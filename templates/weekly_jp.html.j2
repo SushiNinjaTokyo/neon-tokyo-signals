@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Japan Weekly Signals | Neon Tokyo Signals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="Weekly Japan equity momentum signals for global investors."/>
+  <link rel="stylesheet" href="/assets/weekly_jp.css?v=prototype-001"/>
+</head>
+<body>
+<div class="page"><div class="ambient ambient-a"></div><div class="ambient ambient-b"></div><div class="grid"></div>
+<main class="wrap">
+  <nav class="top-nav">
+    <a class="brand" href="/"><strong>NEON TOKYO SIGNALS</strong><span>Weekly Japan equity signals</span></a>
+    <div class="top-links"><a href="/">Home</a><a href="/japan/daily/">Daily</a><a href="/disclaimer/">Disclaimer</a></div>
+  </nav>
+
+  <section class="market-panel">
+    <div class="pulse-stage" style="min-height:320px">
+      <div class="pulse-bg-grid"></div><div class="pulse-bg-word" data-text="WEEKLY">WEEKLY</div><div class="pulse-scan"></div>
+      <div class="hero-content"><div class="kicker">Japan Weekly Signals</div><h1>WEEKLY<br/>SIGNALS</h1><p>As of {{ weekly.date }}. Prototype weekly list using sample data.</p></div>
+    </div>
+  </section>
+
+  <section class="reaction-panel">
+    <div class="section-head"><div class="nav-kicker">Medium-term</div><h2>Weekly Signal List</h2></div>
+    {% for item in items %}
+    <div class="ticker-row">
+      <div>
+        <strong>#{{ item.rank }} {{ item.symbol }}</strong>
+        <span>{{ item.name }} · {{ item.theme }} · Grade {{ item.classification }} · {{ item.score | int }} pts</span>
+        <span>{{ item.why_now }}</span>
+      </div>
+      <div><span class="pill">Weekly candidate</span></div>
+    </div>
+    {% endfor %}
+  </section>
+  <footer class="footer">Generated at {{ generated_at }} · Informational only. Not investment advice.</footer>
+</main></div>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Neon Tokyo Signals | Japan Equity Signals After the Tokyo Close</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="Japan equity signals after the Tokyo close. A prototype dashboard for tracking tradable momentum, market pulse, and ticker reactions from Japan’s equity market."/>
+  <link rel="stylesheet" href="/assets/index.css?v=prototype-001"/>
+</head>
+<body>
+<div class="page">
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <div class="grid"></div>
+
+  <main class="wrap">
+    <nav class="top-nav">
+      <a class="brand" href="/">
+        <strong>NEON TOKYO SIGNALS</strong>
+        <span>Japan equity signals after the Tokyo close</span>
+      </a>
+      <div class="top-links">
+        <a href="/japan/daily/">Daily</a>
+        <a href="/japan/weekly/">Weekly</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
+    </nav>
+
+    <section class="market-panel">
+      <div class="pulse-stage">
+        <div class="pulse-bg-grid"></div>
+        <div class="pulse-bg-word" data-text="TOKYO">TOKYO</div>
+        <div class="pulse-scan"></div>
+
+        <div class="hero-content">
+          <div class="kicker">Japan Equity Signals</div>
+          <h1>NEON TOKYO<br/>SIGNALS</h1>
+          <p>Japan equity signals after the Tokyo close.</p>
+          <div class="hero-meta">
+            <span class="pill">Prototype</span>
+            <span class="pill">Daily / Weekly</span>
+            <span class="pill">Ticker Reactions MVP</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="nav-grid">
+      <a class="nav-card primary" href="/japan/daily/">
+        <div class="nav-kicker">Daily</div>
+        <h3>Japan Daily Signals</h3>
+        <p>Daily momentum setups based on volume expansion, breakout quality, relative strength, and entry timing.</p>
+        <div class="nav-meta">
+          #1 7011.T / 88 pts
+        </div>
+      </a>
+
+      <a class="nav-card" href="/japan/weekly/">
+        <div class="nav-kicker">Weekly</div>
+        <h3>Japan Weekly Signals</h3>
+        <p>Weekly candidates for medium-term momentum, trend quality, accumulation, and sector leadership.</p>
+        <div class="nav-meta">Medium-term signal lab</div>
+      </a>
+
+      <a class="nav-card accent" href="#reactions">
+        <div class="nav-kicker">Community</div>
+        <h3>24h Ticker Reactions</h3>
+        <p>Lightweight ticker reactions for Bullish, Watching, Breakout, and Extended signals. DB will be added later.</p>
+        <div class="nav-meta">Local prototype only</div>
+      </a>
+    </section>
+
+    <section id="reactions" class="reaction-panel">
+      <div class="section-head">
+        <div class="nav-kicker">Prototype UX</div>
+        <h2>Ticker Reactions</h2>
+      </div>
+
+      
+      <div class="ticker-row" data-ticker="7011.T">
+        <div>
+          <strong>7011.T</strong>
+          <span>Mitsubishi Heavy Industries · Defense / Aerospace</span>
+        </div>
+        <div class="reaction-buttons">
+          <button type="button" data-reaction="bullish">Bullish</button>
+          <button type="button" data-reaction="watching">Watching</button>
+          <button type="button" data-reaction="breakout">Breakout</button>
+          <button type="button" data-reaction="extended">Extended</button>
+        </div>
+      </div>
+      
+      <div class="ticker-row" data-ticker="6857.T">
+        <div>
+          <strong>6857.T</strong>
+          <span>Advantest · Semiconductor Test</span>
+        </div>
+        <div class="reaction-buttons">
+          <button type="button" data-reaction="bullish">Bullish</button>
+          <button type="button" data-reaction="watching">Watching</button>
+          <button type="button" data-reaction="breakout">Breakout</button>
+          <button type="button" data-reaction="extended">Extended</button>
+        </div>
+      </div>
+      
+      <div class="ticker-row" data-ticker="5803.T">
+        <div>
+          <strong>5803.T</strong>
+          <span>Fujikura · AI Power / Data Center</span>
+        </div>
+        <div class="reaction-buttons">
+          <button type="button" data-reaction="bullish">Bullish</button>
+          <button type="button" data-reaction="watching">Watching</button>
+          <button type="button" data-reaction="breakout">Breakout</button>
+          <button type="button" data-reaction="extended">Extended</button>
+        </div>
+      </div>
+      
+    </section>
+
+    <footer class="footer">
+      Generated at 2026-05-14 14:14 UTC · Informational only. Not investment advice.
+    </footer>
+  </main>
+</div>
+
+<script>
+document.querySelectorAll(".ticker-row").forEach((row) => {
+  const ticker = row.dataset.ticker;
+  const key = `nts-reaction-${ticker}`;
+  const saved = localStorage.getItem(key);
+
+  if (saved) {
+    const active = row.querySelector(`[data-reaction="${saved}"]`);
+    if (active) active.classList.add("is-active");
+  }
+
+  row.querySelectorAll("button[data-reaction]").forEach((button) => {
+    button.addEventListener("click", () => {
+      row.querySelectorAll("button").forEach((b) => b.classList.remove("is-active"));
+      button.classList.add("is-active");
+      localStorage.setItem(key, button.dataset.reaction);
+    });
+  });
+});
+</script>
+</body>
+</html>
