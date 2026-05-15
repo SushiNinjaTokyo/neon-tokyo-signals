@@ -1,355 +1,265 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Neon Tokyo Signals turns Japan equity momentum, liquidity shocks, breakout quality and emerging themes into structured signals for global investors." />
-  <meta name="theme-color" content="#050711" />
-
+  <meta charset="utf-8"/>
   <title>Neon Tokyo Signals | Japan Equity Signals After the Tokyo Close</title>
-
-  <link rel="stylesheet" href="/assets/index.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="Neon Tokyo Signals turns Japan equity momentum, breakouts, liquidity shocks and themes into readable signals for global investors after the Tokyo close."/>
+  <meta name="theme-color" content="#050711"/>
+  <link rel="stylesheet" href="/assets/index.css?v=20260515-tokyo-pulse"/>
 </head>
 
 <body>
-  <div class="page-shell">
-    <div class="bg-orb bg-orb-a"></div>
-    <div class="bg-orb bg-orb-b"></div>
-    <div class="bg-orb bg-orb-c"></div>
+<div class="page">
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <div class="ambient ambient-c"></div>
+  <div class="grid"></div>
 
-    <header class="site-header">
-      <a class="brand-lockup" href="/" aria-label="Neon Tokyo Signals home">
-        <span class="brand-mark">NTS</span>
-        <span class="brand-text">
-          <span class="brand-name">NEON TOKYO</span>
-          <span class="brand-subname">SIGNALS</span>
-        </span>
+  <main class="wrap">
+    <section class="tokyo-pulse-panel" aria-label="Neon Tokyo market pulse">
+      <div class="pulse-stage" id="pulseStage" data-tone="nikkei">
+        <div class="pulse-bg-grid"></div>
+        <div class="pulse-bg-kanji">東京</div>
+
+        <div class="pulse-brand">
+          <a class="brand-lockup" href="/" aria-label="Neon Tokyo Signals home">
+            <span class="brand-mark">NTS</span>
+            <span>
+              <strong>NEON TOKYO SIGNALS</strong>
+              <em>Japan equity signals after the Tokyo close.</em>
+            </span>
+          </a>
+
+          <nav class="top-nav" aria-label="Primary navigation">
+            <a href="/japan/daily/">Daily</a>
+            <a href="/japan/weekly/">Weekly</a>
+            <a href="#themes">Themes</a>
+            <a href="#reaction">Reaction</a>
+          </nav>
+        </div>
+
+        <div class="pulse-bg-word" id="pulseBgWord" data-text="NIKKEI">NIKKEI</div>
+        <div class="pulse-scan"></div>
+        <div class="pulse-noise"></div>
+
+        <div class="pulse-copy">
+          <div class="pulse-kicker">
+            <span class="live-dot"></span>
+            TOKYO CLOSE // SIGNAL BOARD
+          </div>
+          <h1>Tokyo is closed. The signals are live.</h1>
+          <p>Momentum. Breakouts. Liquidity shocks. Japan themes.</p>
+        </div>
+
+        <div class="pulse-chart-wrap">
+          <svg class="pulse-chart" viewBox="0 0 1000 360" preserveAspectRatio="none" aria-hidden="true">
+            <path class="pulse-path pulse-path-0" data-label="NIKKEI" data-tone="nikkei" data-points="34,38,36,42,48,46,57,61,58,66,71,69,78,82"></path>
+            <path class="pulse-path pulse-path-1" data-label="TOPIX" data-tone="topix" data-points="42,41,45,47,46,51,55,53,58,61,60,65,68,72"></path>
+            <path class="pulse-path pulse-path-2" data-label="GROWTH" data-tone="growth" data-points="28,35,31,44,39,52,47,63,55,68,60,74,66,80"></path>
+            <path class="pulse-trace" d=""></path>
+          </svg>
+        </div>
+
+        <div class="pulse-corner-meta">
+          <span id="pulseLabel">NIKKEI</span>
+          <strong>JP MARKET PULSE</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="ticker-strip" aria-label="Signal watch ticker">
+      <div class="ticker-noise"></div>
+      <div class="ticker-track">
+        <span><b>SIGNAL WATCH</b></span>
+        <span><b>8035.T</b> Tokyo Electron</span>
+        <span><b>6857.T</b> Advantest</span>
+        <span><b>6146.T</b> DISCO</span>
+        <span><b>6920.T</b> Lasertec</span>
+        <span><b>5803.T</b> Fujikura</span>
+        <span><b>7011.T</b> Mitsubishi Heavy Industries</span>
+        <span><b>4425.T</b> Kudan</span>
+        <span><b>135A.T</b> VRAIN Solution</span>
+        <span><b>3993.T</b> PKSHA Technology</span>
+        <span><b>5582.T</b> GRID</span>
+
+        <span><b>SIGNAL WATCH</b></span>
+        <span><b>8035.T</b> Tokyo Electron</span>
+        <span><b>6857.T</b> Advantest</span>
+        <span><b>6146.T</b> DISCO</span>
+        <span><b>6920.T</b> Lasertec</span>
+        <span><b>5803.T</b> Fujikura</span>
+        <span><b>7011.T</b> Mitsubishi Heavy Industries</span>
+        <span><b>4425.T</b> Kudan</span>
+        <span><b>135A.T</b> VRAIN Solution</span>
+        <span><b>3993.T</b> PKSHA Technology</span>
+        <span><b>5582.T</b> GRID</span>
+      </div>
+    </section>
+
+    <section class="nav-grid" aria-label="Signal mode navigation">
+      <a class="nav-card primary" href="/japan/daily/">
+        <div class="nav-visual">
+          <span class="nav-no">01</span>
+          <span class="nav-icon">ϟ</span>
+        </div>
+        <div class="nav-kicker">Tokyo Close</div>
+        <h2>Daily Signals</h2>
+        <p>Momentum board after the Tokyo close.</p>
+        <div class="nav-meta">Volume Shock / Breakout / RS</div>
       </a>
 
-      <nav class="top-nav" aria-label="Primary navigation">
-        <a href="/japan/daily/">Daily</a>
-        <a href="/japan/weekly/">Weekly</a>
-        <a href="#themes">Themes</a>
-        <a href="#reaction">Reaction</a>
-      </nav>
-    </header>
-
-    <main>
-      <section class="hero-section">
-        <div class="hero-grid"></div>
-        <div class="tokyo-kanji">東京</div>
-
-        <div class="hero-copy">
-          <div class="pixel-kicker">
-            <span class="status-dot"></span>
-            TOKYO CLOSE // JP EQUITY SIGNAL BOARD
-          </div>
-
-          <h1>
-            <span>TOKYO IS CLOSED.</span>
-            <span>THE SIGNALS ARE LIVE.</span>
-          </h1>
-
-          <p class="hero-lead">
-            Japan equity signals after the Tokyo close.
-          </p>
-
-          <p class="hero-description">
-            A cyber-market signal board tracking momentum, liquidity shocks,
-            breakout quality and emerging Japan themes.
-          </p>
+      <a class="nav-card" href="/japan/weekly/">
+        <div class="nav-visual">
+          <span class="nav-no">02</span>
+          <span class="nav-icon">▰</span>
         </div>
+        <div class="nav-kicker">Trend Layer</div>
+        <h2>Weekly Board</h2>
+        <p>Trend candidates with staying power.</p>
+        <div class="nav-meta">Compression / Base / Theme</div>
+      </a>
 
-        <aside class="market-console" aria-label="Japan market pulse preview">
-          <div class="console-header">
-            <div>
-              <span class="console-kicker">JP MARKET PULSE</span>
-              <strong>NEON INDEX MAP</strong>
-            </div>
-            <span class="console-live">LIVE</span>
-          </div>
-
-          <div class="neon-chart-card main-chart">
-            <div class="chart-topline">
-              <span>NIKKEI</span>
-              <strong>Momentum proxy</strong>
-            </div>
-
-            <svg class="neon-chart" viewBox="0 0 420 180" role="img" aria-label="Stylized Nikkei neon chart">
-              <defs>
-                <filter id="glow-cyan" x="-30%" y="-30%" width="160%" height="160%">
-                  <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
-                  <feMerge>
-                    <feMergeNode in="coloredBlur"/>
-                    <feMergeNode in="SourceGraphic"/>
-                  </feMerge>
-                </filter>
-                <filter id="glow-pink" x="-30%" y="-30%" width="160%" height="160%">
-                  <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-                  <feMerge>
-                    <feMergeNode in="coloredBlur"/>
-                    <feMergeNode in="SourceGraphic"/>
-                  </feMerge>
-                </filter>
-                <linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1">
-                  <stop offset="0%" stop-color="#63f7ff" stop-opacity="0.28"/>
-                  <stop offset="100%" stop-color="#ff3df2" stop-opacity="0.02"/>
-                </linearGradient>
-              </defs>
-
-              <path class="chart-grid-line" d="M0 40H420M0 90H420M0 140H420" />
-              <path class="chart-grid-line vertical" d="M60 0V180M140 0V180M220 0V180M300 0V180M380 0V180" />
-
-              <path class="chart-area" d="M8 145 L42 132 L78 138 L116 112 L154 118 L196 78 L236 91 L274 62 L318 74 L356 42 L412 54 L412 180 L8 180 Z" />
-
-              <path class="chart-line-pink" d="M8 145 L42 132 L78 138 L116 112 L154 118 L196 78 L236 91 L274 62 L318 74 L356 42 L412 54" />
-              <path class="chart-line-cyan" d="M8 145 L42 132 L78 138 L116 112 L154 118 L196 78 L236 91 L274 62 L318 74 L356 42 L412 54" />
-
-              <circle class="chart-dot" cx="412" cy="54" r="5" />
-            </svg>
-
-            <div class="chart-status-row">
-              <span>RISK MODE</span>
-              <strong>AFTER CLOSE</strong>
-            </div>
-          </div>
-
-          <div class="mini-chart-grid">
-            <div class="mini-chart-card">
-              <div class="mini-chart-label">
-                <span>TOPIX</span>
-                <strong>Broad</strong>
-              </div>
-              <svg class="mini-chart" viewBox="0 0 180 70" aria-hidden="true">
-                <path d="M4 54 L28 48 L52 51 L76 37 L100 40 L124 27 L150 31 L176 22" />
-              </svg>
-            </div>
-
-            <div class="mini-chart-card">
-              <div class="mini-chart-label">
-                <span>GROWTH</span>
-                <strong>Beta</strong>
-              </div>
-              <svg class="mini-chart hot-chart" viewBox="0 0 180 70" aria-hidden="true">
-                <path d="M4 58 L28 50 L52 56 L76 34 L100 45 L124 24 L150 38 L176 18" />
-              </svg>
-            </div>
-          </div>
-        </aside>
-      </section>
-
-      <section class="ticker-strip" aria-label="Ticker tape">
-        <div class="ticker-noise"></div>
-        <div class="ticker-track">
-          <span><b>8035.T</b> Tokyo Electron</span>
-          <span><b>6857.T</b> Advantest</span>
-          <span><b>6146.T</b> DISCO</span>
-          <span><b>6920.T</b> Lasertec</span>
-          <span><b>5803.T</b> Fujikura</span>
-          <span><b>7011.T</b> Mitsubishi Heavy Industries</span>
-          <span><b>4425.T</b> Kudan</span>
-          <span><b>135A.T</b> VRAIN Solution</span>
-          <span><b>3993.T</b> PKSHA Technology</span>
-          <span><b>5582.T</b> GRID</span>
-
-          <span><b>8035.T</b> Tokyo Electron</span>
-          <span><b>6857.T</b> Advantest</span>
-          <span><b>6146.T</b> DISCO</span>
-          <span><b>6920.T</b> Lasertec</span>
-          <span><b>5803.T</b> Fujikura</span>
-          <span><b>7011.T</b> Mitsubishi Heavy Industries</span>
-          <span><b>4425.T</b> Kudan</span>
-          <span><b>135A.T</b> VRAIN Solution</span>
-          <span><b>3993.T</b> PKSHA Technology</span>
-          <span><b>5582.T</b> GRID</span>
+      <a class="nav-card accent" href="#themes" id="themes">
+        <div class="nav-visual">
+          <span class="nav-no">03</span>
+          <span class="nav-icon">◇</span>
         </div>
-      </section>
+        <div class="nav-kicker">Japan Themes</div>
+        <h2>Theme Radar</h2>
+        <p>Semis, defense, robotics, AI and infrastructure.</p>
+        <div class="nav-meta">Core / Discovery / Watch</div>
+      </a>
 
-      <section class="section-block mode-section" aria-labelledby="mode-title">
-        <div class="section-heading compact">
-          <div class="pixel-kicker">SELECT SIGNAL MODE</div>
-          <h2 id="mode-title">Choose your Tokyo signal layer.</h2>
+      <a class="nav-card" href="#reaction" id="reaction">
+        <div class="nav-visual">
+          <span class="nav-no">04</span>
+          <span class="nav-icon">◎</span>
         </div>
+        <div class="nav-kicker">Crowd Pulse</div>
+        <h2>Ticker Reaction</h2>
+        <p>Controlled reactions without open-chat noise.</p>
+        <div class="nav-meta">Bullish / Watching / Extended</div>
+      </a>
+    </section>
 
-        <div class="mode-grid">
-          <a class="mode-card active-card" href="/japan/daily/">
-            <div class="mode-visual">
-              <span class="mode-index">01</span>
-              <span class="mode-icon icon-bolt">ϟ</span>
-            </div>
-            <h3>Daily Signals</h3>
-            <p>Momentum, volume shock and breakout quality after the Tokyo close.</p>
-            <span class="card-link">Launch daily board ↗</span>
-          </a>
+    <section class="theme-pills" aria-label="Featured themes">
+      <span>SEMICONDUCTOR CAPEX</span>
+      <span>DEFENSE & AEROSPACE</span>
+      <span>PHYSICAL AI</span>
+      <span>DATA CENTER INFRA</span>
+      <span>ROBOTICS</span>
+      <span>EDGE AI</span>
+    </section>
 
-          <a class="mode-card" href="/japan/weekly/">
-            <div class="mode-visual">
-              <span class="mode-index">02</span>
-              <span class="mode-icon icon-chart">▰</span>
-            </div>
-            <h3>Weekly Signals</h3>
-            <p>Multi-week candidates with stronger trend and compression context.</p>
-            <span class="card-link">Open weekly board ↗</span>
-          </a>
-
-          <a class="mode-card" href="#reaction" id="reaction">
-            <div class="mode-visual">
-              <span class="mode-index">03</span>
-              <span class="mode-icon icon-pulse">◎</span>
-            </div>
-            <h3>Ticker Reaction</h3>
-            <p>Controlled crowd pulse without open chat or pump-style noise.</p>
-            <span class="card-link">Reaction MVP ↘</span>
-          </a>
-
-          <a class="mode-card" href="#themes">
-            <div class="mode-visual">
-              <span class="mode-index">04</span>
-              <span class="mode-icon icon-grid">▦</span>
-            </div>
-            <h3>Theme Radar</h3>
-            <p>Semis, defense, robotics, physical AI and data-center infrastructure.</p>
-            <span class="card-link">Explore themes ↓</span>
-          </a>
-        </div>
-      </section>
-
-      <section class="section-block visual-pulse-section" aria-labelledby="pulse-title">
-        <div class="section-heading compact">
-          <div class="pixel-kicker">MARKET REGIME</div>
-          <h2 id="pulse-title">Read the market before the ticker.</h2>
-        </div>
-
-        <div class="pulse-grid">
-          <article class="pulse-card">
-            <div class="pulse-icon">日</div>
-            <div>
-              <div class="pulse-label">TOPIX</div>
-              <div class="pulse-status">BROAD MARKET</div>
-            </div>
-          </article>
-
-          <article class="pulse-card">
-            <div class="pulse-icon">株</div>
-            <div>
-              <div class="pulse-label">NIKKEI</div>
-              <div class="pulse-status">LARGE-CAP MOMENTUM</div>
-            </div>
-          </article>
-
-          <article class="pulse-card">
-            <div class="pulse-icon">光</div>
-            <div>
-              <div class="pulse-label">GROWTH</div>
-              <div class="pulse-status">SPECULATIVE BETA</div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="section-block theme-section" id="themes" aria-labelledby="theme-title">
-        <div class="section-heading">
-          <div class="pixel-kicker">THEME RADAR</div>
-          <h2 id="theme-title">Japan themes global investors can understand.</h2>
-          <p>
-            Core leaders and smaller discovery names are separated to keep the signal useful,
-            readable and risk-aware.
-          </p>
-        </div>
-
-        <div class="theme-grid">
-          <article class="theme-card">
-            <span class="theme-icon">◆</span>
-            <span class="theme-tag">SEMIS</span>
-            <h3>Semiconductor Capex</h3>
-          </article>
-
-          <article class="theme-card">
-            <span class="theme-icon">▲</span>
-            <span class="theme-tag">DEFENSE</span>
-            <h3>Defense & Aerospace</h3>
-          </article>
-
-          <article class="theme-card">
-            <span class="theme-icon">◉</span>
-            <span class="theme-tag">AI / ROBOTICS</span>
-            <h3>Physical AI</h3>
-          </article>
-
-          <article class="theme-card">
-            <span class="theme-icon">▣</span>
-            <span class="theme-tag">INFRA</span>
-            <h3>Data Center Infrastructure</h3>
-          </article>
-        </div>
-      </section>
-
-      <section class="section-block classification-section" aria-labelledby="classification-title">
-        <div class="section-heading compact">
-          <div class="pixel-kicker">UNIVERSE CLASSIFICATION</div>
-          <h2 id="classification-title">Core, Discovery and Watch are intentionally separated.</h2>
-        </div>
-
-        <div class="class-grid">
-          <article class="class-card">
-            <div class="class-code">CORE</div>
-            <h3>Liquid leaders</h3>
-            <p>Institutionally visible Japanese companies with stronger liquidity.</p>
-          </article>
-
-          <article class="class-card">
-            <div class="class-code">DISCOVERY</div>
-            <h3>Theme-driven smaller names</h3>
-            <p>Higher attention potential, but higher volatility and liquidity risk.</p>
-          </article>
-
-          <article class="class-card warning-card">
-            <div class="class-code">WATCH</div>
-            <h3>Observation only</h3>
-            <p>Low-liquidity or speculative names. Signal only, not endorsement.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="reaction-panel" aria-labelledby="reaction-title">
-        <div>
-          <div class="pixel-kicker">REACTION MVP</div>
-          <h2 id="reaction-title">Crowd pulse, not open chat.</h2>
-          <p>
-            Controlled ticker reactions reduce spam, pump language and moderation risk.
-          </p>
-        </div>
-
-        <div class="reaction-buttons" aria-label="Reaction examples">
-          <button type="button">Bullish</button>
-          <button type="button">Watching</button>
-          <button type="button">Breakout</button>
-          <button type="button">Extended</button>
-        </div>
-      </section>
-
-      <section class="disclaimer-strip">
-        <strong>Not investment advice.</strong>
-        <span>
-          Neon Tokyo Signals is an informational research interface. Signals are not recommendations.
-          Small-cap and low-liquidity stocks can move violently.
-        </span>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div>
-        <strong>NEON TOKYO SIGNALS</strong>
-        <span>Japan equity signals after the Tokyo close.</span>
-      </div>
-
+    <footer class="footer">
+      <span>Informational only. Not investment advice.</span>
       <nav aria-label="Footer navigation">
         <a href="/disclaimer/">Disclaimer</a>
         <a href="/privacy/">Privacy</a>
-        <a href="/japan/daily/">Daily</a>
-        <a href="/japan/weekly/">Weekly</a>
       </nav>
     </footer>
-  </div>
+  </main>
+</div>
+
+<script>
+function pathFromPoints(points, width = 1000, height = 360) {
+  if (!points || points.length < 2) return "";
+
+  const coords = points.map((p, i) => {
+    const x = (i / (points.length - 1)) * width;
+    const y = height - (Math.max(0, Math.min(100, Number(p))) / 100) * (height - 44) - 22;
+    return [x, y];
+  });
+
+  let d = `M ${coords[0][0].toFixed(2)} ${coords[0][1].toFixed(2)}`;
+
+  for (let i = 1; i < coords.length; i++) {
+    const prev = coords[i - 1];
+    const curr = coords[i];
+    const cx1 = (prev[0] + curr[0]) / 2;
+    const cx2 = (prev[0] + curr[0]) / 2;
+    d += ` C ${cx1.toFixed(2)} ${prev[1].toFixed(2)}, ${cx2.toFixed(2)} ${curr[1].toFixed(2)}, ${curr[0].toFixed(2)} ${curr[1].toFixed(2)}`;
+  }
+
+  return d;
+}
+
+const stage = document.getElementById("pulseStage");
+const bgWord = document.getElementById("pulseBgWord");
+const label = document.getElementById("pulseLabel");
+const paths = Array.from(document.querySelectorAll(".pulse-path"));
+const trace = document.querySelector(".pulse-trace");
+
+const pulseData = paths.map((path, index) => {
+  const raw = path.getAttribute("data-points") || "";
+  const points = raw.split(",").map(Number).filter(v => Number.isFinite(v));
+  const smooth = pathFromPoints(points);
+
+  path.setAttribute("d", smooth);
+
+  return {
+    index,
+    path,
+    points,
+    smooth,
+    label: path.getAttribute("data-label") || "TOKYO",
+    tone: path.getAttribute("data-tone") || "nikkei"
+  };
+}).filter(d => d.points.length >= 2);
+
+let activeIndex = 0;
+
+function restartTraceAnimation() {
+  if (!trace) return;
+  trace.style.animation = "none";
+  void trace.getBoundingClientRect();
+  trace.style.animation = "";
+}
+
+function activatePulse(i) {
+  if (!pulseData.length || !stage || !bgWord || !trace) return;
+
+  const item = pulseData[i % pulseData.length];
+
+  stage.dataset.tone = item.tone || "nikkei";
+  bgWord.textContent = item.label;
+  bgWord.setAttribute("data-text", item.label);
+
+  if (label) {
+    label.textContent = item.label;
+  }
+
+  paths.forEach(p => p.classList.remove("active"));
+  item.path.classList.add("active");
+
+  trace.setAttribute("d", item.smooth);
+  restartTraceAnimation();
+}
+
+activatePulse(activeIndex);
+
+setInterval(() => {
+  activeIndex = (activeIndex + 1) % Math.max(1, pulseData.length);
+  activatePulse(activeIndex);
+}, 2600);
+
+if (bgWord) {
+  function triggerPulseNoise() {
+    bgWord.classList.add("is-noisy");
+
+    const noiseDuration = 90 + Math.random() * 210;
+
+    setTimeout(() => {
+      bgWord.classList.remove("is-noisy");
+    }, noiseDuration);
+
+    const nextNoise = 520 + Math.random() * 2300;
+    setTimeout(triggerPulseNoise, nextNoise);
+  }
+
+  setTimeout(triggerPulseNoise, 500 + Math.random() * 900);
+}
+</script>
 </body>
 </html>
