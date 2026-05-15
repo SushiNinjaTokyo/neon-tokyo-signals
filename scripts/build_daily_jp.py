@@ -2,6 +2,8 @@
 """
 Build Daily JP signal ranking from normalized JP price JSON.
 
+FutureTech-derived v2 logic for Neon Tokyo Signals.
+
 Input:
 - site/data/prices-jp/latest.json
 
@@ -10,10 +12,18 @@ Output:
 - site/data/daily-jp/manifest.json
 - site/data/daily-jp/YYYY-MM-DD.json
 
-Scope:
-- This script does NOT fetch prices.
-- This script does NOT render HTML.
-- This script builds a structured ranking JSON for /japan/daily/.
+Design:
+- Daily signal is NOT a simple momentum ranking.
+- It is an event/timing score emphasizing:
+  1. Volume + liquidity shock
+  2. Compression release
+  3. Breakout setup quality
+  4. Relative strength vs TOPIX
+  5. Entry timing discipline
+  6. Market regime alignment
+  7. Penalty controls
+
+News/disclosure/fundamentals are intentionally excluded in this version.
 """
 
 from __future__ import annotations
@@ -24,6 +34,9 @@ import os
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+
+import numpy as np
+import pandas as pd
 from zoneinfo import ZoneInfo
 
 
@@ -49,14 +62,15 @@ TZ = ZoneInfo("Asia/Tokyo")
 
 
 WEIGHTS = {
-    "volume_shock": 25.0,
-    "breakout_quality": 25.0,
-    "relative_strength": 20.0,
-    "compression": 15.0,
-    "entry_timing": 15.0,
+    "volume_liquidity_shock": 0.24,
+    "compression_release": 0.22,
+    "breakout_setup_quality": 0.20,
+    "relative_strength": 0.16,
+    "entry_timing": 0.15,
+    "market_regime": 0.03,
 }
 
-MAX_RAW_SCORE = sum(WEIGHTS.values())
+SCORE_SCALE = 1000
 
 
 def now_jst() -> datetime:
@@ -93,412 +107,294 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
     tmp.replace(path)
 
 
-def as_float(value: Any) -> float | None:
+def to_float(value: Any) -> float | None:
     try:
         if value is None:
             return None
+        if isinstance(value, str) and not value.strip():
+            return None
         v = float(value)
-        if math.isfinite(v):
-            return v
-        return None
+        if not math.isfinite(v):
+            return None
+        return v
     except Exception:
         return None
 
 
-def as_int(value: Any) -> int | None:
-    try:
-        if value is None:
-            return None
-        v = float(value)
-        if math.isfinite(v):
-            return int(round(v))
+def to_int(value: Any) -> int | None:
+    v = to_float(value)
+    if v is None:
         return None
-    except Exception:
+    return int(round(v))
+
+
+def safe_round(value: Any, digits: int = 4) -> float | None:
+    v = to_float(value)
+    if v is None:
         return None
+    return round(v, digits)
 
 
-def clamp(value: float, low: float, high: float) -> float:
-    return max(low, min(high, value))
+def clamp(value: Any, low: float = 0.0, high: float = 1.0) -> float:
+    v = to_float(value)
+    if v is None:
+        return low
+    return max(low, min(high, v))
 
 
-def scale_linear(value: float | None, low: float, high: float) -> float:
-    """
-    Convert a value to 0..1 using linear interpolation.
-    Values below low -> 0.
-    Values above high -> 1.
-    """
-    if value is None:
+def scale(value: Any, low: float, high: float) -> float:
+    v = to_float(value)
+    if v is None or high == low:
         return 0.0
-    if high == low:
-        return 0.0
-    return clamp((value - low) / (high - low), 0.0, 1.0)
+    return clamp((v - low) / (high - low), 0.0, 1.0)
 
 
-def score_volume_shock(metrics: dict[str, Any]) -> tuple[float, list[str]]:
-    flags: list[str] = []
-
-    volume_ratio = as_float(metrics.get("volume_ratio_20d"))
-    avg_value_20d = as_float(metrics.get("avg_traded_value_20d_jpy"))
-    latest_value = as_float(metrics.get("latest_traded_value_jpy"))
-
-    # Main volume expansion score.
-    # 1.0x = no score, 2.0x = decent, 4.0x+ = very strong.
-    ratio_score = scale_linear(volume_ratio, 1.0, 4.0)
-
-    # Liquidity confirmation.
-    # ¥100M = barely acceptable, ¥1B+ = strong.
-    avg_value_score = scale_linear(avg_value_20d, 100_000_000, 1_000_000_000)
-
-    # Today's traded value helps avoid tiny illiquid names ranking too high.
-    latest_value_score = scale_linear(latest_value, 100_000_000, 1_500_000_000)
-
-    combined = (
-        ratio_score * 0.58
-        + avg_value_score * 0.22
-        + latest_value_score * 0.20
-    )
-
-    if volume_ratio is not None:
-        if volume_ratio >= 4.0:
-            flags.append("major_volume_shock")
-        elif volume_ratio >= 2.0:
-            flags.append("volume_expansion")
-
-    if avg_value_20d is not None and avg_value_20d >= 1_000_000_000:
-        flags.append("high_liquidity")
-
-    return combined * WEIGHTS["volume_shock"], flags
+def pct(cur: Any, prev: Any) -> float | None:
+    c = to_float(cur)
+    p = to_float(prev)
+    if c is None or p is None or p == 0:
+        return None
+    return (c / p - 1.0) * 100.0
 
 
-def score_breakout_quality(metrics: dict[str, Any]) -> tuple[float, list[str]]:
-    flags: list[str] = []
+def bars_to_df(item: dict[str, Any]) -> pd.DataFrame:
+    bars = item.get("bars") or []
+    if not isinstance(bars, list) or not bars:
+        return pd.DataFrame()
 
-    dist_20d = as_float(metrics.get("distance_from_20d_high_pct"))
-    dist_52w = as_float(metrics.get("distance_from_52w_high_pct"))
-    range_pos = as_float(metrics.get("range_position_20d_0_1"))
-    ret_20d = as_float(metrics.get("return_20d_pct"))
+    rows = []
+    for bar in bars:
+        if not isinstance(bar, dict):
+            continue
+        date = bar.get("date")
+        if not date:
+            continue
+        rows.append(
+            {
+                "date": date,
+                "Open": to_float(bar.get("open")),
+                "High": to_float(bar.get("high")),
+                "Low": to_float(bar.get("low")),
+                "Close": to_float(bar.get("close")),
+                "Volume": to_float(bar.get("volume")) or 0.0,
+            }
+        )
 
-    # Near 20D high.
-    # 0% or above = ideal, -10% = weak.
-    near_20d_high = 1.0 - scale_linear(abs(min(dist_20d or 0.0, 0.0)), 0.0, 10.0)
+    if not rows:
+        return pd.DataFrame()
 
-    # Near 52W high.
-    # 0% = ideal, -25% = weak.
-    near_52w_high = 1.0 - scale_linear(abs(min(dist_52w or 0.0, 0.0)), 0.0, 25.0)
+    df = pd.DataFrame(rows)
+    df["date"] = pd.to_datetime(df["date"], errors="coerce")
+    df = df.dropna(subset=["date", "Open", "High", "Low", "Close"])
+    df = df.set_index("date").sort_index()
 
-    # Closing near top of recent range.
-    range_score = clamp(range_pos or 0.0, 0.0, 1.0)
+    for col in ["Open", "High", "Low", "Close", "Volume"]:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
 
-    # 20D return confirms upward pressure, but should not dominate.
-    return_score = scale_linear(ret_20d, 0.0, 35.0)
+    df = df.dropna(subset=["Open", "High", "Low", "Close"])
+    df = df[df["Close"] > 0]
+    df = df[~df.index.duplicated(keep="last")]
 
-    combined = (
-        near_20d_high * 0.32
-        + near_52w_high * 0.30
-        + range_score * 0.23
-        + return_score * 0.15
-    )
-
-    if dist_20d is not None and dist_20d >= -3.0:
-        flags.append("near_20d_high")
-
-    if dist_52w is not None and dist_52w >= -10.0:
-        flags.append("near_52w_high")
-
-    if range_pos is not None and range_pos >= 0.80:
-        flags.append("upper_range_close")
-
-    return combined * WEIGHTS["breakout_quality"], flags
+    return df
 
 
-def score_relative_strength(
-    metrics: dict[str, Any],
-    topix_metrics: dict[str, Any] | None,
-) -> tuple[float, list[str], dict[str, float | None]]:
-    flags: list[str] = []
+def add_indicators(df: pd.DataFrame) -> pd.DataFrame:
+    if df.empty:
+        return df
 
-    ret_20d = as_float(metrics.get("return_20d_pct"))
-    ret_60d = as_float(metrics.get("return_60d_pct"))
-    ret_120d = as_float(metrics.get("return_120d_pct"))
+    d = df.copy().sort_index()
 
-    topix_20d = as_float((topix_metrics or {}).get("return_20d_pct"))
-    topix_60d = as_float((topix_metrics or {}).get("return_60d_pct"))
-    topix_120d = as_float((topix_metrics or {}).get("return_120d_pct"))
+    c = d["Close"]
+    h = d["High"]
+    l = d["Low"]
+    v = d["Volume"]
 
-    rs_20d = ret_20d - topix_20d if ret_20d is not None and topix_20d is not None else None
-    rs_60d = ret_60d - topix_60d if ret_60d is not None and topix_60d is not None else None
-    rs_120d = ret_120d - topix_120d if ret_120d is not None and topix_120d is not None else None
+    d["sma10"] = c.rolling(10, min_periods=5).mean()
+    d["sma20"] = c.rolling(20, min_periods=8).mean()
+    d["sma50"] = c.rolling(50, min_periods=20).mean()
+    d["sma150"] = c.rolling(150, min_periods=60).mean()
 
-    # If TOPIX is unavailable, fall back to absolute returns.
-    base_20 = rs_20d if rs_20d is not None else ret_20d
-    base_60 = rs_60d if rs_60d is not None else ret_60d
-    base_120 = rs_120d if rs_120d is not None else ret_120d
+    d["high5"] = h.rolling(5, min_periods=3).max()
+    d["high10"] = h.rolling(10, min_periods=5).max()
+    d["high20"] = h.rolling(20, min_periods=8).max()
+    d["high50"] = h.rolling(50, min_periods=20).max()
+    d["high252"] = h.rolling(252, min_periods=60).max()
 
-    score_20 = scale_linear(base_20, -5.0, 25.0)
-    score_60 = scale_linear(base_60, -5.0, 45.0)
-    score_120 = scale_linear(base_120, -5.0, 70.0)
+    d["low10"] = l.rolling(10, min_periods=5).min()
+    d["low20"] = l.rolling(20, min_periods=8).min()
+    d["low50"] = l.rolling(50, min_periods=20).min()
 
-    combined = score_20 * 0.45 + score_60 * 0.35 + score_120 * 0.20
+    d["vol20"] = v.rolling(20, min_periods=8).mean()
+    d["vol50"] = v.rolling(50, min_periods=20).mean()
 
-    if rs_20d is not None and rs_20d >= 10:
-        flags.append("rs_20d_positive")
-    if rs_60d is not None and rs_60d >= 20:
-        flags.append("rs_60d_leader")
-    if ret_20d is not None and ret_20d > 0:
-        flags.append("positive_20d_return")
+    prev_c = c.shift(1)
+    tr = pd.concat(
+        [
+            (h - l).abs(),
+            (h - prev_c).abs(),
+            (l - prev_c).abs(),
+        ],
+        axis=1,
+    ).max(axis=1)
 
-    relative_metrics = {
-        "rs_vs_topix_20d_pct": round(rs_20d, 4) if rs_20d is not None else None,
-        "rs_vs_topix_60d_pct": round(rs_60d, 4) if rs_60d is not None else None,
-        "rs_vs_topix_120d_pct": round(rs_120d, 4) if rs_120d is not None else None,
+    d["atr14"] = tr.rolling(14, min_periods=7).mean()
+    d["atr_pct"] = d["atr14"] / c * 100.0
+
+    d["ret1"] = c.pct_change(1) * 100.0
+    d["ret5"] = c.pct_change(5) * 100.0
+    d["ret20"] = c.pct_change(20) * 100.0
+    d["ret60"] = c.pct_change(60) * 100.0
+    d["ret120"] = c.pct_change(120) * 100.0
+
+    d["rvol20"] = v / (d["vol20"] + 1e-9)
+
+    d["day_range"] = (h - l).replace(0, np.nan)
+    d["range_pos"] = (c - l) / d["day_range"]
+    d["close_pos20"] = (c - d["low20"]) / ((d["high20"] - d["low20"]).replace(0, np.nan))
+    d["close_pos50"] = (c - d["low50"]) / ((d["high50"] - d["low50"]).replace(0, np.nan))
+
+    d["bb_width20"] = (c.rolling(20, min_periods=8).std() * 4.0) / c * 100.0
+    d["bb_width_pct63"] = d["bb_width20"].rolling(63, min_periods=20).rank(pct=True)
+    d["atr_pct_rank63"] = d["atr_pct"].rolling(63, min_periods=20).rank(pct=True)
+
+    d["extension_sma20"] = (c / d["sma20"] - 1.0) * 100.0
+    d["extension_sma50"] = (c / d["sma50"] - 1.0) * 100.0
+
+    d["dollar_volume"] = c * v
+    d["avg_dollar_volume20"] = d["dollar_volume"].rolling(20, min_periods=8).mean()
+    d["avg_dollar_volume50"] = d["dollar_volume"].rolling(50, min_periods=20).mean()
+
+    return d
+
+
+def get_last_row(df: pd.DataFrame) -> pd.Series | None:
+    if df is None or df.empty:
+        return None
+    return df.iloc[-1]
+
+
+def market_regime_from_pulse(market_pulse_raw: list[dict[str, Any]]) -> tuple[str, float, dict[str, Any]]:
+    """
+    Market regime uses TOPIX/NIKKEI/GROWTH ETF data.
+    FutureTech uses SPY/QQQ above SMA20/SMA50.
+    Neon Tokyo version:
+      - Risk-on: TOPIX and NIKKEI above SMA20, or TOPIX 20D return strong
+      - Neutral: broad market not broken
+      - Risk-off: TOPIX below SMA50 and weak 20D return
+    """
+    pulse_map: dict[str, dict[str, Any]] = {}
+
+    for item in market_pulse_raw:
+        label = item.get("pulse_label") or item.get("symbol")
+        if label:
+            pulse_map[str(label).upper()] = item
+
+    topix = pulse_map.get("TOPIX")
+    nikkei = pulse_map.get("NIKKEI")
+    growth = pulse_map.get("GROWTH")
+
+    def enriched(item: dict[str, Any] | None) -> tuple[pd.Series | None, dict[str, Any]]:
+        if not item:
+            return None, {}
+        df = add_indicators(bars_to_df(item))
+        row = get_last_row(df)
+        if row is None:
+            return None, {}
+        close = to_float(row.get("Close"))
+        sma20 = to_float(row.get("sma20"))
+        sma50 = to_float(row.get("sma50"))
+        return row, {
+            "symbol": item.get("symbol"),
+            "label": item.get("pulse_label"),
+            "close": safe_round(close, 4),
+            "ret1": safe_round(row.get("ret1"), 4),
+            "ret5": safe_round(row.get("ret5"), 4),
+            "ret20": safe_round(row.get("ret20"), 4),
+            "ret60": safe_round(row.get("ret60"), 4),
+            "above_sma20": bool(close is not None and sma20 is not None and close >= sma20),
+            "above_sma50": bool(close is not None and sma50 is not None and close >= sma50),
+        }
+
+    topix_row, topix_state = enriched(topix)
+    nikkei_row, nikkei_state = enriched(nikkei)
+    growth_row, growth_state = enriched(growth)
+
+    topix_ret20 = to_float(topix_state.get("ret20"))
+    topix_ret5 = to_float(topix_state.get("ret5"))
+
+    topix_above20 = bool(topix_state.get("above_sma20"))
+    nikkei_above20 = bool(nikkei_state.get("above_sma20"))
+    topix_above50 = bool(topix_state.get("above_sma50"))
+    nikkei_above50 = bool(nikkei_state.get("above_sma50"))
+
+    if topix_above20 and nikkei_above20:
+        regime = "Risk-on"
+        score = 1.0
+    elif topix_above50 and nikkei_above50:
+        regime = "Neutral"
+        score = 0.65
+    elif topix_ret20 is not None and topix_ret20 <= -5:
+        regime = "Risk-off"
+        score = 0.18
+    elif topix_ret5 is not None and topix_ret5 <= -2:
+        regime = "Weakening"
+        score = 0.38
+    else:
+        regime = "Neutral"
+        score = 0.55
+
+    state = {
+        "regime": regime,
+        "regime_score": score,
+        "topix": topix_state,
+        "nikkei": nikkei_state,
+        "growth": growth_state,
     }
 
-    return combined * WEIGHTS["relative_strength"], flags, relative_metrics
-
-
-def score_compression(metrics: dict[str, Any]) -> tuple[float, list[str]]:
-    flags: list[str] = []
-
-    compression_20d = as_float(metrics.get("compression_20d_pct"))
-    vol_20d = as_float(metrics.get("volatility_20d_annualized_pct"))
-    volume_ratio = as_float(metrics.get("volume_ratio_20d"))
-    range_pos = as_float(metrics.get("range_position_20d_0_1"))
-
-    # Compression is useful when not too wide.
-    # 8% or less = very tight, 35%+ = loose.
-    compression_score = 1.0 - scale_linear(compression_20d, 8.0, 35.0)
-
-    # Lower volatility helps, but very tiny volatility can also mean no interest.
-    vol_score = 1.0 - scale_linear(vol_20d, 25.0, 90.0)
-
-    # Compression + volume expansion + close near high is better.
-    release_score = (
-        scale_linear(volume_ratio, 1.0, 3.0) * 0.55
-        + clamp(range_pos or 0.0, 0.0, 1.0) * 0.45
-    )
-
-    combined = (
-        compression_score * 0.45
-        + vol_score * 0.20
-        + release_score * 0.35
-    )
-
-    if compression_20d is not None and compression_20d <= 18:
-        flags.append("compressed_range")
-
-    if volume_ratio is not None and volume_ratio >= 1.5 and range_pos is not None and range_pos >= 0.75:
-        flags.append("compression_release")
-
-    return combined * WEIGHTS["compression"], flags
-
-
-def score_entry_timing(metrics: dict[str, Any]) -> tuple[float, list[str]]:
-    flags: list[str] = []
-
-    ret_1d = as_float(metrics.get("return_1d_pct"))
-    ret_5d = as_float(metrics.get("return_5d_pct"))
-    ret_20d = as_float(metrics.get("return_20d_pct"))
-    dist_20d = as_float(metrics.get("distance_from_20d_high_pct"))
-    range_pos = as_float(metrics.get("range_position_20d_0_1"))
-
-    # Prefer active but not insanely extended.
-    one_day_ok = 1.0 - scale_linear(abs(ret_1d or 0.0), 7.0, 20.0)
-    five_day_ok = 1.0 - scale_linear(max(ret_5d or 0.0, 0.0), 18.0, 45.0)
-    twenty_day_ok = 1.0 - scale_linear(max(ret_20d or 0.0, 0.0), 35.0, 85.0)
-
-    # Near high, but not far below.
-    high_proximity = 1.0 - scale_linear(abs(min(dist_20d or 0.0, 0.0)), 0.0, 12.0)
-
-    # Closing in upper range is good.
-    range_quality = clamp(range_pos or 0.0, 0.0, 1.0)
-
-    combined = (
-        one_day_ok * 0.22
-        + five_day_ok * 0.22
-        + twenty_day_ok * 0.18
-        + high_proximity * 0.20
-        + range_quality * 0.18
-    )
-
-    if ret_1d is not None and ret_1d >= 8:
-        flags.append("strong_1d_move")
-
-    if ret_5d is not None and ret_5d >= 20:
-        flags.append("hot_5d_move")
-
-    if ret_20d is not None and ret_20d >= 35:
-        flags.append("hot_20d_move")
-
-    return combined * WEIGHTS["entry_timing"], flags
-
-
-def compute_penalty(item: dict[str, Any]) -> tuple[float, list[str]]:
-    metrics = item.get("metrics") or {}
-
-    penalty = 0.0
-    flags: list[str] = []
-
-    latest_close = as_float(metrics.get("latest_close"))
-    avg_value_20d = as_float(metrics.get("avg_traded_value_20d_jpy"))
-    latest_value = as_float(metrics.get("latest_traded_value_jpy"))
-    ret_1d = as_float(metrics.get("return_1d_pct"))
-    ret_5d = as_float(metrics.get("return_5d_pct"))
-    ret_20d = as_float(metrics.get("return_20d_pct"))
-    volume_ratio = as_float(metrics.get("volume_ratio_20d"))
-    bars_count = as_int(item.get("bars_count"))
-    bucket = str(item.get("bucket") or "").strip().lower()
-    is_partial = bool(item.get("is_partial"))
-
-    if latest_close is not None and latest_close < 300:
-        penalty -= 15.0
-        flags.append("low_price_penalty")
-
-    if avg_value_20d is None:
-        penalty -= 12.0
-        flags.append("unknown_liquidity_penalty")
-    elif avg_value_20d < 100_000_000:
-        penalty -= 25.0
-        flags.append("very_low_liquidity_penalty")
-    elif avg_value_20d < 300_000_000:
-        penalty -= 10.0
-        flags.append("low_liquidity_penalty")
-
-    if latest_value is not None and latest_value < 50_000_000:
-        penalty -= 8.0
-        flags.append("thin_latest_value_penalty")
-
-    if ret_1d is not None and ret_1d >= 20:
-        penalty -= 12.0
-        flags.append("extended_1d_penalty")
-
-    if ret_5d is not None and ret_5d >= 40:
-        penalty -= 12.0
-        flags.append("extended_5d_penalty")
-
-    if ret_20d is not None and ret_20d >= 80:
-        penalty -= 15.0
-        flags.append("extended_20d_penalty")
-
-    if volume_ratio is not None and volume_ratio >= 8:
-        penalty -= 6.0
-        flags.append("possible_event_spike_penalty")
-
-    if bars_count is not None and bars_count < 60:
-        penalty -= 10.0
-        flags.append("insufficient_history_penalty")
-
-    if is_partial:
-        penalty -= 6.0
-        flags.append("partial_data_penalty")
-
-    if bucket == "watch":
-        penalty -= 8.0
-        flags.append("watch_bucket_penalty")
-
-    return penalty, flags
-
-
-def classify_signal(
-    score: float,
-    item: dict[str, Any],
-    flags: list[str],
-) -> str:
-    metrics = item.get("metrics") or {}
-
-    avg_value_20d = as_float(metrics.get("avg_traded_value_20d_jpy"))
-    latest_close = as_float(metrics.get("latest_close"))
-    ret_1d = as_float(metrics.get("return_1d_pct"))
-    ret_5d = as_float(metrics.get("return_5d_pct"))
-    ret_20d = as_float(metrics.get("return_20d_pct"))
-    bars_count = as_int(item.get("bars_count"))
-
-    if bars_count is not None and bars_count < 20:
-        return "Insufficient Data"
-
-    if avg_value_20d is not None and avg_value_20d < 100_000_000:
-        if score >= 70:
-            return "Watch: Low Liquidity Momentum"
-        return "Low Liquidity"
-
-    if latest_close is not None and latest_close < 300:
-        return "Watch: Low Price"
-
-    if (
-        (ret_1d is not None and ret_1d >= 20)
-        or (ret_5d is not None and ret_5d >= 40)
-        or (ret_20d is not None and ret_20d >= 80)
-    ):
-        if score >= 75:
-            return "Extended Momentum"
-        return "Extended"
-
-    if score >= 85:
-        return "A+ Breakout"
-
-    if score >= 75:
-        if "near_52w_high" in flags and "volume_expansion" in flags:
-            return "A Breakout"
-        return "A Momentum"
-
-    if score >= 65:
-        return "B+ Momentum"
-
-    if score >= 55:
-        return "B Watch"
-
-    if score >= 45:
-        return "C Watch"
-
-    return "No Signal"
-
-
-def risk_level(item: dict[str, Any], score: float, flags: list[str]) -> str:
-    metrics = item.get("metrics") or {}
-    avg_value_20d = as_float(metrics.get("avg_traded_value_20d_jpy"))
-    ret_5d = as_float(metrics.get("return_5d_pct"))
-    ret_20d = as_float(metrics.get("return_20d_pct"))
-    bucket = str(item.get("bucket") or "").strip().lower()
-
-    if avg_value_20d is not None and avg_value_20d < 100_000_000:
-        return "High"
-    if bucket == "watch":
-        return "High"
-    if ret_5d is not None and ret_5d >= 40:
-        return "High"
-    if ret_20d is not None and ret_20d >= 80:
-        return "High"
-    if avg_value_20d is not None and avg_value_20d < 300_000_000:
-        return "Medium"
-    if score >= 80:
-        return "Medium"
-    return "Normal"
+    return regime, score, state
 
 
 def build_market_pulse_item(item: dict[str, Any]) -> dict[str, Any]:
-    metrics = item.get("metrics") or {}
+    df = add_indicators(bars_to_df(item))
+    last = get_last_row(df)
 
+    metrics = item.get("metrics") or {}
     label = item.get("pulse_label") or item.get("symbol")
 
-    ret_1d = as_float(metrics.get("return_1d_pct"))
-    ret_5d = as_float(metrics.get("return_5d_pct"))
-    ret_20d = as_float(metrics.get("return_20d_pct"))
-    ret_60d = as_float(metrics.get("return_60d_pct"))
+    if last is None:
+        ret_1d = to_float(metrics.get("return_1d_pct"))
+        ret_5d = to_float(metrics.get("return_5d_pct"))
+        ret_20d = to_float(metrics.get("return_20d_pct"))
+        ret_60d = to_float(metrics.get("return_60d_pct"))
+        close = to_float(metrics.get("latest_close"))
+        above_sma20 = None
+        above_sma50 = None
+    else:
+        ret_1d = to_float(last.get("ret1"))
+        ret_5d = to_float(last.get("ret5"))
+        ret_20d = to_float(last.get("ret20"))
+        ret_60d = to_float(last.get("ret60"))
+        close = to_float(last.get("Close"))
+        sma20 = to_float(last.get("sma20"))
+        sma50 = to_float(last.get("sma50"))
+        above_sma20 = bool(close is not None and sma20 is not None and close >= sma20)
+        above_sma50 = bool(close is not None and sma50 is not None and close >= sma50)
 
-    if ret_20d is not None and ret_20d >= 5:
+    if above_sma20 and ret_20d is not None and ret_20d >= 3:
         regime = "Risk-On"
+    elif above_sma50:
+        regime = "Neutral"
     elif ret_20d is not None and ret_20d <= -5:
         regime = "Risk-Off"
-    elif ret_5d is not None and ret_5d >= 2:
-        regime = "Improving"
     elif ret_5d is not None and ret_5d <= -2:
         regime = "Weakening"
     else:
         regime = "Neutral"
 
     pulse_score = (
-        scale_linear(ret_5d, -5, 5) * 35
-        + scale_linear(ret_20d, -10, 10) * 45
-        + scale_linear(ret_60d, -20, 20) * 20
+        scale(ret_5d, -5, 5) * 35
+        + scale(ret_20d, -10, 10) * 45
+        + scale(ret_60d, -20, 20) * 20
     )
 
     return {
@@ -507,71 +403,624 @@ def build_market_pulse_item(item: dict[str, Any]) -> dict[str, Any]:
         "name": item.get("name"),
         "source": item.get("source"),
         "latest_date": metrics.get("latest_date"),
-        "latest_close": metrics.get("latest_close"),
-        "return_1d_pct": ret_1d,
-        "return_5d_pct": ret_5d,
-        "return_20d_pct": ret_20d,
-        "return_60d_pct": ret_60d,
+        "latest_close": safe_round(close, 4),
+        "return_1d_pct": safe_round(ret_1d, 4),
+        "return_5d_pct": safe_round(ret_5d, 4),
+        "return_20d_pct": safe_round(ret_20d, 4),
+        "return_60d_pct": safe_round(ret_60d, 4),
+        "above_sma20": above_sma20,
+        "above_sma50": above_sma50,
         "regime": regime,
         "pulse_score_0_100": round(pulse_score, 2),
     }
 
 
-def score_equity_item(
-    item: dict[str, Any],
-    topix_metrics: dict[str, Any] | None,
-) -> dict[str, Any]:
-    metrics = item.get("metrics") or {}
+def score_volume_liquidity_shock(last: pd.Series, prev: pd.Series, item: dict[str, Any]) -> tuple[float, list[str]]:
+    flags: list[str] = []
 
-    component_flags: list[str] = []
+    close = to_float(last.get("Close")) or 0.0
+    prev_close = to_float(prev.get("Close")) or close
+    volume = to_float(last.get("Volume")) or 0.0
+    rvol20 = max(0.0, to_float(last.get("rvol20")) or 0.0)
+    range_pos = clamp(last.get("range_pos"), 0, 1)
+    avg_value20 = to_float(last.get("avg_dollar_volume20"))
+    dollar_vol = to_float(last.get("dollar_volume"))
 
-    volume_score, volume_flags = score_volume_shock(metrics)
-    breakout_score, breakout_flags = score_breakout_quality(metrics)
-    rs_score, rs_flags, relative_metrics = score_relative_strength(metrics, topix_metrics)
-    compression_score, compression_flags = score_compression(metrics)
-    entry_score, entry_flags = score_entry_timing(metrics)
-    penalty_score, penalty_flags = compute_penalty(item)
+    price_up = 1.0 if close > prev_close else 0.0
 
-    component_flags.extend(volume_flags)
-    component_flags.extend(breakout_flags)
-    component_flags.extend(rs_flags)
-    component_flags.extend(compression_flags)
-    component_flags.extend(entry_flags)
-    component_flags.extend(penalty_flags)
+    # FutureTech-style saturating volume curve.
+    rvol_score = 1.0 - math.exp(-rvol20 / 2.2)
 
-    raw_score = (
-        volume_score
-        + breakout_score
-        + rs_score
-        + compression_score
-        + entry_score
-        + penalty_score
+    # Japan-specific liquidity confirmation.
+    # ¥100M = minimally tradable, ¥1B = strong.
+    avg_liq_score = scale(avg_value20, 100_000_000, 1_000_000_000)
+
+    # Today's actual traded value matters because tiny stocks can show fake RVOL.
+    today_liq_score = scale(dollar_vol, 100_000_000, 1_500_000_000)
+
+    score = clamp(
+        0.46 * rvol_score
+        + 0.20 * range_pos
+        + 0.14 * price_up
+        + 0.12 * avg_liq_score
+        + 0.08 * today_liq_score
     )
 
-    final_score = clamp(raw_score, 0.0, 100.0)
+    if rvol20 >= 2.5:
+        flags.append("major_volume_shock")
+    elif rvol20 >= 1.3:
+        flags.append("volume_expansion")
 
-    # De-duplicate flags while preserving order.
-    seen: set[str] = set()
-    flags = []
-    for flag in component_flags:
-        if flag not in seen:
-            seen.add(flag)
-            flags.append(flag)
+    if dollar_vol is not None and dollar_vol >= 1_000_000_000:
+        flags.append("large_traded_value")
 
-    classification = classify_signal(final_score, item, flags)
+    if avg_value20 is not None and avg_value20 >= 300_000_000:
+        flags.append("liquid_enough")
 
-    components = {
-        "volume_shock": round(volume_score, 4),
-        "breakout_quality": round(breakout_score, 4),
-        "relative_strength": round(rs_score, 4),
-        "compression": round(compression_score, 4),
-        "entry_timing": round(entry_score, 4),
-        "penalty": round(penalty_score, 4),
-        "raw_score": round(raw_score, 4),
+    return score, flags
+
+
+def score_compression_release(last: pd.Series, prev: pd.Series) -> tuple[float, list[str]]:
+    flags: list[str] = []
+
+    bb_rank_raw = to_float(last.get("bb_width_pct63"))
+    atr_rank_raw = to_float(last.get("atr_pct_rank63"))
+
+    # Lower rank means tighter compression.
+    bb_compression = 1.0 - clamp(bb_rank_raw if bb_rank_raw is not None else 0.50)
+    atr_compression = 1.0 - clamp(atr_rank_raw if atr_rank_raw is not None else 0.50)
+
+    close = to_float(last.get("Close")) or 0.0
+    prev_high20 = to_float(prev.get("high20"))
+    prev_high50 = to_float(prev.get("high50"))
+
+    high20_break = 1.0 if prev_high20 is not None and close >= prev_high20 else 0.0
+    high50_break = 1.0 if prev_high50 is not None and close >= prev_high50 else 0.0
+
+    rvol20 = max(0.0, to_float(last.get("rvol20")) or 0.0)
+    range_pos = clamp(last.get("range_pos"), 0, 1)
+    close_pos20 = clamp(last.get("close_pos20"), 0, 1)
+
+    release_confirmation = clamp(
+        0.42 * scale(rvol20, 0.9, 2.3)
+        + 0.34 * range_pos
+        + 0.24 * close_pos20
+    )
+
+    score = clamp(
+        0.32 * bb_compression
+        + 0.22 * atr_compression
+        + 0.18 * high20_break
+        + 0.10 * high50_break
+        + 0.18 * release_confirmation
+    )
+
+    if bb_compression >= 0.60 or atr_compression >= 0.60:
+        flags.append("compressed_setup")
+
+    if release_confirmation >= 0.65:
+        flags.append("compression_release")
+
+    if high20_break:
+        flags.append("breaks_20d_high")
+
+    return score, flags
+
+
+def score_breakout_setup_quality(last: pd.Series, prev: pd.Series) -> tuple[float, list[str]]:
+    flags: list[str] = []
+
+    close = to_float(last.get("Close")) or 0.0
+    sma20 = to_float(last.get("sma20"))
+    sma50 = to_float(last.get("sma50"))
+    sma150 = to_float(last.get("sma150"))
+    prev_high20 = to_float(prev.get("high20"))
+    prev_high50 = to_float(prev.get("high50"))
+
+    above20 = 1.0 if sma20 is not None and close >= sma20 else 0.0
+    above50 = 1.0 if sma50 is not None and close >= sma50 else 0.0
+    above150 = 1.0 if sma150 is not None and close >= sma150 else 0.0
+
+    high20_break = 1.0 if prev_high20 is not None and close >= prev_high20 else 0.0
+    high50_break = 1.0 if prev_high50 is not None and close >= prev_high50 else 0.0
+
+    close_pos20 = clamp(last.get("close_pos20"), 0, 1)
+    close_pos50 = clamp(last.get("close_pos50"), 0, 1)
+
+    ret5 = to_float(last.get("ret5")) or 0.0
+
+    score = clamp(
+        0.16 * above20
+        + 0.16 * above50
+        + 0.08 * above150
+        + 0.22 * high20_break
+        + 0.14 * high50_break
+        + 0.16 * close_pos20
+        + 0.06 * close_pos50
+        + 0.02 * scale(ret5, -3, 10)
+    )
+
+    if above20 and above50:
+        flags.append("above_key_mas")
+
+    if high20_break:
+        flags.append("breakout_20d")
+
+    if high50_break:
+        flags.append("breakout_50d")
+
+    if close_pos20 >= 0.80:
+        flags.append("upper_20d_range")
+
+    return score, flags
+
+
+def score_relative_strength(last: pd.Series, topix_last: pd.Series | None) -> tuple[float, list[str], dict[str, float | None]]:
+    flags: list[str] = []
+
+    ret5 = to_float(last.get("ret5")) or 0.0
+    ret20 = to_float(last.get("ret20")) or 0.0
+    ret60 = to_float(last.get("ret60")) or 0.0
+    ret120 = to_float(last.get("ret120")) or 0.0
+
+    if topix_last is not None:
+        topix_ret5 = to_float(topix_last.get("ret5")) or 0.0
+        topix_ret20 = to_float(topix_last.get("ret20")) or 0.0
+        topix_ret60 = to_float(topix_last.get("ret60")) or 0.0
+        topix_ret120 = to_float(topix_last.get("ret120")) or 0.0
+    else:
+        topix_ret5 = 0.0
+        topix_ret20 = 0.0
+        topix_ret60 = 0.0
+        topix_ret120 = 0.0
+
+    rs5 = ret5 - topix_ret5
+    rs20 = ret20 - topix_ret20
+    rs60 = ret60 - topix_ret60
+    rs120 = ret120 - topix_ret120
+
+    # More daily-oriented than weekly: 5D/20D matter more.
+    score = clamp(
+        0.30 * scale(rs5, -4, 12)
+        + 0.42 * scale(rs20, -6, 24)
+        + 0.20 * scale(rs60, -8, 45)
+        + 0.08 * scale(rs120, -10, 80)
+    )
+
+    if rs20 >= 8:
+        flags.append("rs_20d_positive")
+    if rs60 >= 20:
+        flags.append("rs_60d_leader")
+
+    return score, flags, {
+        "rs_vs_topix_5d_pct": safe_round(rs5, 4),
+        "rs_vs_topix_20d_pct": safe_round(rs20, 4),
+        "rs_vs_topix_60d_pct": safe_round(rs60, 4),
+        "rs_vs_topix_120d_pct": safe_round(rs120, 4),
     }
 
-    latest_close = as_float(metrics.get("latest_close"))
-    avg_value_20d = as_float(metrics.get("avg_traded_value_20d_jpy"))
+
+def score_entry_timing(last: pd.Series, prev: pd.Series) -> tuple[float, list[str]]:
+    flags: list[str] = []
+
+    close = to_float(last.get("Close")) or 0.0
+    open_ = to_float(last.get("Open")) or close
+
+    ret1 = to_float(last.get("ret1")) or 0.0
+    ret5 = to_float(last.get("ret5")) or 0.0
+    ret20 = to_float(last.get("ret20")) or 0.0
+    atr_pct = to_float(last.get("atr_pct")) or 0.0
+    ext20 = to_float(last.get("extension_sma20")) or 0.0
+    ext50 = to_float(last.get("extension_sma50")) or 0.0
+    range_pos = clamp(last.get("range_pos"), 0, 1)
+    close_pos20 = clamp(last.get("close_pos20"), 0, 1)
+
+    not_extended = 1.0 - clamp(
+        max(ext20 - 8.0, 0.0) / 18.0
+        + max(ext50 - 20.0, 0.0) / 32.0
+        + max(ret1 - 10.0, 0.0) / 16.0
+        + max(ret5 - 22.0, 0.0) / 30.0
+        + max(ret20 - 55.0, 0.0) / 50.0
+    )
+
+    # Stop distance proxy. Lower ATR is easier to control, but too low can mean no movement.
+    stop_distance = min(10.0, max(3.0, atr_pct * 1.6))
+    rr_quality = clamp((12.0 - stop_distance) / 10.0)
+
+    candle_ok = 1.0 if close >= open_ else 0.0
+
+    score = clamp(
+        0.38 * not_extended
+        + 0.24 * range_pos
+        + 0.16 * close_pos20
+        + 0.12 * rr_quality
+        + 0.10 * candle_ok
+    )
+
+    if ret1 >= 10:
+        flags.append("strong_1d_move")
+    if ret5 >= 22:
+        flags.append("hot_5d_move")
+    if ret20 >= 55:
+        flags.append("hot_20d_move")
+    if not_extended <= 0.45:
+        flags.append("extended_risk")
+
+    return score, flags
+
+
+def compute_penalty(last: pd.Series, item: dict[str, Any], bucket: str) -> tuple[float, list[str], dict[str, float | None]]:
+    flags: list[str] = []
+
+    close = to_float(last.get("Close"))
+    open_ = to_float(last.get("Open"))
+    rvol20 = to_float(last.get("rvol20")) or 0.0
+    range_pos = clamp(last.get("range_pos"), 0, 1)
+    ret1 = to_float(last.get("ret1")) or 0.0
+    ret5 = to_float(last.get("ret5")) or 0.0
+    ret20 = to_float(last.get("ret20")) or 0.0
+    ret60 = to_float(last.get("ret60")) or 0.0
+    ext20 = to_float(last.get("extension_sma20")) or 0.0
+    ext50 = to_float(last.get("extension_sma50")) or 0.0
+    avg_value20 = to_float(last.get("avg_dollar_volume20"))
+    dollar_vol = to_float(last.get("dollar_volume"))
+
+    penalty = 0.0
+
+    # Liquidity: Japan-specific and much stricter than US.
+    liquidity_penalty = 0.0
+    if avg_value20 is None:
+        liquidity_penalty += 0.10
+        flags.append("unknown_liquidity")
+    elif avg_value20 < 100_000_000:
+        liquidity_penalty += 0.22
+        flags.append("very_low_liquidity")
+    elif avg_value20 < 300_000_000:
+        liquidity_penalty += 0.10
+        flags.append("low_liquidity")
+
+    if dollar_vol is not None and dollar_vol < 50_000_000:
+        liquidity_penalty += 0.06
+        flags.append("thin_today_value")
+
+    low_price_penalty = 0.0
+    if close is not None and close < 300:
+        low_price_penalty = 0.12
+        flags.append("low_price")
+
+    extension_penalty = clamp(
+        max(ret1 - 15.0, 0.0) / 35.0
+        + max(ret5 - 30.0, 0.0) / 45.0
+        + max(ret20 - 65.0, 0.0) / 70.0
+        + max(ext20 - 18.0, 0.0) / 35.0
+        + max(ext50 - 35.0, 0.0) / 45.0
+    )
+
+    extension_penalty *= 0.55
+
+    if extension_penalty >= 0.10:
+        flags.append("extended_penalty")
+
+    weak_close_penalty = 0.0
+    if range_pos < 0.45 and rvol20 >= 1.3:
+        weak_close_penalty += 0.10
+        flags.append("weak_close_on_volume")
+    if close is not None and open_ is not None and close < open_ and rvol20 >= 1.4:
+        weak_close_penalty += 0.08
+        flags.append("red_close_on_volume")
+
+    no_confirmation_penalty = 0.0
+    if ret1 < 0 and rvol20 < 1.0:
+        no_confirmation_penalty += 0.10
+        flags.append("no_daily_confirmation")
+    if ret5 < -5:
+        no_confirmation_penalty += 0.06
+        flags.append("weak_5d_momentum")
+
+    watch_bucket_penalty = 0.0
+    if bucket.lower() == "watch":
+        watch_bucket_penalty += 0.05
+        flags.append("watch_bucket")
+
+    partial_data_penalty = 0.0
+    if bool(item.get("is_partial")) or (to_int(item.get("bars_count")) or 0) < 60:
+        partial_data_penalty += 0.08
+        flags.append("partial_data")
+
+    penalty = clamp(
+        liquidity_penalty
+        + low_price_penalty
+        + extension_penalty
+        + weak_close_penalty
+        + no_confirmation_penalty
+        + watch_bucket_penalty
+        + partial_data_penalty,
+        0.0,
+        0.38,
+    )
+
+    details = {
+        "liquidity_penalty": safe_round(liquidity_penalty, 6),
+        "low_price_penalty": safe_round(low_price_penalty, 6),
+        "extension_penalty": safe_round(extension_penalty, 6),
+        "weak_close_penalty": safe_round(weak_close_penalty, 6),
+        "no_confirmation_penalty": safe_round(no_confirmation_penalty, 6),
+        "watch_bucket_penalty": safe_round(watch_bucket_penalty, 6),
+        "partial_data_penalty": safe_round(partial_data_penalty, 6),
+    }
+
+    return penalty, flags, details
+
+
+def apply_score_caps(score01: float, last: pd.Series, item: dict[str, Any]) -> tuple[float, list[str]]:
+    """
+    FutureTech evidence showed high score alone is not enough.
+    For JP daily, weak volume or no daily confirmation should cap score.
+    """
+    flags: list[str] = []
+
+    rvol20 = to_float(last.get("rvol20")) or 0.0
+    ret1 = to_float(last.get("ret1")) or 0.0
+    ret5 = to_float(last.get("ret5")) or 0.0
+    ret20 = to_float(last.get("ret20")) or 0.0
+    range_pos = clamp(last.get("range_pos"), 0, 1)
+    close_pos20 = clamp(last.get("close_pos20"), 0, 1)
+    avg_value20 = to_float(last.get("avg_dollar_volume20"))
+
+    cap = 1.0
+
+    has_price_confirmation = ret1 >= 0.0 and range_pos >= 0.65
+    has_breakout_confirmation = range_pos >= 0.80 and close_pos20 >= 0.75
+
+    if rvol20 < 0.60 and not has_breakout_confirmation:
+        cap = min(cap, 0.55)
+        flags.append("score_cap_weak_volume")
+    elif rvol20 < 0.80 and not has_price_confirmation:
+        cap = min(cap, 0.62)
+        flags.append("score_cap_low_volume_confirmation")
+
+    if ret1 < 0 and rvol20 < 1.0:
+        cap = min(cap, 0.58)
+        flags.append("score_cap_no_daily_confirmation")
+
+    if ret5 >= 35:
+        cap = min(cap, 0.72)
+        flags.append("score_cap_hot_5d")
+    if ret20 >= 75:
+        cap = min(cap, 0.68)
+        flags.append("score_cap_hot_20d")
+
+    if avg_value20 is not None and avg_value20 < 100_000_000:
+        cap = min(cap, 0.62)
+        flags.append("score_cap_very_low_liquidity")
+
+    return min(score01, cap), flags
+
+
+def classify_and_triage(
+    score01: float,
+    components: dict[str, float],
+    last: pd.Series,
+    item: dict[str, Any],
+    penalty: float,
+    regime: str,
+    flags: list[str],
+) -> tuple[str, str, str, str]:
+    score_pts = int(round(score01 * SCORE_SCALE))
+
+    volume = components["volume_liquidity_shock"]
+    compression = components["compression_release"]
+    setup = components["breakout_setup_quality"]
+    entry = components["entry_timing"]
+
+    rvol20 = to_float(last.get("rvol20")) or 0.0
+    ret1 = to_float(last.get("ret1")) or 0.0
+    ret5 = to_float(last.get("ret5")) or 0.0
+    ret20 = to_float(last.get("ret20")) or 0.0
+    avg_value20 = to_float(last.get("avg_dollar_volume20"))
+    range_pos = clamp(last.get("range_pos"), 0, 1)
+    close_pos20 = clamp(last.get("close_pos20"), 0, 1)
+
+    archetype_parts: list[str] = []
+    if volume >= 0.60:
+        archetype_parts.append("Volume")
+    if compression >= 0.55:
+        archetype_parts.append("Compression")
+    if setup >= 0.62:
+        archetype_parts.append("Breakout")
+    if not archetype_parts:
+        if components["relative_strength"] >= 0.68:
+            archetype_parts.append("Relative Strength")
+        else:
+            archetype_parts.append("Mixed")
+    archetype = " + ".join(archetype_parts[:3])
+
+    very_low_liquidity = avg_value20 is not None and avg_value20 < 100_000_000
+    low_liquidity = avg_value20 is not None and avg_value20 < 300_000_000
+    extended = ret5 >= 35 or ret20 >= 75
+    no_confirmation = ret1 < 0 and rvol20 < 1.0
+    weak_close = "weak_close_on_volume" in flags or "red_close_on_volume" in flags
+
+    trade_ok = (
+        score_pts >= 730
+        and volume >= 0.56
+        and (compression >= 0.55 or setup >= 0.64)
+        and avg_value20 is not None
+        and avg_value20 >= 300_000_000
+        and range_pos >= 0.65
+        and close_pos20 >= 0.70
+        and not extended
+        and not no_confirmation
+        and not weak_close
+        and penalty < 0.18
+        and regime != "Risk-off"
+    )
+
+    watch_ok = (
+        score_pts >= 620
+        and (
+            volume >= 0.45
+            or (compression >= 0.55 and setup >= 0.55)
+            or (setup >= 0.70 and components["relative_strength"] >= 0.65)
+        )
+        and not no_confirmation
+    )
+
+    if trade_ok:
+        triage = "Trade"
+    elif watch_ok:
+        triage = "Watch"
+    else:
+        triage = "Ignore"
+
+    if very_low_liquidity and triage == "Trade":
+        triage = "Watch"
+
+    if no_confirmation and triage != "Ignore":
+        triage = "Watch"
+
+    if extended and triage == "Trade":
+        triage = "Watch"
+
+    if score_pts >= 800 and triage == "Trade":
+        classification = "A+ Timing"
+    elif score_pts >= 720 and triage in {"Trade", "Watch"}:
+        classification = "A Setup"
+    elif score_pts >= 620 and triage == "Watch":
+        classification = "B Watch"
+    elif very_low_liquidity:
+        classification = "Low Liquidity"
+    elif extended:
+        classification = "Extended"
+    else:
+        classification = "No Signal"
+
+    if very_low_liquidity:
+        risk_level = "High"
+    elif low_liquidity or extended or penalty >= 0.18:
+        risk_level = "Medium"
+    elif triage == "Trade":
+        risk_level = "Medium"
+    else:
+        risk_level = "Normal"
+
+    return classification, triage, archetype, risk_level
+
+
+def build_reason(components: dict[str, float], last: pd.Series, penalty: float, flags: list[str]) -> str:
+    reason: list[str] = []
+
+    rvol20 = to_float(last.get("rvol20")) or 0.0
+
+    if components["volume_liquidity_shock"] >= 0.60:
+        reason.append(f"RVOL {rvol20:.2f}x")
+    if components["compression_release"] >= 0.55:
+        reason.append("compression release")
+    if components["breakout_setup_quality"] >= 0.62:
+        reason.append("breakout setup")
+    if components["relative_strength"] >= 0.68:
+        reason.append("relative strength")
+    if "no_daily_confirmation" in flags:
+        reason.append("no daily confirmation")
+    if "very_low_liquidity" in flags:
+        reason.append("very low liquidity")
+    if penalty >= 0.18:
+        reason.append("penalty drag")
+
+    if not reason:
+        reason.append("mixed signal")
+
+    return "; ".join(reason)
+
+
+def score_equity_item(
+    item: dict[str, Any],
+    topix_last: pd.Series | None,
+    regime: str,
+    regime_score: float,
+) -> dict[str, Any] | None:
+    df = add_indicators(bars_to_df(item))
+    if df.empty or len(df) < 20:
+        return None
+
+    last = df.iloc[-1]
+    prev = df.iloc[-2] if len(df) >= 2 else last
+
+    bucket = str(item.get("bucket") or "")
+    metrics = item.get("metrics") or {}
+
+    volume_score, volume_flags = score_volume_liquidity_shock(last, prev, item)
+    compression_score, compression_flags = score_compression_release(last, prev)
+    setup_score, setup_flags = score_breakout_setup_quality(last, prev)
+    rs_score, rs_flags, relative_metrics = score_relative_strength(last, topix_last)
+    entry_score, entry_flags = score_entry_timing(last, prev)
+    penalty, penalty_flags, penalty_details = compute_penalty(last, item, bucket)
+
+    raw_score01 = (
+        WEIGHTS["volume_liquidity_shock"] * volume_score
+        + WEIGHTS["compression_release"] * compression_score
+        + WEIGHTS["breakout_setup_quality"] * setup_score
+        + WEIGHTS["relative_strength"] * rs_score
+        + WEIGHTS["entry_timing"] * entry_score
+        + WEIGHTS["market_regime"] * regime_score
+    )
+
+    score01_before_penalty = clamp(raw_score01)
+    score01_after_penalty = clamp(score01_before_penalty - penalty)
+
+    cap_score01, cap_flags = apply_score_caps(score01_after_penalty, last, item)
+
+    score01 = clamp(cap_score01)
+    score_pts = int(round(score01 * SCORE_SCALE))
+
+    components = {
+        "volume_liquidity_shock": round(volume_score, 6),
+        "compression_release": round(compression_score, 6),
+        "breakout_setup_quality": round(setup_score, 6),
+        "relative_strength": round(rs_score, 6),
+        "entry_timing": round(entry_score, 6),
+        "market_regime": round(regime_score, 6),
+        "penalty": round(penalty, 6),
+    }
+
+    flags: list[str] = []
+    for flag in (
+        volume_flags
+        + compression_flags
+        + setup_flags
+        + rs_flags
+        + entry_flags
+        + penalty_flags
+        + cap_flags
+    ):
+        if flag not in flags:
+            flags.append(flag)
+
+    classification, triage, archetype, risk = classify_and_triage(
+        score01=score01,
+        components=components,
+        last=last,
+        item=item,
+        penalty=penalty,
+        regime=regime,
+        flags=flags,
+    )
+
+    reason = build_reason(components, last, penalty, flags)
+
+    close = to_float(last.get("Close"))
+    volume = to_int(last.get("Volume"))
+    dollar_volume = to_float(last.get("dollar_volume"))
+    avg_value20 = to_float(last.get("avg_dollar_volume20"))
+
+    ret1 = to_float(last.get("ret1"))
+    ret5 = to_float(last.get("ret5"))
+    ret20 = to_float(last.get("ret20"))
+    ret60 = to_float(last.get("ret60"))
+    ret120 = to_float(last.get("ret120"))
+
+    high252 = to_float(last.get("high252"))
+    dist_52w = pct(close, high252) if close is not None and high252 else metrics.get("distance_from_52w_high_pct")
 
     return {
         "rank": None,
@@ -584,87 +1033,109 @@ def score_equity_item(
         "currency": "JPY",
         "source": item.get("source"),
         "source_symbol": item.get("source_symbol"),
-        "latest_date": metrics.get("latest_date"),
-        "latest_close": metrics.get("latest_close"),
-        "latest_volume": metrics.get("latest_volume"),
-        "latest_traded_value_jpy": metrics.get("latest_traded_value_jpy"),
-        "avg_traded_value_20d_jpy": metrics.get("avg_traded_value_20d_jpy"),
-        "return_1d_pct": metrics.get("return_1d_pct"),
-        "return_5d_pct": metrics.get("return_5d_pct"),
-        "return_20d_pct": metrics.get("return_20d_pct"),
-        "return_60d_pct": metrics.get("return_60d_pct"),
-        "return_120d_pct": metrics.get("return_120d_pct"),
-        "volume_ratio_20d": metrics.get("volume_ratio_20d"),
-        "distance_from_20d_high_pct": metrics.get("distance_from_20d_high_pct"),
-        "distance_from_52w_high_pct": metrics.get("distance_from_52w_high_pct"),
-        "range_position_20d_0_1": metrics.get("range_position_20d_0_1"),
-        "compression_20d_pct": metrics.get("compression_20d_pct"),
-        "volatility_20d_annualized_pct": metrics.get("volatility_20d_annualized_pct"),
+        "as_of": str(last.name.date()),
+        "latest_date": str(last.name.date()),
+        "price": safe_round(close, 4),
+        "latest_close": safe_round(close, 4),
+        "volume": volume,
+        "latest_volume": volume,
+        "latest_traded_value_jpy": safe_round(dollar_volume, 2),
+        "avg_traded_value_20d_jpy": safe_round(avg_value20, 2),
+        "return_1d_pct": safe_round(ret1, 4),
+        "return_5d_pct": safe_round(ret5, 4),
+        "return_20d_pct": safe_round(ret20, 4),
+        "return_60d_pct": safe_round(ret60, 4),
+        "return_120d_pct": safe_round(ret120, 4),
+        "volume_ratio_20d": safe_round(last.get("rvol20"), 4),
+        "range_position_0_1": safe_round(last.get("range_pos"), 4),
+        "range_position_20d_0_1": safe_round(last.get("close_pos20"), 4),
+        "compression_20d_pct": safe_round(metrics.get("compression_20d_pct"), 4),
+        "bb_width20_pct": safe_round(last.get("bb_width20"), 4),
+        "bb_width_pct63": safe_round(last.get("bb_width_pct63"), 4),
+        "atr_pct": safe_round(last.get("atr_pct"), 4),
+        "atr_pct_rank63": safe_round(last.get("atr_pct_rank63"), 4),
+        "extension_sma20_pct": safe_round(last.get("extension_sma20"), 4),
+        "extension_sma50_pct": safe_round(last.get("extension_sma50"), 4),
+        "distance_from_52w_high_pct": safe_round(dist_52w, 4),
+        "score": round(score01 * 100.0, 2),
+        "score_0_1": round(score01, 6),
+        "score_pts": score_pts,
+        "score_before_penalty_0_1": round(score01_before_penalty, 6),
+        "score_after_penalty_0_1": round(score01_after_penalty, 6),
+        "classification": classification,
+        "triage": triage,
+        "archetype": archetype,
+        "risk_level": risk,
+        "regime": regime,
+        "reason": reason,
+        "components": {
+            "volume_shock": round(volume_score * 24, 4),
+            "compression": round(compression_score * 22, 4),
+            "breakout_quality": round(setup_score * 20, 4),
+            "relative_strength": round(rs_score * 16, 4),
+            "entry_timing": round(entry_score * 15, 4),
+            "market_regime": round(regime_score * 3, 4),
+            "penalty": round(-penalty * 100, 4),
+            "raw_score": round(score01_before_penalty * 100, 4),
+        },
+        "v2_components": components,
+        "score_components": {
+            "volume_anomaly": round(volume_score, 6),
+            "compression_release": round(compression_score, 6),
+            "trends_breakout": round(setup_score, 6),
+            "relative_strength": round(rs_score, 6),
+            "entry_timing": round(entry_score, 6),
+            "market_regime": round(regime_score, 6),
+        },
+        "score_weights": {
+            "volume_anomaly": WEIGHTS["volume_liquidity_shock"],
+            "compression_release": WEIGHTS["compression_release"],
+            "trends_breakout": WEIGHTS["breakout_setup_quality"],
+            "relative_strength": WEIGHTS["relative_strength"],
+            "entry_timing": WEIGHTS["entry_timing"],
+            "market_regime": WEIGHTS["market_regime"],
+        },
+        "relative_metrics": relative_metrics,
+        "penalty_details": penalty_details,
+        "flags": flags,
         "liquidity_status": metrics.get("liquidity_status"),
         "liquidity_flags": metrics.get("liquidity_flags") or [],
-        "risk_level": risk_level(item, final_score, flags),
-        "score": round(final_score, 2),
-        "score_0_1": round(final_score / 100.0, 4),
-        "classification": classification,
-        "components": components,
-        "relative_metrics": relative_metrics,
-        "flags": flags,
         "is_partial": bool(item.get("is_partial")),
         "bars_count": item.get("bars_count"),
         "date_start": item.get("date_start"),
         "date_end": item.get("date_end"),
         "warnings": item.get("warnings") or [],
         "source_errors": item.get("source_errors") or [],
-        "debug": {
-            "latest_close_float": latest_close,
-            "avg_value_20d_float": avg_value_20d,
-        },
     }
 
 
 def sort_ranked_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    def sort_key(x: dict[str, Any]) -> tuple:
-        score = as_float(x.get("score")) or 0.0
+    triage_order = {"Trade": 0, "Watch": 1, "Ignore": 2}
+    bucket_order = {"Core": 0, "Discovery": 1, "Watch": 2}
+    risk_order = {"Normal": 0, "Medium": 1, "High": 2}
 
-        bucket = str(x.get("bucket") or "").lower()
-        bucket_order = {
-            "core": 0,
-            "discovery": 1,
-            "watch": 2,
-        }.get(bucket, 3)
+    def key(x: dict[str, Any]) -> tuple:
+        triage = triage_order.get(str(x.get("triage") or ""), 9)
+        bucket = bucket_order.get(str(x.get("bucket") or ""), 9)
+        risk = risk_order.get(str(x.get("risk_level") or ""), 9)
+        score = to_float(x.get("score_pts")) or 0.0
+        avg_value = to_float(x.get("avg_traded_value_20d_jpy")) or 0.0
+        return (triage, -score, bucket, risk, -avg_value, str(x.get("symbol") or ""))
 
-        risk = str(x.get("risk_level") or "").lower()
-        risk_order = {
-            "normal": 0,
-            "medium": 1,
-            "high": 2,
-        }.get(risk, 3)
-
-        avg_value = as_float(x.get("avg_traded_value_20d_jpy")) or 0.0
-
-        return (-score, bucket_order, risk_order, -avg_value, str(x.get("symbol") or ""))
-
-    ranked = sorted(items, key=sort_key)
-
+    ranked = sorted(items, key=key)
     for i, item in enumerate(ranked, start=1):
         item["rank"] = i
 
     return ranked
 
 
-def summarize_output(items: list[dict[str, Any]]) -> dict[str, Any]:
-    by_classification: dict[str, int] = {}
-    by_bucket: dict[str, int] = {}
-    by_risk: dict[str, int] = {}
-
-    for item in items:
-        classification = str(item.get("classification") or "Unknown")
-        bucket = str(item.get("bucket") or "Unknown")
-        risk = str(item.get("risk_level") or "Unknown")
-
-        by_classification[classification] = by_classification.get(classification, 0) + 1
-        by_bucket[bucket] = by_bucket.get(bucket, 0) + 1
-        by_risk[risk] = by_risk.get(risk, 0) + 1
+def summarize(items: list[dict[str, Any]]) -> dict[str, Any]:
+    def count_by(field: str) -> dict[str, int]:
+        out: dict[str, int] = {}
+        for item in items:
+            key = str(item.get(field) or "Unknown")
+            out[key] = out.get(key, 0) + 1
+        return out
 
     top = items[0] if items else {}
 
@@ -673,11 +1144,27 @@ def summarize_output(items: list[dict[str, Any]]) -> dict[str, Any]:
         "top_symbol": top.get("symbol"),
         "top_name": top.get("name"),
         "top_score": top.get("score"),
+        "top_score_pts": top.get("score_pts"),
         "top_classification": top.get("classification"),
-        "by_classification": by_classification,
-        "by_bucket": by_bucket,
-        "by_risk": by_risk,
+        "top_triage": top.get("triage"),
+        "top_archetype": top.get("archetype"),
+        "trade": sum(1 for x in items if x.get("triage") == "Trade"),
+        "watch": sum(1 for x in items if x.get("triage") == "Watch"),
+        "ignore": sum(1 for x in items if x.get("triage") == "Ignore"),
+        "by_triage": count_by("triage"),
+        "by_archetype": count_by("archetype"),
+        "by_classification": count_by("classification"),
+        "by_bucket": count_by("bucket"),
+        "by_risk": count_by("risk_level"),
     }
+
+
+def find_topix_last(market_pulse_raw: list[dict[str, Any]]) -> pd.Series | None:
+    for item in market_pulse_raw:
+        if item.get("pulse_label") == "TOPIX" or item.get("symbol") == "1306.T":
+            df = add_indicators(bars_to_df(item))
+            return get_last_row(df)
+    return None
 
 
 def main() -> int:
@@ -692,63 +1179,95 @@ def main() -> int:
     prices_payload = read_json(PRICES_JSON)
 
     if prices_payload.get("schema_version") != "prices-jp-v1":
-        raise ValueError(
-            f"Unexpected prices schema_version: {prices_payload.get('schema_version')}"
-        )
+        raise ValueError(f"Unexpected schema_version: {prices_payload.get('schema_version')}")
 
     market_pulse_raw = prices_payload.get("market_pulse") or []
     equities_raw = prices_payload.get("equities") or []
 
     if not isinstance(market_pulse_raw, list):
-        raise TypeError("prices market_pulse must be a list")
+        raise TypeError("market_pulse must be a list")
     if not isinstance(equities_raw, list):
-        raise TypeError("prices equities must be a list")
+        raise TypeError("equities must be a list")
+
+    regime, regime_score, regime_state = market_regime_from_pulse(market_pulse_raw)
+    topix_last = find_topix_last(market_pulse_raw)
 
     market_pulse = [build_market_pulse_item(x) for x in market_pulse_raw]
 
-    topix_item = None
-    for item in market_pulse_raw:
-        if item.get("pulse_label") == "TOPIX" or item.get("symbol") == "1306.T":
-            topix_item = item
-            break
+    scored: list[dict[str, Any]] = []
+    failed: list[dict[str, Any]] = []
 
-    topix_metrics = (topix_item or {}).get("metrics") if topix_item else None
+    for item in equities_raw:
+        if item.get("asset_type") != "equity":
+            continue
 
-    scored_items = [
-        score_equity_item(item, topix_metrics)
-        for item in equities_raw
-        if item.get("asset_type") == "equity"
-    ]
+        try:
+            row = score_equity_item(
+                item=item,
+                topix_last=topix_last,
+                regime=regime,
+                regime_score=regime_score,
+            )
+            if row is None:
+                failed.append(
+                    {
+                        "symbol": item.get("symbol"),
+                        "name": item.get("name"),
+                        "reason": "insufficient_bars_for_scoring",
+                    }
+                )
+            else:
+                scored.append(row)
+        except Exception as exc:
+            failed.append(
+                {
+                    "symbol": item.get("symbol"),
+                    "name": item.get("name"),
+                    "reason": f"exception:{type(exc).__name__}",
+                    "message": str(exc),
+                }
+            )
 
-    ranked_items = sort_ranked_items(scored_items)
-
-    summary = summarize_output(ranked_items)
+    ranked_items = sort_ranked_items(scored)
+    summary = summarize(ranked_items)
 
     payload = {
-        "schema_version": "daily-jp-v1",
+        "schema_version": "daily-jp-v2",
         "generated_at": generated_at,
         "market": "JP",
         "timezone": "Asia/Tokyo",
         "source_prices": safe_relative(PRICES_JSON),
         "source_prices_generated_at": prices_payload.get("generated_at"),
-        "weights": WEIGHTS,
-        "score_notes": {
-            "max_raw_score_before_penalty": MAX_RAW_SCORE,
-            "score_floor": 0,
-            "score_cap": 100,
-            "liquidity_rule": "Low liquidity is penalized, not fully excluded, to preserve Discovery visibility.",
-            "not_included_yet": [
-                "news",
-                "earnings",
-                "timely_disclosure",
-                "fundamentals",
-                "short_interest",
-                "credit_margin_data",
+        "methodology": {
+            "name": "Neon Tokyo Daily Event Score v2",
+            "derived_from": "FutureTech Daily Event Score principles",
+            "objective": "Rank timing-sensitive JP equity candidates by volume/liquidity shock, compression release, breakout setup quality, relative strength, entry timing and market regime.",
+            "news_included": False,
+            "weights": {
+                "volume_liquidity_shock": int(WEIGHTS["volume_liquidity_shock"] * 1000),
+                "compression_release": int(WEIGHTS["compression_release"] * 1000),
+                "breakout_setup_quality": int(WEIGHTS["breakout_setup_quality"] * 1000),
+                "relative_strength": int(WEIGHTS["relative_strength"] * 1000),
+                "entry_timing": int(WEIGHTS["entry_timing"] * 1000),
+                "market_regime_alignment": int(WEIGHTS["market_regime"] * 1000),
+                "penalties_max": -380,
+            },
+            "important_controls": [
+                "Low volume without daily confirmation caps final score.",
+                "Very low liquidity cannot become Trade.",
+                "Extended 5D/20D moves are capped and usually Watch, not Trade.",
+                "Weak close on volume is penalized.",
+                "Trade/Watch/Ignore is separated from rank.",
             ],
         },
+        "regime": regime,
+        "regime_score": round(regime_score, 6),
+        "regime_state": regime_state,
         "market_pulse": market_pulse,
-        "items": ranked_items,
+        "items": ranked_items[:25],
+        "all_items": ranked_items,
         "summary": summary,
+        "failed": failed,
     }
 
     DAILY_OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -760,7 +1279,7 @@ def main() -> int:
     write_json(dated_path, payload)
 
     manifest = {
-        "schema_version": "daily-jp-manifest-v1",
+        "schema_version": "daily-jp-manifest-v2",
         "generated_at": generated_at,
         "latest": safe_relative(latest_path),
         "latest_date": today,
@@ -769,8 +1288,14 @@ def main() -> int:
                 "date": today,
                 "path": safe_relative(dated_path),
                 "items_count": len(ranked_items),
+                "trade": summary.get("trade"),
+                "watch": summary.get("watch"),
+                "ignore": summary.get("ignore"),
                 "top_symbol": summary.get("top_symbol"),
                 "top_score": summary.get("top_score"),
+                "top_score_pts": summary.get("top_score_pts"),
+                "top_triage": summary.get("top_triage"),
+                "top_archetype": summary.get("top_archetype"),
                 "top_classification": summary.get("top_classification"),
             }
         ],
@@ -782,11 +1307,18 @@ def main() -> int:
     print(f"Wrote {safe_relative(latest_path)}")
     print(f"Wrote {safe_relative(dated_path)}")
     print(f"Wrote {safe_relative(manifest_path)}")
-    print(f"Items={len(ranked_items)}")
+    print(
+        f"Items={len(ranked_items)} "
+        f"Trade={summary.get('trade')} "
+        f"Watch={summary.get('watch')} "
+        f"Ignore={summary.get('ignore')}"
+    )
     print(
         f"Top={summary.get('top_symbol')} "
         f"score={summary.get('top_score')} "
-        f"classification={summary.get('top_classification')}"
+        f"pts={summary.get('top_score_pts')} "
+        f"triage={summary.get('top_triage')} "
+        f"archetype={summary.get('top_archetype')}"
     )
 
     if not ranked_items:
