@@ -37,6 +37,7 @@
     <main>
       <section class="hero-section">
         <div class="hero-grid"></div>
+        <div class="tokyo-kanji">東京</div>
 
         <div class="hero-copy">
           <div class="pixel-kicker">
@@ -54,190 +55,194 @@
           </p>
 
           <p class="hero-description">
-            A cyber-market signal board for global investors tracking Japan’s
-            momentum, liquidity shocks, breakout quality and emerging themes —
-            from core leaders to discovery-stage growth names.
+            A cyber-market signal board tracking momentum, liquidity shocks,
+            breakout quality and emerging Japan themes.
           </p>
-
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="/japan/daily/">
-              <span>Enter Daily Signals</span>
-              <span class="btn-arrow">↗</span>
-            </a>
-            <a class="btn btn-secondary" href="/japan/weekly/">
-              <span>Open Weekly Board</span>
-              <span class="btn-arrow">↗</span>
-            </a>
-          </div>
         </div>
 
-        <aside class="hero-terminal" aria-label="Signal terminal preview">
-          <div class="terminal-header">
-            <span class="terminal-dot dot-red"></span>
-            <span class="terminal-dot dot-yellow"></span>
-            <span class="terminal-dot dot-green"></span>
-            <span class="terminal-title">SIGNAL_ENGINE.JP</span>
+        <aside class="market-console" aria-label="Japan market pulse preview">
+          <div class="console-header">
+            <div>
+              <span class="console-kicker">JP MARKET PULSE</span>
+              <strong>NEON INDEX MAP</strong>
+            </div>
+            <span class="console-live">LIVE</span>
           </div>
 
-          <div class="terminal-body">
-            <div class="terminal-row">
-              <span class="terminal-label">MARKET</span>
-              <span class="terminal-value">TOKYO</span>
-            </div>
-            <div class="terminal-row">
-              <span class="terminal-label">SESSION</span>
-              <span class="terminal-value value-cyan">AFTER CLOSE</span>
-            </div>
-            <div class="terminal-row">
-              <span class="terminal-label">FOCUS</span>
-              <span class="terminal-value">MOMENTUM / BREAKOUT</span>
-            </div>
-            <div class="terminal-row">
-              <span class="terminal-label">UNIVERSE</span>
-              <span class="terminal-value">CORE + DISCOVERY</span>
+          <div class="neon-chart-card main-chart">
+            <div class="chart-topline">
+              <span>NIKKEI</span>
+              <strong>Momentum proxy</strong>
             </div>
 
-            <div class="signal-preview">
-              <div class="signal-preview-title">LIVE MODULES</div>
+            <svg class="neon-chart" viewBox="0 0 420 180" role="img" aria-label="Stylized Nikkei neon chart">
+              <defs>
+                <filter id="glow-cyan" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+                <filter id="glow-pink" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+                <linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#63f7ff" stop-opacity="0.28"/>
+                  <stop offset="100%" stop-color="#ff3df2" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
 
-              <div class="signal-chip">
-                <span>01</span>
-                <strong>Daily Momentum</strong>
-                <em>Active</em>
-              </div>
+              <path class="chart-grid-line" d="M0 40H420M0 90H420M0 140H420" />
+              <path class="chart-grid-line vertical" d="M60 0V180M140 0V180M220 0V180M300 0V180M380 0V180" />
 
-              <div class="signal-chip">
-                <span>02</span>
-                <strong>Weekly Breakout</strong>
-                <em>Ready</em>
-              </div>
+              <path class="chart-area" d="M8 145 L42 132 L78 138 L116 112 L154 118 L196 78 L236 91 L274 62 L318 74 L356 42 L412 54 L412 180 L8 180 Z" />
 
-              <div class="signal-chip">
-                <span>03</span>
-                <strong>Theme Radar</strong>
-                <em>Building</em>
-              </div>
+              <path class="chart-line-pink" d="M8 145 L42 132 L78 138 L116 112 L154 118 L196 78 L236 91 L274 62 L318 74 L356 42 L412 54" />
+              <path class="chart-line-cyan" d="M8 145 L42 132 L78 138 L116 112 L154 118 L196 78 L236 91 L274 62 L318 74 L356 42 L412 54" />
 
-              <div class="signal-chip">
-                <span>04</span>
-                <strong>Ticker Reaction</strong>
-                <em>MVP</em>
+              <circle class="chart-dot" cx="412" cy="54" r="5" />
+            </svg>
+
+            <div class="chart-status-row">
+              <span>RISK MODE</span>
+              <strong>AFTER CLOSE</strong>
+            </div>
+          </div>
+
+          <div class="mini-chart-grid">
+            <div class="mini-chart-card">
+              <div class="mini-chart-label">
+                <span>TOPIX</span>
+                <strong>Broad</strong>
               </div>
+              <svg class="mini-chart" viewBox="0 0 180 70" aria-hidden="true">
+                <path d="M4 54 L28 48 L52 51 L76 37 L100 40 L124 27 L150 31 L176 22" />
+              </svg>
+            </div>
+
+            <div class="mini-chart-card">
+              <div class="mini-chart-label">
+                <span>GROWTH</span>
+                <strong>Beta</strong>
+              </div>
+              <svg class="mini-chart hot-chart" viewBox="0 0 180 70" aria-hidden="true">
+                <path d="M4 58 L28 50 L52 56 L76 34 L100 45 L124 24 L150 38 L176 18" />
+              </svg>
             </div>
           </div>
         </aside>
       </section>
 
       <section class="ticker-strip" aria-label="Ticker tape">
+        <div class="ticker-noise"></div>
         <div class="ticker-track">
-          <span>8035.T Tokyo Electron</span>
-          <span>6857.T Advantest</span>
-          <span>6146.T DISCO</span>
-          <span>6920.T Lasertec</span>
-          <span>5803.T Fujikura</span>
-          <span>7011.T Mitsubishi Heavy Industries</span>
-          <span>4425.T Kudan</span>
-          <span>135A.T VRAIN Solution</span>
-          <span>3993.T PKSHA Technology</span>
-          <span>5582.T GRID</span>
+          <span><b>8035.T</b> Tokyo Electron</span>
+          <span><b>6857.T</b> Advantest</span>
+          <span><b>6146.T</b> DISCO</span>
+          <span><b>6920.T</b> Lasertec</span>
+          <span><b>5803.T</b> Fujikura</span>
+          <span><b>7011.T</b> Mitsubishi Heavy Industries</span>
+          <span><b>4425.T</b> Kudan</span>
+          <span><b>135A.T</b> VRAIN Solution</span>
+          <span><b>3993.T</b> PKSHA Technology</span>
+          <span><b>5582.T</b> GRID</span>
 
-          <span>8035.T Tokyo Electron</span>
-          <span>6857.T Advantest</span>
-          <span>6146.T DISCO</span>
-          <span>6920.T Lasertec</span>
-          <span>5803.T Fujikura</span>
-          <span>7011.T Mitsubishi Heavy Industries</span>
-          <span>4425.T Kudan</span>
-          <span>135A.T VRAIN Solution</span>
-          <span>3993.T PKSHA Technology</span>
-          <span>5582.T GRID</span>
+          <span><b>8035.T</b> Tokyo Electron</span>
+          <span><b>6857.T</b> Advantest</span>
+          <span><b>6146.T</b> DISCO</span>
+          <span><b>6920.T</b> Lasertec</span>
+          <span><b>5803.T</b> Fujikura</span>
+          <span><b>7011.T</b> Mitsubishi Heavy Industries</span>
+          <span><b>4425.T</b> Kudan</span>
+          <span><b>135A.T</b> VRAIN Solution</span>
+          <span><b>3993.T</b> PKSHA Technology</span>
+          <span><b>5582.T</b> GRID</span>
         </div>
       </section>
 
       <section class="section-block mode-section" aria-labelledby="mode-title">
-        <div class="section-heading">
+        <div class="section-heading compact">
           <div class="pixel-kicker">SELECT SIGNAL MODE</div>
-          <h2 id="mode-title">Japan market intelligence, structured for action.</h2>
-          <p>
-            Built for investors who need a fast English-language read on Japanese equities:
-            liquidity shocks, relative strength, breakout quality and theme persistence.
-          </p>
+          <h2 id="mode-title">Choose your Tokyo signal layer.</h2>
         </div>
 
         <div class="mode-grid">
           <a class="mode-card active-card" href="/japan/daily/">
-            <div class="mode-index">01</div>
+            <div class="mode-visual">
+              <span class="mode-index">01</span>
+              <span class="mode-icon icon-bolt">ϟ</span>
+            </div>
             <h3>Daily Signals</h3>
-            <p>Short-term momentum ranking after the Tokyo close.</p>
-            <ul>
-              <li>Volume shock</li>
-              <li>Breakout quality</li>
-              <li>Relative strength vs Japan market</li>
-            </ul>
-            <span class="card-link">View daily board ↗</span>
+            <p>Momentum, volume shock and breakout quality after the Tokyo close.</p>
+            <span class="card-link">Launch daily board ↗</span>
           </a>
 
           <a class="mode-card" href="/japan/weekly/">
-            <div class="mode-index">02</div>
+            <div class="mode-visual">
+              <span class="mode-index">02</span>
+              <span class="mode-icon icon-chart">▰</span>
+            </div>
             <h3>Weekly Signals</h3>
-            <p>Multi-week candidates with stronger trend context.</p>
-            <ul>
-              <li>Compression</li>
-              <li>Base breakout</li>
-              <li>Theme persistence</li>
-            </ul>
+            <p>Multi-week candidates with stronger trend and compression context.</p>
             <span class="card-link">Open weekly board ↗</span>
           </a>
 
           <a class="mode-card" href="#reaction" id="reaction">
-            <div class="mode-index">03</div>
+            <div class="mode-visual">
+              <span class="mode-index">03</span>
+              <span class="mode-icon icon-pulse">◎</span>
+            </div>
             <h3>Ticker Reaction</h3>
-            <p>Lightweight crowd pulse without open chat risk.</p>
-            <ul>
-              <li>Bullish</li>
-              <li>Watching</li>
-              <li>Breakout / Extended</li>
-            </ul>
-            <span class="card-link">MVP local reaction ↘</span>
+            <p>Controlled crowd pulse without open chat or pump-style noise.</p>
+            <span class="card-link">Reaction MVP ↘</span>
           </a>
 
           <a class="mode-card" href="#themes">
-            <div class="mode-index">04</div>
+            <div class="mode-visual">
+              <span class="mode-index">04</span>
+              <span class="mode-icon icon-grid">▦</span>
+            </div>
             <h3>Theme Radar</h3>
-            <p>Japan themes translated for global investors.</p>
-            <ul>
-              <li>Semiconductors</li>
-              <li>Defense</li>
-              <li>Robotics / Physical AI</li>
-            </ul>
+            <p>Semis, defense, robotics, physical AI and data-center infrastructure.</p>
             <span class="card-link">Explore themes ↓</span>
           </a>
         </div>
       </section>
 
-      <section class="section-block pulse-section" aria-labelledby="pulse-title">
-        <div class="section-heading compact-heading">
-          <div class="pixel-kicker">JP MARKET PULSE</div>
-          <h2 id="pulse-title">Read the market regime before the ticker.</h2>
+      <section class="section-block visual-pulse-section" aria-labelledby="pulse-title">
+        <div class="section-heading compact">
+          <div class="pixel-kicker">MARKET REGIME</div>
+          <h2 id="pulse-title">Read the market before the ticker.</h2>
         </div>
 
         <div class="pulse-grid">
           <article class="pulse-card">
-            <div class="pulse-label">TOPIX</div>
-            <div class="pulse-status">BROAD MARKET</div>
-            <p>Core institutional reference for Japan’s equity risk appetite.</p>
+            <div class="pulse-icon">日</div>
+            <div>
+              <div class="pulse-label">TOPIX</div>
+              <div class="pulse-status">BROAD MARKET</div>
+            </div>
           </article>
 
           <article class="pulse-card">
-            <div class="pulse-label">NIKKEI</div>
-            <div class="pulse-status">LARGE-CAP MOMENTUM</div>
-            <p>Exporters, semiconductors and mega-cap sentiment proxy.</p>
+            <div class="pulse-icon">株</div>
+            <div>
+              <div class="pulse-label">NIKKEI</div>
+              <div class="pulse-status">LARGE-CAP MOMENTUM</div>
+            </div>
           </article>
 
           <article class="pulse-card">
-            <div class="pulse-label">GROWTH</div>
-            <div class="pulse-status">SPECULATIVE BETA</div>
-            <p>Small-cap risk appetite and emerging-theme temperature check.</p>
+            <div class="pulse-icon">光</div>
+            <div>
+              <div class="pulse-label">GROWTH</div>
+              <div class="pulse-status">SPECULATIVE BETA</div>
+            </div>
           </article>
         </div>
       </section>
@@ -247,40 +252,40 @@
           <div class="pixel-kicker">THEME RADAR</div>
           <h2 id="theme-title">Japan themes global investors can understand.</h2>
           <p>
-            The site is designed to surface not only famous large caps, but also smaller discovery names
-            where liquidity, valuation and promotion risk must be handled explicitly.
+            Core leaders and smaller discovery names are separated to keep the signal useful,
+            readable and risk-aware.
           </p>
         </div>
 
         <div class="theme-grid">
           <article class="theme-card">
+            <span class="theme-icon">◆</span>
             <span class="theme-tag">SEMIS</span>
             <h3>Semiconductor Capex</h3>
-            <p>Equipment, inspection, testing, materials and supply-chain leaders.</p>
           </article>
 
           <article class="theme-card">
+            <span class="theme-icon">▲</span>
             <span class="theme-tag">DEFENSE</span>
             <h3>Defense & Aerospace</h3>
-            <p>Prime contractors and suppliers tied to security, space and energy resilience.</p>
           </article>
 
           <article class="theme-card">
+            <span class="theme-icon">◉</span>
             <span class="theme-tag">AI / ROBOTICS</span>
             <h3>Physical AI</h3>
-            <p>Spatial intelligence, machine vision, factory automation and robotics software.</p>
           </article>
 
           <article class="theme-card">
+            <span class="theme-icon">▣</span>
             <span class="theme-tag">INFRA</span>
             <h3>Data Center Infrastructure</h3>
-            <p>Power, cable, components and industrial infrastructure for AI compute buildout.</p>
           </article>
         </div>
       </section>
 
       <section class="section-block classification-section" aria-labelledby="classification-title">
-        <div class="section-heading compact-heading">
+        <div class="section-heading compact">
           <div class="pixel-kicker">UNIVERSE CLASSIFICATION</div>
           <h2 id="classification-title">Core, Discovery and Watch are intentionally separated.</h2>
         </div>
@@ -289,19 +294,19 @@
           <article class="class-card">
             <div class="class-code">CORE</div>
             <h3>Liquid leaders</h3>
-            <p>Institutionally visible Japanese companies with stronger liquidity and global comparability.</p>
+            <p>Institutionally visible Japanese companies with stronger liquidity.</p>
           </article>
 
           <article class="class-card">
             <div class="class-code">DISCOVERY</div>
             <h3>Theme-driven smaller names</h3>
-            <p>Potentially asymmetric attention candidates, but with higher volatility and liquidity risk.</p>
+            <p>Higher attention potential, but higher volatility and liquidity risk.</p>
           </article>
 
           <article class="class-card warning-card">
             <div class="class-code">WATCH</div>
-            <h3>High-risk observation only</h3>
-            <p>Low-liquidity, early-stage or speculative names. Signal only, not endorsement.</p>
+            <h3>Observation only</h3>
+            <p>Low-liquidity or speculative names. Signal only, not endorsement.</p>
           </article>
         </div>
       </section>
@@ -311,8 +316,7 @@
           <div class="pixel-kicker">REACTION MVP</div>
           <h2 id="reaction-title">Crowd pulse, not open chat.</h2>
           <p>
-            Ticker reactions are designed as controlled signals rather than free-form discussion.
-            This reduces spam, pump language and moderation risk while preserving market temperature.
+            Controlled ticker reactions reduce spam, pump language and moderation risk.
           </p>
         </div>
 
@@ -327,8 +331,8 @@
       <section class="disclaimer-strip">
         <strong>Not investment advice.</strong>
         <span>
-          Neon Tokyo Signals is an informational research interface. Signals are not recommendations
-          to buy, sell or hold securities. Small-cap and low-liquidity stocks can move violently.
+          Neon Tokyo Signals is an informational research interface. Signals are not recommendations.
+          Small-cap and low-liquidity stocks can move violently.
         </span>
       </section>
     </main>
