@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>JP Daily Backtest | Neon Tokyo Signals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="Backtest dashboard for Neon Tokyo Daily JP Event Score. Performance by triage, archetype, score band, liquidity and market regime."/>
+  <meta name="theme-color" content="#050711"/>
+  <link rel="stylesheet" href="/assets/backtest_daily_jp.css?v={{ asset_version }}"/>
+</head>
+
+<body>
+<div class="page">
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <div class="grid"></div>
+
+  <main class="wrap">
+    <header class="header">
+      <a class="brand" href="/">
+        <span class="brand-mark">NTS</span>
+        <span>
+          <strong>NEON TOKYO SIGNALS</strong>
+          <em>Japan equity signals after the Tokyo close.</em>
+        </span>
+      </a>
+
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/japan/daily/">Daily</a>
+        <a href="/japan/daily/backtest/" class="active">Backtest</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="kicker">
+          <span class="live-dot"></span>
+          JP DAILY BACKTEST LAB
+        </div>
+
+        <h1>
+          Signal quality,
+          <span>measured after the fact.</span>
+        </h1>
+
+        <p>
+          Historical replay of the Daily Event Score v2. Each date is scored using
+          only information available at that close, then measured over forward
+          trading-day horizons versus TOPIX.
+        </p>
+      </div>
+
+      <aside class="summary-card">
+        <div class="summary-label">BACKTEST RANGE</div>
+        <div class="summary-main">
+          {{ summary.eval_date_count or 0 }}
+          <span>eval dates</span>
+        </div>
+        <div class="summary-sub">
+          {{ summary.eval_date_start or "—" }} → {{ summary.eval_date_end or "—" }}
+        </div>
+        <div class="summary-meta">
+          <span>{{ summary.signal_count or 0 }} signals</span>
+          <span>{{ payload.mode or "—" }}</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="meta-strip">
+      <div>
+        <span>Generated</span>
+        <strong>{{ generated_at or "—" }}</strong>
+      </div>
+      <div>
+        <span>Price Data</span>
+        <strong>{{ payload.source_prices_generated_at or "—" }}</strong>
+      </div>
+      <div>
+        <span>Horizons</span>
+        <strong>{% for h in horizons %}{{ h }}D{% if not loop.last %} / {% endif %}{% endfor %}</strong>
+      </div>
+      <div>
+        <span>API Calls</span>
+        <strong>0</strong>
+      </div>
+    </section>
+
+    <section class="insight-grid">
+      {% for insight in insights %}
+        <article class="insight-card">
+          <span>{{ insight.label }}</span>
+          <strong class="{{ insight.class }}">{{ insight.value }}</strong>
+          <em>{{ insight.detail }}</em>
+        </article>
+      {% endfor %}
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">OVERALL RESULT</div>
+          <h2>Forward returns by holding horizon.</h2>
+        </div>
+        <div class="method-chip">Entry = evaluation date close</div>
+      </div>
+
+      <div class="horizon-grid">
+        {% for row in overall_rows %}
+          <article class="horizon-card">
+            <div class="horizon-top">
+              <span>{{ row.horizon }}</span>
+              <strong>{{ row.count | fmt_int }}</strong>
+            </div>
+
+            <div class="big-return {{ row.avg_return_class }}">
+              {{ row.avg_return_pct | fmt_pct }}
+              <span>avg return</span>
+            </div>
+
+            <div class="horizon-metrics">
+              <div>
+                <span>Median</span>
+                <strong class="{{ row.avg_return_class }}">{{ row.median_return_pct | fmt_pct }}</strong>
+              </div>
+              <div>
+                <span>Win Rate</span>
+                <strong class="{{ row.win_rate_class }}">{{ row.win_rate_pct | fmt_pct }}</strong>
+              </div>
+              <div>
+                <span>Avg Alpha</span>
+                <strong class="{{ row.avg_alpha_class }}">{{ row.avg_alpha_pct | fmt_pct }}</strong>
+              </div>
+              <div>
+                <span>Worst PB</span>
+                <strong>{{ row.avg_worst_pullback_pct | fmt_pct }}</strong>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    {% for section in group_sections %}
+      <section class="section-block">
+        <div class="section-heading">
+          <div class="kicker">{{ section.label | upper }}</div>
+          <h2>{{ section.title }}</h2>
+          <p>{{ section.subtitle }}</p>
+        </div>
+
+        <div class="group-table-wrap">
+          <table class="group-table">
+            <thead>
+              <tr>
+                <th>{{ section.label }}</th>
+                {% for h in horizons %}
+                  <th>{{ h }}D Avg</th>
+                  <th>{{ h }}D Win</th>
+                  <th>{{ h }}D Alpha</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in section.rows %}
+                <tr>
+                  <td>
+                    <strong class="{{ row.name_class }}">{{ row.name }}</strong>
+                    <span>{{ row.count | fmt_int }} obs</span>
+                  </td>
+
+                  {% for cell in row.cells %}
+                    <td class="{{ cell.avg_return_class }}">{{ cell.avg_return_pct | fmt_pct }}</td>
+                    <td class="{{ cell.win_rate_class }}">{{ cell.win_rate_pct | fmt_pct }}</td>
+                    <td class="{{ cell.avg_alpha_class }}">{{ cell.avg_alpha_pct | fmt_pct }}</td>
+                  {% endfor %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    {% endfor %}
+
+    <section class="section-block">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">BEST FORWARD MOVES</div>
+          <h2>Top realized returns.</h2>
+        </div>
+        <div class="method-chip">Primary horizon: 20D if available</div>
+      </div>
+
+      <div class="mini-card-grid">
+        {% for row in top_return_rows %}
+          <article class="mini-card">
+            <div class="mini-top">
+              <span>{{ row.eval_date }}</span>
+              <strong class="{{ row.triage_css }}">{{ row.triage }}</strong>
+            </div>
+
+            <h3>{{ row.symbol }}</h3>
+            <p>{{ row.name }}</p>
+
+            <div class="mini-return {{ row.primary_return_class }}">
+              {{ row.primary_return | fmt_pct }}
+              <span>{{ row.primary_horizon }} return</span>
+            </div>
+
+            <div class="mini-meta">
+              <span>{{ row.archetype }}</span>
+              <span>{{ row.score_pts }} pts</span>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">BEST ALPHA</div>
+          <h2>Top returns versus TOPIX.</h2>
+        </div>
+        <div class="method-chip">Stock return minus TOPIX ETF return</div>
+      </div>
+
+      <div class="mini-card-grid">
+        {% for row in top_alpha_rows %}
+          <article class="mini-card">
+            <div class="mini-top">
+              <span>{{ row.eval_date }}</span>
+              <strong class="{{ row.triage_css }}">{{ row.triage }}</strong>
+            </div>
+
+            <h3>{{ row.symbol }}</h3>
+            <p>{{ row.name }}</p>
+
+            <div class="mini-return {{ row.primary_alpha_class }}">
+              {{ row.primary_alpha | fmt_pct }}
+              <span>{{ row.primary_horizon }} alpha</span>
+            </div>
+
+            <div class="mini-meta">
+              <span>{{ row.archetype }}</span>
+              <span>{{ row.score_pts }} pts</span>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">RECENT SIGNAL REPLAY</div>
+          <h2>Most recent scored observations.</h2>
+        </div>
+        <div class="method-chip">Limited view for readability</div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Rank</th>
+              <th>Triage</th>
+              <th>Symbol</th>
+              <th>Name</th>
+              <th>Score</th>
+              <th>Archetype</th>
+              <th>RVOL</th>
+              <th>1D</th>
+              <th>5D</th>
+              <th>20D Return</th>
+              <th>20D Alpha</th>
+              <th>20D Pullback</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in recent_rows %}
+              <tr>
+                <td>{{ row.eval_date }}</td>
+                <td>#{{ row.rank }}</td>
+                <td><span class="mini-tag {{ row.triage_css }}">{{ row.triage }}</span></td>
+                <td><strong>{{ row.symbol }}</strong></td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.score_pts }}</td>
+                <td>{{ row.archetype }}</td>
+                <td>{{ row.volume_ratio_20d | fmt_num }}</td>
+                <td class="{{ 'value-up' if row.return_1d_pct and row.return_1d_pct > 0 else 'value-down' if row.return_1d_pct and row.return_1d_pct < 0 else 'value-flat' }}">{{ row.return_1d_pct | fmt_pct }}</td>
+                <td class="{{ 'value-up' if row.return_5d_pct and row.return_5d_pct > 0 else 'value-down' if row.return_5d_pct and row.return_5d_pct < 0 else 'value-flat' }}">{{ row.return_5d_pct | fmt_pct }}</td>
+                <td class="{{ row.primary_return_class }}">{{ row.primary_return | fmt_pct }}</td>
+                <td class="{{ row.primary_alpha_class }}">{{ row.primary_alpha | fmt_pct }}</td>
+                <td>{{ row.primary_pullback | fmt_pct }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-block methodology">
+      <div class="section-heading">
+        <div class="kicker">METHOD CONTROL</div>
+        <h2>No look-ahead, no API calls, no display-layer recalculation.</h2>
+        <p>
+          The backtest truncates each stock’s OHLCV history to the evaluation date,
+          runs the same Daily Event Score v2 engine, and measures future returns using
+          trading-day offsets. The rendered page only displays precomputed JSON values.
+        </p>
+      </div>
+
+      <div class="method-grid">
+        <div>
+          <span>Scoring Engine</span>
+          <strong>Daily Event Score v2</strong>
+        </div>
+        <div>
+          <span>Entry</span>
+          <strong>Close on eval date</strong>
+        </div>
+        <div>
+          <span>Alpha Benchmark</span>
+          <strong>TOPIX ETF</strong>
+        </div>
+        <div>
+          <span>External API Calls</span>
+          <strong>0</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes">
+      <strong>Not investment advice.</strong>
+      <span>
+        Backtest results are historical and do not guarantee future performance.
+        Small-cap and low-liquidity Japanese equities can move violently and may be
+        difficult to trade at displayed prices.
+      </span>
+    </section>
+
+    <footer class="footer">
+      <span>Informational only. Not investment advice.</span>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/japan/daily/">Daily</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </nav>
+    </footer>
+  </main>
+</div>
+</body>
+</html>
