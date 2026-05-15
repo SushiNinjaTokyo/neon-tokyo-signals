@@ -1,0 +1,92 @@
+name: Render static site only
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/**"
+      - "templates/**"
+      - "site/data/**"
+      - "data/**"
+      - "requirements.txt"
+      - "requirements-render.txt"
+      - ".github/workflows/render-only.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render-only-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+
+    env:
+      OUT_DIR: site
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          if [ -f requirements-render.txt ]; then
+            pip install -r requirements-render.txt
+          elif [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            pip install Jinja2
+          fi
+
+      - name: Validate Python scripts
+        run: |
+          set -euo pipefail
+          python -m compileall scripts
+
+      - name: Render static site
+        run: |
+          set -euo pipefail
+          python scripts/render_all.py
+
+      - name: Verify required outputs
+        run: |
+          set -euo pipefail
+
+          test -f site/index.html
+          test -f site/japan/daily/index.html
+          test -f site/japan/weekly/index.html
+          test -f site/disclaimer/index.html
+          test -f site/privacy/index.html
+          test -f site/assets/base.css
+          test -f site/assets/index.css
+          test -f site/assets/daily_jp.css
+          test -f site/assets/weekly_jp.css
+
+      - name: Commit rendered site
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add site
+
+          if git diff --cached --quiet; then
+            echo "No rendered changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Render static site"
+          git push
