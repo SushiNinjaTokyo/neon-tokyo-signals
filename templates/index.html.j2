@@ -1,122 +1,351 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <title>{{ brand }} | Japan Equity Signals After the Tokyo Close</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Japan equity signals after the Tokyo close. A prototype dashboard for tracking tradable momentum, market pulse, and ticker reactions from Japan’s equity market."/>
-  <link rel="stylesheet" href="/assets/index.css?v=prototype-001"/>
-</head>
-<body>
-<div class="page">
-  <div class="ambient ambient-a"></div>
-  <div class="ambient ambient-b"></div>
-  <div class="grid"></div>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Neon Tokyo Signals turns Japan equity momentum, liquidity shocks, breakout quality and emerging themes into structured signals for global investors." />
+  <meta name="theme-color" content="#050711" />
 
-  <main class="wrap">
-    <nav class="top-nav">
-      <a class="brand" href="/">
-        <strong>NEON TOKYO SIGNALS</strong>
-        <span>Japan equity signals after the Tokyo close</span>
+  <title>Neon Tokyo Signals | Japan Equity Signals After the Tokyo Close</title>
+
+  <link rel="stylesheet" href="/assets/index.css" />
+</head>
+
+<body>
+  <div class="page-shell">
+    <div class="bg-orb bg-orb-a"></div>
+    <div class="bg-orb bg-orb-b"></div>
+    <div class="bg-orb bg-orb-c"></div>
+
+    <header class="site-header">
+      <a class="brand-lockup" href="/" aria-label="Neon Tokyo Signals home">
+        <span class="brand-mark">NTS</span>
+        <span class="brand-text">
+          <span class="brand-name">NEON TOKYO</span>
+          <span class="brand-subname">SIGNALS</span>
+        </span>
       </a>
-      <div class="top-links">
+
+      <nav class="top-nav" aria-label="Primary navigation">
         <a href="/japan/daily/">Daily</a>
         <a href="/japan/weekly/">Weekly</a>
-        <a href="/disclaimer/">Disclaimer</a>
-      </div>
-    </nav>
+        <a href="#themes">Themes</a>
+        <a href="#reaction">Reaction</a>
+      </nav>
+    </header>
 
-    <section class="market-panel">
-      <div class="pulse-stage">
-        <div class="pulse-bg-grid"></div>
-        <div class="pulse-bg-word" data-text="TOKYO">TOKYO</div>
-        <div class="pulse-scan"></div>
+    <main>
+      <section class="hero-section">
+        <div class="hero-grid"></div>
 
-        <div class="hero-content">
-          <div class="kicker">Japan Equity Signals</div>
-          <h1>NEON TOKYO<br/>SIGNALS</h1>
-          <p>{{ tagline }}</p>
-          <div class="hero-meta">
-            <span class="pill">Prototype</span>
-            <span class="pill">Daily / Weekly</span>
-            <span class="pill">Ticker Reactions MVP</span>
+        <div class="hero-copy">
+          <div class="pixel-kicker">
+            <span class="status-dot"></span>
+            TOKYO CLOSE // JP EQUITY SIGNAL BOARD
+          </div>
+
+          <h1>
+            <span>TOKYO IS CLOSED.</span>
+            <span>THE SIGNALS ARE LIVE.</span>
+          </h1>
+
+          <p class="hero-lead">
+            Japan equity signals after the Tokyo close.
+          </p>
+
+          <p class="hero-description">
+            A cyber-market signal board for global investors tracking Japan’s
+            momentum, liquidity shocks, breakout quality and emerging themes —
+            from core leaders to discovery-stage growth names.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="/japan/daily/">
+              <span>Enter Daily Signals</span>
+              <span class="btn-arrow">↗</span>
+            </a>
+            <a class="btn btn-secondary" href="/japan/weekly/">
+              <span>Open Weekly Board</span>
+              <span class="btn-arrow">↗</span>
+            </a>
           </div>
         </div>
-      </div>
-    </section>
 
-    <section class="nav-grid">
-      <a class="nav-card primary" href="/japan/daily/">
-        <div class="nav-kicker">Daily</div>
-        <h3>Japan Daily Signals</h3>
-        <p>Daily momentum setups based on volume expansion, breakout quality, relative strength, and entry timing.</p>
-        <div class="nav-meta">
-          {% if top.symbol %}#1 {{ top.symbol }} / {{ top.score | int }} pts{% else %}Prototype ranking{% endif %}
+        <aside class="hero-terminal" aria-label="Signal terminal preview">
+          <div class="terminal-header">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+            <span class="terminal-title">SIGNAL_ENGINE.JP</span>
+          </div>
+
+          <div class="terminal-body">
+            <div class="terminal-row">
+              <span class="terminal-label">MARKET</span>
+              <span class="terminal-value">TOKYO</span>
+            </div>
+            <div class="terminal-row">
+              <span class="terminal-label">SESSION</span>
+              <span class="terminal-value value-cyan">AFTER CLOSE</span>
+            </div>
+            <div class="terminal-row">
+              <span class="terminal-label">FOCUS</span>
+              <span class="terminal-value">MOMENTUM / BREAKOUT</span>
+            </div>
+            <div class="terminal-row">
+              <span class="terminal-label">UNIVERSE</span>
+              <span class="terminal-value">CORE + DISCOVERY</span>
+            </div>
+
+            <div class="signal-preview">
+              <div class="signal-preview-title">LIVE MODULES</div>
+
+              <div class="signal-chip">
+                <span>01</span>
+                <strong>Daily Momentum</strong>
+                <em>Active</em>
+              </div>
+
+              <div class="signal-chip">
+                <span>02</span>
+                <strong>Weekly Breakout</strong>
+                <em>Ready</em>
+              </div>
+
+              <div class="signal-chip">
+                <span>03</span>
+                <strong>Theme Radar</strong>
+                <em>Building</em>
+              </div>
+
+              <div class="signal-chip">
+                <span>04</span>
+                <strong>Ticker Reaction</strong>
+                <em>MVP</em>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="ticker-strip" aria-label="Ticker tape">
+        <div class="ticker-track">
+          <span>8035.T Tokyo Electron</span>
+          <span>6857.T Advantest</span>
+          <span>6146.T DISCO</span>
+          <span>6920.T Lasertec</span>
+          <span>5803.T Fujikura</span>
+          <span>7011.T Mitsubishi Heavy Industries</span>
+          <span>4425.T Kudan</span>
+          <span>135A.T VRAIN Solution</span>
+          <span>3993.T PKSHA Technology</span>
+          <span>5582.T GRID</span>
+
+          <span>8035.T Tokyo Electron</span>
+          <span>6857.T Advantest</span>
+          <span>6146.T DISCO</span>
+          <span>6920.T Lasertec</span>
+          <span>5803.T Fujikura</span>
+          <span>7011.T Mitsubishi Heavy Industries</span>
+          <span>4425.T Kudan</span>
+          <span>135A.T VRAIN Solution</span>
+          <span>3993.T PKSHA Technology</span>
+          <span>5582.T GRID</span>
         </div>
-      </a>
+      </section>
 
-      <a class="nav-card" href="/japan/weekly/">
-        <div class="nav-kicker">Weekly</div>
-        <h3>Japan Weekly Signals</h3>
-        <p>Weekly candidates for medium-term momentum, trend quality, accumulation, and sector leadership.</p>
-        <div class="nav-meta">Medium-term signal lab</div>
-      </a>
+      <section class="section-block mode-section" aria-labelledby="mode-title">
+        <div class="section-heading">
+          <div class="pixel-kicker">SELECT SIGNAL MODE</div>
+          <h2 id="mode-title">Japan market intelligence, structured for action.</h2>
+          <p>
+            Built for investors who need a fast English-language read on Japanese equities:
+            liquidity shocks, relative strength, breakout quality and theme persistence.
+          </p>
+        </div>
 
-      <a class="nav-card accent" href="#reactions">
-        <div class="nav-kicker">Community</div>
-        <h3>24h Ticker Reactions</h3>
-        <p>Lightweight ticker reactions for Bullish, Watching, Breakout, and Extended signals. DB will be added later.</p>
-        <div class="nav-meta">Local prototype only</div>
-      </a>
-    </section>
+        <div class="mode-grid">
+          <a class="mode-card active-card" href="/japan/daily/">
+            <div class="mode-index">01</div>
+            <h3>Daily Signals</h3>
+            <p>Short-term momentum ranking after the Tokyo close.</p>
+            <ul>
+              <li>Volume shock</li>
+              <li>Breakout quality</li>
+              <li>Relative strength vs Japan market</li>
+            </ul>
+            <span class="card-link">View daily board ↗</span>
+          </a>
 
-    <section id="reactions" class="reaction-panel">
-      <div class="section-head">
-        <div class="nav-kicker">Prototype UX</div>
-        <h2>Ticker Reactions</h2>
-      </div>
+          <a class="mode-card" href="/japan/weekly/">
+            <div class="mode-index">02</div>
+            <h3>Weekly Signals</h3>
+            <p>Multi-week candidates with stronger trend context.</p>
+            <ul>
+              <li>Compression</li>
+              <li>Base breakout</li>
+              <li>Theme persistence</li>
+            </ul>
+            <span class="card-link">Open weekly board ↗</span>
+          </a>
 
-      {% for item in daily["items"][:3] %}
-      <div class="ticker-row" data-ticker="{{ item.symbol }}">
+          <a class="mode-card" href="#reaction" id="reaction">
+            <div class="mode-index">03</div>
+            <h3>Ticker Reaction</h3>
+            <p>Lightweight crowd pulse without open chat risk.</p>
+            <ul>
+              <li>Bullish</li>
+              <li>Watching</li>
+              <li>Breakout / Extended</li>
+            </ul>
+            <span class="card-link">MVP local reaction ↘</span>
+          </a>
+
+          <a class="mode-card" href="#themes">
+            <div class="mode-index">04</div>
+            <h3>Theme Radar</h3>
+            <p>Japan themes translated for global investors.</p>
+            <ul>
+              <li>Semiconductors</li>
+              <li>Defense</li>
+              <li>Robotics / Physical AI</li>
+            </ul>
+            <span class="card-link">Explore themes ↓</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section-block pulse-section" aria-labelledby="pulse-title">
+        <div class="section-heading compact-heading">
+          <div class="pixel-kicker">JP MARKET PULSE</div>
+          <h2 id="pulse-title">Read the market regime before the ticker.</h2>
+        </div>
+
+        <div class="pulse-grid">
+          <article class="pulse-card">
+            <div class="pulse-label">TOPIX</div>
+            <div class="pulse-status">BROAD MARKET</div>
+            <p>Core institutional reference for Japan’s equity risk appetite.</p>
+          </article>
+
+          <article class="pulse-card">
+            <div class="pulse-label">NIKKEI</div>
+            <div class="pulse-status">LARGE-CAP MOMENTUM</div>
+            <p>Exporters, semiconductors and mega-cap sentiment proxy.</p>
+          </article>
+
+          <article class="pulse-card">
+            <div class="pulse-label">GROWTH</div>
+            <div class="pulse-status">SPECULATIVE BETA</div>
+            <p>Small-cap risk appetite and emerging-theme temperature check.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block theme-section" id="themes" aria-labelledby="theme-title">
+        <div class="section-heading">
+          <div class="pixel-kicker">THEME RADAR</div>
+          <h2 id="theme-title">Japan themes global investors can understand.</h2>
+          <p>
+            The site is designed to surface not only famous large caps, but also smaller discovery names
+            where liquidity, valuation and promotion risk must be handled explicitly.
+          </p>
+        </div>
+
+        <div class="theme-grid">
+          <article class="theme-card">
+            <span class="theme-tag">SEMIS</span>
+            <h3>Semiconductor Capex</h3>
+            <p>Equipment, inspection, testing, materials and supply-chain leaders.</p>
+          </article>
+
+          <article class="theme-card">
+            <span class="theme-tag">DEFENSE</span>
+            <h3>Defense & Aerospace</h3>
+            <p>Prime contractors and suppliers tied to security, space and energy resilience.</p>
+          </article>
+
+          <article class="theme-card">
+            <span class="theme-tag">AI / ROBOTICS</span>
+            <h3>Physical AI</h3>
+            <p>Spatial intelligence, machine vision, factory automation and robotics software.</p>
+          </article>
+
+          <article class="theme-card">
+            <span class="theme-tag">INFRA</span>
+            <h3>Data Center Infrastructure</h3>
+            <p>Power, cable, components and industrial infrastructure for AI compute buildout.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block classification-section" aria-labelledby="classification-title">
+        <div class="section-heading compact-heading">
+          <div class="pixel-kicker">UNIVERSE CLASSIFICATION</div>
+          <h2 id="classification-title">Core, Discovery and Watch are intentionally separated.</h2>
+        </div>
+
+        <div class="class-grid">
+          <article class="class-card">
+            <div class="class-code">CORE</div>
+            <h3>Liquid leaders</h3>
+            <p>Institutionally visible Japanese companies with stronger liquidity and global comparability.</p>
+          </article>
+
+          <article class="class-card">
+            <div class="class-code">DISCOVERY</div>
+            <h3>Theme-driven smaller names</h3>
+            <p>Potentially asymmetric attention candidates, but with higher volatility and liquidity risk.</p>
+          </article>
+
+          <article class="class-card warning-card">
+            <div class="class-code">WATCH</div>
+            <h3>High-risk observation only</h3>
+            <p>Low-liquidity, early-stage or speculative names. Signal only, not endorsement.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="reaction-panel" aria-labelledby="reaction-title">
         <div>
-          <strong>{{ item.symbol }}</strong>
-          <span>{{ item.name }} · {{ item.theme }}</span>
+          <div class="pixel-kicker">REACTION MVP</div>
+          <h2 id="reaction-title">Crowd pulse, not open chat.</h2>
+          <p>
+            Ticker reactions are designed as controlled signals rather than free-form discussion.
+            This reduces spam, pump language and moderation risk while preserving market temperature.
+          </p>
         </div>
-        <div class="reaction-buttons">
-          <button type="button" data-reaction="bullish">Bullish</button>
-          <button type="button" data-reaction="watching">Watching</button>
-          <button type="button" data-reaction="breakout">Breakout</button>
-          <button type="button" data-reaction="extended">Extended</button>
+
+        <div class="reaction-buttons" aria-label="Reaction examples">
+          <button type="button">Bullish</button>
+          <button type="button">Watching</button>
+          <button type="button">Breakout</button>
+          <button type="button">Extended</button>
         </div>
+      </section>
+
+      <section class="disclaimer-strip">
+        <strong>Not investment advice.</strong>
+        <span>
+          Neon Tokyo Signals is an informational research interface. Signals are not recommendations
+          to buy, sell or hold securities. Small-cap and low-liquidity stocks can move violently.
+        </span>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <strong>NEON TOKYO SIGNALS</strong>
+        <span>Japan equity signals after the Tokyo close.</span>
       </div>
-      {% endfor %}
-    </section>
 
-    <footer class="footer">
-      Generated at {{ generated_at }} · Informational only. Not investment advice.
+      <nav aria-label="Footer navigation">
+        <a href="/disclaimer/">Disclaimer</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/japan/daily/">Daily</a>
+        <a href="/japan/weekly/">Weekly</a>
+      </nav>
     </footer>
-  </main>
-</div>
-
-<script>
-document.querySelectorAll(".ticker-row").forEach((row) => {
-  const ticker = row.dataset.ticker;
-  const key = `nts-reaction-${ticker}`;
-  const saved = localStorage.getItem(key);
-
-  if (saved) {
-    const active = row.querySelector(`[data-reaction="${saved}"]`);
-    if (active) active.classList.add("is-active");
-  }
-
-  row.querySelectorAll("button[data-reaction]").forEach((button) => {
-    button.addEventListener("click", () => {
-      row.querySelectorAll("button").forEach((b) => b.classList.remove("is-active"));
-      button.classList.add("is-active");
-      localStorage.setItem(key, button.dataset.reaction);
-    });
-  });
-});
-</script>
+  </div>
 </body>
 </html>
