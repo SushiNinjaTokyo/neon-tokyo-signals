@@ -2,45 +2,280 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title>Japan Daily Signals | Neon Tokyo Signals</title>
+  <title>Daily Japan Signals | Neon Tokyo Signals</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Daily Japan equity momentum signals for global investors."/>
-  <link rel="stylesheet" href="/assets/daily_jp.css?v=prototype-001"/>
+  <meta name="description" content="Daily Japan equity momentum signals after the Tokyo close. Ranked by volume shock, breakout quality, relative strength, compression and entry timing."/>
+  <meta name="theme-color" content="#050711"/>
+  <link rel="stylesheet" href="/assets/daily_jp.css?v={{ asset_version }}"/>
 </head>
+
 <body>
-<div class="page"><div class="ambient ambient-a"></div><div class="ambient ambient-b"></div><div class="grid"></div>
-<main class="wrap">
-  <nav class="top-nav">
-    <a class="brand" href="/"><strong>NEON TOKYO SIGNALS</strong><span>Daily Japan equity signals</span></a>
-    <div class="top-links"><a href="/">Home</a><a href="/japan/weekly/">Weekly</a><a href="/disclaimer/">Disclaimer</a></div>
-  </nav>
+<div class="page">
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <div class="grid"></div>
 
-  <section class="market-panel">
-    <div class="pulse-stage" style="min-height:320px">
-      <div class="pulse-bg-grid"></div><div class="pulse-bg-word" data-text="DAILY">DAILY</div><div class="pulse-scan"></div>
-      <div class="hero-content"><div class="kicker">Japan Daily Signals</div><h1>DAILY<br/>SIGNALS</h1><p>As of {{ daily.date }}. Prototype ranking using sample data.</p></div>
-    </div>
-  </section>
+  <main class="wrap">
+    <header class="header">
+      <a class="brand" href="/">
+        <span class="brand-mark">NTS</span>
+        <span>
+          <strong>NEON TOKYO SIGNALS</strong>
+          <em>Japan equity signals after the Tokyo close.</em>
+        </span>
+      </a>
 
-  <section class="reaction-panel">
-    <div class="section-head"><div class="nav-kicker">Top setups</div><h2>Daily Momentum List</h2></div>
-    {% for item in items %}
-    <div class="ticker-row">
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/japan/daily/" class="active">Daily</a>
+        <a href="/japan/weekly/">Weekly</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="kicker">
+          <span class="live-dot"></span>
+          DAILY JP SIGNAL BOARD
+        </div>
+
+        <h1>
+          Tokyo close momentum,
+          <span>ranked by signal quality.</span>
+        </h1>
+
+        <p>
+          A daily ranking built from volume shock, breakout quality, relative strength,
+          compression and entry timing. Informational only, not investment advice.
+        </p>
+      </div>
+
+      <aside class="summary-card">
+        <div class="summary-label">TODAY’S TOP SIGNAL</div>
+
+        {% if summary.top_symbol %}
+          <div class="summary-symbol">{{ summary.top_symbol }}</div>
+          <div class="summary-name">{{ summary.top_name }}</div>
+          <div class="summary-score">
+            {{ summary.top_score | fmt_score }}
+            <span>{{ summary.top_classification }}</span>
+          </div>
+        {% else %}
+          <div class="summary-symbol">NO DATA</div>
+          <div class="summary-name">Daily signal JSON has not been generated yet.</div>
+        {% endif %}
+      </aside>
+    </section>
+
+    <section class="meta-strip">
       <div>
-        <strong>#{{ item.rank }} {{ item.symbol }}</strong>
-        <span>{{ item.name }} · {{ item.theme }} · {{ item.classification }} · {{ item.score | int }} pts</span>
-        <span>{{ item.why_now }}</span>
+        <span>Generated</span>
+        <strong>{{ generated_at or "—" }}</strong>
       </div>
-      <div class="reaction-buttons">
-        <button type="button">Bullish {{ item.reactions.bullish | default(0) }}</button>
-        <button type="button">Watching {{ item.reactions.watching | default(0) }}</button>
-        <button type="button">Breakout {{ item.reactions.breakout | default(0) }}</button>
-        <button type="button">Extended {{ item.reactions.extended | default(0) }}</button>
+      <div>
+        <span>Price Data</span>
+        <strong>{{ source_prices_generated_at or "—" }}</strong>
       </div>
-    </div>
-    {% endfor %}
-  </section>
-  <footer class="footer">Generated at {{ generated_at }} · Informational only. Not investment advice.</footer>
-</main></div>
+      <div>
+        <span>Items</span>
+        <strong>{{ summary.items_count or 0 }}</strong>
+      </div>
+      <div>
+        <span>Market</span>
+        <strong>JP</strong>
+      </div>
+    </section>
+
+    <section class="pulse-section" aria-label="JP market pulse">
+      <div class="section-heading">
+        <div class="kicker">JP MARKET PULSE</div>
+        <h2>Market regime before individual signals.</h2>
+      </div>
+
+      <div class="pulse-grid">
+        {% for pulse in market_pulse %}
+          <article class="pulse-card">
+            <div class="pulse-label">{{ pulse.label }}</div>
+            <div class="pulse-regime">{{ pulse.regime }}</div>
+
+            <div class="pulse-metrics">
+              <div>
+                <span>1D</span>
+                <strong class="{{ pulse.return_1d_class }}">{{ pulse.return_1d_pct | fmt_pct }}</strong>
+              </div>
+              <div>
+                <span>5D</span>
+                <strong class="{{ pulse.return_5d_class }}">{{ pulse.return_5d_pct | fmt_pct }}</strong>
+              </div>
+              <div>
+                <span>20D</span>
+                <strong class="{{ pulse.return_20d_class }}">{{ pulse.return_20d_pct | fmt_pct }}</strong>
+              </div>
+            </div>
+          </article>
+        {% else %}
+          <article class="empty-card">
+            Market pulse data is not available yet.
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="ranking-section">
+      <div class="section-heading">
+        <div class="kicker">DAILY TOP 10</div>
+        <h2>Signal ranking after the Tokyo close.</h2>
+      </div>
+
+      <div class="cards">
+        {% for item in top_items %}
+          <article class="signal-card {{ item.score_class }}">
+            <div class="card-top">
+              <div class="rank">#{{ item.rank }}</div>
+              <div class="score">
+                {{ item.score | fmt_score }}
+                <span>score</span>
+              </div>
+            </div>
+
+            <div class="symbol-row">
+              <h3>{{ item.symbol }}</h3>
+              <span class="bucket">{{ item.bucket }}</span>
+            </div>
+
+            <div class="name">{{ item.name }}</div>
+            <div class="theme">{{ item.theme }}</div>
+
+            <div class="classification">
+              {{ item.classification }}
+            </div>
+
+            <div class="metric-grid">
+              <div>
+                <span>1D</span>
+                <strong class="{{ item.return_1d_class }}">{{ item.return_1d_pct | fmt_pct }}</strong>
+              </div>
+              <div>
+                <span>5D</span>
+                <strong class="{{ item.return_5d_class }}">{{ item.return_5d_pct | fmt_pct }}</strong>
+              </div>
+              <div>
+                <span>20D</span>
+                <strong class="{{ item.return_20d_class }}">{{ item.return_20d_pct | fmt_pct }}</strong>
+              </div>
+              <div>
+                <span>Vol x20D</span>
+                <strong>{{ item.volume_ratio_20d | fmt_score }}</strong>
+              </div>
+              <div>
+                <span>Avg Value</span>
+                <strong>{{ item.avg_traded_value_20d_jpy | fmt_jpy }}</strong>
+              </div>
+              <div>
+                <span>52W High</span>
+                <strong>{{ item.distance_from_52w_high_pct | fmt_pct }}</strong>
+              </div>
+            </div>
+
+            <div class="component-bars">
+              <div>
+                <span>Volume</span>
+                <i style="width: {{ (item.components.volume_shock / 25 * 100) | round(0) }}%"></i>
+              </div>
+              <div>
+                <span>Breakout</span>
+                <i style="width: {{ (item.components.breakout_quality / 25 * 100) | round(0) }}%"></i>
+              </div>
+              <div>
+                <span>RS</span>
+                <i style="width: {{ (item.components.relative_strength / 20 * 100) | round(0) }}%"></i>
+              </div>
+            </div>
+
+            <div class="flags">
+              {% for flag in item.flags[:5] %}
+                <span>{{ flag.replace("_", " ") }}</span>
+              {% endfor %}
+            </div>
+
+            <div class="risk-row">
+              <span class="{{ item.risk_class }}">Risk: {{ item.risk_level }}</span>
+              <span>{{ item.source }}</span>
+            </div>
+          </article>
+        {% else %}
+          <article class="empty-card">
+            No Daily signals have been generated yet.
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="table-section">
+      <div class="section-heading">
+        <div class="kicker">FULL RANKING</div>
+        <h2>All scored JP equities.</h2>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Symbol</th>
+              <th>Name</th>
+              <th>Bucket</th>
+              <th>Score</th>
+              <th>Class</th>
+              <th>1D</th>
+              <th>5D</th>
+              <th>20D</th>
+              <th>Vol x20D</th>
+              <th>Avg Value</th>
+              <th>Risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in items %}
+              <tr>
+                <td>#{{ item.rank }}</td>
+                <td><strong>{{ item.symbol }}</strong></td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.bucket }}</td>
+                <td>{{ item.score | fmt_score }}</td>
+                <td>{{ item.classification }}</td>
+                <td class="{{ item.return_1d_class }}">{{ item.return_1d_pct | fmt_pct }}</td>
+                <td class="{{ item.return_5d_class }}">{{ item.return_5d_pct | fmt_pct }}</td>
+                <td class="{{ item.return_20d_class }}">{{ item.return_20d_pct | fmt_pct }}</td>
+                <td>{{ item.volume_ratio_20d | fmt_score }}</td>
+                <td>{{ item.avg_traded_value_20d_jpy | fmt_jpy }}</td>
+                <td class="{{ item.risk_class }}">{{ item.risk_level }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="notes">
+      <strong>Method note:</strong>
+      <span>
+        Daily v1 uses price, volume, traded value, relative strength versus TOPIX,
+        compression and entry-timing penalties. News, disclosures and fundamentals
+        are not included yet.
+      </span>
+    </section>
+
+    <footer class="footer">
+      <span>Informational only. Not investment advice.</span>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </nav>
+    </footer>
+  </main>
+</div>
 </body>
 </html>
