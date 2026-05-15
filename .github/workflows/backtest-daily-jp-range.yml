@@ -1,0 +1,133 @@
+name: Backtest JP daily range
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_date:
+        description: "Evaluation start date, YYYY-MM-DD"
+        required: true
+        default: "2025-01-01"
+      end_date:
+        description: "Evaluation end date, YYYY-MM-DD"
+        required: true
+        default: "2026-05-01"
+      horizons:
+        description: "Trading-day horizons, comma-separated"
+        required: false
+        default: "1,5,10,20"
+      rank_limit:
+        description: "Max ranked names per evaluation date"
+        required: false
+        default: "50"
+      min_history_bars:
+        description: "Minimum prior bars required before scoring"
+        required: false
+        default: "80"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backtest-daily-jp-range-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backtest-range:
+    runs-on: ubuntu-latest
+
+    env:
+      OUT_DIR: site
+      PRICES_JSON: site/data/prices-jp/latest.json
+      BACKTEST_MODE: range
+      BACKTEST_START: ${{ github.event.inputs.start_date }}
+      BACKTEST_END: ${{ github.event.inputs.end_date }}
+      BACKTEST_HORIZONS: ${{ github.event.inputs.horizons }}
+      BACKTEST_RANK_LIMIT: ${{ github.event.inputs.rank_limit }}
+      BACKTEST_MIN_HISTORY_BARS: ${{ github.event.inputs.min_history_bars }}
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install -r requirements-render.txt
+
+      - name: Validate scripts
+        run: |
+          set -euo pipefail
+          python -m compileall scripts/build_daily_jp.py scripts/backtest_daily_jp.py
+
+      - name: Verify price JSON exists
+        run: |
+          set -euo pipefail
+
+          if [ ! -f site/data/prices-jp/latest.json ]; then
+            echo "site/data/prices-jp/latest.json does not exist."
+            echo "Run Fetch JP prices first."
+            exit 1
+          fi
+
+      - name: Run range JP daily backtest
+        run: |
+          set -euo pipefail
+          python scripts/backtest_daily_jp.py
+
+      - name: Verify generated backtest JSON
+        run: |
+          set -euo pipefail
+
+          test -f site/data/backtest-daily-jp/latest.json
+          test -f site/data/backtest-daily-jp/manifest.json
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          latest = Path("site/data/backtest-daily-jp/latest.json")
+          manifest = Path("site/data/backtest-daily-jp/manifest.json")
+
+          data = json.loads(latest.read_text(encoding="utf-8"))
+          m = json.loads(manifest.read_text(encoding="utf-8"))
+
+          assert data["schema_version"] == "backtest-daily-jp-v1", data.get("schema_version")
+          assert m["schema_version"] == "backtest-daily-jp-manifest-v1", m.get("schema_version")
+          assert data["mode"] == "range", data.get("mode")
+          assert isinstance(data.get("items"), list)
+          assert isinstance(data.get("summary"), dict)
+          assert data["summary"].get("signal_count", 0) > 0
+
+          print("mode=", data["mode"])
+          print("eval_date_count=", data["summary"].get("eval_date_count"))
+          print("signal_count=", data["summary"].get("signal_count"))
+          print("eval_date_start=", data["summary"].get("eval_date_start"))
+          print("eval_date_end=", data["summary"].get("eval_date_end"))
+
+          for key, value in data["summary"].get("by_triage", {}).items():
+              print("triage", key, value)
+          PY
+
+      - name: Commit generated backtest data
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add -f site/data/backtest-daily-jp
+
+          if git diff --cached --quiet; then
+            echo "No generated backtest data changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Build JP daily backtest range"
+          git push
