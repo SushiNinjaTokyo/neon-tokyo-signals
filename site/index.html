@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description" content="Neon Tokyo Signals turns Japan equity momentum, breakouts, liquidity shocks and themes into readable signals for global investors after the Tokyo close."/>
   <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/index.css?v=20260515-tokyo-pulse"/>
+  <link rel="stylesheet" href="/assets/index.css?v=20260515-tokyo-pulse-refined"/>
 </head>
 
 <body>
@@ -20,7 +20,6 @@
     <section class="tokyo-pulse-panel" aria-label="Neon Tokyo market pulse">
       <div class="pulse-stage" id="pulseStage" data-tone="nikkei">
         <div class="pulse-bg-grid"></div>
-        <div class="pulse-bg-kanji">東京</div>
 
         <div class="pulse-brand">
           <a class="brand-lockup" href="/" aria-label="Neon Tokyo Signals home">
@@ -48,7 +47,12 @@
             <span class="live-dot"></span>
             TOKYO CLOSE // SIGNAL BOARD
           </div>
-          <h1>Tokyo is closed. The signals are live.</h1>
+
+          <h1 class="hero-title">
+            <span class="hero-title-line muted-line">Tokyo is closed.</span>
+            <span class="hero-title-line signal-line">The signals are live.</span>
+          </h1>
+
           <p>Momentum. Breakouts. Liquidity shocks. Japan themes.</p>
         </div>
 
@@ -101,7 +105,6 @@
       <a class="nav-card primary" href="/japan/daily/">
         <div class="nav-visual">
           <span class="nav-no">01</span>
-          <span class="nav-icon">ϟ</span>
         </div>
         <div class="nav-kicker">Tokyo Close</div>
         <h2>Daily Signals</h2>
@@ -112,7 +115,6 @@
       <a class="nav-card" href="/japan/weekly/">
         <div class="nav-visual">
           <span class="nav-no">02</span>
-          <span class="nav-icon">▰</span>
         </div>
         <div class="nav-kicker">Trend Layer</div>
         <h2>Weekly Board</h2>
@@ -123,7 +125,6 @@
       <a class="nav-card accent" href="#themes" id="themes">
         <div class="nav-visual">
           <span class="nav-no">03</span>
-          <span class="nav-icon">◇</span>
         </div>
         <div class="nav-kicker">Japan Themes</div>
         <h2>Theme Radar</h2>
@@ -134,7 +135,6 @@
       <a class="nav-card" href="#reaction" id="reaction">
         <div class="nav-visual">
           <span class="nav-no">04</span>
-          <span class="nav-icon">◎</span>
         </div>
         <div class="nav-kicker">Crowd Pulse</div>
         <h2>Ticker Reaction</h2>
@@ -191,7 +191,7 @@ const label = document.getElementById("pulseLabel");
 const paths = Array.from(document.querySelectorAll(".pulse-path"));
 const trace = document.querySelector(".pulse-trace");
 
-const pulseData = paths.map((path, index) => {
+const pulseData = paths.map((path) => {
   const raw = path.getAttribute("data-points") || "";
   const points = raw.split(",").map(Number).filter(v => Number.isFinite(v));
   const smooth = pathFromPoints(points);
@@ -199,7 +199,6 @@ const pulseData = paths.map((path, index) => {
   path.setAttribute("d", smooth);
 
   return {
-    index,
     path,
     points,
     smooth,
