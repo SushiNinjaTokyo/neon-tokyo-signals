@@ -72,7 +72,10 @@ jobs:
           test -f site/assets/daily_jp.css
 
           grep -q "Daily Japan Signals" site/japan/daily/index.html
-          grep -q "DAILY JP SIGNAL BOARD" site/japan/daily/index.html
+          grep -q "DAILY JP EVENT SCORE V2" site/japan/daily/index.html
+          grep -q "Trade" site/japan/daily/index.html
+          grep -q "Watch" site/japan/daily/index.html
+          grep -q "Ignore" site/japan/daily/index.html
 
       - name: Commit rendered daily page
         run: |
