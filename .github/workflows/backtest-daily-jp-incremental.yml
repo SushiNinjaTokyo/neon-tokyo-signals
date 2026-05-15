@@ -1,0 +1,125 @@
+name: Backtest JP daily incremental
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_eval_dates:
+        description: "Maximum newly matured evaluation dates to process"
+        required: false
+        default: "5"
+  schedule:
+    # 18:45 JST on weekdays. Uses existing prices-jp/latest.json only.
+    - cron: "45 9 * * 1-5"
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/backtest_daily_jp.py"
+      - "scripts/build_daily_jp.py"
+      - "site/data/prices-jp/latest.json"
+      - "requirements-render.txt"
+      - ".github/workflows/backtest-daily-jp-incremental.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backtest-daily-jp-incremental-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backtest-incremental:
+    runs-on: ubuntu-latest
+
+    env:
+      OUT_DIR: site
+      PRICES_JSON: site/data/prices-jp/latest.json
+      BACKTEST_MODE: incremental
+      BACKTEST_HORIZONS: "1,5,10,20"
+      BACKTEST_MIN_HISTORY_BARS: "80"
+      BACKTEST_RANK_LIMIT: "50"
+      BACKTEST_MAX_EVAL_DATES: ${{ github.event.inputs.max_eval_dates || '5' }}
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install -r requirements-render.txt
+
+      - name: Validate scripts
+        run: |
+          set -euo pipefail
+          python -m compileall scripts/build_daily_jp.py scripts/backtest_daily_jp.py
+
+      - name: Verify price JSON exists
+        run: |
+          set -euo pipefail
+
+          if [ ! -f site/data/prices-jp/latest.json ]; then
+            echo "site/data/prices-jp/latest.json does not exist."
+            echo "Run Fetch JP prices first."
+            exit 1
+          fi
+
+      - name: Run incremental JP daily backtest
+        run: |
+          set -euo pipefail
+          python scripts/backtest_daily_jp.py
+
+      - name: Verify generated backtest JSON
+        run: |
+          set -euo pipefail
+
+          test -f site/data/backtest-daily-jp/latest.json
+          test -f site/data/backtest-daily-jp/manifest.json
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          latest = Path("site/data/backtest-daily-jp/latest.json")
+          manifest = Path("site/data/backtest-daily-jp/manifest.json")
+
+          data = json.loads(latest.read_text(encoding="utf-8"))
+          m = json.loads(manifest.read_text(encoding="utf-8"))
+
+          assert data["schema_version"] == "backtest-daily-jp-v1", data.get("schema_version")
+          assert m["schema_version"] == "backtest-daily-jp-manifest-v1", m.get("schema_version")
+          assert data["mode"] == "incremental", data.get("mode")
+          assert isinstance(data.get("items"), list)
+          assert isinstance(data.get("summary"), dict)
+          assert data["summary"].get("signal_count", 0) > 0
+
+          print("mode=", data["mode"])
+          print("eval_date_count=", data["summary"].get("eval_date_count"))
+          print("signal_count=", data["summary"].get("signal_count"))
+          print("eval_date_start=", data["summary"].get("eval_date_start"))
+          print("eval_date_end=", data["summary"].get("eval_date_end"))
+          PY
+
+      - name: Commit generated backtest data
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add -f site/data/backtest-daily-jp
+
+          if git diff --cached --quiet; then
+            echo "No generated backtest data changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Update JP daily backtest"
+          git push
