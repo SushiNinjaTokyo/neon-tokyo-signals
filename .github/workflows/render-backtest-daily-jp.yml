@@ -1,0 +1,94 @@
+name: Render JP daily backtest page
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/render_backtest_daily_jp.py"
+      - "templates/backtest_daily_jp.html.j2"
+      - "templates/backtest_daily_jp.css"
+      - "site/data/backtest-daily-jp/latest.json"
+      - "requirements-render.txt"
+      - ".github/workflows/render-backtest-daily-jp.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render-backtest-daily-jp-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render-backtest:
+    runs-on: ubuntu-latest
+
+    env:
+      OUT_DIR: site
+      BACKTEST_JSON: site/data/backtest-daily-jp/latest.json
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install -r requirements-render.txt
+
+      - name: Validate render script
+        run: |
+          set -euo pipefail
+          python -m compileall scripts/render_backtest_daily_jp.py
+
+      - name: Verify backtest JSON exists
+        run: |
+          set -euo pipefail
+
+          if [ ! -f site/data/backtest-daily-jp/latest.json ]; then
+            echo "site/data/backtest-daily-jp/latest.json does not exist."
+            echo "Run Backtest JP daily range or incremental first."
+            exit 1
+          fi
+
+      - name: Render JP daily backtest page
+        run: |
+          set -euo pipefail
+          python scripts/render_backtest_daily_jp.py
+
+      - name: Verify rendered files
+        run: |
+          set -euo pipefail
+
+          test -f site/japan/daily/backtest/index.html
+          test -f site/assets/backtest_daily_jp.css
+
+          grep -q "JP DAILY BACKTEST LAB" site/japan/daily/backtest/index.html
+          grep -q "Signal quality" site/japan/daily/backtest/index.html
+          grep -q "OVERALL RESULT" site/japan/daily/backtest/index.html
+          grep -q "No look-ahead" site/japan/daily/backtest/index.html
+
+      - name: Commit rendered backtest page
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add -f site/japan/daily/backtest/index.html site/assets/backtest_daily_jp.css
+
+          if git diff --cached --quiet; then
+            echo "No rendered backtest page changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Render JP daily backtest page"
+          git push
