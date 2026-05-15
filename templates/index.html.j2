@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description" content="Neon Tokyo Signals turns Japan equity momentum, breakouts, liquidity shocks and themes into readable signals for global investors after the Tokyo close."/>
   <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/index.css?v=20260515-tokyo-pulse-refined"/>
+  <link rel="stylesheet" href="/assets/index.css?v=20260515-tokyo-pulse-light"/>
 </head>
 
 <body>
@@ -247,17 +247,17 @@ if (bgWord) {
   function triggerPulseNoise() {
     bgWord.classList.add("is-noisy");
 
-    const noiseDuration = 90 + Math.random() * 210;
+    const noiseDuration = 70 + Math.random() * 150;
 
     setTimeout(() => {
       bgWord.classList.remove("is-noisy");
     }, noiseDuration);
 
-    const nextNoise = 520 + Math.random() * 2300;
+    const nextNoise = 1800 + Math.random() * 4200;
     setTimeout(triggerPulseNoise, nextNoise);
   }
 
-  setTimeout(triggerPulseNoise, 500 + Math.random() * 900);
+  setTimeout(triggerPulseNoise, 1200 + Math.random() * 1600);
 }
 </script>
 </body>
