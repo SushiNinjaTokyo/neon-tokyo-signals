@@ -1,11 +1,11 @@
 {
   "schema_version": "backtest-daily-jp-v1",
-  "generated_at": "2026-05-15T18:22:04+09:00",
+  "generated_at": "2026-05-15T20:35:59+09:00",
   "market": "JP",
   "timezone": "Asia/Tokyo",
-  "mode": "range",
+  "mode": "incremental",
   "source_prices": "site/data/prices-jp/latest.json",
-  "source_prices_generated_at": "2026-05-15T13:17:32+09:00",
+  "source_prices_generated_at": "2026-05-15T19:37:37+09:00",
   "horizons": [
     1,
     5,
@@ -15,11 +15,11 @@
   "min_history_bars": 80,
   "rank_limit": 50,
   "range": {
-    "requested_start": "2025-01-01",
-    "requested_end": "2026-05-15",
-    "selected_count": 243,
-    "selected_start": "2025-04-14",
-    "selected_end": "2026-04-13"
+    "requested_start": null,
+    "requested_end": null,
+    "selected_count": 0,
+    "selected_start": null,
+    "selected_end": null
   },
   "methodology": {
     "name": "Neon Tokyo Daily JP Backtest v1",
@@ -30,7 +30,7 @@
     "alpha_measurement": "Stock future return minus TOPIX ETF future return for same horizon."
   },
   "summary": {
-    "mode": "range",
+    "mode": "incremental",
     "eval_date_count": 243,
     "eval_date_start": "2025-04-14",
     "eval_date_end": "2026-04-13",
