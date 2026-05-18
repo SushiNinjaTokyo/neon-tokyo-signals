@@ -45,6 +45,7 @@ jobs:
       BACKTEST_PRIMARY_HORIZON: "5"
       BACKTEST_CORE_HORIZONS: "1,3,5,10"
       BACKTEST_REFERENCE_HORIZONS: "20"
+      BACKTEST_BENCHMARK_RETURN_ABS_LIMIT_PCT: "30"
       BACKTEST_RANK_LIMIT: ${{ github.event.inputs.rank_limit }}
       BACKTEST_MIN_HISTORY_BARS: ${{ github.event.inputs.min_history_bars }}
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
