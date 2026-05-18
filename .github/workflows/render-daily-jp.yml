@@ -27,6 +27,8 @@ jobs:
     env:
       OUT_DIR: site
       DAILY_JSON: site/data/daily-jp/latest.json
+      DAILY_MAIN_RANK_LIMIT: "20"
+      DAILY_REFERENCE_LIMIT: "50"
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
@@ -59,6 +61,27 @@ jobs:
             exit 1
           fi
 
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path("site/data/daily-jp/latest.json")
+          data = json.loads(p.read_text(encoding="utf-8"))
+
+          assert data.get("schema_version") == "daily-jp-v2", data.get("schema_version")
+          assert isinstance(data.get("items"), list), "items must be a list"
+          assert len(data.get("items") or []) > 0, "items is empty"
+          assert isinstance(data.get("summary"), dict), "summary is missing"
+          assert isinstance(data.get("market_pulse"), list), "market_pulse must be a list"
+          assert data.get("regime"), "regime is missing"
+
+          print("daily_json=ok")
+          print("items_count=", len(data.get("items") or []))
+          print("all_items_count=", len(data.get("all_items") or []))
+          print("generated_at=", data.get("generated_at"))
+          print("top_symbol=", (data.get("summary") or {}).get("top_symbol"))
+          PY
+
       - name: Render JP daily page
         run: |
           set -euo pipefail
@@ -73,6 +96,12 @@ jobs:
 
           grep -q "Daily Japan Signals" site/japan/daily/index.html
           grep -q "DAILY JP EVENT SCORE V2" site/japan/daily/index.html
+          grep -q "MAIN DAILY BOARD" site/japan/daily/index.html
+          grep -q "TOP 20 MAIN BOARD" site/japan/daily/index.html
+          grep -q "SETUP QUALITY MAP" site/japan/daily/index.html
+          grep -q "FAVORED SETUPS" site/japan/daily/index.html
+          grep -q "RISK WARNINGS" site/japan/daily/index.html
+          grep -q "REFERENCE ONLY" site/japan/daily/index.html
           grep -q "Trade" site/japan/daily/index.html
           grep -q "Watch" site/japan/daily/index.html
           grep -q "Ignore" site/japan/daily/index.html
