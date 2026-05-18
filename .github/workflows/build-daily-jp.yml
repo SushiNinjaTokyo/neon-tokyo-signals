@@ -2,6 +2,15 @@ name: Build JP daily signals
 
 on:
   workflow_dispatch:
+    inputs:
+      refresh_prices:
+        description: "Fetch fresh JP prices before building daily signals"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
   push:
     branches:
       - main
@@ -46,7 +55,13 @@ jobs:
       - name: Validate Python scripts
         run: |
           set -euo pipefail
-          python -m compileall scripts/build_daily_jp.py
+          python -m compileall scripts/build_daily_jp.py scripts/fetch_prices_jp.py
+
+      - name: Optionally fetch fresh JP prices
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.refresh_prices == 'true' }}
+        run: |
+          set -euo pipefail
+          python scripts/fetch_prices_jp.py
 
       - name: Verify price JSON exists
         run: |
@@ -133,6 +148,10 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
 
           git add -f site/data/daily-jp
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.refresh_prices || 'false' }}" = "true" ]; then
+            git add -f site/data/prices-jp
+          fi
 
           if git diff --cached --quiet; then
             echo "No generated daily data changes to commit."
