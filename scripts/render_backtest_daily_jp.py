@@ -577,6 +577,10 @@ def make_filter_rows(summary: dict[str, Any], horizons: list[int]) -> list[dict[
         "score_gte_600",
         "score_gte_700",
         "liquidity_gte_liquid",
+        "abnormal_accumulation",
+        "abnormal_accumulation_watch",
+        "abnormal_distribution",
+        "volume_noise",
         "excluding_top_1pct_outliers",
         "winsorized_average",
     ]
