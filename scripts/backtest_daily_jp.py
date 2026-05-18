@@ -606,8 +606,492 @@ def group_summary(rows: list[dict[str, Any]], group_field: str) -> dict[str, Any
     return out
 
 
+
+# -----------------------------------------------------------------------------
+# Professional diagnostic layer
+# -----------------------------------------------------------------------------
+
+def metric_value(row: dict[str, Any], metric_family: str, horizon_key: str) -> float | None:
+    container = row.get(metric_family) or {}
+    if not isinstance(container, dict):
+        return None
+    return to_float(container.get(horizon_key))
+
+
+def rows_with_metric(rows: list[dict[str, Any]], metric_family: str, horizon_key: str) -> list[dict[str, Any]]:
+    return [row for row in rows if metric_value(row, metric_family, horizon_key) is not None]
+
+
+def percentile(values: list[float], q: float) -> float | None:
+    vals = finite_values(values)
+    if not vals:
+        return None
+    return float(np.percentile(vals, q))
+
+
+def winsorized_mean(values: list[float], lower_pct: float = 1.0, upper_pct: float = 99.0) -> float | None:
+    vals = finite_values(values)
+    if not vals:
+        return None
+    if len(vals) < 20:
+        return float(np.mean(vals))
+    lo = np.percentile(vals, lower_pct)
+    hi = np.percentile(vals, upper_pct)
+    clipped = np.clip(vals, lo, hi)
+    return float(np.mean(clipped))
+
+
+def avg_excluding_top_pct(values: list[float], pct: float = 1.0) -> float | None:
+    vals = finite_values(values)
+    if not vals:
+        return None
+    if len(vals) < 100:
+        return float(np.mean(vals))
+    cutoff = np.percentile(vals, 100.0 - pct)
+    trimmed = [v for v in vals if v < cutoff]
+    if not trimmed:
+        return None
+    return float(np.mean(trimmed))
+
+
+def enhanced_stats_for_rows(rows: list[dict[str, Any]], horizon_key: str) -> dict[str, Any]:
+    base = stats_for_values(rows, horizon_key)
+
+    returns = finite_values([
+        (row.get("future_returns_pct") or {}).get(horizon_key)
+        for row in rows
+    ])
+    alphas = finite_values([
+        (row.get("alpha_vs_topix_pct") or {}).get(horizon_key)
+        for row in rows
+    ])
+
+    if not returns:
+        base.update(
+            {
+                "median_average_gap_pct": None,
+                "return_stddev_pct": None,
+                "p10_return_pct": None,
+                "p90_return_pct": None,
+                "p95_return_pct": None,
+                "p99_return_pct": None,
+                "max_return_pct": None,
+                "min_return_pct": None,
+                "winsorized_avg_return_pct": None,
+                "avg_return_ex_top_1pct_pct": None,
+                "top_positive_contribution_pct": None,
+            }
+        )
+        return base
+
+    avg_return = to_float(base.get("avg_return_pct"))
+    median_return = to_float(base.get("median_return_pct"))
+    avg_alpha = to_float(base.get("avg_alpha_pct"))
+    median_alpha = to_float(base.get("median_alpha_pct"))
+
+    positive_returns = [max(v, 0.0) for v in returns]
+    positive_sum = float(sum(positive_returns))
+    top_positive = max(positive_returns) if positive_returns else 0.0
+
+    base.update(
+        {
+            "median_average_gap_pct": safe_round(None if avg_return is None or median_return is None else avg_return - median_return, 4),
+            "alpha_median_average_gap_pct": safe_round(None if avg_alpha is None or median_alpha is None else avg_alpha - median_alpha, 4),
+            "return_stddev_pct": safe_round(np.std(returns, ddof=0), 4),
+            "p10_return_pct": safe_round(percentile(returns, 10), 4),
+            "p90_return_pct": safe_round(percentile(returns, 90), 4),
+            "p95_return_pct": safe_round(percentile(returns, 95), 4),
+            "p99_return_pct": safe_round(percentile(returns, 99), 4),
+            "max_return_pct": safe_round(max(returns), 4),
+            "min_return_pct": safe_round(min(returns), 4),
+            "winsorized_avg_return_pct": safe_round(winsorized_mean(returns), 4),
+            "avg_return_ex_top_1pct_pct": safe_round(avg_excluding_top_pct(returns, 1.0), 4),
+            "top_positive_contribution_pct": safe_round((top_positive / positive_sum * 100.0) if positive_sum > 0 else None, 2),
+        }
+    )
+    return base
+
+
+def build_performance_block(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        f"{h}d": enhanced_stats_for_rows(rows, f"{h}d")
+        for h in HORIZONS
+    }
+
+
+def filter_rows_by_horizon_excluding_top_pct(
+    rows: list[dict[str, Any]],
+    horizon_key: str,
+    pct: float = 1.0,
+) -> list[dict[str, Any]]:
+    valid_rows = rows_with_metric(rows, "future_returns_pct", horizon_key)
+    if len(valid_rows) < 100:
+        return valid_rows
+    values = [metric_value(row, "future_returns_pct", horizon_key) for row in valid_rows]
+    vals = finite_values(values)
+    cutoff = np.percentile(vals, 100.0 - pct)
+    return [
+        row for row in valid_rows
+        if (metric_value(row, "future_returns_pct", horizon_key) is not None
+            and metric_value(row, "future_returns_pct", horizon_key) < cutoff)
+    ]
+
+
+def build_filtered_performance(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    liquidity_ok = {"High Liquidity", "Liquid"}
+    filters: list[tuple[str, str, list[dict[str, Any]]]] = [
+        ("rank_lte_10", "Rank <= 10", [r for r in rows if (to_float(r.get("rank")) or 999999) <= 10]),
+        ("rank_lte_20", "Rank <= 20", [r for r in rows if (to_float(r.get("rank")) or 999999) <= 20]),
+        ("trade_only", "Trade only", [r for r in rows if str(r.get("triage") or "") == "Trade"]),
+        ("watch_only", "Watch only", [r for r in rows if str(r.get("triage") or "") == "Watch"]),
+        ("trade_plus_watch", "Trade + Watch", [r for r in rows if str(r.get("triage") or "") in {"Trade", "Watch"}]),
+        ("score_gte_500", "Score >= 500", [r for r in rows if (to_float(r.get("score_pts")) or 0) >= 500]),
+        ("score_gte_600", "Score >= 600", [r for r in rows if (to_float(r.get("score_pts")) or 0) >= 600]),
+        ("score_gte_700", "Score >= 700", [r for r in rows if (to_float(r.get("score_pts")) or 0) >= 700]),
+        ("liquidity_gte_liquid", "Liquidity >= Liquid", [r for r in rows if str(r.get("liquidity_band") or "") in liquidity_ok]),
+    ]
+
+    out: dict[str, Any] = {}
+    for key, label, subset in filters:
+        out[key] = {
+            "label": label,
+            "description": "Predefined diagnostic filter. No display-layer recalculation is required.",
+            "stats": build_performance_block(subset),
+        }
+
+    out["excluding_top_1pct_outliers"] = {
+        "label": "Excluding top 1% return outliers",
+        "description": "Horizon-specific removal of the top 1% realized return observations. If sample < 100, no trim is applied.",
+        "stats": {
+            f"{h}d": enhanced_stats_for_rows(
+                filter_rows_by_horizon_excluding_top_pct(rows, f"{h}d", 1.0),
+                f"{h}d",
+            )
+            for h in HORIZONS
+        },
+    }
+
+    out["winsorized_average"] = {
+        "label": "Winsorized average check",
+        "description": "The avg_return field is unchanged; winsorized_avg_return_pct is added inside each horizon stat.",
+        "stats": build_performance_block(rows),
+    }
+
+    return out
+
+
+def build_rank_bucket_performance(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    buckets = {
+        "rank_1_5": ("Rank 1-5", lambda r: 1 <= (to_float(r.get("rank")) or 999999) <= 5),
+        "rank_1_10": ("Rank 1-10", lambda r: 1 <= (to_float(r.get("rank")) or 999999) <= 10),
+        "rank_11_20": ("Rank 11-20", lambda r: 11 <= (to_float(r.get("rank")) or 999999) <= 20),
+        "rank_21_50": ("Rank 21-50", lambda r: 21 <= (to_float(r.get("rank")) or 999999) <= 50),
+    }
+    return {
+        key: {
+            "label": label,
+            "stats": build_performance_block([row for row in rows if pred(row)]),
+        }
+        for key, (label, pred) in buckets.items()
+    }
+
+
+def build_outlier_analysis(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    primary_h = 20 if 20 in HORIZONS else max(HORIZONS)
+    primary_key = f"{primary_h}d"
+    valid = rows_with_metric(rows, "future_returns_pct", primary_key)
+
+    ranked = sorted(
+        valid,
+        key=lambda r: metric_value(r, "future_returns_pct", primary_key) or -999999,
+        reverse=True,
+    )
+
+    returns = finite_values([metric_value(r, "future_returns_pct", primary_key) for r in valid])
+    positive_total = float(sum(max(x, 0.0) for x in returns))
+
+    def outlier_row(row: dict[str, Any]) -> dict[str, Any]:
+        ret = metric_value(row, "future_returns_pct", primary_key)
+        alpha = metric_value(row, "alpha_vs_topix_pct", primary_key)
+        contribution = None
+        if ret is not None and ret > 0 and positive_total > 0:
+            contribution = ret / positive_total * 100.0
+        return {
+            "eval_date": row.get("eval_date"),
+            "symbol": row.get("symbol"),
+            "name": row.get("name"),
+            "rank": row.get("rank"),
+            "triage": row.get("triage"),
+            "score_pts": row.get("score_pts"),
+            "score_band": row.get("score_band"),
+            "liquidity_band": row.get("liquidity_band"),
+            "archetype": row.get("archetype"),
+            "return_pct": safe_round(ret, 4),
+            "alpha_pct": safe_round(alpha, 4),
+            "positive_return_contribution_pct": safe_round(contribution, 2),
+        }
+
+    by_symbol: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in valid:
+        by_symbol[str(row.get("symbol") or "Unknown")].append(row)
+
+    symbol_contribs: list[dict[str, Any]] = []
+    for symbol, symbol_rows in by_symbol.items():
+        symbol_returns = finite_values([metric_value(r, "future_returns_pct", primary_key) for r in symbol_rows])
+        pos = float(sum(max(x, 0.0) for x in symbol_returns))
+        sample = symbol_rows[0] if symbol_rows else {}
+        symbol_contribs.append(
+            {
+                "symbol": symbol,
+                "name": sample.get("name"),
+                "observations": len(symbol_rows),
+                "avg_return_pct": safe_round(np.mean(symbol_returns), 4) if symbol_returns else None,
+                "median_return_pct": safe_round(np.median(symbol_returns), 4) if symbol_returns else None,
+                "max_return_pct": safe_round(max(symbol_returns), 4) if symbol_returns else None,
+                "positive_return_contribution_pct": safe_round(pos / positive_total * 100.0, 2) if positive_total > 0 else None,
+            }
+        )
+
+    symbol_contribs.sort(key=lambda x: to_float(x.get("positive_return_contribution_pct")) or -1, reverse=True)
+
+    top_obs_contribution = to_float(outlier_row(ranked[0]).get("positive_return_contribution_pct")) if ranked else None
+    top_symbol_contribution = to_float(symbol_contribs[0].get("positive_return_contribution_pct")) if symbol_contribs else None
+    avg_ret = safe_round(np.mean(returns), 4) if returns else None
+    med_ret = safe_round(np.median(returns), 4) if returns else None
+    avg_minus_median = None if avg_ret is None or med_ret is None else avg_ret - med_ret
+
+    warning = "OK"
+    if (top_symbol_contribution is not None and top_symbol_contribution >= 20) or (avg_minus_median is not None and avg_minus_median >= 5):
+        warning = "Warning"
+    if (top_symbol_contribution is not None and top_symbol_contribution >= 35) or (avg_minus_median is not None and avg_minus_median >= 10):
+        warning = "Fail"
+
+    return {
+        "primary_horizon": primary_key,
+        "observation_count": len(valid),
+        "avg_return_pct": avg_ret,
+        "median_return_pct": med_ret,
+        "median_average_gap_pct": safe_round(avg_minus_median, 4),
+        "positive_return_pool_pct_points": safe_round(positive_total, 4),
+        "top_observation_contribution_pct": safe_round(top_obs_contribution, 2),
+        "top_symbol_contribution_pct": safe_round(top_symbol_contribution, 2),
+        "average_return_distortion_warning": warning,
+        "top_return_contributors": [outlier_row(r) for r in ranked[:20]],
+        "top_symbol_contributors": symbol_contribs[:20],
+    }
+
+
+def build_repeated_symbol_analysis(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    primary_h = 20 if 20 in HORIZONS else max(HORIZONS)
+    primary_key = f"{primary_h}d"
+    valid = rows_with_metric(rows, "future_returns_pct", primary_key)
+
+    by_symbol: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in valid:
+        by_symbol[str(row.get("symbol") or "Unknown")].append(row)
+
+    symbol_rows: list[dict[str, Any]] = []
+    for symbol, group_rows in by_symbol.items():
+        rets = finite_values([metric_value(r, "future_returns_pct", primary_key) for r in group_rows])
+        alphas = finite_values([metric_value(r, "alpha_vs_topix_pct", primary_key) for r in group_rows])
+        scores = finite_values([r.get("score_pts") for r in group_rows])
+        triage_counts: dict[str, int] = defaultdict(int)
+        for row in group_rows:
+            triage_counts[str(row.get("triage") or "Unknown")] += 1
+        sample = group_rows[0] if group_rows else {}
+        symbol_rows.append(
+            {
+                "symbol": symbol,
+                "name": sample.get("name"),
+                "observations": len(group_rows),
+                "eval_date_count": len({str(r.get("eval_date")) for r in group_rows if r.get("eval_date")}),
+                "avg_return_pct": safe_round(np.mean(rets), 4) if rets else None,
+                "median_return_pct": safe_round(np.median(rets), 4) if rets else None,
+                "avg_alpha_pct": safe_round(np.mean(alphas), 4) if alphas else None,
+                "median_alpha_pct": safe_round(np.median(alphas), 4) if alphas else None,
+                "avg_score_pts": safe_round(np.mean(scores), 2) if scores else None,
+                "triage_counts": dict(sorted(triage_counts.items())),
+            }
+        )
+
+    symbol_rows.sort(key=lambda x: (int(x.get("observations") or 0), to_float(x.get("avg_return_pct")) or -999), reverse=True)
+
+    obs_returns = finite_values([metric_value(r, "future_returns_pct", primary_key) for r in valid])
+    sym_avg_returns = finite_values([r.get("avg_return_pct") for r in symbol_rows])
+    total_obs = len(valid)
+    max_obs = max([int(r.get("observations") or 0) for r in symbol_rows], default=0)
+
+    return {
+        "primary_horizon": primary_key,
+        "symbol_count": len(symbol_rows),
+        "observation_count": total_obs,
+        "max_observations_single_symbol": max_obs,
+        "max_symbol_observation_share_pct": safe_round(max_obs / total_obs * 100.0, 2) if total_obs else None,
+        "observation_level_avg_return_pct": safe_round(np.mean(obs_returns), 4) if obs_returns else None,
+        "equal_weight_symbol_avg_return_pct": safe_round(np.mean(sym_avg_returns), 4) if sym_avg_returns else None,
+        "observation_vs_symbol_avg_gap_pct": safe_round(
+            (np.mean(obs_returns) - np.mean(sym_avg_returns)) if obs_returns and sym_avg_returns else None,
+            4,
+        ),
+        "most_repeated_symbols": symbol_rows[:25],
+    }
+
+
+def ordered_band_values(container: dict[str, Any], ordered_keys: list[str], horizon_key: str, metric: str) -> list[float | None]:
+    values: list[float | None] = []
+    for key in ordered_keys:
+        stat = ((container.get(key) or {}).get(horizon_key) or {}) if isinstance(container.get(key) or {}, dict) else {}
+        values.append(to_float(stat.get(metric)))
+    return values
+
+
+def monotonic_check(values: list[float | None], direction: str = "descending") -> dict[str, Any]:
+    pairs = [(i, v) for i, v in enumerate(values) if v is not None]
+    if len(pairs) < 2:
+        return {"status": "Insufficient", "violations": 0, "pairs": len(pairs)}
+
+    violations = 0
+    comparisons = 0
+    for (_, prev), (_, cur) in zip(pairs, pairs[1:]):
+        comparisons += 1
+        if direction == "descending":
+            if prev < cur:
+                violations += 1
+        else:
+            if prev > cur:
+                violations += 1
+
+    if violations == 0:
+        status = "Pass"
+    elif violations <= max(1, comparisons // 3):
+        status = "Warning"
+    else:
+        status = "Fail"
+
+    return {"status": status, "violations": violations, "comparisons": comparisons, "pairs": len(pairs)}
+
+
+def build_model_diagnostics(summary: dict[str, Any], outlier_analysis: dict[str, Any]) -> dict[str, Any]:
+    by_triage = summary.get("by_triage") or {}
+    by_score_band = summary.get("by_score_band") or {}
+    score_order = ["800+", "700-799", "600-699", "500-599", "<500"]
+
+    horizon_checks: dict[str, Any] = {}
+    for h in HORIZONS:
+        hk = f"{h}d"
+        trade = ((by_triage.get("Trade") or {}).get(hk) or {})
+        watch = ((by_triage.get("Watch") or {}).get(hk) or {})
+        ignore = ((by_triage.get("Ignore") or {}).get(hk) or {})
+
+        trade_alpha = to_float(trade.get("avg_alpha_pct"))
+        watch_alpha = to_float(watch.get("avg_alpha_pct"))
+        ignore_alpha = to_float(ignore.get("avg_alpha_pct"))
+        trade_median_alpha = to_float(trade.get("median_alpha_pct"))
+        ignore_median_alpha = to_float(ignore.get("median_alpha_pct"))
+
+        score_values = ordered_band_values(by_score_band, score_order, hk, "avg_alpha_pct")
+        score_medians = ordered_band_values(by_score_band, score_order, hk, "median_alpha_pct")
+
+        horizon_checks[hk] = {
+            "trade_avg_alpha_pct": safe_round(trade_alpha, 4),
+            "watch_avg_alpha_pct": safe_round(watch_alpha, 4),
+            "ignore_avg_alpha_pct": safe_round(ignore_alpha, 4),
+            "trade_minus_ignore_alpha_pct": safe_round(None if trade_alpha is None or ignore_alpha is None else trade_alpha - ignore_alpha, 4),
+            "watch_minus_ignore_alpha_pct": safe_round(None if watch_alpha is None or ignore_alpha is None else watch_alpha - ignore_alpha, 4),
+            "trade_minus_ignore_median_alpha_pct": safe_round(None if trade_median_alpha is None or ignore_median_alpha is None else trade_median_alpha - ignore_median_alpha, 4),
+            "score_band_avg_alpha_values": dict(zip(score_order, [safe_round(v, 4) for v in score_values])),
+            "score_band_median_alpha_values": dict(zip(score_order, [safe_round(v, 4) for v in score_medians])),
+            "score_band_avg_alpha_monotonicity": monotonic_check(score_values, "descending"),
+            "score_band_median_alpha_monotonicity": monotonic_check(score_medians, "descending"),
+        }
+
+    consistency = {
+        "trade_beats_ignore_horizons": sum(
+            1 for v in horizon_checks.values()
+            if (to_float(v.get("trade_minus_ignore_alpha_pct")) is not None and to_float(v.get("trade_minus_ignore_alpha_pct")) > 0)
+        ),
+        "watch_beats_ignore_horizons": sum(
+            1 for v in horizon_checks.values()
+            if (to_float(v.get("watch_minus_ignore_alpha_pct")) is not None and to_float(v.get("watch_minus_ignore_alpha_pct")) > 0)
+        ),
+        "score_band_pass_horizons": sum(
+            1 for v in horizon_checks.values()
+            if ((v.get("score_band_avg_alpha_monotonicity") or {}).get("status") == "Pass")
+        ),
+        "horizon_count": len(HORIZONS),
+    }
+
+    return {
+        "horizon_checks": horizon_checks,
+        "cross_horizon_consistency": consistency,
+        "outlier_warning": outlier_analysis.get("average_return_distortion_warning"),
+    }
+
+
+def build_model_health(summary: dict[str, Any], outlier_analysis: dict[str, Any], repeated_symbol_analysis: dict[str, Any], model_diagnostics: dict[str, Any]) -> dict[str, Any]:
+    primary_h = 20 if 20 in HORIZONS else max(HORIZONS)
+    primary_key = f"{primary_h}d"
+    hc = (model_diagnostics.get("horizon_checks") or {}).get(primary_key) or {}
+
+    trade_minus_ignore = to_float(hc.get("trade_minus_ignore_alpha_pct"))
+    watch_minus_ignore = to_float(hc.get("watch_minus_ignore_alpha_pct"))
+    trade_median_minus_ignore = to_float(hc.get("trade_minus_ignore_median_alpha_pct"))
+    score_mono = (hc.get("score_band_avg_alpha_monotonicity") or {}).get("status") or "Insufficient"
+    score_median_mono = (hc.get("score_band_median_alpha_monotonicity") or {}).get("status") or "Insufficient"
+
+    outlier_status = outlier_analysis.get("average_return_distortion_warning") or "OK"
+    top_symbol_concentration = to_float(outlier_analysis.get("top_symbol_contribution_pct"))
+    median_avg_gap = to_float(outlier_analysis.get("median_average_gap_pct"))
+    repeat_share = to_float(repeated_symbol_analysis.get("max_symbol_observation_share_pct"))
+
+    checks = {
+        "score_monotonicity": score_mono,
+        "score_band_median_monotonicity": score_median_mono,
+        "trade_vs_ignore_alpha": "Pass" if trade_minus_ignore is not None and trade_minus_ignore > 0 else "Fail" if trade_minus_ignore is not None else "Insufficient",
+        "watch_vs_ignore_alpha": "Pass" if watch_minus_ignore is not None and watch_minus_ignore > 0 else "Fail" if watch_minus_ignore is not None else "Insufficient",
+        "trade_vs_ignore_median_alpha": "Pass" if trade_median_minus_ignore is not None and trade_median_minus_ignore > 0 else "Fail" if trade_median_minus_ignore is not None else "Insufficient",
+        "outlier_concentration": outlier_status,
+        "median_average_gap": "Pass" if median_avg_gap is not None and median_avg_gap < 3 else "Warning" if median_avg_gap is not None and median_avg_gap < 7 else "Fail" if median_avg_gap is not None else "Insufficient",
+        "repeated_symbol_concentration": "Pass" if repeat_share is not None and repeat_share < 5 else "Warning" if repeat_share is not None and repeat_share < 10 else "Fail" if repeat_share is not None else "Insufficient",
+    }
+
+    hard_fail = any(v == "Fail" for v in checks.values())
+    warning = any(v == "Warning" for v in checks.values())
+    insufficient = any(v == "Insufficient" for v in checks.values())
+
+    verdict = "Fail" if hard_fail else "Warning" if warning or insufficient else "Pass"
+
+    return {
+        "primary_horizon": primary_key,
+        "verdict": verdict,
+        "checks": checks,
+        "trade_minus_ignore_alpha_pct": safe_round(trade_minus_ignore, 4),
+        "watch_minus_ignore_alpha_pct": safe_round(watch_minus_ignore, 4),
+        "trade_minus_ignore_median_alpha_pct": safe_round(trade_median_minus_ignore, 4),
+        "score_monotonicity": hc.get("score_band_avg_alpha_monotonicity"),
+        "score_band_monotonicity": hc.get("score_band_avg_alpha_monotonicity"),
+        "score_band_median_monotonicity": hc.get("score_band_median_alpha_monotonicity"),
+        "outlier_concentration": {
+            "status": outlier_status,
+            "top_symbol_contribution_pct": safe_round(top_symbol_concentration, 2),
+            "top_observation_contribution_pct": outlier_analysis.get("top_observation_contribution_pct"),
+        },
+        "median_average_gap": {
+            "avg_return_pct": outlier_analysis.get("avg_return_pct"),
+            "median_return_pct": outlier_analysis.get("median_return_pct"),
+            "gap_pct": safe_round(median_avg_gap, 4),
+        },
+        "repeated_symbol_concentration": {
+            "max_symbol_observation_share_pct": safe_round(repeat_share, 2),
+            "max_observations_single_symbol": repeated_symbol_analysis.get("max_observations_single_symbol"),
+        },
+    }
+
 def build_summary(rows: list[dict[str, Any]], date_states: list[dict[str, Any]]) -> dict[str, Any]:
     eval_dates = sorted({str(row.get("eval_date")) for row in rows if row.get("eval_date")})
+
+    outlier_analysis = build_outlier_analysis(rows)
+    repeated_symbol_analysis = build_repeated_symbol_analysis(rows)
 
     summary = {
         "mode": MODE,
@@ -617,7 +1101,7 @@ def build_summary(rows: list[dict[str, Any]], date_states: list[dict[str, Any]])
         "signal_count": len(rows),
         "horizons": HORIZONS,
         "overall": {
-            f"{h}d": stats_for_values(rows, f"{h}d")
+            f"{h}d": enhanced_stats_for_rows(rows, f"{h}d")
             for h in HORIZONS
         },
         "by_triage": group_summary(rows, "triage"),
@@ -629,6 +1113,18 @@ def build_summary(rows: list[dict[str, Any]], date_states: list[dict[str, Any]])
         "by_regime": group_summary(rows, "regime"),
         "date_states_count": len(date_states),
     }
+
+    summary["filtered_performance"] = build_filtered_performance(rows)
+    summary["rank_bucket_performance"] = build_rank_bucket_performance(rows)
+    summary["outlier_analysis"] = outlier_analysis
+    summary["repeated_symbol_analysis"] = repeated_symbol_analysis
+    summary["model_diagnostics"] = build_model_diagnostics(summary, outlier_analysis)
+    summary["model_health"] = build_model_health(
+        summary=summary,
+        outlier_analysis=outlier_analysis,
+        repeated_symbol_analysis=repeated_symbol_analysis,
+        model_diagnostics=summary["model_diagnostics"],
+    )
 
     return summary
 
