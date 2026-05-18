@@ -97,6 +97,311 @@
       {% endfor %}
     </section>
 
+
+
+    <section class="section-block health-block">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">MODEL HEALTH</div>
+          <h2>Before trusting the score, test the score.</h2>
+          <p>
+            This is the control panel for whether Daily v2 is actually separating quality:
+            Trade/Watch must beat Ignore, higher score bands should be monotonic, and averages must not be dominated by a single small-cap spike.
+          </p>
+        </div>
+        <div class="status-pill {{ model_health.raw.verdict | lower }}">{{ model_health.raw.verdict or "Insufficient" }}</div>
+      </div>
+
+      <div class="health-grid">
+        {% for card in model_health.cards %}
+          <article class="health-card {{ card.class }}">
+            <span>{{ card.label }}</span>
+            <strong>{{ card.value }}</strong>
+            <em>{{ card.detail }}</em>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="section-block warning-block">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">OUTLIER ANALYSIS</div>
+          <h2>Average-return distortion check.</h2>
+          <p>
+            Japanese small-cap signals can look excellent because of one explosive name. This section shows whether the return pool is concentrated.
+          </p>
+        </div>
+        <div class="method-chip {{ outlier_view.status_class }}">
+          {{ outlier_view.raw.average_return_distortion_warning or "—" }} / {{ outlier_view.raw.primary_horizon | upper }}
+        </div>
+      </div>
+
+      <div class="diagnostic-strip">
+        <div>
+          <span>Avg Return</span>
+          <strong class="{{ 'value-up' if outlier_view.raw.avg_return_pct and outlier_view.raw.avg_return_pct > 0 else 'value-down' if outlier_view.raw.avg_return_pct and outlier_view.raw.avg_return_pct < 0 else 'value-flat' }}">{{ outlier_view.raw.avg_return_pct | fmt_pct }}</strong>
+        </div>
+        <div>
+          <span>Median Return</span>
+          <strong>{{ outlier_view.raw.median_return_pct | fmt_pct }}</strong>
+        </div>
+        <div>
+          <span>Avg - Median Gap</span>
+          <strong>{{ outlier_view.raw.median_average_gap_pct | fmt_pct }}</strong>
+        </div>
+        <div>
+          <span>Top Symbol Contribution</span>
+          <strong>{{ outlier_view.raw.top_symbol_contribution_pct | fmt_pct(2, False) }}</strong>
+        </div>
+      </div>
+
+      <div class="dual-table-grid">
+        <div class="group-table-wrap">
+          <table class="group-table compact-table">
+            <thead>
+              <tr>
+                <th>Top Return Contributor</th>
+                <th>Triage</th>
+                <th>Score</th>
+                <th>Return</th>
+                <th>Alpha</th>
+                <th>Contribution</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in outlier_view.contributors %}
+                <tr>
+                  <td>
+                    <strong>{{ row.symbol }}</strong>
+                    <span>{{ row.name }} / {{ row.eval_date }}</span>
+                  </td>
+                  <td><span class="mini-tag {{ row.triage_css }}">{{ row.triage }}</span></td>
+                  <td>{{ row.score_pts }}</td>
+                  <td class="{{ row.return_class }}">{{ row.return_pct | fmt_pct }}</td>
+                  <td class="{{ row.alpha_class }}">{{ row.alpha_pct | fmt_pct }}</td>
+                  <td>{{ row.positive_return_contribution_pct | fmt_pct(2, False) }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="group-table-wrap">
+          <table class="group-table compact-table">
+            <thead>
+              <tr>
+                <th>Dominant Symbol</th>
+                <th>Obs</th>
+                <th>Avg</th>
+                <th>Median</th>
+                <th>Max</th>
+                <th>Contribution</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in outlier_view.symbols %}
+                <tr>
+                  <td>
+                    <strong>{{ row.symbol }}</strong>
+                    <span>{{ row.name }}</span>
+                  </td>
+                  <td>{{ row.observations | fmt_int }}</td>
+                  <td class="{{ row.return_class }}">{{ row.avg_return_pct | fmt_pct }}</td>
+                  <td>{{ row.median_return_pct | fmt_pct }}</td>
+                  <td>{{ row.max_return_pct | fmt_pct }}</td>
+                  <td>{{ row.positive_return_contribution_pct | fmt_pct(2, False) }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div class="kicker">MODEL DIAGNOSTICS</div>
+        <h2>Does the model beat its own rejects?</h2>
+        <p>Primary quality checks across 1D / 5D / 10D / 20D. This is where a nice-looking dashboard is allowed to fail loudly.</p>
+      </div>
+
+      <div class="group-table-wrap">
+        <table class="group-table">
+          <thead>
+            <tr>
+              <th>Horizon</th>
+              <th>Trade - Ignore Alpha</th>
+              <th>Watch - Ignore Alpha</th>
+              <th>Trade - Ignore Median Alpha</th>
+              <th>Score Avg Alpha Mono</th>
+              <th>Score Median Alpha Mono</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in diagnostic_rows %}
+              <tr>
+                <td><strong>{{ row.horizon }}</strong></td>
+                <td class="{{ row.trade_class }}">{{ row.trade_minus_ignore_alpha_pct | fmt_pct }}</td>
+                <td class="{{ row.watch_class }}">{{ row.watch_minus_ignore_alpha_pct | fmt_pct }}</td>
+                <td class="{{ row.median_class }}">{{ row.trade_minus_ignore_median_alpha_pct | fmt_pct }}</td>
+                <td><span class="health-tag {{ row.score_mono_class }}">{{ row.score_mono }}</span></td>
+                <td><span class="health-tag {{ row.score_median_mono_class }}">{{ row.score_median_mono }}</span></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div class="kicker">FILTERED PERFORMANCE</div>
+        <h2>Return quality under stricter cuts.</h2>
+        <p>Rank, triage, score threshold, liquidity and outlier controls. Values are precomputed in JSON; the HTML only renders them.</p>
+      </div>
+
+      <div class="group-table-wrap wide-scroll">
+        <table class="group-table dense-table">
+          <thead>
+            <tr>
+              <th>Filter</th>
+              {% for h in horizons %}
+                <th>{{ h }}D Cnt</th>
+                <th>{{ h }}D Avg</th>
+                <th>{{ h }}D Med</th>
+                <th>{{ h }}D Alpha</th>
+                <th>{{ h }}D Win</th>
+                <th>{{ h }}D Winsor</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in filtered_rows %}
+              <tr>
+                <td>
+                  <strong>{{ row.label }}</strong>
+                  <span>{{ row.description }}</span>
+                </td>
+                {% for cell in row.cells %}
+                  <td>{{ cell.count | fmt_int }}</td>
+                  <td class="{{ cell.avg_class }}">{{ cell.avg_return_pct | fmt_pct }}</td>
+                  <td>{{ cell.median_return_pct | fmt_pct }}</td>
+                  <td class="{{ cell.alpha_class }}">{{ cell.avg_alpha_pct | fmt_pct }}</td>
+                  <td class="{{ cell.win_class }}">{{ cell.win_rate_pct | fmt_pct(2, False) }}</td>
+                  <td>{{ cell.winsorized_avg_return_pct | fmt_pct }}</td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div class="kicker">RANK BUCKET PERFORMANCE</div>
+        <h2>Does rank order have signal?</h2>
+        <p>Rank 1-5 and 1-10 must not merely look good because the long tail is doing the work.</p>
+      </div>
+
+      <div class="group-table-wrap">
+        <table class="group-table">
+          <thead>
+            <tr>
+              <th>Rank Bucket</th>
+              {% for h in horizons %}
+                <th>{{ h }}D Avg</th>
+                <th>{{ h }}D Median</th>
+                <th>{{ h }}D Alpha</th>
+                <th>{{ h }}D Win</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in rank_bucket_rows %}
+              <tr>
+                <td>
+                  <strong>{{ row.label }}</strong>
+                  <span>{{ row.count | fmt_int }} obs</span>
+                </td>
+                {% for cell in row.cells %}
+                  <td class="{{ cell.avg_class }}">{{ cell.avg_return_pct | fmt_pct }}</td>
+                  <td>{{ cell.median_return_pct | fmt_pct }}</td>
+                  <td class="{{ cell.alpha_class }}">{{ cell.avg_alpha_pct | fmt_pct }}</td>
+                  <td class="{{ cell.win_class }}">{{ cell.win_rate_pct | fmt_pct(2, False) }}</td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">REPEATED SYMBOL ANALYSIS</div>
+          <h2>Observation-level vs symbol-level distortion.</h2>
+          <p>Checks whether the same name repeatedly enters the sample and distorts the aggregate statistics.</p>
+        </div>
+        <div class="method-chip">
+          Obs avg {{ repeated_symbol_view.raw.observation_level_avg_return_pct | fmt_pct }} / Symbol avg {{ repeated_symbol_view.raw.equal_weight_symbol_avg_return_pct | fmt_pct }}
+        </div>
+      </div>
+
+      <div class="diagnostic-strip">
+        <div>
+          <span>Symbols</span>
+          <strong>{{ repeated_symbol_view.raw.symbol_count | fmt_int }}</strong>
+        </div>
+        <div>
+          <span>Obs</span>
+          <strong>{{ repeated_symbol_view.raw.observation_count | fmt_int }}</strong>
+        </div>
+        <div>
+          <span>Max Single Symbol Obs Share</span>
+          <strong>{{ repeated_symbol_view.raw.max_symbol_observation_share_pct | fmt_pct(2, False) }}</strong>
+        </div>
+        <div>
+          <span>Obs - Symbol Avg Gap</span>
+          <strong>{{ repeated_symbol_view.raw.observation_vs_symbol_avg_gap_pct | fmt_pct }}</strong>
+        </div>
+      </div>
+
+      <div class="group-table-wrap">
+        <table class="group-table compact-table">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Obs</th>
+              <th>Eval Dates</th>
+              <th>Avg Return</th>
+              <th>Median Return</th>
+              <th>Avg Alpha</th>
+              <th>Avg Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in repeated_symbol_view.rows %}
+              <tr>
+                <td>
+                  <strong>{{ row.symbol }}</strong>
+                  <span>{{ row.name }}</span>
+                </td>
+                <td>{{ row.observations | fmt_int }}</td>
+                <td>{{ row.eval_date_count | fmt_int }}</td>
+                <td class="{{ row.return_class }}">{{ row.avg_return_pct | fmt_pct }}</td>
+                <td>{{ row.median_return_pct | fmt_pct }}</td>
+                <td class="{{ row.alpha_class }}">{{ row.avg_alpha_pct | fmt_pct }}</td>
+                <td>{{ row.avg_score_pts | fmt_num }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <section class="section-block">
       <div class="section-heading split-heading">
         <div>
