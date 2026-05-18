@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description" content="Backtest dashboard for Neon Tokyo Daily JP Event Score. Performance by triage, archetype, score band, liquidity and market regime."/>
   <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/backtest_daily_jp.css?v=202605181420"/>
+  <link rel="stylesheet" href="/assets/backtest_daily_jp.css?v=202605181855"/>
 </head>
 
 <body>
@@ -46,9 +46,9 @@
         </h1>
 
         <p>
-          Historical replay of the Daily Event Score v2 as a short-term trading model.
-          The main evaluation range is 1D / 3D / 5D / 10D, with 5D as the primary horizon.
-          20D is displayed only as a decay and durability reference.
+Historical replay of the Daily Event Score v2 as a short-term trading model.
+          Backtest candidates are capped at daily Top 10. Top 3 / Top 5 / Top 10 are shown separately,
+          with 5D as the primary horizon and 20D displayed only as a decay reference.
         </p>
       </div>
 
@@ -124,6 +124,85 @@
     </section>
 
 
+    <section class="section-block line-chart-block">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">DAILY PERFORMANCE TREND</div>
+          <h2>Top 3 / Top 5 / Top 10 running performance.</h2>
+          <p>
+            Equal-weighted daily cohorts using the 5D primary horizon.
+            Lines show the running average through time, so a single explosive day is easier to spot.
+          </p>
+        </div>
+        <div class="method-chip">Backtest target: daily Top 10 only</div>
+      </div>
+
+      <div class="line-chart-grid">
+        
+          <article class="line-card value-na">
+            <div class="line-head">
+              <div>
+                <strong>top_3</strong>
+                <span>0 eval dates · rank ≤ None</span>
+              </div>
+              <div class="line-kpis">
+                <span>Run Avg <b class="value-na">—</b></span>
+                <span>Run Alpha <b class="value-na">—</b></span>
+              </div>
+            </div>
+            <svg viewBox="0 0 900 220" role="img" aria-label="top_3 running average line chart">
+              <line x1="24" x2="876" y1="110.0" y2="110.0" class="zero-line"/>
+              <path d="" class="return-line"/>
+              <path d="" class="alpha-line"/>
+              
+            </svg>
+            <div class="line-legend"><span><i class="return-key"></i>Running avg return</span><span><i class="alpha-key"></i>Running avg alpha</span></div>
+          </article>
+        
+          <article class="line-card value-na">
+            <div class="line-head">
+              <div>
+                <strong>top_5</strong>
+                <span>0 eval dates · rank ≤ None</span>
+              </div>
+              <div class="line-kpis">
+                <span>Run Avg <b class="value-na">—</b></span>
+                <span>Run Alpha <b class="value-na">—</b></span>
+              </div>
+            </div>
+            <svg viewBox="0 0 900 220" role="img" aria-label="top_5 running average line chart">
+              <line x1="24" x2="876" y1="110.0" y2="110.0" class="zero-line"/>
+              <path d="" class="return-line"/>
+              <path d="" class="alpha-line"/>
+              
+            </svg>
+            <div class="line-legend"><span><i class="return-key"></i>Running avg return</span><span><i class="alpha-key"></i>Running avg alpha</span></div>
+          </article>
+        
+          <article class="line-card value-na">
+            <div class="line-head">
+              <div>
+                <strong>top_10</strong>
+                <span>0 eval dates · rank ≤ None</span>
+              </div>
+              <div class="line-kpis">
+                <span>Run Avg <b class="value-na">—</b></span>
+                <span>Run Alpha <b class="value-na">—</b></span>
+              </div>
+            </div>
+            <svg viewBox="0 0 900 220" role="img" aria-label="top_10 running average line chart">
+              <line x1="24" x2="876" y1="110.0" y2="110.0" class="zero-line"/>
+              <path d="" class="return-line"/>
+              <path d="" class="alpha-line"/>
+              
+            </svg>
+            <div class="line-legend"><span><i class="return-key"></i>Running avg return</span><span><i class="alpha-key"></i>Running avg alpha</span></div>
+          </article>
+        
+      </div>
+    </section>
+
+
     <section class="section-block visual-block">
       <div class="section-heading split-heading">
         <div>
@@ -151,7 +230,7 @@
         <article class="chart-card">
           <div class="chart-title">
             <strong>Rank quality</strong>
-            <span>Top 20 is the main Daily board; 21-50 is reference.</span>
+            <span>Top 3 / Top 5 / Top 10 are the actual tested decision buckets.</span>
           </div>
           <div class="bar-list">
             
@@ -824,7 +903,7 @@
       <div class="section-heading">
         <div class="kicker">FILTERED PERFORMANCE</div>
         <h2>Return quality under stricter cuts.</h2>
-        <p>Top-20 rank, triage, score threshold, liquidity, favored archetype and outlier controls. Read 1D / 3D / 5D / 10D as the main Daily range; 20D is reference.</p>
+        <p>Top-3 / Top-5 / Top-10 rank cuts, triage, score threshold, liquidity, favored archetype and outlier controls. Read 1D / 3D / 5D / 10D as the main Daily range; 20D is reference.</p>
       </div>
 
       <div class="group-table-wrap wide-scroll">
@@ -912,92 +991,6 @@
                   <td class="value-up">+4.09%</td>
                   <td class="value-up">67.24%</td>
                   <td>+6.89%</td>
-                
-              </tr>
-            
-              <tr>
-                <td>
-                  <strong>Main Rank <= 20</strong>
-                  <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
-                </td>
-                
-                  <td>4,860</td>
-                  <td class="value-up">+0.31%</td>
-                  <td>+0.11%</td>
-                  <td class="value-up">+0.15%</td>
-                  <td class="value-flat">51.58%</td>
-                  <td>+0.31%</td>
-                
-                  <td>4,860</td>
-                  <td class="value-up">+1.00%</td>
-                  <td>+0.50%</td>
-                  <td class="value-up">+0.51%</td>
-                  <td class="value-flat">54.20%</td>
-                  <td>+0.95%</td>
-                
-                  <td>4,860</td>
-                  <td class="value-up">+1.64%</td>
-                  <td>+1.00%</td>
-                  <td class="value-up">+0.86%</td>
-                  <td class="value-up">56.58%</td>
-                  <td>+1.57%</td>
-                
-                  <td>4,860</td>
-                  <td class="value-up">+3.29%</td>
-                  <td>+2.42%</td>
-                  <td class="value-up">+1.81%</td>
-                  <td class="value-up">61.21%</td>
-                  <td>+3.20%</td>
-                
-                  <td>4,860</td>
-                  <td class="value-up">+6.42%</td>
-                  <td>+4.86%</td>
-                  <td class="value-up">+3.51%</td>
-                  <td class="value-up">65.76%</td>
-                  <td>+6.37%</td>
-                
-              </tr>
-            
-              <tr>
-                <td>
-                  <strong>Reference Rank 21-50</strong>
-                  <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
-                </td>
-                
-                  <td>3,888</td>
-                  <td class="value-up">+0.15%</td>
-                  <td>-0.05%</td>
-                  <td class="value-down">-0.02%</td>
-                  <td class="value-flat">48.33%</td>
-                  <td>+0.12%</td>
-                
-                  <td>3,888</td>
-                  <td class="value-up">+0.44%</td>
-                  <td>0.00%</td>
-                  <td class="value-down">-0.08%</td>
-                  <td class="value-flat">49.74%</td>
-                  <td>+0.35%</td>
-                
-                  <td>3,888</td>
-                  <td class="value-up">+0.71%</td>
-                  <td>0.00%</td>
-                  <td class="value-down">-0.13%</td>
-                  <td class="value-flat">49.67%</td>
-                  <td>+0.53%</td>
-                
-                  <td>3,888</td>
-                  <td class="value-up">+1.50%</td>
-                  <td>-0.13%</td>
-                  <td class="value-down">-0.07%</td>
-                  <td class="value-flat">49.05%</td>
-                  <td>+1.11%</td>
-                
-                  <td>3,888</td>
-                  <td class="value-up">+2.99%</td>
-                  <td>+0.06%</td>
-                  <td class="value-down">-0.18%</td>
-                  <td class="value-flat">50.08%</td>
-                  <td>+2.49%</td>
                 
               </tr>
             
@@ -1655,7 +1648,7 @@
       <div class="section-heading">
         <div class="kicker">RANK BUCKET PERFORMANCE</div>
         <h2>Does rank order have signal?</h2>
-        <p>Rank 1-20 is the main Daily board. Rank 21-50 is retained as a reference / discovery shelf, not the primary decision zone.</p>
+        <p>The backtest target is intentionally narrow: daily Top 10 only, with Top 3 / Top 5 / Top 10 shown separately.</p>
       </div>
 
       <div class="group-table-wrap">
@@ -1692,138 +1685,6 @@
             </tr>
           </thead>
           <tbody>
-            
-              <tr>
-                <td>
-                  <strong>Rank 1-5</strong>
-                  <span>1,215 obs</span>
-                </td>
-                
-                  <td class="value-up">+0.21%</td>
-                  <td>+0.06%</td>
-                  <td class="value-up">+0.05%</td>
-                  <td class="value-flat">50.86%</td>
-                
-                  <td class="value-up">+0.96%</td>
-                  <td>+0.48%</td>
-                  <td class="value-up">+0.49%</td>
-                  <td class="value-flat">53.66%</td>
-                
-                  <td class="value-up">+1.90%</td>
-                  <td>+1.15%</td>
-                  <td class="value-up">+1.14%</td>
-                  <td class="value-up">56.63%</td>
-                
-                  <td class="value-up">+3.53%</td>
-                  <td>+2.78%</td>
-                  <td class="value-up">+2.06%</td>
-                  <td class="value-up">61.48%</td>
-                
-                  <td class="value-up">+7.45%</td>
-                  <td>+5.99%</td>
-                  <td class="value-up">+4.47%</td>
-                  <td class="value-up">67.57%</td>
-                
-              </tr>
-            
-              <tr>
-                <td>
-                  <strong>Rank 1-10</strong>
-                  <span>2,430 obs</span>
-                </td>
-                
-                  <td class="value-up">+0.32%</td>
-                  <td>+0.12%</td>
-                  <td class="value-up">+0.15%</td>
-                  <td class="value-flat">51.69%</td>
-                
-                  <td class="value-up">+1.03%</td>
-                  <td>+0.57%</td>
-                  <td class="value-up">+0.55%</td>
-                  <td class="value-flat">54.57%</td>
-                
-                  <td class="value-up">+1.79%</td>
-                  <td>+1.04%</td>
-                  <td class="value-up">+1.01%</td>
-                  <td class="value-up">57.00%</td>
-                
-                  <td class="value-up">+3.48%</td>
-                  <td>+2.62%</td>
-                  <td class="value-up">+2.01%</td>
-                  <td class="value-up">62.10%</td>
-                
-                  <td class="value-up">+6.98%</td>
-                  <td>+5.38%</td>
-                  <td class="value-up">+4.09%</td>
-                  <td class="value-up">67.24%</td>
-                
-              </tr>
-            
-              <tr>
-                <td>
-                  <strong>Main Rank 11-20</strong>
-                  <span>2,430 obs</span>
-                </td>
-                
-                  <td class="value-up">+0.31%</td>
-                  <td>+0.09%</td>
-                  <td class="value-up">+0.15%</td>
-                  <td class="value-flat">51.48%</td>
-                
-                  <td class="value-up">+0.96%</td>
-                  <td>+0.44%</td>
-                  <td class="value-up">+0.47%</td>
-                  <td class="value-flat">53.83%</td>
-                
-                  <td class="value-up">+1.49%</td>
-                  <td>+0.99%</td>
-                  <td class="value-up">+0.70%</td>
-                  <td class="value-up">56.17%</td>
-                
-                  <td class="value-up">+3.10%</td>
-                  <td>+2.13%</td>
-                  <td class="value-up">+1.62%</td>
-                  <td class="value-up">60.33%</td>
-                
-                  <td class="value-up">+5.87%</td>
-                  <td>+4.24%</td>
-                  <td class="value-up">+2.93%</td>
-                  <td class="value-up">64.28%</td>
-                
-              </tr>
-            
-              <tr>
-                <td>
-                  <strong>Reference Rank 21-50</strong>
-                  <span>3,888 obs</span>
-                </td>
-                
-                  <td class="value-up">+0.15%</td>
-                  <td>-0.05%</td>
-                  <td class="value-down">-0.02%</td>
-                  <td class="value-flat">48.33%</td>
-                
-                  <td class="value-up">+0.44%</td>
-                  <td>0.00%</td>
-                  <td class="value-down">-0.08%</td>
-                  <td class="value-flat">49.74%</td>
-                
-                  <td class="value-up">+0.71%</td>
-                  <td>0.00%</td>
-                  <td class="value-down">-0.13%</td>
-                  <td class="value-flat">49.67%</td>
-                
-                  <td class="value-up">+1.50%</td>
-                  <td>-0.13%</td>
-                  <td class="value-down">-0.07%</td>
-                  <td class="value-flat">49.05%</td>
-                
-                  <td class="value-up">+2.99%</td>
-                  <td>+0.06%</td>
-                  <td class="value-down">-0.18%</td>
-                  <td class="value-flat">50.08%</td>
-                
-              </tr>
             
           </tbody>
         </table>
