@@ -209,6 +209,17 @@ def triage_class(value: Any) -> str:
     return "triage-unknown"
 
 
+def status_class(value: Any) -> str:
+    s = str(value or "").strip().lower()
+    if s in {"pass", "ok"}:
+        return "status-pass"
+    if s == "warning":
+        return "status-warning"
+    if s == "fail":
+        return "status-fail"
+    return "status-muted"
+
+
 def horizon_key(h: Any) -> str:
     return f"{int(h)}d"
 
@@ -458,6 +469,185 @@ def make_insights(summary: dict[str, Any], horizons: list[int]) -> list[dict[str
     return insights[:4]
 
 
+
+
+# -----------------------------------------------------------------------------
+# Diagnostic view models. These are format-only transforms; no performance math.
+# -----------------------------------------------------------------------------
+
+def make_model_health_view(summary: dict[str, Any]) -> dict[str, Any]:
+    mh = summary.get("model_health") or {}
+    checks = mh.get("checks") or {}
+    cards = [
+        {
+            "label": "Verdict",
+            "value": mh.get("verdict") or "Insufficient",
+            "detail": f"Primary horizon: {str(mh.get('primary_horizon') or '—').upper()}",
+            "class": status_class(mh.get("verdict")),
+        },
+        {
+            "label": "Trade vs Ignore Alpha",
+            "value": fmt_pct(mh.get("trade_minus_ignore_alpha_pct")),
+            "detail": checks.get("trade_vs_ignore_alpha") or "Insufficient",
+            "class": status_class(checks.get("trade_vs_ignore_alpha")),
+        },
+        {
+            "label": "Watch vs Ignore Alpha",
+            "value": fmt_pct(mh.get("watch_minus_ignore_alpha_pct")),
+            "detail": checks.get("watch_vs_ignore_alpha") or "Insufficient",
+            "class": status_class(checks.get("watch_vs_ignore_alpha")),
+        },
+        {
+            "label": "Score Monotonicity",
+            "value": checks.get("score_monotonicity") or "Insufficient",
+            "detail": "Higher score bands should beat lower bands",
+            "class": status_class(checks.get("score_monotonicity")),
+        },
+        {
+            "label": "Outlier Concentration",
+            "value": checks.get("outlier_concentration") or "Insufficient",
+            "detail": f"Top symbol: {fmt_pct((mh.get('outlier_concentration') or {}).get('top_symbol_contribution_pct'), signed=False)} of positive-return pool",
+            "class": status_class(checks.get("outlier_concentration")),
+        },
+        {
+            "label": "Avg vs Median Gap",
+            "value": fmt_pct((mh.get("median_average_gap") or {}).get("gap_pct")),
+            "detail": checks.get("median_average_gap") or "Insufficient",
+            "class": status_class(checks.get("median_average_gap")),
+        },
+    ]
+    return {"raw": mh, "cards": cards}
+
+
+def make_filter_rows(summary: dict[str, Any], horizons: list[int]) -> list[dict[str, Any]]:
+    fp = summary.get("filtered_performance") or {}
+    order = [
+        "rank_lte_10",
+        "rank_lte_20",
+        "trade_only",
+        "watch_only",
+        "trade_plus_watch",
+        "score_gte_500",
+        "score_gte_600",
+        "score_gte_700",
+        "liquidity_gte_liquid",
+        "excluding_top_1pct_outliers",
+        "winsorized_average",
+    ]
+    rows: list[dict[str, Any]] = []
+    for key in order:
+        item = fp.get(key) or {}
+        stats = item.get("stats") or {}
+        if not item:
+            continue
+        cells = []
+        for h in horizons:
+            hk = horizon_key(h)
+            stat = stats.get(hk) or {}
+            cells.append(
+                {
+                    "horizon": hk.upper(),
+                    "count": stat.get("count"),
+                    "avg_return_pct": stat.get("avg_return_pct"),
+                    "median_return_pct": stat.get("median_return_pct"),
+                    "avg_alpha_pct": stat.get("avg_alpha_pct"),
+                    "win_rate_pct": stat.get("win_rate_pct"),
+                    "winsorized_avg_return_pct": stat.get("winsorized_avg_return_pct"),
+                    "gap_pct": stat.get("median_average_gap_pct"),
+                    "avg_class": value_class(stat.get("avg_return_pct")),
+                    "alpha_class": value_class(stat.get("avg_alpha_pct")),
+                    "win_class": win_class(stat.get("win_rate_pct")),
+                }
+            )
+        rows.append({"key": key, "label": item.get("label") or key, "description": item.get("description") or "", "cells": cells})
+    return rows
+
+
+def make_rank_bucket_rows(summary: dict[str, Any], horizons: list[int]) -> list[dict[str, Any]]:
+    rb = summary.get("rank_bucket_performance") or {}
+    order = ["rank_1_5", "rank_1_10", "rank_11_20", "rank_21_50"]
+    rows: list[dict[str, Any]] = []
+    for key in order:
+        item = rb.get(key) or {}
+        if not item:
+            continue
+        stats = item.get("stats") or {}
+        cells = []
+        for h in horizons:
+            hk = horizon_key(h)
+            stat = stats.get(hk) or {}
+            cells.append(
+                {
+                    "horizon": hk.upper(),
+                    "count": stat.get("count"),
+                    "avg_return_pct": stat.get("avg_return_pct"),
+                    "median_return_pct": stat.get("median_return_pct"),
+                    "avg_alpha_pct": stat.get("avg_alpha_pct"),
+                    "win_rate_pct": stat.get("win_rate_pct"),
+                    "gap_pct": stat.get("median_average_gap_pct"),
+                    "avg_class": value_class(stat.get("avg_return_pct")),
+                    "alpha_class": value_class(stat.get("avg_alpha_pct")),
+                    "win_class": win_class(stat.get("win_rate_pct")),
+                }
+            )
+        first_count = next((c.get("count") for c in cells if c.get("count") is not None), None)
+        rows.append({"label": item.get("label") or key, "count": first_count, "cells": cells})
+    return rows
+
+
+def make_outlier_view(summary: dict[str, Any]) -> dict[str, Any]:
+    oa = summary.get("outlier_analysis") or {}
+    contributors = []
+    for row in oa.get("top_return_contributors") or []:
+        r = dict(row)
+        r["triage_css"] = triage_class(r.get("triage"))
+        r["return_class"] = value_class(r.get("return_pct"))
+        r["alpha_class"] = value_class(r.get("alpha_pct"))
+        contributors.append(r)
+    symbols = []
+    for row in oa.get("top_symbol_contributors") or []:
+        r = dict(row)
+        r["return_class"] = value_class(r.get("avg_return_pct"))
+        symbols.append(r)
+    return {"raw": oa, "contributors": contributors[:12], "symbols": symbols[:12], "status_class": status_class(oa.get("average_return_distortion_warning"))}
+
+
+def make_repeated_symbol_view(summary: dict[str, Any]) -> dict[str, Any]:
+    rs = summary.get("repeated_symbol_analysis") or {}
+    rows = []
+    for row in rs.get("most_repeated_symbols") or []:
+        r = dict(row)
+        r["return_class"] = value_class(r.get("avg_return_pct"))
+        r["alpha_class"] = value_class(r.get("avg_alpha_pct"))
+        rows.append(r)
+    return {"raw": rs, "rows": rows[:15]}
+
+
+def make_diagnostic_rows(summary: dict[str, Any]) -> list[dict[str, Any]]:
+    md = summary.get("model_diagnostics") or {}
+    checks = md.get("horizon_checks") or {}
+    rows = []
+    for hk in sorted(checks.keys(), key=lambda x: int(str(x).replace("d", "")) if str(x).replace("d", "").isdigit() else 999):
+        item = checks.get(hk) or {}
+        mono = item.get("score_band_avg_alpha_monotonicity") or {}
+        med_mono = item.get("score_band_median_alpha_monotonicity") or {}
+        rows.append(
+            {
+                "horizon": hk.upper(),
+                "trade_minus_ignore_alpha_pct": item.get("trade_minus_ignore_alpha_pct"),
+                "watch_minus_ignore_alpha_pct": item.get("watch_minus_ignore_alpha_pct"),
+                "trade_minus_ignore_median_alpha_pct": item.get("trade_minus_ignore_median_alpha_pct"),
+                "score_mono": mono.get("status") or "Insufficient",
+                "score_mono_class": status_class(mono.get("status")),
+                "score_median_mono": med_mono.get("status") or "Insufficient",
+                "score_median_mono_class": status_class(med_mono.get("status")),
+                "trade_class": value_class(item.get("trade_minus_ignore_alpha_pct")),
+                "watch_class": value_class(item.get("watch_minus_ignore_alpha_pct")),
+                "median_class": value_class(item.get("trade_minus_ignore_median_alpha_pct")),
+            }
+        )
+    return rows
+
 def render() -> None:
     payload = read_json(BACKTEST_JSON)
 
@@ -493,6 +683,12 @@ def render() -> None:
         overall_rows=overall_rows,
         group_sections=group_sections,
         insights=insights,
+        model_health=make_model_health_view(summary),
+        filtered_rows=make_filter_rows(summary, horizons),
+        rank_bucket_rows=make_rank_bucket_rows(summary, horizons),
+        outlier_view=make_outlier_view(summary),
+        repeated_symbol_view=make_repeated_symbol_view(summary),
+        diagnostic_rows=make_diagnostic_rows(summary),
         recent_rows=signal_rows["recent"],
         top_return_rows=signal_rows["top_return"],
         top_alpha_rows=signal_rows["top_alpha"],
