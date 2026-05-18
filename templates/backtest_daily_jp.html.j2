@@ -106,6 +106,107 @@
     </section>
 
 
+    <section class="section-block visual-block">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">VISUAL PERFORMANCE MAP</div>
+          <h2>The model's edge at a glance.</h2>
+          <p>
+            These charts use the {{ visualization_view.primary_horizon }} primary horizon. Longer bars mean stronger alpha;
+            red bars are negative. The goal is simple: Trade/Watch, high score, and top rank should be visibly better than weak buckets.
+          </p>
+        </div>
+        <div class="method-chip">Primary {{ visualization_view.primary_horizon }}</div>
+      </div>
+
+      <div class="visual-grid two-col">
+        <article class="chart-card">
+          <div class="chart-title">
+            <strong>Triage separation</strong>
+            <span>Avg alpha by Trade / Watch / Ignore</span>
+          </div>
+          <div class="bar-list">
+            {% for row in visualization_view.triage %}
+              <div class="bar-row">
+                <div class="bar-label"><strong>{{ row.label }}</strong><span>{{ row.count | fmt_int }} obs</span></div>
+                <div class="bar-track"><div class="bar-fill {{ row.bar_class }}" style="width: {{ row.bar_width }}%"></div></div>
+                <div class="bar-value {{ row.bar_class }}">{{ row.value | fmt_pct }}</div>
+                <div class="bar-sub">Win {{ row.win_rate_pct | fmt_pct(1, False) }}</div>
+              </div>
+            {% endfor %}
+          </div>
+        </article>
+
+        <article class="chart-card">
+          <div class="chart-title">
+            <strong>Rank quality</strong>
+            <span>Top 20 is the main Daily board; 21-50 is reference.</span>
+          </div>
+          <div class="bar-list">
+            {% for row in visualization_view.rank_buckets %}
+              <div class="bar-row {% if '21-50' in row.label %}reference-row{% endif %}">
+                <div class="bar-label"><strong>{{ row.label }}</strong><span>{{ row.count | fmt_int }} obs</span></div>
+                <div class="bar-track"><div class="bar-fill {{ row.bar_class }}" style="width: {{ row.bar_width }}%"></div></div>
+                <div class="bar-value {{ row.bar_class }}">{{ row.value | fmt_pct }}</div>
+                <div class="bar-sub">Return {{ row.secondary_value | fmt_pct }}</div>
+              </div>
+            {% endfor %}
+          </div>
+        </article>
+      </div>
+
+      <div class="visual-grid two-col">
+        <article class="chart-card">
+          <div class="chart-title">
+            <strong>Score bands</strong>
+            <span>Checks whether higher scores create better alpha.</span>
+          </div>
+          <div class="bar-list compact-bars">
+            {% for row in visualization_view.score_bands %}
+              <div class="bar-row">
+                <div class="bar-label"><strong>{{ row.label }}</strong><span>{{ row.count | fmt_int }} obs</span></div>
+                <div class="bar-track"><div class="bar-fill {{ row.bar_class }}" style="width: {{ row.bar_width }}%"></div></div>
+                <div class="bar-value {{ row.bar_class }}">{{ row.value | fmt_pct }}</div>
+              </div>
+            {% endfor %}
+          </div>
+        </article>
+
+        <article class="chart-card">
+          <div class="chart-title">
+            <strong>Liquidity bands</strong>
+            <span>Liquidity is checked after the bucket logic revision.</span>
+          </div>
+          <div class="bar-list compact-bars">
+            {% for row in visualization_view.liquidity_bands %}
+              <div class="bar-row">
+                <div class="bar-label"><strong>{{ row.label }}</strong><span>{{ row.count | fmt_int }} obs</span></div>
+                <div class="bar-track"><div class="bar-fill {{ row.bar_class }}" style="width: {{ row.bar_width }}%"></div></div>
+                <div class="bar-value {{ row.bar_class }}">{{ row.value | fmt_pct }}</div>
+              </div>
+            {% endfor %}
+          </div>
+        </article>
+      </div>
+
+      <article class="chart-card wide-chart">
+        <div class="chart-title">
+          <strong>Best and worst signal archetypes</strong>
+          <span>Favored structures should rise; Volume + Breakout risk should be contained.</span>
+        </div>
+        <div class="bar-list archetype-bars">
+          {% for row in visualization_view.archetypes %}
+            <div class="bar-row">
+              <div class="bar-label"><strong>{{ row.label }}</strong><span>{{ row.count | fmt_int }} obs</span></div>
+              <div class="bar-track"><div class="bar-fill {{ row.bar_class }}" style="width: {{ row.bar_width }}%"></div></div>
+              <div class="bar-value {{ row.bar_class }}">{{ row.value | fmt_pct }}</div>
+              <div class="bar-sub">Win {{ row.win_rate_pct | fmt_pct(1, False) }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      </article>
+    </section>
+
 
     <section class="section-block health-block">
       <div class="section-heading split-heading">
@@ -342,7 +443,7 @@
       <div class="section-heading">
         <div class="kicker">FILTERED PERFORMANCE</div>
         <h2>Return quality under stricter cuts.</h2>
-        <p>Rank, triage, score threshold, liquidity and outlier controls. Read 1D / 3D / 5D / 10D as the main Daily range; 20D is reference.</p>
+        <p>Top-20 rank, triage, score threshold, liquidity, favored archetype and outlier controls. Read 1D / 3D / 5D / 10D as the main Daily range; 20D is reference.</p>
       </div>
 
       <div class="group-table-wrap wide-scroll">
@@ -386,7 +487,7 @@
       <div class="section-heading">
         <div class="kicker">RANK BUCKET PERFORMANCE</div>
         <h2>Does rank order have signal?</h2>
-        <p>Rank 1-5 and 1-10 must show short-term edge, especially around the 5D primary horizon.</p>
+        <p>Rank 1-20 is the main Daily board. Rank 21-50 is retained as a reference / discovery shelf, not the primary decision zone.</p>
       </div>
 
       <div class="group-table-wrap">
