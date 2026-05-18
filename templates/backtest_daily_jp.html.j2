@@ -46,9 +46,9 @@
         </h1>
 
         <p>
-          Historical replay of the Daily Event Score v2. Each date is scored using
-          only information available at that close, then measured over forward
-          trading-day horizons versus TOPIX.
+          Historical replay of the Daily Event Score v2 as a short-term trading model.
+          The main evaluation range is 1D / 3D / 5D / 10D, with 5D as the primary horizon.
+          20D is displayed only as a decay and durability reference.
         </p>
       </div>
 
@@ -78,8 +78,16 @@
         <strong>{{ payload.source_prices_generated_at or "—" }}</strong>
       </div>
       <div>
-        <span>Horizons</span>
-        <strong>{% for h in horizons %}{{ h }}D{% if not loop.last %} / {% endif %}{% endfor %}</strong>
+        <span>Primary</span>
+        <strong>{{ primary_horizon }}D</strong>
+      </div>
+      <div>
+        <span>Core Range</span>
+        <strong>{% for h in core_horizons %}{{ h }}D{% if not loop.last %} / {% endif %}{% endfor %}</strong>
+      </div>
+      <div>
+        <span>Reference</span>
+        <strong>{% for h in reference_horizons %}{{ h }}D{% if not loop.last %} / {% endif %}{% else %}—{% endfor %}</strong>
       </div>
       <div>
         <span>API Calls</span>
@@ -105,8 +113,9 @@
           <div class="kicker">MODEL HEALTH</div>
           <h2>Before trusting the score, test the score.</h2>
           <p>
-            This is the control panel for whether Daily v2 is actually separating quality:
-            Trade/Watch must beat Ignore, higher score bands should be monotonic, and averages must not be dominated by a single small-cap spike.
+            This is the control panel for whether Daily v2 works as a short-term trading model:
+            Trade/Watch must beat Ignore on the 5D primary horizon and across the 1D / 3D / 5D / 10D core range.
+            20D is not used as the main pass/fail target.
           </p>
         </div>
         <div class="status-pill {{ model_health.raw.verdict | lower }}">{{ model_health.raw.verdict or "Insufficient" }}</div>
@@ -129,7 +138,7 @@
           <div class="kicker">OUTLIER ANALYSIS</div>
           <h2>Average-return distortion check.</h2>
           <p>
-            Japanese small-cap signals can look excellent because of one explosive name. This section shows whether the return pool is concentrated.
+            Japanese small-cap signals can look excellent because of one explosive name. This section checks concentration on the Daily primary horizon, while 20D remains reference only.
           </p>
         </div>
         <div class="method-chip {{ outlier_view.status_class }}">
@@ -222,8 +231,8 @@
     <section class="section-block">
       <div class="section-heading">
         <div class="kicker">MODEL DIAGNOSTICS</div>
-        <h2>Does the model beat its own rejects?</h2>
-        <p>Primary quality checks across 1D / 5D / 10D / 20D. This is where a nice-looking dashboard is allowed to fail loudly.</p>
+        <h2>Does the model beat its own rejects in the short-term range?</h2>
+        <p>Core Daily checks are 1D / 3D / 5D / 10D, with 5D as primary. 20D is marked as reference and should be read as decay/durability, not the main Daily target.</p>
       </div>
 
       <div class="group-table-wrap">
@@ -231,6 +240,7 @@
           <thead>
             <tr>
               <th>Horizon</th>
+              <th>Role</th>
               <th>Trade - Ignore Alpha</th>
               <th>Watch - Ignore Alpha</th>
               <th>Trade - Ignore Median Alpha</th>
@@ -242,6 +252,7 @@
             {% for row in diagnostic_rows %}
               <tr>
                 <td><strong>{{ row.horizon }}</strong></td>
+                <td><span class="role-pill {{ row.role_class }}">{{ row.role }}</span></td>
                 <td class="{{ row.trade_class }}">{{ row.trade_minus_ignore_alpha_pct | fmt_pct }}</td>
                 <td class="{{ row.watch_class }}">{{ row.watch_minus_ignore_alpha_pct | fmt_pct }}</td>
                 <td class="{{ row.median_class }}">{{ row.trade_minus_ignore_median_alpha_pct | fmt_pct }}</td>
@@ -258,7 +269,7 @@
       <div class="section-heading">
         <div class="kicker">FILTERED PERFORMANCE</div>
         <h2>Return quality under stricter cuts.</h2>
-        <p>Rank, triage, score threshold, liquidity and outlier controls. Values are precomputed in JSON; the HTML only renders them.</p>
+        <p>Rank, triage, score threshold, liquidity and outlier controls. Read 1D / 3D / 5D / 10D as the main Daily range; 20D is reference.</p>
       </div>
 
       <div class="group-table-wrap wide-scroll">
@@ -302,7 +313,7 @@
       <div class="section-heading">
         <div class="kicker">RANK BUCKET PERFORMANCE</div>
         <h2>Does rank order have signal?</h2>
-        <p>Rank 1-5 and 1-10 must not merely look good because the long tail is doing the work.</p>
+        <p>Rank 1-5 and 1-10 must show short-term edge, especially around the 5D primary horizon.</p>
       </div>
 
       <div class="group-table-wrap">
@@ -494,7 +505,7 @@
           <div class="kicker">BEST FORWARD MOVES</div>
           <h2>Top realized returns.</h2>
         </div>
-        <div class="method-chip">Primary horizon: 20D if available</div>
+        <div class="method-chip">Primary horizon: {{ primary_horizon }}D short-term</div>
       </div>
 
       <div class="mini-card-grid">
@@ -579,9 +590,9 @@
               <th>RVOL</th>
               <th>1D</th>
               <th>5D</th>
-              <th>20D Return</th>
-              <th>20D Alpha</th>
-              <th>20D Pullback</th>
+              <th>{{ primary_horizon }}D Return</th>
+              <th>{{ primary_horizon }}D Alpha</th>
+              <th>{{ primary_horizon }}D Pullback</th>
             </tr>
           </thead>
           <tbody>
@@ -614,7 +625,8 @@
         <p>
           The backtest truncates each stock’s OHLCV history to the evaluation date,
           runs the same Daily Event Score v2 engine, and measures future returns using
-          trading-day offsets. The rendered page only displays precomputed JSON values.
+          trading-day offsets. Daily model health is judged on the short-term range,
+          while 20D is shown as a reference horizon only. The rendered page only displays precomputed JSON values.
         </p>
       </div>
 
