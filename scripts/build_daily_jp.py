@@ -70,6 +70,11 @@ WEIGHTS = {
     "market_regime": 0.03,
 }
 
+# Post-score flow adjustment. This is intentionally not part of the base weights
+# because it is a short-term discovery overlay, not a core trend model.
+# The overlay is capped tightly to avoid turning every volume spike into a signal.
+ACCUMULATION_BOOST_CAP = 0.075
+DISTRIBUTION_PENALTY_CAP = 0.120
 SCORE_SCALE = 1000
 
 
@@ -241,12 +246,16 @@ def add_indicators(df: pd.DataFrame) -> pd.DataFrame:
     d["atr_pct"] = d["atr14"] / c * 100.0
 
     d["ret1"] = c.pct_change(1) * 100.0
+    d["ret3"] = c.pct_change(3) * 100.0
     d["ret5"] = c.pct_change(5) * 100.0
+    d["ret10"] = c.pct_change(10) * 100.0
     d["ret20"] = c.pct_change(20) * 100.0
     d["ret60"] = c.pct_change(60) * 100.0
     d["ret120"] = c.pct_change(120) * 100.0
 
+    d["vol3"] = v.rolling(3, min_periods=2).mean()
     d["rvol20"] = v / (d["vol20"] + 1e-9)
+    d["rvol3_20"] = d["vol3"] / (d["vol20"] + 1e-9)
 
     d["day_range"] = (h - l).replace(0, np.nan)
     d["range_pos"] = (c - l) / d["day_range"]
@@ -458,6 +467,174 @@ def score_volume_liquidity_shock(last: pd.Series, prev: pd.Series, item: dict[st
         flags.append("liquid_enough")
 
     return score, flags
+
+
+def evaluate_volume_flow(last: pd.Series, prev: pd.Series, item: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
+    """
+    Classify abnormal volume into three mutually exclusive buckets:
+      - abnormal_accumulation: volume expansion that can be interpreted positively
+      - abnormal_distribution: volume expansion with weak price action / sell pressure
+      - volume_noise: volume expanded, but direction is too ambiguous to reward
+
+    This deliberately does not try to predict hard news. It only captures the
+    tradable footprint that may appear before or immediately after a catalyst.
+    """
+    flags: list[str] = []
+
+    close = to_float(last.get("Close"))
+    open_ = to_float(last.get("Open"))
+    prev_close = to_float(prev.get("Close"))
+    rvol20 = max(0.0, to_float(last.get("rvol20")) or 0.0)
+    rvol3_20 = max(0.0, to_float(last.get("rvol3_20")) or 0.0)
+    range_pos = clamp(last.get("range_pos"), 0, 1)
+    close_pos20 = clamp(last.get("close_pos20"), 0, 1)
+    close_pos50 = clamp(last.get("close_pos50"), 0, 1)
+    ret1 = to_float(last.get("ret1")) or 0.0
+    ret3 = to_float(last.get("ret3")) or 0.0
+    ret5 = to_float(last.get("ret5")) or 0.0
+    ret10 = to_float(last.get("ret10")) or 0.0
+    ret20 = to_float(last.get("ret20")) or 0.0
+    avg_value20 = to_float(last.get("avg_dollar_volume20"))
+    dollar_vol = to_float(last.get("dollar_volume"))
+    sma20 = to_float(last.get("sma20"))
+    prev_high20 = to_float(prev.get("high20"))
+
+    above_sma20 = bool(close is not None and sma20 is not None and close >= sma20)
+    green_or_flat = bool(close is not None and prev_close is not None and close >= prev_close * 0.985)
+    high_zone = close_pos20 >= 0.55 or close_pos50 >= 0.55 or above_sma20
+    not_collapsing = ret1 >= -3.5 and ret3 >= -8.0 and ret5 >= -12.0
+    not_overheated = ret5 <= 28.0 and ret10 <= 45.0 and ret20 <= 70.0
+    sufficient_today_value = dollar_vol is not None and dollar_vol >= 100_000_000
+    sufficient_avg_value = avg_value20 is not None and avg_value20 >= 70_000_000
+    high_today_value = dollar_vol is not None and dollar_vol >= 1_000_000_000
+    high_avg_value = avg_value20 is not None and avg_value20 >= 300_000_000
+    persistent_volume = rvol3_20 >= 1.8
+    single_day_spike = rvol20 >= 2.5
+    major_volume = rvol20 >= 4.0 or rvol3_20 >= 3.0
+    volume_event = single_day_spike or persistent_volume
+
+    weak_intraday_close = range_pos <= 0.35
+    red_on_volume = bool(close is not None and open_ is not None and close < open_ and rvol20 >= 1.8)
+    downside_break = ret1 <= -6.0 or ret3 <= -10.0 or ret5 <= -15.0
+    low_zone_break = close_pos20 <= 0.35 and ret1 < 0
+
+    abnormal_distribution = bool(
+        volume_event
+        and sufficient_today_value
+        and (
+            downside_break
+            or (weak_intraday_close and red_on_volume)
+            or low_zone_break
+        )
+    )
+
+    quiet_price_with_volume = abs(ret3) <= 10.0 and -5.0 <= ret5 <= 18.0
+    controlled_up_move = -3.5 <= ret1 <= 12.0 and -8.0 <= ret3 <= 18.0
+    near_breakout = bool(prev_high20 is not None and close is not None and close >= prev_high20 * 0.92)
+
+    # A second, stricter path for post-catalyst digestion. Some JP small-cap
+    # theme names stay liquid after the first news spike, so RVOL vs 20D can
+    # look mediocre even while the tape is still actively absorbing supply.
+    # This is Watch-oriented only; it should not create Trade by itself.
+    post_catalyst_digestion = bool(
+        high_today_value
+        and high_avg_value
+        and rvol3_20 >= 0.60
+        and not abnormal_distribution
+        and ret1 >= -2.5
+        and ret3 >= -6.0
+        and -25.0 <= ret5 <= 10.0
+        and ret10 >= -45.0
+        and ret20 >= -45.0
+        and range_pos >= 0.55
+        and close_pos50 >= 0.38
+    )
+
+    abnormal_accumulation = bool(
+        (
+            volume_event
+            and not abnormal_distribution
+            and sufficient_today_value
+            and sufficient_avg_value
+            and not_collapsing
+            and not_overheated
+            and (green_or_flat or range_pos >= 0.45)
+            and (high_zone or near_breakout)
+            and (quiet_price_with_volume or controlled_up_move or major_volume)
+        )
+        or post_catalyst_digestion
+    )
+
+    volume_noise = bool(volume_event and not abnormal_accumulation and not abnormal_distribution)
+
+    boost = 0.0
+    distribution_penalty = 0.0
+    signal = "none"
+    confidence = "none"
+
+    if abnormal_accumulation:
+        signal = "abnormal_accumulation"
+        confidence = "high" if major_volume and close_pos20 >= 0.60 and range_pos >= 0.45 else "medium"
+        # Discovery overlay: enough to lift strong accumulation into Watch,
+        # but not enough to manufacture Trade without breakout/setup quality.
+        boost = clamp(
+            0.020
+            + 0.020 * scale(rvol20, 2.0, 6.0)
+            + 0.015 * scale(rvol3_20, 1.4, 4.0)
+            + 0.012 * close_pos20
+            + 0.008 * range_pos,
+            0.0,
+            ACCUMULATION_BOOST_CAP,
+        )
+        flags.append("abnormal_accumulation")
+        if post_catalyst_digestion:
+            flags.append("post_catalyst_digestion")
+        if confidence == "high":
+            flags.append("abnormal_accumulation_high_confidence")
+        flags.append("discovery_watch_candidate")
+    elif abnormal_distribution:
+        signal = "abnormal_distribution"
+        confidence = "high" if downside_break and weak_intraday_close else "medium"
+        distribution_penalty = clamp(
+            0.035
+            + 0.030 * scale(rvol20, 2.0, 6.0)
+            + 0.025 * scale(abs(min(ret1, 0.0)), 3.0, 12.0)
+            + 0.020 * (1.0 - range_pos),
+            0.0,
+            DISTRIBUTION_PENALTY_CAP,
+        )
+        flags.append("abnormal_distribution")
+        if confidence == "high":
+            flags.append("abnormal_distribution_high_confidence")
+    elif volume_noise:
+        signal = "volume_noise"
+        confidence = "low"
+        flags.append("volume_noise")
+
+    flow = {
+        "signal": signal,
+        "confidence": confidence,
+        "boost_0_1": safe_round(boost, 6),
+        "distribution_penalty_0_1": safe_round(distribution_penalty, 6),
+        "rvol20": safe_round(rvol20, 4),
+        "rvol3_20": safe_round(rvol3_20, 4),
+        "ret1_pct": safe_round(ret1, 4),
+        "ret3_pct": safe_round(ret3, 4),
+        "ret5_pct": safe_round(ret5, 4),
+        "ret10_pct": safe_round(ret10, 4),
+        "ret20_pct": safe_round(ret20, 4),
+        "range_pos_0_1": safe_round(range_pos, 4),
+        "close_pos20_0_1": safe_round(close_pos20, 4),
+        "close_pos50_0_1": safe_round(close_pos50, 4),
+        "sufficient_today_value": sufficient_today_value,
+        "sufficient_avg_value": sufficient_avg_value,
+        "high_today_value": high_today_value,
+        "high_avg_value": high_avg_value,
+        "post_catalyst_digestion": post_catalyst_digestion,
+        "above_sma20": above_sma20,
+    }
+
+    return flow, flags
 
 
 def score_compression_release(last: pd.Series, prev: pd.Series) -> tuple[float, list[str]]:
@@ -840,6 +1017,10 @@ def classify_and_triage(
     extended = ret5 >= 35 or ret20 >= 75
     no_confirmation = ret1 < 0 and rvol20 < 1.0
     weak_close = "weak_close_on_volume" in flags or "red_close_on_volume" in flags
+    abnormal_accumulation = "abnormal_accumulation" in flags
+    abnormal_distribution = "abnormal_distribution" in flags
+    discovery_watch_candidate = "discovery_watch_candidate" in flags
+    post_catalyst_digestion = "post_catalyst_digestion" in flags
 
     trade_ok = (
         score_pts >= 730
@@ -852,6 +1033,7 @@ def classify_and_triage(
         and not extended
         and not no_confirmation
         and not weak_close
+        and not abnormal_distribution
         and penalty < 0.18
         and regime != "Risk-off"
     )
@@ -864,11 +1046,36 @@ def classify_and_triage(
             or (setup >= 0.70 and components["relative_strength"] >= 0.65)
         )
         and not no_confirmation
+        and not abnormal_distribution
     )
+
+    discovery_watch_ok = (
+        abnormal_accumulation
+        and discovery_watch_candidate
+        and avg_value20 is not None
+        and avg_value20 >= 70_000_000
+        and not very_low_liquidity
+        and not abnormal_distribution
+        and not extended
+        and (
+            score_pts >= 500
+            or (
+                post_catalyst_digestion
+                and score_pts >= 400
+                and avg_value20 >= 300_000_000
+                and range_pos >= 0.65
+                and ret1 >= 0.0
+            )
+        )
+    )
+
+    if abnormal_distribution:
+        trade_ok = False
+        watch_ok = False
 
     if trade_ok:
         triage = "Trade"
-    elif watch_ok:
+    elif watch_ok or discovery_watch_ok:
         triage = "Watch"
     else:
         triage = "Ignore"
@@ -886,6 +1093,10 @@ def classify_and_triage(
         classification = "A+ Timing"
     elif score_pts >= 720 and triage in {"Trade", "Watch"}:
         classification = "A Setup"
+    elif abnormal_accumulation and triage == "Watch":
+        classification = "Discovery Watch"
+    elif abnormal_distribution:
+        classification = "Distribution Risk"
     elif score_pts >= 620 and triage == "Watch":
         classification = "B Watch"
     elif very_low_liquidity:
@@ -896,6 +1107,8 @@ def classify_and_triage(
         classification = "No Signal"
 
     if very_low_liquidity:
+        risk_level = "High"
+    elif abnormal_distribution:
         risk_level = "High"
     elif low_liquidity or extended or penalty >= 0.18:
         risk_level = "Medium"
@@ -920,6 +1133,12 @@ def build_reason(components: dict[str, float], last: pd.Series, penalty: float, 
         reason.append("breakout setup")
     if components["relative_strength"] >= 0.68:
         reason.append("relative strength")
+    if "abnormal_accumulation" in flags:
+        reason.append("abnormal accumulation")
+    if "abnormal_distribution" in flags:
+        reason.append("abnormal distribution risk")
+    if "volume_noise" in flags:
+        reason.append("volume noise")
     if "no_daily_confirmation" in flags:
         reason.append("no daily confirmation")
     if "very_low_liquidity" in flags:
@@ -955,6 +1174,9 @@ def score_equity_item(
     rs_score, rs_flags, relative_metrics = score_relative_strength(last, topix_last)
     entry_score, entry_flags = score_entry_timing(last, prev)
     penalty, penalty_flags, penalty_details = compute_penalty(last, item, bucket)
+    volume_flow, flow_flags = evaluate_volume_flow(last, prev, item)
+    flow_boost = to_float(volume_flow.get("boost_0_1")) or 0.0
+    flow_distribution_penalty = to_float(volume_flow.get("distribution_penalty_0_1")) or 0.0
 
     raw_score01 = (
         WEIGHTS["volume_liquidity_shock"] * volume_score
@@ -967,8 +1189,9 @@ def score_equity_item(
 
     score01_before_penalty = clamp(raw_score01)
     score01_after_penalty = clamp(score01_before_penalty - penalty)
+    score01_after_flow = clamp(score01_after_penalty + flow_boost - flow_distribution_penalty)
 
-    cap_score01, cap_flags = apply_score_caps(score01_after_penalty, last, item)
+    cap_score01, cap_flags = apply_score_caps(score01_after_flow, last, item)
 
     score01 = clamp(cap_score01)
     score_pts = int(round(score01 * SCORE_SCALE))
@@ -981,6 +1204,8 @@ def score_equity_item(
         "entry_timing": round(entry_score, 6),
         "market_regime": round(regime_score, 6),
         "penalty": round(penalty, 6),
+        "abnormal_flow_boost": round(flow_boost, 6),
+        "abnormal_distribution_penalty": round(flow_distribution_penalty, 6),
     }
 
     flags: list[str] = []
@@ -991,6 +1216,7 @@ def score_equity_item(
         + rs_flags
         + entry_flags
         + penalty_flags
+        + flow_flags
         + cap_flags
     ):
         if flag not in flags:
@@ -1014,7 +1240,9 @@ def score_equity_item(
     avg_value20 = to_float(last.get("avg_dollar_volume20"))
 
     ret1 = to_float(last.get("ret1"))
+    ret3 = to_float(last.get("ret3"))
     ret5 = to_float(last.get("ret5"))
+    ret10 = to_float(last.get("ret10"))
     ret20 = to_float(last.get("ret20"))
     ret60 = to_float(last.get("ret60"))
     ret120 = to_float(last.get("ret120"))
@@ -1042,11 +1270,14 @@ def score_equity_item(
         "latest_traded_value_jpy": safe_round(dollar_volume, 2),
         "avg_traded_value_20d_jpy": safe_round(avg_value20, 2),
         "return_1d_pct": safe_round(ret1, 4),
+        "return_3d_pct": safe_round(ret3, 4),
         "return_5d_pct": safe_round(ret5, 4),
+        "return_10d_pct": safe_round(ret10, 4),
         "return_20d_pct": safe_round(ret20, 4),
         "return_60d_pct": safe_round(ret60, 4),
         "return_120d_pct": safe_round(ret120, 4),
         "volume_ratio_20d": safe_round(last.get("rvol20"), 4),
+        "volume_ratio_3d_vs_20d": safe_round(last.get("rvol3_20"), 4),
         "range_position_0_1": safe_round(last.get("range_pos"), 4),
         "range_position_20d_0_1": safe_round(last.get("close_pos20"), 4),
         "compression_20d_pct": safe_round(metrics.get("compression_20d_pct"), 4),
@@ -1062,6 +1293,7 @@ def score_equity_item(
         "score_pts": score_pts,
         "score_before_penalty_0_1": round(score01_before_penalty, 6),
         "score_after_penalty_0_1": round(score01_after_penalty, 6),
+        "score_after_flow_0_1": round(score01_after_flow, 6),
         "classification": classification,
         "triage": triage,
         "archetype": archetype,
@@ -1075,6 +1307,8 @@ def score_equity_item(
             "relative_strength": round(rs_score * 16, 4),
             "entry_timing": round(entry_score * 15, 4),
             "market_regime": round(regime_score * 3, 4),
+            "abnormal_flow_boost": round(flow_boost * 100, 4),
+            "abnormal_distribution_penalty": round(-flow_distribution_penalty * 100, 4),
             "penalty": round(-penalty * 100, 4),
             "raw_score": round(score01_before_penalty * 100, 4),
         },
@@ -1096,7 +1330,12 @@ def score_equity_item(
             "market_regime": WEIGHTS["market_regime"],
         },
         "relative_metrics": relative_metrics,
-        "penalty_details": penalty_details,
+        "volume_flow": volume_flow,
+        "penalty_details": {
+            **penalty_details,
+            "abnormal_flow_boost": safe_round(flow_boost, 6),
+            "abnormal_distribution_penalty": safe_round(flow_distribution_penalty, 6),
+        },
         "flags": flags,
         "liquidity_status": metrics.get("liquidity_status"),
         "liquidity_flags": metrics.get("liquidity_flags") or [],
@@ -1257,6 +1496,8 @@ def main() -> int:
                 "Very low liquidity cannot become Trade.",
                 "Extended 5D/20D moves are capped and usually Watch, not Trade.",
                 "Weak close on volume is penalized.",
+                "Abnormal accumulation can lift a candidate into Discovery Watch, not automatically Trade.",
+                "Abnormal distribution is penalized and blocks Trade/Watch promotion.",
                 "Trade/Watch/Ignore is separated from rank.",
             ],
         },
