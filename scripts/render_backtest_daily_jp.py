@@ -224,6 +224,54 @@ def horizon_key(h: Any) -> str:
     return f"{int(h)}d"
 
 
+def parse_horizon_key(value: Any, fallback: int = 5) -> int:
+    if value is None:
+        return fallback
+    text = str(value).strip().lower().replace("d", "")
+    try:
+        return int(text)
+    except Exception:
+        return fallback
+
+
+def evaluation_design(summary: dict[str, Any], payload: dict[str, Any] | None = None) -> dict[str, Any]:
+    payload = payload or {}
+    if not isinstance(summary, dict):
+        return {}
+    design = summary.get("evaluation_design") or payload.get("evaluation_design") or {}
+    return design if isinstance(design, dict) else {}
+
+
+def primary_horizon_from_summary(summary: dict[str, Any], horizons: list[int]) -> int:
+    design = evaluation_design(summary)
+    h = parse_horizon_key(design.get("primary_horizon"), 5)
+    if h in horizons:
+        return h
+    if 5 in horizons:
+        return 5
+    return max(horizons) if horizons else 5
+
+
+def core_horizons_from_summary(summary: dict[str, Any], horizons: list[int]) -> list[int]:
+    design = evaluation_design(summary)
+    raw = design.get("daily_core_horizons") or []
+    parsed = [parse_horizon_key(x, -1) for x in raw]
+    out = [h for h in parsed if h in horizons]
+    if out:
+        return out
+    return [h for h in [1, 3, 5, 10] if h in horizons]
+
+
+def reference_horizons_from_summary(summary: dict[str, Any], horizons: list[int]) -> list[int]:
+    design = evaluation_design(summary)
+    raw = design.get("reference_horizons") or []
+    parsed = [parse_horizon_key(x, -1) for x in raw]
+    out = [h for h in parsed if h in horizons]
+    if out:
+        return out
+    return [h for h in [20] if h in horizons]
+
+
 def stat_for(summary_section: dict[str, Any], h: Any) -> dict[str, Any]:
     key = horizon_key(h)
     stat = summary_section.get(key) or {}
@@ -342,7 +390,7 @@ def get_pullback(row: dict[str, Any], horizon: int = 20) -> float | None:
     return as_float((row.get("worst_pullback_pct") or {}).get(horizon_key(horizon)))
 
 
-def normalize_signal_rows(items: list[dict[str, Any]], horizons: list[int]) -> dict[str, list[dict[str, Any]]]:
+def normalize_signal_rows(items: list[dict[str, Any]], horizons: list[int], primary_horizon: int) -> dict[str, list[dict[str, Any]]]:
     if not items:
         return {
             "recent": [],
@@ -350,8 +398,6 @@ def normalize_signal_rows(items: list[dict[str, Any]], horizons: list[int]) -> d
             "top_alpha": [],
             "worst": [],
         }
-
-    primary_horizon = 20 if 20 in horizons else max(horizons)
 
     def enrich(row: dict[str, Any]) -> dict[str, Any]:
         r = dict(row)
@@ -404,55 +450,54 @@ def normalize_signal_rows(items: list[dict[str, Any]], horizons: list[int]) -> d
     }
 
 
-def make_insights(summary: dict[str, Any], horizons: list[int]) -> list[dict[str, Any]]:
+def make_insights(summary: dict[str, Any], horizons: list[int], primary_horizon: int, core_horizons: list[int]) -> list[dict[str, Any]]:
     insights: list[dict[str, Any]] = []
-
     overall = summary.get("overall") or {}
-
-    best_horizon = None
-    best_return = None
-
-    for h in horizons:
-        key = horizon_key(h)
-        stat = overall.get(key) or {}
-        avg_return = as_float(stat.get("avg_return_pct"))
-        if avg_return is None:
-            continue
-        if best_return is None or avg_return > best_return:
-            best_return = avg_return
-            best_horizon = key.upper()
-
-    if best_horizon is not None:
-        insights.append(
-            {
-                "label": "Best overall horizon",
-                "value": best_horizon,
-                "detail": f"{fmt_pct(best_return)} avg return",
-                "class": value_class(best_return),
-            }
-        )
-
     by_triage = summary.get("by_triage") or {}
-    trade_20 = stat_for(by_triage.get("Trade") or {}, 20)
-    watch_20 = stat_for(by_triage.get("Watch") or {}, 20)
+    mh = summary.get("model_health") or {}
 
-    if trade_20.get("count"):
+    primary_stat = overall.get(horizon_key(primary_horizon)) or {}
+    if primary_stat:
         insights.append(
             {
-                "label": "Trade 20D avg",
-                "value": fmt_pct(trade_20.get("avg_return_pct")),
-                "detail": f"{fmt_pct(trade_20.get('avg_alpha_pct'))} alpha",
-                "class": value_class(trade_20.get("avg_return_pct")),
+                "label": f"Primary {primary_horizon}D avg",
+                "value": fmt_pct(primary_stat.get("avg_return_pct")),
+                "detail": f"{fmt_pct(primary_stat.get('avg_alpha_pct'))} alpha / {fmt_pct(primary_stat.get('win_rate_pct'), signed=False)} win",
+                "class": value_class(primary_stat.get("avg_return_pct")),
             }
         )
 
-    if watch_20.get("count"):
+    trade_primary = stat_for(by_triage.get("Trade") or {}, primary_horizon)
+    if trade_primary.get("count"):
         insights.append(
             {
-                "label": "Watch 20D avg",
-                "value": fmt_pct(watch_20.get("avg_return_pct")),
-                "detail": f"{fmt_pct(watch_20.get('avg_alpha_pct'))} alpha",
-                "class": value_class(watch_20.get("avg_return_pct")),
+                "label": f"Trade {primary_horizon}D avg",
+                "value": fmt_pct(trade_primary.get("avg_return_pct")),
+                "detail": f"{fmt_pct(trade_primary.get('avg_alpha_pct'))} alpha",
+                "class": value_class(trade_primary.get("avg_return_pct")),
+            }
+        )
+
+    checks = ((summary.get("model_diagnostics") or {}).get("cross_horizon_consistency") or {})
+    core_count = checks.get("core_horizon_count") or len(core_horizons)
+    trade_beats = checks.get("trade_beats_ignore_core_horizons")
+    if core_count:
+        insights.append(
+            {
+                "label": "Core short-term edge",
+                "value": f"{trade_beats or 0}/{core_count}",
+                "detail": "Trade beats Ignore across Daily core horizons",
+                "class": "value-up" if trade_beats and trade_beats >= max(1, core_count // 2) else "value-down",
+            }
+        )
+
+    if mh:
+        insights.append(
+            {
+                "label": "Model health",
+                "value": mh.get("verdict") or "—",
+                "detail": f"Judged on {str(mh.get('primary_horizon') or horizon_key(primary_horizon)).upper()}, not 20D",
+                "class": status_class(mh.get("verdict")),
             }
         )
 
@@ -471,6 +516,7 @@ def make_insights(summary: dict[str, Any], horizons: list[int]) -> list[dict[str
 
 
 
+
 # -----------------------------------------------------------------------------
 # Diagnostic view models. These are format-only transforms; no performance math.
 # -----------------------------------------------------------------------------
@@ -482,7 +528,7 @@ def make_model_health_view(summary: dict[str, Any]) -> dict[str, Any]:
         {
             "label": "Verdict",
             "value": mh.get("verdict") or "Insufficient",
-            "detail": f"Primary horizon: {str(mh.get('primary_horizon') or '—').upper()}",
+            "detail": f"Primary short-term horizon: {str(mh.get('primary_horizon') or '—').upper()}",
             "class": status_class(mh.get("verdict")),
         },
         {
@@ -634,6 +680,8 @@ def make_diagnostic_rows(summary: dict[str, Any]) -> list[dict[str, Any]]:
         rows.append(
             {
                 "horizon": hk.upper(),
+                "role": str(item.get("role") or "secondary").title(),
+                "role_class": "role-primary" if item.get("role") == "primary" else "role-core" if item.get("role") == "core" else "role-reference" if item.get("role") == "reference" else "role-secondary",
                 "trade_minus_ignore_alpha_pct": item.get("trade_minus_ignore_alpha_pct"),
                 "watch_minus_ignore_alpha_pct": item.get("watch_minus_ignore_alpha_pct"),
                 "trade_minus_ignore_median_alpha_pct": item.get("trade_minus_ignore_median_alpha_pct"),
@@ -654,7 +702,7 @@ def render() -> None:
     if payload.get("schema_version") != "backtest-daily-jp-v1":
         raise ValueError(f"Unexpected schema_version: {payload.get('schema_version')}")
 
-    horizons = [int(h) for h in payload.get("horizons") or [1, 5, 10, 20]]
+    horizons = [int(h) for h in payload.get("horizons") or [1, 3, 5, 10, 20]]
     summary = payload.get("summary") or {}
     items = payload.get("items") or []
     date_states = payload.get("date_states") or []
@@ -671,15 +719,23 @@ def render() -> None:
 
     template = env.get_template(TEMPLATE_HTML)
 
+    primary_horizon = primary_horizon_from_summary(summary, horizons)
+    core_horizons = core_horizons_from_summary(summary, horizons)
+    reference_horizons = reference_horizons_from_summary(summary, horizons)
+
     overall_rows = make_overall_rows(summary, horizons)
     group_sections = make_group_sections(summary, horizons)
-    signal_rows = normalize_signal_rows(items, horizons)
-    insights = make_insights(summary, horizons)
+    signal_rows = normalize_signal_rows(items, horizons, primary_horizon)
+    insights = make_insights(summary, horizons, primary_horizon, core_horizons)
 
     rendered = template.render(
         payload=payload,
         summary=summary,
         horizons=horizons,
+        primary_horizon=primary_horizon,
+        core_horizons=core_horizons,
+        reference_horizons=reference_horizons,
+        evaluation_design=evaluation_design(summary, payload),
         overall_rows=overall_rows,
         group_sections=group_sections,
         insights=insights,
