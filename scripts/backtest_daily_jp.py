@@ -70,17 +70,69 @@ MODE = os.getenv("BACKTEST_MODE", "incremental").strip().lower()
 BACKTEST_START = os.getenv("BACKTEST_START", "").strip()
 BACKTEST_END = os.getenv("BACKTEST_END", "").strip()
 
-HORIZONS = [
+HORIZONS = sorted({
     int(x.strip())
-    for x in os.getenv("BACKTEST_HORIZONS", "1,5,10,20").split(",")
+    for x in os.getenv("BACKTEST_HORIZONS", "1,3,5,10,20").split(",")
     if x.strip()
-]
+})
+
+DAILY_PRIMARY_HORIZON = int(os.getenv("BACKTEST_PRIMARY_HORIZON", "5"))
+DAILY_CORE_HORIZONS = sorted({
+    int(x.strip())
+    for x in os.getenv("BACKTEST_CORE_HORIZONS", "1,3,5,10").split(",")
+    if x.strip()
+})
+DAILY_REFERENCE_HORIZONS = sorted({
+    int(x.strip())
+    for x in os.getenv("BACKTEST_REFERENCE_HORIZONS", "20").split(",")
+    if x.strip()
+})
+
+if DAILY_PRIMARY_HORIZON not in HORIZONS:
+    HORIZONS = sorted(set(HORIZONS + [DAILY_PRIMARY_HORIZON]))
 
 MIN_HISTORY_BARS = int(os.getenv("BACKTEST_MIN_HISTORY_BARS", "80"))
 RANK_LIMIT = int(os.getenv("BACKTEST_RANK_LIMIT", "50"))
 MAX_EVAL_DATES_INCREMENTAL = int(os.getenv("BACKTEST_MAX_EVAL_DATES", "5"))
 
 TZ = ZoneInfo("Asia/Tokyo")
+
+
+def available_horizons(candidates: list[int] | tuple[int, ...] | set[int]) -> list[int]:
+    return [h for h in sorted({int(x) for x in candidates}) if h in HORIZONS]
+
+
+def primary_horizon() -> int:
+    if DAILY_PRIMARY_HORIZON in HORIZONS:
+        return DAILY_PRIMARY_HORIZON
+    core = available_horizons(DAILY_CORE_HORIZONS)
+    if core:
+        return max(core)
+    return max(HORIZONS)
+
+
+def primary_horizon_key() -> str:
+    return f"{primary_horizon()}d"
+
+
+def core_horizon_keys() -> list[str]:
+    core = available_horizons(DAILY_CORE_HORIZONS)
+    return [f"{h}d" for h in core]
+
+
+def reference_horizon_keys() -> list[str]:
+    refs = available_horizons(DAILY_REFERENCE_HORIZONS)
+    return [f"{h}d" for h in refs]
+
+
+def horizon_role(h: int) -> str:
+    if h == primary_horizon():
+        return "primary"
+    if h in set(DAILY_CORE_HORIZONS):
+        return "core"
+    if h in set(DAILY_REFERENCE_HORIZONS):
+        return "reference"
+    return "secondary"
 
 
 def now_jst() -> datetime:
@@ -797,8 +849,7 @@ def build_rank_bucket_performance(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def build_outlier_analysis(rows: list[dict[str, Any]]) -> dict[str, Any]:
-    primary_h = 20 if 20 in HORIZONS else max(HORIZONS)
-    primary_key = f"{primary_h}d"
+    primary_key = primary_horizon_key()
     valid = rows_with_metric(rows, "future_returns_pct", primary_key)
 
     ranked = sorted(
@@ -882,8 +933,7 @@ def build_outlier_analysis(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def build_repeated_symbol_analysis(rows: list[dict[str, Any]]) -> dict[str, Any]:
-    primary_h = 20 if 20 in HORIZONS else max(HORIZONS)
-    primary_key = f"{primary_h}d"
+    primary_key = primary_horizon_key()
     valid = rows_with_metric(rows, "future_returns_pct", primary_key)
 
     by_symbol: dict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -975,6 +1025,8 @@ def build_model_diagnostics(summary: dict[str, Any], outlier_analysis: dict[str,
     by_triage = summary.get("by_triage") or {}
     by_score_band = summary.get("by_score_band") or {}
     score_order = ["800+", "700-799", "600-699", "500-599", "<500"]
+    core_keys = set(core_horizon_keys())
+    reference_keys = set(reference_horizon_keys())
 
     horizon_checks: dict[str, Any] = {}
     for h in HORIZONS:
@@ -993,6 +1045,9 @@ def build_model_diagnostics(summary: dict[str, Any], outlier_analysis: dict[str,
         score_medians = ordered_band_values(by_score_band, score_order, hk, "median_alpha_pct")
 
         horizon_checks[hk] = {
+            "role": horizon_role(h),
+            "is_core_daily_horizon": hk in core_keys,
+            "is_reference_horizon": hk in reference_keys,
             "trade_avg_alpha_pct": safe_round(trade_alpha, 4),
             "watch_avg_alpha_pct": safe_round(watch_alpha, 4),
             "ignore_avg_alpha_pct": safe_round(ignore_alpha, 4),
@@ -1005,32 +1060,43 @@ def build_model_diagnostics(summary: dict[str, Any], outlier_analysis: dict[str,
             "score_band_median_alpha_monotonicity": monotonic_check(score_medians, "descending"),
         }
 
+    core_checks = {k: v for k, v in horizon_checks.items() if v.get("is_core_daily_horizon")}
+    reference_checks = {k: v for k, v in horizon_checks.items() if v.get("is_reference_horizon")}
+
+    def positive_count(container: dict[str, Any], field: str) -> int:
+        return sum(
+            1 for v in container.values()
+            if (to_float(v.get(field)) is not None and to_float(v.get(field)) > 0)
+        )
+
     consistency = {
-        "trade_beats_ignore_horizons": sum(
-            1 for v in horizon_checks.values()
-            if (to_float(v.get("trade_minus_ignore_alpha_pct")) is not None and to_float(v.get("trade_minus_ignore_alpha_pct")) > 0)
-        ),
-        "watch_beats_ignore_horizons": sum(
-            1 for v in horizon_checks.values()
-            if (to_float(v.get("watch_minus_ignore_alpha_pct")) is not None and to_float(v.get("watch_minus_ignore_alpha_pct")) > 0)
-        ),
-        "score_band_pass_horizons": sum(
-            1 for v in horizon_checks.values()
+        "daily_core_horizons": list(core_checks.keys()),
+        "reference_horizons": list(reference_checks.keys()),
+        "trade_beats_ignore_core_horizons": positive_count(core_checks, "trade_minus_ignore_alpha_pct"),
+        "watch_beats_ignore_core_horizons": positive_count(core_checks, "watch_minus_ignore_alpha_pct"),
+        "score_band_pass_core_horizons": sum(
+            1 for v in core_checks.values()
             if ((v.get("score_band_avg_alpha_monotonicity") or {}).get("status") == "Pass")
         ),
-        "horizon_count": len(HORIZONS),
+        "core_horizon_count": len(core_checks),
+        "reference_horizon_count": len(reference_checks),
+        "trade_beats_ignore_all_horizons": positive_count(horizon_checks, "trade_minus_ignore_alpha_pct"),
+        "watch_beats_ignore_all_horizons": positive_count(horizon_checks, "watch_minus_ignore_alpha_pct"),
+        "all_horizon_count": len(horizon_checks),
     }
 
     return {
+        "primary_horizon": primary_horizon_key(),
+        "daily_core_horizons": list(core_checks.keys()),
+        "reference_horizons": list(reference_checks.keys()),
         "horizon_checks": horizon_checks,
         "cross_horizon_consistency": consistency,
         "outlier_warning": outlier_analysis.get("average_return_distortion_warning"),
+        "evaluation_note": "Daily model health is judged on 1D/3D/5D/10D, with 5D as the primary horizon. 20D is a reference horizon for decay/durability, not the main pass/fail target.",
     }
 
-
 def build_model_health(summary: dict[str, Any], outlier_analysis: dict[str, Any], repeated_symbol_analysis: dict[str, Any], model_diagnostics: dict[str, Any]) -> dict[str, Any]:
-    primary_h = 20 if 20 in HORIZONS else max(HORIZONS)
-    primary_key = f"{primary_h}d"
+    primary_key = primary_horizon_key()
     hc = (model_diagnostics.get("horizon_checks") or {}).get(primary_key) or {}
 
     trade_minus_ignore = to_float(hc.get("trade_minus_ignore_alpha_pct"))
@@ -1100,6 +1166,13 @@ def build_summary(rows: list[dict[str, Any]], date_states: list[dict[str, Any]])
         "eval_date_end": eval_dates[-1] if eval_dates else None,
         "signal_count": len(rows),
         "horizons": HORIZONS,
+        "evaluation_design": {
+            "model": "Daily short-term trading",
+            "primary_horizon": primary_horizon_key(),
+            "daily_core_horizons": core_horizon_keys(),
+            "reference_horizons": reference_horizon_keys(),
+            "primary_note": "5D is the main Daily evaluation horizon. 1D/3D/10D are core short-term confirmation horizons. 20D is reference only for decay/durability, not the main pass/fail target.",
+        },
         "overall": {
             f"{h}d": enhanced_stats_for_rows(rows, f"{h}d")
             for h in HORIZONS
@@ -1250,6 +1323,7 @@ def main() -> int:
         "source_prices": safe_relative(PRICES_JSON),
         "source_prices_generated_at": prices_payload.get("generated_at"),
         "horizons": HORIZONS,
+        "evaluation_design": summary.get("evaluation_design"),
         "min_history_bars": MIN_HISTORY_BARS,
         "rank_limit": RANK_LIMIT,
         "range": {
