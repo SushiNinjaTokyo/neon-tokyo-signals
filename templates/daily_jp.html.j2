@@ -4,16 +4,18 @@
   <meta charset="utf-8"/>
   <title>Daily Japan Signals | Neon Tokyo Signals</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Daily Japan equity signals after the Tokyo close. Top 20 short-term trading candidates ranked by volume shock, compression release, breakout quality, relative strength and entry discipline."/>
+  <meta name="description" content="Daily Japan equity signal board after the Tokyo close. Top 20 short-term decision board with actionable signals, blocked high-score names, market tape and risk controls."/>
   <meta name="theme-color" content="#050711"/>
   <link rel="stylesheet" href="/assets/daily_jp.css?v={{ asset_version }}"/>
 </head>
 
 <body>
-<div class="page">
+<div class="page-shell">
   <div class="ambient ambient-a"></div>
   <div class="ambient ambient-b"></div>
+  <div class="ambient ambient-c"></div>
   <div class="grid"></div>
+  <div class="scanline"></div>
 
   <main class="wrap">
     <header class="header">
@@ -34,135 +36,157 @@
       </nav>
     </header>
 
-    <section class="hero">
+    <section class="hero cockpit">
       <div class="hero-copy">
-        <div class="kicker">
-          <span class="live-dot"></span>
-          DAILY JP EVENT SCORE V2 · TOP 20 MAIN BOARD
-        </div>
-
+        <div class="kicker"><span class="live-dot"></span> DAILY JP DECISION BOARD · TOP {{ main_rank_limit }}</div>
         <h1>
-          Tokyo close signals,
-          <span>screened for short-term edge.</span>
+          Decide in five seconds.
+          <span>Then inspect the tape.</span>
         </h1>
-
         <p>
-          The Daily board focuses on the top {{ main_rank_limit }} ranked candidates only.
-          Rank 21–50 is treated as reference, not the core Daily signal set. News is
-          intentionally excluded; this is a price, volume, liquidity and timing layer.
+          A short-term signal board for Japanese equities after the Tokyo close.
+          The model separates actionable Trade/Watch candidates from high-score names
+          blocked by timing, liquidity or risk controls. News is intentionally excluded.
         </p>
+
+        <div class="verdict-card verdict-{{ setup_quality.verdict_tone }}">
+          <div>
+            <span>Today’s model verdict</span>
+            <strong>{{ setup_quality.verdict }}</strong>
+          </div>
+          <p>{{ setup_quality.verdict_text }}</p>
+        </div>
       </div>
 
-      <aside class="summary-card">
-        <div class="summary-label">TOP SIGNAL</div>
+      <aside class="hero-panels">
+        <article class="hero-panel action-panel">
+          <div class="panel-label">ACTIONABLE SIGNAL</div>
+          {% if actionable_signal %}
+            <div class="ticker-row">
+              <strong>{{ actionable_signal.symbol }}</strong>
+              <span class="tag triage-{{ (actionable_signal.triage or 'unknown') | lower }}">{{ actionable_signal.triage }}</span>
+            </div>
+            <div class="panel-name">{{ actionable_signal.name }}</div>
+            <div class="panel-score">{{ actionable_signal.score_display }} <span>pts</span></div>
+            <div class="decision-line">{{ actionable_signal.decision_label }}</div>
+            <p>{{ actionable_signal.decision_reason }}</p>
+          {% else %}
+            <div class="ticker-row no-action"><strong>NO TRADE</strong><span class="tag triage-ignore">Capital first</span></div>
+            <div class="panel-name">No Trade/Watch candidate cleared the daily decision rules.</div>
+            <div class="panel-score muted">0 <span>actionable</span></div>
+            <p>Use the blocked list as a watchlist, not as a trade list.</p>
+          {% endif %}
+        </article>
 
-        {% if summary.top_symbol %}
-          <div class="summary-symbol">{{ summary.top_symbol }}</div>
-          <div class="summary-name">{{ summary.top_name }}</div>
-
-          <div class="summary-score">
-            {% if summary.top_score_pts %}
-              {{ summary.top_score_pts }}
-              <span>pts / {{ summary.top_score | fmt_score }} score</span>
-            {% else %}
-              {{ summary.top_score | fmt_score }}
-              <span>score</span>
-            {% endif %}
-          </div>
-
-          <div class="summary-tags">
-            <span class="tag triage-{{ (summary.top_triage or 'Unknown') | lower }}">
-              {{ summary.top_triage or "—" }}
-            </span>
-            <span class="tag">{{ summary.top_archetype or "Mixed" }}</span>
-            <span class="tag">{{ summary.top_classification or "No Signal" }}</span>
-          </div>
-        {% else %}
-          <div class="summary-symbol">NO DATA</div>
-          <div class="summary-name">Daily signal JSON has not been generated yet.</div>
-        {% endif %}
+        <article class="hero-panel score-panel">
+          <div class="panel-label">HIGHEST SCORE</div>
+          {% if highest_score_item %}
+            <div class="ticker-row">
+              <strong>{{ highest_score_item.symbol }}</strong>
+              <span class="tag triage-{{ (highest_score_item.triage or 'unknown') | lower }}">{{ highest_score_item.triage }}</span>
+            </div>
+            <div class="panel-name">{{ highest_score_item.name }}</div>
+            <div class="panel-score">{{ highest_score_item.score_display }} <span>pts</span></div>
+            <div class="decision-line">{{ highest_score_item.decision_label }}</div>
+            <p>{{ highest_score_item.decision_reason }}</p>
+          {% else %}
+            <div class="ticker-row no-action"><strong>NO DATA</strong></div>
+            <p>Daily signal JSON has not been generated yet.</p>
+          {% endif %}
+        </article>
       </aside>
     </section>
 
     <section class="meta-strip">
-      <div>
-        <span>Generated</span>
-        <strong>{{ generated_at or "—" }}</strong>
-      </div>
-      <div>
-        <span>Price Data</span>
-        <strong>{{ source_prices_generated_at or "—" }}</strong>
-      </div>
-      <div>
-        <span>Regime</span>
-        <strong>{{ payload.regime or "—" }}</strong>
-      </div>
-      <div>
-        <span>Universe</span>
-        <strong>{{ summary.items_count or all_items|length }} names</strong>
-      </div>
+      <div><span>Generated</span><strong>{{ generated_at or "—" }}</strong></div>
+      <div><span>Price Data</span><strong>{{ source_prices_generated_at or "—" }}</strong></div>
+      <div><span>Regime</span><strong>{{ payload.regime or "—" }}</strong></div>
+      <div><span>Universe</span><strong>{{ summary.items_count or all_items|length }} names</strong></div>
     </section>
 
-    <section class="triage-strip" aria-label="Triage summary">
-      <div class="triage-box trade">
+    <section class="decision-summary" aria-label="5-second daily decision summary">
+      <article class="summary-tile trade">
         <span>Trade</span>
         <strong>{{ setup_quality.trade_count }}</strong>
-        <em>Main Top {{ main_rank_limit }}</em>
-      </div>
-      <div class="triage-box watch">
+        <em>Full threshold</em>
+      </article>
+      <article class="summary-tile watch">
         <span>Watch</span>
         <strong>{{ setup_quality.watch_count }}</strong>
-        <em>Main Top {{ main_rank_limit }}</em>
-      </div>
-      <div class="triage-box ignore">
-        <span>Ignore</span>
-        <strong>{{ setup_quality.ignore_count }}</strong>
-        <em>Main Top {{ main_rank_limit }}</em>
-      </div>
-      <div class="triage-box regime">
-        <span>Market Regime</span>
-        <strong>{{ payload.regime or "Neutral" }}</strong>
-        <em>Tokyo close context</em>
-      </div>
+        <em>Actionable monitor</em>
+      </article>
+      <article class="summary-tile blocked">
+        <span>Blocked High Score</span>
+        <strong>{{ setup_quality.blocked_high_count }}</strong>
+        <em>Score ≥ {{ blocked_score_floor }}</em>
+      </article>
+      <article class="summary-tile danger">
+        <span>Risk Warnings</span>
+        <strong>{{ setup_quality.risk_count }}</strong>
+        <em>Top {{ main_rank_limit }}</em>
+      </article>
+      <article class="summary-tile favored">
+        <span>Favored Setups</span>
+        <strong>{{ setup_quality.favored_count }}</strong>
+        <em>RS / Compression</em>
+      </article>
     </section>
 
-    <section class="quality-map" aria-label="Daily signal quality map">
+    <section class="visual-board">
       <div class="section-heading split-heading">
         <div>
-          <div class="kicker">SETUP QUALITY MAP</div>
-          <h2>What matters today.</h2>
+          <div class="kicker">5-SECOND READ</div>
+          <h2>Actionability before detail.</h2>
         </div>
-        <div class="method-chip">Primary board: Rank 1–{{ main_rank_limit }} · Reference: Rank {{ main_rank_limit + 1 }}–{{ reference_limit }}</div>
+        <div class="method-chip">Primary Daily lens: 1D / 3D / 5D / 10D · 20D reference only</div>
       </div>
 
-      <div class="quality-grid">
-        <article class="quality-card good">
-          <span>Favored Setups</span>
-          <strong>{{ setup_quality.favored_count }}</strong>
-          <p>Relative Strength, Compression + Breakout, or Volume + Compression with no major bad-flow flag.</p>
+      <div class="visual-grid">
+        <article class="visual-card">
+          <div class="visual-title">Triage mix</div>
+          <div class="stacked-bar" aria-label="Triage distribution">
+            {% for bar in bar_data.triage_bars %}
+              <span class="seg seg-{{ bar.label|lower }}" style="width:{{ bar.width }}%"></span>
+            {% endfor %}
+          </div>
+          <div class="bar-legend">
+            {% for bar in bar_data.triage_bars %}
+              <span><i class="dot dot-{{ bar.label|lower }}"></i>{{ bar.label }} {{ bar.count }}</span>
+            {% endfor %}
+          </div>
         </article>
-        <article class="quality-card danger">
-          <span>Risk Flags</span>
-          <strong>{{ setup_quality.risk_count }}</strong>
-          <p>Volume breakout risk, abnormal distribution, volume noise, weak close, or cap warnings.</p>
+
+        <article class="visual-card">
+          <div class="visual-title">Score distribution</div>
+          <div class="score-bars">
+            {% for bar in bar_data.score_bars %}
+              <div>
+                <span>{{ bar.label }}</span>
+                <i style="width:{{ bar.width }}%"></i>
+                <strong>{{ bar.count }}</strong>
+              </div>
+            {% endfor %}
+          </div>
         </article>
-        <article class="quality-card main">
-          <span>Main Board</span>
-          <strong>{{ setup_quality.main_count }}</strong>
-          <p>Top {{ main_rank_limit }} names shown as the Daily decision set.</p>
-        </article>
-        <article class="quality-card ref">
-          <span>Reference</span>
-          <strong>{{ setup_quality.reference_count }}</strong>
-          <p>Rank {{ main_rank_limit + 1 }}–{{ reference_limit }} is intentionally de-emphasized.</p>
+
+        <article class="visual-card">
+          <div class="visual-title">Board role</div>
+          <div class="role-meter">
+            <div><strong>{{ main_items|length }}</strong><span>Main Top {{ main_rank_limit }}</span></div>
+            <div><strong>{{ reference_items|length }}</strong><span>Reference 21–{{ reference_limit }}</span></div>
+          </div>
+          <p>Rank 21–50 is intentionally not treated as the main Daily decision set.</p>
         </article>
       </div>
     </section>
 
-    <section class="pulse-section" aria-label="JP market pulse">
-      <div class="section-heading">
-        <div class="kicker">JP MARKET PULSE</div>
-        <h2>Market regime before individual signals.</h2>
+    <section class="market-section">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">MARKET CONTEXT</div>
+          <h2>Broad trend versus short-term tape.</h2>
+        </div>
+        <div class="method-chip">Avoid reading Risk-On when the short-term tape is weak</div>
       </div>
 
       <div class="pulse-grid">
@@ -171,27 +195,15 @@
             <div class="pulse-top">
               <div>
                 <div class="pulse-label">{{ pulse.label }}</div>
-                <div class="pulse-regime">{{ pulse.regime }}</div>
+                <div class="pulse-regime">{{ pulse.broad_trend }}</div>
               </div>
-              <div class="pulse-score">
-                {{ pulse.pulse_score_0_100 | fmt_score }}
-                <span>pulse</span>
-              </div>
+              <div class="pulse-score">{{ pulse.pulse_score_0_100 | fmt_score }}<span>pulse</span></div>
             </div>
-
+            <div class="tape-badge">{{ pulse.short_tape }}</div>
             <div class="pulse-metrics">
-              <div>
-                <span>1D</span>
-                <strong class="{{ pulse.return_1d_class }}">{{ pulse.return_1d_pct | fmt_pct }}</strong>
-              </div>
-              <div>
-                <span>5D</span>
-                <strong class="{{ pulse.return_5d_class }}">{{ pulse.return_5d_pct | fmt_pct }}</strong>
-              </div>
-              <div>
-                <span>20D</span>
-                <strong class="{{ pulse.return_20d_class }}">{{ pulse.return_20d_pct | fmt_pct }}</strong>
-              </div>
+              <div><span>1D</span><strong class="{{ pulse.return_1d_class }}">{{ pulse.return_1d_pct | fmt_pct }}</strong></div>
+              <div><span>5D Tape</span><strong class="{{ pulse.return_5d_class }}">{{ pulse.return_5d_pct | fmt_pct }}</strong></div>
+              <div><span>20D Trend</span><strong class="{{ pulse.return_20d_class }}">{{ pulse.return_20d_pct | fmt_pct }}</strong></div>
             </div>
           </article>
         {% else %}
@@ -200,196 +212,138 @@
       </div>
     </section>
 
-    <section class="ranking-section">
+    <section class="actionable-section">
       <div class="section-heading split-heading">
         <div>
-          <div class="kicker">MAIN DAILY BOARD</div>
-          <h2>Top {{ main_rank_limit }} candidates, not a broad watchlist.</h2>
+          <div class="kicker">ACTIONABLE BOARD</div>
+          <h2>Trade and Watch candidates only.</h2>
         </div>
-        <div class="method-chip">5D short-term model · News excluded</div>
+        <div class="method-chip">Ignore is not a mistake; it means the trigger did not clear</div>
       </div>
 
-      <div class="cards">
-        {% for item in main_items %}
-          <article class="signal-card {{ item.score_class }} triage-card-{{ (item.triage or 'unknown') | lower }}{% if item.has_risk_flag %} has-risk{% endif %}{% if item.has_good_setup %} has-good{% endif %}">
+      <div class="cards action-cards">
+        {% for item in actionable_items %}
+          <article class="signal-card action-card {{ item.score_class }} triage-card-{{ (item.triage or 'unknown') | lower }} {% if item.has_good_flags %}has-good{% endif %} {% if item.has_risk_flags %}has-risk{% endif %}">
             <div class="card-top">
               <div class="rank">#{{ item.rank }}</div>
-              <div class="score">
-                {% if item.score_pts %}{{ item.score_pts }}<span>pts</span>{% else %}{{ item.score | fmt_score }}<span>score</span>{% endif %}
-              </div>
+              <div class="score">{{ item.score_display }}<span>pts</span></div>
             </div>
-
             <div class="signal-tags">
-              <span class="tag triage-{{ (item.triage or 'unknown') | lower }}">{{ item.triage or "—" }}</span>
+              <span class="tag triage-{{ (item.triage or 'unknown') | lower }}">{{ item.triage }}</span>
               <span class="tag">{{ item.archetype or "Mixed" }}</span>
               <span class="tag {{ item.liquidity_class }}">{{ item.liquidity_band }}</span>
-              <span class="tag risk-{{ (item.risk_level or 'unknown') | lower }}">Risk: {{ item.risk_level or "—" }}</span>
             </div>
-
-            {% if item.has_good_setup or item.has_risk_flag %}
-              <div class="signal-diagnostics">
-                {% if item.has_good_setup %}
-                  <span class="diag good">{{ item.good_flag_label }}</span>
-                {% endif %}
-                {% if item.has_risk_flag %}
-                  <span class="diag danger">{{ item.risk_flag_label }}</span>
-                {% endif %}
-              </div>
-            {% endif %}
-
-            <div class="symbol-row">
-              <h3>{{ item.symbol }}</h3>
-              <span class="bucket">{{ item.bucket }}</span>
-            </div>
-
+            <div class="symbol-row"><h3>{{ item.symbol }}</h3><span class="bucket">{{ item.bucket }}</span></div>
             <div class="name">{{ item.name }}</div>
             <div class="theme">{{ item.theme }}</div>
-
-            <div class="classification">{{ item.classification }}</div>
-
-            {% if item.reason_short %}
-              <div class="reason">{{ item.reason_short }}</div>
-            {% endif %}
-
+            <div class="decision-box"><strong>{{ item.decision_label }}</strong><span>{{ item.decision_reason }}</span></div>
             <div class="metric-grid">
-              <div>
-                <span>1D</span>
-                <strong class="{{ item.return_1d_class }}">{{ item.return_1d_pct | fmt_pct }}</strong>
-              </div>
-              <div>
-                <span>5D</span>
-                <strong class="{{ item.return_5d_class }}">{{ item.return_5d_pct | fmt_pct }}</strong>
-              </div>
-              <div>
-                <span>20D Ref</span>
-                <strong class="{{ item.return_20d_class }}">{{ item.return_20d_pct | fmt_pct }}</strong>
-              </div>
-              <div>
-                <span>RVOL</span>
-                <strong>{{ item.volume_ratio_20d | fmt_score }}</strong>
-              </div>
-              <div>
-                <span>Avg Value</span>
-                <strong>{{ item.avg_traded_value_20d_jpy | fmt_jpy }}</strong>
-              </div>
-              <div>
-                <span>52W High</span>
-                <strong>{{ item.distance_from_52w_high_pct | fmt_pct }}</strong>
-              </div>
+              <div><span>1D</span><strong class="{{ item.return_1d_class }}">{{ item.return_1d_pct | fmt_pct }}</strong></div>
+              <div><span>5D</span><strong class="{{ item.return_5d_class }}">{{ item.return_5d_pct | fmt_pct }}</strong></div>
+              <div><span>10D</span><strong class="{{ item.return_10d_class }}">{{ item.return_10d_pct | fmt_pct }}</strong></div>
+              <div><span>RVOL</span><strong>{{ item.volume_ratio_20d | fmt_score }}</strong></div>
+              <div><span>Avg Value</span><strong>{{ item.avg_traded_value_20d_jpy | fmt_jpy }}</strong></div>
+              <div><span>Risk</span><strong class="{{ item.risk_class }}">{{ item.risk_level }}</strong></div>
             </div>
-
             <div class="component-bars">
-              <div><span>Volume</span><i style="width: {{ item.component_widths.volume }}%"></i></div>
-              <div><span>Compression</span><i style="width: {{ item.component_widths.compression }}%"></i></div>
-              <div><span>Breakout</span><i style="width: {{ item.component_widths.breakout }}%"></i></div>
-              <div><span>RS</span><i style="width: {{ item.component_widths.rs }}%"></i></div>
-              <div><span>Entry</span><i style="width: {{ item.component_widths.entry }}%"></i></div>
+              <div><span>Volume</span><i style="width:{{ item.component_widths.volume }}%"></i></div>
+              <div><span>Compression</span><i style="width:{{ item.component_widths.compression }}%"></i></div>
+              <div><span>Breakout</span><i style="width:{{ item.component_widths.breakout }}%"></i></div>
+              <div><span>RS</span><i style="width:{{ item.component_widths.relative_strength }}%"></i></div>
+              <div><span>Entry</span><i style="width:{{ item.component_widths.entry }}%"></i></div>
             </div>
-
             <div class="flags">
-              {% for flag in item.good_flags[:3] %}<span class="good">{{ flag | flag_label }}</span>{% endfor %}
-              {% for flag in item.risk_flags[:3] %}<span class="danger">{{ flag | flag_label }}</span>{% endfor %}
-              {% for flag in item.neutral_flags[:4] %}<span>{{ flag | flag_label }}</span>{% endfor %}
-            </div>
-
-            <div class="risk-row">
-              <span>{{ item.source }}</span>
-              <span>{{ item.latest_date or item.as_of }}</span>
+              {% for flag in item.good_flags[:4] %}<span class="good">{{ flag }}</span>{% endfor %}
+              {% for flag in item.risk_flags[:4] %}<span class="danger">{{ flag }}</span>{% endfor %}
             </div>
           </article>
         {% else %}
-          <article class="empty-card">No Daily signals have been generated yet.</article>
+          <article class="empty-card action-empty">
+            <strong>No actionable Trade/Watch today.</strong>
+            <span>The model did not find a short-term setup strong enough to act on. Review blocked high-score names only as a watchlist.</span>
+          </article>
         {% endfor %}
       </div>
     </section>
 
-    <section class="insight-lanes">
-      <div class="lane-card favored">
-        <div class="section-heading compact">
-          <div class="kicker">FAVORED SETUPS</div>
-          <h2>Good technical structure inside Top {{ main_rank_limit }}.</h2>
+    <section class="blocked-section">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">BLOCKED HIGH SCORE</div>
+          <h2>Strong names that still failed the action trigger.</h2>
         </div>
-        <div class="mini-list">
-          {% for item in favored_items %}
-            <div class="mini-row">
-              <strong>#{{ item.rank }} {{ item.symbol }}</strong>
-              <span>{{ item.good_flag_label }}</span>
-              <em>{{ item.triage }} · {{ item.score_pts }} pts</em>
-            </div>
-          {% else %}
-            <div class="mini-empty">No favored setup flags in the main board today.</div>
-          {% endfor %}
-        </div>
+        <div class="method-chip">This is the highest-value watchlist for tomorrow</div>
       </div>
 
-      <div class="lane-card warning">
-        <div class="section-heading compact">
-          <div class="kicker">RISK WARNINGS</div>
-          <h2>Patterns the backtest says to distrust.</h2>
-        </div>
-        <div class="mini-list">
-          {% for item in risk_items %}
-            <div class="mini-row danger">
-              <strong>#{{ item.rank }} {{ item.symbol }}</strong>
-              <span>{{ item.risk_flag_label }}</span>
-              <em>{{ item.triage }} · {{ item.score_pts }} pts</em>
+      <div class="cards compact-cards">
+        {% for item in blocked_high_score_items %}
+          <article class="signal-card blocked-card {{ item.score_class }} {% if item.has_good_flags %}has-good{% endif %} {% if item.has_risk_flags %}has-risk{% endif %}">
+            <div class="card-top">
+              <div class="rank">#{{ item.rank }}</div>
+              <div class="score">{{ item.score_display }}<span>pts</span></div>
             </div>
-          {% else %}
-            <div class="mini-empty">No major risk flags in the main board today.</div>
-          {% endfor %}
-        </div>
+            <div class="symbol-row"><h3>{{ item.symbol }}</h3><span class="tag triage-ignore">Blocked</span></div>
+            <div class="name">{{ item.name }}</div>
+            <div class="decision-box"><strong>{{ item.decision_label }}</strong><span>{{ item.decision_reason }}</span></div>
+            <div class="mini-metrics">
+              <span class="{{ item.return_1d_class }}">1D {{ item.return_1d_pct | fmt_pct }}</span>
+              <span class="{{ item.return_5d_class }}">5D {{ item.return_5d_pct | fmt_pct }}</span>
+              <span>{{ item.liquidity_band }}</span>
+            </div>
+            <div class="flags">
+              {% for flag in item.good_flags[:3] %}<span class="good">{{ flag }}</span>{% endfor %}
+              {% for flag in item.risk_flags[:3] %}<span class="danger">{{ flag }}</span>{% endfor %}
+            </div>
+          </article>
+        {% else %}
+          <article class="empty-card">No high-score blocked names today.</article>
+        {% endfor %}
       </div>
     </section>
 
-    <section class="table-section">
+    <section class="main-board-section">
       <div class="section-heading split-heading">
         <div>
-          <div class="kicker">MAIN RANKING TABLE</div>
-          <h2>Top {{ main_rank_limit }} scored JP equities.</h2>
+          <div class="kicker">MAIN DAILY BOARD</div>
+          <h2>Top {{ main_rank_limit }} ranked candidates.</h2>
         </div>
-        <div class="method-chip">Risk flags are shown explicitly</div>
+        <div class="method-chip">Decision-first table · not a buy list</div>
       </div>
 
-      <div class="table-wrap">
+      <div class="table-wrap decision-table">
         <table>
           <thead>
             <tr>
               <th>Rank</th>
-              <th>Triage</th>
+              <th>Decision</th>
               <th>Symbol</th>
               <th>Name</th>
               <th>Score</th>
               <th>Archetype</th>
-              <th>Quality</th>
-              <th>Liquidity</th>
+              <th>Setup / Blocker</th>
               <th>1D</th>
               <th>5D</th>
-              <th>20D Ref</th>
               <th>RVOL</th>
-              <th>Avg Value</th>
+              <th>Liquidity</th>
               <th>Risk</th>
             </tr>
           </thead>
           <tbody>
             {% for item in main_items %}
-              <tr class="{% if item.has_risk_flag %}row-risk{% elif item.has_good_setup %}row-good{% endif %}">
+              <tr class="{% if item.triage in ['Trade','Watch'] %}row-action{% elif item.has_risk_flags %}row-risk{% elif item.has_good_flags %}row-good{% endif %}">
                 <td>#{{ item.rank }}</td>
-                <td><span class="mini-tag triage-{{ (item.triage or 'unknown') | lower }}">{{ item.triage or "—" }}</span></td>
+                <td><span class="mini-tag triage-{{ (item.triage or 'unknown') | lower }}">{{ item.triage }}</span></td>
                 <td><strong>{{ item.symbol }}</strong></td>
                 <td>{{ item.name }}</td>
-                <td>{% if item.score_pts %}{{ item.score_pts }}{% else %}{{ item.score | fmt_score }}{% endif %}</td>
-                <td>{{ item.archetype or "Mixed" }}</td>
                 <td>
-                  {% if item.has_risk_flag %}<span class="mini-tag danger">{{ item.risk_flag_label }}</span>
-                  {% elif item.has_good_setup %}<span class="mini-tag good">{{ item.good_flag_label }}</span>
-                  {% else %}<span class="mini-tag">neutral</span>{% endif %}
+                  <div class="score-cell"><strong>{{ item.score_display }}</strong><i style="width:{{ item.score_width }}%"></i></div>
                 </td>
-                <td><span class="mini-tag {{ item.liquidity_class }}">{{ item.liquidity_band }}</span></td>
+                <td>{{ item.archetype or "Mixed" }}</td>
+                <td class="decision-cell">{{ item.decision_label }}</td>
                 <td class="{{ item.return_1d_class }}">{{ item.return_1d_pct | fmt_pct }}</td>
                 <td class="{{ item.return_5d_class }}">{{ item.return_5d_pct | fmt_pct }}</td>
-                <td class="{{ item.return_20d_class }}">{{ item.return_20d_pct | fmt_pct }}</td>
                 <td>{{ item.volume_ratio_20d | fmt_score }}</td>
-                <td>{{ item.avg_traded_value_20d_jpy | fmt_jpy }}</td>
+                <td><span class="liq-pill {{ item.liquidity_class }}">{{ item.liquidity_band }}</span></td>
                 <td class="{{ item.risk_class }}">{{ item.risk_level }}</td>
               </tr>
             {% endfor %}
@@ -398,22 +352,65 @@
       </div>
     </section>
 
+    <section class="insight-lanes-section">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">SETUP INTELLIGENCE</div>
+          <h2>What to lean into, what to avoid.</h2>
+        </div>
+        <div class="method-chip">Labels are translated from internal model flags</div>
+      </div>
+
+      <div class="insight-lanes">
+        <article class="lane-card favored">
+          <div class="lane-head"><span>FAVORED SETUPS</span><strong>{{ favored_items|length }}</strong></div>
+          <div class="mini-list">
+            {% for item in favored_items %}
+              <div class="mini-row good">
+                <strong>#{{ item.rank }} {{ item.symbol }}</strong>
+                <span>{{ item.good_flags[0] }}</span>
+                <em>{{ item.score_display }} pts</em>
+              </div>
+            {% else %}
+              <div class="mini-empty">No favored setup flags in the main board.</div>
+            {% endfor %}
+          </div>
+        </article>
+
+        <article class="lane-card warning">
+          <div class="lane-head"><span>RISK WARNINGS</span><strong>{{ risk_items|length }}</strong></div>
+          <div class="mini-list">
+            {% for item in risk_items %}
+              <div class="mini-row danger">
+                <strong>#{{ item.rank }} {{ item.symbol }}</strong>
+                <span>{{ item.risk_flags[0] }}</span>
+                <em>{{ item.triage }}</em>
+              </div>
+            {% else %}
+              <div class="mini-empty">No risk-control flags in the main board.</div>
+            {% endfor %}
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="reference-section">
       <div class="section-heading split-heading">
         <div>
           <div class="kicker">REFERENCE ONLY</div>
-          <h2>Rank {{ main_rank_limit + 1 }}–{{ reference_limit }} is not the Daily core.</h2>
+          <h2>Rank 21–{{ reference_limit }} is not the core Daily board.</h2>
         </div>
-        <div class="method-chip">Backtest showed quality decay after Rank 20</div>
+        <div class="method-chip">Backtest showed Rank 21–50 quality drops materially</div>
       </div>
+
       <div class="reference-grid">
-        {% for item in reference_items[:12] %}
-          <div class="reference-pill{% if item.has_risk_flag %} risk{% elif item.has_good_setup %} good{% endif %}">
-            <strong>#{{ item.rank }} {{ item.symbol }}</strong>
-            <span>{{ item.triage }} · {{ item.score_pts }} pts · {{ item.archetype }}</span>
+        {% for item in reference_items[:18] %}
+          <div class="reference-pill {% if item.has_risk_flags %}risk{% elif item.has_good_flags %}good{% endif %}">
+            <strong>#{{ item.rank }} {{ item.symbol }} · {{ item.score_display }} pts</strong>
+            <span>{{ item.triage }} · {{ item.archetype or 'Mixed' }} · 5D {{ item.return_5d_pct | fmt_pct }}</span>
           </div>
         {% else %}
-          <div class="empty-card">No reference names available.</div>
+          <article class="empty-card">No reference items available.</article>
         {% endfor %}
       </div>
     </section>
@@ -423,10 +420,11 @@
         <div class="kicker">METHODOLOGY</div>
         <h2>Daily Event Score v2</h2>
         <p>
-          The Daily model is a short-term trading screen. It prioritizes 1D/3D/5D/10D behavior,
-          with 5D as the primary backtest horizon. 20D is shown as a reference horizon only.
+          This page is a short-term decision board, not a generic momentum ranking.
+          The model rewards volume/liquidity shock, compression release, breakout setup,
+          relative strength versus TOPIX and entry timing. It also blocks risky tape patterns
+          such as noisy volume, distribution and volume-breakout exhaustion.
         </p>
-
         <div class="method-grid">
           <div><span>Volume / Liquidity</span><strong>24%</strong></div>
           <div><span>Compression Release</span><strong>22%</strong></div>
@@ -438,12 +436,12 @@
       </div>
 
       <div class="method-card warning">
-        <div class="kicker">CONTROLS</div>
-        <h2>What the latest backtest changed.</h2>
+        <div class="kicker">HOW TO READ</div>
+        <h2>Ignore can be a useful result.</h2>
         <p>
-          Volume + Breakout without compression is treated as exhaustion risk. Relative Strength,
-          Compression + Breakout, and Volume + Compression are favored. Abnormal distribution and
-          volume noise are penalized. Rank 21–50 is reference, not the main Daily decision board.
+          A high-score Ignore is not necessarily bad. It often means the stock has strength,
+          but the model is waiting for a cleaner trigger. Trade and Watch are the only
+          actionable lanes. Blocked names are watchlist material, not buy signals.
         </p>
       </div>
     </section>
@@ -460,11 +458,15 @@
       <span>Informational only. Not investment advice.</span>
       <nav>
         <a href="/">Home</a>
+        <a href="/japan/daily/backtest/">Backtest</a>
         <a href="/privacy/">Privacy</a>
         <a href="/disclaimer/">Disclaimer</a>
       </nav>
     </footer>
   </main>
 </div>
+
+{# Inline macro-like card markup kept here to avoid introducing another template file. #}
+<template id="unused"></template>
 </body>
 </html>
