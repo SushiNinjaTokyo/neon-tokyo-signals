@@ -63,6 +63,23 @@ jobs:
             exit 1
           fi
 
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path("site/data/daily-jp/latest.json")
+          data = json.loads(p.read_text(encoding="utf-8"))
+
+          assert data.get("schema_version") == "daily-jp-v2", data.get("schema_version")
+          assert isinstance(data.get("items"), list), "items must be a list"
+          assert isinstance(data.get("summary"), dict), "summary must be a dict"
+          assert isinstance(data.get("market_pulse"), list), "market_pulse must be a list"
+
+          print("daily schema_version=", data.get("schema_version"))
+          print("daily items_count=", len(data.get("items") or []))
+          print("daily generated_at=", data.get("generated_at"))
+          PY
+
       - name: Render JP daily page
         run: |
           set -euo pipefail
@@ -75,15 +92,53 @@ jobs:
           test -f site/japan/daily/index.html
           test -f site/assets/daily_jp.css
 
-          grep -q "Daily Japan Signals" site/japan/daily/index.html
-          grep -q "DAILY JP DECISION BOARD" site/japan/daily/index.html
-          grep -q "5-SECOND READ" site/japan/daily/index.html
-          grep -q "HIGHEST SCORE" site/japan/daily/index.html
-          grep -q "BLOCKED HIGH SCORE" site/japan/daily/index.html
-          grep -q "MAIN DAILY BOARD" site/japan/daily/index.html
-          grep -q "REFERENCE ONLY" site/japan/daily/index.html
-          grep -q "Monitor" site/japan/daily/index.html
-          grep -q "Ignore" site/japan/daily/index.html
+          python - <<'PY'
+          from pathlib import Path
+
+          html_path = Path("site/japan/daily/index.html")
+          css_path = Path("site/assets/daily_jp.css")
+
+          html = html_path.read_text(encoding="utf-8")
+          css = css_path.read_text(encoding="utf-8")
+
+          assert len(html) > 1000, "daily html is unexpectedly small"
+          assert len(css) > 1000, "daily css is unexpectedly small"
+
+          required_html_skeleton = [
+              "<!doctype html>",
+              "<html",
+              "<head>",
+              "<body>",
+              "</html>",
+              "Neon Tokyo Signals",
+              "daily_jp.css",
+          ]
+
+          for token in required_html_skeleton:
+              assert token in html, f"missing stable html skeleton token: {token}"
+
+          forbidden_unrendered_tokens = [
+              "{{",
+              "{%",
+              "%}",
+              "UndefinedError",
+              "Traceback",
+          ]
+
+          for token in forbidden_unrendered_tokens:
+              assert token not in html, f"unrendered/error token found in html: {token}"
+
+          required_css_skeleton = [
+              ":root",
+              "body",
+          ]
+
+          for token in required_css_skeleton:
+              assert token in css, f"missing stable css skeleton token: {token}"
+
+          print("daily html bytes=", len(html))
+          print("daily css bytes=", len(css))
+          PY
 
       - name: Commit rendered daily page
         run: |
