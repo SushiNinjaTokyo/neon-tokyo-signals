@@ -1,6 +1,6 @@
 {
   "schema_version": "daily-jp-v2",
-  "generated_at": "2026-05-18T14:13:01+09:00",
+  "generated_at": "2026-05-18T14:15:52+09:00",
   "market": "JP",
   "timezone": "Asia/Tokyo",
   "source_prices": "site/data/prices-jp/latest.json",
@@ -22,6 +22,8 @@
     "important_controls": [
       "Low volume without daily confirmation caps final score.",
       "Very low liquidity cannot become Trade.",
+      "Daily main board focuses on top 20. Rank 21-50 remains reference/discovery only.",
+      "Volume + Breakout without compression is treated as exhaustion risk and cannot become Trade by itself.",
       "Extended 5D/20D moves are capped and usually Watch, not Trade.",
       "Weak close on volume is penalized.",
       "Abnormal accumulation can lift a candidate into Discovery Watch, not automatically Trade.",
@@ -177,7 +179,10 @@
         "entry_timing": 11.6264,
         "market_regime": 3.0,
         "abnormal_flow_boost": 2.8937,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -0.0,
         "raw_score": 42.7404
       },
@@ -190,7 +195,10 @@
         "market_regime": 1.0,
         "penalty": 0.0,
         "abnormal_flow_boost": 0.028937,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.664314,
@@ -219,6 +227,7 @@
         "confidence": "medium",
         "boost_0_1": 0.028937,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9778,
         "rvol3_20": 0.9308,
         "ret1_pct": 3.0186,
@@ -245,7 +254,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.028937,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -255,6 +275,8 @@
         "post_catalyst_digestion",
         "discovery_watch_candidate"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -302,18 +324,18 @@
       "extension_sma20_pct": 7.6979,
       "extension_sma50_pct": 7.4054,
       "distance_from_52w_high_pct": -25.1256,
-      "score": 53.18,
-      "score_0_1": 0.531806,
-      "score_pts": 532,
+      "score": 55.16,
+      "score_0_1": 0.551571,
+      "score_pts": 552,
       "score_before_penalty_0_1": 0.531806,
       "score_after_penalty_0_1": 0.531806,
-      "score_after_flow_0_1": 0.531806,
+      "score_after_flow_0_1": 0.551571,
       "classification": "No Signal",
       "triage": "Ignore",
       "archetype": "Volume",
       "risk_level": "Normal",
       "regime": "Risk-on",
-      "reason": "RVOL 1.23x; relative strength",
+      "reason": "RVOL 1.23x; relative strength; favored relative strength",
       "components": {
         "volume_shock": 14.7971,
         "compression": 2.0019,
@@ -322,7 +344,10 @@
         "entry_timing": 11.3693,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 1.9766,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -0.0,
         "raw_score": 53.1806
       },
@@ -335,7 +360,10 @@
         "market_regime": 1.0,
         "penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.019766,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.616547,
@@ -364,6 +392,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.229,
         "rvol3_20": 1.5856,
         "ret1_pct": 3.8328,
@@ -390,14 +419,28 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.019766,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": true,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.019766,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
         "liquid_enough",
         "above_key_mas",
-        "rs_60d_leader"
+        "rs_60d_leader",
+        "favored_relative_strength"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -465,7 +508,10 @@
         "entry_timing": 9.6065,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -0.0,
         "raw_score": 52.2116
       },
@@ -478,7 +524,10 @@
         "market_regime": 1.0,
         "penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.468544,
@@ -507,6 +556,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.2805,
         "rvol3_20": 0.9708,
         "ret1_pct": -0.3108,
@@ -533,7 +583,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -542,6 +603,8 @@
         "above_key_mas",
         "rs_60d_leader"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -609,7 +672,10 @@
         "entry_timing": 10.9379,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -0.0,
         "raw_score": 44.3178
       },
@@ -622,7 +688,10 @@
         "market_regime": 1.0,
         "penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.585202,
@@ -651,6 +720,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9068,
         "rvol3_20": 0.7777,
         "ret1_pct": 1.2107,
@@ -677,7 +747,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -685,6 +766,8 @@
         "compressed_setup",
         "rs_60d_leader"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -752,7 +835,10 @@
         "entry_timing": 7.0895,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -10.0,
         "raw_score": 47.8582
       },
@@ -765,7 +851,10 @@
         "market_regime": 1.0,
         "penalty": 0.1,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.380594,
@@ -794,6 +883,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9079,
         "rvol3_20": 0.8047,
         "ret1_pct": -2.5716,
@@ -820,7 +910,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -831,6 +932,8 @@
         "no_daily_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -898,7 +1001,10 @@
         "entry_timing": 9.3148,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -10.0,
         "raw_score": 46.9845
       },
@@ -911,7 +1017,10 @@
         "market_regime": 1.0,
         "penalty": 0.1,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.410209,
@@ -940,6 +1049,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9192,
         "rvol3_20": 0.753,
         "ret1_pct": -1.7773,
@@ -966,7 +1076,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -978,6 +1099,8 @@
         "no_daily_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -1045,7 +1168,10 @@
         "entry_timing": 12.108,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -6.0,
         "raw_score": 41.1979
       },
@@ -1058,7 +1184,10 @@
         "market_regime": 1.0,
         "penalty": 0.06,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.705727,
@@ -1087,6 +1216,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.0265,
         "rvol3_20": 1.071,
         "ret1_pct": 4.1812,
@@ -1113,7 +1243,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -1121,6 +1262,8 @@
         "rs_60d_leader",
         "weak_5d_momentum"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -1188,7 +1331,10 @@
         "entry_timing": 6.2309,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -10.0,
         "raw_score": 42.6264
       },
@@ -1201,7 +1347,10 @@
         "market_regime": 1.0,
         "penalty": 0.1,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.244298,
@@ -1230,6 +1379,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.5877,
         "rvol3_20": 0.5811,
         "ret1_pct": -0.8986,
@@ -1256,7 +1406,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "liquid_enough",
@@ -1267,6 +1428,8 @@
         "score_cap_weak_volume",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "Tradable",
+      "liquidity_score_0_1": 0.78,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -1334,7 +1497,10 @@
         "entry_timing": 3.925,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -18.841,
         "raw_score": 50.9517
       },
@@ -1347,7 +1513,10 @@
         "market_regime": 1.0,
         "penalty": 0.18841,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.633018,
@@ -1376,6 +1545,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.704,
         "rvol3_20": 1.4543,
         "ret1_pct": 2.3892,
@@ -1402,7 +1572,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "volume_expansion",
@@ -1415,6 +1596,8 @@
         "weak_close_on_volume",
         "red_close_on_volume"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -1482,7 +1665,10 @@
         "entry_timing": 9.5932,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -6.0,
         "raw_score": 36.4777
       },
@@ -1495,7 +1681,10 @@
         "market_regime": 1.0,
         "penalty": 0.06,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.598441,
@@ -1524,6 +1713,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9253,
         "rvol3_20": 0.988,
         "ret1_pct": 0.2053,
@@ -1550,7 +1740,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -1558,6 +1759,8 @@
         "rs_60d_leader",
         "weak_5d_momentum"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -1625,7 +1828,10 @@
         "entry_timing": 9.3144,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -16.0,
         "raw_score": 43.7218
       },
@@ -1638,7 +1844,10 @@
         "market_regime": 1.0,
         "penalty": 0.16,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.384467,
@@ -1667,6 +1876,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.6118,
         "rvol3_20": 0.6655,
         "ret1_pct": -0.1682,
@@ -1693,7 +1903,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -1706,6 +1927,8 @@
         "score_cap_low_volume_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -1773,7 +1996,10 @@
         "entry_timing": 6.6092,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -16.0,
         "raw_score": 43.4253
       },
@@ -1786,7 +2012,10 @@
         "market_regime": 1.0,
         "penalty": 0.16,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.374766,
@@ -1815,6 +2044,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.7945,
         "rvol3_20": 0.705,
         "ret1_pct": -0.4333,
@@ -1841,7 +2071,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -1854,6 +2095,8 @@
         "score_cap_low_volume_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -1921,7 +2164,10 @@
         "entry_timing": 6.646,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -6.0,
         "raw_score": 33.3687
       },
@@ -1934,7 +2180,10 @@
         "market_regime": 1.0,
         "penalty": 0.06,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.397975,
@@ -1963,6 +2212,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.1028,
         "rvol3_20": 0.7992,
         "ret1_pct": -7.2857,
@@ -1989,7 +2239,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -1998,6 +2259,8 @@
         "rs_60d_leader",
         "weak_5d_momentum"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -2065,7 +2328,10 @@
         "entry_timing": 12.4106,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -16.0,
         "raw_score": 43.2395
       },
@@ -2078,7 +2344,10 @@
         "market_regime": 1.0,
         "penalty": 0.16,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.44323,
@@ -2107,6 +2376,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.5791,
         "rvol3_20": 0.8565,
         "ret1_pct": 3.6967,
@@ -2133,7 +2403,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "above_key_mas",
@@ -2142,6 +2423,8 @@
         "weak_5d_momentum",
         "score_cap_weak_volume"
       ],
+      "liquidity_band": "Thin",
+      "liquidity_score_0_1": 0.42,
       "liquidity_status": "penalty",
       "liquidity_flags": [
         "avg_traded_value_20d_below_300m_jpy"
@@ -2155,156 +2438,6 @@
     },
     {
       "rank": 15,
-      "symbol": "269A.T",
-      "name": "Sapeet",
-      "theme": "Expert AI and Human AI",
-      "bucket": "Discovery",
-      "priority": "B",
-      "market": "JP",
-      "currency": "JPY",
-      "source": "yfinance",
-      "source_symbol": "269A.T",
-      "as_of": "2026-05-15",
-      "latest_date": "2026-05-15",
-      "price": 2648.0,
-      "latest_close": 2648.0,
-      "volume": 57200,
-      "latest_volume": 57200,
-      "latest_traded_value_jpy": 151465600.0,
-      "avg_traded_value_20d_jpy": 23298670.0,
-      "return_1d_pct": -1.1202,
-      "return_3d_pct": -1.2309,
-      "return_5d_pct": 1.9638,
-      "return_10d_pct": 13.3077,
-      "return_20d_pct": 20.1997,
-      "return_60d_pct": 20.3636,
-      "return_120d_pct": 14.9805,
-      "volume_ratio_20d": 6.2754,
-      "volume_ratio_3d_vs_20d": 2.7756,
-      "range_position_0_1": 0.5725,
-      "range_position_20d_0_1": 0.6489,
-      "compression_20d_pct": 24.7356,
-      "bb_width20_pct": 22.059,
-      "bb_width_pct63": 0.5079,
-      "atr_pct": 4.9282,
-      "atr_pct_rank63": 0.6667,
-      "extension_sma20_pct": 7.2,
-      "extension_sma50_pct": 15.0764,
-      "distance_from_52w_high_pct": -28.3356,
-      "score": 26.5,
-      "score_0_1": 0.26501,
-      "score_pts": 265,
-      "score_before_penalty_0_1": 0.56501,
-      "score_after_penalty_0_1": 0.26501,
-      "score_after_flow_0_1": 0.26501,
-      "classification": "Low Liquidity",
-      "triage": "Ignore",
-      "archetype": "Relative Strength",
-      "risk_level": "High",
-      "regime": "Risk-on",
-      "reason": "relative strength; volume noise; very low liquidity; penalty drag",
-      "components": {
-        "volume_shock": 13.2215,
-        "compression": 8.1281,
-        "breakout_quality": 11.107,
-        "relative_strength": 10.9855,
-        "entry_timing": 10.0589,
-        "market_regime": 3.0,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": -0.0,
-        "penalty": -30.0,
-        "raw_score": 56.501
-      },
-      "v2_components": {
-        "volume_liquidity_shock": 0.550896,
-        "compression_release": 0.369461,
-        "breakout_setup_quality": 0.555351,
-        "relative_strength": 0.686594,
-        "entry_timing": 0.670592,
-        "market_regime": 1.0,
-        "penalty": 0.3,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
-      },
-      "score_components": {
-        "volume_anomaly": 0.550896,
-        "compression_release": 0.369461,
-        "trends_breakout": 0.555351,
-        "relative_strength": 0.686594,
-        "entry_timing": 0.670592,
-        "market_regime": 1.0
-      },
-      "score_weights": {
-        "volume_anomaly": 0.24,
-        "compression_release": 0.22,
-        "trends_breakout": 0.2,
-        "relative_strength": 0.16,
-        "entry_timing": 0.15,
-        "market_regime": 0.03
-      },
-      "relative_metrics": {
-        "rs_vs_topix_5d_pct": 0.9783,
-        "rs_vs_topix_20d_pct": 16.375,
-        "rs_vs_topix_60d_pct": 110.3097,
-        "rs_vs_topix_120d_pct": 103.3422
-      },
-      "volume_flow": {
-        "signal": "volume_noise",
-        "confidence": "low",
-        "boost_0_1": 0.0,
-        "distribution_penalty_0_1": 0.0,
-        "rvol20": 6.2754,
-        "rvol3_20": 2.7756,
-        "ret1_pct": -1.1202,
-        "ret3_pct": -1.2309,
-        "ret5_pct": 1.9638,
-        "ret10_pct": 13.3077,
-        "ret20_pct": 20.1997,
-        "range_pos_0_1": 0.5725,
-        "close_pos20_0_1": 0.6489,
-        "close_pos50_0_1": 0.7316,
-        "sufficient_today_value": true,
-        "sufficient_avg_value": false,
-        "high_today_value": false,
-        "high_avg_value": false,
-        "post_catalyst_digestion": false,
-        "above_sma20": true
-      },
-      "penalty_details": {
-        "liquidity_penalty": 0.22,
-        "low_price_penalty": 0.0,
-        "extension_penalty": 0.0,
-        "weak_close_penalty": 0.08,
-        "no_confirmation_penalty": 0.0,
-        "watch_bucket_penalty": 0.0,
-        "partial_data_penalty": 0.0,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
-      },
-      "flags": [
-        "major_volume_shock",
-        "compression_release",
-        "above_key_mas",
-        "rs_20d_positive",
-        "rs_60d_leader",
-        "very_low_liquidity",
-        "red_close_on_volume",
-        "volume_noise",
-        "score_cap_very_low_liquidity"
-      ],
-      "liquidity_status": "exclude_or_watch",
-      "liquidity_flags": [
-        "avg_traded_value_20d_below_100m_jpy"
-      ],
-      "is_partial": false,
-      "bars_count": 344,
-      "date_start": "2024-12-11",
-      "date_end": "2026-05-15",
-      "warnings": [],
-      "source_errors": []
-    },
-    {
-      "rank": 16,
       "symbol": "6981.T",
       "name": "Murata Manufacturing",
       "theme": "Electronic Components",
@@ -2361,7 +2494,10 @@
         "entry_timing": 3.4659,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -18.3111,
         "raw_score": 44.4439
       },
@@ -2374,7 +2510,10 @@
         "market_regime": 1.0,
         "penalty": 0.183111,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.410043,
@@ -2403,6 +2542,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9713,
         "rvol3_20": 0.9232,
         "ret1_pct": -2.9658,
@@ -2429,7 +2569,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -2442,6 +2593,8 @@
         "no_daily_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -2452,7 +2605,7 @@
       "source_errors": []
     },
     {
-      "rank": 17,
+      "rank": 16,
       "symbol": "5802.T",
       "name": "Sumitomo Electric",
       "theme": "Data Center and Power Infrastructure",
@@ -2509,7 +2662,10 @@
         "entry_timing": 7.3324,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -18.0,
         "raw_score": 42.3249
       },
@@ -2522,7 +2678,10 @@
         "market_regime": 1.0,
         "penalty": 0.18,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.434132,
@@ -2551,6 +2710,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.4149,
         "rvol3_20": 1.5508,
         "ret1_pct": -9.2937,
@@ -2577,7 +2737,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "volume_expansion",
@@ -2588,6 +2759,8 @@
         "weak_close_on_volume",
         "red_close_on_volume"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -2598,7 +2771,7 @@
       "source_errors": []
     },
     {
-      "rank": 18,
+      "rank": 17,
       "symbol": "7011.T",
       "name": "Mitsubishi Heavy Industries",
       "theme": "Defense Energy and Aerospace",
@@ -2655,7 +2828,10 @@
         "entry_timing": 8.2807,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -6.0,
         "raw_score": 29.0578
       },
@@ -2668,7 +2844,10 @@
         "market_regime": 1.0,
         "penalty": 0.06,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.456151,
@@ -2697,6 +2876,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.004,
         "rvol3_20": 1.2516,
         "ret1_pct": -1.9702,
@@ -2723,7 +2903,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -2731,6 +2922,8 @@
         "rs_60d_leader",
         "weak_5d_momentum"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -2741,7 +2934,7 @@
       "source_errors": []
     },
     {
-      "rank": 19,
+      "rank": 18,
       "symbol": "6701.T",
       "name": "NEC",
       "theme": "IT Defense and Communications",
@@ -2798,7 +2991,10 @@
         "entry_timing": 7.3924,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -10.0,
         "raw_score": 32.4374
       },
@@ -2811,7 +3007,10 @@
         "market_regime": 1.0,
         "penalty": 0.1,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.392085,
@@ -2840,6 +3039,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.83,
         "rvol3_20": 0.7691,
         "ret1_pct": -1.1114,
@@ -2866,7 +3066,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -2876,6 +3087,8 @@
         "no_daily_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -2886,7 +3099,7 @@
       "source_errors": []
     },
     {
-      "rank": 20,
+      "rank": 19,
       "symbol": "6857.T",
       "name": "Advantest",
       "theme": "Semiconductor Test",
@@ -2943,7 +3156,10 @@
         "entry_timing": 6.5185,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -16.0,
         "raw_score": 37.7459
       },
@@ -2956,7 +3172,10 @@
         "market_regime": 1.0,
         "penalty": 0.16,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.373094,
@@ -2985,6 +3204,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9244,
         "rvol3_20": 0.784,
         "ret1_pct": -7.8805,
@@ -3011,7 +3231,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -3022,6 +3253,8 @@
         "weak_5d_momentum",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -3032,670 +3265,90 @@
       "source_errors": []
     },
     {
-      "rank": 21,
-      "symbol": "5574.T",
-      "name": "ABEJA",
-      "theme": "Enterprise AI Platform",
-      "bucket": "Discovery",
-      "priority": "A",
-      "market": "JP",
-      "currency": "JPY",
-      "source": "yfinance",
-      "source_symbol": "5574.T",
-      "as_of": "2026-05-15",
-      "latest_date": "2026-05-15",
-      "price": 2649.0,
-      "latest_close": 2649.0,
-      "volume": 99700,
-      "latest_volume": 99700,
-      "latest_traded_value_jpy": 264105300.0,
-      "avg_traded_value_20d_jpy": 436803530.0,
-      "return_1d_pct": -1.1936,
-      "return_3d_pct": 1.5721,
-      "return_5d_pct": -2.1064,
-      "return_10d_pct": 8.8779,
-      "return_20d_pct": -13.9935,
-      "return_60d_pct": -13.4314,
-      "return_120d_pct": -4.8833,
-      "volume_ratio_20d": 0.6233,
-      "volume_ratio_3d_vs_20d": 0.6397,
-      "range_position_0_1": 0.25,
-      "range_position_20d_0_1": 0.2758,
-      "compression_20d_pct": 31.0683,
-      "bb_width20_pct": 25.761,
-      "bb_width_pct63": 0.8254,
-      "atr_pct": 3.9179,
-      "atr_pct_rank63": 0.0794,
-      "extension_sma20_pct": -1.0607,
-      "extension_sma50_pct": -6.9318,
-      "distance_from_52w_high_pct": -42.7862,
-      "score": 18.76,
-      "score_0_1": 0.187648,
-      "score_pts": 188,
-      "score_before_penalty_0_1": 0.287648,
-      "score_after_penalty_0_1": 0.187648,
-      "score_after_flow_0_1": 0.187648,
-      "classification": "No Signal",
-      "triage": "Ignore",
-      "archetype": "Mixed",
-      "risk_level": "Normal",
-      "regime": "Risk-on",
-      "reason": "no daily confirmation",
-      "components": {
-        "volume_shock": 5.2265,
-        "compression": 6.2838,
-        "breakout_quality": 1.2085,
-        "relative_strength": 4.7524,
-        "entry_timing": 8.2936,
-        "market_regime": 3.0,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": -0.0,
-        "penalty": -10.0,
-        "raw_score": 28.7648
-      },
-      "v2_components": {
-        "volume_liquidity_shock": 0.21777,
-        "compression_release": 0.285628,
-        "breakout_setup_quality": 0.060424,
-        "relative_strength": 0.297027,
-        "entry_timing": 0.552907,
-        "market_regime": 1.0,
-        "penalty": 0.1,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
-      },
-      "score_components": {
-        "volume_anomaly": 0.21777,
-        "compression_release": 0.285628,
-        "trends_breakout": 0.060424,
-        "relative_strength": 0.297027,
-        "entry_timing": 0.552907,
-        "market_regime": 1.0
-      },
-      "score_weights": {
-        "volume_anomaly": 0.24,
-        "compression_release": 0.22,
-        "trends_breakout": 0.2,
-        "relative_strength": 0.16,
-        "entry_timing": 0.15,
-        "market_regime": 0.03
-      },
-      "relative_metrics": {
-        "rs_vs_topix_5d_pct": -3.0919,
-        "rs_vs_topix_20d_pct": -17.8182,
-        "rs_vs_topix_60d_pct": 76.5147,
-        "rs_vs_topix_120d_pct": 83.4784
-      },
-      "volume_flow": {
-        "signal": "none",
-        "confidence": "none",
-        "boost_0_1": 0.0,
-        "distribution_penalty_0_1": 0.0,
-        "rvol20": 0.6233,
-        "rvol3_20": 0.6397,
-        "ret1_pct": -1.1936,
-        "ret3_pct": 1.5721,
-        "ret5_pct": -2.1064,
-        "ret10_pct": 8.8779,
-        "ret20_pct": -13.9935,
-        "range_pos_0_1": 0.25,
-        "close_pos20_0_1": 0.2758,
-        "close_pos50_0_1": 0.2486,
-        "sufficient_today_value": true,
-        "sufficient_avg_value": true,
-        "high_today_value": false,
-        "high_avg_value": true,
-        "post_catalyst_digestion": false,
-        "above_sma20": false
-      },
-      "penalty_details": {
-        "liquidity_penalty": 0.0,
-        "low_price_penalty": 0.0,
-        "extension_penalty": 0.0,
-        "weak_close_penalty": 0.0,
-        "no_confirmation_penalty": 0.1,
-        "watch_bucket_penalty": 0.0,
-        "partial_data_penalty": 0.0,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
-      },
-      "flags": [
-        "liquid_enough",
-        "compressed_setup",
-        "rs_60d_leader",
-        "no_daily_confirmation",
-        "score_cap_low_volume_confirmation",
-        "score_cap_no_daily_confirmation"
-      ],
-      "liquidity_status": "ok",
-      "liquidity_flags": [],
-      "is_partial": false,
-      "bars_count": 344,
-      "date_start": "2024-12-11",
-      "date_end": "2026-05-15",
-      "warnings": [],
-      "source_errors": []
-    },
-    {
-      "rank": 22,
-      "symbol": "7012.T",
-      "name": "Kawasaki Heavy Industries",
-      "theme": "Defense Aerospace and Energy",
-      "bucket": "Core",
-      "priority": "A",
-      "market": "JP",
-      "currency": "JPY",
-      "source": "yfinance",
-      "source_symbol": "7012.T",
-      "as_of": "2026-05-15",
-      "latest_date": "2026-05-15",
-      "price": 3048.0,
-      "latest_close": 3048.0,
-      "volume": 13209800,
-      "latest_volume": 13209800,
-      "latest_traded_value_jpy": 40263470400.0,
-      "avg_traded_value_20d_jpy": 49965574975.0,
-      "return_1d_pct": -3.6053,
-      "return_3d_pct": -10.115,
-      "return_5d_pct": -6.6748,
-      "return_10d_pct": -1.4549,
-      "return_20d_pct": -8.8789,
-      "return_60d_pct": -14.4301,
-      "return_120d_pct": 44.5235,
-      "volume_ratio_20d": 0.8552,
-      "volume_ratio_3d_vs_20d": 1.112,
-      "range_position_0_1": 0.1546,
-      "range_position_20d_0_1": 0.1431,
-      "compression_20d_pct": 16.5026,
-      "bb_width20_pct": 14.8302,
-      "bb_width_pct63": 0.1587,
-      "atr_pct": 6.414,
-      "atr_pct_rank63": 0.9683,
-      "extension_sma20_pct": -5.0571,
-      "extension_sma50_pct": -5.0964,
-      "distance_from_52w_high_pct": -19.0653,
-      "score": 16.3,
-      "score_0_1": 0.162995,
-      "score_pts": 163,
-      "score_before_penalty_0_1": 0.322995,
-      "score_after_penalty_0_1": 0.162995,
-      "score_after_flow_0_1": 0.162995,
-      "classification": "No Signal",
-      "triage": "Ignore",
-      "archetype": "Mixed",
-      "risk_level": "Normal",
-      "regime": "Risk-on",
-      "reason": "no daily confirmation",
-      "components": {
-        "volume_shock": 9.0977,
-        "compression": 6.4204,
-        "breakout_quality": 2.3415,
-        "relative_strength": 4.48,
-        "entry_timing": 6.9601,
-        "market_regime": 3.0,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": -0.0,
-        "penalty": -16.0,
-        "raw_score": 32.2995
-      },
-      "v2_components": {
-        "volume_liquidity_shock": 0.379069,
-        "compression_release": 0.291835,
-        "breakout_setup_quality": 0.117073,
-        "relative_strength": 0.28,
-        "entry_timing": 0.464004,
-        "market_regime": 1.0,
-        "penalty": 0.16,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
-      },
-      "score_components": {
-        "volume_anomaly": 0.379069,
-        "compression_release": 0.291835,
-        "trends_breakout": 0.117073,
-        "relative_strength": 0.28,
-        "entry_timing": 0.464004,
-        "market_regime": 1.0
-      },
-      "score_weights": {
-        "volume_anomaly": 0.24,
-        "compression_release": 0.22,
-        "trends_breakout": 0.2,
-        "relative_strength": 0.16,
-        "entry_timing": 0.15,
-        "market_regime": 0.03
-      },
-      "relative_metrics": {
-        "rs_vs_topix_5d_pct": -7.6603,
-        "rs_vs_topix_20d_pct": -12.7036,
-        "rs_vs_topix_60d_pct": 75.5159,
-        "rs_vs_topix_120d_pct": 132.8852
-      },
-      "volume_flow": {
-        "signal": "none",
-        "confidence": "none",
-        "boost_0_1": 0.0,
-        "distribution_penalty_0_1": 0.0,
-        "rvol20": 0.8552,
-        "rvol3_20": 1.112,
-        "ret1_pct": -3.6053,
-        "ret3_pct": -10.115,
-        "ret5_pct": -6.6748,
-        "ret10_pct": -1.4549,
-        "ret20_pct": -8.8789,
-        "range_pos_0_1": 0.1546,
-        "close_pos20_0_1": 0.1431,
-        "close_pos50_0_1": 0.2362,
-        "sufficient_today_value": true,
-        "sufficient_avg_value": true,
-        "high_today_value": true,
-        "high_avg_value": true,
-        "post_catalyst_digestion": false,
-        "above_sma20": false
-      },
-      "penalty_details": {
-        "liquidity_penalty": 0.0,
-        "low_price_penalty": 0.0,
-        "extension_penalty": 0.0,
-        "weak_close_penalty": 0.0,
-        "no_confirmation_penalty": 0.16,
-        "watch_bucket_penalty": 0.0,
-        "partial_data_penalty": 0.0,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
-      },
-      "flags": [
-        "large_traded_value",
-        "liquid_enough",
-        "compressed_setup",
-        "rs_60d_leader",
-        "no_daily_confirmation",
-        "weak_5d_momentum",
-        "score_cap_no_daily_confirmation"
-      ],
-      "liquidity_status": "ok",
-      "liquidity_flags": [],
-      "is_partial": false,
-      "bars_count": 344,
-      "date_start": "2024-12-11",
-      "date_end": "2026-05-15",
-      "warnings": [],
-      "source_errors": []
-    },
-    {
-      "rank": 23,
-      "symbol": "3905.T",
-      "name": "Data Section",
-      "theme": "AI Infrastructure and Data Center",
-      "bucket": "Discovery",
-      "priority": "A",
-      "market": "JP",
-      "currency": "JPY",
-      "source": "yfinance",
-      "source_symbol": "3905.T",
-      "as_of": "2026-05-15",
-      "latest_date": "2026-05-15",
-      "price": 2343.0,
-      "latest_close": 2343.0,
-      "volume": 2238800,
-      "latest_volume": 2238800,
-      "latest_traded_value_jpy": 5245508400.0,
-      "avg_traded_value_20d_jpy": 3627250630.0,
-      "return_1d_pct": 9.0275,
-      "return_3d_pct": 4.1333,
-      "return_5d_pct": 12.1589,
-      "return_10d_pct": 59.7137,
-      "return_20d_pct": 71.9002,
-      "return_60d_pct": 13.7931,
-      "return_120d_pct": -12.5746,
-      "volume_ratio_20d": 1.2379,
-      "volume_ratio_3d_vs_20d": 0.8903,
-      "range_position_0_1": 0.5498,
-      "range_position_20d_0_1": 0.8231,
-      "compression_20d_pct": 49.936,
-      "bb_width20_pct": 59.1916,
-      "bb_width_pct63": 0.9841,
-      "atr_pct": 8.533,
-      "atr_pct_rank63": 0.9841,
-      "extension_sma20_pct": 34.4736,
-      "extension_sma50_pct": 48.2742,
-      "distance_from_52w_high_pct": -45.7639,
-      "score": 16.21,
-      "score_0_1": 0.162088,
-      "score_pts": 162,
-      "score_before_penalty_0_1": 0.542088,
-      "score_after_penalty_0_1": 0.162088,
-      "score_after_flow_0_1": 0.162088,
-      "classification": "No Signal",
-      "triage": "Ignore",
-      "archetype": "Volume",
-      "risk_level": "Medium",
-      "regime": "Risk-on",
-      "reason": "RVOL 1.24x; relative strength; penalty drag",
-      "components": {
-        "volume_shock": 15.5497,
-        "compression": 2.1125,
-        "breakout_quality": 12.0398,
-        "relative_strength": 15.6921,
-        "entry_timing": 5.8147,
-        "market_regime": 3.0,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": -0.0,
-        "penalty": -38.0,
-        "raw_score": 54.2088
-      },
-      "v2_components": {
-        "volume_liquidity_shock": 0.647906,
-        "compression_release": 0.096022,
-        "breakout_setup_quality": 0.601989,
-        "relative_strength": 0.980758,
-        "entry_timing": 0.387648,
-        "market_regime": 1.0,
-        "penalty": 0.38,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
-      },
-      "score_components": {
-        "volume_anomaly": 0.647906,
-        "compression_release": 0.096022,
-        "trends_breakout": 0.601989,
-        "relative_strength": 0.980758,
-        "entry_timing": 0.387648,
-        "market_regime": 1.0
-      },
-      "score_weights": {
-        "volume_anomaly": 0.24,
-        "compression_release": 0.22,
-        "trends_breakout": 0.2,
-        "relative_strength": 0.16,
-        "entry_timing": 0.15,
-        "market_regime": 0.03
-      },
-      "relative_metrics": {
-        "rs_vs_topix_5d_pct": 11.1735,
-        "rs_vs_topix_20d_pct": 68.0755,
-        "rs_vs_topix_60d_pct": 103.7391,
-        "rs_vs_topix_120d_pct": 75.7871
-      },
-      "volume_flow": {
-        "signal": "none",
-        "confidence": "none",
-        "boost_0_1": 0.0,
-        "distribution_penalty_0_1": 0.0,
-        "rvol20": 1.2379,
-        "rvol3_20": 0.8903,
-        "ret1_pct": 9.0275,
-        "ret3_pct": 4.1333,
-        "ret5_pct": 12.1589,
-        "ret10_pct": 59.7137,
-        "ret20_pct": 71.9002,
-        "range_pos_0_1": 0.5498,
-        "close_pos20_0_1": 0.8231,
-        "close_pos50_0_1": 0.8383,
-        "sufficient_today_value": true,
-        "sufficient_avg_value": true,
-        "high_today_value": true,
-        "high_avg_value": true,
-        "post_catalyst_digestion": false,
-        "above_sma20": true
-      },
-      "penalty_details": {
-        "liquidity_penalty": 0.0,
-        "low_price_penalty": 0.0,
-        "extension_penalty": 0.475327,
-        "weak_close_penalty": 0.0,
-        "no_confirmation_penalty": 0.0,
-        "watch_bucket_penalty": 0.0,
-        "partial_data_penalty": 0.0,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
-      },
-      "flags": [
-        "large_traded_value",
-        "liquid_enough",
-        "above_key_mas",
-        "upper_20d_range",
-        "rs_20d_positive",
-        "rs_60d_leader",
-        "hot_20d_move",
-        "extended_risk",
-        "extended_penalty"
-      ],
-      "liquidity_status": "ok",
-      "liquidity_flags": [],
-      "is_partial": false,
-      "bars_count": 344,
-      "date_start": "2024-12-11",
-      "date_end": "2026-05-15",
-      "warnings": [],
-      "source_errors": []
-    },
-    {
-      "rank": 24,
-      "symbol": "6920.T",
-      "name": "Lasertec",
-      "theme": "Semiconductor Inspection",
-      "bucket": "Core",
-      "priority": "A",
-      "market": "JP",
-      "currency": "JPY",
-      "source": "yfinance",
-      "source_symbol": "6920.T",
-      "as_of": "2026-05-15",
-      "latest_date": "2026-05-15",
-      "price": 38410.0,
-      "latest_close": 38410.0,
-      "volume": 3328000,
-      "latest_volume": 3328000,
-      "latest_traded_value_jpy": 127828480000.0,
-      "avg_traded_value_20d_jpy": 194130962450.0,
-      "return_1d_pct": -5.3008,
-      "return_3d_pct": -11.6808,
-      "return_5d_pct": -12.2458,
-      "return_10d_pct": -16.0804,
-      "return_20d_pct": -6.8397,
-      "return_60d_pct": 23.3066,
-      "return_120d_pct": 31.1593,
-      "volume_ratio_20d": 0.7371,
-      "volume_ratio_3d_vs_20d": 0.6907,
-      "range_position_0_1": 0.1203,
-      "range_position_20d_0_1": 0.0437,
-      "compression_20d_pct": 22.6243,
-      "bb_width20_pct": 19.4464,
-      "bb_width_pct63": 0.2063,
-      "atr_pct": 6.6036,
-      "atr_pct_rank63": 0.873,
-      "extension_sma20_pct": -10.6235,
-      "extension_sma50_pct": -0.2426,
-      "distance_from_52w_high_pct": -17.7868,
-      "score": 15.39,
-      "score_0_1": 0.153867,
-      "score_pts": 154,
-      "score_before_penalty_0_1": 0.313867,
-      "score_after_penalty_0_1": 0.153867,
-      "score_after_flow_0_1": 0.153867,
-      "classification": "No Signal",
-      "triage": "Ignore",
-      "archetype": "Mixed",
-      "risk_level": "Normal",
-      "regime": "Risk-on",
-      "reason": "no daily confirmation",
-      "components": {
-        "volume_shock": 8.5203,
-        "compression": 6.4054,
-        "breakout_quality": 2.3831,
-        "relative_strength": 4.48,
-        "entry_timing": 6.5979,
-        "market_regime": 3.0,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": -0.0,
-        "penalty": -16.0,
-        "raw_score": 31.3867
-      },
-      "v2_components": {
-        "volume_liquidity_shock": 0.355013,
-        "compression_release": 0.291153,
-        "breakout_setup_quality": 0.119157,
-        "relative_strength": 0.28,
-        "entry_timing": 0.439857,
-        "market_regime": 1.0,
-        "penalty": 0.16,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
-      },
-      "score_components": {
-        "volume_anomaly": 0.355013,
-        "compression_release": 0.291153,
-        "trends_breakout": 0.119157,
-        "relative_strength": 0.28,
-        "entry_timing": 0.439857,
-        "market_regime": 1.0
-      },
-      "score_weights": {
-        "volume_anomaly": 0.24,
-        "compression_release": 0.22,
-        "trends_breakout": 0.2,
-        "relative_strength": 0.16,
-        "entry_timing": 0.15,
-        "market_regime": 0.03
-      },
-      "relative_metrics": {
-        "rs_vs_topix_5d_pct": -13.2313,
-        "rs_vs_topix_20d_pct": -10.6644,
-        "rs_vs_topix_60d_pct": 113.2526,
-        "rs_vs_topix_120d_pct": 119.521
-      },
-      "volume_flow": {
-        "signal": "none",
-        "confidence": "none",
-        "boost_0_1": 0.0,
-        "distribution_penalty_0_1": 0.0,
-        "rvol20": 0.7371,
-        "rvol3_20": 0.6907,
-        "ret1_pct": -5.3008,
-        "ret3_pct": -11.6808,
-        "ret5_pct": -12.2458,
-        "ret10_pct": -16.0804,
-        "ret20_pct": -6.8397,
-        "range_pos_0_1": 0.1203,
-        "close_pos20_0_1": 0.0437,
-        "close_pos50_0_1": 0.536,
-        "sufficient_today_value": true,
-        "sufficient_avg_value": true,
-        "high_today_value": true,
-        "high_avg_value": true,
-        "post_catalyst_digestion": false,
-        "above_sma20": false
-      },
-      "penalty_details": {
-        "liquidity_penalty": 0.0,
-        "low_price_penalty": 0.0,
-        "extension_penalty": 0.0,
-        "weak_close_penalty": 0.0,
-        "no_confirmation_penalty": 0.16,
-        "watch_bucket_penalty": 0.0,
-        "partial_data_penalty": 0.0,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
-      },
-      "flags": [
-        "large_traded_value",
-        "liquid_enough",
-        "compressed_setup",
-        "rs_60d_leader",
-        "no_daily_confirmation",
-        "weak_5d_momentum",
-        "score_cap_low_volume_confirmation",
-        "score_cap_no_daily_confirmation"
-      ],
-      "liquidity_status": "ok",
-      "liquidity_flags": [],
-      "is_partial": false,
-      "bars_count": 344,
-      "date_start": "2024-12-11",
-      "date_end": "2026-05-15",
-      "warnings": [],
-      "source_errors": []
-    },
-    {
-      "rank": 25,
-      "symbol": "3652.T",
-      "name": "Digital Media Professionals",
-      "theme": "Edge AI and AI Processor",
+      "rank": 20,
+      "symbol": "269A.T",
+      "name": "Sapeet",
+      "theme": "Expert AI and Human AI",
       "bucket": "Discovery",
       "priority": "B",
       "market": "JP",
       "currency": "JPY",
       "source": "yfinance",
-      "source_symbol": "3652.T",
+      "source_symbol": "269A.T",
       "as_of": "2026-05-15",
       "latest_date": "2026-05-15",
-      "price": 3320.0,
-      "latest_close": 3320.0,
-      "volume": 77400,
-      "latest_volume": 77400,
-      "latest_traded_value_jpy": 256968000.0,
-      "avg_traded_value_20d_jpy": 265989045.0,
-      "return_1d_pct": -1.0432,
-      "return_3d_pct": -0.3003,
-      "return_5d_pct": -3.6284,
-      "return_10d_pct": 32.2182,
-      "return_20d_pct": 58.6998,
-      "return_60d_pct": 46.7728,
-      "return_120d_pct": 44.3478,
-      "volume_ratio_20d": 0.877,
-      "volume_ratio_3d_vs_20d": 0.6454,
-      "range_position_0_1": 0.3714,
-      "range_position_20d_0_1": 0.7552,
-      "compression_20d_pct": 49.2169,
-      "bb_width20_pct": 59.9548,
-      "bb_width_pct63": 0.9683,
-      "atr_pct": 8.9264,
-      "atr_pct_rank63": 1.0,
-      "extension_sma20_pct": 18.5587,
-      "extension_sma50_pct": 37.324,
-      "distance_from_52w_high_pct": -10.7527,
-      "score": 12.94,
-      "score_0_1": 0.129382,
-      "score_pts": 129,
-      "score_before_penalty_0_1": 0.366566,
-      "score_after_penalty_0_1": 0.129382,
-      "score_after_flow_0_1": 0.129382,
-      "classification": "No Signal",
+      "price": 2648.0,
+      "latest_close": 2648.0,
+      "volume": 57200,
+      "latest_volume": 57200,
+      "latest_traded_value_jpy": 151465600.0,
+      "avg_traded_value_20d_jpy": 23298670.0,
+      "return_1d_pct": -1.1202,
+      "return_3d_pct": -1.2309,
+      "return_5d_pct": 1.9638,
+      "return_10d_pct": 13.3077,
+      "return_20d_pct": 20.1997,
+      "return_60d_pct": 20.3636,
+      "return_120d_pct": 14.9805,
+      "volume_ratio_20d": 6.2754,
+      "volume_ratio_3d_vs_20d": 2.7756,
+      "range_position_0_1": 0.5725,
+      "range_position_20d_0_1": 0.6489,
+      "compression_20d_pct": 24.7356,
+      "bb_width20_pct": 22.059,
+      "bb_width_pct63": 0.5079,
+      "atr_pct": 4.9282,
+      "atr_pct_rank63": 0.6667,
+      "extension_sma20_pct": 7.2,
+      "extension_sma50_pct": 15.0764,
+      "distance_from_52w_high_pct": -28.3356,
+      "score": 20.65,
+      "score_0_1": 0.20646,
+      "score_pts": 206,
+      "score_before_penalty_0_1": 0.56501,
+      "score_after_penalty_0_1": 0.26501,
+      "score_after_flow_0_1": 0.20646,
+      "classification": "Volume Noise",
       "triage": "Ignore",
       "archetype": "Relative Strength",
-      "risk_level": "Medium",
+      "risk_level": "High",
       "regime": "Risk-on",
-      "reason": "relative strength; no daily confirmation; penalty drag",
+      "reason": "relative strength; volume noise; very low liquidity; penalty drag",
       "components": {
-        "volume_shock": 6.1587,
-        "compression": 1.4413,
-        "breakout_quality": 11.347,
-        "relative_strength": 11.2,
-        "entry_timing": 3.5096,
+        "volume_shock": 13.2215,
+        "compression": 8.1281,
+        "breakout_quality": 11.107,
+        "relative_strength": 10.9855,
+        "entry_timing": 10.0589,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
-        "penalty": -23.7184,
-        "raw_score": 36.6566
+        "volume_noise_penalty": -5.855,
+        "volume_breakout_risk_penalty": -0.0,
+        "penalty": -30.0,
+        "raw_score": 56.501
       },
       "v2_components": {
-        "volume_liquidity_shock": 0.256613,
-        "compression_release": 0.065515,
-        "breakout_setup_quality": 0.567349,
-        "relative_strength": 0.7,
-        "entry_timing": 0.233975,
+        "volume_liquidity_shock": 0.550896,
+        "compression_release": 0.369461,
+        "breakout_setup_quality": 0.555351,
+        "relative_strength": 0.686594,
+        "entry_timing": 0.670592,
         "market_regime": 1.0,
-        "penalty": 0.237184,
+        "penalty": 0.3,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.05855,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
-        "volume_anomaly": 0.256613,
-        "compression_release": 0.065515,
-        "trends_breakout": 0.567349,
-        "relative_strength": 0.7,
-        "entry_timing": 0.233975,
+        "volume_anomaly": 0.550896,
+        "compression_release": 0.369461,
+        "trends_breakout": 0.555351,
+        "relative_strength": 0.686594,
+        "entry_timing": 0.670592,
         "market_regime": 1.0
       },
       "score_weights": {
@@ -3707,57 +3360,72 @@
         "market_regime": 0.03
       },
       "relative_metrics": {
-        "rs_vs_topix_5d_pct": -4.6139,
-        "rs_vs_topix_20d_pct": 54.8751,
-        "rs_vs_topix_60d_pct": 136.7188,
-        "rs_vs_topix_120d_pct": 132.7096
+        "rs_vs_topix_5d_pct": 0.9783,
+        "rs_vs_topix_20d_pct": 16.375,
+        "rs_vs_topix_60d_pct": 110.3097,
+        "rs_vs_topix_120d_pct": 103.3422
       },
       "volume_flow": {
-        "signal": "none",
-        "confidence": "none",
+        "signal": "volume_noise",
+        "confidence": "low",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
-        "rvol20": 0.877,
-        "rvol3_20": 0.6454,
-        "ret1_pct": -1.0432,
-        "ret3_pct": -0.3003,
-        "ret5_pct": -3.6284,
-        "ret10_pct": 32.2182,
-        "ret20_pct": 58.6998,
-        "range_pos_0_1": 0.3714,
-        "close_pos20_0_1": 0.7552,
-        "close_pos50_0_1": 0.7753,
+        "noise_penalty_0_1": 0.05855,
+        "rvol20": 6.2754,
+        "rvol3_20": 2.7756,
+        "ret1_pct": -1.1202,
+        "ret3_pct": -1.2309,
+        "ret5_pct": 1.9638,
+        "ret10_pct": 13.3077,
+        "ret20_pct": 20.1997,
+        "range_pos_0_1": 0.5725,
+        "close_pos20_0_1": 0.6489,
+        "close_pos50_0_1": 0.7316,
         "sufficient_today_value": true,
-        "sufficient_avg_value": true,
+        "sufficient_avg_value": false,
         "high_today_value": false,
         "high_avg_value": false,
         "post_catalyst_digestion": false,
         "above_sma20": true
       },
       "penalty_details": {
-        "liquidity_penalty": 0.1,
+        "liquidity_penalty": 0.22,
         "low_price_penalty": 0.0,
-        "extension_penalty": 0.037184,
-        "weak_close_penalty": 0.0,
-        "no_confirmation_penalty": 0.1,
+        "extension_penalty": 0.0,
+        "weak_close_penalty": 0.08,
+        "no_confirmation_penalty": 0.0,
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.05855,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
+        "major_volume_shock",
+        "compression_release",
         "above_key_mas",
         "rs_20d_positive",
         "rs_60d_leader",
-        "hot_20d_move",
-        "extended_risk",
-        "low_liquidity",
-        "no_daily_confirmation",
-        "score_cap_no_daily_confirmation"
+        "very_low_liquidity",
+        "red_close_on_volume",
+        "volume_noise",
+        "score_cap_very_low_liquidity"
       ],
-      "liquidity_status": "penalty",
+      "liquidity_band": "Very Thin",
+      "liquidity_score_0_1": 0.1,
+      "liquidity_status": "exclude_or_watch",
       "liquidity_flags": [
-        "avg_traded_value_20d_below_300m_jpy"
+        "avg_traded_value_20d_below_100m_jpy"
       ],
       "is_partial": false,
       "bars_count": 344,
@@ -3826,7 +3494,10 @@
         "entry_timing": 11.6264,
         "market_regime": 3.0,
         "abnormal_flow_boost": 2.8937,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -0.0,
         "raw_score": 42.7404
       },
@@ -3839,7 +3510,10 @@
         "market_regime": 1.0,
         "penalty": 0.0,
         "abnormal_flow_boost": 0.028937,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.664314,
@@ -3868,6 +3542,7 @@
         "confidence": "medium",
         "boost_0_1": 0.028937,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9778,
         "rvol3_20": 0.9308,
         "ret1_pct": 3.0186,
@@ -3894,7 +3569,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.028937,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -3904,6 +3590,8 @@
         "post_catalyst_digestion",
         "discovery_watch_candidate"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -3951,18 +3639,18 @@
       "extension_sma20_pct": 7.6979,
       "extension_sma50_pct": 7.4054,
       "distance_from_52w_high_pct": -25.1256,
-      "score": 53.18,
-      "score_0_1": 0.531806,
-      "score_pts": 532,
+      "score": 55.16,
+      "score_0_1": 0.551571,
+      "score_pts": 552,
       "score_before_penalty_0_1": 0.531806,
       "score_after_penalty_0_1": 0.531806,
-      "score_after_flow_0_1": 0.531806,
+      "score_after_flow_0_1": 0.551571,
       "classification": "No Signal",
       "triage": "Ignore",
       "archetype": "Volume",
       "risk_level": "Normal",
       "regime": "Risk-on",
-      "reason": "RVOL 1.23x; relative strength",
+      "reason": "RVOL 1.23x; relative strength; favored relative strength",
       "components": {
         "volume_shock": 14.7971,
         "compression": 2.0019,
@@ -3971,7 +3659,10 @@
         "entry_timing": 11.3693,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 1.9766,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -0.0,
         "raw_score": 53.1806
       },
@@ -3984,7 +3675,10 @@
         "market_regime": 1.0,
         "penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.019766,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.616547,
@@ -4013,6 +3707,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.229,
         "rvol3_20": 1.5856,
         "ret1_pct": 3.8328,
@@ -4039,14 +3734,28 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.019766,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": true,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.019766,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
         "liquid_enough",
         "above_key_mas",
-        "rs_60d_leader"
+        "rs_60d_leader",
+        "favored_relative_strength"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -4114,7 +3823,10 @@
         "entry_timing": 9.6065,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -0.0,
         "raw_score": 52.2116
       },
@@ -4127,7 +3839,10 @@
         "market_regime": 1.0,
         "penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.468544,
@@ -4156,6 +3871,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.2805,
         "rvol3_20": 0.9708,
         "ret1_pct": -0.3108,
@@ -4182,7 +3898,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -4191,6 +3918,8 @@
         "above_key_mas",
         "rs_60d_leader"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -4258,7 +3987,10 @@
         "entry_timing": 10.9379,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -0.0,
         "raw_score": 44.3178
       },
@@ -4271,7 +4003,10 @@
         "market_regime": 1.0,
         "penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.585202,
@@ -4300,6 +4035,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9068,
         "rvol3_20": 0.7777,
         "ret1_pct": 1.2107,
@@ -4326,7 +4062,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -4334,6 +4081,8 @@
         "compressed_setup",
         "rs_60d_leader"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -4401,7 +4150,10 @@
         "entry_timing": 7.0895,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -10.0,
         "raw_score": 47.8582
       },
@@ -4414,7 +4166,10 @@
         "market_regime": 1.0,
         "penalty": 0.1,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.380594,
@@ -4443,6 +4198,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9079,
         "rvol3_20": 0.8047,
         "ret1_pct": -2.5716,
@@ -4469,7 +4225,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -4480,6 +4247,8 @@
         "no_daily_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -4547,7 +4316,10 @@
         "entry_timing": 9.3148,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -10.0,
         "raw_score": 46.9845
       },
@@ -4560,7 +4332,10 @@
         "market_regime": 1.0,
         "penalty": 0.1,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.410209,
@@ -4589,6 +4364,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9192,
         "rvol3_20": 0.753,
         "ret1_pct": -1.7773,
@@ -4615,7 +4391,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -4627,6 +4414,8 @@
         "no_daily_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -4694,7 +4483,10 @@
         "entry_timing": 12.108,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -6.0,
         "raw_score": 41.1979
       },
@@ -4707,7 +4499,10 @@
         "market_regime": 1.0,
         "penalty": 0.06,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.705727,
@@ -4736,6 +4531,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.0265,
         "rvol3_20": 1.071,
         "ret1_pct": 4.1812,
@@ -4762,7 +4558,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -4770,6 +4577,8 @@
         "rs_60d_leader",
         "weak_5d_momentum"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -4837,7 +4646,10 @@
         "entry_timing": 6.2309,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -10.0,
         "raw_score": 42.6264
       },
@@ -4850,7 +4662,10 @@
         "market_regime": 1.0,
         "penalty": 0.1,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.244298,
@@ -4879,6 +4694,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.5877,
         "rvol3_20": 0.5811,
         "ret1_pct": -0.8986,
@@ -4905,7 +4721,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "liquid_enough",
@@ -4916,6 +4743,8 @@
         "score_cap_weak_volume",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "Tradable",
+      "liquidity_score_0_1": 0.78,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -4983,7 +4812,10 @@
         "entry_timing": 3.925,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -18.841,
         "raw_score": 50.9517
       },
@@ -4996,7 +4828,10 @@
         "market_regime": 1.0,
         "penalty": 0.18841,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.633018,
@@ -5025,6 +4860,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.704,
         "rvol3_20": 1.4543,
         "ret1_pct": 2.3892,
@@ -5051,7 +4887,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "volume_expansion",
@@ -5064,6 +4911,8 @@
         "weak_close_on_volume",
         "red_close_on_volume"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -5131,7 +4980,10 @@
         "entry_timing": 9.5932,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -6.0,
         "raw_score": 36.4777
       },
@@ -5144,7 +4996,10 @@
         "market_regime": 1.0,
         "penalty": 0.06,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.598441,
@@ -5173,6 +5028,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9253,
         "rvol3_20": 0.988,
         "ret1_pct": 0.2053,
@@ -5199,7 +5055,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -5207,6 +5074,8 @@
         "rs_60d_leader",
         "weak_5d_momentum"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -5274,7 +5143,10 @@
         "entry_timing": 9.3144,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -16.0,
         "raw_score": 43.7218
       },
@@ -5287,7 +5159,10 @@
         "market_regime": 1.0,
         "penalty": 0.16,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.384467,
@@ -5316,6 +5191,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.6118,
         "rvol3_20": 0.6655,
         "ret1_pct": -0.1682,
@@ -5342,7 +5218,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -5355,6 +5242,8 @@
         "score_cap_low_volume_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -5422,7 +5311,10 @@
         "entry_timing": 6.6092,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -16.0,
         "raw_score": 43.4253
       },
@@ -5435,7 +5327,10 @@
         "market_regime": 1.0,
         "penalty": 0.16,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.374766,
@@ -5464,6 +5359,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.7945,
         "rvol3_20": 0.705,
         "ret1_pct": -0.4333,
@@ -5490,7 +5386,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -5503,6 +5410,8 @@
         "score_cap_low_volume_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -5570,7 +5479,10 @@
         "entry_timing": 6.646,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -6.0,
         "raw_score": 33.3687
       },
@@ -5583,7 +5495,10 @@
         "market_regime": 1.0,
         "penalty": 0.06,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.397975,
@@ -5612,6 +5527,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.1028,
         "rvol3_20": 0.7992,
         "ret1_pct": -7.2857,
@@ -5638,7 +5554,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -5647,6 +5574,8 @@
         "rs_60d_leader",
         "weak_5d_momentum"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -5714,7 +5643,10 @@
         "entry_timing": 12.4106,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -16.0,
         "raw_score": 43.2395
       },
@@ -5727,7 +5659,10 @@
         "market_regime": 1.0,
         "penalty": 0.16,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.44323,
@@ -5756,6 +5691,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.5791,
         "rvol3_20": 0.8565,
         "ret1_pct": 3.6967,
@@ -5782,7 +5718,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "above_key_mas",
@@ -5791,6 +5738,8 @@
         "weak_5d_momentum",
         "score_cap_weak_volume"
       ],
+      "liquidity_band": "Thin",
+      "liquidity_score_0_1": 0.42,
       "liquidity_status": "penalty",
       "liquidity_flags": [
         "avg_traded_value_20d_below_300m_jpy"
@@ -5804,156 +5753,6 @@
     },
     {
       "rank": 15,
-      "symbol": "269A.T",
-      "name": "Sapeet",
-      "theme": "Expert AI and Human AI",
-      "bucket": "Discovery",
-      "priority": "B",
-      "market": "JP",
-      "currency": "JPY",
-      "source": "yfinance",
-      "source_symbol": "269A.T",
-      "as_of": "2026-05-15",
-      "latest_date": "2026-05-15",
-      "price": 2648.0,
-      "latest_close": 2648.0,
-      "volume": 57200,
-      "latest_volume": 57200,
-      "latest_traded_value_jpy": 151465600.0,
-      "avg_traded_value_20d_jpy": 23298670.0,
-      "return_1d_pct": -1.1202,
-      "return_3d_pct": -1.2309,
-      "return_5d_pct": 1.9638,
-      "return_10d_pct": 13.3077,
-      "return_20d_pct": 20.1997,
-      "return_60d_pct": 20.3636,
-      "return_120d_pct": 14.9805,
-      "volume_ratio_20d": 6.2754,
-      "volume_ratio_3d_vs_20d": 2.7756,
-      "range_position_0_1": 0.5725,
-      "range_position_20d_0_1": 0.6489,
-      "compression_20d_pct": 24.7356,
-      "bb_width20_pct": 22.059,
-      "bb_width_pct63": 0.5079,
-      "atr_pct": 4.9282,
-      "atr_pct_rank63": 0.6667,
-      "extension_sma20_pct": 7.2,
-      "extension_sma50_pct": 15.0764,
-      "distance_from_52w_high_pct": -28.3356,
-      "score": 26.5,
-      "score_0_1": 0.26501,
-      "score_pts": 265,
-      "score_before_penalty_0_1": 0.56501,
-      "score_after_penalty_0_1": 0.26501,
-      "score_after_flow_0_1": 0.26501,
-      "classification": "Low Liquidity",
-      "triage": "Ignore",
-      "archetype": "Relative Strength",
-      "risk_level": "High",
-      "regime": "Risk-on",
-      "reason": "relative strength; volume noise; very low liquidity; penalty drag",
-      "components": {
-        "volume_shock": 13.2215,
-        "compression": 8.1281,
-        "breakout_quality": 11.107,
-        "relative_strength": 10.9855,
-        "entry_timing": 10.0589,
-        "market_regime": 3.0,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": -0.0,
-        "penalty": -30.0,
-        "raw_score": 56.501
-      },
-      "v2_components": {
-        "volume_liquidity_shock": 0.550896,
-        "compression_release": 0.369461,
-        "breakout_setup_quality": 0.555351,
-        "relative_strength": 0.686594,
-        "entry_timing": 0.670592,
-        "market_regime": 1.0,
-        "penalty": 0.3,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
-      },
-      "score_components": {
-        "volume_anomaly": 0.550896,
-        "compression_release": 0.369461,
-        "trends_breakout": 0.555351,
-        "relative_strength": 0.686594,
-        "entry_timing": 0.670592,
-        "market_regime": 1.0
-      },
-      "score_weights": {
-        "volume_anomaly": 0.24,
-        "compression_release": 0.22,
-        "trends_breakout": 0.2,
-        "relative_strength": 0.16,
-        "entry_timing": 0.15,
-        "market_regime": 0.03
-      },
-      "relative_metrics": {
-        "rs_vs_topix_5d_pct": 0.9783,
-        "rs_vs_topix_20d_pct": 16.375,
-        "rs_vs_topix_60d_pct": 110.3097,
-        "rs_vs_topix_120d_pct": 103.3422
-      },
-      "volume_flow": {
-        "signal": "volume_noise",
-        "confidence": "low",
-        "boost_0_1": 0.0,
-        "distribution_penalty_0_1": 0.0,
-        "rvol20": 6.2754,
-        "rvol3_20": 2.7756,
-        "ret1_pct": -1.1202,
-        "ret3_pct": -1.2309,
-        "ret5_pct": 1.9638,
-        "ret10_pct": 13.3077,
-        "ret20_pct": 20.1997,
-        "range_pos_0_1": 0.5725,
-        "close_pos20_0_1": 0.6489,
-        "close_pos50_0_1": 0.7316,
-        "sufficient_today_value": true,
-        "sufficient_avg_value": false,
-        "high_today_value": false,
-        "high_avg_value": false,
-        "post_catalyst_digestion": false,
-        "above_sma20": true
-      },
-      "penalty_details": {
-        "liquidity_penalty": 0.22,
-        "low_price_penalty": 0.0,
-        "extension_penalty": 0.0,
-        "weak_close_penalty": 0.08,
-        "no_confirmation_penalty": 0.0,
-        "watch_bucket_penalty": 0.0,
-        "partial_data_penalty": 0.0,
-        "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
-      },
-      "flags": [
-        "major_volume_shock",
-        "compression_release",
-        "above_key_mas",
-        "rs_20d_positive",
-        "rs_60d_leader",
-        "very_low_liquidity",
-        "red_close_on_volume",
-        "volume_noise",
-        "score_cap_very_low_liquidity"
-      ],
-      "liquidity_status": "exclude_or_watch",
-      "liquidity_flags": [
-        "avg_traded_value_20d_below_100m_jpy"
-      ],
-      "is_partial": false,
-      "bars_count": 344,
-      "date_start": "2024-12-11",
-      "date_end": "2026-05-15",
-      "warnings": [],
-      "source_errors": []
-    },
-    {
-      "rank": 16,
       "symbol": "6981.T",
       "name": "Murata Manufacturing",
       "theme": "Electronic Components",
@@ -6010,7 +5809,10 @@
         "entry_timing": 3.4659,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -18.3111,
         "raw_score": 44.4439
       },
@@ -6023,7 +5825,10 @@
         "market_regime": 1.0,
         "penalty": 0.183111,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.410043,
@@ -6052,6 +5857,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9713,
         "rvol3_20": 0.9232,
         "ret1_pct": -2.9658,
@@ -6078,7 +5884,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -6091,6 +5908,8 @@
         "no_daily_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -6101,7 +5920,7 @@
       "source_errors": []
     },
     {
-      "rank": 17,
+      "rank": 16,
       "symbol": "5802.T",
       "name": "Sumitomo Electric",
       "theme": "Data Center and Power Infrastructure",
@@ -6158,7 +5977,10 @@
         "entry_timing": 7.3324,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -18.0,
         "raw_score": 42.3249
       },
@@ -6171,7 +5993,10 @@
         "market_regime": 1.0,
         "penalty": 0.18,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.434132,
@@ -6200,6 +6025,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.4149,
         "rvol3_20": 1.5508,
         "ret1_pct": -9.2937,
@@ -6226,7 +6052,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "volume_expansion",
@@ -6237,6 +6074,8 @@
         "weak_close_on_volume",
         "red_close_on_volume"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -6247,7 +6086,7 @@
       "source_errors": []
     },
     {
-      "rank": 18,
+      "rank": 17,
       "symbol": "7011.T",
       "name": "Mitsubishi Heavy Industries",
       "theme": "Defense Energy and Aerospace",
@@ -6304,7 +6143,10 @@
         "entry_timing": 8.2807,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -6.0,
         "raw_score": 29.0578
       },
@@ -6317,7 +6159,10 @@
         "market_regime": 1.0,
         "penalty": 0.06,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.456151,
@@ -6346,6 +6191,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.004,
         "rvol3_20": 1.2516,
         "ret1_pct": -1.9702,
@@ -6372,7 +6218,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -6380,6 +6237,8 @@
         "rs_60d_leader",
         "weak_5d_momentum"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -6390,7 +6249,7 @@
       "source_errors": []
     },
     {
-      "rank": 19,
+      "rank": 18,
       "symbol": "6701.T",
       "name": "NEC",
       "theme": "IT Defense and Communications",
@@ -6447,7 +6306,10 @@
         "entry_timing": 7.3924,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -10.0,
         "raw_score": 32.4374
       },
@@ -6460,7 +6322,10 @@
         "market_regime": 1.0,
         "penalty": 0.1,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.392085,
@@ -6489,6 +6354,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.83,
         "rvol3_20": 0.7691,
         "ret1_pct": -1.1114,
@@ -6515,7 +6381,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -6525,6 +6402,8 @@
         "no_daily_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -6535,7 +6414,7 @@
       "source_errors": []
     },
     {
-      "rank": 20,
+      "rank": 19,
       "symbol": "6857.T",
       "name": "Advantest",
       "theme": "Semiconductor Test",
@@ -6592,7 +6471,10 @@
         "entry_timing": 6.5185,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -16.0,
         "raw_score": 37.7459
       },
@@ -6605,7 +6487,10 @@
         "market_regime": 1.0,
         "penalty": 0.16,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.373094,
@@ -6634,6 +6519,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9244,
         "rvol3_20": 0.784,
         "ret1_pct": -7.8805,
@@ -6660,7 +6546,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -6671,8 +6568,180 @@
         "weak_5d_momentum",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
+      "is_partial": false,
+      "bars_count": 344,
+      "date_start": "2024-12-11",
+      "date_end": "2026-05-15",
+      "warnings": [],
+      "source_errors": []
+    },
+    {
+      "rank": 20,
+      "symbol": "269A.T",
+      "name": "Sapeet",
+      "theme": "Expert AI and Human AI",
+      "bucket": "Discovery",
+      "priority": "B",
+      "market": "JP",
+      "currency": "JPY",
+      "source": "yfinance",
+      "source_symbol": "269A.T",
+      "as_of": "2026-05-15",
+      "latest_date": "2026-05-15",
+      "price": 2648.0,
+      "latest_close": 2648.0,
+      "volume": 57200,
+      "latest_volume": 57200,
+      "latest_traded_value_jpy": 151465600.0,
+      "avg_traded_value_20d_jpy": 23298670.0,
+      "return_1d_pct": -1.1202,
+      "return_3d_pct": -1.2309,
+      "return_5d_pct": 1.9638,
+      "return_10d_pct": 13.3077,
+      "return_20d_pct": 20.1997,
+      "return_60d_pct": 20.3636,
+      "return_120d_pct": 14.9805,
+      "volume_ratio_20d": 6.2754,
+      "volume_ratio_3d_vs_20d": 2.7756,
+      "range_position_0_1": 0.5725,
+      "range_position_20d_0_1": 0.6489,
+      "compression_20d_pct": 24.7356,
+      "bb_width20_pct": 22.059,
+      "bb_width_pct63": 0.5079,
+      "atr_pct": 4.9282,
+      "atr_pct_rank63": 0.6667,
+      "extension_sma20_pct": 7.2,
+      "extension_sma50_pct": 15.0764,
+      "distance_from_52w_high_pct": -28.3356,
+      "score": 20.65,
+      "score_0_1": 0.20646,
+      "score_pts": 206,
+      "score_before_penalty_0_1": 0.56501,
+      "score_after_penalty_0_1": 0.26501,
+      "score_after_flow_0_1": 0.20646,
+      "classification": "Volume Noise",
+      "triage": "Ignore",
+      "archetype": "Relative Strength",
+      "risk_level": "High",
+      "regime": "Risk-on",
+      "reason": "relative strength; volume noise; very low liquidity; penalty drag",
+      "components": {
+        "volume_shock": 13.2215,
+        "compression": 8.1281,
+        "breakout_quality": 11.107,
+        "relative_strength": 10.9855,
+        "entry_timing": 10.0589,
+        "market_regime": 3.0,
+        "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -5.855,
+        "volume_breakout_risk_penalty": -0.0,
+        "penalty": -30.0,
+        "raw_score": 56.501
+      },
+      "v2_components": {
+        "volume_liquidity_shock": 0.550896,
+        "compression_release": 0.369461,
+        "breakout_setup_quality": 0.555351,
+        "relative_strength": 0.686594,
+        "entry_timing": 0.670592,
+        "market_regime": 1.0,
+        "penalty": 0.3,
+        "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.05855,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "score_components": {
+        "volume_anomaly": 0.550896,
+        "compression_release": 0.369461,
+        "trends_breakout": 0.555351,
+        "relative_strength": 0.686594,
+        "entry_timing": 0.670592,
+        "market_regime": 1.0
+      },
+      "score_weights": {
+        "volume_anomaly": 0.24,
+        "compression_release": 0.22,
+        "trends_breakout": 0.2,
+        "relative_strength": 0.16,
+        "entry_timing": 0.15,
+        "market_regime": 0.03
+      },
+      "relative_metrics": {
+        "rs_vs_topix_5d_pct": 0.9783,
+        "rs_vs_topix_20d_pct": 16.375,
+        "rs_vs_topix_60d_pct": 110.3097,
+        "rs_vs_topix_120d_pct": 103.3422
+      },
+      "volume_flow": {
+        "signal": "volume_noise",
+        "confidence": "low",
+        "boost_0_1": 0.0,
+        "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.05855,
+        "rvol20": 6.2754,
+        "rvol3_20": 2.7756,
+        "ret1_pct": -1.1202,
+        "ret3_pct": -1.2309,
+        "ret5_pct": 1.9638,
+        "ret10_pct": 13.3077,
+        "ret20_pct": 20.1997,
+        "range_pos_0_1": 0.5725,
+        "close_pos20_0_1": 0.6489,
+        "close_pos50_0_1": 0.7316,
+        "sufficient_today_value": true,
+        "sufficient_avg_value": false,
+        "high_today_value": false,
+        "high_avg_value": false,
+        "post_catalyst_digestion": false,
+        "above_sma20": true
+      },
+      "penalty_details": {
+        "liquidity_penalty": 0.22,
+        "low_price_penalty": 0.0,
+        "extension_penalty": 0.0,
+        "weak_close_penalty": 0.08,
+        "no_confirmation_penalty": 0.0,
+        "watch_bucket_penalty": 0.0,
+        "partial_data_penalty": 0.0,
+        "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.05855,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
+      },
+      "flags": [
+        "major_volume_shock",
+        "compression_release",
+        "above_key_mas",
+        "rs_20d_positive",
+        "rs_60d_leader",
+        "very_low_liquidity",
+        "red_close_on_volume",
+        "volume_noise",
+        "score_cap_very_low_liquidity"
+      ],
+      "liquidity_band": "Very Thin",
+      "liquidity_score_0_1": 0.1,
+      "liquidity_status": "exclude_or_watch",
+      "liquidity_flags": [
+        "avg_traded_value_20d_below_100m_jpy"
+      ],
       "is_partial": false,
       "bars_count": 344,
       "date_start": "2024-12-11",
@@ -6738,7 +6807,10 @@
         "entry_timing": 8.2936,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -10.0,
         "raw_score": 28.7648
       },
@@ -6751,7 +6823,10 @@
         "market_regime": 1.0,
         "penalty": 0.1,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.21777,
@@ -6780,6 +6855,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.6233,
         "rvol3_20": 0.6397,
         "ret1_pct": -1.1936,
@@ -6806,7 +6882,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "liquid_enough",
@@ -6816,6 +6903,8 @@
         "score_cap_low_volume_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "Tradable",
+      "liquidity_score_0_1": 0.78,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -6883,7 +6972,10 @@
         "entry_timing": 6.9601,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -16.0,
         "raw_score": 32.2995
       },
@@ -6896,7 +6988,10 @@
         "market_regime": 1.0,
         "penalty": 0.16,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.379069,
@@ -6925,6 +7020,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.8552,
         "rvol3_20": 1.112,
         "ret1_pct": -3.6053,
@@ -6951,7 +7047,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -6962,6 +7069,8 @@
         "weak_5d_momentum",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -7029,7 +7138,10 @@
         "entry_timing": 5.8147,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -38.0,
         "raw_score": 54.2088
       },
@@ -7042,7 +7154,10 @@
         "market_regime": 1.0,
         "penalty": 0.38,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.647906,
@@ -7071,6 +7186,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.2379,
         "rvol3_20": 0.8903,
         "ret1_pct": 9.0275,
@@ -7097,7 +7213,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -7110,6 +7237,8 @@
         "extended_risk",
         "extended_penalty"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -7177,7 +7306,10 @@
         "entry_timing": 6.5979,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -16.0,
         "raw_score": 31.3867
       },
@@ -7190,7 +7322,10 @@
         "market_regime": 1.0,
         "penalty": 0.16,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.355013,
@@ -7219,6 +7354,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.7371,
         "rvol3_20": 0.6907,
         "ret1_pct": -5.3008,
@@ -7245,7 +7381,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "large_traded_value",
@@ -7257,6 +7404,8 @@
         "score_cap_low_volume_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -7324,7 +7473,10 @@
         "entry_timing": 3.5096,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -23.7184,
         "raw_score": 36.6566
       },
@@ -7337,7 +7489,10 @@
         "market_regime": 1.0,
         "penalty": 0.237184,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.256613,
@@ -7366,6 +7521,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.877,
         "rvol3_20": 0.6454,
         "ret1_pct": -1.0432,
@@ -7392,7 +7548,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "above_key_mas",
@@ -7404,6 +7571,8 @@
         "no_daily_confirmation",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "Thin",
+      "liquidity_score_0_1": 0.42,
       "liquidity_status": "penalty",
       "liquidity_flags": [
         "avg_traded_value_20d_below_300m_jpy"
@@ -7473,7 +7642,10 @@
         "entry_timing": 6.6204,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -24.0,
         "raw_score": 36.2561
       },
@@ -7486,7 +7658,10 @@
         "market_regime": 1.0,
         "penalty": 0.24,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.515961,
@@ -7515,6 +7690,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 2.3399,
         "rvol3_20": 1.5049,
         "ret1_pct": -8.4343,
@@ -7541,7 +7717,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "volume_expansion",
@@ -7552,6 +7739,8 @@
         "red_close_on_volume",
         "weak_5d_momentum"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -7619,7 +7808,10 @@
         "entry_timing": 6.1358,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -24.0,
         "raw_score": 35.1456
       },
@@ -7632,7 +7824,10 @@
         "market_regime": 1.0,
         "penalty": 0.24,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.445276,
@@ -7661,6 +7856,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.681,
         "rvol3_20": 1.0505,
         "ret1_pct": -17.2176,
@@ -7687,7 +7883,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "volume_expansion",
@@ -7698,6 +7905,8 @@
         "red_close_on_volume",
         "weak_5d_momentum"
       ],
+      "liquidity_band": "Tradable",
+      "liquidity_score_0_1": 0.78,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -7765,7 +7974,10 @@
         "entry_timing": 7.8872,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -28.0,
         "raw_score": 35.6031
       },
@@ -7778,7 +7990,10 @@
         "market_regime": 1.0,
         "penalty": 0.28,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.215894,
@@ -7807,6 +8022,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.2404,
         "rvol3_20": 0.7062,
         "ret1_pct": -0.3623,
@@ -7833,7 +8049,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "compressed_setup",
@@ -7842,6 +8069,8 @@
         "thin_today_value",
         "score_cap_very_low_liquidity"
       ],
+      "liquidity_band": "Very Thin",
+      "liquidity_score_0_1": 0.1,
       "liquidity_status": "exclude_or_watch",
       "liquidity_flags": [
         "avg_traded_value_20d_below_100m_jpy"
@@ -7911,7 +8140,10 @@
         "entry_timing": 10.27,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -26.0,
         "raw_score": 29.9893
       },
@@ -7924,7 +8156,10 @@
         "market_regime": 1.0,
         "penalty": 0.26,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.183193,
@@ -7953,6 +8188,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.5001,
         "rvol3_20": 0.5508,
         "ret1_pct": -0.8115,
@@ -7979,7 +8215,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "rs_60d_leader",
@@ -7989,6 +8236,8 @@
         "score_cap_weak_volume",
         "score_cap_no_daily_confirmation"
       ],
+      "liquidity_band": "Thin",
+      "liquidity_score_0_1": 0.42,
       "liquidity_status": "penalty",
       "liquidity_flags": [
         "avg_traded_value_20d_below_300m_jpy"
@@ -8058,7 +8307,10 @@
         "entry_timing": 9.5319,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -32.0,
         "raw_score": 35.9746
       },
@@ -8071,7 +8323,10 @@
         "market_regime": 1.0,
         "penalty": 0.32,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.445374,
@@ -8100,6 +8355,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.7003,
         "rvol3_20": 1.5072,
         "ret1_pct": 1.0633,
@@ -8126,7 +8382,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "volume_expansion",
@@ -8136,6 +8403,8 @@
         "weak_close_on_volume",
         "score_cap_very_low_liquidity"
       ],
+      "liquidity_band": "Very Thin",
+      "liquidity_score_0_1": 0.1,
       "liquidity_status": "exclude_or_watch",
       "liquidity_flags": [
         "avg_traded_value_20d_below_100m_jpy"
@@ -8185,12 +8454,12 @@
       "extension_sma20_pct": -9.3196,
       "extension_sma50_pct": -5.1857,
       "distance_from_52w_high_pct": -35.7254,
-      "score": 3.62,
-      "score_0_1": 0.036224,
-      "score_pts": 36,
+      "score": 0.0,
+      "score_0_1": 0.0,
+      "score_pts": 0,
       "score_before_penalty_0_1": 0.359748,
       "score_after_penalty_0_1": 0.119748,
-      "score_after_flow_0_1": 0.036224,
+      "score_after_flow_0_1": 0.0,
       "classification": "Distribution Risk",
       "triage": "Ignore",
       "archetype": "Mixed",
@@ -8205,7 +8474,10 @@
         "entry_timing": 6.5697,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": -8.3524,
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": -13.0286,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -24.0,
         "raw_score": 35.9748
       },
@@ -8218,7 +8490,10 @@
         "market_regime": 1.0,
         "penalty": 0.24,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.083524
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.130286,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.524746,
@@ -8246,7 +8521,8 @@
         "signal": "abnormal_distribution",
         "confidence": "high",
         "boost_0_1": 0.0,
-        "distribution_penalty_0_1": 0.083524,
+        "distribution_penalty_0_1": 0.130286,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 2.5719,
         "rvol3_20": 1.6196,
         "ret1_pct": -12.0606,
@@ -8273,7 +8549,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.083524
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.130286,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "major_volume_shock",
@@ -8287,6 +8574,8 @@
         "abnormal_distribution",
         "abnormal_distribution_high_confidence"
       ],
+      "liquidity_band": "High Liquidity",
+      "liquidity_score_0_1": 1.0,
       "liquidity_status": "ok",
       "liquidity_flags": [],
       "is_partial": false,
@@ -8354,7 +8643,10 @@
         "entry_timing": 6.8367,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -38.0,
         "raw_score": 19.7665
       },
@@ -8367,7 +8659,10 @@
         "market_regime": 1.0,
         "penalty": 0.38,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.116886,
@@ -8396,6 +8691,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.5577,
         "rvol3_20": 1.1241,
         "ret1_pct": -1.9831,
@@ -8422,7 +8718,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "rs_60d_leader",
@@ -8434,6 +8741,8 @@
         "score_cap_no_daily_confirmation",
         "score_cap_very_low_liquidity"
       ],
+      "liquidity_band": "Very Thin",
+      "liquidity_score_0_1": 0.1,
       "liquidity_status": "exclude_or_watch",
       "liquidity_flags": [
         "avg_traded_value_20d_below_100m_jpy"
@@ -8503,7 +8812,10 @@
         "entry_timing": 7.614,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": -7.4514,
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": -11.5518,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -38.0,
         "raw_score": 33.6059
       },
@@ -8516,7 +8828,10 @@
         "market_regime": 1.0,
         "penalty": 0.38,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.074514
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.115518,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.40315,
@@ -8544,7 +8859,8 @@
         "signal": "abnormal_distribution",
         "confidence": "high",
         "boost_0_1": 0.0,
-        "distribution_penalty_0_1": 0.074514,
+        "distribution_penalty_0_1": 0.115518,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 3.4132,
         "rvol3_20": 2.3034,
         "ret1_pct": -7.4895,
@@ -8571,7 +8887,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.074514
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.115518,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "major_volume_shock",
@@ -8584,6 +8911,8 @@
         "abnormal_distribution_high_confidence",
         "score_cap_very_low_liquidity"
       ],
+      "liquidity_band": "Very Thin",
+      "liquidity_score_0_1": 0.1,
       "liquidity_status": "exclude_or_watch",
       "liquidity_flags": [
         "avg_traded_value_20d_below_100m_jpy"
@@ -8653,7 +8982,10 @@
         "entry_timing": 7.3484,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -38.0,
         "raw_score": 31.8021
       },
@@ -8666,7 +8998,10 @@
         "market_regime": 1.0,
         "penalty": 0.38,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.253129,
@@ -8695,6 +9030,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.7581,
         "rvol3_20": 1.4072,
         "ret1_pct": -3.9863,
@@ -8721,7 +9057,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "volume_expansion",
@@ -8732,6 +9079,8 @@
         "weak_5d_momentum",
         "score_cap_very_low_liquidity"
       ],
+      "liquidity_band": "Very Thin",
+      "liquidity_score_0_1": 0.1,
       "liquidity_status": "exclude_or_watch",
       "liquidity_flags": [
         "avg_traded_value_20d_below_100m_jpy"
@@ -8801,7 +9150,10 @@
         "entry_timing": 7.7972,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -38.0,
         "raw_score": 23.6417
       },
@@ -8814,7 +9166,10 @@
         "market_regime": 1.0,
         "penalty": 0.38,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.189341,
@@ -8843,6 +9198,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 0.9113,
         "rvol3_20": 0.8644,
         "ret1_pct": -0.7792,
@@ -8869,7 +9225,18 @@
         "watch_bucket_penalty": 0.0,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "compressed_setup",
@@ -8880,6 +9247,8 @@
         "score_cap_no_daily_confirmation",
         "score_cap_very_low_liquidity"
       ],
+      "liquidity_band": "Very Thin",
+      "liquidity_score_0_1": 0.1,
       "liquidity_status": "exclude_or_watch",
       "liquidity_flags": [
         "avg_traded_value_20d_below_100m_jpy"
@@ -8949,7 +9318,10 @@
         "entry_timing": 7.3475,
         "market_regime": 3.0,
         "abnormal_flow_boost": 0.0,
+        "favorable_archetype_boost": 0.0,
         "abnormal_distribution_penalty": -0.0,
+        "volume_noise_penalty": -0.0,
+        "volume_breakout_risk_penalty": -0.0,
         "penalty": -38.0,
         "raw_score": 29.1939
       },
@@ -8962,7 +9334,10 @@
         "market_regime": 1.0,
         "penalty": 0.38,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
       },
       "score_components": {
         "volume_anomaly": 0.284739,
@@ -8991,6 +9366,7 @@
         "confidence": "none",
         "boost_0_1": 0.0,
         "distribution_penalty_0_1": 0.0,
+        "noise_penalty_0_1": 0.0,
         "rvol20": 1.828,
         "rvol3_20": 1.5054,
         "ret1_pct": -4.2982,
@@ -9017,7 +9393,18 @@
         "watch_bucket_penalty": 0.05,
         "partial_data_penalty": 0.0,
         "abnormal_flow_boost": 0.0,
-        "abnormal_distribution_penalty": 0.0
+        "favorable_archetype_boost": 0.0,
+        "abnormal_distribution_penalty": 0.0,
+        "volume_noise_penalty": 0.0,
+        "volume_breakout_risk_penalty": 0.0
+      },
+      "archetype_adjustment": {
+        "favored_relative_strength": false,
+        "favored_compression_breakout": false,
+        "favored_volume_compression": false,
+        "volume_breakout_risk": false,
+        "favorable_archetype_boost_0_1": 0.0,
+        "volume_breakout_risk_penalty_0_1": 0.0
       },
       "flags": [
         "volume_expansion",
@@ -9030,6 +9417,8 @@
         "watch_bucket",
         "score_cap_very_low_liquidity"
       ],
+      "liquidity_band": "Very Thin",
+      "liquidity_score_0_1": 0.1,
       "liquidity_status": "exclude_or_watch",
       "liquidity_flags": [
         "avg_traded_value_20d_below_100m_jpy"
@@ -9066,7 +9455,8 @@
     "by_classification": {
       "Discovery Watch": 1,
       "No Signal": 26,
-      "Low Liquidity": 7,
+      "Volume Noise": 1,
+      "Low Liquidity": 6,
       "Distribution Risk": 2
     },
     "by_bucket": {
