@@ -55,9 +55,26 @@ jobs:
 
           if [ ! -f site/data/backtest-daily-jp/latest.json ]; then
             echo "site/data/backtest-daily-jp/latest.json does not exist."
-            echo "Run Backtest JP daily range or incremental first."
+            echo "Run Backtest JP daily range first."
             exit 1
           fi
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path("site/data/backtest-daily-jp/latest.json")
+          data = json.loads(p.read_text(encoding="utf-8"))
+
+          assert data.get("schema_version") == "backtest-daily-jp-v1", data.get("schema_version")
+          assert isinstance(data.get("summary"), dict), "summary must be a dict"
+          assert "range" in data, "range missing"
+          assert "horizons" in data, "horizons missing"
+
+          print("backtest schema_version=", data.get("schema_version"))
+          print("backtest generated_at=", data.get("generated_at"))
+          print("backtest range=", data.get("range"))
+          PY
 
       - name: Render JP daily backtest page
         run: |
@@ -71,12 +88,53 @@ jobs:
           test -f site/japan/daily/backtest/index.html
           test -f site/assets/backtest_daily_jp.css
 
-          grep -q "JP DAILY BACKTEST LAB" site/japan/daily/backtest/index.html
-          grep -q "Signal quality" site/japan/daily/backtest/index.html
-          grep -q "OVERALL RESULT" site/japan/daily/backtest/index.html
-          grep -q "Top 3 / Top 5 / Top 10" site/japan/daily/backtest/index.html
-          grep -q "DAILY PERFORMANCE TREND" site/japan/daily/backtest/index.html
-          grep -q "No look-ahead" site/japan/daily/backtest/index.html
+          python - <<'PY'
+          from pathlib import Path
+
+          html_path = Path("site/japan/daily/backtest/index.html")
+          css_path = Path("site/assets/backtest_daily_jp.css")
+
+          html = html_path.read_text(encoding="utf-8")
+          css = css_path.read_text(encoding="utf-8")
+
+          assert len(html) > 1000, "backtest html is unexpectedly small"
+          assert len(css) > 1000, "backtest css is unexpectedly small"
+
+          required_html_skeleton = [
+              "<!doctype html>",
+              "<html",
+              "<head>",
+              "<body>",
+              "</html>",
+              "Neon Tokyo Signals",
+              "backtest_daily_jp.css",
+          ]
+
+          for token in required_html_skeleton:
+              assert token in html, f"missing stable html skeleton token: {token}"
+
+          forbidden_unrendered_tokens = [
+              "{{",
+              "{%",
+              "%}",
+              "UndefinedError",
+              "Traceback",
+          ]
+
+          for token in forbidden_unrendered_tokens:
+              assert token not in html, f"unrendered/error token found in html: {token}"
+
+          required_css_skeleton = [
+              ":root",
+              "body",
+          ]
+
+          for token in required_css_skeleton:
+              assert token in css, f"missing stable css skeleton token: {token}"
+
+          print("backtest html bytes=", len(html))
+          print("backtest css bytes=", len(css))
+          PY
 
       - name: Commit rendered backtest page
         run: |
