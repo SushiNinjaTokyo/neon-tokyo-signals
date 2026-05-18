@@ -4,9 +4,9 @@
   <meta charset="utf-8"/>
   <title>Daily Japan Signals | Neon Tokyo Signals</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Daily Japan equity signals after the Tokyo close. Ranked by volume shock, compression release, breakout quality, relative strength and entry discipline."/>
+  <meta name="description" content="Daily Japan equity signals after the Tokyo close. Top 20 short-term trading candidates ranked by volume shock, compression release, breakout quality, relative strength and entry discipline."/>
   <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/daily_jp.css?v=202605181426"/>
+  <link rel="stylesheet" href="/assets/daily_jp.css?v=202605181453"/>
 </head>
 
 <body>
@@ -28,6 +28,7 @@
       <nav class="nav">
         <a href="/">Home</a>
         <a href="/japan/daily/" class="active">Daily</a>
+        <a href="/japan/daily/backtest/">Backtest</a>
         <a href="/japan/weekly/">Weekly</a>
         <a href="/disclaimer/">Disclaimer</a>
       </nav>
@@ -37,18 +38,18 @@
       <div class="hero-copy">
         <div class="kicker">
           <span class="live-dot"></span>
-          DAILY JP EVENT SCORE V2
+          DAILY JP EVENT SCORE V2 · TOP 20 MAIN BOARD
         </div>
 
         <h1>
           Tokyo close signals,
-          <span>filtered by timing discipline.</span>
+          <span>screened for short-term edge.</span>
         </h1>
 
         <p>
-          Ranked by volume/liquidity shock, compression release, breakout setup,
-          relative strength versus TOPIX, entry timing and market regime. News is
-          intentionally excluded in this version.
+          The Daily board focuses on the top 20 ranked candidates only.
+          Rank 21–50 is treated as reference, not the core Daily signal set. News is
+          intentionally excluded; this is a price, volume, liquidity and timing layer.
         </p>
       </div>
 
@@ -71,6 +72,7 @@
               Watch
             </span>
             <span class="tag">Volume</span>
+            <span class="tag">Discovery Watch</span>
           </div>
         
       </aside>
@@ -99,18 +101,55 @@
       <div class="triage-box trade">
         <span>Trade</span>
         <strong>0</strong>
+        <em>Main Top 20</em>
       </div>
       <div class="triage-box watch">
         <span>Watch</span>
         <strong>1</strong>
+        <em>Main Top 20</em>
       </div>
       <div class="triage-box ignore">
         <span>Ignore</span>
-        <strong>35</strong>
+        <strong>19</strong>
+        <em>Main Top 20</em>
       </div>
       <div class="triage-box regime">
         <span>Market Regime</span>
         <strong>Risk-on</strong>
+        <em>Tokyo close context</em>
+      </div>
+    </section>
+
+    <section class="quality-map" aria-label="Daily signal quality map">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">SETUP QUALITY MAP</div>
+          <h2>What matters today.</h2>
+        </div>
+        <div class="method-chip">Primary board: Rank 1–20 · Reference: Rank 21–50</div>
+      </div>
+
+      <div class="quality-grid">
+        <article class="quality-card good">
+          <span>Favored Setups</span>
+          <strong>2</strong>
+          <p>Relative Strength, Compression + Breakout, or Volume + Compression with no major bad-flow flag.</p>
+        </article>
+        <article class="quality-card danger">
+          <span>Risk Flags</span>
+          <strong>12</strong>
+          <p>Volume breakout risk, abnormal distribution, volume noise, weak close, or cap warnings.</p>
+        </article>
+        <article class="quality-card main">
+          <span>Main Board</span>
+          <strong>20</strong>
+          <p>Top 20 names shown as the Daily decision set.</p>
+        </article>
+        <article class="quality-card ref">
+          <span>Reference</span>
+          <strong>16</strong>
+          <p>Rank 21–50 is intentionally de-emphasized.</p>
+        </article>
       </div>
     </section>
 
@@ -212,35 +251,37 @@
     <section class="ranking-section">
       <div class="section-heading split-heading">
         <div>
-          <div class="kicker">DAILY SIGNALS</div>
-          <h2>Ranked by event quality, not simple momentum.</h2>
+          <div class="kicker">MAIN DAILY BOARD</div>
+          <h2>Top 20 candidates, not a broad watchlist.</h2>
         </div>
-        <div class="method-chip">News excluded · Price / Volume / Timing only</div>
+        <div class="method-chip">5D short-term model · News excluded</div>
       </div>
 
       <div class="cards">
         
-          <article class="signal-card score-muted triage-card-watch">
+          <article class="signal-card score-muted triage-card-watch has-good">
             <div class="card-top">
               <div class="rank">#1</div>
-
               <div class="score">
-                
-                  456
-                  <span>pts</span>
-                
+                456<span>pts</span>
               </div>
             </div>
 
             <div class="signal-tags">
-              <span class="tag triage-watch">
-                Watch
-              </span>
+              <span class="tag triage-watch">Watch</span>
               <span class="tag">Volume</span>
-              <span class="tag risk-normal">
-                Risk: Normal
-              </span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-normal">Risk: Normal</span>
             </div>
+
+            
+              <div class="signal-diagnostics">
+                
+                  <span class="diag good">abnormal accumulation</span>
+                
+                
+              </div>
+            
 
             <div class="symbol-row">
               <h3>6501.T</h3>
@@ -250,14 +291,10 @@
             <div class="name">Hitachi</div>
             <div class="theme">AI Infrastructure and Energy</div>
 
-            <div class="classification">
-              Discovery Watch
-            </div>
+            <div class="classification">Discovery Watch</div>
 
             
-              <div class="reason">
-                RVOL 0.98x; abnormal accumulation
-              </div>
+              <div class="reason">RVOL 0.98x; abnormal accumulation</div>
             
 
             <div class="metric-grid">
@@ -270,7 +307,7 @@
                 <strong class="ret-down">-2.6%</strong>
               </div>
               <div>
-                <span>20D</span>
+                <span>20D Ref</span>
                 <strong class="ret-down">-0.7%</strong>
               </div>
               <div>
@@ -288,42 +325,17 @@
             </div>
 
             <div class="component-bars">
-              <div>
-                <span>Volume</span>
-                <i style="width: 66.0%"></i>
-              </div>
-              <div>
-                <span>Compression</span>
-                <i style="width: 27.0%"></i>
-              </div>
-              <div>
-                <span>Breakout</span>
-                <i style="width: 6.0%"></i>
-              </div>
-              <div>
-                <span>RS</span>
-                <i style="width: 31.0%"></i>
-              </div>
-              <div>
-                <span>Entry</span>
-                <i style="width: 78.0%"></i>
-              </div>
+              <div><span>Volume</span><i style="width: 66%"></i></div>
+              <div><span>Compression</span><i style="width: 27%"></i></div>
+              <div><span>Breakout</span><i style="width: 6%"></i></div>
+              <div><span>RS</span><i style="width: 31%"></i></div>
+              <div><span>Entry</span><i style="width: 78%"></i></div>
             </div>
 
             <div class="flags">
+              <span class="good">abnormal accumulation</span><span class="good">post catalyst digestion</span>
               
-                <span>large traded value</span>
-              
-                <span>liquid enough</span>
-              
-                <span>rs 60d leader</span>
-              
-                <span>abnormal accumulation</span>
-              
-                <span>post catalyst digestion</span>
-              
-                <span>discovery watch candidate</span>
-              
+              <span>large traded value</span><span>liquid enough</span><span>rs 60d leader</span><span>discovery watch candidate</span>
             </div>
 
             <div class="risk-row">
@@ -332,27 +344,29 @@
             </div>
           </article>
         
-          <article class="signal-card score-watch triage-card-ignore">
+          <article class="signal-card score-watch triage-card-ignore has-good">
             <div class="card-top">
               <div class="rank">#2</div>
-
               <div class="score">
-                
-                  552
-                  <span>pts</span>
-                
+                552<span>pts</span>
               </div>
             </div>
 
             <div class="signal-tags">
-              <span class="tag triage-ignore">
-                Ignore
-              </span>
+              <span class="tag triage-ignore">Ignore</span>
               <span class="tag">Volume</span>
-              <span class="tag risk-normal">
-                Risk: Normal
-              </span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-normal">Risk: Normal</span>
             </div>
+
+            
+              <div class="signal-diagnostics">
+                
+                  <span class="diag good">favored relative strength</span>
+                
+                
+              </div>
+            
 
             <div class="symbol-row">
               <h3>6758.T</h3>
@@ -362,14 +376,10 @@
             <div class="name">Sony Group</div>
             <div class="theme">Semiconductors Gaming and Entertainment</div>
 
-            <div class="classification">
-              No Signal
-            </div>
+            <div class="classification">No Signal</div>
 
             
-              <div class="reason">
-                RVOL 1.23x; relative strength; favored relative strength
-              </div>
+              <div class="reason">RVOL 1.23x; relative strength; favored relative strength</div>
             
 
             <div class="metric-grid">
@@ -382,7 +392,7 @@
                 <strong class="ret-up">+14.8%</strong>
               </div>
               <div>
-                <span>20D</span>
+                <span>20D Ref</span>
                 <strong class="ret-up">+10.0%</strong>
               </div>
               <div>
@@ -400,40 +410,17 @@
             </div>
 
             <div class="component-bars">
-              <div>
-                <span>Volume</span>
-                <i style="width: 62.0%"></i>
-              </div>
-              <div>
-                <span>Compression</span>
-                <i style="width: 9.0%"></i>
-              </div>
-              <div>
-                <span>Breakout</span>
-                <i style="width: 51.0%"></i>
-              </div>
-              <div>
-                <span>RS</span>
-                <i style="width: 74.0%"></i>
-              </div>
-              <div>
-                <span>Entry</span>
-                <i style="width: 76.0%"></i>
-              </div>
+              <div><span>Volume</span><i style="width: 62%"></i></div>
+              <div><span>Compression</span><i style="width: 9%"></i></div>
+              <div><span>Breakout</span><i style="width: 51%"></i></div>
+              <div><span>RS</span><i style="width: 74%"></i></div>
+              <div><span>Entry</span><i style="width: 76%"></i></div>
             </div>
 
             <div class="flags">
+              <span class="good">favored relative strength</span>
               
-                <span>large traded value</span>
-              
-                <span>liquid enough</span>
-              
-                <span>above key mas</span>
-              
-                <span>rs 60d leader</span>
-              
-                <span>favored relative strength</span>
-              
+              <span>large traded value</span><span>liquid enough</span><span>above key mas</span><span>rs 60d leader</span>
             </div>
 
             <div class="risk-row">
@@ -445,24 +432,19 @@
           <article class="signal-card score-watch triage-card-ignore">
             <div class="card-top">
               <div class="rank">#3</div>
-
               <div class="score">
-                
-                  522
-                  <span>pts</span>
-                
+                522<span>pts</span>
               </div>
             </div>
 
             <div class="signal-tags">
-              <span class="tag triage-ignore">
-                Ignore
-              </span>
+              <span class="tag triage-ignore">Ignore</span>
               <span class="tag">Mixed</span>
-              <span class="tag risk-normal">
-                Risk: Normal
-              </span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-normal">Risk: Normal</span>
             </div>
+
+            
 
             <div class="symbol-row">
               <h3>6503.T</h3>
@@ -472,14 +454,10 @@
             <div class="name">Mitsubishi Electric</div>
             <div class="theme">Factory Automation and Power Systems</div>
 
-            <div class="classification">
-              No Signal
-            </div>
+            <div class="classification">No Signal</div>
 
             
-              <div class="reason">
-                mixed signal
-              </div>
+              <div class="reason">mixed signal</div>
             
 
             <div class="metric-grid">
@@ -492,7 +470,7 @@
                 <strong class="ret-down">-0.7%</strong>
               </div>
               <div>
-                <span>20D</span>
+                <span>20D Ref</span>
                 <strong class="ret-up">+10.4%</strong>
               </div>
               <div>
@@ -510,40 +488,17 @@
             </div>
 
             <div class="component-bars">
-              <div>
-                <span>Volume</span>
-                <i style="width: 47.0%"></i>
-              </div>
-              <div>
-                <span>Compression</span>
-                <i style="width: 41.0%"></i>
-              </div>
-              <div>
-                <span>Breakout</span>
-                <i style="width: 57.0%"></i>
-              </div>
-              <div>
-                <span>RS</span>
-                <i style="width: 50.0%"></i>
-              </div>
-              <div>
-                <span>Entry</span>
-                <i style="width: 64.0%"></i>
-              </div>
+              <div><span>Volume</span><i style="width: 47%"></i></div>
+              <div><span>Compression</span><i style="width: 41%"></i></div>
+              <div><span>Breakout</span><i style="width: 57%"></i></div>
+              <div><span>RS</span><i style="width: 50%"></i></div>
+              <div><span>Entry</span><i style="width: 64%"></i></div>
             </div>
 
             <div class="flags">
               
-                <span>large traded value</span>
               
-                <span>liquid enough</span>
-              
-                <span>compressed setup</span>
-              
-                <span>above key mas</span>
-              
-                <span>rs 60d leader</span>
-              
+              <span>large traded value</span><span>liquid enough</span><span>compressed setup</span><span>above key mas</span>
             </div>
 
             <div class="risk-row">
@@ -555,24 +510,19 @@
           <article class="signal-card score-muted triage-card-ignore">
             <div class="card-top">
               <div class="rank">#4</div>
-
               <div class="score">
-                
-                  443
-                  <span>pts</span>
-                
+                443<span>pts</span>
               </div>
             </div>
 
             <div class="signal-tags">
-              <span class="tag triage-ignore">
-                Ignore
-              </span>
+              <span class="tag triage-ignore">Ignore</span>
               <span class="tag">Mixed</span>
-              <span class="tag risk-normal">
-                Risk: Normal
-              </span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-normal">Risk: Normal</span>
             </div>
+
+            
 
             <div class="symbol-row">
               <h3>7741.T</h3>
@@ -582,14 +532,10 @@
             <div class="name">HOYA</div>
             <div class="theme">Semiconductor Materials and MedTech</div>
 
-            <div class="classification">
-              No Signal
-            </div>
+            <div class="classification">No Signal</div>
 
             
-              <div class="reason">
-                mixed signal
-              </div>
+              <div class="reason">mixed signal</div>
             
 
             <div class="metric-grid">
@@ -602,7 +548,7 @@
                 <strong class="ret-up">+1.9%</strong>
               </div>
               <div>
-                <span>20D</span>
+                <span>20D Ref</span>
                 <strong class="ret-down">-4.0%</strong>
               </div>
               <div>
@@ -620,38 +566,17 @@
             </div>
 
             <div class="component-bars">
-              <div>
-                <span>Volume</span>
-                <i style="width: 59.0%"></i>
-              </div>
-              <div>
-                <span>Compression</span>
-                <i style="width: 32.0%"></i>
-              </div>
-              <div>
-                <span>Breakout</span>
-                <i style="width: 17.0%"></i>
-              </div>
-              <div>
-                <span>RS</span>
-                <i style="width: 37.0%"></i>
-              </div>
-              <div>
-                <span>Entry</span>
-                <i style="width: 73.0%"></i>
-              </div>
+              <div><span>Volume</span><i style="width: 59%"></i></div>
+              <div><span>Compression</span><i style="width: 32%"></i></div>
+              <div><span>Breakout</span><i style="width: 17%"></i></div>
+              <div><span>RS</span><i style="width: 37%"></i></div>
+              <div><span>Entry</span><i style="width: 73%"></i></div>
             </div>
 
             <div class="flags">
               
-                <span>large traded value</span>
               
-                <span>liquid enough</span>
-              
-                <span>compressed setup</span>
-              
-                <span>rs 60d leader</span>
-              
+              <span>large traded value</span><span>liquid enough</span><span>compressed setup</span><span>rs 60d leader</span>
             </div>
 
             <div class="risk-row">
@@ -660,27 +585,29 @@
             </div>
           </article>
         
-          <article class="signal-card score-muted triage-card-ignore">
+          <article class="signal-card score-muted triage-card-ignore has-risk">
             <div class="card-top">
               <div class="rank">#5</div>
-
               <div class="score">
-                
-                  379
-                  <span>pts</span>
-                
+                379<span>pts</span>
               </div>
             </div>
 
             <div class="signal-tags">
-              <span class="tag triage-ignore">
-                Ignore
-              </span>
+              <span class="tag triage-ignore">Ignore</span>
               <span class="tag">Relative Strength</span>
-              <span class="tag risk-normal">
-                Risk: Normal
-              </span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-normal">Risk: Normal</span>
             </div>
+
+            
+              <div class="signal-diagnostics">
+                
+                
+                  <span class="diag danger">score cap no daily confirmation</span>
+                
+              </div>
+            
 
             <div class="symbol-row">
               <h3>6762.T</h3>
@@ -690,14 +617,10 @@
             <div class="name">TDK</div>
             <div class="theme">Electronic Components</div>
 
-            <div class="classification">
-              No Signal
-            </div>
+            <div class="classification">No Signal</div>
 
             
-              <div class="reason">
-                relative strength; no daily confirmation
-              </div>
+              <div class="reason">relative strength; no daily confirmation</div>
             
 
             <div class="metric-grid">
@@ -710,7 +633,7 @@
                 <strong class="ret-up">+2.4%</strong>
               </div>
               <div>
-                <span>20D</span>
+                <span>20D Ref</span>
                 <strong class="ret-up">+32.1%</strong>
               </div>
               <div>
@@ -728,44 +651,17 @@
             </div>
 
             <div class="component-bars">
-              <div>
-                <span>Volume</span>
-                <i style="width: 38.0%"></i>
-              </div>
-              <div>
-                <span>Compression</span>
-                <i style="width: 19.0%"></i>
-              </div>
-              <div>
-                <span>Breakout</span>
-                <i style="width: 59.0%"></i>
-              </div>
-              <div>
-                <span>RS</span>
-                <i style="width: 80.0%"></i>
-              </div>
-              <div>
-                <span>Entry</span>
-                <i style="width: 47.0%"></i>
-              </div>
+              <div><span>Volume</span><i style="width: 38%"></i></div>
+              <div><span>Compression</span><i style="width: 19%"></i></div>
+              <div><span>Breakout</span><i style="width: 59%"></i></div>
+              <div><span>RS</span><i style="width: 80%"></i></div>
+              <div><span>Entry</span><i style="width: 47%"></i></div>
             </div>
 
             <div class="flags">
               
-                <span>large traded value</span>
-              
-                <span>liquid enough</span>
-              
-                <span>above key mas</span>
-              
-                <span>rs 20d positive</span>
-              
-                <span>rs 60d leader</span>
-              
-                <span>no daily confirmation</span>
-              
-                <span>score cap no daily confirmation</span>
-              
+              <span class="danger">score cap no daily confirmation</span>
+              <span>large traded value</span><span>liquid enough</span><span>above key mas</span><span>rs 20d positive</span>
             </div>
 
             <div class="risk-row">
@@ -774,27 +670,29 @@
             </div>
           </article>
         
-          <article class="signal-card score-muted triage-card-ignore">
+          <article class="signal-card score-muted triage-card-ignore has-risk">
             <div class="card-top">
               <div class="rank">#6</div>
-
               <div class="score">
-                
-                  370
-                  <span>pts</span>
-                
+                370<span>pts</span>
               </div>
             </div>
 
             <div class="signal-tags">
-              <span class="tag triage-ignore">
-                Ignore
-              </span>
+              <span class="tag triage-ignore">Ignore</span>
               <span class="tag">Mixed</span>
-              <span class="tag risk-normal">
-                Risk: Normal
-              </span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-normal">Risk: Normal</span>
             </div>
+
+            
+              <div class="signal-diagnostics">
+                
+                
+                  <span class="diag danger">score cap no daily confirmation</span>
+                
+              </div>
+            
 
             <div class="symbol-row">
               <h3>8035.T</h3>
@@ -804,14 +702,10 @@
             <div class="name">Tokyo Electron</div>
             <div class="theme">Semiconductor Equipment</div>
 
-            <div class="classification">
-              No Signal
-            </div>
+            <div class="classification">No Signal</div>
 
             
-              <div class="reason">
-                no daily confirmation
-              </div>
+              <div class="reason">no daily confirmation</div>
             
 
             <div class="metric-grid">
@@ -824,7 +718,7 @@
                 <strong class="ret-down">-4.1%</strong>
               </div>
               <div>
-                <span>20D</span>
+                <span>20D Ref</span>
                 <strong class="ret-up">+18.4%</strong>
               </div>
               <div>
@@ -842,44 +736,17 @@
             </div>
 
             <div class="component-bars">
-              <div>
-                <span>Volume</span>
-                <i style="width: 41.0%"></i>
-              </div>
-              <div>
-                <span>Compression</span>
-                <i style="width: 21.0%"></i>
-              </div>
-              <div>
-                <span>Breakout</span>
-                <i style="width: 56.0%"></i>
-              </div>
-              <div>
-                <span>RS</span>
-                <i style="width: 57.0%"></i>
-              </div>
-              <div>
-                <span>Entry</span>
-                <i style="width: 62.0%"></i>
-              </div>
+              <div><span>Volume</span><i style="width: 41%"></i></div>
+              <div><span>Compression</span><i style="width: 21%"></i></div>
+              <div><span>Breakout</span><i style="width: 56%"></i></div>
+              <div><span>RS</span><i style="width: 57%"></i></div>
+              <div><span>Entry</span><i style="width: 62%"></i></div>
             </div>
 
             <div class="flags">
               
-                <span>large traded value</span>
-              
-                <span>liquid enough</span>
-              
-                <span>compressed setup</span>
-              
-                <span>above key mas</span>
-              
-                <span>rs 20d positive</span>
-              
-                <span>rs 60d leader</span>
-              
-                <span>no daily confirmation</span>
-              
+              <span class="danger">score cap no daily confirmation</span>
+              <span>large traded value</span><span>liquid enough</span><span>compressed setup</span><span>above key mas</span>
             </div>
 
             <div class="risk-row">
@@ -891,24 +758,19 @@
           <article class="signal-card score-muted triage-card-ignore">
             <div class="card-top">
               <div class="rank">#7</div>
-
               <div class="score">
-                
-                  352
-                  <span>pts</span>
-                
+                352<span>pts</span>
               </div>
             </div>
 
             <div class="signal-tags">
-              <span class="tag triage-ignore">
-                Ignore
-              </span>
+              <span class="tag triage-ignore">Ignore</span>
               <span class="tag">Volume</span>
-              <span class="tag risk-normal">
-                Risk: Normal
-              </span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-normal">Risk: Normal</span>
             </div>
+
+            
 
             <div class="symbol-row">
               <h3>7974.T</h3>
@@ -918,14 +780,10 @@
             <div class="name">Nintendo</div>
             <div class="theme">Interactive Entertainment</div>
 
-            <div class="classification">
-              No Signal
-            </div>
+            <div class="classification">No Signal</div>
 
             
-              <div class="reason">
-                RVOL 1.03x
-              </div>
+              <div class="reason">RVOL 1.03x</div>
             
 
             <div class="metric-grid">
@@ -938,7 +796,7 @@
                 <strong class="ret-down">-6.7%</strong>
               </div>
               <div>
-                <span>20D</span>
+                <span>20D Ref</span>
                 <strong class="ret-down">-13.8%</strong>
               </div>
               <div>
@@ -956,38 +814,17 @@
             </div>
 
             <div class="component-bars">
-              <div>
-                <span>Volume</span>
-                <i style="width: 71.0%"></i>
-              </div>
-              <div>
-                <span>Compression</span>
-                <i style="width: 21.0%"></i>
-              </div>
-              <div>
-                <span>Breakout</span>
-                <i style="width: 3.0%"></i>
-              </div>
-              <div>
-                <span>RS</span>
-                <i style="width: 24.0%"></i>
-              </div>
-              <div>
-                <span>Entry</span>
-                <i style="width: 81.0%"></i>
-              </div>
+              <div><span>Volume</span><i style="width: 71%"></i></div>
+              <div><span>Compression</span><i style="width: 21%"></i></div>
+              <div><span>Breakout</span><i style="width: 3%"></i></div>
+              <div><span>RS</span><i style="width: 24%"></i></div>
+              <div><span>Entry</span><i style="width: 81%"></i></div>
             </div>
 
             <div class="flags">
               
-                <span>large traded value</span>
               
-                <span>liquid enough</span>
-              
-                <span>rs 60d leader</span>
-              
-                <span>weak 5d momentum</span>
-              
+              <span>large traded value</span><span>liquid enough</span><span>rs 60d leader</span><span>weak 5d momentum</span>
             </div>
 
             <div class="risk-row">
@@ -996,27 +833,29 @@
             </div>
           </article>
         
-          <article class="signal-card score-muted triage-card-ignore">
+          <article class="signal-card score-muted triage-card-ignore has-risk">
             <div class="card-top">
               <div class="rank">#8</div>
-
               <div class="score">
-                
-                  326
-                  <span>pts</span>
-                
+                326<span>pts</span>
               </div>
             </div>
 
             <div class="signal-tags">
-              <span class="tag triage-ignore">
-                Ignore
-              </span>
+              <span class="tag triage-ignore">Ignore</span>
               <span class="tag">Relative Strength</span>
-              <span class="tag risk-normal">
-                Risk: Normal
-              </span>
+              <span class="tag liq-tradable">Tradable</span>
+              <span class="tag risk-normal">Risk: Normal</span>
             </div>
+
+            
+              <div class="signal-diagnostics">
+                
+                
+                  <span class="diag danger">score cap weak volume</span>
+                
+              </div>
+            
 
             <div class="symbol-row">
               <h3>135A.T</h3>
@@ -1026,14 +865,10 @@
             <div class="name">VRAIN Solution</div>
             <div class="theme">Manufacturing AI and Visual Inspection</div>
 
-            <div class="classification">
-              No Signal
-            </div>
+            <div class="classification">No Signal</div>
 
             
-              <div class="reason">
-                relative strength; no daily confirmation
-              </div>
+              <div class="reason">relative strength; no daily confirmation</div>
             
 
             <div class="metric-grid">
@@ -1046,7 +881,7 @@
                 <strong class="ret-up">+0.3%</strong>
               </div>
               <div>
-                <span>20D</span>
+                <span>20D Ref</span>
                 <strong class="ret-up">+38.8%</strong>
               </div>
               <div>
@@ -1064,44 +899,17 @@
             </div>
 
             <div class="component-bars">
-              <div>
-                <span>Volume</span>
-                <i style="width: 24.0%"></i>
-              </div>
-              <div>
-                <span>Compression</span>
-                <i style="width: 18.0%"></i>
-              </div>
-              <div>
-                <span>Breakout</span>
-                <i style="width: 57.0%"></i>
-              </div>
-              <div>
-                <span>RS</span>
-                <i style="width: 76.0%"></i>
-              </div>
-              <div>
-                <span>Entry</span>
-                <i style="width: 42.0%"></i>
-              </div>
+              <div><span>Volume</span><i style="width: 24%"></i></div>
+              <div><span>Compression</span><i style="width: 18%"></i></div>
+              <div><span>Breakout</span><i style="width: 57%"></i></div>
+              <div><span>RS</span><i style="width: 76%"></i></div>
+              <div><span>Entry</span><i style="width: 42%"></i></div>
             </div>
 
             <div class="flags">
               
-                <span>liquid enough</span>
-              
-                <span>above key mas</span>
-              
-                <span>rs 20d positive</span>
-              
-                <span>rs 60d leader</span>
-              
-                <span>no daily confirmation</span>
-              
-                <span>score cap weak volume</span>
-              
-                <span>score cap no daily confirmation</span>
-              
+              <span class="danger">score cap weak volume</span><span class="danger">score cap no daily confirmation</span>
+              <span>liquid enough</span><span>above key mas</span><span>rs 20d positive</span><span>rs 60d leader</span>
             </div>
 
             <div class="risk-row">
@@ -1110,27 +918,29 @@
             </div>
           </article>
         
-          <article class="signal-card score-muted triage-card-ignore">
+          <article class="signal-card score-muted triage-card-ignore has-risk">
             <div class="card-top">
               <div class="rank">#9</div>
-
               <div class="score">
-                
-                  321
-                  <span>pts</span>
-                
+                321<span>pts</span>
               </div>
             </div>
 
             <div class="signal-tags">
-              <span class="tag triage-ignore">
-                Ignore
-              </span>
+              <span class="tag triage-ignore">Ignore</span>
               <span class="tag">Volume</span>
-              <span class="tag risk-medium">
-                Risk: Medium
-              </span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-medium">Risk: Medium</span>
             </div>
+
+            
+              <div class="signal-diagnostics">
+                
+                
+                  <span class="diag danger">weak close on volume</span>
+                
+              </div>
+            
 
             <div class="symbol-row">
               <h3>6954.T</h3>
@@ -1140,14 +950,10 @@
             <div class="name">FANUC</div>
             <div class="theme">Robotics and Factory Automation</div>
 
-            <div class="classification">
-              No Signal
-            </div>
+            <div class="classification">No Signal</div>
 
             
-              <div class="reason">
-                RVOL 1.70x; relative strength; penalty drag
-              </div>
+              <div class="reason">RVOL 1.70x; relative strength; penalty drag</div>
             
 
             <div class="metric-grid">
@@ -1160,7 +966,7 @@
                 <strong class="ret-up">+9.5%</strong>
               </div>
               <div>
-                <span>20D</span>
+                <span>20D Ref</span>
                 <strong class="ret-up">+33.1%</strong>
               </div>
               <div>
@@ -1178,44 +984,17 @@
             </div>
 
             <div class="component-bars">
-              <div>
-                <span>Volume</span>
-                <i style="width: 63.0%"></i>
-              </div>
-              <div>
-                <span>Compression</span>
-                <i style="width: 9.0%"></i>
-              </div>
-              <div>
-                <span>Breakout</span>
-                <i style="width: 59.0%"></i>
-              </div>
-              <div>
-                <span>RS</span>
-                <i style="width: 93.0%"></i>
-              </div>
-              <div>
-                <span>Entry</span>
-                <i style="width: 26.0%"></i>
-              </div>
+              <div><span>Volume</span><i style="width: 63%"></i></div>
+              <div><span>Compression</span><i style="width: 9%"></i></div>
+              <div><span>Breakout</span><i style="width: 59%"></i></div>
+              <div><span>RS</span><i style="width: 93%"></i></div>
+              <div><span>Entry</span><i style="width: 26%"></i></div>
             </div>
 
             <div class="flags">
               
-                <span>volume expansion</span>
-              
-                <span>large traded value</span>
-              
-                <span>liquid enough</span>
-              
-                <span>above key mas</span>
-              
-                <span>rs 20d positive</span>
-              
-                <span>rs 60d leader</span>
-              
-                <span>extended risk</span>
-              
+              <span class="danger">weak close on volume</span><span class="danger">red close on volume</span>
+              <span>volume expansion</span><span>large traded value</span><span>liquid enough</span><span>above key mas</span>
             </div>
 
             <div class="risk-row">
@@ -1227,24 +1006,19 @@
           <article class="signal-card score-muted triage-card-ignore">
             <div class="card-top">
               <div class="rank">#10</div>
-
               <div class="score">
-                
-                  305
-                  <span>pts</span>
-                
+                305<span>pts</span>
               </div>
             </div>
 
             <div class="signal-tags">
-              <span class="tag triage-ignore">
-                Ignore
-              </span>
+              <span class="tag triage-ignore">Ignore</span>
               <span class="tag">Mixed</span>
-              <span class="tag risk-normal">
-                Risk: Normal
-              </span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-normal">Risk: Normal</span>
             </div>
+
+            
 
             <div class="symbol-row">
               <h3>7013.T</h3>
@@ -1254,14 +1028,10 @@
             <div class="name">IHI</div>
             <div class="theme">Aerospace Defense and Energy</div>
 
-            <div class="classification">
-              No Signal
-            </div>
+            <div class="classification">No Signal</div>
 
             
-              <div class="reason">
-                mixed signal
-              </div>
+              <div class="reason">mixed signal</div>
             
 
             <div class="metric-grid">
@@ -1274,7 +1044,7 @@
                 <strong class="ret-down">-12.2%</strong>
               </div>
               <div>
-                <span>20D</span>
+                <span>20D Ref</span>
                 <strong class="ret-down">-18.2%</strong>
               </div>
               <div>
@@ -1292,38 +1062,853 @@
             </div>
 
             <div class="component-bars">
-              <div>
-                <span>Volume</span>
-                <i style="width: 60.0%"></i>
-              </div>
-              <div>
-                <span>Compression</span>
-                <i style="width: 22.0%"></i>
-              </div>
-              <div>
-                <span>Breakout</span>
-                <i style="width: 1.0%"></i>
-              </div>
-              <div>
-                <span>RS</span>
-                <i style="width: 28.0%"></i>
-              </div>
-              <div>
-                <span>Entry</span>
-                <i style="width: 64.0%"></i>
-              </div>
+              <div><span>Volume</span><i style="width: 60%"></i></div>
+              <div><span>Compression</span><i style="width: 22%"></i></div>
+              <div><span>Breakout</span><i style="width: 2%"></i></div>
+              <div><span>RS</span><i style="width: 28%"></i></div>
+              <div><span>Entry</span><i style="width: 64%"></i></div>
             </div>
 
             <div class="flags">
               
-                <span>large traded value</span>
               
-                <span>liquid enough</span>
+              <span>large traded value</span><span>liquid enough</span><span>rs 60d leader</span><span>weak 5d momentum</span>
+            </div>
+
+            <div class="risk-row">
+              <span>yfinance</span>
+              <span>2026-05-15</span>
+            </div>
+          </article>
+        
+          <article class="signal-card score-muted triage-card-ignore has-risk">
+            <div class="card-top">
+              <div class="rank">#11</div>
+              <div class="score">
+                277<span>pts</span>
+              </div>
+            </div>
+
+            <div class="signal-tags">
+              <span class="tag triage-ignore">Ignore</span>
+              <span class="tag">Mixed</span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-normal">Risk: Normal</span>
+            </div>
+
+            
+              <div class="signal-diagnostics">
+                
+                
+                  <span class="diag danger">score cap no daily confirmation</span>
+                
+              </div>
+            
+
+            <div class="symbol-row">
+              <h3>6861.T</h3>
+              <span class="bucket">Core</span>
+            </div>
+
+            <div class="name">Keyence</div>
+            <div class="theme">Factory Automation</div>
+
+            <div class="classification">No Signal</div>
+
+            
+              <div class="reason">no daily confirmation</div>
+            
+
+            <div class="metric-grid">
+              <div>
+                <span>1D</span>
+                <strong class="ret-down">-0.2%</strong>
+              </div>
+              <div>
+                <span>5D</span>
+                <strong class="ret-down">-8.3%</strong>
+              </div>
+              <div>
+                <span>20D Ref</span>
+                <strong class="ret-up">+21.5%</strong>
+              </div>
+              <div>
+                <span>RVOL</span>
+                <strong>0.6</strong>
+              </div>
+              <div>
+                <span>Avg Value</span>
+                <strong>¥79.81B</strong>
+              </div>
+              <div>
+                <span>52W High</span>
+                <strong>-8.3%</strong>
+              </div>
+            </div>
+
+            <div class="component-bars">
+              <div><span>Volume</span><i style="width: 38%"></i></div>
+              <div><span>Compression</span><i style="width: 6%"></i></div>
+              <div><span>Breakout</span><i style="width: 56%"></i></div>
+              <div><span>RS</span><i style="width: 61%"></i></div>
+              <div><span>Entry</span><i style="width: 62%"></i></div>
+            </div>
+
+            <div class="flags">
               
-                <span>rs 60d leader</span>
+              <span class="danger">score cap no daily confirmation</span>
+              <span>large traded value</span><span>liquid enough</span><span>above key mas</span><span>rs 20d positive</span>
+            </div>
+
+            <div class="risk-row">
+              <span>yfinance</span>
+              <span>2026-05-15</span>
+            </div>
+          </article>
+        
+          <article class="signal-card score-muted triage-card-ignore has-risk">
+            <div class="card-top">
+              <div class="rank">#12</div>
+              <div class="score">
+                274<span>pts</span>
+              </div>
+            </div>
+
+            <div class="signal-tags">
+              <span class="tag triage-ignore">Ignore</span>
+              <span class="tag">Relative Strength</span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-normal">Risk: Normal</span>
+            </div>
+
+            
+              <div class="signal-diagnostics">
+                
+                
+                  <span class="diag danger">score cap no daily confirmation</span>
+                
+              </div>
+            
+
+            <div class="symbol-row">
+              <h3>9984.T</h3>
+              <span class="bucket">Core</span>
+            </div>
+
+            <div class="name">SoftBank Group</div>
+            <div class="theme">AI and Technology Investment</div>
+
+            <div class="classification">No Signal</div>
+
+            
+              <div class="reason">relative strength; no daily confirmation</div>
+            
+
+            <div class="metric-grid">
+              <div>
+                <span>1D</span>
+                <strong class="ret-down">-0.4%</strong>
+              </div>
+              <div>
+                <span>5D</span>
+                <strong class="ret-down">-6.3%</strong>
+              </div>
+              <div>
+                <span>20D Ref</span>
+                <strong class="ret-up">+52.6%</strong>
+              </div>
+              <div>
+                <span>RVOL</span>
+                <strong>0.8</strong>
+              </div>
+              <div>
+                <span>Avg Value</span>
+                <strong>¥480.90B</strong>
+              </div>
+              <div>
+                <span>52W High</span>
+                <strong>-17.0%</strong>
+              </div>
+            </div>
+
+            <div class="component-bars">
+              <div><span>Volume</span><i style="width: 37%"></i></div>
+              <div><span>Compression</span><i style="width: 11%"></i></div>
+              <div><span>Breakout</span><i style="width: 56%"></i></div>
+              <div><span>RS</span><i style="width: 70%"></i></div>
+              <div><span>Entry</span><i style="width: 44%"></i></div>
+            </div>
+
+            <div class="flags">
               
-                <span>weak 5d momentum</span>
+              <span class="danger">score cap no daily confirmation</span>
+              <span>large traded value</span><span>liquid enough</span><span>above key mas</span><span>rs 20d positive</span>
+            </div>
+
+            <div class="risk-row">
+              <span>yfinance</span>
+              <span>2026-05-15</span>
+            </div>
+          </article>
+        
+          <article class="signal-card score-muted triage-card-ignore">
+            <div class="card-top">
+              <div class="rank">#13</div>
+              <div class="score">
+                274<span>pts</span>
+              </div>
+            </div>
+
+            <div class="signal-tags">
+              <span class="tag triage-ignore">Ignore</span>
+              <span class="tag">Mixed</span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-normal">Risk: Normal</span>
+            </div>
+
+            
+
+            <div class="symbol-row">
+              <h3>6146.T</h3>
+              <span class="bucket">Core</span>
+            </div>
+
+            <div class="name">DISCO</div>
+            <div class="theme">Semiconductor Equipment</div>
+
+            <div class="classification">No Signal</div>
+
+            
+              <div class="reason">mixed signal</div>
+            
+
+            <div class="metric-grid">
+              <div>
+                <span>1D</span>
+                <strong class="ret-down">-7.3%</strong>
+              </div>
+              <div>
+                <span>5D</span>
+                <strong class="ret-down">-13.5%</strong>
+              </div>
+              <div>
+                <span>20D Ref</span>
+                <strong class="ret-down">-3.7%</strong>
+              </div>
+              <div>
+                <span>RVOL</span>
+                <strong>1.1</strong>
+              </div>
+              <div>
+                <span>Avg Value</span>
+                <strong>¥168.28B</strong>
+              </div>
+              <div>
+                <span>52W High</span>
+                <strong>-19.9%</strong>
+              </div>
+            </div>
+
+            <div class="component-bars">
+              <div><span>Volume</span><i style="width: 40%"></i></div>
+              <div><span>Compression</span><i style="width: 35%"></i></div>
+              <div><span>Breakout</span><i style="width: 10%"></i></div>
+              <div><span>RS</span><i style="width: 28%"></i></div>
+              <div><span>Entry</span><i style="width: 44%"></i></div>
+            </div>
+
+            <div class="flags">
               
+              
+              <span>large traded value</span><span>liquid enough</span><span>compressed setup</span><span>rs 60d leader</span>
+            </div>
+
+            <div class="risk-row">
+              <span>yfinance</span>
+              <span>2026-05-15</span>
+            </div>
+          </article>
+        
+          <article class="signal-card score-muted triage-card-ignore has-risk">
+            <div class="card-top">
+              <div class="rank">#14</div>
+              <div class="score">
+                272<span>pts</span>
+              </div>
+            </div>
+
+            <div class="signal-tags">
+              <span class="tag triage-ignore">Ignore</span>
+              <span class="tag">Mixed</span>
+              <span class="tag liq-thin">Thin</span>
+              <span class="tag risk-medium">Risk: Medium</span>
+            </div>
+
+            
+              <div class="signal-diagnostics">
+                
+                
+                  <span class="diag danger">score cap weak volume</span>
+                
+              </div>
+            
+
+            <div class="symbol-row">
+              <h3>3914.T</h3>
+              <span class="bucket">Discovery</span>
+            </div>
+
+            <div class="name">JIG-SAW</div>
+            <div class="theme">IoT Automation and Managed Control</div>
+
+            <div class="classification">No Signal</div>
+
+            
+              <div class="reason">mixed signal</div>
+            
+
+            <div class="metric-grid">
+              <div>
+                <span>1D</span>
+                <strong class="ret-up">+3.7%</strong>
+              </div>
+              <div>
+                <span>5D</span>
+                <strong class="ret-down">-5.2%</strong>
+              </div>
+              <div>
+                <span>20D Ref</span>
+                <strong class="ret-up">+1.8%</strong>
+              </div>
+              <div>
+                <span>RVOL</span>
+                <strong>0.6</strong>
+              </div>
+              <div>
+                <span>Avg Value</span>
+                <strong>¥107.4M</strong>
+              </div>
+              <div>
+                <span>52W High</span>
+                <strong>-35.9%</strong>
+              </div>
+            </div>
+
+            <div class="component-bars">
+              <div><span>Volume</span><i style="width: 44%"></i></div>
+              <div><span>Compression</span><i style="width: 9%"></i></div>
+              <div><span>Breakout</span><i style="width: 50%"></i></div>
+              <div><span>RS</span><i style="width: 33%"></i></div>
+              <div><span>Entry</span><i style="width: 83%"></i></div>
+            </div>
+
+            <div class="flags">
+              
+              <span class="danger">score cap weak volume</span>
+              <span>above key mas</span><span>rs 60d leader</span><span>low liquidity</span><span>weak 5d momentum</span>
+            </div>
+
+            <div class="risk-row">
+              <span>yfinance</span>
+              <span>2026-05-15</span>
+            </div>
+          </article>
+        
+          <article class="signal-card score-muted triage-card-ignore has-risk">
+            <div class="card-top">
+              <div class="rank">#15</div>
+              <div class="score">
+                261<span>pts</span>
+              </div>
+            </div>
+
+            <div class="signal-tags">
+              <span class="tag triage-ignore">Ignore</span>
+              <span class="tag">Relative Strength</span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-medium">Risk: Medium</span>
+            </div>
+
+            
+              <div class="signal-diagnostics">
+                
+                
+                  <span class="diag danger">score cap no daily confirmation</span>
+                
+              </div>
+            
+
+            <div class="symbol-row">
+              <h3>6981.T</h3>
+              <span class="bucket">Core</span>
+            </div>
+
+            <div class="name">Murata Manufacturing</div>
+            <div class="theme">Electronic Components</div>
+
+            <div class="classification">No Signal</div>
+
+            
+              <div class="reason">relative strength; no daily confirmation; penalty drag</div>
+            
+
+            <div class="metric-grid">
+              <div>
+                <span>1D</span>
+                <strong class="ret-down">-3.0%</strong>
+              </div>
+              <div>
+                <span>5D</span>
+                <strong class="ret-up">+5.1%</strong>
+              </div>
+              <div>
+                <span>20D Ref</span>
+                <strong class="ret-up">+47.5%</strong>
+              </div>
+              <div>
+                <span>RVOL</span>
+                <strong>1.0</strong>
+              </div>
+              <div>
+                <span>Avg Value</span>
+                <strong>¥70.96B</strong>
+              </div>
+              <div>
+                <span>52W High</span>
+                <strong>-6.0%</strong>
+              </div>
+            </div>
+
+            <div class="component-bars">
+              <div><span>Volume</span><i style="width: 41%"></i></div>
+              <div><span>Compression</span><i style="width: 11%"></i></div>
+              <div><span>Breakout</span><i style="width: 60%"></i></div>
+              <div><span>RS</span><i style="width: 85%"></i></div>
+              <div><span>Entry</span><i style="width: 23%"></i></div>
+            </div>
+
+            <div class="flags">
+              
+              <span class="danger">score cap no daily confirmation</span>
+              <span>large traded value</span><span>liquid enough</span><span>above key mas</span><span>upper 20d range</span>
+            </div>
+
+            <div class="risk-row">
+              <span>yfinance</span>
+              <span>2026-05-15</span>
+            </div>
+          </article>
+        
+          <article class="signal-card score-muted triage-card-ignore has-risk">
+            <div class="card-top">
+              <div class="rank">#16</div>
+              <div class="score">
+                243<span>pts</span>
+              </div>
+            </div>
+
+            <div class="signal-tags">
+              <span class="tag triage-ignore">Ignore</span>
+              <span class="tag">Mixed</span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-medium">Risk: Medium</span>
+            </div>
+
+            
+              <div class="signal-diagnostics">
+                
+                
+                  <span class="diag danger">weak close on volume</span>
+                
+              </div>
+            
+
+            <div class="symbol-row">
+              <h3>5802.T</h3>
+              <span class="bucket">Core</span>
+            </div>
+
+            <div class="name">Sumitomo Electric</div>
+            <div class="theme">Data Center and Power Infrastructure</div>
+
+            <div class="classification">No Signal</div>
+
+            
+              <div class="reason">penalty drag</div>
+            
+
+            <div class="metric-grid">
+              <div>
+                <span>1D</span>
+                <strong class="ret-down">-9.3%</strong>
+              </div>
+              <div>
+                <span>5D</span>
+                <strong class="ret-down">-2.9%</strong>
+              </div>
+              <div>
+                <span>20D Ref</span>
+                <strong class="ret-up">+10.6%</strong>
+              </div>
+              <div>
+                <span>RVOL</span>
+                <strong>1.4</strong>
+              </div>
+              <div>
+                <span>Avg Value</span>
+                <strong>¥80.10B</strong>
+              </div>
+              <div>
+                <span>52W High</span>
+                <strong>-15.7%</strong>
+              </div>
+            </div>
+
+            <div class="component-bars">
+              <div><span>Volume</span><i style="width: 43%"></i></div>
+              <div><span>Compression</span><i style="width: 19%"></i></div>
+              <div><span>Breakout</span><i style="width: 50%"></i></div>
+              <div><span>RS</span><i style="width: 46%"></i></div>
+              <div><span>Entry</span><i style="width: 49%"></i></div>
+            </div>
+
+            <div class="flags">
+              
+              <span class="danger">weak close on volume</span><span class="danger">red close on volume</span>
+              <span>volume expansion</span><span>large traded value</span><span>liquid enough</span><span>above key mas</span>
+            </div>
+
+            <div class="risk-row">
+              <span>yfinance</span>
+              <span>2026-05-15</span>
+            </div>
+          </article>
+        
+          <article class="signal-card score-muted triage-card-ignore">
+            <div class="card-top">
+              <div class="rank">#17</div>
+              <div class="score">
+                231<span>pts</span>
+              </div>
+            </div>
+
+            <div class="signal-tags">
+              <span class="tag triage-ignore">Ignore</span>
+              <span class="tag">Mixed</span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-normal">Risk: Normal</span>
+            </div>
+
+            
+
+            <div class="symbol-row">
+              <h3>7011.T</h3>
+              <span class="bucket">Core</span>
+            </div>
+
+            <div class="name">Mitsubishi Heavy Industries</div>
+            <div class="theme">Defense Energy and Aerospace</div>
+
+            <div class="classification">No Signal</div>
+
+            
+              <div class="reason">mixed signal</div>
+            
+
+            <div class="metric-grid">
+              <div>
+                <span>1D</span>
+                <strong class="ret-down">-2.0%</strong>
+              </div>
+              <div>
+                <span>5D</span>
+                <strong class="ret-down">-9.5%</strong>
+              </div>
+              <div>
+                <span>20D Ref</span>
+                <strong class="ret-down">-14.3%</strong>
+              </div>
+              <div>
+                <span>RVOL</span>
+                <strong>1.0</strong>
+              </div>
+              <div>
+                <span>Avg Value</span>
+                <strong>¥117.14B</strong>
+              </div>
+              <div>
+                <span>52W High</span>
+                <strong>-21.7%</strong>
+              </div>
+            </div>
+
+            <div class="component-bars">
+              <div><span>Volume</span><i style="width: 46%"></i></div>
+              <div><span>Compression</span><i style="width: 9%"></i></div>
+              <div><span>Breakout</span><i style="width: 2%"></i></div>
+              <div><span>RS</span><i style="width: 28%"></i></div>
+              <div><span>Entry</span><i style="width: 55%"></i></div>
+            </div>
+
+            <div class="flags">
+              
+              
+              <span>large traded value</span><span>liquid enough</span><span>rs 60d leader</span><span>weak 5d momentum</span>
+            </div>
+
+            <div class="risk-row">
+              <span>yfinance</span>
+              <span>2026-05-15</span>
+            </div>
+          </article>
+        
+          <article class="signal-card score-muted triage-card-ignore has-risk">
+            <div class="card-top">
+              <div class="rank">#18</div>
+              <div class="score">
+                224<span>pts</span>
+              </div>
+            </div>
+
+            <div class="signal-tags">
+              <span class="tag triage-ignore">Ignore</span>
+              <span class="tag">Mixed</span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-normal">Risk: Normal</span>
+            </div>
+
+            
+              <div class="signal-diagnostics">
+                
+                
+                  <span class="diag danger">score cap no daily confirmation</span>
+                
+              </div>
+            
+
+            <div class="symbol-row">
+              <h3>6701.T</h3>
+              <span class="bucket">Core</span>
+            </div>
+
+            <div class="name">NEC</div>
+            <div class="theme">IT Defense and Communications</div>
+
+            <div class="classification">No Signal</div>
+
+            
+              <div class="reason">no daily confirmation</div>
+            
+
+            <div class="metric-grid">
+              <div>
+                <span>1D</span>
+                <strong class="ret-down">-1.1%</strong>
+              </div>
+              <div>
+                <span>5D</span>
+                <strong class="ret-down">-4.7%</strong>
+              </div>
+              <div>
+                <span>20D Ref</span>
+                <strong class="ret-up">+3.1%</strong>
+              </div>
+              <div>
+                <span>RVOL</span>
+                <strong>0.8</strong>
+              </div>
+              <div>
+                <span>Avg Value</span>
+                <strong>¥43.88B</strong>
+              </div>
+              <div>
+                <span>52W High</span>
+                <strong>-35.4%</strong>
+              </div>
+            </div>
+
+            <div class="component-bars">
+              <div><span>Volume</span><i style="width: 39%"></i></div>
+              <div><span>Compression</span><i style="width: 31%"></i></div>
+              <div><span>Breakout</span><i style="width: 3%"></i></div>
+              <div><span>RS</span><i style="width: 33%"></i></div>
+              <div><span>Entry</span><i style="width: 49%"></i></div>
+            </div>
+
+            <div class="flags">
+              
+              <span class="danger">score cap no daily confirmation</span>
+              <span>large traded value</span><span>liquid enough</span><span>compressed setup</span><span>rs 60d leader</span>
+            </div>
+
+            <div class="risk-row">
+              <span>yfinance</span>
+              <span>2026-05-15</span>
+            </div>
+          </article>
+        
+          <article class="signal-card score-muted triage-card-ignore has-risk">
+            <div class="card-top">
+              <div class="rank">#19</div>
+              <div class="score">
+                217<span>pts</span>
+              </div>
+            </div>
+
+            <div class="signal-tags">
+              <span class="tag triage-ignore">Ignore</span>
+              <span class="tag">Mixed</span>
+              <span class="tag liq-high-liquidity">High Liquidity</span>
+              <span class="tag risk-normal">Risk: Normal</span>
+            </div>
+
+            
+              <div class="signal-diagnostics">
+                
+                
+                  <span class="diag danger">score cap no daily confirmation</span>
+                
+              </div>
+            
+
+            <div class="symbol-row">
+              <h3>6857.T</h3>
+              <span class="bucket">Core</span>
+            </div>
+
+            <div class="name">Advantest</div>
+            <div class="theme">Semiconductor Test</div>
+
+            <div class="classification">No Signal</div>
+
+            
+              <div class="reason">no daily confirmation</div>
+            
+
+            <div class="metric-grid">
+              <div>
+                <span>1D</span>
+                <strong class="ret-down">-7.9%</strong>
+              </div>
+              <div>
+                <span>5D</span>
+                <strong class="ret-down">-11.8%</strong>
+              </div>
+              <div>
+                <span>20D Ref</span>
+                <strong class="ret-up">+5.9%</strong>
+              </div>
+              <div>
+                <span>RVOL</span>
+                <strong>0.9</strong>
+              </div>
+              <div>
+                <span>Avg Value</span>
+                <strong>¥307.94B</strong>
+              </div>
+              <div>
+                <span>52W High</span>
+                <strong>-18.6%</strong>
+              </div>
+            </div>
+
+            <div class="component-bars">
+              <div><span>Volume</span><i style="width: 37%"></i></div>
+              <div><span>Compression</span><i style="width: 33%"></i></div>
+              <div><span>Breakout</span><i style="width: 28%"></i></div>
+              <div><span>RS</span><i style="width: 39%"></i></div>
+              <div><span>Entry</span><i style="width: 43%"></i></div>
+            </div>
+
+            <div class="flags">
+              
+              <span class="danger">score cap no daily confirmation</span>
+              <span>large traded value</span><span>liquid enough</span><span>compressed setup</span><span>rs 60d leader</span>
+            </div>
+
+            <div class="risk-row">
+              <span>yfinance</span>
+              <span>2026-05-15</span>
+            </div>
+          </article>
+        
+          <article class="signal-card score-muted triage-card-ignore has-risk">
+            <div class="card-top">
+              <div class="rank">#20</div>
+              <div class="score">
+                206<span>pts</span>
+              </div>
+            </div>
+
+            <div class="signal-tags">
+              <span class="tag triage-ignore">Ignore</span>
+              <span class="tag">Relative Strength</span>
+              <span class="tag liq-very-thin">Very Thin</span>
+              <span class="tag risk-high">Risk: High</span>
+            </div>
+
+            
+              <div class="signal-diagnostics">
+                
+                
+                  <span class="diag danger">red close on volume</span>
+                
+              </div>
+            
+
+            <div class="symbol-row">
+              <h3>269A.T</h3>
+              <span class="bucket">Discovery</span>
+            </div>
+
+            <div class="name">Sapeet</div>
+            <div class="theme">Expert AI and Human AI</div>
+
+            <div class="classification">Volume Noise</div>
+
+            
+              <div class="reason">relative strength; volume noise; very low liquidity; penalty drag</div>
+            
+
+            <div class="metric-grid">
+              <div>
+                <span>1D</span>
+                <strong class="ret-down">-1.1%</strong>
+              </div>
+              <div>
+                <span>5D</span>
+                <strong class="ret-up">+2.0%</strong>
+              </div>
+              <div>
+                <span>20D Ref</span>
+                <strong class="ret-up">+20.2%</strong>
+              </div>
+              <div>
+                <span>RVOL</span>
+                <strong>6.3</strong>
+              </div>
+              <div>
+                <span>Avg Value</span>
+                <strong>¥23.3M</strong>
+              </div>
+              <div>
+                <span>52W High</span>
+                <strong>-28.3%</strong>
+              </div>
+            </div>
+
+            <div class="component-bars">
+              <div><span>Volume</span><i style="width: 55%"></i></div>
+              <div><span>Compression</span><i style="width: 37%"></i></div>
+              <div><span>Breakout</span><i style="width: 56%"></i></div>
+              <div><span>RS</span><i style="width: 69%"></i></div>
+              <div><span>Entry</span><i style="width: 67%"></i></div>
+            </div>
+
+            <div class="flags">
+              
+              <span class="danger">red close on volume</span><span class="danger">volume noise</span><span class="danger">score cap very low liquidity</span>
+              <span>major volume shock</span><span>compression release</span><span>above key mas</span><span>rs 20d positive</span>
             </div>
 
             <div class="risk-row">
@@ -1335,13 +1920,95 @@
       </div>
     </section>
 
+    <section class="insight-lanes">
+      <div class="lane-card favored">
+        <div class="section-heading compact">
+          <div class="kicker">FAVORED SETUPS</div>
+          <h2>Good technical structure inside Top 20.</h2>
+        </div>
+        <div class="mini-list">
+          
+            <div class="mini-row">
+              <strong>#1 6501.T</strong>
+              <span>abnormal accumulation</span>
+              <em>Watch · 456 pts</em>
+            </div>
+          
+            <div class="mini-row">
+              <strong>#2 6758.T</strong>
+              <span>favored relative strength</span>
+              <em>Ignore · 552 pts</em>
+            </div>
+          
+        </div>
+      </div>
+
+      <div class="lane-card warning">
+        <div class="section-heading compact">
+          <div class="kicker">RISK WARNINGS</div>
+          <h2>Patterns the backtest says to distrust.</h2>
+        </div>
+        <div class="mini-list">
+          
+            <div class="mini-row danger">
+              <strong>#5 6762.T</strong>
+              <span>score cap no daily confirmation</span>
+              <em>Ignore · 379 pts</em>
+            </div>
+          
+            <div class="mini-row danger">
+              <strong>#6 8035.T</strong>
+              <span>score cap no daily confirmation</span>
+              <em>Ignore · 370 pts</em>
+            </div>
+          
+            <div class="mini-row danger">
+              <strong>#8 135A.T</strong>
+              <span>score cap weak volume</span>
+              <em>Ignore · 326 pts</em>
+            </div>
+          
+            <div class="mini-row danger">
+              <strong>#9 6954.T</strong>
+              <span>weak close on volume</span>
+              <em>Ignore · 321 pts</em>
+            </div>
+          
+            <div class="mini-row danger">
+              <strong>#11 6861.T</strong>
+              <span>score cap no daily confirmation</span>
+              <em>Ignore · 277 pts</em>
+            </div>
+          
+            <div class="mini-row danger">
+              <strong>#12 9984.T</strong>
+              <span>score cap no daily confirmation</span>
+              <em>Ignore · 274 pts</em>
+            </div>
+          
+            <div class="mini-row danger">
+              <strong>#14 3914.T</strong>
+              <span>score cap weak volume</span>
+              <em>Ignore · 272 pts</em>
+            </div>
+          
+            <div class="mini-row danger">
+              <strong>#15 6981.T</strong>
+              <span>score cap no daily confirmation</span>
+              <em>Ignore · 261 pts</em>
+            </div>
+          
+        </div>
+      </div>
+    </section>
+
     <section class="table-section">
       <div class="section-heading split-heading">
         <div>
-          <div class="kicker">FULL RANKING</div>
-          <h2>All scored JP equities.</h2>
+          <div class="kicker">MAIN RANKING TABLE</div>
+          <h2>Top 20 scored JP equities.</h2>
         </div>
-        <div class="method-chip">Score is capped by liquidity, extension and confirmation rules</div>
+        <div class="method-chip">Risk flags are shown explicitly</div>
       </div>
 
       <div class="table-wrap">
@@ -1352,13 +2019,13 @@
               <th>Triage</th>
               <th>Symbol</th>
               <th>Name</th>
-              <th>Bucket</th>
               <th>Score</th>
               <th>Archetype</th>
-              <th>Class</th>
+              <th>Quality</th>
+              <th>Liquidity</th>
               <th>1D</th>
               <th>5D</th>
-              <th>20D</th>
+              <th>20D Ref</th>
               <th>RVOL</th>
               <th>Avg Value</th>
               <th>Risk</th>
@@ -1366,23 +2033,18 @@
           </thead>
           <tbody>
             
-              <tr>
+              <tr class="row-good">
                 <td>#1</td>
-                <td>
-                  <span class="mini-tag triage-watch">
-                    Watch
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>6501.T</strong></td>
                 <td>Hitachi</td>
-                <td>Core</td>
+                <td>456</td>
+                <td>Volume</td>
                 <td>
-                  
-                    456
+                  <span class="mini-tag good">abnormal accumulation</span>
                   
                 </td>
-                <td>Volume</td>
-                <td>Discovery Watch</td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-up">+3.0%</td>
                 <td class="ret-down">-2.6%</td>
                 <td class="ret-down">-0.7%</td>
@@ -1391,23 +2053,18 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="row-good">
                 <td>#2</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6758.T</strong></td>
                 <td>Sony Group</td>
-                <td>Core</td>
+                <td>552</td>
+                <td>Volume</td>
                 <td>
-                  
-                    552
+                  <span class="mini-tag good">favored relative strength</span>
                   
                 </td>
-                <td>Volume</td>
-                <td>No Signal</td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-up">+3.8%</td>
                 <td class="ret-up">+14.8%</td>
                 <td class="ret-up">+10.0%</td>
@@ -1416,23 +2073,17 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="">
                 <td>#3</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6503.T</strong></td>
                 <td>Mitsubishi Electric</td>
-                <td>Core</td>
-                <td>
-                  
-                    522
-                  
-                </td>
+                <td>522</td>
                 <td>Mixed</td>
-                <td>No Signal</td>
+                <td>
+                  <span class="mini-tag">neutral</span>
+                </td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-down">-0.3%</td>
                 <td class="ret-down">-0.7%</td>
                 <td class="ret-up">+10.4%</td>
@@ -1441,23 +2092,17 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="">
                 <td>#4</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>7741.T</strong></td>
                 <td>HOYA</td>
-                <td>Core</td>
-                <td>
-                  
-                    443
-                  
-                </td>
+                <td>443</td>
                 <td>Mixed</td>
-                <td>No Signal</td>
+                <td>
+                  <span class="mini-tag">neutral</span>
+                </td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-up">+1.2%</td>
                 <td class="ret-up">+1.9%</td>
                 <td class="ret-down">-4.0%</td>
@@ -1466,23 +2111,18 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="row-risk">
                 <td>#5</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6762.T</strong></td>
                 <td>TDK</td>
-                <td>Core</td>
+                <td>379</td>
+                <td>Relative Strength</td>
                 <td>
-                  
-                    379
+                  <span class="mini-tag danger">score cap no daily confirmation</span>
                   
                 </td>
-                <td>Relative Strength</td>
-                <td>No Signal</td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-down">-2.6%</td>
                 <td class="ret-up">+2.4%</td>
                 <td class="ret-up">+32.1%</td>
@@ -1491,23 +2131,18 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="row-risk">
                 <td>#6</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>8035.T</strong></td>
                 <td>Tokyo Electron</td>
-                <td>Core</td>
+                <td>370</td>
+                <td>Mixed</td>
                 <td>
-                  
-                    370
+                  <span class="mini-tag danger">score cap no daily confirmation</span>
                   
                 </td>
-                <td>Mixed</td>
-                <td>No Signal</td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-down">-1.8%</td>
                 <td class="ret-down">-4.1%</td>
                 <td class="ret-up">+18.4%</td>
@@ -1516,23 +2151,17 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="">
                 <td>#7</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>7974.T</strong></td>
                 <td>Nintendo</td>
-                <td>Core</td>
-                <td>
-                  
-                    352
-                  
-                </td>
+                <td>352</td>
                 <td>Volume</td>
-                <td>No Signal</td>
+                <td>
+                  <span class="mini-tag">neutral</span>
+                </td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-up">+4.2%</td>
                 <td class="ret-down">-6.7%</td>
                 <td class="ret-down">-13.8%</td>
@@ -1541,23 +2170,18 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="row-risk">
                 <td>#8</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>135A.T</strong></td>
                 <td>VRAIN Solution</td>
-                <td>Discovery</td>
+                <td>326</td>
+                <td>Relative Strength</td>
                 <td>
-                  
-                    326
+                  <span class="mini-tag danger">score cap weak volume</span>
                   
                 </td>
-                <td>Relative Strength</td>
-                <td>No Signal</td>
+                <td><span class="mini-tag liq-tradable">Tradable</span></td>
                 <td class="ret-down">-0.9%</td>
                 <td class="ret-up">+0.3%</td>
                 <td class="ret-up">+38.8%</td>
@@ -1566,23 +2190,18 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="row-risk">
                 <td>#9</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6954.T</strong></td>
                 <td>FANUC</td>
-                <td>Core</td>
+                <td>321</td>
+                <td>Volume</td>
                 <td>
-                  
-                    321
+                  <span class="mini-tag danger">weak close on volume</span>
                   
                 </td>
-                <td>Volume</td>
-                <td>No Signal</td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-up">+2.4%</td>
                 <td class="ret-up">+9.5%</td>
                 <td class="ret-up">+33.1%</td>
@@ -1591,23 +2210,17 @@
                 <td class="risk-medium">Medium</td>
               </tr>
             
-              <tr>
+              <tr class="">
                 <td>#10</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>7013.T</strong></td>
                 <td>IHI</td>
-                <td>Core</td>
-                <td>
-                  
-                    305
-                  
-                </td>
+                <td>305</td>
                 <td>Mixed</td>
-                <td>No Signal</td>
+                <td>
+                  <span class="mini-tag">neutral</span>
+                </td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-up">+0.2%</td>
                 <td class="ret-down">-12.2%</td>
                 <td class="ret-down">-18.2%</td>
@@ -1616,23 +2229,18 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="row-risk">
                 <td>#11</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6861.T</strong></td>
                 <td>Keyence</td>
-                <td>Core</td>
+                <td>277</td>
+                <td>Mixed</td>
                 <td>
-                  
-                    277
+                  <span class="mini-tag danger">score cap no daily confirmation</span>
                   
                 </td>
-                <td>Mixed</td>
-                <td>No Signal</td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-down">-0.2%</td>
                 <td class="ret-down">-8.3%</td>
                 <td class="ret-up">+21.5%</td>
@@ -1641,23 +2249,18 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="row-risk">
                 <td>#12</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>9984.T</strong></td>
                 <td>SoftBank Group</td>
-                <td>Core</td>
+                <td>274</td>
+                <td>Relative Strength</td>
                 <td>
-                  
-                    274
+                  <span class="mini-tag danger">score cap no daily confirmation</span>
                   
                 </td>
-                <td>Relative Strength</td>
-                <td>No Signal</td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-down">-0.4%</td>
                 <td class="ret-down">-6.3%</td>
                 <td class="ret-up">+52.6%</td>
@@ -1666,23 +2269,17 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="">
                 <td>#13</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6146.T</strong></td>
                 <td>DISCO</td>
-                <td>Core</td>
-                <td>
-                  
-                    274
-                  
-                </td>
+                <td>274</td>
                 <td>Mixed</td>
-                <td>No Signal</td>
+                <td>
+                  <span class="mini-tag">neutral</span>
+                </td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-down">-7.3%</td>
                 <td class="ret-down">-13.5%</td>
                 <td class="ret-down">-3.7%</td>
@@ -1691,23 +2288,18 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="row-risk">
                 <td>#14</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>3914.T</strong></td>
                 <td>JIG-SAW</td>
-                <td>Discovery</td>
+                <td>272</td>
+                <td>Mixed</td>
                 <td>
-                  
-                    272
+                  <span class="mini-tag danger">score cap weak volume</span>
                   
                 </td>
-                <td>Mixed</td>
-                <td>No Signal</td>
+                <td><span class="mini-tag liq-thin">Thin</span></td>
                 <td class="ret-up">+3.7%</td>
                 <td class="ret-down">-5.2%</td>
                 <td class="ret-up">+1.8%</td>
@@ -1716,23 +2308,18 @@
                 <td class="risk-medium">Medium</td>
               </tr>
             
-              <tr>
+              <tr class="row-risk">
                 <td>#15</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6981.T</strong></td>
                 <td>Murata Manufacturing</td>
-                <td>Core</td>
+                <td>261</td>
+                <td>Relative Strength</td>
                 <td>
-                  
-                    261
+                  <span class="mini-tag danger">score cap no daily confirmation</span>
                   
                 </td>
-                <td>Relative Strength</td>
-                <td>No Signal</td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-down">-3.0%</td>
                 <td class="ret-up">+5.1%</td>
                 <td class="ret-up">+47.5%</td>
@@ -1741,23 +2328,18 @@
                 <td class="risk-medium">Medium</td>
               </tr>
             
-              <tr>
+              <tr class="row-risk">
                 <td>#16</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>5802.T</strong></td>
                 <td>Sumitomo Electric</td>
-                <td>Core</td>
+                <td>243</td>
+                <td>Mixed</td>
                 <td>
-                  
-                    243
+                  <span class="mini-tag danger">weak close on volume</span>
                   
                 </td>
-                <td>Mixed</td>
-                <td>No Signal</td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-down">-9.3%</td>
                 <td class="ret-down">-2.9%</td>
                 <td class="ret-up">+10.6%</td>
@@ -1766,23 +2348,17 @@
                 <td class="risk-medium">Medium</td>
               </tr>
             
-              <tr>
+              <tr class="">
                 <td>#17</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>7011.T</strong></td>
                 <td>Mitsubishi Heavy Industries</td>
-                <td>Core</td>
-                <td>
-                  
-                    231
-                  
-                </td>
+                <td>231</td>
                 <td>Mixed</td>
-                <td>No Signal</td>
+                <td>
+                  <span class="mini-tag">neutral</span>
+                </td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-down">-2.0%</td>
                 <td class="ret-down">-9.5%</td>
                 <td class="ret-down">-14.3%</td>
@@ -1791,23 +2367,18 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="row-risk">
                 <td>#18</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6701.T</strong></td>
                 <td>NEC</td>
-                <td>Core</td>
+                <td>224</td>
+                <td>Mixed</td>
                 <td>
-                  
-                    224
+                  <span class="mini-tag danger">score cap no daily confirmation</span>
                   
                 </td>
-                <td>Mixed</td>
-                <td>No Signal</td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-down">-1.1%</td>
                 <td class="ret-down">-4.7%</td>
                 <td class="ret-up">+3.1%</td>
@@ -1816,23 +2387,18 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="row-risk">
                 <td>#19</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6857.T</strong></td>
                 <td>Advantest</td>
-                <td>Core</td>
+                <td>217</td>
+                <td>Mixed</td>
                 <td>
-                  
-                    217
+                  <span class="mini-tag danger">score cap no daily confirmation</span>
                   
                 </td>
-                <td>Mixed</td>
-                <td>No Signal</td>
+                <td><span class="mini-tag liq-high-liquidity">High Liquidity</span></td>
                 <td class="ret-down">-7.9%</td>
                 <td class="ret-down">-11.8%</td>
                 <td class="ret-up">+5.9%</td>
@@ -1841,23 +2407,18 @@
                 <td class="risk-normal">Normal</td>
               </tr>
             
-              <tr>
+              <tr class="row-risk">
                 <td>#20</td>
-                <td>
-                  <span class="mini-tag triage-ignore">
-                    Ignore
-                  </span>
-                </td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>269A.T</strong></td>
                 <td>Sapeet</td>
-                <td>Discovery</td>
+                <td>206</td>
+                <td>Relative Strength</td>
                 <td>
-                  
-                    206
+                  <span class="mini-tag danger">red close on volume</span>
                   
                 </td>
-                <td>Relative Strength</td>
-                <td>Volume Noise</td>
+                <td><span class="mini-tag liq-very-thin">Very Thin</span></td>
                 <td class="ret-down">-1.1%</td>
                 <td class="ret-up">+2.0%</td>
                 <td class="ret-up">+20.2%</td>
@@ -1871,51 +2432,105 @@
       </div>
     </section>
 
+    <section class="reference-section">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">REFERENCE ONLY</div>
+          <h2>Rank 21–50 is not the Daily core.</h2>
+        </div>
+        <div class="method-chip">Backtest showed quality decay after Rank 20</div>
+      </div>
+      <div class="reference-grid">
+        
+          <div class="reference-pill risk">
+            <strong>#21 5574.T</strong>
+            <span>Ignore · 188 pts · Mixed</span>
+          </div>
+        
+          <div class="reference-pill risk">
+            <strong>#22 7012.T</strong>
+            <span>Ignore · 163 pts · Mixed</span>
+          </div>
+        
+          <div class="reference-pill risk">
+            <strong>#23 3905.T</strong>
+            <span>Ignore · 162 pts · Volume</span>
+          </div>
+        
+          <div class="reference-pill risk">
+            <strong>#24 6920.T</strong>
+            <span>Ignore · 154 pts · Mixed</span>
+          </div>
+        
+          <div class="reference-pill risk">
+            <strong>#25 3652.T</strong>
+            <span>Ignore · 129 pts · Relative Strength</span>
+          </div>
+        
+          <div class="reference-pill risk">
+            <strong>#26 5803.T</strong>
+            <span>Ignore · 123 pts · Mixed</span>
+          </div>
+        
+          <div class="reference-pill risk">
+            <strong>#27 4425.T</strong>
+            <span>Ignore · 111 pts · Mixed</span>
+          </div>
+        
+          <div class="reference-pill risk">
+            <strong>#28 5572.T</strong>
+            <span>Ignore · 76 pts · Mixed</span>
+          </div>
+        
+          <div class="reference-pill risk">
+            <strong>#29 5132.T</strong>
+            <span>Ignore · 40 pts · Mixed</span>
+          </div>
+        
+          <div class="reference-pill risk">
+            <strong>#30 4011.T</strong>
+            <span>Ignore · 40 pts · Mixed</span>
+          </div>
+        
+          <div class="reference-pill risk">
+            <strong>#31 3993.T</strong>
+            <span>Ignore · 0 pts · Mixed</span>
+          </div>
+        
+          <div class="reference-pill risk">
+            <strong>#32 4488.T</strong>
+            <span>Ignore · 0 pts · Mixed</span>
+          </div>
+        
+      </div>
+    </section>
+
     <section class="method-section">
       <div class="method-card">
         <div class="kicker">METHODOLOGY</div>
         <h2>Daily Event Score v2</h2>
         <p>
-          This model is designed to avoid a simple “strong stock” ranking. It prioritizes
-          names showing event-like timing: volume/liquidity shock, compression release,
-          breakout setup quality, relative strength versus TOPIX and entry discipline.
+          The Daily model is a short-term trading screen. It prioritizes 1D/3D/5D/10D behavior,
+          with 5D as the primary backtest horizon. 20D is shown as a reference horizon only.
         </p>
 
         <div class="method-grid">
-          <div>
-            <span>Volume / Liquidity</span>
-            <strong>24%</strong>
-          </div>
-          <div>
-            <span>Compression Release</span>
-            <strong>22%</strong>
-          </div>
-          <div>
-            <span>Breakout Setup</span>
-            <strong>20%</strong>
-          </div>
-          <div>
-            <span>Relative Strength</span>
-            <strong>16%</strong>
-          </div>
-          <div>
-            <span>Entry Timing</span>
-            <strong>15%</strong>
-          </div>
-          <div>
-            <span>Market Regime</span>
-            <strong>3%</strong>
-          </div>
+          <div><span>Volume / Liquidity</span><strong>24%</strong></div>
+          <div><span>Compression Release</span><strong>22%</strong></div>
+          <div><span>Breakout Setup</span><strong>20%</strong></div>
+          <div><span>Relative Strength</span><strong>16%</strong></div>
+          <div><span>Entry Timing</span><strong>15%</strong></div>
+          <div><span>Market Regime</span><strong>3%</strong></div>
         </div>
       </div>
 
       <div class="method-card warning">
         <div class="kicker">CONTROLS</div>
-        <h2>Why some high-momentum names are capped.</h2>
+        <h2>What the latest backtest changed.</h2>
         <p>
-          Low liquidity, no daily confirmation, weak close on volume and extended 5D/20D
-          moves cap the final score. This keeps speculative discovery names visible
-          without letting them dominate the Trade list.
+          Volume + Breakout without compression is treated as exhaustion risk. Relative Strength,
+          Compression + Breakout, and Volume + Compression are favored. Abnormal distribution and
+          volume noise are penalized. Rank 21–50 is reference, not the main Daily decision board.
         </p>
       </div>
     </section>
