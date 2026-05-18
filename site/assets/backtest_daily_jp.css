@@ -1047,3 +1047,27 @@ table td strong{
     min-height:auto;
   }
 }
+
+.warning-note {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 213, 117, 0.28);
+  border-radius: 16px;
+  background: rgba(255, 213, 117, 0.06);
+  color: rgba(246, 247, 255, 0.78);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  font-size: 0.82rem;
+}
+
+.warning-note strong {
+  color: rgba(255, 244, 205, 0.96);
+}
+
+.warning-note span {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
