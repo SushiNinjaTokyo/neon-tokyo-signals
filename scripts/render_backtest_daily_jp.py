@@ -100,7 +100,7 @@ GROUP_SECTIONS = [
         "title": "Liquidity Band Performance",
         "subtitle": "Japan-specific liquidity control is critical.",
         "label": "Liquidity",
-        "priority": ["High Liquidity", "Liquid", "Thin", "Very Thin", "Unknown"],
+        "priority": ["High Liquidity", "Tradable", "Thin", "Event Thin", "Very Thin", "Unknown"],
     },
     {
         "key": "by_regime",
@@ -521,6 +521,42 @@ def make_insights(summary: dict[str, Any], horizons: list[int], primary_horizon:
 # Diagnostic view models. These are format-only transforms; no performance math.
 # -----------------------------------------------------------------------------
 
+def _chart_width(value: Any, max_abs: float, min_width: float = 3.0) -> float:
+    v = as_float(value)
+    if v is None or max_abs <= 0:
+        return 0.0
+    return round(max(min_width, min(100.0, abs(v) / max_abs * 100.0)), 2)
+
+
+def make_bar_chart_rows(rows: list[dict[str, Any]], value_key: str, secondary_key: str | None = None) -> list[dict[str, Any]]:
+    vals = [abs(as_float(r.get(value_key)) or 0.0) for r in rows]
+    max_abs = max(vals) if vals else 0.0
+    out = []
+    for r in rows:
+        v = as_float(r.get(value_key))
+        sec = as_float(r.get(secondary_key)) if secondary_key else None
+        row = dict(r)
+        row["value"] = v
+        row["secondary_value"] = sec
+        row["bar_width"] = _chart_width(v, max_abs)
+        row["bar_class"] = value_class(v)
+        row["win_class"] = win_class(r.get("win_rate_pct"))
+        out.append(row)
+    return out
+
+
+def make_visualization_view(summary: dict[str, Any]) -> dict[str, Any]:
+    raw = summary.get("visualization_data") or {}
+    return {
+        "primary_horizon": str(raw.get("primary_horizon") or "5d").upper(),
+        "triage": make_bar_chart_rows(raw.get("triage") or [], "avg_alpha_pct", "avg_return_pct"),
+        "score_bands": make_bar_chart_rows(raw.get("score_bands") or [], "avg_alpha_pct", "avg_return_pct"),
+        "rank_buckets": make_bar_chart_rows(raw.get("rank_buckets") or [], "avg_alpha_pct", "avg_return_pct"),
+        "archetypes": make_bar_chart_rows(raw.get("archetypes") or [], "avg_alpha_pct", "avg_return_pct"),
+        "liquidity_bands": make_bar_chart_rows(raw.get("liquidity_bands") or [], "avg_alpha_pct", "avg_return_pct"),
+    }
+
+
 def make_model_health_view(summary: dict[str, Any]) -> dict[str, Any]:
     mh = summary.get("model_health") or {}
     checks = mh.get("checks") or {}
@@ -570,13 +606,16 @@ def make_filter_rows(summary: dict[str, Any], horizons: list[int]) -> list[dict[
     order = [
         "rank_lte_10",
         "rank_lte_20",
+        "rank_21_50_reference",
         "trade_only",
         "watch_only",
         "trade_plus_watch",
         "score_gte_500",
         "score_gte_600",
         "score_gte_700",
-        "liquidity_gte_liquid",
+        "liquidity_gte_tradable",
+        "favored_archetypes",
+        "volume_breakout_risk",
         "abnormal_accumulation",
         "abnormal_accumulation_watch",
         "abnormal_distribution",
@@ -779,6 +818,7 @@ def render() -> None:
         insights=insights,
         model_health=make_model_health_view(summary),
         benchmark_quality_view=make_benchmark_quality_view(summary),
+        visualization_view=make_visualization_view(summary),
         filtered_rows=make_filter_rows(summary, horizons),
         rank_bucket_rows=make_rank_bucket_rows(summary, horizons),
         outlier_view=make_outlier_view(summary),
