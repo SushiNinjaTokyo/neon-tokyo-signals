@@ -95,6 +95,13 @@ MIN_HISTORY_BARS = int(os.getenv("BACKTEST_MIN_HISTORY_BARS", "80"))
 RANK_LIMIT = int(os.getenv("BACKTEST_RANK_LIMIT", "50"))
 MAX_EVAL_DATES_INCREMENTAL = int(os.getenv("BACKTEST_MAX_EVAL_DATES", "5"))
 
+# Guard against benchmark data glitches such as split / adjustment / bad bars in 1306.T.
+# If TOPIX ETF future return is outside this absolute threshold, alpha is set to None
+# for that eval_date x horizon. Raw stock future returns remain untouched.
+BENCHMARK_RETURN_ABS_LIMIT_PCT = float(os.getenv("BACKTEST_BENCHMARK_RETURN_ABS_LIMIT_PCT", "30"))
+BENCHMARK_SYMBOL = os.getenv("BACKTEST_BENCHMARK_SYMBOL", "1306.T")
+BENCHMARK_LABEL = os.getenv("BACKTEST_BENCHMARK_LABEL", "TOPIX")
+
 TZ = ZoneInfo("Asia/Tokyo")
 
 
@@ -316,6 +323,54 @@ def get_topix_df(market_pulse_raw: list[dict[str, Any]]) -> pd.DataFrame:
     return bars_to_df(item)
 
 
+def benchmark_quality_for_returns(benchmark_returns: dict[str, Any]) -> dict[str, Any]:
+    """Return horizon-level benchmark quality for alpha calculation.
+
+    The backtest should never allow a broken benchmark bar to dominate alpha.
+    Japanese ETF data can occasionally contain split/adjustment-like artifacts.
+    For Daily short-term horizons, a TOPIX ETF move above the configured threshold
+    is treated as invalid for alpha only. Stock raw returns remain valid.
+    """
+    horizons: dict[str, Any] = {}
+    invalid_horizons: list[str] = []
+
+    for h in HORIZONS:
+        key = f"{h}d"
+        value = to_float(benchmark_returns.get(key))
+        valid = value is not None and abs(value) <= BENCHMARK_RETURN_ABS_LIMIT_PCT
+
+        reason = None
+        if value is None:
+            reason = "missing_benchmark_return"
+        elif abs(value) > BENCHMARK_RETURN_ABS_LIMIT_PCT:
+            reason = "benchmark_return_outlier"
+
+        if not valid:
+            invalid_horizons.append(key)
+
+        horizons[key] = {
+            "valid_for_alpha": bool(valid),
+            "return_pct": safe_round(value, 4),
+            "reason": reason,
+            "abs_limit_pct": safe_round(BENCHMARK_RETURN_ABS_LIMIT_PCT, 4),
+        }
+
+    return {
+        "benchmark_symbol": BENCHMARK_SYMBOL,
+        "benchmark_label": BENCHMARK_LABEL,
+        "abs_return_limit_pct": safe_round(BENCHMARK_RETURN_ABS_LIMIT_PCT, 4),
+        "valid_horizon_count": len(HORIZONS) - len(invalid_horizons),
+        "invalid_horizon_count": len(invalid_horizons),
+        "invalid_horizons": invalid_horizons,
+        "horizons": horizons,
+    }
+
+
+def benchmark_is_valid_for_horizon(benchmark_quality: dict[str, Any], horizon_key: str) -> bool:
+    hq = ((benchmark_quality.get("horizons") or {}).get(horizon_key) or {})
+    return bool(hq.get("valid_for_alpha"))
+
+
 def eligible_eval_dates_from_topix(
     topix_df: pd.DataFrame,
     start: str,
@@ -414,6 +469,7 @@ def score_date(
 
     topix_future = get_entry_and_future_returns(topix_full_df, eval_date, HORIZONS)
     topix_returns = topix_future.get("returns") or {}
+    topix_benchmark_quality = benchmark_quality_for_returns(topix_returns)
 
     for item in equities_raw:
         symbol = item.get("symbol")
@@ -494,11 +550,19 @@ def score_date(
         worst_pullback = future.get("worst_pullback") or {}
 
         alpha_vs_topix: dict[str, float | None] = {}
+        alpha_quality: dict[str, Any] = {}
         for h in HORIZONS:
             key = f"{h}d"
             r = to_float(future_returns.get(key))
             tr = to_float(topix_returns.get(key))
-            alpha_vs_topix[key] = None if r is None or tr is None else r - tr
+            benchmark_valid = benchmark_is_valid_for_horizon(topix_benchmark_quality, key)
+            alpha_vs_topix[key] = None if r is None or tr is None or not benchmark_valid else r - tr
+            alpha_quality[key] = {
+                "valid": bool(alpha_vs_topix[key] is not None),
+                "benchmark_valid": bool(benchmark_valid),
+                "benchmark_return_pct": safe_round(tr, 4),
+                "reason": None if benchmark_valid else ((topix_benchmark_quality.get("horizons") or {}).get(key) or {}).get("reason"),
+            }
 
         avg_value = to_float(scored.get("avg_traded_value_20d_jpy"))
         if avg_value is None:
@@ -560,6 +624,7 @@ def score_date(
             "alpha_vs_topix_pct": {
                 k: safe_round(v, 4) for k, v in alpha_vs_topix.items()
             },
+            "alpha_quality": alpha_quality,
             "worst_pullback_pct": {
                 k: safe_round(v, 4) for k, v in worst_pullback.items()
             },
@@ -584,6 +649,7 @@ def score_date(
         "topix_future_returns_pct": {
             k: safe_round(v, 4) for k, v in topix_returns.items()
         },
+        "topix_benchmark_quality": topix_benchmark_quality,
         "scored_count": len(ranked),
         "failure_count": len(failures),
     }
@@ -621,6 +687,8 @@ def stats_for_values(rows: list[dict[str, Any]], horizon_key: str) -> dict[str, 
             "avg_return_pct": None,
             "median_return_pct": None,
             "win_rate_pct": None,
+            "alpha_count": 0,
+            "alpha_coverage_pct": None,
             "avg_alpha_pct": None,
             "median_alpha_pct": None,
             "positive_alpha_rate_pct": None,
@@ -633,6 +701,8 @@ def stats_for_values(rows: list[dict[str, Any]], horizon_key: str) -> dict[str, 
         "avg_return_pct": safe_round(np.mean(returns), 4),
         "median_return_pct": safe_round(np.median(returns), 4),
         "win_rate_pct": safe_round(sum(1 for x in returns if x > 0) / len(returns) * 100.0, 2),
+        "alpha_count": len(alphas),
+        "alpha_coverage_pct": safe_round(len(alphas) / len(returns) * 100.0, 2) if returns else None,
         "avg_alpha_pct": safe_round(np.mean(alphas), 4) if alphas else None,
         "median_alpha_pct": safe_round(np.median(alphas), 4) if alphas else None,
         "positive_alpha_rate_pct": safe_round(sum(1 for x in alphas if x > 0) / len(alphas) * 100.0, 2) if alphas else None,
@@ -1178,6 +1248,64 @@ def build_model_health(summary: dict[str, Any], outlier_analysis: dict[str, Any]
         },
     }
 
+def build_benchmark_quality_summary(date_states: list[dict[str, Any]]) -> dict[str, Any]:
+    by_horizon: dict[str, Any] = {}
+    invalid_dates_by_horizon: dict[str, list[dict[str, Any]]] = {f"{h}d": [] for h in HORIZONS}
+
+    for h in HORIZONS:
+        hk = f"{h}d"
+        valid_count = 0
+        invalid_count = 0
+        returns: list[float] = []
+        reasons: dict[str, int] = defaultdict(int)
+
+        for state in date_states:
+            quality = state.get("topix_benchmark_quality") or {}
+            hq = ((quality.get("horizons") or {}).get(hk) or {})
+            value = to_float(hq.get("return_pct"))
+            if value is not None:
+                returns.append(value)
+
+            if hq.get("valid_for_alpha"):
+                valid_count += 1
+            else:
+                invalid_count += 1
+                reason = str(hq.get("reason") or "unknown")
+                reasons[reason] += 1
+                invalid_dates_by_horizon[hk].append(
+                    {
+                        "eval_date": state.get("eval_date"),
+                        "benchmark_return_pct": safe_round(value, 4),
+                        "reason": reason,
+                    }
+                )
+
+        total = valid_count + invalid_count
+        by_horizon[hk] = {
+            "valid_count": valid_count,
+            "invalid_count": invalid_count,
+            "valid_rate_pct": safe_round(valid_count / total * 100.0, 2) if total else None,
+            "invalid_rate_pct": safe_round(invalid_count / total * 100.0, 2) if total else None,
+            "min_benchmark_return_pct": safe_round(min(returns), 4) if returns else None,
+            "max_benchmark_return_pct": safe_round(max(returns), 4) if returns else None,
+            "invalid_reasons": dict(sorted(reasons.items())),
+            "invalid_dates": invalid_dates_by_horizon[hk][:20],
+        }
+
+    total_invalid = sum((v.get("invalid_count") or 0) for v in by_horizon.values())
+    status = "Pass" if total_invalid == 0 else "Warning"
+
+    return {
+        "benchmark_symbol": BENCHMARK_SYMBOL,
+        "benchmark_label": BENCHMARK_LABEL,
+        "abs_return_limit_pct": safe_round(BENCHMARK_RETURN_ABS_LIMIT_PCT, 4),
+        "status": status,
+        "total_invalid_horizon_observations": total_invalid,
+        "by_horizon": by_horizon,
+        "note": "Invalid benchmark horizons are excluded from alpha calculations only. Raw stock returns remain included.",
+    }
+
+
 def build_summary(rows: list[dict[str, Any]], date_states: list[dict[str, Any]]) -> dict[str, Any]:
     eval_dates = sorted({str(row.get("eval_date")) for row in rows if row.get("eval_date")})
 
@@ -1210,6 +1338,7 @@ def build_summary(rows: list[dict[str, Any]], date_states: list[dict[str, Any]])
         "by_risk_level": group_summary(rows, "risk_level"),
         "by_regime": group_summary(rows, "regime"),
         "date_states_count": len(date_states),
+        "benchmark_quality": build_benchmark_quality_summary(date_states),
     }
 
     summary["filtered_performance"] = build_filtered_performance(rows)
@@ -1278,6 +1407,7 @@ def main() -> int:
     print(f"BACKTEST_END={BACKTEST_END or '-'}")
     print(f"MIN_HISTORY_BARS={MIN_HISTORY_BARS}")
     print(f"RANK_LIMIT={RANK_LIMIT}")
+    print(f"BENCHMARK_RETURN_ABS_LIMIT_PCT={BENCHMARK_RETURN_ABS_LIMIT_PCT}")
 
     if not HORIZONS:
         raise ValueError("BACKTEST_HORIZONS is empty")
@@ -1364,7 +1494,12 @@ def main() -> int:
             "api_calls": 0,
             "note": "Backtest replays scoring using historical bars already saved in prices-jp/latest.json. It does not fetch external data.",
             "return_measurement": "Entry at evaluation date close; future returns use trading-day offsets.",
-            "alpha_measurement": "Stock future return minus TOPIX ETF future return for same horizon.",
+            "alpha_measurement": "Stock future return minus TOPIX ETF future return for same horizon. If benchmark return is missing or exceeds BACKTEST_BENCHMARK_RETURN_ABS_LIMIT_PCT, alpha is set to null for that date x horizon; raw stock return remains included.",
+            "benchmark_guard": {
+                "benchmark_symbol": BENCHMARK_SYMBOL,
+                "benchmark_label": BENCHMARK_LABEL,
+                "abs_return_limit_pct": safe_round(BENCHMARK_RETURN_ABS_LIMIT_PCT, 4),
+            },
         },
         "summary": summary,
         "date_states": date_states,
