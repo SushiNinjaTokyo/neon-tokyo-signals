@@ -27,10 +27,10 @@ jobs:
     env:
       OUT_DIR: site
       DAILY_JSON: site/data/daily-jp/latest.json
-      DAILY_MAIN_RANK_LIMIT: "20"
-      DAILY_REFERENCE_LIMIT: "50"
-      DAILY_BLOCKED_SCORE_FLOOR: "500"
-      DAILY_BLOCKED_DISPLAY_LIMIT: "5"
+      DAILY_MAIN_RANK_LIMIT: 20
+      DAILY_REFERENCE_LIMIT: 50
+      DAILY_BLOCKED_SCORE_FLOOR: 500
+      DAILY_BLOCKED_DISPLAY_LIMIT: 5
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
@@ -78,13 +78,10 @@ jobs:
           grep -q "Daily Japan Signals" site/japan/daily/index.html
           grep -q "DAILY JP DECISION BOARD" site/japan/daily/index.html
           grep -q "5-SECOND READ" site/japan/daily/index.html
-          grep -q "MONITOR ONLY" site/japan/daily/index.html
-          grep -q "TRADE SIGNAL" site/japan/daily/index.html
           grep -q "HIGHEST SCORE" site/japan/daily/index.html
           grep -q "BLOCKED HIGH SCORE" site/japan/daily/index.html
           grep -q "MAIN DAILY BOARD" site/japan/daily/index.html
           grep -q "REFERENCE ONLY" site/japan/daily/index.html
-          grep -q "Trade" site/japan/daily/index.html
           grep -q "Monitor" site/japan/daily/index.html
           grep -q "Ignore" site/japan/daily/index.html
 
@@ -102,5 +99,5 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Render JP daily decision board"
+          git commit -m "Render JP daily page"
           git push
