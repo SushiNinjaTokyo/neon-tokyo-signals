@@ -195,6 +195,26 @@ def safe_round(value: Any, digits: int = 4) -> float | None:
     return round(v, digits)
 
 
+
+def classify_liquidity_band(avg_value20: Any, dollar_vol: Any = None) -> str:
+    if hasattr(scorer, "classify_liquidity_band"):
+        return scorer.classify_liquidity_band(avg_value20, dollar_vol)
+    avg = to_float(avg_value20)
+    today = to_float(dollar_vol)
+    if avg is None:
+        return "Unknown"
+    if avg >= 1_000_000_000:
+        return "High Liquidity"
+    if avg >= 300_000_000:
+        return "Tradable"
+    if avg >= 100_000_000:
+        return "Thin"
+    if today is not None and today >= 300_000_000 and avg >= 70_000_000:
+        return "Event Thin"
+    return "Very Thin"
+
+
+
 def parse_date(value: str) -> pd.Timestamp | None:
     if not value:
         return None
@@ -565,16 +585,8 @@ def score_date(
             }
 
         avg_value = to_float(scored.get("avg_traded_value_20d_jpy"))
-        if avg_value is None:
-            liquidity_band = "Unknown"
-        elif avg_value >= 1_000_000_000:
-            liquidity_band = "High Liquidity"
-        elif avg_value >= 300_000_000:
-            liquidity_band = "Liquid"
-        elif avg_value >= 100_000_000:
-            liquidity_band = "Thin"
-        else:
-            liquidity_band = "Very Thin"
+        dollar_value = to_float(scored.get("latest_traded_value_jpy"))
+        liquidity_band = str(scored.get("liquidity_band") or classify_liquidity_band(avg_value, dollar_value))
 
         score_pts = to_float(scored.get("score_pts")) or 0.0
         if score_pts >= 800:
@@ -861,17 +873,20 @@ def filter_rows_by_horizon_excluding_top_pct(
 
 
 def build_filtered_performance(rows: list[dict[str, Any]]) -> dict[str, Any]:
-    liquidity_ok = {"High Liquidity", "Liquid"}
+    liquidity_ok = {"High Liquidity", "Tradable"}
     filters: list[tuple[str, str, list[dict[str, Any]]]] = [
-        ("rank_lte_10", "Rank <= 10", [r for r in rows if (to_float(r.get("rank")) or 999999) <= 10]),
-        ("rank_lte_20", "Rank <= 20", [r for r in rows if (to_float(r.get("rank")) or 999999) <= 20]),
+        ("rank_lte_10", "Main Rank <= 10", [r for r in rows if (to_float(r.get("rank")) or 999999) <= 10]),
+        ("rank_lte_20", "Main Rank <= 20", [r for r in rows if (to_float(r.get("rank")) or 999999) <= 20]),
+        ("rank_21_50_reference", "Reference Rank 21-50", [r for r in rows if 21 <= (to_float(r.get("rank")) or 999999) <= 50]),
         ("trade_only", "Trade only", [r for r in rows if str(r.get("triage") or "") == "Trade"]),
         ("watch_only", "Watch only", [r for r in rows if str(r.get("triage") or "") == "Watch"]),
         ("trade_plus_watch", "Trade + Watch", [r for r in rows if str(r.get("triage") or "") in {"Trade", "Watch"}]),
         ("score_gte_500", "Score >= 500", [r for r in rows if (to_float(r.get("score_pts")) or 0) >= 500]),
         ("score_gte_600", "Score >= 600", [r for r in rows if (to_float(r.get("score_pts")) or 0) >= 600]),
         ("score_gte_700", "Score >= 700", [r for r in rows if (to_float(r.get("score_pts")) or 0) >= 700]),
-        ("liquidity_gte_liquid", "Liquidity >= Liquid", [r for r in rows if str(r.get("liquidity_band") or "") in liquidity_ok]),
+        ("liquidity_gte_tradable", "Liquidity >= Tradable", [r for r in rows if str(r.get("liquidity_band") or "") in liquidity_ok]),
+        ("favored_archetypes", "Favored archetypes", [r for r in rows if set(r.get("flags") or []) & {"favored_relative_strength", "favored_compression_breakout", "favored_volume_compression"}]),
+        ("volume_breakout_risk", "Volume + Breakout risk", [r for r in rows if "volume_breakout_risk" in set(r.get("flags") or [])]),
         (
             "abnormal_accumulation",
             "Abnormal accumulation",
@@ -931,8 +946,8 @@ def build_rank_bucket_performance(rows: list[dict[str, Any]]) -> dict[str, Any]:
     buckets = {
         "rank_1_5": ("Rank 1-5", lambda r: 1 <= (to_float(r.get("rank")) or 999999) <= 5),
         "rank_1_10": ("Rank 1-10", lambda r: 1 <= (to_float(r.get("rank")) or 999999) <= 10),
-        "rank_11_20": ("Rank 11-20", lambda r: 11 <= (to_float(r.get("rank")) or 999999) <= 20),
-        "rank_21_50": ("Rank 21-50", lambda r: 21 <= (to_float(r.get("rank")) or 999999) <= 50),
+        "rank_11_20": ("Main Rank 11-20", lambda r: 11 <= (to_float(r.get("rank")) or 999999) <= 20),
+        "rank_21_50": ("Reference Rank 21-50", lambda r: 21 <= (to_float(r.get("rank")) or 999999) <= 50),
     }
     return {
         key: {
@@ -1247,6 +1262,93 @@ def build_model_health(summary: dict[str, Any], outlier_analysis: dict[str, Any]
             "max_observations_single_symbol": repeated_symbol_analysis.get("max_observations_single_symbol"),
         },
     }
+
+def build_visualization_data(summary: dict[str, Any]) -> dict[str, Any]:
+    """Precompute chart-friendly data so HTML only renders values."""
+    primary = primary_horizon_key()
+
+    def stat(block: dict[str, Any], key: str) -> dict[str, Any]:
+        return ((block.get(key) or {}).get(primary) or {}) if block else {}
+
+    triage = summary.get("by_triage") or {}
+    triage_order = ["Trade", "Watch", "Ignore"]
+    triage_rows = []
+    for label in triage_order:
+        st = stat(triage, label)
+        triage_rows.append({
+            "label": label,
+            "count": st.get("count"),
+            "avg_return_pct": st.get("avg_return_pct"),
+            "avg_alpha_pct": st.get("avg_alpha_pct"),
+            "win_rate_pct": st.get("win_rate_pct"),
+        })
+
+    score_band = summary.get("by_score_band") or {}
+    score_order = ["<500", "500-599", "600-699", "700-799", "800+"]
+    score_rows = []
+    for label in score_order:
+        st = stat(score_band, label)
+        score_rows.append({
+            "label": label,
+            "count": st.get("count"),
+            "avg_return_pct": st.get("avg_return_pct"),
+            "avg_alpha_pct": st.get("avg_alpha_pct"),
+            "win_rate_pct": st.get("win_rate_pct"),
+        })
+
+    rank_block = summary.get("rank_bucket_performance") or {}
+    rank_order = ["rank_1_5", "rank_1_10", "rank_11_20", "rank_21_50"]
+    rank_rows = []
+    for key in rank_order:
+        item = rank_block.get(key) or {}
+        st = ((item.get("stats") or {}).get(primary) or {})
+        rank_rows.append({
+            "label": item.get("label") or key,
+            "count": st.get("count"),
+            "avg_return_pct": st.get("avg_return_pct"),
+            "avg_alpha_pct": st.get("avg_alpha_pct"),
+            "win_rate_pct": st.get("win_rate_pct"),
+        })
+
+    archetype = summary.get("by_archetype") or {}
+    archetype_rows = []
+    for label, block in archetype.items():
+        st = stat(archetype, label)
+        if st.get("count") is None:
+            continue
+        archetype_rows.append({
+            "label": label,
+            "count": st.get("count"),
+            "avg_return_pct": st.get("avg_return_pct"),
+            "avg_alpha_pct": st.get("avg_alpha_pct"),
+            "win_rate_pct": st.get("win_rate_pct"),
+        })
+    archetype_rows = sorted(archetype_rows, key=lambda r: (to_float(r.get("avg_alpha_pct")) or -999), reverse=True)[:8]
+
+    liquidity = summary.get("by_liquidity_band") or {}
+    liquidity_order = ["High Liquidity", "Tradable", "Thin", "Event Thin", "Very Thin", "Unknown"]
+    liquidity_rows = []
+    for label in liquidity_order:
+        if label not in liquidity:
+            continue
+        st = stat(liquidity, label)
+        liquidity_rows.append({
+            "label": label,
+            "count": st.get("count"),
+            "avg_return_pct": st.get("avg_return_pct"),
+            "avg_alpha_pct": st.get("avg_alpha_pct"),
+            "win_rate_pct": st.get("win_rate_pct"),
+        })
+
+    return {
+        "primary_horizon": primary,
+        "triage": triage_rows,
+        "score_bands": score_rows,
+        "rank_buckets": rank_rows,
+        "archetypes": archetype_rows,
+        "liquidity_bands": liquidity_rows,
+    }
+
 
 def build_benchmark_quality_summary(date_states: list[dict[str, Any]]) -> dict[str, Any]:
     by_horizon: dict[str, Any] = {}
