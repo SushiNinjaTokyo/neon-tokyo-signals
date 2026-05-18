@@ -74,6 +74,8 @@ jobs:
           grep -q "JP DAILY BACKTEST LAB" site/japan/daily/backtest/index.html
           grep -q "Signal quality" site/japan/daily/backtest/index.html
           grep -q "OVERALL RESULT" site/japan/daily/backtest/index.html
+          grep -q "Top 3 / Top 5 / Top 10" site/japan/daily/backtest/index.html
+          grep -q "DAILY PERFORMANCE TREND" site/japan/daily/backtest/index.html
           grep -q "No look-ahead" site/japan/daily/backtest/index.html
 
       - name: Commit rendered backtest page
