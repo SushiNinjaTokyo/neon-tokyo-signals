@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description" content="Daily Japan equity signal board after the Tokyo close. Top 20 short-term decision board with actionable signals, blocked high-score names, market tape and risk controls."/>
   <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/daily_jp.css?v=202605181525"/>
+  <link rel="stylesheet" href="/assets/daily_jp.css?v=202605181845"/>
 </head>
 
 <body>
@@ -49,12 +49,12 @@
           blocked by timing, liquidity or risk controls. News is intentionally excluded.
         </p>
 
-        <div class="verdict-card verdict-watch">
+        <div class="verdict-card verdict-monitor">
           <div>
             <span>Today’s model verdict</span>
-            <strong>WATCH ONLY</strong>
+            <strong>MONITOR ONLY</strong>
           </div>
-          <p>No full Trade today. Monitor Watch names and wait for confirmation. Risk controls are active across a large part of the board.</p>
+          <p>No full Trade today. 1 Monitor candidate. Wait for next-day price/volume confirmation.</p>
         </div>
       </div>
 
@@ -62,14 +62,10 @@
         <article class="hero-panel action-panel">
           <div class="panel-label">ACTIONABLE SIGNAL</div>
           
-            <div class="ticker-row">
-              <strong>6501.T</strong>
-              <span class="tag triage-watch">Watch</span>
-            </div>
-            <div class="panel-name">Hitachi</div>
-            <div class="panel-score">456 <span>pts</span></div>
-            <div class="decision-line">Actionable Watch · Discovery</div>
-            <p>Not a full Trade, but abnormal accumulation or catalyst digestion makes it worth monitoring.</p>
+            <div class="ticker-row no-action"><strong>NO TRADE</strong><span class="tag triage-ignore">Capital first</span></div>
+            <div class="panel-name">No Trade/Watch candidate cleared the daily decision rules.</div>
+            <div class="panel-score muted">0 <span>actionable</span></div>
+            <p>Use the blocked list as a watchlist, not as a trade list.</p>
           
         </article>
 
@@ -77,13 +73,13 @@
           <div class="panel-label">HIGHEST SCORE</div>
           
             <div class="ticker-row">
-              <strong>6501.T</strong>
-              <span class="tag triage-watch">Watch</span>
+              <strong>6758.T</strong>
+              <span class="tag triage-ignore">Ignore</span>
             </div>
-            <div class="panel-name">Hitachi</div>
-            <div class="panel-score">456 <span>pts</span></div>
-            <div class="decision-line">Actionable Watch · Discovery</div>
-            <p>Not a full Trade, but abnormal accumulation or catalyst digestion makes it worth monitoring.</p>
+            <div class="panel-name">Sony Group</div>
+            <div class="panel-score">552 <span>pts</span></div>
+            <div class="decision-line">High Quality, Waiting for Trigger</div>
+            <p>Strong setup quality, but no actionable trigger yet: Favored RS setup.</p>
           
         </article>
       </aside>
@@ -104,7 +100,7 @@
       </article>
       <article class="summary-tile watch">
         <span>Watch</span>
-        <strong>1</strong>
+        <strong></strong>
         <em>Actionable monitor</em>
       </article>
       <article class="summary-tile blocked">
@@ -114,12 +110,12 @@
       </article>
       <article class="summary-tile danger">
         <span>Risk Warnings</span>
-        <strong>16</strong>
+        <strong>18</strong>
         <em>Top 20</em>
       </article>
       <article class="summary-tile favored">
         <span>Favored Setups</span>
-        <strong>20</strong>
+        <strong>1</strong>
         <em>RS / Compression</em>
       </article>
     </section>
@@ -140,18 +136,18 @@
             
               <span class="seg seg-trade" style="width:0.0%"></span>
             
-              <span class="seg seg-watch" style="width:5.0%"></span>
+              <span class="seg seg-monitor" style="width:5.0%"></span>
             
-              <span class="seg seg-ignore" style="width:95.0%"></span>
+              <span class="seg seg-blocked" style="width:95.0%"></span>
             
           </div>
           <div class="bar-legend">
             
               <span><i class="dot dot-trade"></i>Trade 0</span>
             
-              <span><i class="dot dot-watch"></i>Watch 1</span>
+              <span><i class="dot dot-monitor"></i>Monitor 1</span>
             
-              <span><i class="dot dot-ignore"></i>Ignore 19</span>
+              <span><i class="dot dot-blocked"></i>Blocked 19</span>
             
           </div>
         </article>
@@ -225,9 +221,9 @@
             </div>
             <div class="tape-badge">Mixed tape</div>
             <div class="pulse-metrics">
-              <div><span>1D</span><strong class="ret-down">-0.3%</strong></div>
-              <div><span>5D Tape</span><strong class="ret-up">+1.0%</strong></div>
-              <div><span>20D Trend</span><strong class="ret-up">+3.8%</strong></div>
+              <div><span>1D</span><strong class="">-0.3%</strong></div>
+              <div><span>5D Tape</span><strong class="">+1.0%</strong></div>
+              <div><span>20D Trend</span><strong class="">+3.8%</strong></div>
             </div>
           </article>
         
@@ -241,9 +237,9 @@
             </div>
             <div class="tape-badge">Soft tape</div>
             <div class="pulse-metrics">
-              <div><span>1D</span><strong class="ret-down">-2.0%</strong></div>
-              <div><span>5D Tape</span><strong class="ret-down">-2.0%</strong></div>
-              <div><span>20D Trend</span><strong class="ret-up">+8.7%</strong></div>
+              <div><span>1D</span><strong class="">-2.0%</strong></div>
+              <div><span>5D Tape</span><strong class="">-2.0%</strong></div>
+              <div><span>20D Trend</span><strong class="">+8.7%</strong></div>
             </div>
           </article>
         
@@ -257,9 +253,9 @@
             </div>
             <div class="tape-badge">Weak tape</div>
             <div class="pulse-metrics">
-              <div><span>1D</span><strong class="ret-up">+0.1%</strong></div>
-              <div><span>5D Tape</span><strong class="ret-down">-4.2%</strong></div>
-              <div><span>20D Trend</span><strong class="ret-up">+4.8%</strong></div>
+              <div><span>1D</span><strong class="">+0.1%</strong></div>
+              <div><span>5D Tape</span><strong class="">-4.2%</strong></div>
+              <div><span>20D Trend</span><strong class="">+4.8%</strong></div>
             </div>
           </article>
         
@@ -277,39 +273,9 @@
 
       <div class="cards action-cards">
         
-          <article class="signal-card action-card score-muted triage-card-watch has-good ">
-            <div class="card-top">
-              <div class="rank">#1</div>
-              <div class="score">456<span>pts</span></div>
-            </div>
-            <div class="signal-tags">
-              <span class="tag triage-watch">Watch</span>
-              <span class="tag">Volume</span>
-              <span class="tag liq-high-liquidity">High Liquidity</span>
-            </div>
-            <div class="symbol-row"><h3>6501.T</h3><span class="bucket">Core</span></div>
-            <div class="name">Hitachi</div>
-            <div class="theme">AI Infrastructure and Energy</div>
-            <div class="decision-box"><strong>Actionable Watch · Discovery</strong><span>Not a full Trade, but abnormal accumulation or catalyst digestion makes it worth monitoring.</span></div>
-            <div class="metric-grid">
-              <div><span>1D</span><strong class="ret-up">+3.0%</strong></div>
-              <div><span>5D</span><strong class="ret-down">-2.6%</strong></div>
-              <div><span>10D</span><strong class="ret-down">-10.2%</strong></div>
-              <div><span>RVOL</span><strong>1.0</strong></div>
-              <div><span>Avg Value</span><strong>¥78.45B</strong></div>
-              <div><span>Risk</span><strong class="risk-normal">Normal</strong></div>
-            </div>
-            <div class="component-bars">
-              <div><span>Volume</span><i style="width:66%"></i></div>
-              <div><span>Compression</span><i style="width:27%"></i></div>
-              <div><span>Breakout</span><i style="width:6%"></i></div>
-              <div><span>RS</span><i style="width:31%"></i></div>
-              <div><span>Entry</span><i style="width:78%"></i></div>
-            </div>
-            <div class="flags">
-              <span class="good">60D RS leader</span><span class="good">Abnormal accumulation</span><span class="good">Catalyst digestion</span>
-              
-            </div>
+          <article class="empty-card action-empty">
+            <strong>No actionable Trade/Watch today.</strong>
+            <span>The model did not find a short-term setup strong enough to act on. Review blocked high-score names only as a watchlist.</span>
           </article>
         
       </div>
@@ -333,14 +299,14 @@
             </div>
             <div class="symbol-row"><h3>6758.T</h3><span class="tag triage-ignore">Blocked</span></div>
             <div class="name">Sony Group</div>
-            <div class="decision-box"><strong>High Quality, Waiting for Trigger</strong><span>Good setup quality is present, but no actionable trigger yet: 60D RS leader, Favored RS setup.</span></div>
+            <div class="decision-box"><strong>High Quality, Waiting for Trigger</strong><span>Strong setup quality, but no actionable trigger yet: Favored RS setup.</span></div>
             <div class="mini-metrics">
-              <span class="ret-up">1D +3.8%</span>
-              <span class="ret-up">5D +14.8%</span>
+              <span class="">1D +3.8%</span>
+              <span class="">5D +14.8%</span>
               <span>High Liquidity</span>
             </div>
             <div class="flags">
-              <span class="good">60D RS leader</span><span class="good">Favored RS setup</span>
+              <span class="good">Favored RS setup</span><span class="good">Institutional-size turnover</span><span class="good">Tradable liquidity</span>
               
             </div>
           </article>
@@ -352,129 +318,15 @@
             </div>
             <div class="symbol-row"><h3>6503.T</h3><span class="tag triage-ignore">Blocked</span></div>
             <div class="name">Mitsubishi Electric</div>
-            <div class="decision-box"><strong>High Quality, Waiting for Trigger</strong><span>Good setup quality is present, but no actionable trigger yet: Compressed setup, 60D RS leader.</span></div>
+            <div class="decision-box"><strong>Constructive, But Not Actionable</strong><span>Constructive tape, but still below Monitor/Trade rules: Institutional-size turnover, Tradable liquidity.</span></div>
             <div class="mini-metrics">
-              <span class="ret-down">1D -0.3%</span>
-              <span class="ret-down">5D -0.7%</span>
+              <span class="">1D -0.3%</span>
+              <span class="">5D -0.7%</span>
               <span>High Liquidity</span>
             </div>
             <div class="flags">
-              <span class="good">Compressed setup</span><span class="good">60D RS leader</span>
+              <span class="good">Institutional-size turnover</span><span class="good">Tradable liquidity</span><span class="good">Above key moving averages</span>
               
-            </div>
-          </article>
-        
-          <article class="signal-card blocked-card score-muted has-good ">
-            <div class="card-top">
-              <div class="rank">#4</div>
-              <div class="score">443<span>pts</span></div>
-            </div>
-            <div class="symbol-row"><h3>7741.T</h3><span class="tag triage-ignore">Blocked</span></div>
-            <div class="name">HOYA</div>
-            <div class="decision-box"><strong>High Quality, Waiting for Trigger</strong><span>Below the model’s daily decision threshold.</span></div>
-            <div class="mini-metrics">
-              <span class="ret-up">1D +1.2%</span>
-              <span class="ret-up">5D +1.9%</span>
-              <span>High Liquidity</span>
-            </div>
-            <div class="flags">
-              <span class="good">Compressed setup</span><span class="good">60D RS leader</span>
-              
-            </div>
-          </article>
-        
-          <article class="signal-card blocked-card score-muted has-good has-risk">
-            <div class="card-top">
-              <div class="rank">#5</div>
-              <div class="score">379<span>pts</span></div>
-            </div>
-            <div class="symbol-row"><h3>6762.T</h3><span class="tag triage-ignore">Blocked</span></div>
-            <div class="name">TDK</div>
-            <div class="decision-box"><strong>Blocked by Risk Controls</strong><span>Blocked despite rank/score because risk controls triggered: No daily confirmation, No daily confirmation.</span></div>
-            <div class="mini-metrics">
-              <span class="ret-down">1D -2.6%</span>
-              <span class="ret-up">5D +2.4%</span>
-              <span>High Liquidity</span>
-            </div>
-            <div class="flags">
-              <span class="good">20D RS positive</span><span class="good">60D RS leader</span>
-              <span class="danger">No daily confirmation</span><span class="danger">No daily confirmation</span>
-            </div>
-          </article>
-        
-          <article class="signal-card blocked-card score-muted has-good has-risk">
-            <div class="card-top">
-              <div class="rank">#6</div>
-              <div class="score">370<span>pts</span></div>
-            </div>
-            <div class="symbol-row"><h3>8035.T</h3><span class="tag triage-ignore">Blocked</span></div>
-            <div class="name">Tokyo Electron</div>
-            <div class="decision-box"><strong>Blocked by Risk Controls</strong><span>Blocked despite rank/score because risk controls triggered: No daily confirmation, No daily confirmation.</span></div>
-            <div class="mini-metrics">
-              <span class="ret-down">1D -1.8%</span>
-              <span class="ret-down">5D -4.1%</span>
-              <span>High Liquidity</span>
-            </div>
-            <div class="flags">
-              <span class="good">Compressed setup</span><span class="good">20D RS positive</span><span class="good">60D RS leader</span>
-              <span class="danger">No daily confirmation</span><span class="danger">No daily confirmation</span>
-            </div>
-          </article>
-        
-          <article class="signal-card blocked-card score-muted has-good has-risk">
-            <div class="card-top">
-              <div class="rank">#7</div>
-              <div class="score">352<span>pts</span></div>
-            </div>
-            <div class="symbol-row"><h3>7974.T</h3><span class="tag triage-ignore">Blocked</span></div>
-            <div class="name">Nintendo</div>
-            <div class="decision-box"><strong>Blocked by Risk Controls</strong><span>Blocked despite rank/score because risk controls triggered: Weak 5D momentum.</span></div>
-            <div class="mini-metrics">
-              <span class="ret-up">1D +4.2%</span>
-              <span class="ret-down">5D -6.7%</span>
-              <span>High Liquidity</span>
-            </div>
-            <div class="flags">
-              <span class="good">60D RS leader</span>
-              <span class="danger">Weak 5D momentum</span>
-            </div>
-          </article>
-        
-          <article class="signal-card blocked-card score-muted has-good has-risk">
-            <div class="card-top">
-              <div class="rank">#8</div>
-              <div class="score">326<span>pts</span></div>
-            </div>
-            <div class="symbol-row"><h3>135A.T</h3><span class="tag triage-ignore">Blocked</span></div>
-            <div class="name">VRAIN Solution</div>
-            <div class="decision-box"><strong>Blocked by Risk Controls</strong><span>Blocked despite rank/score because risk controls triggered: No daily confirmation, Weak volume cap, No daily confirmation.</span></div>
-            <div class="mini-metrics">
-              <span class="ret-down">1D -0.9%</span>
-              <span class="ret-up">5D +0.3%</span>
-              <span>Tradable</span>
-            </div>
-            <div class="flags">
-              <span class="good">20D RS positive</span><span class="good">60D RS leader</span>
-              <span class="danger">No daily confirmation</span><span class="danger">Weak volume cap</span><span class="danger">No daily confirmation</span>
-            </div>
-          </article>
-        
-          <article class="signal-card blocked-card score-muted has-good has-risk">
-            <div class="card-top">
-              <div class="rank">#9</div>
-              <div class="score">321<span>pts</span></div>
-            </div>
-            <div class="symbol-row"><h3>6954.T</h3><span class="tag triage-ignore">Blocked</span></div>
-            <div class="name">FANUC</div>
-            <div class="decision-box"><strong>Blocked by Risk Controls</strong><span>Blocked despite rank/score because risk controls triggered: Extended risk, Weak close on volume, Red close on volume.</span></div>
-            <div class="mini-metrics">
-              <span class="ret-up">1D +2.4%</span>
-              <span class="ret-up">5D +9.5%</span>
-              <span>High Liquidity</span>
-            </div>
-            <div class="flags">
-              <span class="good">20D RS positive</span><span class="good">60D RS leader</span>
-              <span class="danger">Extended risk</span><span class="danger">Weak close on volume</span><span class="danger">Red close on volume</span>
             </div>
           </article>
         
@@ -519,12 +371,12 @@
                   <div class="score-cell"><strong>456</strong><i style="width:46%"></i></div>
                 </td>
                 <td>Volume</td>
-                <td class="decision-cell">Actionable Watch · Discovery</td>
-                <td class="ret-up">+3.0%</td>
-                <td class="ret-down">-2.6%</td>
+                <td class="decision-cell">Monitor Only · Discovery</td>
+                <td class="">+3.0%</td>
+                <td class="">-2.6%</td>
                 <td>1.0</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-good">
@@ -537,11 +389,11 @@
                 </td>
                 <td>Volume</td>
                 <td class="decision-cell">High Quality, Waiting for Trigger</td>
-                <td class="ret-up">+3.8%</td>
-                <td class="ret-up">+14.8%</td>
+                <td class="">+3.8%</td>
+                <td class="">+14.8%</td>
                 <td>1.2</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-good">
@@ -553,12 +405,12 @@
                   <div class="score-cell"><strong>522</strong><i style="width:52%"></i></div>
                 </td>
                 <td>Mixed</td>
-                <td class="decision-cell">High Quality, Waiting for Trigger</td>
-                <td class="ret-down">-0.3%</td>
-                <td class="ret-down">-0.7%</td>
+                <td class="decision-cell">Constructive, But Not Actionable</td>
+                <td class="">-0.3%</td>
+                <td class="">-0.7%</td>
                 <td>1.3</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-good">
@@ -570,12 +422,12 @@
                   <div class="score-cell"><strong>443</strong><i style="width:44%"></i></div>
                 </td>
                 <td>Mixed</td>
-                <td class="decision-cell">High Quality, Waiting for Trigger</td>
-                <td class="ret-up">+1.2%</td>
-                <td class="ret-up">+1.9%</td>
+                <td class="decision-cell">Constructive, But Not Actionable</td>
+                <td class="">+1.2%</td>
+                <td class="">+1.9%</td>
                 <td>0.9</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-risk">
@@ -587,12 +439,12 @@
                   <div class="score-cell"><strong>379</strong><i style="width:38%"></i></div>
                 </td>
                 <td>Relative Strength</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-down">-2.6%</td>
-                <td class="ret-up">+2.4%</td>
+                <td class="decision-cell">Blocked by Confirmation Rules</td>
+                <td class="">-2.6%</td>
+                <td class="">+2.4%</td>
                 <td>0.9</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-risk">
@@ -604,12 +456,12 @@
                   <div class="score-cell"><strong>370</strong><i style="width:37%"></i></div>
                 </td>
                 <td>Mixed</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-down">-1.8%</td>
-                <td class="ret-down">-4.1%</td>
+                <td class="decision-cell">Blocked by Confirmation Rules</td>
+                <td class="">-1.8%</td>
+                <td class="">-4.1%</td>
                 <td>0.9</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-risk">
@@ -621,12 +473,12 @@
                   <div class="score-cell"><strong>352</strong><i style="width:35%"></i></div>
                 </td>
                 <td>Volume</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-up">+4.2%</td>
-                <td class="ret-down">-6.7%</td>
+                <td class="decision-cell">Blocked by Confirmation Rules</td>
+                <td class="">+4.2%</td>
+                <td class="">-6.7%</td>
                 <td>1.0</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-risk">
@@ -638,12 +490,12 @@
                   <div class="score-cell"><strong>326</strong><i style="width:33%"></i></div>
                 </td>
                 <td>Relative Strength</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-down">-0.9%</td>
-                <td class="ret-up">+0.3%</td>
+                <td class="decision-cell">Blocked by Confirmation Rules</td>
+                <td class="">-0.9%</td>
+                <td class="">+0.3%</td>
                 <td>0.6</td>
                 <td><span class="liq-pill liq-tradable">Tradable</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-risk">
@@ -655,12 +507,12 @@
                   <div class="score-cell"><strong>321</strong><i style="width:32%"></i></div>
                 </td>
                 <td>Volume</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-up">+2.4%</td>
-                <td class="ret-up">+9.5%</td>
+                <td class="decision-cell">Blocked by High-Severity Risk</td>
+                <td class="">+2.4%</td>
+                <td class="">+9.5%</td>
                 <td>1.7</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-medium">Medium</td>
+                <td class="">Medium</td>
               </tr>
             
               <tr class="row-risk">
@@ -672,12 +524,12 @@
                   <div class="score-cell"><strong>305</strong><i style="width:30%"></i></div>
                 </td>
                 <td>Mixed</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-up">+0.2%</td>
-                <td class="ret-down">-12.2%</td>
+                <td class="decision-cell">Blocked by Confirmation Rules</td>
+                <td class="">+0.2%</td>
+                <td class="">-12.2%</td>
                 <td>0.9</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-risk">
@@ -689,12 +541,12 @@
                   <div class="score-cell"><strong>277</strong><i style="width:28%"></i></div>
                 </td>
                 <td>Mixed</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-down">-0.2%</td>
-                <td class="ret-down">-8.3%</td>
+                <td class="decision-cell">Blocked by Confirmation Rules</td>
+                <td class="">-0.2%</td>
+                <td class="">-8.3%</td>
                 <td>0.6</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-risk">
@@ -706,12 +558,12 @@
                   <div class="score-cell"><strong>274</strong><i style="width:27%"></i></div>
                 </td>
                 <td>Relative Strength</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-down">-0.4%</td>
-                <td class="ret-down">-6.3%</td>
+                <td class="decision-cell">Blocked by Confirmation Rules</td>
+                <td class="">-0.4%</td>
+                <td class="">-6.3%</td>
                 <td>0.8</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-risk">
@@ -723,12 +575,12 @@
                   <div class="score-cell"><strong>274</strong><i style="width:27%"></i></div>
                 </td>
                 <td>Mixed</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-down">-7.3%</td>
-                <td class="ret-down">-13.5%</td>
+                <td class="decision-cell">Blocked by Confirmation Rules</td>
+                <td class="">-7.3%</td>
+                <td class="">-13.5%</td>
                 <td>1.1</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-risk">
@@ -740,12 +592,12 @@
                   <div class="score-cell"><strong>272</strong><i style="width:27%"></i></div>
                 </td>
                 <td>Mixed</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-up">+3.7%</td>
-                <td class="ret-down">-5.2%</td>
+                <td class="decision-cell">Blocked by Confirmation Rules</td>
+                <td class="">+3.7%</td>
+                <td class="">-5.2%</td>
                 <td>0.6</td>
                 <td><span class="liq-pill liq-thin">Thin</span></td>
-                <td class="risk-medium">Medium</td>
+                <td class="">Medium</td>
               </tr>
             
               <tr class="row-risk">
@@ -757,12 +609,12 @@
                   <div class="score-cell"><strong>261</strong><i style="width:26%"></i></div>
                 </td>
                 <td>Relative Strength</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-down">-3.0%</td>
-                <td class="ret-up">+5.1%</td>
+                <td class="decision-cell">Blocked by Confirmation Rules</td>
+                <td class="">-3.0%</td>
+                <td class="">+5.1%</td>
                 <td>1.0</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-medium">Medium</td>
+                <td class="">Medium</td>
               </tr>
             
               <tr class="row-risk">
@@ -774,12 +626,12 @@
                   <div class="score-cell"><strong>243</strong><i style="width:24%"></i></div>
                 </td>
                 <td>Mixed</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-down">-9.3%</td>
-                <td class="ret-down">-2.9%</td>
+                <td class="decision-cell">Blocked by High-Severity Risk</td>
+                <td class="">-9.3%</td>
+                <td class="">-2.9%</td>
                 <td>1.4</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-medium">Medium</td>
+                <td class="">Medium</td>
               </tr>
             
               <tr class="row-risk">
@@ -791,12 +643,12 @@
                   <div class="score-cell"><strong>231</strong><i style="width:23%"></i></div>
                 </td>
                 <td>Mixed</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-down">-2.0%</td>
-                <td class="ret-down">-9.5%</td>
+                <td class="decision-cell">Blocked by Confirmation Rules</td>
+                <td class="">-2.0%</td>
+                <td class="">-9.5%</td>
                 <td>1.0</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-risk">
@@ -808,12 +660,12 @@
                   <div class="score-cell"><strong>224</strong><i style="width:22%"></i></div>
                 </td>
                 <td>Mixed</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-down">-1.1%</td>
-                <td class="ret-down">-4.7%</td>
+                <td class="decision-cell">Blocked by Confirmation Rules</td>
+                <td class="">-1.1%</td>
+                <td class="">-4.7%</td>
                 <td>0.8</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-risk">
@@ -825,12 +677,12 @@
                   <div class="score-cell"><strong>217</strong><i style="width:22%"></i></div>
                 </td>
                 <td>Mixed</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-down">-7.9%</td>
-                <td class="ret-down">-11.8%</td>
+                <td class="decision-cell">Blocked by Confirmation Rules</td>
+                <td class="">-7.9%</td>
+                <td class="">-11.8%</td>
                 <td>0.9</td>
                 <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td class="risk-normal">Normal</td>
+                <td class="">Normal</td>
               </tr>
             
               <tr class="row-risk">
@@ -842,12 +694,12 @@
                   <div class="score-cell"><strong>206</strong><i style="width:21%"></i></div>
                 </td>
                 <td>Relative Strength</td>
-                <td class="decision-cell">Blocked by Risk Controls</td>
-                <td class="ret-down">-1.1%</td>
-                <td class="ret-up">+2.0%</td>
+                <td class="decision-cell">Blocked by High-Severity Risk</td>
+                <td class="">-1.1%</td>
+                <td class="">+2.0%</td>
                 <td>6.3</td>
                 <td><span class="liq-pill liq-very-thin">Very Thin</span></td>
-                <td class="risk-high">High</td>
+                <td class="">High</td>
               </tr>
             
           </tbody>
@@ -866,123 +718,23 @@
 
       <div class="insight-lanes">
         <article class="lane-card favored">
-          <div class="lane-head"><span>FAVORED SETUPS</span><strong>8</strong></div>
+          <div class="lane-head"><span>FAVORED SETUPS</span><strong>1</strong></div>
           <div class="mini-list">
             
               <div class="mini-row good">
-                <strong>#1 6501.T</strong>
-                <span>60D RS leader</span>
-                <em>456 pts</em>
-              </div>
-            
-              <div class="mini-row good">
                 <strong>#2 6758.T</strong>
-                <span>60D RS leader</span>
+                <span>Favored RS setup</span>
                 <em>552 pts</em>
-              </div>
-            
-              <div class="mini-row good">
-                <strong>#3 6503.T</strong>
-                <span>Compressed setup</span>
-                <em>522 pts</em>
-              </div>
-            
-              <div class="mini-row good">
-                <strong>#4 7741.T</strong>
-                <span>Compressed setup</span>
-                <em>443 pts</em>
-              </div>
-            
-              <div class="mini-row good">
-                <strong>#5 6762.T</strong>
-                <span>20D RS positive</span>
-                <em>379 pts</em>
-              </div>
-            
-              <div class="mini-row good">
-                <strong>#6 8035.T</strong>
-                <span>Compressed setup</span>
-                <em>370 pts</em>
-              </div>
-            
-              <div class="mini-row good">
-                <strong>#7 7974.T</strong>
-                <span>60D RS leader</span>
-                <em>352 pts</em>
-              </div>
-            
-              <div class="mini-row good">
-                <strong>#8 135A.T</strong>
-                <span>20D RS positive</span>
-                <em>326 pts</em>
               </div>
             
           </div>
         </article>
 
         <article class="lane-card warning">
-          <div class="lane-head"><span>RISK WARNINGS</span><strong>10</strong></div>
+          <div class="lane-head"><span>RISK WARNINGS</span><strong>0</strong></div>
           <div class="mini-list">
             
-              <div class="mini-row danger">
-                <strong>#5 6762.T</strong>
-                <span>No daily confirmation</span>
-                <em>Ignore</em>
-              </div>
-            
-              <div class="mini-row danger">
-                <strong>#6 8035.T</strong>
-                <span>No daily confirmation</span>
-                <em>Ignore</em>
-              </div>
-            
-              <div class="mini-row danger">
-                <strong>#7 7974.T</strong>
-                <span>Weak 5D momentum</span>
-                <em>Ignore</em>
-              </div>
-            
-              <div class="mini-row danger">
-                <strong>#8 135A.T</strong>
-                <span>No daily confirmation</span>
-                <em>Ignore</em>
-              </div>
-            
-              <div class="mini-row danger">
-                <strong>#9 6954.T</strong>
-                <span>Extended risk</span>
-                <em>Ignore</em>
-              </div>
-            
-              <div class="mini-row danger">
-                <strong>#10 7013.T</strong>
-                <span>Weak 5D momentum</span>
-                <em>Ignore</em>
-              </div>
-            
-              <div class="mini-row danger">
-                <strong>#11 6861.T</strong>
-                <span>No daily confirmation</span>
-                <em>Ignore</em>
-              </div>
-            
-              <div class="mini-row danger">
-                <strong>#12 9984.T</strong>
-                <span>No daily confirmation</span>
-                <em>Ignore</em>
-              </div>
-            
-              <div class="mini-row danger">
-                <strong>#13 6146.T</strong>
-                <span>Weak 5D momentum</span>
-                <em>Ignore</em>
-              </div>
-            
-              <div class="mini-row danger">
-                <strong>#14 3914.T</strong>
-                <span>Low liquidity</span>
-                <em>Ignore</em>
-              </div>
+              <div class="mini-empty">No risk-control flags in the main board.</div>
             
           </div>
         </article>
