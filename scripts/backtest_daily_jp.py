@@ -542,6 +542,7 @@ def score_date(
             "regime": regime,
             "reason": scored.get("reason"),
             "flags": scored.get("flags") or [],
+            "volume_flow": scored.get("volume_flow") or {},
             "liquidity_band": liquidity_band,
             "latest_close": scored.get("latest_close"),
             "entry_close": safe_round(future.get("entry_close"), 4),
@@ -801,6 +802,30 @@ def build_filtered_performance(rows: list[dict[str, Any]]) -> dict[str, Any]:
         ("score_gte_600", "Score >= 600", [r for r in rows if (to_float(r.get("score_pts")) or 0) >= 600]),
         ("score_gte_700", "Score >= 700", [r for r in rows if (to_float(r.get("score_pts")) or 0) >= 700]),
         ("liquidity_gte_liquid", "Liquidity >= Liquid", [r for r in rows if str(r.get("liquidity_band") or "") in liquidity_ok]),
+        (
+            "abnormal_accumulation",
+            "Abnormal accumulation",
+            [r for r in rows if "abnormal_accumulation" in set(r.get("flags") or [])],
+        ),
+        (
+            "abnormal_accumulation_watch",
+            "Abnormal accumulation + Watch/Trade",
+            [
+                r for r in rows
+                if "abnormal_accumulation" in set(r.get("flags") or [])
+                and str(r.get("triage") or "") in {"Trade", "Watch"}
+            ],
+        ),
+        (
+            "abnormal_distribution",
+            "Abnormal distribution",
+            [r for r in rows if "abnormal_distribution" in set(r.get("flags") or [])],
+        ),
+        (
+            "volume_noise",
+            "Volume noise",
+            [r for r in rows if "volume_noise" in set(r.get("flags") or [])],
+        ),
     ]
 
     out: dict[str, Any] = {}
