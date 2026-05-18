@@ -18,7 +18,7 @@ on:
       rank_limit:
         description: "Max ranked names per evaluation date"
         required: false
-        default: "50"
+        default: "10"
       min_history_bars:
         description: "Minimum prior bars required before scoring"
         required: false
@@ -55,6 +55,7 @@ jobs:
       BACKTEST_REFERENCE_HORIZONS: "20"
       BACKTEST_BENCHMARK_RETURN_ABS_LIMIT_PCT: "30"
       BACKTEST_RANK_LIMIT: ${{ github.event.inputs.rank_limit }}
+      BACKTEST_MAX_RANK_LIMIT: "10"
       BACKTEST_MIN_HISTORY_BARS: ${{ github.event.inputs.min_history_bars }}
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
