@@ -74,7 +74,11 @@ WEIGHTS = {
 # because it is a short-term discovery overlay, not a core trend model.
 # The overlay is capped tightly to avoid turning every volume spike into a signal.
 ACCUMULATION_BOOST_CAP = 0.075
-DISTRIBUTION_PENALTY_CAP = 0.120
+DISTRIBUTION_PENALTY_CAP = 0.180
+VOLUME_NOISE_PENALTY_CAP = 0.075
+FAVORABLE_ARCHETYPE_BOOST_CAP = 0.045
+VOLUME_BREAKOUT_RISK_PENALTY_CAP = 0.090
+DAILY_MAIN_RANK_LIMIT = int(os.getenv("DAILY_MAIN_RANK_LIMIT", "20"))
 SCORE_SCALE = 1000
 
 
@@ -152,6 +156,41 @@ def scale(value: Any, low: float, high: float) -> float:
     if v is None or high == low:
         return 0.0
     return clamp((v - low) / (high - low), 0.0, 1.0)
+
+
+def classify_liquidity_band(avg_value20: Any, dollar_vol: Any = None) -> str:
+    """
+    Tradability bands for JP daily signals.
+
+    The previous labels made the middle bucket look cleaner than it really was.
+    This version separates institutional-grade liquidity from merely tradable
+    liquidity, and keeps sub-100m JPY names out of Trade by default.
+    """
+    avg = to_float(avg_value20)
+    today = to_float(dollar_vol)
+
+    if avg is None:
+        return "Unknown"
+    if avg >= 1_000_000_000:
+        return "High Liquidity"
+    if avg >= 300_000_000:
+        return "Tradable"
+    if avg >= 100_000_000:
+        return "Thin"
+    if today is not None and today >= 300_000_000 and avg >= 70_000_000:
+        return "Event Thin"
+    return "Very Thin"
+
+
+def liquidity_score_from_band(band: str) -> float:
+    return {
+        "High Liquidity": 1.00,
+        "Tradable": 0.78,
+        "Thin": 0.42,
+        "Event Thin": 0.34,
+        "Very Thin": 0.10,
+        "Unknown": 0.00,
+    }.get(str(band or ""), 0.0)
 
 
 def pct(cur: Any, prev: Any) -> float | None:
@@ -569,6 +608,7 @@ def evaluate_volume_flow(last: pd.Series, prev: pd.Series, item: dict[str, Any])
 
     boost = 0.0
     distribution_penalty = 0.0
+    noise_penalty = 0.0
     signal = "none"
     confidence = "none"
 
@@ -596,10 +636,10 @@ def evaluate_volume_flow(last: pd.Series, prev: pd.Series, item: dict[str, Any])
         signal = "abnormal_distribution"
         confidence = "high" if downside_break and weak_intraday_close else "medium"
         distribution_penalty = clamp(
-            0.035
-            + 0.030 * scale(rvol20, 2.0, 6.0)
-            + 0.025 * scale(abs(min(ret1, 0.0)), 3.0, 12.0)
-            + 0.020 * (1.0 - range_pos),
+            0.055
+            + 0.045 * scale(rvol20, 2.0, 6.0)
+            + 0.040 * scale(abs(min(ret1, 0.0)), 3.0, 12.0)
+            + 0.030 * (1.0 - range_pos),
             0.0,
             DISTRIBUTION_PENALTY_CAP,
         )
@@ -609,6 +649,13 @@ def evaluate_volume_flow(last: pd.Series, prev: pd.Series, item: dict[str, Any])
     elif volume_noise:
         signal = "volume_noise"
         confidence = "low"
+        noise_penalty = clamp(
+            0.030
+            + 0.020 * scale(rvol20, 1.6, 5.0)
+            + 0.020 * (1.0 - range_pos),
+            0.0,
+            VOLUME_NOISE_PENALTY_CAP,
+        )
         flags.append("volume_noise")
 
     flow = {
@@ -616,6 +663,7 @@ def evaluate_volume_flow(last: pd.Series, prev: pd.Series, item: dict[str, Any])
         "confidence": confidence,
         "boost_0_1": safe_round(boost, 6),
         "distribution_penalty_0_1": safe_round(distribution_penalty, 6),
+        "noise_penalty_0_1": safe_round(noise_penalty, 6),
         "rvol20": safe_round(rvol20, 4),
         "rvol3_20": safe_round(rvol3_20, 4),
         "ret1_pct": safe_round(ret1, 4),
@@ -826,6 +874,108 @@ def score_entry_timing(last: pd.Series, prev: pd.Series) -> tuple[float, list[st
     return score, flags
 
 
+def evaluate_archetype_adjustment(
+    components: dict[str, float],
+    last: pd.Series,
+    flags: list[str],
+) -> tuple[float, float, list[str], dict[str, Any]]:
+    """
+    Post-score archetype overlay derived from the first backtest diagnostics.
+
+    Positive:
+      - Relative Strength
+      - Compression + Breakout
+      - Volume + Compression
+
+    Negative:
+      - Volume + Breakout without compression. In JP daily data this behaved
+        like short-term exhaustion / sell-the-news more often than a clean
+        continuation setup.
+    """
+    out_flags: list[str] = []
+
+    volume = float(components.get("volume_liquidity_shock") or 0.0)
+    compression = float(components.get("compression_release") or 0.0)
+    setup = float(components.get("breakout_setup_quality") or 0.0)
+    rs = float(components.get("relative_strength") or 0.0)
+    entry = float(components.get("entry_timing") or 0.0)
+
+    ret1 = to_float(last.get("ret1")) or 0.0
+    ret5 = to_float(last.get("ret5")) or 0.0
+    range_pos = clamp(last.get("range_pos"), 0, 1)
+    close_pos20 = clamp(last.get("close_pos20"), 0, 1)
+
+    has_bad_flow = "abnormal_distribution" in flags or "volume_noise" in flags
+    not_extended = ret5 < 35.0
+
+    favorable_boost = 0.0
+
+    favored_relative_strength = bool(
+        rs >= 0.70
+        and entry >= 0.48
+        and close_pos20 >= 0.50
+        and not has_bad_flow
+        and not_extended
+    )
+    if favored_relative_strength:
+        favorable_boost += 0.018 + 0.012 * scale(rs, 0.70, 0.95)
+        out_flags.append("favored_relative_strength")
+
+    favored_compression_breakout = bool(
+        compression >= 0.58
+        and setup >= 0.58
+        and range_pos >= 0.55
+        and not has_bad_flow
+        and not_extended
+    )
+    if favored_compression_breakout:
+        favorable_boost += 0.020 + 0.012 * min(scale(compression, 0.58, 0.90), scale(setup, 0.58, 0.90))
+        out_flags.append("favored_compression_breakout")
+
+    favored_volume_compression = bool(
+        volume >= 0.52
+        and compression >= 0.55
+        and range_pos >= 0.45
+        and ret1 >= -3.0
+        and not has_bad_flow
+        and not_extended
+    )
+    if favored_volume_compression:
+        favorable_boost += 0.016 + 0.010 * min(scale(volume, 0.52, 0.90), scale(compression, 0.55, 0.90))
+        out_flags.append("favored_volume_compression")
+
+    volume_breakout_risk = bool(
+        volume >= 0.60
+        and setup >= 0.62
+        and compression < 0.52
+    )
+    volume_breakout_penalty = 0.0
+    if volume_breakout_risk:
+        volume_breakout_penalty = clamp(
+            0.035
+            + 0.020 * scale(volume, 0.60, 0.95)
+            + 0.020 * scale(setup, 0.62, 0.95)
+            + 0.015 * scale(ret5, 8.0, 35.0)
+            + 0.015 * (1.0 - range_pos),
+            0.0,
+            VOLUME_BREAKOUT_RISK_PENALTY_CAP,
+        )
+        out_flags.append("volume_breakout_risk")
+        out_flags.append("trade_block_volume_breakout")
+
+    favorable_boost = clamp(favorable_boost, 0.0, FAVORABLE_ARCHETYPE_BOOST_CAP)
+
+    details = {
+        "favored_relative_strength": favored_relative_strength,
+        "favored_compression_breakout": favored_compression_breakout,
+        "favored_volume_compression": favored_volume_compression,
+        "volume_breakout_risk": volume_breakout_risk,
+        "favorable_archetype_boost_0_1": safe_round(favorable_boost, 6),
+        "volume_breakout_risk_penalty_0_1": safe_round(volume_breakout_penalty, 6),
+    }
+    return favorable_boost, volume_breakout_penalty, out_flags, details
+
+
 def compute_penalty(last: pd.Series, item: dict[str, Any], bucket: str) -> tuple[float, list[str], dict[str, float | None]]:
     flags: list[str] = []
 
@@ -1019,6 +1169,11 @@ def classify_and_triage(
     weak_close = "weak_close_on_volume" in flags or "red_close_on_volume" in flags
     abnormal_accumulation = "abnormal_accumulation" in flags
     abnormal_distribution = "abnormal_distribution" in flags
+    volume_noise = "volume_noise" in flags
+    volume_breakout_risk = "volume_breakout_risk" in flags
+    favored_relative_strength = "favored_relative_strength" in flags
+    favored_compression_breakout = "favored_compression_breakout" in flags
+    favored_volume_compression = "favored_volume_compression" in flags
     discovery_watch_candidate = "discovery_watch_candidate" in flags
     post_catalyst_digestion = "post_catalyst_digestion" in flags
 
@@ -1034,6 +1189,8 @@ def classify_and_triage(
         and not no_confirmation
         and not weak_close
         and not abnormal_distribution
+        and not volume_noise
+        and not volume_breakout_risk
         and penalty < 0.18
         and regime != "Risk-off"
     )
@@ -1044,9 +1201,13 @@ def classify_and_triage(
             volume >= 0.45
             or (compression >= 0.55 and setup >= 0.55)
             or (setup >= 0.70 and components["relative_strength"] >= 0.65)
+            or favored_relative_strength
+            or favored_compression_breakout
+            or favored_volume_compression
         )
         and not no_confirmation
         and not abnormal_distribution
+        and not volume_noise
     )
 
     discovery_watch_ok = (
@@ -1069,9 +1230,14 @@ def classify_and_triage(
         )
     )
 
-    if abnormal_distribution:
+    if abnormal_distribution or volume_noise:
         trade_ok = False
         watch_ok = False
+
+    if volume_breakout_risk:
+        # Keep it visible if the score is still respectable, but do not let the
+        # historically weak Volume + Breakout pattern become Trade by itself.
+        trade_ok = False
 
     if trade_ok:
         triage = "Trade"
@@ -1093,10 +1259,14 @@ def classify_and_triage(
         classification = "A+ Timing"
     elif score_pts >= 720 and triage in {"Trade", "Watch"}:
         classification = "A Setup"
+    elif volume_breakout_risk and triage == "Watch":
+        classification = "Exhaustion Watch"
     elif abnormal_accumulation and triage == "Watch":
         classification = "Discovery Watch"
     elif abnormal_distribution:
         classification = "Distribution Risk"
+    elif volume_noise:
+        classification = "Volume Noise"
     elif score_pts >= 620 and triage == "Watch":
         classification = "B Watch"
     elif very_low_liquidity:
@@ -1108,8 +1278,10 @@ def classify_and_triage(
 
     if very_low_liquidity:
         risk_level = "High"
-    elif abnormal_distribution:
+    elif abnormal_distribution or volume_noise:
         risk_level = "High"
+    elif volume_breakout_risk:
+        risk_level = "Medium"
     elif low_liquidity or extended or penalty >= 0.18:
         risk_level = "Medium"
     elif triage == "Trade":
@@ -1139,6 +1311,14 @@ def build_reason(components: dict[str, float], last: pd.Series, penalty: float, 
         reason.append("abnormal distribution risk")
     if "volume_noise" in flags:
         reason.append("volume noise")
+    if "volume_breakout_risk" in flags:
+        reason.append("volume breakout risk")
+    if "favored_relative_strength" in flags:
+        reason.append("favored relative strength")
+    if "favored_compression_breakout" in flags:
+        reason.append("favored compression breakout")
+    if "favored_volume_compression" in flags:
+        reason.append("favored volume compression")
     if "no_daily_confirmation" in flags:
         reason.append("no daily confirmation")
     if "very_low_liquidity" in flags:
@@ -1177,6 +1357,7 @@ def score_equity_item(
     volume_flow, flow_flags = evaluate_volume_flow(last, prev, item)
     flow_boost = to_float(volume_flow.get("boost_0_1")) or 0.0
     flow_distribution_penalty = to_float(volume_flow.get("distribution_penalty_0_1")) or 0.0
+    flow_noise_penalty = to_float(volume_flow.get("noise_penalty_0_1")) or 0.0
 
     raw_score01 = (
         WEIGHTS["volume_liquidity_shock"] * volume_score
@@ -1188,27 +1369,17 @@ def score_equity_item(
     )
 
     score01_before_penalty = clamp(raw_score01)
-    score01_after_penalty = clamp(score01_before_penalty - penalty)
-    score01_after_flow = clamp(score01_after_penalty + flow_boost - flow_distribution_penalty)
 
-    cap_score01, cap_flags = apply_score_caps(score01_after_flow, last, item)
-
-    score01 = clamp(cap_score01)
-    score_pts = int(round(score01 * SCORE_SCALE))
-
-    components = {
+    base_components = {
         "volume_liquidity_shock": round(volume_score, 6),
         "compression_release": round(compression_score, 6),
         "breakout_setup_quality": round(setup_score, 6),
         "relative_strength": round(rs_score, 6),
         "entry_timing": round(entry_score, 6),
         "market_regime": round(regime_score, 6),
-        "penalty": round(penalty, 6),
-        "abnormal_flow_boost": round(flow_boost, 6),
-        "abnormal_distribution_penalty": round(flow_distribution_penalty, 6),
     }
 
-    flags: list[str] = []
+    pre_adjustment_flags: list[str] = []
     for flag in (
         volume_flags
         + compression_flags
@@ -1217,6 +1388,45 @@ def score_equity_item(
         + entry_flags
         + penalty_flags
         + flow_flags
+    ):
+        if flag not in pre_adjustment_flags:
+            pre_adjustment_flags.append(flag)
+
+    favorable_boost, volume_breakout_penalty, archetype_flags, archetype_adjustment = evaluate_archetype_adjustment(
+        base_components,
+        last,
+        pre_adjustment_flags,
+    )
+
+    score01_after_penalty = clamp(score01_before_penalty - penalty)
+    score01_after_flow = clamp(
+        score01_after_penalty
+        + flow_boost
+        + favorable_boost
+        - flow_distribution_penalty
+        - flow_noise_penalty
+        - volume_breakout_penalty
+    )
+
+    cap_score01, cap_flags = apply_score_caps(score01_after_flow, last, item)
+
+    score01 = clamp(cap_score01)
+    score_pts = int(round(score01 * SCORE_SCALE))
+
+    components = {
+        **base_components,
+        "penalty": round(penalty, 6),
+        "abnormal_flow_boost": round(flow_boost, 6),
+        "favorable_archetype_boost": round(favorable_boost, 6),
+        "abnormal_distribution_penalty": round(flow_distribution_penalty, 6),
+        "volume_noise_penalty": round(flow_noise_penalty, 6),
+        "volume_breakout_risk_penalty": round(volume_breakout_penalty, 6),
+    }
+
+    flags: list[str] = []
+    for flag in (
+        pre_adjustment_flags
+        + archetype_flags
         + cap_flags
     ):
         if flag not in flags:
@@ -1308,7 +1518,10 @@ def score_equity_item(
             "entry_timing": round(entry_score * 15, 4),
             "market_regime": round(regime_score * 3, 4),
             "abnormal_flow_boost": round(flow_boost * 100, 4),
+            "favorable_archetype_boost": round(favorable_boost * 100, 4),
             "abnormal_distribution_penalty": round(-flow_distribution_penalty * 100, 4),
+            "volume_noise_penalty": round(-flow_noise_penalty * 100, 4),
+            "volume_breakout_risk_penalty": round(-volume_breakout_penalty * 100, 4),
             "penalty": round(-penalty * 100, 4),
             "raw_score": round(score01_before_penalty * 100, 4),
         },
@@ -1334,9 +1547,15 @@ def score_equity_item(
         "penalty_details": {
             **penalty_details,
             "abnormal_flow_boost": safe_round(flow_boost, 6),
+            "favorable_archetype_boost": safe_round(favorable_boost, 6),
             "abnormal_distribution_penalty": safe_round(flow_distribution_penalty, 6),
+            "volume_noise_penalty": safe_round(flow_noise_penalty, 6),
+            "volume_breakout_risk_penalty": safe_round(volume_breakout_penalty, 6),
         },
+        "archetype_adjustment": archetype_adjustment,
         "flags": flags,
+        "liquidity_band": classify_liquidity_band(avg_value20, dollar_volume),
+        "liquidity_score_0_1": safe_round(liquidity_score_from_band(classify_liquidity_band(avg_value20, dollar_volume)), 4),
         "liquidity_status": metrics.get("liquidity_status"),
         "liquidity_flags": metrics.get("liquidity_flags") or [],
         "is_partial": bool(item.get("is_partial")),
@@ -1494,6 +1713,8 @@ def main() -> int:
             "important_controls": [
                 "Low volume without daily confirmation caps final score.",
                 "Very low liquidity cannot become Trade.",
+                "Daily main board focuses on top 20. Rank 21-50 remains reference/discovery only.",
+                "Volume + Breakout without compression is treated as exhaustion risk and cannot become Trade by itself.",
                 "Extended 5D/20D moves are capped and usually Watch, not Trade.",
                 "Weak close on volume is penalized.",
                 "Abnormal accumulation can lift a candidate into Discovery Watch, not automatically Trade.",
@@ -1505,7 +1726,7 @@ def main() -> int:
         "regime_score": round(regime_score, 6),
         "regime_state": regime_state,
         "market_pulse": market_pulse,
-        "items": ranked_items[:25],
+        "items": ranked_items[:DAILY_MAIN_RANK_LIMIT],
         "all_items": ranked_items,
         "summary": summary,
         "failed": failed,
