@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description" content="Backtest dashboard for Neon Tokyo Daily JP Event Score. Performance by triage, archetype, score band, liquidity and market regime."/>
   <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/backtest_daily_jp.css?v=202605181342"/>
+  <link rel="stylesheet" href="/assets/backtest_daily_jp.css?v=202605181420"/>
 </head>
 
 <body>
@@ -71,7 +71,7 @@
     <section class="meta-strip">
       <div>
         <span>Generated</span>
-        <strong>2026-05-18T13:37:57+09:00</strong>
+        <strong>2026-05-18T14:16:43+09:00</strong>
       </div>
       <div>
         <span>Price Data</span>
@@ -105,8 +105,8 @@
       
         <article class="insight-card">
           <span>Trade 5D avg</span>
-          <strong class="value-up">+2.14%</strong>
-          <em>+1.72% alpha</em>
+          <strong class="value-up">+2.02%</strong>
+          <em>+1.66% alpha</em>
         </article>
       
         <article class="insight-card">
@@ -123,6 +123,74 @@
       
     </section>
 
+
+    <section class="section-block visual-block">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">VISUAL PERFORMANCE MAP</div>
+          <h2>The model's edge at a glance.</h2>
+          <p>
+            These charts use the 5D primary horizon. Longer bars mean stronger alpha;
+            red bars are negative. The goal is simple: Trade/Watch, high score, and top rank should be visibly better than weak buckets.
+          </p>
+        </div>
+        <div class="method-chip">Primary 5D</div>
+      </div>
+
+      <div class="visual-grid two-col">
+        <article class="chart-card">
+          <div class="chart-title">
+            <strong>Triage separation</strong>
+            <span>Avg alpha by Trade / Watch / Ignore</span>
+          </div>
+          <div class="bar-list">
+            
+          </div>
+        </article>
+
+        <article class="chart-card">
+          <div class="chart-title">
+            <strong>Rank quality</strong>
+            <span>Top 20 is the main Daily board; 21-50 is reference.</span>
+          </div>
+          <div class="bar-list">
+            
+          </div>
+        </article>
+      </div>
+
+      <div class="visual-grid two-col">
+        <article class="chart-card">
+          <div class="chart-title">
+            <strong>Score bands</strong>
+            <span>Checks whether higher scores create better alpha.</span>
+          </div>
+          <div class="bar-list compact-bars">
+            
+          </div>
+        </article>
+
+        <article class="chart-card">
+          <div class="chart-title">
+            <strong>Liquidity bands</strong>
+            <span>Liquidity is checked after the bucket logic revision.</span>
+          </div>
+          <div class="bar-list compact-bars">
+            
+          </div>
+        </article>
+      </div>
+
+      <article class="chart-card wide-chart">
+        <div class="chart-title">
+          <strong>Best and worst signal archetypes</strong>
+          <span>Favored structures should rise; Volume + Breakout risk should be contained.</span>
+        </div>
+        <div class="bar-list archetype-bars">
+          
+        </div>
+      </article>
+    </section>
 
 
     <section class="section-block health-block">
@@ -149,7 +217,7 @@
         
           <article class="health-card status-pass">
             <span>Trade vs Ignore Alpha</span>
-            <strong>+1.45%</strong>
+            <strong>+1.39%</strong>
             <em>Pass</em>
           </article>
         
@@ -465,7 +533,7 @@
                     <span>Data Section / 2025-06-03</span>
                   </td>
                   <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                  <td>367</td>
+                  <td>303</td>
                   <td class="value-up">+76.41%</td>
                   <td class="value-up">+76.01%</td>
                   <td>0.27%</td>
@@ -477,7 +545,7 @@
                     <span>Data Section / 2025-05-30</span>
                   </td>
                   <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                  <td>265</td>
+                  <td>215</td>
                   <td class="value-up">+74.47%</td>
                   <td class="value-up">+75.50%</td>
                   <td>0.26%</td>
@@ -501,7 +569,7 @@
                     <span>Data Section / 2025-06-02</span>
                   </td>
                   <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                  <td>217</td>
+                  <td>167</td>
                   <td class="value-up">+65.25%</td>
                   <td class="value-up">+64.94%</td>
                   <td>0.23%</td>
@@ -700,29 +768,29 @@
               <tr>
                 <td><strong>1D</strong></td>
                 <td><span class="role-pill role-core">Core</span></td>
-                <td class="value-up">+0.34%</td>
-                <td class="value-up">+0.07%</td>
-                <td class="value-up">+0.21%</td>
-                <td><span class="health-tag status-fail">Fail</span></td>
+                <td class="value-up">+0.41%</td>
+                <td class="value-up">+0.05%</td>
+                <td class="value-up">+0.32%</td>
+                <td><span class="health-tag status-warning">Warning</span></td>
                 <td><span class="health-tag status-fail">Fail</span></td>
               </tr>
             
               <tr>
                 <td><strong>3D</strong></td>
                 <td><span class="role-pill role-core">Core</span></td>
-                <td class="value-up">+0.85%</td>
-                <td class="value-up">+0.27%</td>
-                <td class="value-up">+0.65%</td>
-                <td><span class="health-tag status-pass">Pass</span></td>
-                <td><span class="health-tag status-fail">Fail</span></td>
+                <td class="value-up">+1.03%</td>
+                <td class="value-up">+0.20%</td>
+                <td class="value-up">+0.94%</td>
+                <td><span class="health-tag status-warning">Warning</span></td>
+                <td><span class="health-tag status-warning">Warning</span></td>
               </tr>
             
               <tr>
                 <td><strong>5D</strong></td>
                 <td><span class="role-pill role-primary">Primary</span></td>
-                <td class="value-up">+1.45%</td>
+                <td class="value-up">+1.39%</td>
                 <td class="value-up">+0.68%</td>
-                <td class="value-up">+0.80%</td>
+                <td class="value-up">+0.78%</td>
                 <td><span class="health-tag status-warning">Warning</span></td>
                 <td><span class="health-tag status-warning">Warning</span></td>
               </tr>
@@ -730,20 +798,20 @@
               <tr>
                 <td><strong>10D</strong></td>
                 <td><span class="role-pill role-core">Core</span></td>
-                <td class="value-up">+1.95%</td>
-                <td class="value-up">+1.24%</td>
-                <td class="value-up">+1.82%</td>
+                <td class="value-up">+2.13%</td>
+                <td class="value-up">+1.21%</td>
+                <td class="value-up">+2.27%</td>
                 <td><span class="health-tag status-warning">Warning</span></td>
-                <td><span class="health-tag status-fail">Fail</span></td>
+                <td><span class="health-tag status-pass">Pass</span></td>
               </tr>
             
               <tr>
                 <td><strong>20D</strong></td>
                 <td><span class="role-pill role-reference">Reference</span></td>
-                <td class="value-up">+2.80%</td>
-                <td class="value-up">+2.14%</td>
-                <td class="value-up">+3.28%</td>
-                <td><span class="health-tag status-pass">Pass</span></td>
+                <td class="value-up">+3.06%</td>
+                <td class="value-up">+2.04%</td>
+                <td class="value-up">+3.65%</td>
+                <td><span class="health-tag status-warning">Warning</span></td>
                 <td><span class="health-tag status-warning">Warning</span></td>
               </tr>
             
@@ -756,7 +824,7 @@
       <div class="section-heading">
         <div class="kicker">FILTERED PERFORMANCE</div>
         <h2>Return quality under stricter cuts.</h2>
-        <p>Rank, triage, score threshold, liquidity and outlier controls. Read 1D / 3D / 5D / 10D as the main Daily range; 20D is reference.</p>
+        <p>Top-20 rank, triage, score threshold, liquidity, favored archetype and outlier controls. Read 1D / 3D / 5D / 10D as the main Daily range; 20D is reference.</p>
       </div>
 
       <div class="group-table-wrap wide-scroll">
@@ -806,87 +874,130 @@
             
               <tr>
                 <td>
-                  <strong>Rank <= 10</strong>
+                  <strong>Main Rank <= 10</strong>
                   <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
                 </td>
                 
                   <td>2,430</td>
-                  <td class="value-up">+0.31%</td>
+                  <td class="value-up">+0.32%</td>
                   <td>+0.12%</td>
-                  <td class="value-up">+0.14%</td>
-                  <td class="value-flat">51.65%</td>
-                  <td>+0.29%</td>
+                  <td class="value-up">+0.15%</td>
+                  <td class="value-flat">51.69%</td>
+                  <td>+0.30%</td>
                 
                   <td>2,430</td>
-                  <td class="value-up">+1.02%</td>
-                  <td>+0.54%</td>
-                  <td class="value-up">+0.54%</td>
-                  <td class="value-flat">54.49%</td>
-                  <td>+0.98%</td>
+                  <td class="value-up">+1.03%</td>
+                  <td>+0.57%</td>
+                  <td class="value-up">+0.55%</td>
+                  <td class="value-flat">54.57%</td>
+                  <td>+0.99%</td>
                 
                   <td>2,430</td>
                   <td class="value-up">+1.79%</td>
-                  <td>+1.07%</td>
+                  <td>+1.04%</td>
                   <td class="value-up">+1.01%</td>
-                  <td class="value-up">57.04%</td>
+                  <td class="value-up">57.00%</td>
                   <td>+1.73%</td>
                 
                   <td>2,430</td>
-                  <td class="value-up">+3.47%</td>
+                  <td class="value-up">+3.48%</td>
                   <td>+2.62%</td>
-                  <td class="value-up">+2.00%</td>
+                  <td class="value-up">+2.01%</td>
                   <td class="value-up">62.10%</td>
                   <td>+3.42%</td>
                 
                   <td>2,430</td>
-                  <td class="value-up">+6.94%</td>
+                  <td class="value-up">+6.98%</td>
                   <td>+5.38%</td>
-                  <td class="value-up">+4.05%</td>
-                  <td class="value-up">67.16%</td>
-                  <td>+6.85%</td>
+                  <td class="value-up">+4.09%</td>
+                  <td class="value-up">67.24%</td>
+                  <td>+6.89%</td>
                 
               </tr>
             
               <tr>
                 <td>
-                  <strong>Rank <= 20</strong>
+                  <strong>Main Rank <= 20</strong>
                   <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
                 </td>
                 
                   <td>4,860</td>
-                  <td class="value-up">+0.32%</td>
+                  <td class="value-up">+0.31%</td>
                   <td>+0.11%</td>
                   <td class="value-up">+0.15%</td>
-                  <td class="value-flat">51.60%</td>
+                  <td class="value-flat">51.58%</td>
                   <td>+0.31%</td>
                 
                   <td>4,860</td>
-                  <td class="value-up">+0.99%</td>
+                  <td class="value-up">+1.00%</td>
                   <td>+0.50%</td>
                   <td class="value-up">+0.51%</td>
-                  <td class="value-flat">54.16%</td>
+                  <td class="value-flat">54.20%</td>
                   <td>+0.95%</td>
                 
                   <td>4,860</td>
                   <td class="value-up">+1.64%</td>
                   <td>+1.00%</td>
                   <td class="value-up">+0.86%</td>
-                  <td class="value-up">56.56%</td>
+                  <td class="value-up">56.58%</td>
                   <td>+1.57%</td>
                 
                   <td>4,860</td>
                   <td class="value-up">+3.29%</td>
-                  <td>+2.43%</td>
-                  <td class="value-up">+1.82%</td>
+                  <td>+2.42%</td>
+                  <td class="value-up">+1.81%</td>
                   <td class="value-up">61.21%</td>
                   <td>+3.20%</td>
                 
                   <td>4,860</td>
-                  <td class="value-up">+6.41%</td>
-                  <td>+4.87%</td>
-                  <td class="value-up">+3.50%</td>
-                  <td class="value-up">65.72%</td>
-                  <td>+6.36%</td>
+                  <td class="value-up">+6.42%</td>
+                  <td>+4.86%</td>
+                  <td class="value-up">+3.51%</td>
+                  <td class="value-up">65.76%</td>
+                  <td>+6.37%</td>
+                
+              </tr>
+            
+              <tr>
+                <td>
+                  <strong>Reference Rank 21-50</strong>
+                  <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
+                </td>
+                
+                  <td>3,888</td>
+                  <td class="value-up">+0.15%</td>
+                  <td>-0.05%</td>
+                  <td class="value-down">-0.02%</td>
+                  <td class="value-flat">48.33%</td>
+                  <td>+0.12%</td>
+                
+                  <td>3,888</td>
+                  <td class="value-up">+0.44%</td>
+                  <td>0.00%</td>
+                  <td class="value-down">-0.08%</td>
+                  <td class="value-flat">49.74%</td>
+                  <td>+0.35%</td>
+                
+                  <td>3,888</td>
+                  <td class="value-up">+0.71%</td>
+                  <td>0.00%</td>
+                  <td class="value-down">-0.13%</td>
+                  <td class="value-flat">49.67%</td>
+                  <td>+0.53%</td>
+                
+                  <td>3,888</td>
+                  <td class="value-up">+1.50%</td>
+                  <td>-0.13%</td>
+                  <td class="value-down">-0.07%</td>
+                  <td class="value-flat">49.05%</td>
+                  <td>+1.11%</td>
+                
+                  <td>3,888</td>
+                  <td class="value-up">+2.99%</td>
+                  <td>+0.06%</td>
+                  <td class="value-down">-0.18%</td>
+                  <td class="value-flat">50.08%</td>
+                  <td>+2.49%</td>
                 
               </tr>
             
@@ -896,40 +1007,40 @@
                   <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
                 </td>
                 
-                  <td>262</td>
-                  <td class="value-up">+0.54%</td>
-                  <td>+0.17%</td>
-                  <td class="value-up">+0.39%</td>
-                  <td class="value-flat">51.91%</td>
-                  <td>+0.50%</td>
+                  <td>288</td>
+                  <td class="value-up">+0.64%</td>
+                  <td>+0.31%</td>
+                  <td class="value-up">+0.47%</td>
+                  <td class="value-flat">54.17%</td>
+                  <td>+0.62%</td>
                 
-                  <td>262</td>
-                  <td class="value-up">+1.38%</td>
-                  <td>+0.80%</td>
-                  <td class="value-up">+1.04%</td>
-                  <td class="value-up">56.11%</td>
-                  <td>+1.32%</td>
+                  <td>288</td>
+                  <td class="value-up">+1.51%</td>
+                  <td>+1.01%</td>
+                  <td class="value-up">+1.22%</td>
+                  <td class="value-up">56.94%</td>
+                  <td>+1.45%</td>
                 
-                  <td>262</td>
-                  <td class="value-up">+2.14%</td>
-                  <td>+1.23%</td>
-                  <td class="value-up">+1.72%</td>
-                  <td class="value-flat">54.58%</td>
-                  <td>+2.10%</td>
+                  <td>288</td>
+                  <td class="value-up">+2.02%</td>
+                  <td>+0.75%</td>
+                  <td class="value-up">+1.66%</td>
+                  <td class="value-flat">54.17%</td>
+                  <td>+1.98%</td>
                 
-                  <td>262</td>
-                  <td class="value-up">+3.65%</td>
-                  <td>+2.46%</td>
-                  <td class="value-up">+2.68%</td>
-                  <td class="value-up">61.07%</td>
-                  <td>+3.67%</td>
+                  <td>288</td>
+                  <td class="value-up">+3.71%</td>
+                  <td>+2.96%</td>
+                  <td class="value-up">+2.85%</td>
+                  <td class="value-up">62.85%</td>
+                  <td>+3.74%</td>
                 
-                  <td>262</td>
-                  <td class="value-up">+6.79%</td>
-                  <td>+5.31%</td>
-                  <td class="value-up">+4.25%</td>
-                  <td class="value-up">66.41%</td>
-                  <td>+6.78%</td>
+                  <td>288</td>
+                  <td class="value-up">+7.20%</td>
+                  <td>+5.83%</td>
+                  <td class="value-up">+4.52%</td>
+                  <td class="value-up">67.36%</td>
+                  <td>+7.20%</td>
                 
               </tr>
             
@@ -939,40 +1050,40 @@
                   <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
                 </td>
                 
-                  <td>1,311</td>
-                  <td class="value-up">+0.23%</td>
-                  <td>+0.05%</td>
-                  <td class="value-up">+0.13%</td>
-                  <td class="value-flat">50.88%</td>
-                  <td>+0.19%</td>
+                  <td>1,282</td>
+                  <td class="value-up">+0.18%</td>
+                  <td>+0.03%</td>
+                  <td class="value-up">+0.11%</td>
+                  <td class="value-flat">50.39%</td>
+                  <td>+0.16%</td>
                 
-                  <td>1,311</td>
-                  <td class="value-up">+0.80%</td>
-                  <td>+0.26%</td>
-                  <td class="value-up">+0.45%</td>
-                  <td class="value-flat">52.17%</td>
-                  <td>+0.72%</td>
+                  <td>1,282</td>
+                  <td class="value-up">+0.73%</td>
+                  <td>+0.22%</td>
+                  <td class="value-up">+0.39%</td>
+                  <td class="value-flat">52.03%</td>
+                  <td>+0.65%</td>
                 
-                  <td>1,311</td>
-                  <td class="value-up">+1.62%</td>
+                  <td>1,282</td>
+                  <td class="value-up">+1.63%</td>
                   <td>+0.80%</td>
                   <td class="value-up">+0.95%</td>
-                  <td class="value-up">55.53%</td>
-                  <td>+1.44%</td>
+                  <td class="value-up">55.54%</td>
+                  <td>+1.46%</td>
                 
-                  <td>1,311</td>
+                  <td>1,282</td>
                   <td class="value-up">+3.06%</td>
-                  <td>+2.31%</td>
-                  <td class="value-up">+1.96%</td>
-                  <td class="value-up">60.95%</td>
+                  <td>+2.17%</td>
+                  <td class="value-up">+1.93%</td>
+                  <td class="value-up">60.53%</td>
                   <td>+2.84%</td>
                 
-                  <td>1,311</td>
-                  <td class="value-up">+6.24%</td>
-                  <td>+5.16%</td>
-                  <td class="value-up">+3.59%</td>
-                  <td class="value-up">66.29%</td>
-                  <td>+6.14%</td>
+                  <td>1,282</td>
+                  <td class="value-up">+6.18%</td>
+                  <td>+5.04%</td>
+                  <td class="value-up">+3.50%</td>
+                  <td class="value-up">66.22%</td>
+                  <td>+6.08%</td>
                 
               </tr>
             
@@ -982,40 +1093,40 @@
                   <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
                 </td>
                 
-                  <td>1,573</td>
-                  <td class="value-up">+0.28%</td>
+                  <td>1,570</td>
+                  <td class="value-up">+0.27%</td>
                   <td>+0.07%</td>
                   <td class="value-up">+0.17%</td>
-                  <td class="value-flat">51.05%</td>
+                  <td class="value-flat">51.08%</td>
                   <td>+0.24%</td>
                 
-                  <td>1,573</td>
-                  <td class="value-up">+0.89%</td>
-                  <td>+0.28%</td>
-                  <td class="value-up">+0.55%</td>
-                  <td class="value-flat">52.83%</td>
-                  <td>+0.82%</td>
+                  <td>1,570</td>
+                  <td class="value-up">+0.87%</td>
+                  <td>+0.29%</td>
+                  <td class="value-up">+0.54%</td>
+                  <td class="value-flat">52.93%</td>
+                  <td>+0.79%</td>
                 
-                  <td>1,573</td>
+                  <td>1,570</td>
                   <td class="value-up">+1.70%</td>
                   <td>+0.80%</td>
                   <td class="value-up">+1.08%</td>
-                  <td class="value-up">55.37%</td>
-                  <td>+1.57%</td>
+                  <td class="value-up">55.29%</td>
+                  <td>+1.56%</td>
                 
-                  <td>1,573</td>
-                  <td class="value-up">+3.15%</td>
-                  <td>+2.36%</td>
-                  <td class="value-up">+2.09%</td>
-                  <td class="value-up">60.97%</td>
-                  <td>+2.98%</td>
+                  <td>1,570</td>
+                  <td class="value-up">+3.18%</td>
+                  <td>+2.40%</td>
+                  <td class="value-up">+2.10%</td>
+                  <td class="value-up">60.96%</td>
+                  <td>+3.00%</td>
                 
-                  <td>1,573</td>
-                  <td class="value-up">+6.33%</td>
-                  <td>+5.19%</td>
-                  <td class="value-up">+3.70%</td>
-                  <td class="value-up">66.31%</td>
-                  <td>+6.24%</td>
+                  <td>1,570</td>
+                  <td class="value-up">+6.37%</td>
+                  <td>+5.17%</td>
+                  <td class="value-up">+3.69%</td>
+                  <td class="value-up">66.43%</td>
+                  <td>+6.28%</td>
                 
               </tr>
             
@@ -1025,40 +1136,40 @@
                   <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
                 </td>
                 
-                  <td>2,090</td>
-                  <td class="value-up">+0.30%</td>
-                  <td>+0.08%</td>
-                  <td class="value-up">+0.20%</td>
-                  <td class="value-flat">51.20%</td>
-                  <td>+0.28%</td>
+                  <td>2,106</td>
+                  <td class="value-up">+0.31%</td>
+                  <td>+0.09%</td>
+                  <td class="value-up">+0.19%</td>
+                  <td class="value-flat">51.33%</td>
+                  <td>+0.29%</td>
                 
-                  <td>2,090</td>
-                  <td class="value-up">+0.90%</td>
-                  <td>+0.31%</td>
+                  <td>2,106</td>
+                  <td class="value-up">+0.92%</td>
+                  <td>+0.33%</td>
                   <td class="value-up">+0.57%</td>
-                  <td class="value-flat">52.87%</td>
-                  <td>+0.87%</td>
+                  <td class="value-flat">52.90%</td>
+                  <td>+0.89%</td>
                 
-                  <td>2,090</td>
-                  <td class="value-up">+1.70%</td>
-                  <td>+0.98%</td>
-                  <td class="value-up">+1.06%</td>
-                  <td class="value-up">55.98%</td>
-                  <td>+1.65%</td>
+                  <td>2,106</td>
+                  <td class="value-up">+1.74%</td>
+                  <td>+1.00%</td>
+                  <td class="value-up">+1.08%</td>
+                  <td class="value-up">56.27%</td>
+                  <td>+1.70%</td>
                 
-                  <td>2,090</td>
-                  <td class="value-up">+3.34%</td>
+                  <td>2,106</td>
+                  <td class="value-up">+3.42%</td>
                   <td>+2.51%</td>
-                  <td class="value-up">+2.22%</td>
-                  <td class="value-up">61.10%</td>
-                  <td>+3.26%</td>
+                  <td class="value-up">+2.29%</td>
+                  <td class="value-up">61.16%</td>
+                  <td>+3.33%</td>
                 
-                  <td>2,090</td>
-                  <td class="value-up">+6.77%</td>
-                  <td>+5.17%</td>
-                  <td class="value-up">+4.20%</td>
-                  <td class="value-up">66.03%</td>
-                  <td>+6.70%</td>
+                  <td>2,106</td>
+                  <td class="value-up">+6.82%</td>
+                  <td>+5.25%</td>
+                  <td class="value-up">+4.23%</td>
+                  <td class="value-up">66.14%</td>
+                  <td>+6.75%</td>
                 
               </tr>
             
@@ -1068,40 +1179,40 @@
                   <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
                 </td>
                 
-                  <td>1,057</td>
-                  <td class="value-up">+0.33%</td>
-                  <td>+0.13%</td>
-                  <td class="value-up">+0.20%</td>
-                  <td class="value-flat">51.84%</td>
-                  <td>+0.31%</td>
+                  <td>1,082</td>
+                  <td class="value-up">+0.29%</td>
+                  <td>+0.11%</td>
+                  <td class="value-up">+0.16%</td>
+                  <td class="value-flat">51.20%</td>
+                  <td>+0.27%</td>
                 
-                  <td>1,057</td>
-                  <td class="value-up">+1.04%</td>
-                  <td>+0.24%</td>
-                  <td class="value-up">+0.64%</td>
-                  <td class="value-flat">52.98%</td>
-                  <td>+0.98%</td>
+                  <td>1,082</td>
+                  <td class="value-up">+1.08%</td>
+                  <td>+0.30%</td>
+                  <td class="value-up">+0.68%</td>
+                  <td class="value-flat">53.42%</td>
+                  <td>+1.03%</td>
                 
-                  <td>1,057</td>
-                  <td class="value-up">+2.00%</td>
-                  <td>+0.94%</td>
-                  <td class="value-up">+1.38%</td>
-                  <td class="value-up">55.82%</td>
-                  <td>+1.92%</td>
+                  <td>1,082</td>
+                  <td class="value-up">+2.08%</td>
+                  <td>+1.00%</td>
+                  <td class="value-up">+1.45%</td>
+                  <td class="value-up">56.01%</td>
+                  <td>+2.01%</td>
                 
-                  <td>1,057</td>
-                  <td class="value-up">+3.59%</td>
-                  <td>+2.57%</td>
-                  <td class="value-up">+2.55%</td>
-                  <td class="value-up">61.68%</td>
-                  <td>+3.45%</td>
+                  <td>1,082</td>
+                  <td class="value-up">+3.73%</td>
+                  <td>+2.77%</td>
+                  <td class="value-up">+2.71%</td>
+                  <td class="value-up">62.20%</td>
+                  <td>+3.61%</td>
                 
-                  <td>1,057</td>
-                  <td class="value-up">+7.24%</td>
-                  <td>+5.77%</td>
-                  <td class="value-up">+4.70%</td>
-                  <td class="value-up">66.79%</td>
-                  <td>+7.15%</td>
+                  <td>1,082</td>
+                  <td class="value-up">+7.39%</td>
+                  <td>+5.78%</td>
+                  <td class="value-up">+4.80%</td>
+                  <td class="value-up">66.91%</td>
+                  <td>+7.30%</td>
                 
               </tr>
             
@@ -1111,46 +1222,46 @@
                   <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
                 </td>
                 
-                  <td>398</td>
-                  <td class="value-up">+0.41%</td>
-                  <td>+0.13%</td>
-                  <td class="value-up">+0.24%</td>
-                  <td class="value-flat">51.26%</td>
-                  <td>+0.37%</td>
+                  <td>448</td>
+                  <td class="value-up">+0.48%</td>
+                  <td>+0.22%</td>
+                  <td class="value-up">+0.32%</td>
+                  <td class="value-flat">52.46%</td>
+                  <td>+0.47%</td>
                 
-                  <td>398</td>
-                  <td class="value-up">+1.18%</td>
-                  <td>+0.40%</td>
-                  <td class="value-up">+0.77%</td>
-                  <td class="value-flat">54.27%</td>
-                  <td>+1.12%</td>
+                  <td>448</td>
+                  <td class="value-up">+1.40%</td>
+                  <td>+0.84%</td>
+                  <td class="value-up">+1.01%</td>
+                  <td class="value-up">56.47%</td>
+                  <td>+1.36%</td>
                 
-                  <td>398</td>
-                  <td class="value-up">+1.94%</td>
-                  <td>+0.73%</td>
-                  <td class="value-up">+1.37%</td>
-                  <td class="value-flat">53.77%</td>
-                  <td>+1.88%</td>
+                  <td>448</td>
+                  <td class="value-up">+2.29%</td>
+                  <td>+1.23%</td>
+                  <td class="value-up">+1.75%</td>
+                  <td class="value-up">56.25%</td>
+                  <td>+2.25%</td>
                 
-                  <td>398</td>
-                  <td class="value-up">+3.69%</td>
-                  <td>+2.66%</td>
-                  <td class="value-up">+2.74%</td>
-                  <td class="value-up">61.81%</td>
-                  <td>+3.70%</td>
+                  <td>448</td>
+                  <td class="value-up">+3.95%</td>
+                  <td>+3.00%</td>
+                  <td class="value-up">+3.02%</td>
+                  <td class="value-up">63.84%</td>
+                  <td>+3.94%</td>
                 
-                  <td>398</td>
-                  <td class="value-up">+7.68%</td>
-                  <td>+5.79%</td>
-                  <td class="value-up">+5.00%</td>
-                  <td class="value-up">67.09%</td>
-                  <td>+7.71%</td>
+                  <td>448</td>
+                  <td class="value-up">+7.71%</td>
+                  <td>+5.92%</td>
+                  <td class="value-up">+5.04%</td>
+                  <td class="value-up">67.41%</td>
+                  <td>+7.74%</td>
                 
               </tr>
             
               <tr>
                 <td>
-                  <strong>Liquidity >= Liquid</strong>
+                  <strong>Liquidity >= Tradable</strong>
                   <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
                 </td>
                 
@@ -1188,6 +1299,92 @@
                   <td class="value-up">+3.25%</td>
                   <td class="value-up">64.60%</td>
                   <td>+6.07%</td>
+                
+              </tr>
+            
+              <tr>
+                <td>
+                  <strong>Favored archetypes</strong>
+                  <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
+                </td>
+                
+                  <td>1,130</td>
+                  <td class="value-up">+0.30%</td>
+                  <td>+0.15%</td>
+                  <td class="value-up">+0.14%</td>
+                  <td class="value-flat">51.95%</td>
+                  <td>+0.29%</td>
+                
+                  <td>1,130</td>
+                  <td class="value-up">+1.02%</td>
+                  <td>+0.62%</td>
+                  <td class="value-up">+0.61%</td>
+                  <td class="value-flat">54.42%</td>
+                  <td>+1.00%</td>
+                
+                  <td>1,130</td>
+                  <td class="value-up">+1.83%</td>
+                  <td>+1.11%</td>
+                  <td class="value-up">+1.17%</td>
+                  <td class="value-up">55.75%</td>
+                  <td>+1.83%</td>
+                
+                  <td>1,130</td>
+                  <td class="value-up">+3.50%</td>
+                  <td>+2.44%</td>
+                  <td class="value-up">+2.46%</td>
+                  <td class="value-up">61.33%</td>
+                  <td>+3.45%</td>
+                
+                  <td>1,130</td>
+                  <td class="value-up">+7.10%</td>
+                  <td>+4.94%</td>
+                  <td class="value-up">+4.34%</td>
+                  <td class="value-up">63.36%</td>
+                  <td>+6.99%</td>
+                
+              </tr>
+            
+              <tr>
+                <td>
+                  <strong>Volume + Breakout risk</strong>
+                  <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
+                </td>
+                
+                  <td>185</td>
+                  <td class="value-down">-0.49%</td>
+                  <td>-0.79%</td>
+                  <td class="value-down">-0.55%</td>
+                  <td class="value-down">38.92%</td>
+                  <td>-0.48%</td>
+                
+                  <td>185</td>
+                  <td class="value-down">-0.57%</td>
+                  <td>-0.87%</td>
+                  <td class="value-down">-0.68%</td>
+                  <td class="value-down">42.16%</td>
+                  <td>-0.65%</td>
+                
+                  <td>185</td>
+                  <td class="value-down">-0.79%</td>
+                  <td>-1.29%</td>
+                  <td class="value-down">-1.04%</td>
+                  <td class="value-down">41.62%</td>
+                  <td>-0.81%</td>
+                
+                  <td>185</td>
+                  <td class="value-down">-0.44%</td>
+                  <td>-0.22%</td>
+                  <td class="value-down">-0.97%</td>
+                  <td class="value-flat">48.11%</td>
+                  <td>-0.46%</td>
+                
+                  <td>185</td>
+                  <td class="value-up">+2.06%</td>
+                  <td>+1.03%</td>
+                  <td class="value-up">+0.80%</td>
+                  <td class="value-flat">54.05%</td>
+                  <td>+2.08%</td>
                 
               </tr>
             
@@ -1240,40 +1437,40 @@
                   <span>Predefined diagnostic filter. No display-layer recalculation is required.</span>
                 </td>
                 
-                  <td>1,288</td>
-                  <td class="value-up">+0.23%</td>
+                  <td>1,291</td>
+                  <td class="value-up">+0.22%</td>
                   <td>+0.06%</td>
-                  <td class="value-up">+0.13%</td>
-                  <td class="value-flat">50.93%</td>
-                  <td>+0.20%</td>
+                  <td class="value-up">+0.12%</td>
+                  <td class="value-flat">50.89%</td>
+                  <td>+0.19%</td>
                 
-                  <td>1,288</td>
-                  <td class="value-up">+0.81%</td>
-                  <td>+0.30%</td>
-                  <td class="value-up">+0.49%</td>
-                  <td class="value-flat">53.11%</td>
-                  <td>+0.72%</td>
+                  <td>1,291</td>
+                  <td class="value-up">+0.79%</td>
+                  <td>+0.28%</td>
+                  <td class="value-up">+0.48%</td>
+                  <td class="value-flat">52.83%</td>
+                  <td>+0.70%</td>
                 
-                  <td>1,288</td>
-                  <td class="value-up">+1.60%</td>
+                  <td>1,291</td>
+                  <td class="value-up">+1.57%</td>
                   <td>+0.80%</td>
-                  <td class="value-up">+0.96%</td>
-                  <td class="value-up">55.43%</td>
-                  <td>+1.42%</td>
+                  <td class="value-up">+0.93%</td>
+                  <td class="value-up">55.31%</td>
+                  <td>+1.39%</td>
                 
-                  <td>1,288</td>
-                  <td class="value-up">+3.17%</td>
-                  <td>+2.34%</td>
-                  <td class="value-up">+2.04%</td>
-                  <td class="value-up">61.34%</td>
-                  <td>+2.96%</td>
+                  <td>1,291</td>
+                  <td class="value-up">+3.14%</td>
+                  <td>+2.25%</td>
+                  <td class="value-up">+2.02%</td>
+                  <td class="value-up">61.12%</td>
+                  <td>+2.93%</td>
                 
-                  <td>1,288</td>
-                  <td class="value-up">+5.99%</td>
-                  <td>+5.07%</td>
-                  <td class="value-up">+3.30%</td>
+                  <td>1,291</td>
+                  <td class="value-up">+5.96%</td>
+                  <td>+5.06%</td>
+                  <td class="value-up">+3.26%</td>
                   <td class="value-up">66.46%</td>
-                  <td>+5.96%</td>
+                  <td>+5.93%</td>
                 
               </tr>
             
@@ -1458,7 +1655,7 @@
       <div class="section-heading">
         <div class="kicker">RANK BUCKET PERFORMANCE</div>
         <h2>Does rank order have signal?</h2>
-        <p>Rank 1-5 and 1-10 must show short-term edge, especially around the 5D primary horizon.</p>
+        <p>Rank 1-20 is the main Daily board. Rank 21-50 is retained as a reference / discovery shelf, not the primary decision zone.</p>
       </div>
 
       <div class="group-table-wrap">
@@ -1502,30 +1699,30 @@
                   <span>1,215 obs</span>
                 </td>
                 
-                  <td class="value-up">+0.19%</td>
-                  <td>+0.03%</td>
-                  <td class="value-up">+0.02%</td>
-                  <td class="value-flat">50.29%</td>
+                  <td class="value-up">+0.21%</td>
+                  <td>+0.06%</td>
+                  <td class="value-up">+0.05%</td>
+                  <td class="value-flat">50.86%</td>
                 
-                  <td class="value-up">+0.97%</td>
+                  <td class="value-up">+0.96%</td>
                   <td>+0.48%</td>
-                  <td class="value-up">+0.50%</td>
-                  <td class="value-flat">53.83%</td>
+                  <td class="value-up">+0.49%</td>
+                  <td class="value-flat">53.66%</td>
                 
-                  <td class="value-up">+1.84%</td>
-                  <td>+1.10%</td>
-                  <td class="value-up">+1.07%</td>
-                  <td class="value-up">56.54%</td>
+                  <td class="value-up">+1.90%</td>
+                  <td>+1.15%</td>
+                  <td class="value-up">+1.14%</td>
+                  <td class="value-up">56.63%</td>
                 
-                  <td class="value-up">+3.44%</td>
-                  <td>+2.57%</td>
-                  <td class="value-up">+1.97%</td>
-                  <td class="value-up">60.74%</td>
+                  <td class="value-up">+3.53%</td>
+                  <td>+2.78%</td>
+                  <td class="value-up">+2.06%</td>
+                  <td class="value-up">61.48%</td>
                 
-                  <td class="value-up">+7.31%</td>
-                  <td>+5.62%</td>
-                  <td class="value-up">+4.31%</td>
-                  <td class="value-up">66.83%</td>
+                  <td class="value-up">+7.45%</td>
+                  <td>+5.99%</td>
+                  <td class="value-up">+4.47%</td>
+                  <td class="value-up">67.57%</td>
                 
               </tr>
             
@@ -1535,96 +1732,96 @@
                   <span>2,430 obs</span>
                 </td>
                 
-                  <td class="value-up">+0.31%</td>
+                  <td class="value-up">+0.32%</td>
                   <td>+0.12%</td>
-                  <td class="value-up">+0.14%</td>
-                  <td class="value-flat">51.65%</td>
+                  <td class="value-up">+0.15%</td>
+                  <td class="value-flat">51.69%</td>
                 
-                  <td class="value-up">+1.02%</td>
-                  <td>+0.54%</td>
-                  <td class="value-up">+0.54%</td>
-                  <td class="value-flat">54.49%</td>
+                  <td class="value-up">+1.03%</td>
+                  <td>+0.57%</td>
+                  <td class="value-up">+0.55%</td>
+                  <td class="value-flat">54.57%</td>
                 
                   <td class="value-up">+1.79%</td>
-                  <td>+1.07%</td>
+                  <td>+1.04%</td>
                   <td class="value-up">+1.01%</td>
-                  <td class="value-up">57.04%</td>
+                  <td class="value-up">57.00%</td>
                 
-                  <td class="value-up">+3.47%</td>
+                  <td class="value-up">+3.48%</td>
                   <td>+2.62%</td>
-                  <td class="value-up">+2.00%</td>
+                  <td class="value-up">+2.01%</td>
                   <td class="value-up">62.10%</td>
                 
-                  <td class="value-up">+6.94%</td>
+                  <td class="value-up">+6.98%</td>
                   <td>+5.38%</td>
-                  <td class="value-up">+4.05%</td>
-                  <td class="value-up">67.16%</td>
+                  <td class="value-up">+4.09%</td>
+                  <td class="value-up">67.24%</td>
                 
               </tr>
             
               <tr>
                 <td>
-                  <strong>Rank 11-20</strong>
+                  <strong>Main Rank 11-20</strong>
                   <span>2,430 obs</span>
                 </td>
                 
-                  <td class="value-up">+0.33%</td>
-                  <td>+0.10%</td>
-                  <td class="value-up">+0.16%</td>
-                  <td class="value-flat">51.56%</td>
+                  <td class="value-up">+0.31%</td>
+                  <td>+0.09%</td>
+                  <td class="value-up">+0.15%</td>
+                  <td class="value-flat">51.48%</td>
                 
-                  <td class="value-up">+0.97%</td>
-                  <td>+0.45%</td>
-                  <td class="value-up">+0.48%</td>
+                  <td class="value-up">+0.96%</td>
+                  <td>+0.44%</td>
+                  <td class="value-up">+0.47%</td>
                   <td class="value-flat">53.83%</td>
                 
-                  <td class="value-up">+1.50%</td>
-                  <td>+0.97%</td>
-                  <td class="value-up">+0.71%</td>
-                  <td class="value-up">56.09%</td>
+                  <td class="value-up">+1.49%</td>
+                  <td>+0.99%</td>
+                  <td class="value-up">+0.70%</td>
+                  <td class="value-up">56.17%</td>
                 
-                  <td class="value-up">+3.12%</td>
-                  <td>+2.14%</td>
-                  <td class="value-up">+1.63%</td>
+                  <td class="value-up">+3.10%</td>
+                  <td>+2.13%</td>
+                  <td class="value-up">+1.62%</td>
                   <td class="value-up">60.33%</td>
                 
-                  <td class="value-up">+5.89%</td>
-                  <td>+4.35%</td>
-                  <td class="value-up">+2.96%</td>
+                  <td class="value-up">+5.87%</td>
+                  <td>+4.24%</td>
+                  <td class="value-up">+2.93%</td>
                   <td class="value-up">64.28%</td>
                 
               </tr>
             
               <tr>
                 <td>
-                  <strong>Rank 21-50</strong>
+                  <strong>Reference Rank 21-50</strong>
                   <span>3,888 obs</span>
                 </td>
                 
-                  <td class="value-up">+0.14%</td>
+                  <td class="value-up">+0.15%</td>
                   <td>-0.05%</td>
-                  <td class="value-down">-0.03%</td>
-                  <td class="value-flat">48.30%</td>
+                  <td class="value-down">-0.02%</td>
+                  <td class="value-flat">48.33%</td>
                 
-                  <td class="value-up">+0.45%</td>
+                  <td class="value-up">+0.44%</td>
                   <td>0.00%</td>
-                  <td class="value-down">-0.07%</td>
-                  <td class="value-flat">49.79%</td>
-                
-                  <td class="value-up">+0.70%</td>
-                  <td>0.00%</td>
-                  <td class="value-down">-0.14%</td>
-                  <td class="value-flat">49.69%</td>
-                
-                  <td class="value-up">+1.49%</td>
-                  <td>-0.12%</td>
                   <td class="value-down">-0.08%</td>
+                  <td class="value-flat">49.74%</td>
+                
+                  <td class="value-up">+0.71%</td>
+                  <td>0.00%</td>
+                  <td class="value-down">-0.13%</td>
+                  <td class="value-flat">49.67%</td>
+                
+                  <td class="value-up">+1.50%</td>
+                  <td>-0.13%</td>
+                  <td class="value-down">-0.07%</td>
                   <td class="value-flat">49.05%</td>
                 
-                  <td class="value-up">+3.00%</td>
-                  <td>+0.10%</td>
-                  <td class="value-down">-0.17%</td>
-                  <td class="value-flat">50.13%</td>
+                  <td class="value-up">+2.99%</td>
+                  <td>+0.06%</td>
+                  <td class="value-down">-0.18%</td>
+                  <td class="value-flat">50.08%</td>
                 
               </tr>
             
@@ -1689,7 +1886,7 @@
                 <td class="value-up">+4.46%</td>
                 <td>+3.86%</td>
                 <td class="value-up">+3.71%</td>
-                <td>506.93</td>
+                <td>515.05</td>
               </tr>
             
               <tr>
@@ -1702,7 +1899,7 @@
                 <td class="value-up">+3.64%</td>
                 <td>-1.91%</td>
                 <td class="value-up">+2.91%</td>
-                <td>260.19</td>
+                <td>257.32</td>
               </tr>
             
               <tr>
@@ -1715,7 +1912,7 @@
                 <td class="value-up">+3.54%</td>
                 <td>+2.49%</td>
                 <td class="value-up">+2.88%</td>
-                <td>470.81</td>
+                <td>478.31</td>
               </tr>
             
               <tr>
@@ -1728,7 +1925,7 @@
                 <td class="value-up">+3.40%</td>
                 <td>+2.73%</td>
                 <td class="value-up">+2.75%</td>
-                <td>503.07</td>
+                <td>505.79</td>
               </tr>
             
               <tr>
@@ -1741,7 +1938,7 @@
                 <td class="value-up">+2.87%</td>
                 <td>+2.16%</td>
                 <td class="value-up">+1.97%</td>
-                <td>439.44</td>
+                <td>444.59</td>
               </tr>
             
               <tr>
@@ -1754,7 +1951,7 @@
                 <td class="value-up">+2.40%</td>
                 <td>+2.01%</td>
                 <td class="value-up">+1.63%</td>
-                <td>429.32</td>
+                <td>433.31</td>
               </tr>
             
               <tr>
@@ -1767,7 +1964,7 @@
                 <td class="value-up">+2.32%</td>
                 <td>+1.60%</td>
                 <td class="value-up">+1.60%</td>
-                <td>446.70</td>
+                <td>451.66</td>
               </tr>
             
               <tr>
@@ -1780,7 +1977,7 @@
                 <td class="value-up">+1.99%</td>
                 <td>+0.26%</td>
                 <td class="value-up">+1.10%</td>
-                <td>222.02</td>
+                <td>219.03</td>
               </tr>
             
               <tr>
@@ -1793,7 +1990,7 @@
                 <td class="value-up">+1.85%</td>
                 <td>+0.78%</td>
                 <td class="value-up">+1.09%</td>
-                <td>456.38</td>
+                <td>460.55</td>
               </tr>
             
               <tr>
@@ -1806,7 +2003,7 @@
                 <td class="value-up">+1.80%</td>
                 <td>+1.41%</td>
                 <td class="value-up">+1.05%</td>
-                <td>479.98</td>
+                <td>482.79</td>
               </tr>
             
               <tr>
@@ -1819,7 +2016,7 @@
                 <td class="value-up">+1.80%</td>
                 <td>+1.41%</td>
                 <td class="value-up">+1.08%</td>
-                <td>460.67</td>
+                <td>463.46</td>
               </tr>
             
               <tr>
@@ -1832,7 +2029,7 @@
                 <td class="value-up">+1.78%</td>
                 <td>+1.27%</td>
                 <td class="value-up">+0.95%</td>
-                <td>422.63</td>
+                <td>426.69</td>
               </tr>
             
               <tr>
@@ -1845,7 +2042,7 @@
                 <td class="value-up">+1.76%</td>
                 <td>+1.47%</td>
                 <td class="value-up">+0.97%</td>
-                <td>458.77</td>
+                <td>459.41</td>
               </tr>
             
               <tr>
@@ -1858,7 +2055,7 @@
                 <td class="value-up">+1.42%</td>
                 <td>+1.08%</td>
                 <td class="value-up">+0.69%</td>
-                <td>415.27</td>
+                <td>415.64</td>
               </tr>
             
               <tr>
@@ -1871,7 +2068,7 @@
                 <td class="value-up">+1.39%</td>
                 <td>+1.10%</td>
                 <td class="value-up">+0.61%</td>
-                <td>468.37</td>
+                <td>470.64</td>
               </tr>
             
           </tbody>
@@ -2089,87 +2286,87 @@
                 <tr>
                   <td>
                     <strong class="triage-trade">Trade</strong>
-                    <span>262 obs</span>
+                    <span>288 obs</span>
                   </td>
 
                   
-                    <td class="value-up">+0.54%</td>
-                    <td class="value-flat">+51.91%</td>
-                    <td class="value-up">+0.39%</td>
+                    <td class="value-up">+0.64%</td>
+                    <td class="value-flat">+54.17%</td>
+                    <td class="value-up">+0.47%</td>
                   
-                    <td class="value-up">+1.38%</td>
-                    <td class="value-up">+56.11%</td>
-                    <td class="value-up">+1.04%</td>
+                    <td class="value-up">+1.51%</td>
+                    <td class="value-up">+56.94%</td>
+                    <td class="value-up">+1.22%</td>
                   
-                    <td class="value-up">+2.14%</td>
-                    <td class="value-flat">+54.58%</td>
-                    <td class="value-up">+1.72%</td>
+                    <td class="value-up">+2.02%</td>
+                    <td class="value-flat">+54.17%</td>
+                    <td class="value-up">+1.66%</td>
                   
-                    <td class="value-up">+3.65%</td>
-                    <td class="value-up">+61.07%</td>
-                    <td class="value-up">+2.68%</td>
+                    <td class="value-up">+3.71%</td>
+                    <td class="value-up">+62.85%</td>
+                    <td class="value-up">+2.85%</td>
                   
-                    <td class="value-up">+6.79%</td>
-                    <td class="value-up">+66.41%</td>
-                    <td class="value-up">+4.25%</td>
+                    <td class="value-up">+7.20%</td>
+                    <td class="value-up">+67.36%</td>
+                    <td class="value-up">+4.52%</td>
                   
                 </tr>
               
                 <tr>
                   <td>
                     <strong class="triage-watch">Watch</strong>
-                    <span>1,311 obs</span>
+                    <span>1,282 obs</span>
                   </td>
 
                   
-                    <td class="value-up">+0.23%</td>
-                    <td class="value-flat">+50.88%</td>
-                    <td class="value-up">+0.13%</td>
+                    <td class="value-up">+0.18%</td>
+                    <td class="value-flat">+50.39%</td>
+                    <td class="value-up">+0.11%</td>
                   
-                    <td class="value-up">+0.80%</td>
-                    <td class="value-flat">+52.17%</td>
-                    <td class="value-up">+0.45%</td>
+                    <td class="value-up">+0.73%</td>
+                    <td class="value-flat">+52.03%</td>
+                    <td class="value-up">+0.39%</td>
                   
-                    <td class="value-up">+1.62%</td>
-                    <td class="value-up">+55.53%</td>
+                    <td class="value-up">+1.63%</td>
+                    <td class="value-up">+55.54%</td>
                     <td class="value-up">+0.95%</td>
                   
                     <td class="value-up">+3.06%</td>
-                    <td class="value-up">+60.95%</td>
-                    <td class="value-up">+1.96%</td>
+                    <td class="value-up">+60.53%</td>
+                    <td class="value-up">+1.93%</td>
                   
-                    <td class="value-up">+6.24%</td>
-                    <td class="value-up">+66.29%</td>
-                    <td class="value-up">+3.59%</td>
+                    <td class="value-up">+6.18%</td>
+                    <td class="value-up">+66.22%</td>
+                    <td class="value-up">+3.50%</td>
                   
                 </tr>
               
                 <tr>
                   <td>
                     <strong class="triage-ignore">Ignore</strong>
-                    <span>7,175 obs</span>
+                    <span>7,178 obs</span>
                   </td>
 
                   
-                    <td class="value-up">+0.23%</td>
-                    <td class="value-flat">+49.94%</td>
+                    <td class="value-up">+0.24%</td>
+                    <td class="value-flat">+49.93%</td>
                     <td class="value-up">+0.05%</td>
                   
                     <td class="value-up">+0.72%</td>
-                    <td class="value-flat">+52.08%</td>
+                    <td class="value-flat">+52.06%</td>
                     <td class="value-up">+0.19%</td>
                   
                     <td class="value-up">+1.12%</td>
-                    <td class="value-flat">+53.10%</td>
+                    <td class="value-flat">+53.12%</td>
                     <td class="value-up">+0.27%</td>
                   
-                    <td class="value-up">+2.35%</td>
+                    <td class="value-up">+2.34%</td>
                     <td class="value-flat">+54.68%</td>
-                    <td class="value-up">+0.73%</td>
+                    <td class="value-up">+0.72%</td>
                   
-                    <td class="value-up">+4.58%</td>
-                    <td class="value-up">+57.14%</td>
-                    <td class="value-up">+1.45%</td>
+                    <td class="value-up">+4.57%</td>
+                    <td class="value-up">+57.12%</td>
+                    <td class="value-up">+1.46%</td>
                   
                 </tr>
               
@@ -2521,145 +2718,145 @@
                 <tr>
                   <td>
                     <strong class="">800+</strong>
-                    <span>118 obs</span>
+                    <span>221 obs</span>
                   </td>
 
                   
-                    <td class="value-up">+0.68%</td>
-                    <td class="value-flat">+50.00%</td>
-                    <td class="value-up">+0.44%</td>
+                    <td class="value-up">+0.71%</td>
+                    <td class="value-flat">+52.49%</td>
+                    <td class="value-up">+0.56%</td>
                   
-                    <td class="value-up">+1.78%</td>
-                    <td class="value-up">+55.93%</td>
-                    <td class="value-up">+1.23%</td>
+                    <td class="value-up">+1.62%</td>
+                    <td class="value-up">+55.66%</td>
+                    <td class="value-up">+1.35%</td>
                   
-                    <td class="value-up">+2.76%</td>
-                    <td class="value-up">+57.63%</td>
-                    <td class="value-up">+1.97%</td>
+                    <td class="value-up">+2.65%</td>
+                    <td class="value-up">+57.47%</td>
+                    <td class="value-up">+2.28%</td>
                   
-                    <td class="value-up">+5.43%</td>
-                    <td class="value-up">+66.10%</td>
-                    <td class="value-up">+4.03%</td>
+                    <td class="value-up">+4.80%</td>
+                    <td class="value-up">+65.16%</td>
+                    <td class="value-up">+3.99%</td>
                   
-                    <td class="value-up">+9.01%</td>
-                    <td class="value-up">+71.19%</td>
-                    <td class="value-up">+5.99%</td>
+                    <td class="value-up">+8.72%</td>
+                    <td class="value-up">+69.68%</td>
+                    <td class="value-up">+6.17%</td>
                   
                 </tr>
               
                 <tr>
                   <td>
                     <strong class="">700-799</strong>
-                    <span>280 obs</span>
+                    <span>227 obs</span>
                   </td>
 
                   
-                    <td class="value-up">+0.29%</td>
-                    <td class="value-flat">+51.79%</td>
-                    <td class="value-up">+0.15%</td>
+                    <td class="value-up">+0.26%</td>
+                    <td class="value-flat">+52.42%</td>
+                    <td class="value-up">+0.10%</td>
                   
-                    <td class="value-up">+0.92%</td>
-                    <td class="value-flat">+53.57%</td>
-                    <td class="value-up">+0.57%</td>
+                    <td class="value-up">+1.20%</td>
+                    <td class="value-up">+57.27%</td>
+                    <td class="value-up">+0.68%</td>
                   
-                    <td class="value-up">+1.60%</td>
-                    <td class="value-flat">+52.14%</td>
-                    <td class="value-up">+1.11%</td>
+                    <td class="value-up">+1.94%</td>
+                    <td class="value-up">+55.07%</td>
+                    <td class="value-up">+1.23%</td>
                   
-                    <td class="value-up">+2.96%</td>
-                    <td class="value-up">+60.00%</td>
-                    <td class="value-up">+2.19%</td>
+                    <td class="value-up">+3.12%</td>
+                    <td class="value-up">+62.56%</td>
+                    <td class="value-up">+2.06%</td>
                   
-                    <td class="value-up">+7.12%</td>
-                    <td class="value-up">+65.36%</td>
-                    <td class="value-up">+4.57%</td>
+                    <td class="value-up">+6.74%</td>
+                    <td class="value-up">+65.20%</td>
+                    <td class="value-up">+3.93%</td>
                   
                 </tr>
               
                 <tr>
                   <td>
                     <strong class="">600-699</strong>
-                    <span>659 obs</span>
+                    <span>634 obs</span>
                   </td>
 
                   
-                    <td class="value-up">+0.29%</td>
-                    <td class="value-flat">+52.20%</td>
-                    <td class="value-up">+0.17%</td>
+                    <td class="value-up">+0.16%</td>
+                    <td class="value-flat">+50.32%</td>
+                    <td class="value-up">+0.04%</td>
                   
-                    <td class="value-up">+0.95%</td>
-                    <td class="value-flat">+52.20%</td>
-                    <td class="value-up">+0.57%</td>
+                    <td class="value-up">+0.86%</td>
+                    <td class="value-flat">+51.26%</td>
+                    <td class="value-up">+0.44%</td>
                   
-                    <td class="value-up">+2.03%</td>
-                    <td class="value-up">+57.06%</td>
-                    <td class="value-up">+1.39%</td>
+                    <td class="value-up">+1.93%</td>
+                    <td class="value-up">+55.84%</td>
+                    <td class="value-up">+1.24%</td>
                   
-                    <td class="value-up">+3.53%</td>
-                    <td class="value-up">+61.61%</td>
-                    <td class="value-up">+2.43%</td>
+                    <td class="value-up">+3.58%</td>
+                    <td class="value-up">+61.04%</td>
+                    <td class="value-up">+2.48%</td>
                   
-                    <td class="value-up">+6.98%</td>
-                    <td class="value-up">+66.62%</td>
-                    <td class="value-up">+4.51%</td>
+                    <td class="value-up">+7.15%</td>
+                    <td class="value-up">+66.56%</td>
+                    <td class="value-up">+4.62%</td>
                   
                 </tr>
               
                 <tr>
                   <td>
                     <strong class="">500-599</strong>
-                    <span>1,033 obs</span>
+                    <span>1,024 obs</span>
                   </td>
 
                   
-                    <td class="value-up">+0.27%</td>
-                    <td class="value-flat">+50.53%</td>
-                    <td class="value-up">+0.20%</td>
+                    <td class="value-up">+0.32%</td>
+                    <td class="value-flat">+51.46%</td>
+                    <td class="value-up">+0.23%</td>
                   
-                    <td class="value-up">+0.76%</td>
-                    <td class="value-flat">+52.76%</td>
-                    <td class="value-up">+0.49%</td>
+                    <td class="value-up">+0.75%</td>
+                    <td class="value-flat">+52.34%</td>
+                    <td class="value-up">+0.45%</td>
                   
-                    <td class="value-up">+1.39%</td>
-                    <td class="value-up">+56.15%</td>
-                    <td class="value-up">+0.72%</td>
+                    <td class="value-up">+1.38%</td>
+                    <td class="value-up">+56.54%</td>
+                    <td class="value-up">+0.69%</td>
                   
-                    <td class="value-up">+3.09%</td>
-                    <td class="value-up">+60.50%</td>
-                    <td class="value-up">+1.88%</td>
+                    <td class="value-up">+3.10%</td>
+                    <td class="value-up">+60.06%</td>
+                    <td class="value-up">+1.85%</td>
                   
-                    <td class="value-up">+6.28%</td>
-                    <td class="value-up">+65.25%</td>
-                    <td class="value-up">+3.67%</td>
+                    <td class="value-up">+6.22%</td>
+                    <td class="value-up">+65.33%</td>
+                    <td class="value-up">+3.61%</td>
                   
                 </tr>
               
                 <tr>
                   <td>
                     <strong class=""><500</strong>
-                    <span>6,658 obs</span>
+                    <span>6,642 obs</span>
                   </td>
 
                   
                     <td class="value-up">+0.22%</td>
-                    <td class="value-flat">+49.80%</td>
+                    <td class="value-flat">+49.76%</td>
                     <td class="value-up">+0.03%</td>
                   
                     <td class="value-up">+0.70%</td>
-                    <td class="value-flat">+52.01%</td>
+                    <td class="value-flat">+52.00%</td>
                     <td class="value-up">+0.15%</td>
                   
+                    <td class="value-up">+1.06%</td>
+                    <td class="value-flat">+52.63%</td>
+                    <td class="value-up">+0.20%</td>
+                  
+                    <td class="value-up">+2.20%</td>
+                    <td class="value-flat">+54.11%</td>
+                    <td class="value-up">+0.54%</td>
+                  
+                    <td class="value-up">+4.29%</td>
+                    <td class="value-up">+56.46%</td>
                     <td class="value-up">+1.08%</td>
-                    <td class="value-flat">+52.73%</td>
-                    <td class="value-up">+0.21%</td>
-                  
-                    <td class="value-up">+2.23%</td>
-                    <td class="value-flat">+54.15%</td>
-                    <td class="value-up">+0.57%</td>
-                  
-                    <td class="value-up">+4.31%</td>
-                    <td class="value-up">+56.52%</td>
-                    <td class="value-up">+1.09%</td>
                   
                 </tr>
               
@@ -2736,7 +2933,7 @@
               
                 <tr>
                   <td>
-                    <strong class="">Liquid</strong>
+                    <strong class="">Tradable</strong>
                     <span>628 obs</span>
                   </td>
 
@@ -2794,29 +2991,58 @@
               
                 <tr>
                   <td>
-                    <strong class="">Very Thin</strong>
-                    <span>1,875 obs</span>
+                    <strong class="">Event Thin</strong>
+                    <span>16 obs</span>
                   </td>
 
                   
-                    <td class="value-up">+0.13%</td>
-                    <td class="value-flat">+48.43%</td>
-                    <td class="value-down">-0.06%</td>
+                    <td class="value-up">+2.04%</td>
+                    <td class="value-up">+56.25%</td>
+                    <td class="value-up">+1.95%</td>
+                  
+                    <td class="value-down">-0.10%</td>
+                    <td class="value-down">+43.75%</td>
+                    <td class="value-up">+0.37%</td>
+                  
+                    <td class="value-down">-0.24%</td>
+                    <td class="value-down">+37.50%</td>
+                    <td class="value-down">-0.09%</td>
+                  
+                    <td class="value-down">-1.26%</td>
+                    <td class="value-down">+37.50%</td>
+                    <td class="value-down">-2.16%</td>
+                  
+                    <td class="value-down">-0.47%</td>
+                    <td class="value-up">+56.25%</td>
+                    <td class="value-down">-2.12%</td>
+                  
+                </tr>
+              
+                <tr>
+                  <td>
+                    <strong class="">Very Thin</strong>
+                    <span>1,859 obs</span>
+                  </td>
+
+                  
+                    <td class="value-up">+0.12%</td>
+                    <td class="value-flat">+48.36%</td>
+                    <td class="value-down">-0.07%</td>
                   
                     <td class="value-up">+0.32%</td>
-                    <td class="value-flat">+49.87%</td>
-                    <td class="value-down">-0.25%</td>
+                    <td class="value-flat">+49.92%</td>
+                    <td class="value-down">-0.26%</td>
                   
-                    <td class="value-up">+0.45%</td>
-                    <td class="value-flat">+49.28%</td>
-                    <td class="value-down">-0.46%</td>
+                    <td class="value-up">+0.46%</td>
+                    <td class="value-flat">+49.38%</td>
+                    <td class="value-down">-0.47%</td>
                   
-                    <td class="value-up">+0.82%</td>
-                    <td class="value-flat">+47.68%</td>
-                    <td class="value-down">-0.90%</td>
+                    <td class="value-up">+0.84%</td>
+                    <td class="value-flat">+47.77%</td>
+                    <td class="value-down">-0.88%</td>
                   
-                    <td class="value-up">+1.31%</td>
-                    <td class="value-flat">+47.04%</td>
+                    <td class="value-up">+1.33%</td>
+                    <td class="value-flat">+46.96%</td>
                     <td class="value-down">-2.00%</td>
                   
                 </tr>
@@ -3172,7 +3398,7 @@
 
             <div class="mini-meta">
               <span>Volume + Compression + Breakout</span>
-              <span>367 pts</span>
+              <span>303 pts</span>
             </div>
           </article>
         
@@ -3192,7 +3418,7 @@
 
             <div class="mini-meta">
               <span>Compression + Breakout</span>
-              <span>265 pts</span>
+              <span>215 pts</span>
             </div>
           </article>
         
@@ -3232,7 +3458,7 @@
 
             <div class="mini-meta">
               <span>Compression + Breakout</span>
-              <span>217 pts</span>
+              <span>167 pts</span>
             </div>
           </article>
         
@@ -3426,7 +3652,7 @@
 
             <div class="mini-meta">
               <span>Volume + Compression + Breakout</span>
-              <span>367 pts</span>
+              <span>303 pts</span>
             </div>
           </article>
         
@@ -3446,7 +3672,7 @@
 
             <div class="mini-meta">
               <span>Compression + Breakout</span>
-              <span>265 pts</span>
+              <span>215 pts</span>
             </div>
           </article>
         
@@ -3486,7 +3712,7 @@
 
             <div class="mini-meta">
               <span>Compression + Breakout</span>
-              <span>217 pts</span>
+              <span>167 pts</span>
             </div>
           </article>
         
@@ -3561,7 +3787,7 @@
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>5256.T</strong></td>
                 <td>Fusic</td>
-                <td>3</td>
+                <td>30</td>
                 <td>Relative Strength</td>
                 <td>0.60</td>
                 <td class="value-down">-3.99%</td>
@@ -3574,22 +3800,6 @@
               <tr>
                 <td>2026-04-13</td>
                 <td>#33</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                <td><strong>5586.T</strong></td>
-                <td>Laboro.AI</td>
-                <td>33</td>
-                <td>Relative Strength</td>
-                <td>0.86</td>
-                <td class="value-down">-1.21%</td>
-                <td class="value-down">-1.57%</td>
-                <td class="value-up">+3.92%</td>
-                <td class="value-up">+2.45%</td>
-                <td>+0.37%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-13</td>
-                <td>#32</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>3652.T</strong></td>
                 <td>Digital Media Professionals</td>
@@ -3605,11 +3815,27 @@
             
               <tr>
                 <td>2026-04-13</td>
+                <td>#32</td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><strong>5586.T</strong></td>
+                <td>Laboro.AI</td>
+                <td>51</td>
+                <td>Relative Strength</td>
+                <td>0.86</td>
+                <td class="value-down">-1.21%</td>
+                <td class="value-down">-1.57%</td>
+                <td class="value-up">+3.92%</td>
+                <td class="value-up">+2.45%</td>
+                <td>+0.37%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-13</td>
                 <td>#31</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>3914.T</strong></td>
                 <td>JIG-SAW</td>
-                <td>73</td>
+                <td>96</td>
                 <td>Relative Strength</td>
                 <td>1.32</td>
                 <td class="value-down">-1.53%</td>
@@ -3639,22 +3865,6 @@
                 <td>2026-04-13</td>
                 <td>#29</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                <td><strong>269A.T</strong></td>
-                <td>Sapeet</td>
-                <td>182</td>
-                <td>Relative Strength</td>
-                <td>1.74</td>
-                <td class="value-up">+2.42%</td>
-                <td class="value-up">+3.43%</td>
-                <td class="value-up">+11.71%</td>
-                <td class="value-up">+10.24%</td>
-                <td>+0.91%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-13</td>
-                <td>#28</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>5132.T</strong></td>
                 <td>pluszero</td>
                 <td>196</td>
@@ -3665,6 +3875,22 @@
                 <td class="value-down">-4.11%</td>
                 <td class="value-down">-5.58%</td>
                 <td>-4.60%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-13</td>
+                <td>#28</td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><strong>269A.T</strong></td>
+                <td>Sapeet</td>
+                <td>205</td>
+                <td>Relative Strength</td>
+                <td>1.74</td>
+                <td class="value-up">+2.42%</td>
+                <td class="value-up">+3.43%</td>
+                <td class="value-up">+11.71%</td>
+                <td class="value-up">+10.24%</td>
+                <td>+0.91%</td>
               </tr>
             
               <tr>
@@ -3689,7 +3915,7 @@
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>5582.T</strong></td>
                 <td>GRID</td>
-                <td>249</td>
+                <td>271</td>
                 <td>Relative Strength</td>
                 <td>0.38</td>
                 <td class="value-up">+0.91%</td>
@@ -3719,22 +3945,6 @@
                 <td>2026-04-13</td>
                 <td>#24</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                <td><strong>5802.T</strong></td>
-                <td>Sumitomo Electric</td>
-                <td>325</td>
-                <td>Relative Strength</td>
-                <td>1.55</td>
-                <td class="value-down">-6.18%</td>
-                <td class="value-up">+4.02%</td>
-                <td class="value-up">+0.50%</td>
-                <td class="value-down">-0.97%</td>
-                <td>-3.78%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-13</td>
-                <td>#23</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>3905.T</strong></td>
                 <td>Data Section</td>
                 <td>327</td>
@@ -3745,6 +3955,22 @@
                 <td class="value-up">+16.65%</td>
                 <td class="value-up">+15.19%</td>
                 <td>+1.25%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-13</td>
+                <td>#23</td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><strong>5802.T</strong></td>
+                <td>Sumitomo Electric</td>
+                <td>348</td>
+                <td>Relative Strength</td>
+                <td>1.55</td>
+                <td class="value-down">-6.18%</td>
+                <td class="value-up">+4.02%</td>
+                <td class="value-up">+0.50%</td>
+                <td class="value-down">-0.97%</td>
+                <td>-3.78%</td>
               </tr>
             
               <tr>
@@ -3783,38 +4009,6 @@
                 <td>2026-04-13</td>
                 <td>#20</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                <td><strong>7741.T</strong></td>
-                <td>HOYA</td>
-                <td>447</td>
-                <td>Relative Strength</td>
-                <td>0.78</td>
-                <td class="value-down">-1.09%</td>
-                <td class="value-up">+4.33%</td>
-                <td class="value-up">+1.63%</td>
-                <td class="value-up">+0.16%</td>
-                <td>-0.60%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-13</td>
-                <td>#19</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                <td><strong>9984.T</strong></td>
-                <td>SoftBank Group</td>
-                <td>451</td>
-                <td>Relative Strength</td>
-                <td>0.65</td>
-                <td class="value-down">-0.37%</td>
-                <td class="value-up">+3.18%</td>
-                <td class="value-up">+26.83%</td>
-                <td class="value-up">+25.36%</td>
-                <td>+3.69%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-13</td>
-                <td>#18</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>3993.T</strong></td>
                 <td>PKSHA Technology</td>
                 <td>453</td>
@@ -3829,11 +4023,43 @@
             
               <tr>
                 <td>2026-04-13</td>
+                <td>#19</td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><strong>7741.T</strong></td>
+                <td>HOYA</td>
+                <td>470</td>
+                <td>Relative Strength</td>
+                <td>0.78</td>
+                <td class="value-down">-1.09%</td>
+                <td class="value-up">+4.33%</td>
+                <td class="value-up">+1.63%</td>
+                <td class="value-up">+0.16%</td>
+                <td>-0.60%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-13</td>
+                <td>#18</td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><strong>9984.T</strong></td>
+                <td>SoftBank Group</td>
+                <td>473</td>
+                <td>Relative Strength</td>
+                <td>0.65</td>
+                <td class="value-down">-0.37%</td>
+                <td class="value-up">+3.18%</td>
+                <td class="value-up">+26.83%</td>
+                <td class="value-up">+25.36%</td>
+                <td>+3.69%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-13</td>
                 <td>#17</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6762.T</strong></td>
                 <td>TDK</td>
-                <td>455</td>
+                <td>485</td>
                 <td>Relative Strength</td>
                 <td>0.86</td>
                 <td class="value-down">-1.90%</td>
@@ -3849,7 +4075,7 @@
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6954.T</strong></td>
                 <td>FANUC</td>
-                <td>477</td>
+                <td>507</td>
                 <td>Relative Strength</td>
                 <td>1.41</td>
                 <td class="value-down">-1.07%</td>
@@ -3862,54 +4088,6 @@
               <tr>
                 <td>2026-04-13</td>
                 <td>#15</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                <td><strong>6857.T</strong></td>
-                <td>Advantest</td>
-                <td>482</td>
-                <td>Relative Strength</td>
-                <td>0.67</td>
-                <td class="value-down">-0.44%</td>
-                <td class="value-up">+13.45%</td>
-                <td class="value-up">+8.92%</td>
-                <td class="value-up">+7.45%</td>
-                <td>+3.94%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-13</td>
-                <td>#14</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                <td><strong>6920.T</strong></td>
-                <td>Lasertec</td>
-                <td>485</td>
-                <td>Breakout</td>
-                <td>0.86</td>
-                <td class="value-down">-0.84%</td>
-                <td class="value-up">+10.06%</td>
-                <td class="value-up">+2.16%</td>
-                <td class="value-up">+0.69%</td>
-                <td>-3.10%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-13</td>
-                <td>#13</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                <td><strong>7012.T</strong></td>
-                <td>Kawasaki Heavy Industries</td>
-                <td>501</td>
-                <td>Relative Strength</td>
-                <td>0.74</td>
-                <td class="value-down">-1.06%</td>
-                <td class="value-up">+8.60%</td>
-                <td class="value-down">-6.43%</td>
-                <td class="value-down">-7.90%</td>
-                <td>-8.49%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-13</td>
-                <td>#12</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6701.T</strong></td>
                 <td>NEC</td>
@@ -3925,23 +4103,39 @@
             
               <tr>
                 <td>2026-04-13</td>
-                <td>#11</td>
+                <td>#14</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                <td><strong>5574.T</strong></td>
-                <td>ABEJA</td>
-                <td>522</td>
+                <td><strong>6857.T</strong></td>
+                <td>Advantest</td>
+                <td>512</td>
                 <td>Relative Strength</td>
-                <td>1.00</td>
-                <td class="value-up">+2.67%</td>
-                <td class="value-up">+5.23%</td>
-                <td class="value-down">-9.68%</td>
-                <td class="value-down">-11.14%</td>
-                <td>-10.39%</td>
+                <td>0.67</td>
+                <td class="value-down">-0.44%</td>
+                <td class="value-up">+13.45%</td>
+                <td class="value-up">+8.92%</td>
+                <td class="value-up">+7.45%</td>
+                <td>+3.94%</td>
               </tr>
             
               <tr>
                 <td>2026-04-13</td>
-                <td>#10</td>
+                <td>#13</td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><strong>6920.T</strong></td>
+                <td>Lasertec</td>
+                <td>514</td>
+                <td>Breakout</td>
+                <td>0.86</td>
+                <td class="value-down">-0.84%</td>
+                <td class="value-up">+10.06%</td>
+                <td class="value-up">+2.16%</td>
+                <td class="value-up">+0.69%</td>
+                <td>-3.10%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-13</td>
+                <td>#12</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>5803.T</strong></td>
                 <td>Fujikura</td>
@@ -3957,11 +4151,43 @@
             
               <tr>
                 <td>2026-04-13</td>
+                <td>#11</td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><strong>7012.T</strong></td>
+                <td>Kawasaki Heavy Industries</td>
+                <td>528</td>
+                <td>Relative Strength</td>
+                <td>0.74</td>
+                <td class="value-down">-1.06%</td>
+                <td class="value-up">+8.60%</td>
+                <td class="value-down">-6.43%</td>
+                <td class="value-down">-7.90%</td>
+                <td>-8.49%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-13</td>
+                <td>#10</td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><strong>5574.T</strong></td>
+                <td>ABEJA</td>
+                <td>546</td>
+                <td>Relative Strength</td>
+                <td>1.00</td>
+                <td class="value-up">+2.67%</td>
+                <td class="value-up">+5.23%</td>
+                <td class="value-down">-9.68%</td>
+                <td class="value-down">-11.14%</td>
+                <td>-10.39%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-13</td>
                 <td>#9</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>8035.T</strong></td>
                 <td>Tokyo Electron</td>
-                <td>528</td>
+                <td>557</td>
                 <td>Relative Strength</td>
                 <td>1.14</td>
                 <td class="value-down">-3.59%</td>
@@ -3977,7 +4203,7 @@
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6501.T</strong></td>
                 <td>Hitachi</td>
-                <td>544</td>
+                <td>566</td>
                 <td>Relative Strength</td>
                 <td>0.99</td>
                 <td class="value-up">+0.79%</td>
@@ -3993,7 +4219,7 @@
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>4425.T</strong></td>
                 <td>Kudan</td>
-                <td>566</td>
+                <td>586</td>
                 <td>Relative Strength</td>
                 <td>0.99</td>
                 <td class="value-up">+3.96%</td>
@@ -4009,7 +4235,7 @@
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>7011.T</strong></td>
                 <td>Mitsubishi Heavy Industries</td>
-                <td>568</td>
+                <td>588</td>
                 <td>Relative Strength</td>
                 <td>0.70</td>
                 <td class="value-up">+0.34%</td>
@@ -4022,10 +4248,10 @@
               <tr>
                 <td>2026-04-13</td>
                 <td>#5</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>6146.T</strong></td>
                 <td>DISCO</td>
-                <td>613</td>
+                <td>650</td>
                 <td>Volume + Compression</td>
                 <td>0.66</td>
                 <td class="value-up">+0.72%</td>
@@ -4039,25 +4265,9 @@
                 <td>2026-04-13</td>
                 <td>#4</td>
                 <td><span class="mini-tag triage-watch">Watch</span></td>
-                <td><strong>135A.T</strong></td>
-                <td>VRAIN Solution</td>
-                <td>652</td>
-                <td>Volume + Compression + Breakout</td>
-                <td>2.32</td>
-                <td class="value-up">+4.35%</td>
-                <td class="value-up">+8.85%</td>
-                <td class="value-up">+27.83%</td>
-                <td class="value-up">+26.36%</td>
-                <td>+0.68%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-13</td>
-                <td>#3</td>
-                <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>6503.T</strong></td>
                 <td>Mitsubishi Electric</td>
-                <td>657</td>
+                <td>685</td>
                 <td>Volume</td>
                 <td>0.72</td>
                 <td class="value-up">+0.02%</td>
@@ -4069,11 +4279,27 @@
             
               <tr>
                 <td>2026-04-13</td>
+                <td>#3</td>
+                <td><span class="mini-tag triage-watch">Watch</span></td>
+                <td><strong>135A.T</strong></td>
+                <td>VRAIN Solution</td>
+                <td>697</td>
+                <td>Volume + Compression + Breakout</td>
+                <td>2.32</td>
+                <td class="value-up">+4.35%</td>
+                <td class="value-up">+8.85%</td>
+                <td class="value-up">+27.83%</td>
+                <td class="value-up">+26.36%</td>
+                <td>+0.68%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-13</td>
                 <td>#2</td>
                 <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>6981.T</strong></td>
                 <td>Murata Manufacturing</td>
-                <td>751</td>
+                <td>723</td>
                 <td>Volume + Breakout</td>
                 <td>0.96</td>
                 <td class="value-up">+0.58%</td>
@@ -4089,7 +4315,7 @@
                 <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>6861.T</strong></td>
                 <td>Keyence</td>
-                <td>817</td>
+                <td>862</td>
                 <td>Volume + Compression + Breakout</td>
                 <td>1.51</td>
                 <td class="value-up">+1.73%</td>
@@ -4167,25 +4393,9 @@
                 <td>2026-04-10</td>
                 <td>#32</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                <td><strong>4382.T</strong></td>
-                <td>HEROZ</td>
-                <td>0</td>
-                <td>Relative Strength</td>
-                <td>0.47</td>
-                <td class="value-down">-0.82%</td>
-                <td class="value-down">-0.58%</td>
-                <td class="value-up">+3.41%</td>
-                <td class="value-up">+2.76%</td>
-                <td>0.00%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-10</td>
-                <td>#31</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>3652.T</strong></td>
                 <td>Digital Media Professionals</td>
-                <td>38</td>
+                <td>3</td>
                 <td>Relative Strength</td>
                 <td>3.47</td>
                 <td class="value-up">+1.48%</td>
@@ -4197,11 +4407,27 @@
             
               <tr>
                 <td>2026-04-10</td>
+                <td>#31</td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><strong>4382.T</strong></td>
+                <td>HEROZ</td>
+                <td>18</td>
+                <td>Relative Strength</td>
+                <td>0.47</td>
+                <td class="value-down">-0.82%</td>
+                <td class="value-down">-0.58%</td>
+                <td class="value-up">+3.41%</td>
+                <td class="value-up">+2.76%</td>
+                <td>0.00%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-10</td>
                 <td>#30</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>5582.T</strong></td>
                 <td>GRID</td>
-                <td>186</td>
+                <td>209</td>
                 <td>Relative Strength</td>
                 <td>0.56</td>
                 <td class="value-up">+0.21%</td>
@@ -4214,22 +4440,6 @@
               <tr>
                 <td>2026-04-10</td>
                 <td>#29</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                <td><strong>5132.T</strong></td>
-                <td>pluszero</td>
-                <td>216</td>
-                <td>Relative Strength</td>
-                <td>0.61</td>
-                <td class="value-down">-2.45%</td>
-                <td class="value-up">+3.34%</td>
-                <td class="value-down">-2.23%</td>
-                <td class="value-down">-2.89%</td>
-                <td>-3.83%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-10</td>
-                <td>#28</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6701.T</strong></td>
                 <td>NEC</td>
@@ -4245,7 +4455,7 @@
             
               <tr>
                 <td>2026-04-10</td>
-                <td>#27</td>
+                <td>#28</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>269A.T</strong></td>
                 <td>Sapeet</td>
@@ -4257,6 +4467,22 @@
                 <td class="value-up">+12.27%</td>
                 <td class="value-up">+11.62%</td>
                 <td>+0.19%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-10</td>
+                <td>#27</td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><strong>5132.T</strong></td>
+                <td>pluszero</td>
+                <td>238</td>
+                <td>Relative Strength</td>
+                <td>0.61</td>
+                <td class="value-down">-2.45%</td>
+                <td class="value-up">+3.34%</td>
+                <td class="value-down">-2.23%</td>
+                <td class="value-down">-2.89%</td>
+                <td>-3.83%</td>
               </tr>
             
               <tr>
@@ -4279,25 +4505,9 @@
                 <td>2026-04-10</td>
                 <td>#25</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                <td><strong>5574.T</strong></td>
-                <td>ABEJA</td>
-                <td>280</td>
-                <td>Relative Strength</td>
-                <td>0.74</td>
-                <td class="value-down">-2.28%</td>
-                <td class="value-up">+2.85%</td>
-                <td class="value-down">-5.60%</td>
-                <td class="value-down">-6.26%</td>
-                <td>-8.00%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-10</td>
-                <td>#24</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>5256.T</strong></td>
                 <td>Fusic</td>
-                <td>325</td>
+                <td>291</td>
                 <td>Volume</td>
                 <td>2.12</td>
                 <td class="value-up">+9.20%</td>
@@ -4305,6 +4515,22 @@
                 <td class="value-down">-0.28%</td>
                 <td class="value-down">-0.94%</td>
                 <td>-6.39%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-10</td>
+                <td>#24</td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><strong>5574.T</strong></td>
+                <td>ABEJA</td>
+                <td>302</td>
+                <td>Relative Strength</td>
+                <td>0.74</td>
+                <td class="value-down">-2.28%</td>
+                <td class="value-up">+2.85%</td>
+                <td class="value-down">-5.60%</td>
+                <td class="value-down">-6.26%</td>
+                <td>-8.00%</td>
               </tr>
             
               <tr>
@@ -4329,7 +4555,7 @@
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>3993.T</strong></td>
                 <td>PKSHA Technology</td>
-                <td>342</td>
+                <td>362</td>
                 <td>Relative Strength</td>
                 <td>0.92</td>
                 <td class="value-down">-1.03%</td>
@@ -4345,7 +4571,7 @@
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>7011.T</strong></td>
                 <td>Mitsubishi Heavy Industries</td>
-                <td>358</td>
+                <td>376</td>
                 <td>Relative Strength</td>
                 <td>0.76</td>
                 <td class="value-down">-0.75%</td>
@@ -4359,25 +4585,9 @@
                 <td>2026-04-10</td>
                 <td>#20</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                <td><strong>3914.T</strong></td>
-                <td>JIG-SAW</td>
-                <td>379</td>
-                <td>Breakout</td>
-                <td>1.04</td>
-                <td class="value-up">+1.67%</td>
-                <td class="value-up">+8.85%</td>
-                <td class="value-down">-5.61%</td>
-                <td class="value-down">-6.27%</td>
-                <td>-7.40%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-10</td>
-                <td>#19</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6758.T</strong></td>
                 <td>Sony Group</td>
-                <td>379</td>
+                <td>398</td>
                 <td>Relative Strength</td>
                 <td>0.99</td>
                 <td class="value-down">-1.48%</td>
@@ -4385,6 +4595,22 @@
                 <td class="value-up">+2.11%</td>
                 <td class="value-up">+1.45%</td>
                 <td>-2.83%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-10</td>
+                <td>#19</td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><strong>3914.T</strong></td>
+                <td>JIG-SAW</td>
+                <td>406</td>
+                <td>Breakout</td>
+                <td>1.04</td>
+                <td class="value-up">+1.67%</td>
+                <td class="value-up">+8.85%</td>
+                <td class="value-down">-5.61%</td>
+                <td class="value-down">-6.27%</td>
+                <td>-7.40%</td>
               </tr>
             
               <tr>
@@ -4409,7 +4635,7 @@
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6501.T</strong></td>
                 <td>Hitachi</td>
-                <td>416</td>
+                <td>436</td>
                 <td>Relative Strength</td>
                 <td>0.95</td>
                 <td class="value-down">-0.68%</td>
@@ -4425,7 +4651,7 @@
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>4425.T</strong></td>
                 <td>Kudan</td>
-                <td>454</td>
+                <td>474</td>
                 <td>Relative Strength</td>
                 <td>1.12</td>
                 <td class="value-down">-3.85%</td>
@@ -4441,7 +4667,7 @@
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>135A.T</strong></td>
                 <td>VRAIN Solution</td>
-                <td>519</td>
+                <td>545</td>
                 <td>Relative Strength</td>
                 <td>0.74</td>
                 <td class="value-up">+1.14%</td>
@@ -4457,7 +4683,7 @@
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>9984.T</strong></td>
                 <td>SoftBank Group</td>
-                <td>550</td>
+                <td>573</td>
                 <td>Volume</td>
                 <td>1.01</td>
                 <td class="value-up">+0.08%</td>
@@ -4473,7 +4699,7 @@
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>6857.T</strong></td>
                 <td>Advantest</td>
-                <td>575</td>
+                <td>605</td>
                 <td>Relative Strength</td>
                 <td>1.11</td>
                 <td class="value-up">+0.77%</td>
@@ -4486,10 +4712,10 @@
               <tr>
                 <td>2026-04-10</td>
                 <td>#12</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>6146.T</strong></td>
                 <td>DISCO</td>
-                <td>600</td>
+                <td>621</td>
                 <td>Volume</td>
                 <td>0.93</td>
                 <td class="value-up">+3.54%</td>
@@ -4503,25 +4729,9 @@
                 <td>2026-04-10</td>
                 <td>#11</td>
                 <td><span class="mini-tag triage-watch">Watch</span></td>
-                <td><strong>5803.T</strong></td>
-                <td>Fujikura</td>
-                <td>646</td>
-                <td>Volume + Compression + Breakout</td>
-                <td>1.34</td>
-                <td class="value-up">+11.97%</td>
-                <td class="value-up">+21.97%</td>
-                <td class="value-up">+2.34%</td>
-                <td class="value-up">+1.69%</td>
-                <td>-1.42%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-10</td>
-                <td>#10</td>
-                <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>5802.T</strong></td>
                 <td>Sumitomo Electric</td>
-                <td>669</td>
+                <td>653</td>
                 <td>Volume + Breakout</td>
                 <td>1.20</td>
                 <td class="value-up">+1.63%</td>
@@ -4533,11 +4743,27 @@
             
               <tr>
                 <td>2026-04-10</td>
+                <td>#10</td>
+                <td><span class="mini-tag triage-watch">Watch</span></td>
+                <td><strong>5803.T</strong></td>
+                <td>Fujikura</td>
+                <td>691</td>
+                <td>Volume + Compression + Breakout</td>
+                <td>1.34</td>
+                <td class="value-up">+11.97%</td>
+                <td class="value-up">+21.97%</td>
+                <td class="value-up">+2.34%</td>
+                <td class="value-up">+1.69%</td>
+                <td>-1.42%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-10</td>
                 <td>#9</td>
                 <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>6954.T</strong></td>
                 <td>FANUC</td>
-                <td>685</td>
+                <td>715</td>
                 <td>Volume</td>
                 <td>1.66</td>
                 <td class="value-up">+6.01%</td>
@@ -4553,7 +4779,7 @@
                 <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>7012.T</strong></td>
                 <td>Kawasaki Heavy Industries</td>
-                <td>689</td>
+                <td>731</td>
                 <td>Compression</td>
                 <td>0.83</td>
                 <td class="value-up">+1.93%</td>
@@ -4567,25 +4793,9 @@
                 <td>2026-04-10</td>
                 <td>#7</td>
                 <td><span class="mini-tag triage-watch">Watch</span></td>
-                <td><strong>7741.T</strong></td>
-                <td>HOYA</td>
-                <td>710</td>
-                <td>Volume + Compression + Breakout</td>
-                <td>1.14</td>
-                <td class="value-up">+1.74%</td>
-                <td class="value-up">+6.94%</td>
-                <td class="value-down">-1.68%</td>
-                <td class="value-down">-2.33%</td>
-                <td>-1.78%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-10</td>
-                <td>#6</td>
-                <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>6981.T</strong></td>
                 <td>Murata Manufacturing</td>
-                <td>773</td>
+                <td>743</td>
                 <td>Volume + Breakout</td>
                 <td>1.34</td>
                 <td class="value-up">+3.91%</td>
@@ -4597,11 +4807,27 @@
             
               <tr>
                 <td>2026-04-10</td>
+                <td>#6</td>
+                <td><span class="mini-tag triage-watch">Watch</span></td>
+                <td><strong>7741.T</strong></td>
+                <td>HOYA</td>
+                <td>753</td>
+                <td>Volume + Compression + Breakout</td>
+                <td>1.14</td>
+                <td class="value-up">+1.74%</td>
+                <td class="value-up">+6.94%</td>
+                <td class="value-down">-1.68%</td>
+                <td class="value-down">-2.33%</td>
+                <td>-1.78%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-10</td>
                 <td>#5</td>
                 <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>6503.T</strong></td>
                 <td>Mitsubishi Electric</td>
-                <td>776</td>
+                <td>821</td>
                 <td>Volume + Compression + Breakout</td>
                 <td>1.06</td>
                 <td class="value-up">+3.09%</td>
@@ -4617,7 +4843,7 @@
                 <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>6762.T</strong></td>
                 <td>TDK</td>
-                <td>779</td>
+                <td>824</td>
                 <td>Volume + Compression + Breakout</td>
                 <td>1.32</td>
                 <td class="value-up">+4.05%</td>
@@ -4633,7 +4859,7 @@
                 <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>8035.T</strong></td>
                 <td>Tokyo Electron</td>
-                <td>793</td>
+                <td>838</td>
                 <td>Volume + Compression + Breakout</td>
                 <td>1.43</td>
                 <td class="value-up">+4.38%</td>
@@ -4649,7 +4875,7 @@
                 <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>6861.T</strong></td>
                 <td>Keyence</td>
-                <td>808</td>
+                <td>853</td>
                 <td>Volume + Compression + Breakout</td>
                 <td>1.09</td>
                 <td class="value-up">+1.38%</td>
@@ -4665,7 +4891,7 @@
                 <td><span class="mini-tag triage-watch">Watch</span></td>
                 <td><strong>6920.T</strong></td>
                 <td>Lasertec</td>
-                <td>814</td>
+                <td>859</td>
                 <td>Volume + Compression + Breakout</td>
                 <td>1.29</td>
                 <td class="value-up">+7.44%</td>
@@ -4678,6 +4904,22 @@
               <tr>
                 <td>2026-04-09</td>
                 <td>#36</td>
+                <td><span class="mini-tag triage-ignore">Ignore</span></td>
+                <td><strong>5256.T</strong></td>
+                <td>Fusic</td>
+                <td>0</td>
+                <td>Relative Strength</td>
+                <td>1.94</td>
+                <td class="value-down">-6.40%</td>
+                <td class="value-up">+6.33%</td>
+                <td class="value-up">+5.78%</td>
+                <td class="value-up">+3.83%</td>
+                <td>+0.67%</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-09</td>
+                <td>#35</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>4488.T</strong></td>
                 <td>AI inside</td>
@@ -4693,7 +4935,7 @@
             
               <tr>
                 <td>2026-04-09</td>
-                <td>#35</td>
+                <td>#34</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>5572.T</strong></td>
                 <td>Ridge-i</td>
@@ -4709,7 +4951,7 @@
             
               <tr>
                 <td>2026-04-09</td>
-                <td>#34</td>
+                <td>#33</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>3652.T</strong></td>
                 <td>Digital Media Professionals</td>
@@ -4725,11 +4967,11 @@
             
               <tr>
                 <td>2026-04-09</td>
-                <td>#33</td>
+                <td>#32</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>4382.T</strong></td>
                 <td>HEROZ</td>
-                <td>3</td>
+                <td>22</td>
                 <td>Relative Strength</td>
                 <td>0.44</td>
                 <td class="value-down">-3.27%</td>
@@ -4741,27 +4983,11 @@
             
               <tr>
                 <td>2026-04-09</td>
-                <td>#32</td>
-                <td><span class="mini-tag triage-ignore">Ignore</span></td>
-                <td><strong>5256.T</strong></td>
-                <td>Fusic</td>
-                <td>33</td>
-                <td>Relative Strength</td>
-                <td>1.94</td>
-                <td class="value-down">-6.40%</td>
-                <td class="value-up">+6.33%</td>
-                <td class="value-up">+5.78%</td>
-                <td class="value-up">+3.83%</td>
-                <td>+0.67%</td>
-              </tr>
-            
-              <tr>
-                <td>2026-04-09</td>
                 <td>#31</td>
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>5582.T</strong></td>
                 <td>GRID</td>
-                <td>35</td>
+                <td>58</td>
                 <td>Relative Strength</td>
                 <td>0.67</td>
                 <td class="value-down">-1.91%</td>
@@ -4777,7 +5003,7 @@
                 <td><span class="mini-tag triage-ignore">Ignore</span></td>
                 <td><strong>5586.T</strong></td>
                 <td>Laboro.AI</td>
-                <td>125</td>
+                <td>148</td>
                 <td>Relative Strength</td>
                 <td>0.95</td>
                 <td class="value-down">-0.36%</td>
