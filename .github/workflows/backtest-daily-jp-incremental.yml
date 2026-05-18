@@ -7,6 +7,14 @@ on:
         description: "Maximum newly matured evaluation dates to process"
         required: false
         default: "5"
+      refresh_prices:
+        description: "Fetch fresh JP prices before running incremental backtest"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
   schedule:
     # 18:45 JST on weekdays. Uses existing prices-jp/latest.json only.
     - cron: "45 9 * * 1-5"
@@ -63,7 +71,13 @@ jobs:
       - name: Validate scripts
         run: |
           set -euo pipefail
-          python -m compileall scripts/build_daily_jp.py scripts/backtest_daily_jp.py
+          python -m compileall scripts/build_daily_jp.py scripts/backtest_daily_jp.py scripts/fetch_prices_jp.py
+
+      - name: Optionally fetch fresh JP prices
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.refresh_prices == 'true' }}
+        run: |
+          set -euo pipefail
+          python scripts/fetch_prices_jp.py
 
       - name: Verify price JSON exists
         run: |
@@ -119,6 +133,10 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
 
           git add -f site/data/backtest-daily-jp
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.refresh_prices || 'false' }}" = "true" ]; then
+            git add -f site/data/prices-jp
+          fi
 
           if git diff --cached --quiet; then
             echo "No generated backtest data changes to commit."
