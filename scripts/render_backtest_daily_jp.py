@@ -557,6 +557,72 @@ def make_visualization_view(summary: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+
+def _series_path(points: list[dict[str, Any]], value_key: str, width: int = 900, height: int = 220, pad: int = 24) -> dict[str, Any]:
+    vals = [as_float(p.get(value_key)) for p in points]
+    vals = [v for v in vals if v is not None]
+    if not points or not vals:
+        return {"path": "", "zero_y": height / 2, "min": None, "max": None, "last": None, "points": []}
+    vmin = min(min(vals), 0.0)
+    vmax = max(max(vals), 0.0)
+    if abs(vmax - vmin) < 1e-9:
+        vmax += 1.0
+        vmin -= 1.0
+    usable_w = max(1, width - pad * 2)
+    usable_h = max(1, height - pad * 2)
+    n = max(1, len(points) - 1)
+
+    def xy(i: int, v: float) -> tuple[float, float]:
+        x = pad + usable_w * i / n
+        y = pad + (vmax - v) / (vmax - vmin) * usable_h
+        return round(x, 2), round(y, 2)
+
+    coords = []
+    sparse_points = []
+    for i, point in enumerate(points):
+        v = as_float(point.get(value_key))
+        if v is None:
+            continue
+        x, y = xy(i, v)
+        coords.append((x, y))
+        if i == 0 or i == len(points) - 1 or i % max(1, len(points) // 6) == 0:
+            sparse_points.append({"x": x, "y": y, "date": point.get("eval_date"), "value": v})
+    path = " ".join(("M" if i == 0 else "L") + f" {x} {y}" for i, (x, y) in enumerate(coords))
+    _, zero_y = xy(0, 0.0)
+    return {"path": path, "zero_y": round(zero_y, 2), "min": vmin, "max": vmax, "last": vals[-1], "points": sparse_points}
+
+
+def make_daily_series_view(summary: dict[str, Any]) -> dict[str, Any]:
+    raw = summary.get("daily_rank_performance_series") or {}
+    series = raw.get("series") or {}
+    order = ["top_3", "top_5", "top_10"]
+    rows = []
+    for key in order:
+        block = series.get(key) or {}
+        points = block.get("points") or []
+        return_chart = _series_path(points, "running_avg_return_pct")
+        alpha_chart = _series_path(points, "running_avg_alpha_pct")
+        last_point = points[-1] if points else {}
+        rows.append({
+            "key": key,
+            "label": block.get("label") or key,
+            "count": len(points),
+            "rank_limit": block.get("rank_limit"),
+            "last_return": last_point.get("running_avg_return_pct"),
+            "last_alpha": last_point.get("running_avg_alpha_pct"),
+            "last_win": last_point.get("win_rate_pct"),
+            "return_chart": return_chart,
+            "alpha_chart": alpha_chart,
+            "value_class": value_class(last_point.get("running_avg_return_pct")),
+            "alpha_class": value_class(last_point.get("running_avg_alpha_pct")),
+        })
+    return {
+        "primary_horizon": str(raw.get("primary_horizon") or "5d").upper(),
+        "rows": rows,
+        "svg_width": 900,
+        "svg_height": 220,
+    }
+
 def make_model_health_view(summary: dict[str, Any]) -> dict[str, Any]:
     mh = summary.get("model_health") or {}
     checks = mh.get("checks") or {}
@@ -604,9 +670,9 @@ def make_model_health_view(summary: dict[str, Any]) -> dict[str, Any]:
 def make_filter_rows(summary: dict[str, Any], horizons: list[int]) -> list[dict[str, Any]]:
     fp = summary.get("filtered_performance") or {}
     order = [
+        "rank_lte_3",
+        "rank_lte_5",
         "rank_lte_10",
-        "rank_lte_20",
-        "rank_21_50_reference",
         "trade_only",
         "watch_only",
         "trade_plus_watch",
@@ -654,7 +720,7 @@ def make_filter_rows(summary: dict[str, Any], horizons: list[int]) -> list[dict[
 
 def make_rank_bucket_rows(summary: dict[str, Any], horizons: list[int]) -> list[dict[str, Any]]:
     rb = summary.get("rank_bucket_performance") or {}
-    order = ["rank_1_5", "rank_1_10", "rank_11_20", "rank_21_50"]
+    order = ["top_3", "top_5", "top_10"]
     rows: list[dict[str, Any]] = []
     for key in order:
         item = rb.get(key) or {}
@@ -819,6 +885,7 @@ def render() -> None:
         model_health=make_model_health_view(summary),
         benchmark_quality_view=make_benchmark_quality_view(summary),
         visualization_view=make_visualization_view(summary),
+        daily_series_view=make_daily_series_view(summary),
         filtered_rows=make_filter_rows(summary, horizons),
         rank_bucket_rows=make_rank_bucket_rows(summary, horizons),
         outlier_view=make_outlier_view(summary),
