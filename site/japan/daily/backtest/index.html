@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description" content="Backtest dashboard for Neon Tokyo Daily JP Event Score. Performance by triage, archetype, score band, liquidity and market regime."/>
   <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/backtest_daily_jp.css?v=202605151844"/>
+  <link rel="stylesheet" href="/assets/backtest_daily_jp.css?v=202605181003"/>
 </head>
 
 <body>
@@ -63,7 +63,7 @@
         </div>
         <div class="summary-meta">
           <span>8748 signals</span>
-          <span>range</span>
+          <span>incremental</span>
         </div>
       </aside>
     </section>
@@ -71,11 +71,11 @@
     <section class="meta-strip">
       <div>
         <span>Generated</span>
-        <strong>2026-05-15T18:22:04+09:00</strong>
+        <strong>2026-05-15T20:35:59+09:00</strong>
       </div>
       <div>
         <span>Price Data</span>
-        <strong>2026-05-15T13:17:32+09:00</strong>
+        <strong>2026-05-15T19:37:37+09:00</strong>
       </div>
       <div>
         <span>Horizons</span>
@@ -107,6 +107,303 @@
           <em>+7.40% alpha</em>
         </article>
       
+    </section>
+
+
+
+    <section class="section-block health-block">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">MODEL HEALTH</div>
+          <h2>Before trusting the score, test the score.</h2>
+          <p>
+            This is the control panel for whether Daily v2 is actually separating quality:
+            Trade/Watch must beat Ignore, higher score bands should be monotonic, and averages must not be dominated by a single small-cap spike.
+          </p>
+        </div>
+        <div class="status-pill ">Insufficient</div>
+      </div>
+
+      <div class="health-grid">
+        
+          <article class="health-card status-muted">
+            <span>Verdict</span>
+            <strong>Insufficient</strong>
+            <em>Primary horizon: —</em>
+          </article>
+        
+          <article class="health-card status-muted">
+            <span>Trade vs Ignore Alpha</span>
+            <strong>—</strong>
+            <em>Insufficient</em>
+          </article>
+        
+          <article class="health-card status-muted">
+            <span>Watch vs Ignore Alpha</span>
+            <strong>—</strong>
+            <em>Insufficient</em>
+          </article>
+        
+          <article class="health-card status-muted">
+            <span>Score Monotonicity</span>
+            <strong>Insufficient</strong>
+            <em>Higher score bands should beat lower bands</em>
+          </article>
+        
+          <article class="health-card status-muted">
+            <span>Outlier Concentration</span>
+            <strong>Insufficient</strong>
+            <em>Top symbol: — of positive-return pool</em>
+          </article>
+        
+          <article class="health-card status-muted">
+            <span>Avg vs Median Gap</span>
+            <strong>—</strong>
+            <em>Insufficient</em>
+          </article>
+        
+      </div>
+    </section>
+
+    <section class="section-block warning-block">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">OUTLIER ANALYSIS</div>
+          <h2>Average-return distortion check.</h2>
+          <p>
+            Japanese small-cap signals can look excellent because of one explosive name. This section shows whether the return pool is concentrated.
+          </p>
+        </div>
+        <div class="method-chip status-muted">
+          — / 
+        </div>
+      </div>
+
+      <div class="diagnostic-strip">
+        <div>
+          <span>Avg Return</span>
+          <strong class="value-flat">—</strong>
+        </div>
+        <div>
+          <span>Median Return</span>
+          <strong>—</strong>
+        </div>
+        <div>
+          <span>Avg - Median Gap</span>
+          <strong>—</strong>
+        </div>
+        <div>
+          <span>Top Symbol Contribution</span>
+          <strong>—</strong>
+        </div>
+      </div>
+
+      <div class="dual-table-grid">
+        <div class="group-table-wrap">
+          <table class="group-table compact-table">
+            <thead>
+              <tr>
+                <th>Top Return Contributor</th>
+                <th>Triage</th>
+                <th>Score</th>
+                <th>Return</th>
+                <th>Alpha</th>
+                <th>Contribution</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+          </table>
+        </div>
+
+        <div class="group-table-wrap">
+          <table class="group-table compact-table">
+            <thead>
+              <tr>
+                <th>Dominant Symbol</th>
+                <th>Obs</th>
+                <th>Avg</th>
+                <th>Median</th>
+                <th>Max</th>
+                <th>Contribution</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div class="kicker">MODEL DIAGNOSTICS</div>
+        <h2>Does the model beat its own rejects?</h2>
+        <p>Primary quality checks across 1D / 5D / 10D / 20D. This is where a nice-looking dashboard is allowed to fail loudly.</p>
+      </div>
+
+      <div class="group-table-wrap">
+        <table class="group-table">
+          <thead>
+            <tr>
+              <th>Horizon</th>
+              <th>Trade - Ignore Alpha</th>
+              <th>Watch - Ignore Alpha</th>
+              <th>Trade - Ignore Median Alpha</th>
+              <th>Score Avg Alpha Mono</th>
+              <th>Score Median Alpha Mono</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div class="kicker">FILTERED PERFORMANCE</div>
+        <h2>Return quality under stricter cuts.</h2>
+        <p>Rank, triage, score threshold, liquidity and outlier controls. Values are precomputed in JSON; the HTML only renders them.</p>
+      </div>
+
+      <div class="group-table-wrap wide-scroll">
+        <table class="group-table dense-table">
+          <thead>
+            <tr>
+              <th>Filter</th>
+              
+                <th>1D Cnt</th>
+                <th>1D Avg</th>
+                <th>1D Med</th>
+                <th>1D Alpha</th>
+                <th>1D Win</th>
+                <th>1D Winsor</th>
+              
+                <th>5D Cnt</th>
+                <th>5D Avg</th>
+                <th>5D Med</th>
+                <th>5D Alpha</th>
+                <th>5D Win</th>
+                <th>5D Winsor</th>
+              
+                <th>10D Cnt</th>
+                <th>10D Avg</th>
+                <th>10D Med</th>
+                <th>10D Alpha</th>
+                <th>10D Win</th>
+                <th>10D Winsor</th>
+              
+                <th>20D Cnt</th>
+                <th>20D Avg</th>
+                <th>20D Med</th>
+                <th>20D Alpha</th>
+                <th>20D Win</th>
+                <th>20D Winsor</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div class="kicker">RANK BUCKET PERFORMANCE</div>
+        <h2>Does rank order have signal?</h2>
+        <p>Rank 1-5 and 1-10 must not merely look good because the long tail is doing the work.</p>
+      </div>
+
+      <div class="group-table-wrap">
+        <table class="group-table">
+          <thead>
+            <tr>
+              <th>Rank Bucket</th>
+              
+                <th>1D Avg</th>
+                <th>1D Median</th>
+                <th>1D Alpha</th>
+                <th>1D Win</th>
+              
+                <th>5D Avg</th>
+                <th>5D Median</th>
+                <th>5D Alpha</th>
+                <th>5D Win</th>
+              
+                <th>10D Avg</th>
+                <th>10D Median</th>
+                <th>10D Alpha</th>
+                <th>10D Win</th>
+              
+                <th>20D Avg</th>
+                <th>20D Median</th>
+                <th>20D Alpha</th>
+                <th>20D Win</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">REPEATED SYMBOL ANALYSIS</div>
+          <h2>Observation-level vs symbol-level distortion.</h2>
+          <p>Checks whether the same name repeatedly enters the sample and distorts the aggregate statistics.</p>
+        </div>
+        <div class="method-chip">
+          Obs avg — / Symbol avg —
+        </div>
+      </div>
+
+      <div class="diagnostic-strip">
+        <div>
+          <span>Symbols</span>
+          <strong>—</strong>
+        </div>
+        <div>
+          <span>Obs</span>
+          <strong>—</strong>
+        </div>
+        <div>
+          <span>Max Single Symbol Obs Share</span>
+          <strong>—</strong>
+        </div>
+        <div>
+          <span>Obs - Symbol Avg Gap</span>
+          <strong>—</strong>
+        </div>
+      </div>
+
+      <div class="group-table-wrap">
+        <table class="group-table compact-table">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Obs</th>
+              <th>Eval Dates</th>
+              <th>Avg Return</th>
+              <th>Median Return</th>
+              <th>Avg Alpha</th>
+              <th>Avg Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section class="section-block">

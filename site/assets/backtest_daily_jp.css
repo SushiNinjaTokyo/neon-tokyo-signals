@@ -802,3 +802,211 @@ table td strong{
     font-size:34px;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Professional diagnostics additions
+   -------------------------------------------------------------------------- */
+.health-block{
+  border-color:rgba(125,249,255,.24);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(125,249,255,.10),transparent 30%),
+    linear-gradient(180deg,rgba(12,18,34,.88),rgba(7,10,18,.70));
+}
+
+.warning-block{
+  border-color:rgba(255,209,102,.22);
+  background:
+    radial-gradient(circle at 86% 0%,rgba(255,209,102,.10),transparent 34%),
+    linear-gradient(180deg,rgba(12,18,34,.88),rgba(7,10,18,.72));
+}
+
+.status-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:118px;
+  padding:12px 16px;
+  border:1px solid rgba(148,163,184,.18);
+  border-radius:999px;
+  color:#fff;
+  background:rgba(7,10,18,.52);
+  font-size:13px;
+  font-weight:950;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.status-pill.pass,
+.status-pass{
+  border-color:rgba(93,255,177,.38)!important;
+  color:var(--green)!important;
+  background:rgba(93,255,177,.08)!important;
+  text-shadow:0 0 10px rgba(93,255,177,.36);
+}
+
+.status-pill.warning,
+.status-warning{
+  border-color:rgba(255,209,102,.40)!important;
+  color:var(--amber)!important;
+  background:rgba(255,209,102,.08)!important;
+  text-shadow:0 0 10px rgba(255,209,102,.28);
+}
+
+.status-pill.fail,
+.status-fail{
+  border-color:rgba(255,107,138,.42)!important;
+  color:var(--red)!important;
+  background:rgba(255,107,138,.08)!important;
+  text-shadow:0 0 10px rgba(255,107,138,.30);
+}
+
+.status-muted{
+  border-color:rgba(148,163,184,.18)!important;
+  color:var(--muted)!important;
+  background:rgba(148,163,184,.06)!important;
+}
+
+.health-grid{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:12px;
+  margin-top:20px;
+}
+
+.health-card{
+  min-height:132px;
+  padding:17px;
+  border:1px solid rgba(148,163,184,.16);
+  border-radius:20px;
+  background:rgba(7,10,18,.46);
+}
+
+.health-card span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.health-card strong{
+  display:block;
+  margin-top:12px;
+  color:#fff;
+  font-size:24px;
+  line-height:1;
+  font-weight:950;
+  letter-spacing:-.04em;
+}
+
+.health-card em{
+  display:block;
+  margin-top:12px;
+  color:rgba(184,199,222,.78);
+  font-size:12px;
+  line-height:1.45;
+  font-style:normal;
+}
+
+.health-tag{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:78px;
+  padding:6px 9px;
+  border:1px solid rgba(148,163,184,.16);
+  border-radius:999px;
+  background:rgba(7,10,18,.46);
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.diagnostic-strip{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin:18px 0;
+}
+
+.diagnostic-strip div{
+  padding:16px;
+  border:1px solid rgba(148,163,184,.16);
+  border-radius:18px;
+  background:rgba(7,10,18,.44);
+}
+
+.diagnostic-strip span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.diagnostic-strip strong{
+  display:block;
+  margin-top:8px;
+  color:#fff;
+  font-size:20px;
+  font-weight:950;
+  letter-spacing:-.04em;
+}
+
+.dual-table-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:14px;
+  align-items:start;
+}
+
+.compact-table th,
+.compact-table td{
+  padding:10px 11px;
+  font-size:12px;
+}
+
+.dense-table th,
+.dense-table td{
+  padding:9px 10px;
+  font-size:11px;
+  white-space:nowrap;
+}
+
+.wide-scroll{
+  overflow-x:auto;
+}
+
+.dense-table{
+  min-width:1380px;
+}
+
+.group-table td span{
+  display:block;
+  margin-top:4px;
+  color:rgba(142,160,188,.82);
+  font-size:11px;
+  line-height:1.35;
+}
+
+@media (max-width:1100px){
+  .health-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  .dual-table-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width:760px){
+  .health-grid,
+  .diagnostic-strip{
+    grid-template-columns:1fr;
+  }
+  .health-card{
+    min-height:auto;
+  }
+}
