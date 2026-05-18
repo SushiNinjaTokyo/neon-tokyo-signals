@@ -673,6 +673,40 @@ def make_repeated_symbol_view(summary: dict[str, Any]) -> dict[str, Any]:
     return {"raw": rs, "rows": rows[:15]}
 
 
+
+def make_benchmark_quality_view(summary: dict[str, Any]) -> dict[str, Any]:
+    bq = summary.get("benchmark_quality") or {}
+    rows = []
+    by_horizon = bq.get("by_horizon") or {}
+    for hk in sorted(by_horizon.keys(), key=lambda x: int(str(x).replace("d", "")) if str(x).replace("d", "").isdigit() else 999):
+        item = by_horizon.get(hk) or {}
+        invalid_count = as_float(item.get("invalid_count")) or 0
+        rows.append({
+            "horizon": hk.upper(),
+            "valid_count": item.get("valid_count"),
+            "invalid_count": item.get("invalid_count"),
+            "valid_rate_pct": item.get("valid_rate_pct"),
+            "invalid_rate_pct": item.get("invalid_rate_pct"),
+            "min_benchmark_return_pct": item.get("min_benchmark_return_pct"),
+            "max_benchmark_return_pct": item.get("max_benchmark_return_pct"),
+            "status": "Warning" if invalid_count > 0 else "Pass",
+            "status_class": status_class("Warning" if invalid_count > 0 else "Pass"),
+            "invalid_dates": item.get("invalid_dates") or [],
+        })
+    invalid_samples = []
+    for row in rows:
+        for d in row.get("invalid_dates") or []:
+            sample = dict(d)
+            sample["horizon"] = row["horizon"]
+            invalid_samples.append(sample)
+    invalid_samples = invalid_samples[:12]
+    return {
+        "raw": bq,
+        "rows": rows,
+        "invalid_samples": invalid_samples,
+        "status_class": status_class(bq.get("status")),
+    }
+
 def make_diagnostic_rows(summary: dict[str, Any]) -> list[dict[str, Any]]:
     md = summary.get("model_diagnostics") or {}
     checks = md.get("horizon_checks") or {}
@@ -744,6 +778,7 @@ def render() -> None:
         group_sections=group_sections,
         insights=insights,
         model_health=make_model_health_view(summary),
+        benchmark_quality_view=make_benchmark_quality_view(summary),
         filtered_rows=make_filter_rows(summary, horizons),
         rank_bucket_rows=make_rank_bucket_rows(summary, horizons),
         outlier_view=make_outlier_view(summary),
