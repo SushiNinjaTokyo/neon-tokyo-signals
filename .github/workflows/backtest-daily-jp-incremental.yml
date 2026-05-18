@@ -35,8 +35,11 @@ jobs:
       OUT_DIR: site
       PRICES_JSON: site/data/prices-jp/latest.json
       BACKTEST_MODE: incremental
-      BACKTEST_HORIZONS: "1,5,10,20"
+      BACKTEST_HORIZONS: "1,3,5,10,20"
       BACKTEST_MIN_HISTORY_BARS: "80"
+      BACKTEST_PRIMARY_HORIZON: "5"
+      BACKTEST_CORE_HORIZONS: "1,3,5,10"
+      BACKTEST_REFERENCE_HORIZONS: "20"
       BACKTEST_RANK_LIMIT: "50"
       BACKTEST_MAX_EVAL_DATES: ${{ github.event.inputs.max_eval_dates || '5' }}
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
