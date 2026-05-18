@@ -92,7 +92,9 @@ if DAILY_PRIMARY_HORIZON not in HORIZONS:
     HORIZONS = sorted(set(HORIZONS + [DAILY_PRIMARY_HORIZON]))
 
 MIN_HISTORY_BARS = int(os.getenv("BACKTEST_MIN_HISTORY_BARS", "80"))
-RANK_LIMIT = int(os.getenv("BACKTEST_RANK_LIMIT", "50"))
+REQUESTED_RANK_LIMIT = int(os.getenv("BACKTEST_RANK_LIMIT", "10"))
+BACKTEST_MAX_RANK_LIMIT = int(os.getenv("BACKTEST_MAX_RANK_LIMIT", "10"))
+RANK_LIMIT = min(REQUESTED_RANK_LIMIT, BACKTEST_MAX_RANK_LIMIT) if BACKTEST_MAX_RANK_LIMIT > 0 else REQUESTED_RANK_LIMIT
 MAX_EVAL_DATES_INCREMENTAL = int(os.getenv("BACKTEST_MAX_EVAL_DATES", "5"))
 
 # Guard against benchmark data glitches such as split / adjustment / bad bars in 1306.T.
@@ -875,9 +877,9 @@ def filter_rows_by_horizon_excluding_top_pct(
 def build_filtered_performance(rows: list[dict[str, Any]]) -> dict[str, Any]:
     liquidity_ok = {"High Liquidity", "Tradable"}
     filters: list[tuple[str, str, list[dict[str, Any]]]] = [
-        ("rank_lte_10", "Main Rank <= 10", [r for r in rows if (to_float(r.get("rank")) or 999999) <= 10]),
-        ("rank_lte_20", "Main Rank <= 20", [r for r in rows if (to_float(r.get("rank")) or 999999) <= 20]),
-        ("rank_21_50_reference", "Reference Rank 21-50", [r for r in rows if 21 <= (to_float(r.get("rank")) or 999999) <= 50]),
+        ("rank_lte_3", "Top 3", [r for r in rows if (to_float(r.get("rank")) or 999999) <= 3]),
+        ("rank_lte_5", "Top 5", [r for r in rows if (to_float(r.get("rank")) or 999999) <= 5]),
+        ("rank_lte_10", "Top 10", [r for r in rows if (to_float(r.get("rank")) or 999999) <= 10]),
         ("trade_only", "Trade only", [r for r in rows if str(r.get("triage") or "") == "Trade"]),
         ("watch_only", "Watch only", [r for r in rows if str(r.get("triage") or "") == "Watch"]),
         ("trade_plus_watch", "Trade + Watch", [r for r in rows if str(r.get("triage") or "") in {"Trade", "Watch"}]),
@@ -944,10 +946,9 @@ def build_filtered_performance(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 def build_rank_bucket_performance(rows: list[dict[str, Any]]) -> dict[str, Any]:
     buckets = {
-        "rank_1_5": ("Rank 1-5", lambda r: 1 <= (to_float(r.get("rank")) or 999999) <= 5),
-        "rank_1_10": ("Rank 1-10", lambda r: 1 <= (to_float(r.get("rank")) or 999999) <= 10),
-        "rank_11_20": ("Main Rank 11-20", lambda r: 11 <= (to_float(r.get("rank")) or 999999) <= 20),
-        "rank_21_50": ("Reference Rank 21-50", lambda r: 21 <= (to_float(r.get("rank")) or 999999) <= 50),
+        "top_3": ("Top 3", lambda r: 1 <= (to_float(r.get("rank")) or 999999) <= 3),
+        "top_5": ("Top 5", lambda r: 1 <= (to_float(r.get("rank")) or 999999) <= 5),
+        "top_10": ("Top 10", lambda r: 1 <= (to_float(r.get("rank")) or 999999) <= 10),
     }
     return {
         key: {
@@ -955,6 +956,62 @@ def build_rank_bucket_performance(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "stats": build_performance_block([row for row in rows if pred(row)]),
         }
         for key, (label, pred) in buckets.items()
+    }
+
+
+def build_daily_rank_performance_series(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """Daily performance series for Top 3 / Top 5 / Top 10.
+
+    This is precomputed in the backtest layer so the renderer only draws the
+    chart. Returns are equal-weighted by evaluation date and horizon.
+    """
+    primary_key = primary_horizon_key()
+    buckets = {
+        "top_3": ("Top 3", 3),
+        "top_5": ("Top 5", 5),
+        "top_10": ("Top 10", 10),
+    }
+    by_date: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        date = str(row.get("eval_date") or "")
+        if date:
+            by_date[date].append(row)
+
+    series: dict[str, Any] = {}
+    for key, (label, limit) in buckets.items():
+        points = []
+        running_returns: list[float] = []
+        running_alphas: list[float] = []
+        for date in sorted(by_date):
+            subset = [r for r in by_date[date] if (to_float(r.get("rank")) or 999999) <= limit]
+            returns = finite_values([(r.get("future_returns_pct") or {}).get(primary_key) for r in subset])
+            alphas = finite_values([(r.get("alpha_vs_topix_pct") or {}).get(primary_key) for r in subset])
+            if not returns:
+                continue
+            avg_return = float(np.mean(returns))
+            avg_alpha = float(np.mean(alphas)) if alphas else None
+            running_returns.append(avg_return)
+            if avg_alpha is not None:
+                running_alphas.append(avg_alpha)
+            points.append({
+                "eval_date": date,
+                "count": len(returns),
+                "avg_return_pct": safe_round(avg_return, 4),
+                "avg_alpha_pct": safe_round(avg_alpha, 4),
+                "win_rate_pct": safe_round(sum(1 for x in returns if x > 0) / len(returns) * 100.0, 2),
+                "running_avg_return_pct": safe_round(float(np.mean(running_returns)), 4),
+                "running_avg_alpha_pct": safe_round(float(np.mean(running_alphas)), 4) if running_alphas else None,
+            })
+        series[key] = {
+            "label": label,
+            "rank_limit": limit,
+            "primary_horizon": primary_key,
+            "points": points,
+            "stats": build_performance_block([r for r in rows if (to_float(r.get("rank")) or 999999) <= limit]),
+        }
+    return {
+        "primary_horizon": primary_key,
+        "series": series,
     }
 
 
@@ -1297,7 +1354,7 @@ def build_visualization_data(summary: dict[str, Any]) -> dict[str, Any]:
         })
 
     rank_block = summary.get("rank_bucket_performance") or {}
-    rank_order = ["rank_1_5", "rank_1_10", "rank_11_20", "rank_21_50"]
+    rank_order = ["top_3", "top_5", "top_10"]
     rank_rows = []
     for key in rank_order:
         item = rank_block.get(key) or {}
@@ -1445,6 +1502,7 @@ def build_summary(rows: list[dict[str, Any]], date_states: list[dict[str, Any]])
 
     summary["filtered_performance"] = build_filtered_performance(rows)
     summary["rank_bucket_performance"] = build_rank_bucket_performance(rows)
+    summary["daily_rank_performance_series"] = build_daily_rank_performance_series(rows)
     summary["outlier_analysis"] = outlier_analysis
     summary["repeated_symbol_analysis"] = repeated_symbol_analysis
     summary["model_diagnostics"] = build_model_diagnostics(summary, outlier_analysis)
@@ -1583,6 +1641,8 @@ def main() -> int:
         "evaluation_design": summary.get("evaluation_design"),
         "min_history_bars": MIN_HISTORY_BARS,
         "rank_limit": RANK_LIMIT,
+        "requested_rank_limit": REQUESTED_RANK_LIMIT,
+        "max_rank_limit": BACKTEST_MAX_RANK_LIMIT,
         "range": {
             "requested_start": BACKTEST_START or None,
             "requested_end": BACKTEST_END or None,
