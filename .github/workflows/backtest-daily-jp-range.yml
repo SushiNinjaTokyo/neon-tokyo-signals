@@ -23,6 +23,14 @@ on:
         description: "Minimum prior bars required before scoring"
         required: false
         default: "80"
+      refresh_prices:
+        description: "Fetch fresh JP prices before running backtest"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
 
 permissions:
   contents: write
@@ -68,7 +76,13 @@ jobs:
       - name: Validate scripts
         run: |
           set -euo pipefail
-          python -m compileall scripts/build_daily_jp.py scripts/backtest_daily_jp.py
+          python -m compileall scripts/build_daily_jp.py scripts/backtest_daily_jp.py scripts/fetch_prices_jp.py
+
+      - name: Optionally fetch fresh JP prices
+        if: ${{ github.event.inputs.refresh_prices == 'true' }}
+        run: |
+          set -euo pipefail
+          python scripts/fetch_prices_jp.py
 
       - name: Verify price JSON exists
         run: |
@@ -127,6 +141,10 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
 
           git add -f site/data/backtest-daily-jp
+
+          if [ "${{ github.event.inputs.refresh_prices || 'false' }}" = "true" ]; then
+            git add -f site/data/prices-jp
+          fi
 
           if git diff --cached --quiet; then
             echo "No generated backtest data changes to commit."
