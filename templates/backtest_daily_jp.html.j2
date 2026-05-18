@@ -135,6 +135,79 @@
     <section class="section-block warning-block">
       <div class="section-heading split-heading">
         <div>
+          <div class="kicker">BENCHMARK QUALITY</div>
+          <h2>Alpha is only computed when TOPIX data is sane.</h2>
+          <p>
+            Raw stock returns stay in the backtest. If the TOPIX ETF benchmark shows an implausible future return,
+            alpha is set to null for that date × horizon so benchmark data glitches cannot distort Model Health.
+          </p>
+        </div>
+        <div class="method-chip {{ benchmark_quality_view.status_class }}">
+          {{ benchmark_quality_view.raw.status or "—" }} / limit {{ benchmark_quality_view.raw.abs_return_limit_pct | fmt_pct(2, False) }}
+        </div>
+      </div>
+
+      <div class="diagnostic-strip">
+        <div>
+          <span>Benchmark</span>
+          <strong>{{ benchmark_quality_view.raw.benchmark_label or "TOPIX" }} / {{ benchmark_quality_view.raw.benchmark_symbol or "1306.T" }}</strong>
+        </div>
+        <div>
+          <span>Invalid Horizon Obs</span>
+          <strong>{{ benchmark_quality_view.raw.total_invalid_horizon_observations | fmt_int }}</strong>
+        </div>
+        <div>
+          <span>Alpha Rule</span>
+          <strong>Invalid → null</strong>
+        </div>
+        <div>
+          <span>Raw Return</span>
+          <strong>Always kept</strong>
+        </div>
+      </div>
+
+      <div class="group-table-wrap">
+        <table class="group-table compact-table">
+          <thead>
+            <tr>
+              <th>Horizon</th>
+              <th>Status</th>
+              <th>Valid</th>
+              <th>Invalid</th>
+              <th>Valid Rate</th>
+              <th>Min Benchmark Ret</th>
+              <th>Max Benchmark Ret</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in benchmark_quality_view.rows %}
+              <tr>
+                <td><strong>{{ row.horizon }}</strong></td>
+                <td><span class="method-chip {{ row.status_class }}">{{ row.status }}</span></td>
+                <td>{{ row.valid_count | fmt_int }}</td>
+                <td>{{ row.invalid_count | fmt_int }}</td>
+                <td>{{ row.valid_rate_pct | fmt_pct(2, False) }}</td>
+                <td>{{ row.min_benchmark_return_pct | fmt_pct }}</td>
+                <td>{{ row.max_benchmark_return_pct | fmt_pct }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      {% if benchmark_quality_view.invalid_samples %}
+        <div class="warning-note">
+          <strong>Invalid alpha samples:</strong>
+          {% for sample in benchmark_quality_view.invalid_samples %}
+            <span>{{ sample.eval_date }} {{ sample.horizon }} {{ sample.benchmark_return_pct | fmt_pct }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </section>
+
+    <section class="section-block warning-block">
+      <div class="section-heading split-heading">
+        <div>
           <div class="kicker">OUTLIER ANALYSIS</div>
           <h2>Average-return distortion check.</h2>
           <p>
