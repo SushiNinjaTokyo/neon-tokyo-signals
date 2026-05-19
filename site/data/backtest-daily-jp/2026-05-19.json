@@ -1,11 +1,11 @@
 {
   "schema_version": "backtest-daily-jp-v1",
-  "generated_at": "2026-05-19T17:52:24+09:00",
+  "generated_at": "2026-05-19T21:31:22+09:00",
   "market": "JP",
   "timezone": "Asia/Tokyo",
-  "mode": "range",
+  "mode": "incremental",
   "source_prices": "site/data/prices-jp/latest.json",
-  "source_prices_generated_at": "2026-05-19T17:49:21+09:00",
+  "source_prices_generated_at": "2026-05-19T20:33:06+09:00",
   "horizons": [
     1,
     3,
@@ -32,11 +32,11 @@
   "requested_rank_limit": 10,
   "max_rank_limit": 10,
   "range": {
-    "requested_start": "2025-01-01",
-    "requested_end": "2026-05-18",
-    "selected_count": 242,
-    "selected_start": "2025-04-17",
-    "selected_end": "2026-04-15"
+    "requested_start": null,
+    "requested_end": null,
+    "selected_count": 0,
+    "selected_start": null,
+    "selected_end": null
   },
   "methodology": {
     "name": "Neon Tokyo Daily JP Backtest v1",
@@ -52,7 +52,7 @@
     }
   },
   "summary": {
-    "mode": "range",
+    "mode": "incremental",
     "eval_date_count": 242,
     "eval_date_start": "2025-04-17",
     "eval_date_end": "2026-04-15",
