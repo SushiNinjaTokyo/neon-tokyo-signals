@@ -37,7 +37,8 @@
           breakout freshness, base quality, volume accumulation and Japan-specific liquidity controls.
         </p>
         <div class="hero-meta">
-          <span>As of {{ weekly.date or '—' }}</span>
+          <span>Latest trading date: {{ weekly.latest_trading_date or weekly.date or '—' }}</span>
+          <span>Week ending: {{ weekly.week_label or weekly.date or '—' }}{% if weekly.is_partial_week %} · partial week{% endif %}</span>
           <span>Benchmark: {{ weekly.benchmark or 'TOPIX' }}</span>
           <span>News excluded · Price / Volume / Timing</span>
         </div>
