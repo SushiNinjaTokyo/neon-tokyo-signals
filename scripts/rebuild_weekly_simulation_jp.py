@@ -424,6 +424,80 @@ def should_exit(pos: dict[str, Any], current_item: dict[str, Any] | None, curren
     return False, "hold"
 
 
+
+
+def sanitize_benchmark_curve(curve: list[dict[str, Any]], external_capital: float) -> dict[str, Any]:
+    """
+    Detect and neutralize broken TOPIX benchmark observations.
+
+    yfinance can occasionally return split/adjustment artifacts for JP ETFs
+    such as 1306.T. A -90% benchmark move would make strategy alpha and the
+    benchmark equity curve meaningless. Raw strategy accounting is preserved;
+    only benchmark-derived values are suspended.
+    """
+    stats = {
+        "benchmark_symbol": BENCHMARK_SYMBOL,
+        "abs_return_limit_pct": BENCHMARK_RETURN_ABS_LIMIT_PCT,
+        "total_points": len(curve),
+        "valid_points": 0,
+        "invalid_points": 0,
+        "status": "valid",
+        "message": "Benchmark data passed sanity checks.",
+        "invalid_samples": [],
+    }
+
+    if not curve or not external_capital or external_capital <= 0:
+        stats["status"] = "missing"
+        stats["message"] = "Benchmark comparison unavailable because the equity curve or capital base is missing."
+        return stats
+
+    invalid_started = False
+    for point in curve:
+        ret = to_float(point.get("benchmark_return_pct"))
+        eq = to_float(point.get("benchmark_equity"))
+        invalid_reason = None
+
+        if ret is None or eq is None or eq <= 0:
+            invalid_reason = "missing benchmark mark"
+        elif abs(ret) > BENCHMARK_RETURN_ABS_LIMIT_PCT:
+            invalid_reason = f"benchmark return {ret:.2f}% exceeds ±{BENCHMARK_RETURN_ABS_LIMIT_PCT:.1f}% guardrail"
+
+        # Once a split/adjustment artifact appears, later points are usually on
+        # a different price scale. Do not resume the benchmark line after that.
+        if invalid_started and invalid_reason is None:
+            invalid_reason = "benchmark scale invalid after prior anomaly"
+
+        if invalid_reason:
+            invalid_started = True
+            point["benchmark_quality"] = "invalid"
+            point["benchmark_quality_reason"] = invalid_reason
+            point["benchmark_equity_raw"] = point.get("benchmark_equity")
+            point["benchmark_return_pct_raw"] = point.get("benchmark_return_pct")
+            point["benchmark_equity"] = None
+            point["benchmark_return_pct"] = None
+            stats["invalid_points"] += 1
+            if len(stats["invalid_samples"]) < 8:
+                stats["invalid_samples"].append({
+                    "date": point.get("date"),
+                    "benchmark_equity_raw": point.get("benchmark_equity_raw"),
+                    "benchmark_return_pct_raw": point.get("benchmark_return_pct_raw"),
+                    "reason": invalid_reason,
+                })
+        else:
+            point["benchmark_quality"] = "valid"
+            point["benchmark_quality_reason"] = None
+            stats["valid_points"] += 1
+
+    if stats["invalid_points"]:
+        stats["status"] = "invalid"
+        stats["message"] = "TOPIX benchmark comparison suspended because cached benchmark prices failed the sanity check. Strategy return and cash accounting remain valid."
+    elif stats["valid_points"] == 0:
+        stats["status"] = "missing"
+        stats["message"] = "No valid TOPIX benchmark marks were available."
+
+    return stats
+
+
 def max_drawdown(curve: list[dict[str, Any]], key: str = "portfolio_equity") -> float | None:
     peak = None
     worst = 0.0
@@ -501,11 +575,17 @@ def build_simulation() -> dict[str, Any]:
         scored_by_symbol = {str(x.get("symbol")): x for x in scored}
         bench_mark = close_at_or_prior(benchmark_df, eval_date)
         bench_next = next_open_after(benchmark_df, eval_date)
-        if benchmark_external_units is None and bench_mark and bench_mark.get("price"):
-            first_benchmark_price = bench_mark["price"]
-            benchmark_external_units = INITIAL_CAPITAL / first_benchmark_price
+        if bench_next is None or to_float(bench_next.get("price")) is None:
+            # No executable following session. Do not mix a non-executable
+            # weekly decision into the cash-accounted equity curve.
+            continue
+        execution_date = pd.Timestamp(bench_next.get("date")).normalize()
+        if benchmark_external_units is None:
+            first_benchmark_price = to_float(bench_next.get("price"))
+            if first_benchmark_price and first_benchmark_price > 0:
+                benchmark_external_units = INITIAL_CAPITAL / first_benchmark_price
 
-        # Mark current positions at evaluation close.
+        # Mark current positions at evaluation close for exit decisions only.
         market_value = 0.0
         for symbol, pos in list(open_positions.items()):
             df = equity_dfs.get(symbol)
@@ -629,11 +709,15 @@ def build_simulation() -> dict[str, Any]:
             existing.add(symbol)
             new_count += 1
 
-        # Final mark for snapshot after orders. New buys are marked at entry cost.
+        # Final mark for the executable snapshot. Orders were decided at
+        # eval_date close and executed at execution_date open. Therefore the
+        # equity curve must be dated on execution_date, not eval_date. Existing
+        # and newly opened positions are marked at execution_date close where
+        # available; otherwise new positions fall back to entry cost.
         market_value = 0.0
         for symbol, pos in open_positions.items():
             df = equity_dfs.get(symbol)
-            mark = close_at_or_prior(df, eval_date) if df is not None else None
+            mark = close_at_or_prior(df, execution_date) if df is not None else None
             current_price = to_float(mark.get("price")) if mark else None
             if current_price is None:
                 current_price = to_float(pos.get("entry_price"))
@@ -645,10 +729,13 @@ def build_simulation() -> dict[str, Any]:
             market_value += mv
         portfolio_equity = cash + market_value
         benchmark_equity = None
-        if benchmark_external_units is not None and bench_mark and to_float(bench_mark.get("price")):
-            benchmark_equity = benchmark_external_units * to_float(bench_mark.get("price"))
+        bench_exec_mark = close_at_or_prior(benchmark_df, execution_date)
+        if benchmark_external_units is not None and bench_exec_mark and to_float(bench_exec_mark.get("price")):
+            benchmark_equity = benchmark_external_units * to_float(bench_exec_mark.get("price"))
         equity_curve.append({
-            "date": str(eval_date.date()),
+            "date": str(execution_date.date()),
+            "eval_date": str(eval_date.date()),
+            "execution_date": str(execution_date.date()),
             "cash": safe_round(cash, 2),
             "market_value": safe_round(market_value, 2),
             "portfolio_equity": safe_round(portfolio_equity, 2),
@@ -663,6 +750,7 @@ def build_simulation() -> dict[str, Any]:
         })
         snapshots.append({
             "eval_date": str(eval_date.date()),
+            "execution_date": str(execution_date.date()),
             "score_candidates": len(scored),
             "new_entries": new_count,
             "exits": exit_count,
@@ -673,11 +761,15 @@ def build_simulation() -> dict[str, Any]:
         })
         weekly_decisions.append({
             "eval_date": str(eval_date.date()),
+            "execution_date": str(execution_date.date()),
             "top10": [{"rank": x.get("rank"), "symbol": x.get("symbol"), "score_pts": x.get("score_pts"), "signal": normalize_signal(x.get("signal")), "quality": x.get("quality"), "liquidity_band": x.get("liquidity_band")} for x in scored],
         })
 
+    benchmark_quality = sanitize_benchmark_curve(equity_curve, external_capital)
+
     final_equity = to_float(equity_curve[-1].get("portfolio_equity")) if equity_curve else INITIAL_CAPITAL
-    final_benchmark = to_float(equity_curve[-1].get("benchmark_equity")) if equity_curve else INITIAL_CAPITAL
+    final_benchmark = to_float(equity_curve[-1].get("benchmark_equity")) if equity_curve else None
+    benchmark_valid = benchmark_quality.get("status") == "valid" and final_benchmark is not None
     total_mv = sum(to_float(p.get("market_value")) or 0.0 for p in open_positions.values())
     open_rows = sorted(open_positions.values(), key=lambda x: to_float(x.get("market_value")) or 0.0, reverse=True)
     for p in open_rows:
@@ -707,12 +799,14 @@ def build_simulation() -> dict[str, Any]:
         "cash": safe_round(cash, 2),
         "market_value": safe_round(total_mv, 2),
         "portfolio_equity": safe_round(final_equity, 2),
-        "benchmark_equity": safe_round(final_benchmark, 2),
+        "benchmark_equity": safe_round(final_benchmark, 2) if benchmark_valid else None,
         "net_return_pct": safe_round((final_equity / external_capital - 1.0) * 100.0 if external_capital else None, 4),
-        "benchmark_return_pct": safe_round((final_benchmark / external_capital - 1.0) * 100.0 if final_benchmark and external_capital else None, 4),
-        "alpha_pct": safe_round(((final_equity - final_benchmark) / external_capital * 100.0) if final_equity and final_benchmark and external_capital else None, 4),
+        "benchmark_return_pct": safe_round((final_benchmark / external_capital - 1.0) * 100.0 if benchmark_valid and external_capital else None, 4),
+        "alpha_pct": safe_round(((final_equity - final_benchmark) / external_capital * 100.0) if benchmark_valid and final_equity and external_capital else None, 4),
+        "benchmark_status": benchmark_quality.get("status"),
+        "benchmark_message": benchmark_quality.get("message"),
         "max_drawdown_pct": max_drawdown(equity_curve, "portfolio_equity"),
-        "benchmark_max_drawdown_pct": max_drawdown(equity_curve, "benchmark_equity"),
+        "benchmark_max_drawdown_pct": max_drawdown(equity_curve, "benchmark_equity") if benchmark_valid else None,
         "open_positions_count": len(open_rows),
         "closed_trades_count": len(closed_trades),
         "skipped_orders_count": len(skipped_orders),
@@ -726,6 +820,7 @@ def build_simulation() -> dict[str, Any]:
         "timezone": "Asia/Tokyo",
         "source_prices": safe_relative(PRICES_JSON),
         "benchmark": {"symbol": BENCHMARK_SYMBOL, "name": "TOPIX ETF proxy"},
+        "benchmark_quality": benchmark_quality,
         "policy": {
             "initial_capital": INITIAL_CAPITAL,
             "position_pct": POSITION_PCT,
@@ -741,7 +836,7 @@ def build_simulation() -> dict[str, Any]:
             "sell_slippage_pct": SELL_SLIPPAGE_PCT,
             "allow_watch_monitor_entries": ALLOW_WATCH,
             "order_execution": "next trading day open after weekly evaluation date",
-            "mark_to_market": "weekly evaluation close",
+            "mark_to_market": "execution-date close after next-open orders; new positions fall back to entry cost if same-day close is unavailable",
         },
         "summary": summary,
         "equity_curve": equity_curve,
@@ -752,7 +847,7 @@ def build_simulation() -> dict[str, Any]:
         "weekly_decisions": weekly_decisions[-20:],
         "strategy_comparison": [
             {"label": "Weekly Strategy", "equity": safe_round(final_equity, 2), "return_pct": summary.get("net_return_pct"), "max_drawdown_pct": summary.get("max_drawdown_pct")},
-            {"label": "TOPIX Same Initial Capital", "equity": safe_round(final_benchmark, 2), "return_pct": summary.get("benchmark_return_pct"), "max_drawdown_pct": summary.get("benchmark_max_drawdown_pct")},
+            {"label": "TOPIX Same Initial Capital", "equity": safe_round(final_benchmark, 2) if benchmark_valid else None, "return_pct": summary.get("benchmark_return_pct"), "max_drawdown_pct": summary.get("benchmark_max_drawdown_pct"), "status": benchmark_quality.get("status"), "message": benchmark_quality.get("message")},
         ],
         "signal_summary": signal_summary,
         "quality_summary": quality_summary,
@@ -780,13 +875,16 @@ def write_outputs(payload: dict[str, Any]) -> None:
         "files": [{"date": as_of, "path": safe_relative(dated)}],
     })
     if WRITE_LEGACY_COPY:
-        write_json(LEGACY_OUT_SIM_DIR / "latest.json", payload)
+        legacy_latest = LEGACY_OUT_SIM_DIR / "latest.json"
+        legacy_dated = LEGACY_OUT_SIM_DIR / f"{as_of}.json"
+        write_json(legacy_latest, payload)
+        write_json(legacy_dated, payload)
         write_json(LEGACY_OUT_SIM_DIR / "manifest.json", {
             "schema_version": "weekly-jp-simulation-manifest-v1",
-            "latest": safe_relative(LEGACY_OUT_SIM_DIR / "latest.json"),
+            "latest": safe_relative(legacy_latest),
             "latest_date": as_of,
             "generated_at": payload.get("generated_at"),
-            "files": [{"date": as_of, "path": safe_relative(LEGACY_OUT_SIM_DIR / f"{as_of}.json")}],
+            "files": [{"date": as_of, "path": safe_relative(legacy_dated)}],
         })
 
 
