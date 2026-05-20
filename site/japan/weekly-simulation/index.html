@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Weekly JP Simulation | Neon Tokyo Signals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="Japan weekly signal portfolio simulation with cash, open positions, closed trades, benchmark comparison and equity curve."/>
+  <meta name="theme-color" content="#050711"/>
+  <link rel="stylesheet" href="/assets/weekly_simulation_jp.css?v=202605201137"/>
+</head>
+<body>
+<div class="page">
+  <div class="glow glow-a"></div>
+  <div class="glow glow-b"></div>
+  <main class="wrap">
+    <header class="topbar">
+      <a class="brand" href="/">
+        <span class="mark">NTS</span>
+        <span><strong>NEON TOKYO SIGNALS</strong><em>Japan weekly portfolio simulation</em></span>
+      </a>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/japan/weekly/">Weekly</a>
+        <a href="/japan/weekly-backtest/">Backtest</a>
+        <a class="active" href="/japan/weekly-simulation/">Simulation</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <div class="kicker"><span></span> WEEKLY JP SIMULATION V1</div>
+        <h1>Portfolio behavior, not just signal returns.</h1>
+        <p>
+          Weekly signals are converted into a cash-accounted Japan equity portfolio:
+          next-open execution, round-lot sizing, explicit cash, open positions, closed trades,
+          benchmark comparison and drawdown tracking.
+        </p>
+      </div>
+      <aside class="verdict-card up">
+        <span>Strategy Return</span>
+        <strong>+12.9%</strong>
+        <em>Alpha vs TOPIX +100.9%</em>
+      </aside>
+    </section>
+
+    <section class="quick-grid" aria-label="5-second simulation read">
+      <article>
+        <span>Portfolio Equity</span>
+        <strong>¥11.3M</strong>
+        <em>Capital ¥10.0M</em>
+      </article>
+      <article>
+        <span>Cash</span>
+        <strong>¥9.2M</strong>
+        <em>Market value ¥2.1M</em>
+      </article>
+      <article>
+        <span>Open Positions</span>
+        <strong>2</strong>
+        <em>Closed trades 40</em>
+      </article>
+      <article class="down">
+        <span>Max Drawdown</span>
+        <strong>-9.7%</strong>
+        <em>Benchmark -90.6%</em>
+      </article>
+    </section>
+
+    <section class="chart-panel">
+      <div class="section-head">
+        <div><div class="kicker"><span></span> EQUITY CURVE</div><h2>Strategy vs TOPIX, same initial capital.</h2></div>
+        <div class="chip">2025-10-17 → 2026-05-20</div>
+      </div>
+      <div class="legend"><span class="strategy"></span>Strategy <span class="benchmark"></span>TOPIX</div>
+      <svg class="equity-chart" viewBox="0 0 920 260" role="img" aria-label="Weekly simulation equity curve">
+        <defs>
+          <linearGradient id="strategyLine" x1="0" x2="1"><stop offset="0%" stop-color="#7df9ff"/><stop offset="100%" stop-color="#5dffb1"/></linearGradient>
+          <linearGradient id="benchLine" x1="0" x2="1"><stop offset="0%" stop-color="#b779ff"/><stop offset="100%" stop-color="#ff4fd8"/></linearGradient>
+        </defs>
+        <line x1="26" y1="224" x2="894" y2="224" class="axis"/>
+        <line x1="26" y1="36" x2="894" y2="36" class="gridline"/>
+        <line x1="26" y1="130" x2="894" y2="130" class="gridline soft"/>
+        <polyline points="26.0,70.8 54.0,66.2 82.0,61.5 110.0,63.6 138.0,59.8 166.0,63.4 194.0,58.7 222.0,59.8 250.0,55.9 278.0,58.1 306.0,56.2 334.0,56.7 362.0,50.5 390.0,41.7 418.0,43.7 446.0,47.5 474.0,39.7 502.0,32.6 530.0,33.2 558.0,26.0 586.0,38.7 614.0,43.9 642.0,44.9 670.0,42.9 698.0,234.0 726.0,233.5 754.0,233.3 782.0,233.6 810.0,233.6 838.0,232.9 866.0,232.7 894.0,233.2" class="line benchmark"/>
+        <polyline points="26.0,199.5 54.0,179.5 82.0,138.4 110.0,175.9 138.0,174.0 166.0,203.9 194.0,198.3 222.0,192.9 250.0,208.5 278.0,224.0 306.0,223.0 334.0,223.9 362.0,234.0 390.0,206.7 418.0,204.1 446.0,212.9 474.0,165.9 502.0,111.8 530.0,94.2 558.0,72.3 586.0,151.0 614.0,151.6 642.0,145.9 670.0,172.1 698.0,169.1 726.0,147.9 754.0,142.5 782.0,129.0 810.0,116.2 838.0,26.0 866.0,44.9 894.0,72.3" class="line strategy"/>
+      </svg>
+      <div class="curve-footer">
+        <div><span>Strategy</span><strong>¥11.3M</strong></div>
+        <div><span>TOPIX</span><strong>¥1.2M</strong></div>
+        <div><span>Alpha</span><strong class="up">+100.9%</strong></div>
+      </div>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <div class="section-head compact"><div><div class="kicker"><span></span> POLICY</div><h2>Execution rules</h2></div></div>
+        <div class="policy-grid">
+          <div><span>Position size</span><strong>12.5%</strong></div>
+          <div><span>Max positions</span><strong>8</strong></div>
+          <div><span>Entry floor</span><strong>600 pts</strong></div>
+          <div><span>Score exit</span><strong>560 pts</strong></div>
+          <div><span>Stop</span><strong>-8.0%</strong></div>
+          <div><span>Time exit</span><strong>12w</strong></div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="section-head compact"><div><div class="kicker"><span></span> CLOSED TRADE QUALITY</div><h2>Realized trades</h2></div></div>
+        <div class="trade-quality">
+          <div><span>Win rate</span><strong>42.5%</strong></div>
+          <div><span>Avg return</span><strong class="up">+4.1%</strong></div>
+          <div><span>Avg alpha</span><strong class="up">+2.1%</strong></div>
+        </div>
+        <div class="exit-pills">
+          <span>quality exit · 13</span><span>distribution / weak close exit · 9</span><span>close stop -8.0% · 9</span><span>score exit < 560 · 6</span><span>extreme profit / extension harvest · 3</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-head"><div><div class="kicker"><span></span> OPEN POSITIONS</div><h2>Current exposure.</h2></div><div class="chip">2 positions</div></div>
+      <div class="position-grid">
+        
+          <article class="position-card">
+            <div class="rank-row"><strong>6503.T</strong><span>10.0%</span></div>
+            <em>Mitsubishi Electric</em>
+            <div class="position-meta"><span>Monitor</span><span>B Constructive Setup</span><span>Core</span></div>
+            <div class="position-return down">-1.6%</div>
+            <div class="mini-line"><span>Entry 2026-04-13</span><span>¥1.1M</span></div>
+          </article>
+        
+          <article class="position-card">
+            <div class="rank-row"><strong>9984.T</strong><span>8.9%</span></div>
+            <em>SoftBank Group</em>
+            <div class="position-meta"><span>Monitor</span><span>C Early Watch</span><span>Core</span></div>
+            <div class="position-return down">-7.8%</div>
+            <div class="mini-line"><span>Entry 2026-05-18</span><span>¥1.0M</span></div>
+          </article>
+        
+      </div>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <div class="section-head compact"><div><div class="kicker"><span></span> OPEN THEME EXPOSURE</div><h2>Where capital is allocated.</h2></div></div>
+        <div class="bars">
+          
+          <div class="bar-row"><span>Factory Automation and Power Systems</span><i style="width:52.93%"></i><strong>52.9%</strong></div>
+          
+          <div class="bar-row"><span>AI and Technology Investment</span><i style="width:47.07%"></i><strong>47.1%</strong></div>
+          
+        </div>
+      </article>
+      <article class="panel">
+        <div class="section-head compact"><div><div class="kicker"><span></span> SIGNAL PERFORMANCE</div><h2>Realized return by entry signal.</h2></div></div>
+        <div class="bars performance">
+          
+          <div class="bar-row up"><span>Monitor</span><i style="width:100%"></i><strong>+4.1%</strong></div>
+          
+        </div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-head"><div><div class="kicker"><span></span> CLOSED TRADES</div><h2>Recent realized exits.</h2></div></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Exit</th><th>Symbol</th><th>Signal</th><th>Entry</th><th>Return</th><th>Alpha</th><th>Reason</th><th>P/L</th></tr></thead>
+          <tbody>
+          
+            <tr>
+              <td>2026-05-18</td>
+              <td><strong>5802.T</strong><br><span>Sumitomo Electric</span></td>
+              <td>Monitor<br><span>C Early Watch</span></td>
+              <td>2026-04-13</td>
+              <td class="up">+5.5%</td>
+              <td class="up">+1.5%</td>
+              <td>quality exit</td>
+              <td class="up">¥57,264</td>
+            </tr>
+          
+            <tr>
+              <td>2026-05-18</td>
+              <td><strong>3652.T</strong><br><span>Digital Media Professionals</span></td>
+              <td>Monitor<br><span>B Constructive Setup</span></td>
+              <td>2026-04-27</td>
+              <td class="up">+35.8%</td>
+              <td class="up">+31.8%</td>
+              <td>distribution / weak close exit</td>
+              <td class="up">¥455,500</td>
+            </tr>
+          
+            <tr>
+              <td>2026-05-18</td>
+              <td><strong>4425.T</strong><br><span>Kudan</span></td>
+              <td>Monitor<br><span>C Early Watch</span></td>
+              <td>2026-05-07</td>
+              <td class="down">-15.0%</td>
+              <td class="down">-16.5%</td>
+              <td>close stop -8.0%</td>
+              <td class="down">-¥198,674</td>
+            </tr>
+          
+            <tr>
+              <td>2026-05-18</td>
+              <td><strong>135A.T</strong><br><span>VRAIN Solution</span></td>
+              <td>Monitor<br><span>C Early Watch</span></td>
+              <td>2026-05-07</td>
+              <td class="up">+23.3%</td>
+              <td class="up">+21.8%</td>
+              <td>distribution / weak close exit</td>
+              <td class="up">¥238,073</td>
+            </tr>
+          
+            <tr>
+              <td>2026-05-11</td>
+              <td><strong>5803.T</strong><br><span>Fujikura</span></td>
+              <td>Monitor<br><span>C Early Watch</span></td>
+              <td>2026-03-16</td>
+              <td class="up">+51.9%</td>
+              <td class="flat">—</td>
+              <td>extreme profit / extension harvest</td>
+              <td class="up">¥462,631</td>
+            </tr>
+          
+            <tr>
+              <td>2026-04-27</td>
+              <td><strong>4425.T</strong><br><span>Kudan</span></td>
+              <td>Monitor<br><span>C Early Watch</span></td>
+              <td>2026-03-30</td>
+              <td class="up">+27.7%</td>
+              <td class="up">+21.1%</td>
+              <td>distribution / weak close exit</td>
+              <td class="up">¥340,794</td>
+            </tr>
+          
+            <tr>
+              <td>2026-04-20</td>
+              <td><strong>7012.T</strong><br><span>Kawasaki Heavy Industries</span></td>
+              <td>Monitor<br><span>C Early Watch</span></td>
+              <td>2026-04-13</td>
+              <td class="down">-8.1%</td>
+              <td class="down">-9.9%</td>
+              <td>close stop -8.0%</td>
+              <td class="down">-¥82,411</td>
+            </tr>
+          
+            <tr>
+              <td>2026-04-13</td>
+              <td><strong>7011.T</strong><br><span>Mitsubishi Heavy Industries</span></td>
+              <td>Monitor<br><span>C Early Watch</span></td>
+              <td>2026-04-06</td>
+              <td class="down">-2.4%</td>
+              <td class="down">-4.3%</td>
+              <td>score exit < 560</td>
+              <td class="down">-¥23,266</td>
+            </tr>
+          
+            <tr>
+              <td>2026-04-06</td>
+              <td><strong>5802.T</strong><br><span>Sumitomo Electric</span></td>
+              <td>Monitor<br><span>C Early Watch</span></td>
+              <td>2026-03-23</td>
+              <td class="up">+3.6%</td>
+              <td class="flat">—</td>
+              <td>quality exit</td>
+              <td class="up">¥33,371</td>
+            </tr>
+          
+            <tr>
+              <td>2026-03-30</td>
+              <td><strong>7012.T</strong><br><span>Kawasaki Heavy Industries</span></td>
+              <td>Monitor<br><span>B Constructive Setup</span></td>
+              <td>2026-01-13</td>
+              <td class="up">+7.8%</td>
+              <td class="flat">—</td>
+              <td>score exit < 560</td>
+              <td class="up">¥81,907</td>
+            </tr>
+          
+            <tr>
+              <td>2026-03-30</td>
+              <td><strong>6503.T</strong><br><span>Mitsubishi Electric</span></td>
+              <td>Monitor<br><span>C Early Watch</span></td>
+              <td>2026-03-16</td>
+              <td class="down">-8.0%</td>
+              <td class="flat">—</td>
+              <td>score exit < 560</td>
+              <td class="down">-¥86,530</td>
+            </tr>
+          
+            <tr>
+              <td>2026-03-30</td>
+              <td><strong>7011.T</strong><br><span>Mitsubishi Heavy Industries</span></td>
+              <td>Monitor<br><span>C Early Watch</span></td>
+              <td>2026-03-16</td>
+              <td class="down">-8.4%</td>
+              <td class="flat">—</td>
+              <td>score exit < 560</td>
+              <td class="down">-¥80,757</td>
+            </tr>
+          
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="notes">
+      <strong>Simulation only.</strong>
+      <span>Not investment advice. Results use cached prices, next-open execution, slippage assumptions and 100-share JP round lots. Real fills, limit moves, taxes, fees and liquidity may differ.</span>
+    </section>
+  </main>
+</div>
+</body>
+</html>
