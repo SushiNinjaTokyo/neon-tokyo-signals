@@ -37,10 +37,10 @@
           The model is evaluated on score-ranked weekly Top 10 only. Top 3, Top 5 and Top 10 are separated so the board does not hide weak lower-ranked candidates inside a broad average.
         </p>
         <div class="hero-meta">
-          <span>{{ summary.eval_date_start or '—' }} → {{ summary.eval_date_end or '—' }}</span>
-          <span>{{ summary.eval_date_count or 0 }} eval dates</span>
-          <span>{{ summary.signal_count or 0 }} signals</span>
-          <span>Primary {{ primary_horizon|upper }}</span>
+          <span>Primary {{ primary_horizon|upper }}: {{ summary.eval_date_start or '—' }} → {{ summary.eval_date_end or '—' }}</span>
+          <span>{{ summary.eval_date_count or 0 }} mature weeks</span>
+          <span>{{ summary.signal_count or 0 }} mature signals</span>
+          <span>Latest prices {{ payload.latest_price_date or '—' }}</span>
         </div>
       </div>
 
@@ -84,10 +84,21 @@
     <section class="chart-section">
       <div class="section-heading split-heading">
         <div>
-          <div class="kicker">DAILY PERFORMANCE TREND</div>
+          <div class="kicker">WEEKLY PERFORMANCE TREND</div>
           <h2>Top 3 / Top 5 / Top 10 forward-performance curve.</h2>
         </div>
         <div class="method-chip">{{ primary_horizon|upper }} forward return index · not a live portfolio</div>
+      </div>
+
+      <div class="coverage-grid">
+        {% for row in coverage_rows %}
+          <article class="coverage-card {{ 'primary-card' if row.horizon|lower == primary_horizon else '' }}">
+            <div class="coverage-top"><span>{{ row.horizon }}</span><b>{{ row.valid_signal_count|fmt_int }}</b></div>
+            <div class="coverage-window">{{ row.start or '—' }} → {{ row.end or '—' }}</div>
+            <div class="coverage-bar"><i style="width:{{ row.coverage_width }}%"></i></div>
+            <em>{{ row.eval_date_count }} mature weeks · {{ row.pending_or_missing_signal_count|fmt_int }} pending/missing</em>
+          </article>
+        {% endfor %}
       </div>
 
       <div class="chart-card trend-card">
@@ -110,7 +121,7 @@
             {% for s in trend_chart.series %}
               <span class="legend-line legend-{{ loop.index }}"><i></i>{{ s.label }} <b>{{ s.latest|fmt_num(1) }}</b></span>
             {% endfor %}
-            <em>{{ trend_chart.start }} → {{ trend_chart.end }}</em>
+            <em>{{ trend_chart.start }} → {{ trend_chart.end }} · {{ primary_horizon|upper }} mature window</em>
           </div>
         {% else %}
           <div class="empty-card">Trend chart is not available yet. Run Weekly JP Backtest with enough historical weeks.</div>
