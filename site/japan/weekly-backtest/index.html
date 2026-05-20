@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description" content="Weekly Japan equity signal backtest for Neon Tokyo Signals. Top 3, Top 5 and Top 10 forward performance with TOPIX alpha."/>
   <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/weekly_backtest_jp.css?v=202605201548"/>
+  <link rel="stylesheet" href="/assets/weekly_backtest_jp.css?v=202605201613"/>
 </head>
 <body>
 <div class="page">
@@ -37,10 +37,10 @@
           The model is evaluated on score-ranked weekly Top 10 only. Top 3, Top 5 and Top 10 are separated so the board does not hide weak lower-ranked candidates inside a broad average.
         </p>
         <div class="hero-meta">
-          <span>2025-07-11 → 2026-02-13</span>
-          <span>32 eval dates</span>
-          <span>200 signals</span>
-          <span>Primary 4W</span>
+          <span>Primary 4W: 2025-10-03 → 2026-04-10</span>
+          <span>28 mature weeks</span>
+          <span>280 mature signals</span>
+          <span>Latest prices 2026-05-20</span>
         </div>
       </div>
 
@@ -64,25 +64,25 @@
       
         <article class="read-card ret-up">
           <span>Top 3</span>
-          <strong>+6.1%</strong>
-          <em>4W return · +3.5% alpha · 62% win</em>
+          <strong>+6.9%</strong>
+          <em>4W return · +4.8% alpha · 62% win</em>
         </article>
       
         <article class="read-card ret-up">
           <span>Top 5</span>
           <strong>+7.1%</strong>
-          <em>4W return · +4.5% alpha · 65% win</em>
+          <em>4W return · +5.0% alpha · 64% win</em>
         </article>
       
         <article class="read-card ret-up">
           <span>Top 10</span>
-          <strong>+7.3%</strong>
-          <em>4W return · +4.7% alpha · 66% win</em>
+          <strong>+7.1%</strong>
+          <em>4W return · +5.2% alpha · 65% win</em>
         </article>
       
       <article class="read-card neutral">
         <span>Evaluation</span>
-        <strong>32</strong>
+        <strong>28</strong>
         <em>weekly snapshots, no API calls during replay</em>
       </article>
     </section>
@@ -90,10 +90,49 @@
     <section class="chart-section">
       <div class="section-heading split-heading">
         <div>
-          <div class="kicker">DAILY PERFORMANCE TREND</div>
+          <div class="kicker">WEEKLY PERFORMANCE TREND</div>
           <h2>Top 3 / Top 5 / Top 10 forward-performance curve.</h2>
         </div>
         <div class="method-chip">4W forward return index · not a live portfolio</div>
+      </div>
+
+      <div class="coverage-grid">
+        
+          <article class="coverage-card ">
+            <div class="coverage-top"><span>1W</span><b>320</b></div>
+            <div class="coverage-window">2025-10-03 → 2026-05-08</div>
+            <div class="coverage-bar"><i style="width:100.0%"></i></div>
+            <em>32 mature weeks · 0 pending/missing</em>
+          </article>
+        
+          <article class="coverage-card ">
+            <div class="coverage-top"><span>2W</span><b>310</b></div>
+            <div class="coverage-window">2025-10-03 → 2026-05-01</div>
+            <div class="coverage-bar"><i style="width:96.88%"></i></div>
+            <em>31 mature weeks · 10 pending/missing</em>
+          </article>
+        
+          <article class="coverage-card primary-card">
+            <div class="coverage-top"><span>4W</span><b>280</b></div>
+            <div class="coverage-window">2025-10-03 → 2026-04-10</div>
+            <div class="coverage-bar"><i style="width:87.5%"></i></div>
+            <em>28 mature weeks · 40 pending/missing</em>
+          </article>
+        
+          <article class="coverage-card ">
+            <div class="coverage-top"><span>8W</span><b>240</b></div>
+            <div class="coverage-window">2025-10-03 → 2026-03-13</div>
+            <div class="coverage-bar"><i style="width:75.0%"></i></div>
+            <em>24 mature weeks · 80 pending/missing</em>
+          </article>
+        
+          <article class="coverage-card ">
+            <div class="coverage-top"><span>12W</span><b>200</b></div>
+            <div class="coverage-window">2025-10-03 → 2026-02-13</div>
+            <div class="coverage-bar"><i style="width:62.5%"></i></div>
+            <em>20 mature weeks · 120 pending/missing</em>
+          </article>
+        
       </div>
 
       <div class="chart-card trend-card">
@@ -109,22 +148,22 @@
             <line x1="42" y1="266" x2="878" y2="266" class="axis"/>
             <line x1="42" y1="150" x2="878" y2="150" class="midline"/>
             
-              <polyline class="line line-1" points="42.0,260.9 86.0,248.9 130.0,224.3 174.0,243.6 218.0,263.0 262.0,259.9 306.0,262.5 350.0,249.0 394.0,260.1 438.0,258.1 482.0,244.6 526.0,229.1 570.0,206.7 614.0,198.2 658.0,167.2 702.0,136.2 746.0,97.5 790.0,91.0 834.0,103.3 878.0,121.7" fill="none"/>
+              <polyline class="line line-1" points="42.0,263.1 73.0,256.3 103.9,242.4 134.9,253.4 165.9,264.3 196.8,262.6 227.8,264.0 258.7,256.4 289.7,262.7 320.7,261.6 351.6,253.9 382.6,245.1 413.6,232.5 444.5,227.7 475.5,210.2 506.4,192.7 537.4,170.8 568.4,167.2 599.3,174.1 630.3,184.5 661.3,203.5 692.2,215.8 723.2,215.5 754.1,203.3 785.1,185.5 816.1,142.0 847.0,89.5 878.0,70.6" fill="none"/>
             
-              <polyline class="line line-2" points="42.0,263.2 86.0,251.7 130.0,230.0 174.0,234.7 218.0,252.4 262.0,251.4 306.0,255.3 350.0,248.1 394.0,256.2 438.0,254.2 482.0,240.3 526.0,225.3 570.0,199.5 614.0,185.5 658.0,150.2 702.0,127.2 746.0,104.3 790.0,53.0 834.0,47.9 878.0,56.0" fill="none"/>
+              <polyline class="line line-2" points="42.0,264.4 73.0,257.9 103.9,245.7 134.9,248.3 165.9,258.3 196.8,257.7 227.8,260.0 258.7,255.9 289.7,260.5 320.7,259.3 351.6,251.5 382.6,243.0 413.6,228.5 444.5,220.6 475.5,200.6 506.4,187.6 537.4,174.7 568.4,145.7 599.3,142.8 630.3,147.4 661.3,170.0 692.2,187.5 723.2,177.2 754.1,164.5 785.1,147.9 816.1,107.7 847.0,65.2 878.0,38.4" fill="none"/>
             
-              <polyline class="line line-3" points="42.0,266.0 86.0,255.9 130.0,239.7 174.0,238.3 218.0,256.9 262.0,255.4 306.0,254.6 350.0,254.3 394.0,257.1 438.0,255.7 482.0,240.5 526.0,225.0 570.0,197.3 614.0,177.2 658.0,144.7 702.0,105.1 746.0,75.2 790.0,34.7 834.0,34.0 878.0,44.3" fill="none"/>
+              <polyline class="line line-3" points="42.0,266.0 73.0,260.3 103.9,251.1 134.9,250.4 165.9,260.9 196.8,260.0 227.8,259.6 258.7,259.4 289.7,261.0 320.7,260.2 351.6,251.6 382.6,242.9 413.6,227.2 444.5,215.9 475.5,197.5 506.4,175.1 537.4,158.3 568.4,135.4 599.3,135.0 630.3,140.8 661.3,159.5 692.2,180.4 723.2,170.4 754.1,162.3 785.1,143.6 816.1,103.5 847.0,57.3 878.0,34.0" fill="none"/>
             
           </svg>
           <div class="trend-legend">
             
-              <span class="legend-line legend-1"><i></i>Top 3 <b>287.0</b></span>
+              <span class="legend-line legend-1"><i></i>Top 3 <b>522.2</b></span>
             
-              <span class="legend-line legend-2"><i></i>Top 5 <b>363.7</b></span>
+              <span class="legend-line legend-2"><i></i>Top 5 <b>588.5</b></span>
             
-              <span class="legend-line legend-3"><i></i>Top 10 <b>377.3</b></span>
+              <span class="legend-line legend-3"><i></i>Top 10 <b>597.6</b></span>
             
-            <em>2025-10-03 → 2026-02-13</em>
+            <em>2025-10-03 → 2026-04-10 · 4W mature window</em>
           </div>
         
       </div>
@@ -144,20 +183,20 @@
           
             <div class="bar-row">
               <span>Top 3</span>
-              <i class="ret-up" style="width:69.262%"></i>
-              <b class="ret-up">+3.5%</b>
+              <i class="ret-up" style="width:95.612%"></i>
+              <b class="ret-up">+4.8%</b>
             </div>
           
             <div class="bar-row">
               <span>Top 5</span>
-              <i class="ret-up" style="width:90.424%"></i>
-              <b class="ret-up">+4.5%</b>
+              <i class="ret-up" style="width:100.0%"></i>
+              <b class="ret-up">+5.0%</b>
             </div>
           
             <div class="bar-row">
               <span>Top 10</span>
-              <i class="ret-up" style="width:93.148%"></i>
-              <b class="ret-up">+4.7%</b>
+              <i class="ret-up" style="width:100.0%"></i>
+              <b class="ret-up">+5.2%</b>
             </div>
           
         </article>
@@ -172,14 +211,14 @@
           
             <div class="mini-stat">
               <span>Monitor</span>
-              <b class="ret-up">+7.9%</b>
-              <em>+5.6% alpha · 65% win</em>
+              <b class="ret-up">+7.7%</b>
+              <em>+6.1% alpha · 64% win</em>
             </div>
           
             <div class="mini-stat">
               <span>Avoid</span>
-              <b class="ret-up">+6.4%</b>
-              <em>+3.4% alpha · 67% win</em>
+              <b class="ret-up">+6.3%</b>
+              <em>+4.2% alpha · 66% win</em>
             </div>
           
         </article>
@@ -189,19 +228,19 @@
           
             <div class="quality-row">
               <span>1W</span>
-              <b>200 valid</b>
+              <b>320 valid</b>
               <em>0 invalid</em>
             </div>
           
             <div class="quality-row">
               <span>2W</span>
-              <b>200 valid</b>
+              <b>290 valid</b>
               <em>0 invalid</em>
             </div>
           
             <div class="quality-row">
               <span>4W</span>
-              <b>200 valid</b>
+              <b>240 valid</b>
               <em>0 invalid</em>
             </div>
           
@@ -254,23 +293,23 @@
             </div>
           
             <div class="lane-row">
+              <b>#10 6857.T · +43.9%</b>
+              <span>2026-03-27 · E Avoid · Semiconductor Test</span>
+            </div>
+          
+            <div class="lane-row">
+              <b>#1 5803.T · +43.7%</b>
+              <span>2026-03-19 · C Early Watch · AI Data Center Infrastructure</span>
+            </div>
+          
+            <div class="lane-row">
               <b>#9 5803.T · +42.4%</b>
               <span>2025-10-03 · D Extended · AI Data Center Infrastructure</span>
             </div>
           
             <div class="lane-row">
-              <b>#5 5802.T · +38.3%</b>
-              <span>2025-10-03 · B Constructive Setup · Data Center and Power Infrastructure</span>
-            </div>
-          
-            <div class="lane-row">
-              <b>#4 5803.T · +37.0%</b>
-              <span>2026-01-30 · C Early Watch · AI Data Center Infrastructure</span>
-            </div>
-          
-            <div class="lane-row">
-              <b>#6 6146.T · +37.0%</b>
-              <span>2025-12-26 · E Avoid · Semiconductor Equipment</span>
+              <b>#1 5803.T · +38.9%</b>
+              <span>2026-04-03 · C Early Watch · AI Data Center Infrastructure</span>
             </div>
           
         </article>
@@ -288,8 +327,18 @@
             </div>
           
             <div class="lane-row">
+              <b>#6 7013.T · -23.8%</b>
+              <span>2026-02-27 · C Early Watch · normal weekly risk</span>
+            </div>
+          
+            <div class="lane-row">
               <b>#8 4011.T · -23.6%</b>
               <span>2026-01-23 · E Avoid · normal weekly risk</span>
+            </div>
+          
+            <div class="lane-row">
+              <b>#3 7013.T · -23.2%</b>
+              <span>2026-02-20 · C Early Watch · normal weekly risk</span>
             </div>
           
             <div class="lane-row">
@@ -303,18 +352,8 @@
             </div>
           
             <div class="lane-row">
-              <b>#10 135A.T · -19.3%</b>
-              <span>2025-12-19 · E Avoid · normal weekly risk</span>
-            </div>
-          
-            <div class="lane-row">
-              <b>#4 7011.T · -17.4%</b>
-              <span>2025-10-31 · B Constructive Setup · normal weekly risk</span>
-            </div>
-          
-            <div class="lane-row">
-              <b>#4 6920.T · -15.4%</b>
-              <span>2026-01-16 · D Extended · extended from weekly averages; limit-move / gap risk</span>
+              <b>#1 7012.T · -21.2%</b>
+              <span>2026-02-27 · D Extended · extended from weekly averages</span>
             </div>
           
         </article>
@@ -339,522 +378,522 @@
           <tbody>
             
               <tr>
-                <td>2026-01-23</td>
+                <td>2026-04-17</td>
                 <td>#1</td>
-                <td><strong>6857.T</strong></td>
-                <td>Watch</td>
-                <td>720</td>
-                <td>B Constructive Setup</td>
-                <td class="ret-up">+15.6%</td>
-                <td class="ret-up">+8.4%</td>
-                <td>-1.0%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-01-23</td>
-                <td>#2</td>
-                <td><strong>6146.T</strong></td>
+                <td><strong>5803.T</strong></td>
                 <td>Avoid</td>
                 <td>720</td>
                 <td>D Extended</td>
-                <td class="ret-up">+12.6%</td>
-                <td class="ret-up">+5.4%</td>
-                <td>-7.7%</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>Institutional</td>
               </tr>
             
               <tr>
-                <td>2026-01-23</td>
-                <td>#3</td>
-                <td><strong>4425.T</strong></td>
-                <td>Watch</td>
-                <td>705</td>
-                <td>B Constructive Setup</td>
-                <td class="ret-up">+22.0%</td>
-                <td class="ret-up">+14.8%</td>
-                <td>-8.9%</td>
+                <td>2026-04-17</td>
+                <td>#2</td>
+                <td><strong>135A.T</strong></td>
+                <td>Avoid</td>
+                <td>720</td>
+                <td>D Extended</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>High Liquidity</td>
               </tr>
             
               <tr>
-                <td>2026-01-23</td>
+                <td>2026-04-17</td>
+                <td>#3</td>
+                <td><strong>6857.T</strong></td>
+                <td>Watch</td>
+                <td>689</td>
+                <td>C Early Watch</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-17</td>
                 <td>#4</td>
                 <td><strong>8035.T</strong></td>
                 <td>Watch</td>
-                <td>694</td>
+                <td>668</td>
                 <td>C Early Watch</td>
-                <td class="ret-up">+8.2%</td>
-                <td class="ret-up">+1.0%</td>
-                <td>-3.8%</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>Institutional</td>
               </tr>
             
               <tr>
-                <td>2026-01-23</td>
+                <td>2026-04-17</td>
                 <td>#5</td>
-                <td><strong>6920.T</strong></td>
-                <td>Watch</td>
-                <td>693</td>
-                <td>C Early Watch</td>
-                <td class="ret-down">-10.8%</td>
-                <td class="ret-down">-18.0%</td>
-                <td>-19.9%</td>
-                <td>Institutional</td>
+                <td><strong>4425.T</strong></td>
+                <td>Avoid</td>
+                <td>667</td>
+                <td>D Extended</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>High Liquidity</td>
               </tr>
             
               <tr>
-                <td>2026-01-23</td>
+                <td>2026-04-17</td>
                 <td>#6</td>
-                <td><strong>7013.T</strong></td>
-                <td>Watch</td>
-                <td>669</td>
-                <td>C Early Watch</td>
-                <td class="ret-up">+18.0%</td>
-                <td class="ret-up">+10.7%</td>
-                <td>-1.7%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-01-23</td>
-                <td>#7</td>
                 <td><strong>6503.T</strong></td>
                 <td>Watch</td>
-                <td>653</td>
+                <td>666</td>
                 <td>C Early Watch</td>
-                <td class="ret-up">+21.9%</td>
-                <td class="ret-up">+14.7%</td>
-                <td>-1.9%</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>Institutional</td>
               </tr>
             
               <tr>
-                <td>2026-01-23</td>
+                <td>2026-04-17</td>
+                <td>#7</td>
+                <td><strong>6146.T</strong></td>
+                <td>Watch</td>
+                <td>647</td>
+                <td>C Early Watch</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-17</td>
                 <td>#8</td>
-                <td><strong>4011.T</strong></td>
+                <td><strong>5802.T</strong></td>
+                <td>Watch</td>
+                <td>625</td>
+                <td>C Early Watch</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-17</td>
+                <td>#9</td>
+                <td><strong>6920.T</strong></td>
+                <td>Watch</td>
+                <td>614</td>
+                <td>C Early Watch</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-17</td>
+                <td>#10</td>
+                <td><strong>6501.T</strong></td>
                 <td>Avoid</td>
-                <td>643</td>
+                <td>595</td>
                 <td>E Avoid</td>
-                <td class="ret-down">-23.6%</td>
-                <td class="ret-down">-30.8%</td>
-                <td>-23.7%</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-24</td>
+                <td>#1</td>
+                <td><strong>8035.T</strong></td>
+                <td>Watch</td>
+                <td>720</td>
+                <td>B Constructive Setup</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-24</td>
+                <td>#2</td>
+                <td><strong>6920.T</strong></td>
+                <td>Watch</td>
+                <td>720</td>
+                <td>B Constructive Setup</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-24</td>
+                <td>#3</td>
+                <td><strong>6857.T</strong></td>
+                <td>Watch</td>
+                <td>720</td>
+                <td>B Constructive Setup</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-24</td>
+                <td>#4</td>
+                <td><strong>6503.T</strong></td>
+                <td>Watch</td>
+                <td>720</td>
+                <td>B Constructive Setup</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-24</td>
+                <td>#5</td>
+                <td><strong>5803.T</strong></td>
+                <td>Avoid</td>
+                <td>720</td>
+                <td>D Extended</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-24</td>
+                <td>#6</td>
+                <td><strong>3652.T</strong></td>
+                <td>Watch</td>
+                <td>687</td>
+                <td>B Constructive Setup</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>Tradable</td>
               </tr>
             
               <tr>
-                <td>2026-01-23</td>
+                <td>2026-04-24</td>
+                <td>#7</td>
+                <td><strong>6501.T</strong></td>
+                <td>Avoid</td>
+                <td>670</td>
+                <td>E Avoid</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-24</td>
+                <td>#8</td>
+                <td><strong>9984.T</strong></td>
+                <td>Avoid</td>
+                <td>650</td>
+                <td>E Avoid</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-24</td>
                 <td>#9</td>
                 <td><strong>5802.T</strong></td>
                 <td>Watch</td>
-                <td>633</td>
+                <td>634</td>
                 <td>C Early Watch</td>
-                <td class="ret-up">+56.8%</td>
-                <td class="ret-up">+49.6%</td>
-                <td>-2.1%</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>Institutional</td>
               </tr>
             
               <tr>
-                <td>2026-01-23</td>
+                <td>2026-04-24</td>
                 <td>#10</td>
-                <td><strong>6501.T</strong></td>
+                <td><strong>4425.T</strong></td>
                 <td>Avoid</td>
-                <td>621</td>
-                <td>E Avoid</td>
-                <td class="ret-down">-7.0%</td>
-                <td class="ret-down">-14.2%</td>
-                <td>-8.2%</td>
-                <td>Institutional</td>
+                <td>620</td>
+                <td>D Extended</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>High Liquidity</td>
               </tr>
             
               <tr>
-                <td>2026-01-30</td>
+                <td>2026-05-01</td>
                 <td>#1</td>
-                <td><strong>6857.T</strong></td>
-                <td>Watch</td>
-                <td>720</td>
-                <td>B Constructive Setup</td>
-                <td class="ret-up">+1.5%</td>
-                <td class="ret-down">-3.0%</td>
-                <td>-8.0%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-01-30</td>
-                <td>#2</td>
-                <td><strong>6501.T</strong></td>
-                <td>Watch</td>
-                <td>720</td>
-                <td>B Constructive Setup</td>
-                <td class="ret-down">-10.2%</td>
-                <td class="ret-down">-14.7%</td>
-                <td>-11.4%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-01-30</td>
-                <td>#3</td>
-                <td><strong>7013.T</strong></td>
-                <td>Watch</td>
-                <td>659</td>
-                <td>C Early Watch</td>
-                <td class="ret-up">+15.9%</td>
-                <td class="ret-up">+11.3%</td>
-                <td>-3.9%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-01-30</td>
-                <td>#4</td>
-                <td><strong>5803.T</strong></td>
-                <td>Watch</td>
-                <td>654</td>
-                <td>C Early Watch</td>
-                <td class="ret-up">+37.0%</td>
-                <td class="ret-up">+32.4%</td>
-                <td>-2.4%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-01-30</td>
-                <td>#5</td>
-                <td><strong>5802.T</strong></td>
-                <td>Watch</td>
-                <td>632</td>
-                <td>C Early Watch</td>
-                <td class="ret-up">+53.2%</td>
-                <td class="ret-up">+48.6%</td>
-                <td>-0.4%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-01-30</td>
-                <td>#6</td>
-                <td><strong>6503.T</strong></td>
-                <td>Avoid</td>
-                <td>621</td>
-                <td>E Avoid</td>
-                <td class="ret-up">+15.0%</td>
-                <td class="ret-up">+10.4%</td>
-                <td>-2.0%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-01-30</td>
-                <td>#7</td>
                 <td><strong>8035.T</strong></td>
                 <td>Watch</td>
-                <td>620</td>
-                <td>C Early Watch</td>
-                <td class="ret-up">+5.8%</td>
-                <td class="ret-up">+1.2%</td>
-                <td>-2.0%</td>
+                <td>720</td>
+                <td>B Constructive Setup</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>Institutional</td>
               </tr>
             
               <tr>
-                <td>2026-01-30</td>
-                <td>#8</td>
+                <td>2026-05-01</td>
+                <td>#2</td>
+                <td><strong>3652.T</strong></td>
+                <td>Avoid</td>
+                <td>720</td>
+                <td>D Extended</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Tradable</td>
+              </tr>
+            
+              <tr>
+                <td>2026-05-01</td>
+                <td>#3</td>
+                <td><strong>6503.T</strong></td>
+                <td>Watch</td>
+                <td>702</td>
+                <td>B Constructive Setup</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-05-01</td>
+                <td>#4</td>
                 <td><strong>6920.T</strong></td>
                 <td>Watch</td>
+                <td>655</td>
+                <td>C Early Watch</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-05-01</td>
+                <td>#5</td>
+                <td><strong>5803.T</strong></td>
+                <td>Watch</td>
+                <td>641</td>
+                <td>C Early Watch</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-05-01</td>
+                <td>#6</td>
+                <td><strong>4425.T</strong></td>
+                <td>Watch</td>
+                <td>626</td>
+                <td>C Early Watch</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>High Liquidity</td>
+              </tr>
+            
+              <tr>
+                <td>2026-05-01</td>
+                <td>#7</td>
+                <td><strong>135A.T</strong></td>
+                <td>Watch</td>
                 <td>620</td>
                 <td>C Early Watch</td>
-                <td class="ret-up">+1.2%</td>
-                <td class="ret-down">-3.4%</td>
-                <td>-15.3%</td>
-                <td>Institutional</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>High Liquidity</td>
               </tr>
             
               <tr>
-                <td>2026-01-30</td>
-                <td>#9</td>
+                <td>2026-05-01</td>
+                <td>#8</td>
                 <td><strong>6146.T</strong></td>
-                <td>Avoid</td>
-                <td>620</td>
-                <td>D Extended</td>
-                <td class="ret-up">+12.0%</td>
-                <td class="ret-up">+7.5%</td>
-                <td>-4.9%</td>
+                <td>Watch</td>
+                <td>612</td>
+                <td>C Early Watch</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>Institutional</td>
               </tr>
             
               <tr>
-                <td>2026-01-30</td>
-                <td>#10</td>
-                <td><strong>7011.T</strong></td>
+                <td>2026-05-01</td>
+                <td>#9</td>
+                <td><strong>9984.T</strong></td>
                 <td>Avoid</td>
-                <td>605</td>
+                <td>607</td>
                 <td>E Avoid</td>
-                <td class="ret-up">+7.3%</td>
-                <td class="ret-up">+2.7%</td>
-                <td>-2.7%</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>Institutional</td>
               </tr>
             
               <tr>
-                <td>2026-02-06</td>
+                <td>2026-05-01</td>
+                <td>#10</td>
+                <td><strong>6857.T</strong></td>
+                <td>Avoid</td>
+                <td>590</td>
+                <td>E Avoid</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-05-08</td>
                 <td>#1</td>
-                <td><strong>7013.T</strong></td>
+                <td><strong>8035.T</strong></td>
                 <td>Watch</td>
                 <td>720</td>
                 <td>B Constructive Setup</td>
-                <td class="ret-down">-9.3%</td>
-                <td class="ret-down">-5.0%</td>
-                <td>-15.5%</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>Institutional</td>
               </tr>
             
               <tr>
-                <td>2026-02-06</td>
+                <td>2026-05-08</td>
                 <td>#2</td>
-                <td><strong>7012.T</strong></td>
-                <td>Watch</td>
-                <td>720</td>
-                <td>B Constructive Setup</td>
-                <td class="ret-up">+5.3%</td>
-                <td class="ret-up">+9.5%</td>
-                <td>-3.8%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-02-06</td>
-                <td>#3</td>
                 <td><strong>6503.T</strong></td>
                 <td>Watch</td>
                 <td>720</td>
                 <td>B Constructive Setup</td>
-                <td class="ret-down">-9.4%</td>
-                <td class="ret-down">-5.2%</td>
-                <td>-15.1%</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>Institutional</td>
               </tr>
             
               <tr>
-                <td>2026-02-06</td>
-                <td>#4</td>
-                <td><strong>5803.T</strong></td>
-                <td>Watch</td>
-                <td>720</td>
-                <td>B Constructive Setup</td>
-                <td class="ret-up">+3.1%</td>
-                <td class="ret-up">+7.3%</td>
-                <td>-10.4%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-02-06</td>
-                <td>#5</td>
-                <td><strong>5802.T</strong></td>
-                <td>Watch</td>
-                <td>720</td>
-                <td>B Constructive Setup</td>
-                <td class="ret-up">+18.2%</td>
-                <td class="ret-up">+22.5%</td>
-                <td>-3.1%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-02-06</td>
-                <td>#6</td>
-                <td><strong>4425.T</strong></td>
-                <td>Watch</td>
-                <td>720</td>
-                <td>B Constructive Setup</td>
-                <td class="ret-up">+19.8%</td>
-                <td class="ret-up">+24.1%</td>
-                <td>-2.7%</td>
-                <td>High Liquidity</td>
-              </tr>
-            
-              <tr>
-                <td>2026-02-06</td>
-                <td>#7</td>
-                <td><strong>7011.T</strong></td>
-                <td>Watch</td>
-                <td>716</td>
-                <td>B Constructive Setup</td>
-                <td class="ret-down">-8.1%</td>
-                <td class="ret-down">-3.9%</td>
-                <td>-13.5%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-02-06</td>
-                <td>#8</td>
-                <td><strong>6501.T</strong></td>
-                <td>Watch</td>
-                <td>709</td>
-                <td>B Constructive Setup</td>
-                <td class="ret-down">-13.0%</td>
-                <td class="ret-down">-8.7%</td>
-                <td>-19.8%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-02-06</td>
-                <td>#9</td>
-                <td><strong>6146.T</strong></td>
-                <td>Watch</td>
-                <td>660</td>
-                <td>C Early Watch</td>
-                <td class="ret-down">-1.0%</td>
-                <td class="ret-up">+3.3%</td>
-                <td>-9.0%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-02-06</td>
-                <td>#10</td>
-                <td><strong>8035.T</strong></td>
-                <td>Watch</td>
-                <td>640</td>
-                <td>C Early Watch</td>
-                <td class="ret-down">-3.7%</td>
-                <td class="ret-up">+0.5%</td>
-                <td>-9.6%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-02-13</td>
-                <td>#1</td>
-                <td><strong>7012.T</strong></td>
-                <td>Avoid</td>
-                <td>720</td>
-                <td>D Extended</td>
-                <td class="ret-down">-10.2%</td>
-                <td class="ret-down">-4.4%</td>
-                <td>-16.8%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-02-13</td>
-                <td>#2</td>
-                <td><strong>7011.T</strong></td>
-                <td>Watch</td>
-                <td>720</td>
-                <td>B Constructive Setup</td>
-                <td class="ret-down">-5.9%</td>
-                <td class="ret-down">-0.1%</td>
-                <td>-14.1%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-02-13</td>
+                <td>2026-05-08</td>
                 <td>#3</td>
-                <td><strong>6146.T</strong></td>
-                <td>Watch</td>
+                <td><strong>5803.T</strong></td>
+                <td>Avoid</td>
                 <td>720</td>
-                <td>B Constructive Setup</td>
-                <td class="ret-down">-4.7%</td>
-                <td class="ret-up">+1.1%</td>
-                <td>-12.6%</td>
+                <td>D Extended</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>Institutional</td>
               </tr>
             
               <tr>
-                <td>2026-02-13</td>
+                <td>2026-05-08</td>
                 <td>#4</td>
                 <td><strong>5802.T</strong></td>
                 <td>Watch</td>
                 <td>720</td>
-                <td>B Constructive Setup</td>
-                <td class="ret-up">+15.1%</td>
-                <td class="ret-up">+20.9%</td>
-                <td>-4.2%</td>
+                <td>C Early Watch</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>Institutional</td>
               </tr>
             
               <tr>
-                <td>2026-02-13</td>
+                <td>2026-05-08</td>
                 <td>#5</td>
                 <td><strong>4425.T</strong></td>
                 <td>Avoid</td>
                 <td>720</td>
                 <td>D Extended</td>
-                <td class="ret-down">-6.8%</td>
-                <td class="ret-down">-0.9%</td>
-                <td>-12.6%</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>High Liquidity</td>
               </tr>
             
               <tr>
-                <td>2026-02-13</td>
+                <td>2026-05-08</td>
                 <td>#6</td>
+                <td><strong>135A.T</strong></td>
+                <td>Avoid</td>
+                <td>720</td>
+                <td>D Extended</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>High Liquidity</td>
+              </tr>
+            
+              <tr>
+                <td>2026-05-08</td>
+                <td>#7</td>
+                <td><strong>9984.T</strong></td>
+                <td>Avoid</td>
+                <td>650</td>
+                <td>E Avoid</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Institutional</td>
+              </tr>
+            
+              <tr>
+                <td>2026-05-08</td>
+                <td>#8</td>
+                <td><strong>3652.T</strong></td>
+                <td>Avoid</td>
+                <td>650</td>
+                <td>E Avoid</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
+                <td>Tradable</td>
+              </tr>
+            
+              <tr>
+                <td>2026-05-08</td>
+                <td>#9</td>
                 <td><strong>6857.T</strong></td>
                 <td>Watch</td>
-                <td>677</td>
+                <td>641</td>
                 <td>C Early Watch</td>
-                <td class="ret-down">-12.0%</td>
-                <td class="ret-down">-6.2%</td>
-                <td>-19.4%</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>Institutional</td>
               </tr>
             
               <tr>
-                <td>2026-02-13</td>
-                <td>#7</td>
-                <td><strong>8035.T</strong></td>
-                <td>Watch</td>
-                <td>665</td>
-                <td>C Early Watch</td>
-                <td class="ret-down">-6.3%</td>
-                <td class="ret-down">-0.5%</td>
-                <td>-10.0%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-02-13</td>
-                <td>#8</td>
-                <td><strong>7013.T</strong></td>
-                <td>Watch</td>
-                <td>620</td>
-                <td>C Early Watch</td>
-                <td class="ret-down">-11.9%</td>
-                <td class="ret-down">-6.1%</td>
-                <td>-15.7%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-02-13</td>
-                <td>#9</td>
-                <td><strong>6503.T</strong></td>
-                <td>Watch</td>
-                <td>620</td>
-                <td>C Early Watch</td>
-                <td class="ret-down">-5.1%</td>
-                <td class="ret-up">+0.7%</td>
-                <td>-10.0%</td>
-                <td>Institutional</td>
-              </tr>
-            
-              <tr>
-                <td>2026-02-13</td>
+                <td>2026-05-08</td>
                 <td>#10</td>
-                <td><strong>5803.T</strong></td>
+                <td><strong>6146.T</strong></td>
                 <td>Watch</td>
-                <td>620</td>
+                <td>639</td>
                 <td>C Early Watch</td>
-                <td class="ret-up">+17.1%</td>
-                <td class="ret-up">+23.0%</td>
-                <td>-4.5%</td>
+                <td class="ret-flat">—</td>
+                <td class="ret-flat">—</td>
+                <td>—</td>
                 <td>Institutional</td>
               </tr>
             
