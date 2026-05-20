@@ -1,12 +1,71 @@
 {
   "schema_version": "weekly-jp-simulation-v1",
-  "generated_at": "2026-05-20T11:37:07+09:00",
+  "generated_at": "2026-05-20T15:48:32+09:00",
   "market": "JP",
   "timezone": "Asia/Tokyo",
   "source_prices": "site/data/prices-jp/latest.json",
   "benchmark": {
     "symbol": "1306.T",
     "name": "TOPIX ETF proxy"
+  },
+  "benchmark_quality": {
+    "benchmark_symbol": "1306.T",
+    "abs_return_limit_pct": 35.0,
+    "total_points": 31,
+    "valid_points": 23,
+    "invalid_points": 8,
+    "status": "invalid",
+    "message": "TOPIX benchmark comparison suspended because cached benchmark prices failed the sanity check. Strategy return and cash accounting remain valid.",
+    "invalid_samples": [
+      {
+        "date": "2026-03-30",
+        "benchmark_equity_raw": 1115259.26,
+        "benchmark_return_pct_raw": -88.8474,
+        "reason": "benchmark return -88.85% exceeds ±35.0% guardrail"
+      },
+      {
+        "date": "2026-04-06",
+        "benchmark_equity_raw": 1146074.07,
+        "benchmark_return_pct_raw": -88.5393,
+        "reason": "benchmark return -88.54% exceeds ±35.0% guardrail"
+      },
+      {
+        "date": "2026-04-13",
+        "benchmark_equity_raw": 1169777.78,
+        "benchmark_return_pct_raw": -88.3022,
+        "reason": "benchmark return -88.30% exceeds ±35.0% guardrail"
+      },
+      {
+        "date": "2026-04-20",
+        "benchmark_equity_raw": 1186962.96,
+        "benchmark_return_pct_raw": -88.1304,
+        "reason": "benchmark return -88.13% exceeds ±35.0% guardrail"
+      },
+      {
+        "date": "2026-04-27",
+        "benchmark_equity_raw": 1173037.04,
+        "benchmark_return_pct_raw": -88.2696,
+        "reason": "benchmark return -88.27% exceeds ±35.0% guardrail"
+      },
+      {
+        "date": "2026-05-07",
+        "benchmark_equity_raw": 1206518.52,
+        "benchmark_return_pct_raw": -87.9348,
+        "reason": "benchmark return -87.93% exceeds ±35.0% guardrail"
+      },
+      {
+        "date": "2026-05-11",
+        "benchmark_equity_raw": 1206222.22,
+        "benchmark_return_pct_raw": -87.9378,
+        "reason": "benchmark return -87.94% exceeds ±35.0% guardrail"
+      },
+      {
+        "date": "2026-05-18",
+        "benchmark_equity_raw": 1202666.67,
+        "benchmark_return_pct_raw": -87.9733,
+        "reason": "benchmark return -87.97% exceeds ±35.0% guardrail"
+      }
+    ]
   },
   "policy": {
     "initial_capital": 10000000.0,
@@ -23,7 +82,7 @@
     "sell_slippage_pct": 0.15,
     "allow_watch_monitor_entries": true,
     "order_execution": "next trading day open after weekly evaluation date",
-    "mark_to_market": "weekly evaluation close"
+    "mark_to_market": "execution-date close after next-open orders; new positions fall back to entry cost if same-day close is unavailable"
   },
   "summary": {
     "policy_name": "Weekly JP Simulation v1",
@@ -32,17 +91,19 @@
     "eval_date_end": "2026-05-20",
     "external_capital": 10000000.0,
     "cash": 9156658.94,
-    "market_value": 2137400.0,
-    "portfolio_equity": 11294058.94,
-    "benchmark_equity": 1206979.54,
-    "net_return_pct": 12.9406,
-    "benchmark_return_pct": -87.9302,
-    "alpha_pct": 100.8708,
-    "max_drawdown_pct": -9.6954,
-    "benchmark_max_drawdown_pct": -90.6415,
+    "market_value": 2388600.0,
+    "portfolio_equity": 11545258.94,
+    "benchmark_equity": null,
+    "net_return_pct": 15.4526,
+    "benchmark_return_pct": null,
+    "alpha_pct": null,
+    "benchmark_status": "invalid",
+    "benchmark_message": "TOPIX benchmark comparison suspended because cached benchmark prices failed the sanity check. Strategy return and cash accounting remain valid.",
+    "max_drawdown_pct": -11.9862,
+    "benchmark_max_drawdown_pct": null,
     "open_positions_count": 2,
     "closed_trades_count": 40,
-    "skipped_orders_count": 145,
+    "skipped_orders_count": 140,
     "closed_trade_summary": {
       "count": 40,
       "win_rate_pct": 42.5,
@@ -63,463 +124,590 @@
   },
   "equity_curve": [
     {
-      "date": "2025-10-17",
+      "date": "2025-10-20",
+      "eval_date": "2025-10-17",
+      "execution_date": "2025-10-20",
       "cash": 7078624.5,
-      "market_value": 2850400.0,
-      "portfolio_equity": 9929024.5,
-      "portfolio_return_pct": -0.7098,
-      "benchmark_equity": 10000000.0,
-      "benchmark_return_pct": 0.0,
+      "market_value": 2952400.0,
+      "portfolio_equity": 10031024.5,
+      "portfolio_return_pct": 0.3102,
+      "benchmark_equity": 10074074.07,
+      "benchmark_return_pct": 0.7407,
       "open_positions": 3,
       "new_entries": 3,
       "exits": 0,
       "top_score": 720,
-      "top_symbol": "7011.T"
+      "top_symbol": "7011.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2025-10-23",
+      "date": "2025-10-27",
+      "eval_date": "2025-10-23",
+      "execution_date": "2025-10-27",
       "cash": 5946929.5,
-      "market_value": 4197100.0,
-      "portfolio_equity": 10144029.5,
-      "portfolio_return_pct": 1.4403,
-      "benchmark_equity": 10249699.16,
-      "benchmark_return_pct": 2.497,
+      "market_value": 4390000.0,
+      "portfolio_equity": 10336929.5,
+      "portfolio_return_pct": 3.3693,
+      "benchmark_equity": 10325925.93,
+      "benchmark_return_pct": 3.2593,
       "open_positions": 4,
       "new_entries": 1,
       "exits": 0,
       "top_score": 720,
-      "top_symbol": "7013.T"
+      "top_symbol": "7013.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2025-10-31",
+      "date": "2025-11-04",
+      "eval_date": "2025-10-31",
+      "execution_date": "2025-11-04",
       "cash": 2729410.45,
-      "market_value": 7856100.0,
-      "portfolio_equity": 10585510.45,
-      "portfolio_return_pct": 5.8551,
-      "benchmark_equity": 10505415.16,
-      "benchmark_return_pct": 5.0542,
+      "market_value": 7750500.0,
+      "portfolio_equity": 10479910.45,
+      "portfolio_return_pct": 4.7991,
+      "benchmark_equity": 10290370.37,
+      "benchmark_return_pct": 2.9037,
       "open_positions": 7,
       "new_entries": 3,
       "exits": 0,
       "top_score": 720,
-      "top_symbol": "8035.T"
+      "top_symbol": "8035.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2025-11-07",
+      "date": "2025-11-10",
+      "eval_date": "2025-11-07",
+      "execution_date": "2025-11-10",
       "cash": 4118857.7,
-      "market_value": 6063300.0,
-      "portfolio_equity": 10182157.7,
-      "portfolio_return_pct": 1.8216,
-      "benchmark_equity": 10394103.49,
-      "benchmark_return_pct": 3.941,
+      "market_value": 6101500.0,
+      "portfolio_equity": 10220357.7,
+      "portfolio_return_pct": 2.2036,
+      "benchmark_equity": 10308148.15,
+      "benchmark_return_pct": 3.0815,
       "open_positions": 6,
       "new_entries": 1,
       "exits": 2,
       "top_score": 720,
-      "top_symbol": "6503.T"
+      "top_symbol": "6503.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2025-11-14",
+      "date": "2025-11-17",
+      "eval_date": "2025-11-14",
+      "execution_date": "2025-11-17",
       "cash": 3124113.0,
-      "market_value": 7078700.0,
-      "portfolio_equity": 10202813.0,
-      "portfolio_return_pct": 2.0281,
-      "benchmark_equity": 10595667.87,
-      "benchmark_return_pct": 5.9567,
+      "market_value": 7038900.0,
+      "portfolio_equity": 10163013.0,
+      "portfolio_return_pct": 1.6301,
+      "benchmark_equity": 10391111.11,
+      "benchmark_return_pct": 3.9111,
       "open_positions": 7,
       "new_entries": 2,
       "exits": 1,
       "top_score": 720,
-      "top_symbol": "6758.T"
+      "top_symbol": "6758.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2025-11-21",
+      "date": "2025-11-25",
+      "eval_date": "2025-11-21",
+      "execution_date": "2025-11-25",
       "cash": 7978520.45,
-      "market_value": 1903200.0,
-      "portfolio_equity": 9881720.45,
-      "portfolio_return_pct": -1.1828,
-      "benchmark_equity": 10400120.34,
-      "benchmark_return_pct": 4.0012,
+      "market_value": 1892800.0,
+      "portfolio_equity": 9871320.45,
+      "portfolio_return_pct": -1.2868,
+      "benchmark_equity": 10225185.19,
+      "benchmark_return_pct": 2.2519,
       "open_positions": 2,
       "new_entries": 0,
       "exits": 5,
       "top_score": 640,
-      "top_symbol": "6503.T"
+      "top_symbol": "6503.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2025-11-28",
+      "date": "2025-12-01",
+      "eval_date": "2025-11-28",
+      "execution_date": "2025-12-01",
       "cash": 5511596.2,
-      "market_value": 4430400.0,
-      "portfolio_equity": 9941996.2,
-      "portfolio_return_pct": -0.58,
-      "benchmark_equity": 10655836.34,
-      "benchmark_return_pct": 6.5584,
+      "market_value": 4333500.0,
+      "portfolio_equity": 9845096.2,
+      "portfolio_return_pct": -1.549,
+      "benchmark_equity": 10373333.33,
+      "benchmark_return_pct": 3.7333,
       "open_positions": 4,
       "new_entries": 3,
       "exits": 1,
       "top_score": 720,
-      "top_symbol": "135A.T"
+      "top_symbol": "135A.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2025-12-05",
+      "date": "2025-12-08",
+      "eval_date": "2025-12-05",
+      "execution_date": "2025-12-08",
       "cash": 4277614.95,
-      "market_value": 5722500.0,
-      "portfolio_equity": 10000114.95,
-      "portfolio_return_pct": 0.0011,
-      "benchmark_equity": 10595667.87,
-      "benchmark_return_pct": 5.9567,
+      "market_value": 5878300.0,
+      "portfolio_equity": 10155914.95,
+      "portfolio_return_pct": 1.5591,
+      "benchmark_equity": 10518518.52,
+      "benchmark_return_pct": 5.1852,
       "open_positions": 5,
       "new_entries": 2,
       "exits": 1,
       "top_score": 720,
-      "top_symbol": "6920.T"
+      "top_symbol": "6920.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2025-12-12",
+      "date": "2025-12-15",
+      "eval_date": "2025-12-12",
+      "execution_date": "2025-12-15",
       "cash": 5369467.6,
-      "market_value": 4462900.0,
-      "portfolio_equity": 9832367.6,
-      "portfolio_return_pct": -1.6763,
-      "benchmark_equity": 10809265.94,
-      "benchmark_return_pct": 8.0927,
+      "market_value": 4461300.0,
+      "portfolio_equity": 9830767.6,
+      "portfolio_return_pct": -1.6923,
+      "benchmark_equity": 10684444.44,
+      "benchmark_return_pct": 6.8444,
       "open_positions": 4,
       "new_entries": 2,
       "exits": 3,
       "top_score": 720,
-      "top_symbol": "6503.T"
+      "top_symbol": "6503.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2025-12-19",
+      "date": "2025-12-22",
+      "eval_date": "2025-12-19",
+      "execution_date": "2025-12-22",
       "cash": 7486886.7,
-      "market_value": 2179800.0,
-      "portfolio_equity": 9666686.7,
-      "portfolio_return_pct": -3.3331,
-      "benchmark_equity": 10688929.0,
-      "benchmark_return_pct": 6.8893,
+      "market_value": 2287400.0,
+      "portfolio_equity": 9774286.7,
+      "portfolio_return_pct": -2.2571,
+      "benchmark_equity": 10583703.7,
+      "benchmark_return_pct": 5.837,
       "open_positions": 2,
       "new_entries": 0,
       "exits": 2,
       "top_score": 646,
-      "top_symbol": "6503.T"
+      "top_symbol": "6503.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2025-12-26",
+      "date": "2025-12-29",
+      "eval_date": "2025-12-26",
+      "execution_date": "2025-12-29",
       "cash": 8750188.9,
-      "market_value": 927400.0,
-      "portfolio_equity": 9677588.9,
-      "portfolio_return_pct": -3.2241,
-      "benchmark_equity": 10794223.83,
-      "benchmark_return_pct": 7.9422,
+      "market_value": 923800.0,
+      "portfolio_equity": 9673988.9,
+      "portfolio_return_pct": -3.2601,
+      "benchmark_equity": 10663703.7,
+      "benchmark_return_pct": 6.637,
       "open_positions": 1,
       "new_entries": 0,
       "exits": 1,
       "top_score": 656,
-      "top_symbol": "6503.T"
+      "top_symbol": "6503.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2025-12-30",
+      "date": "2026-01-05",
+      "eval_date": "2025-12-30",
+      "execution_date": "2026-01-05",
       "cash": 8750188.9,
-      "market_value": 917000.0,
-      "portfolio_equity": 9667188.9,
-      "portfolio_return_pct": -3.3281,
-      "benchmark_equity": 10767148.01,
-      "benchmark_return_pct": 7.6715,
+      "market_value": 958000.0,
+      "portfolio_equity": 9708188.9,
+      "portfolio_return_pct": -2.9181,
+      "benchmark_equity": 10814814.81,
+      "benchmark_return_pct": 8.1481,
       "open_positions": 1,
       "new_entries": 0,
       "exits": 0,
       "top_score": 619,
-      "top_symbol": "6503.T"
+      "top_symbol": "6503.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2026-01-09",
+      "date": "2026-01-13",
+      "eval_date": "2026-01-09",
+      "execution_date": "2026-01-13",
       "cash": 6021702.3,
-      "market_value": 3537500.0,
-      "portfolio_equity": 9559202.3,
-      "portfolio_return_pct": -4.408,
-      "benchmark_equity": 11101083.03,
-      "benchmark_return_pct": 11.0108,
+      "market_value": 3755200.0,
+      "portfolio_equity": 9776902.3,
+      "portfolio_return_pct": -2.231,
+      "benchmark_equity": 11185185.19,
+      "benchmark_return_pct": 11.8519,
       "open_positions": 4,
       "new_entries": 3,
       "exits": 0,
       "top_score": 720,
-      "top_symbol": "8035.T"
+      "top_symbol": "8035.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2026-01-16",
+      "date": "2026-01-19",
+      "eval_date": "2026-01-16",
+      "execution_date": "2026-01-19",
       "cash": 3923760.1,
-      "market_value": 5928900.0,
-      "portfolio_equity": 9852660.1,
-      "portfolio_return_pct": -1.4734,
-      "benchmark_equity": 11576413.96,
-      "benchmark_return_pct": 15.7641,
+      "market_value": 6032800.0,
+      "portfolio_equity": 9956560.1,
+      "portfolio_return_pct": -0.4344,
+      "benchmark_equity": 11377777.78,
+      "benchmark_return_pct": 13.7778,
       "open_positions": 6,
       "new_entries": 2,
       "exits": 0,
       "top_score": 720,
-      "top_symbol": "8035.T"
+      "top_symbol": "8035.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2026-01-23",
+      "date": "2026-01-26",
+      "eval_date": "2026-01-23",
+      "execution_date": "2026-01-26",
       "cash": 3923760.1,
-      "market_value": 5955900.0,
-      "portfolio_equity": 9879660.1,
-      "portfolio_return_pct": -1.2034,
-      "benchmark_equity": 11471119.13,
-      "benchmark_return_pct": 14.7112,
+      "market_value": 6001300.0,
+      "portfolio_equity": 9925060.1,
+      "portfolio_return_pct": -0.7494,
+      "benchmark_equity": 11048888.89,
+      "benchmark_return_pct": 10.4889,
       "open_positions": 6,
       "new_entries": 0,
       "exits": 0,
       "top_score": 720,
-      "top_symbol": "6857.T"
+      "top_symbol": "6857.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2026-01-30",
+      "date": "2026-02-02",
+      "eval_date": "2026-01-30",
+      "execution_date": "2026-02-02",
       "cash": 3744907.36,
-      "market_value": 6040300.01,
-      "portfolio_equity": 9785207.37,
-      "portfolio_return_pct": -2.1479,
-      "benchmark_equity": 11263537.91,
-      "benchmark_return_pct": 12.6354,
+      "market_value": 6018300.0,
+      "portfolio_equity": 9763207.36,
+      "portfolio_return_pct": -2.3679,
+      "benchmark_equity": 11001481.48,
+      "benchmark_return_pct": 10.0148,
       "open_positions": 6,
       "new_entries": 2,
       "exits": 2,
       "top_score": 720,
-      "top_symbol": "6857.T"
+      "top_symbol": "6857.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2026-02-06",
+      "date": "2026-02-09",
+      "eval_date": "2026-02-06",
+      "execution_date": "2026-02-09",
       "cash": 1533995.96,
-      "market_value": 8755950.0,
-      "portfolio_equity": 10289945.96,
-      "portfolio_return_pct": 2.8995,
-      "benchmark_equity": 11687725.63,
-      "benchmark_return_pct": 16.8773,
+      "market_value": 9367850.01,
+      "portfolio_equity": 10901845.97,
+      "portfolio_return_pct": 9.0185,
+      "benchmark_equity": 11771851.85,
+      "benchmark_return_pct": 17.7185,
       "open_positions": 8,
       "new_entries": 2,
       "exits": 0,
       "top_score": 720,
-      "top_symbol": "7013.T"
+      "top_symbol": "7013.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2026-02-13",
+      "date": "2026-02-16",
+      "eval_date": "2026-02-13",
+      "execution_date": "2026-02-16",
       "cash": 5022105.93,
-      "market_value": 5848100.0,
-      "portfolio_equity": 10870205.93,
-      "portfolio_return_pct": 8.7021,
-      "benchmark_equity": 12069795.43,
-      "benchmark_return_pct": 20.698,
+      "market_value": 6136500.0,
+      "portfolio_equity": 11158605.93,
+      "portfolio_return_pct": 11.5861,
+      "benchmark_equity": 11795555.56,
+      "benchmark_return_pct": 17.9556,
       "open_positions": 5,
       "new_entries": 0,
       "exits": 3,
       "top_score": 720,
-      "top_symbol": "7012.T"
+      "top_symbol": "7012.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2026-02-20",
+      "date": "2026-02-24",
+      "eval_date": "2026-02-20",
+      "execution_date": "2026-02-24",
       "cash": 5003447.33,
-      "market_value": 6056400.01,
-      "portfolio_equity": 11059847.34,
-      "portfolio_return_pct": 10.5985,
-      "benchmark_equity": 12036702.77,
-      "benchmark_return_pct": 20.367,
+      "market_value": 6020400.05,
+      "portfolio_equity": 11023847.38,
+      "portfolio_return_pct": 10.2385,
+      "benchmark_equity": 11884444.44,
+      "benchmark_return_pct": 18.8444,
       "open_positions": 5,
       "new_entries": 3,
       "exits": 3,
       "top_score": 720,
-      "top_symbol": "6503.T"
+      "top_symbol": "6503.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2026-02-27",
+      "date": "2026-03-02",
+      "eval_date": "2026-02-27",
+      "execution_date": "2026-03-02",
       "cash": 5003447.33,
-      "market_value": 6290550.05,
-      "portfolio_equity": 11293997.38,
-      "portfolio_return_pct": 12.94,
-      "benchmark_equity": 12427797.83,
-      "benchmark_return_pct": 24.278,
+      "market_value": 6458350.0,
+      "portfolio_equity": 11461797.33,
+      "portfolio_return_pct": 14.618,
+      "benchmark_equity": 12130370.37,
+      "benchmark_return_pct": 21.3037,
       "open_positions": 5,
       "new_entries": 0,
       "exits": 0,
       "top_score": 720,
-      "top_symbol": "7012.T"
+      "top_symbol": "7012.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2026-03-06",
+      "date": "2026-03-09",
+      "eval_date": "2026-03-06",
+      "execution_date": "2026-03-09",
       "cash": 9142729.09,
-      "market_value": 1307200.0,
-      "portfolio_equity": 10449929.09,
-      "portfolio_return_pct": 4.4993,
-      "benchmark_equity": 11741877.26,
-      "benchmark_return_pct": 17.4188,
+      "market_value": 1255600.0,
+      "portfolio_equity": 10398329.09,
+      "portfolio_return_pct": 3.9833,
+      "benchmark_equity": 11122962.96,
+      "benchmark_return_pct": 11.2296,
       "open_positions": 1,
       "new_entries": 0,
       "exits": 4,
       "top_score": 669,
-      "top_symbol": "6146.T"
+      "top_symbol": "6146.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2026-03-13",
+      "date": "2026-03-16",
+      "eval_date": "2026-03-13",
+      "execution_date": "2026-03-16",
       "cash": 6205329.59,
-      "market_value": 4237800.0,
-      "portfolio_equity": 10443129.59,
-      "portfolio_return_pct": 4.4313,
-      "benchmark_equity": 11459085.44,
-      "benchmark_return_pct": 14.5909,
+      "market_value": 4176533.3,
+      "portfolio_equity": 10381862.89,
+      "portfolio_return_pct": 3.8186,
+      "benchmark_equity": 11229629.63,
+      "benchmark_return_pct": 12.2963,
       "open_positions": 4,
       "new_entries": 3,
       "exits": 0,
       "top_score": 720,
-      "top_symbol": "6920.T"
+      "top_symbol": "6920.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2026-03-19",
+      "date": "2026-03-23",
+      "eval_date": "2026-03-19",
+      "execution_date": "2026-03-23",
       "cash": 5279142.39,
-      "market_value": 5225333.3,
-      "portfolio_equity": 10504475.69,
-      "portfolio_return_pct": 5.0448,
-      "benchmark_equity": 11404933.81,
-      "benchmark_return_pct": 14.0493,
+      "market_value": 4893800.0,
+      "portfolio_equity": 10172942.39,
+      "portfolio_return_pct": 1.7294,
+      "benchmark_equity": 10841481.48,
+      "benchmark_return_pct": 8.4148,
       "open_positions": 5,
       "new_entries": 1,
       "exits": 0,
       "top_score": 644,
-      "top_symbol": "5803.T"
+      "top_symbol": "5803.T",
+      "benchmark_quality": "valid",
+      "benchmark_quality_reason": null
     },
     {
-      "date": "2026-03-27",
+      "date": "2026-03-30",
+      "eval_date": "2026-03-27",
+      "execution_date": "2026-03-30",
       "cash": 7065365.29,
-      "market_value": 3158400.0,
-      "portfolio_equity": 10223765.29,
-      "portfolio_return_pct": 2.2377,
-      "benchmark_equity": 11513237.06,
-      "benchmark_return_pct": 15.1324,
+      "market_value": 3022600.0,
+      "portfolio_equity": 10087965.29,
+      "portfolio_return_pct": 0.8797,
+      "benchmark_equity": null,
+      "benchmark_return_pct": null,
       "open_positions": 3,
       "new_entries": 1,
       "exits": 3,
       "top_score": 685,
-      "top_symbol": "5803.T"
+      "top_symbol": "5803.T",
+      "benchmark_quality": "invalid",
+      "benchmark_quality_reason": "benchmark return -88.85% exceeds ±35.0% guardrail",
+      "benchmark_equity_raw": 1115259.26,
+      "benchmark_return_pct_raw": -88.8474
     },
     {
-      "date": "2026-04-03",
+      "date": "2026-04-06",
+      "eval_date": "2026-04-03",
+      "execution_date": "2026-04-06",
       "cash": 7058075.69,
-      "market_value": 3197200.0,
-      "portfolio_equity": 10255275.69,
-      "portfolio_return_pct": 2.5528,
-      "benchmark_equity": 1163056.56,
-      "benchmark_return_pct": -88.3694,
+      "market_value": 3251800.0,
+      "portfolio_equity": 10309875.69,
+      "portfolio_return_pct": 3.0988,
+      "benchmark_equity": null,
+      "benchmark_return_pct": null,
       "open_positions": 3,
       "new_entries": 1,
       "exits": 1,
       "top_score": 678,
-      "top_symbol": "5803.T"
+      "top_symbol": "5803.T",
+      "benchmark_quality": "invalid",
+      "benchmark_quality_reason": "benchmark return -88.54% exceeds ±35.0% guardrail",
+      "benchmark_equity_raw": 1146074.07,
+      "benchmark_return_pct_raw": -88.5393
     },
     {
-      "date": "2026-04-10",
+      "date": "2026-04-13",
+      "eval_date": "2026-04-10",
+      "execution_date": "2026-04-13",
       "cash": 4789847.69,
-      "market_value": 5693500.0,
-      "portfolio_equity": 10483347.69,
-      "portfolio_return_pct": 4.8335,
-      "benchmark_equity": 1192839.95,
-      "benchmark_return_pct": -88.0716,
+      "market_value": 5683900.0,
+      "portfolio_equity": 10473747.69,
+      "portfolio_return_pct": 4.7375,
+      "benchmark_equity": null,
+      "benchmark_return_pct": null,
       "open_positions": 5,
       "new_entries": 3,
       "exits": 1,
       "top_score": 720,
-      "top_symbol": "6920.T"
+      "top_symbol": "6920.T",
+      "benchmark_quality": "invalid",
+      "benchmark_quality_reason": "benchmark return -88.30% exceeds ±35.0% guardrail",
+      "benchmark_equity_raw": 1169777.78,
+      "benchmark_return_pct_raw": -88.3022
     },
     {
-      "date": "2026-04-17",
+      "date": "2026-04-20",
+      "eval_date": "2026-04-17",
+      "execution_date": "2026-04-20",
       "cash": 5719051.79,
-      "market_value": 4822400.0,
-      "portfolio_equity": 10541451.79,
-      "portfolio_return_pct": 5.4145,
-      "benchmark_equity": 1200661.85,
-      "benchmark_return_pct": -87.9934,
+      "market_value": 4908600.0,
+      "portfolio_equity": 10627651.79,
+      "portfolio_return_pct": 6.2765,
+      "benchmark_equity": null,
+      "benchmark_return_pct": null,
       "open_positions": 4,
       "new_entries": 0,
       "exits": 1,
       "top_score": 720,
-      "top_symbol": "5803.T"
+      "top_symbol": "5803.T",
+      "benchmark_quality": "invalid",
+      "benchmark_quality_reason": "benchmark return -88.13% exceeds ±35.0% guardrail",
+      "benchmark_equity_raw": 1186962.96,
+      "benchmark_return_pct_raw": -88.1304
     },
     {
-      "date": "2026-04-24",
+      "date": "2026-04-27",
+      "eval_date": "2026-04-24",
+      "execution_date": "2026-04-27",
       "cash": 6019185.19,
-      "market_value": 4667200.0,
-      "portfolio_equity": 10686385.19,
-      "portfolio_return_pct": 6.8639,
-      "benchmark_equity": 1184416.37,
-      "benchmark_return_pct": -88.1558,
+      "market_value": 4740500.0,
+      "portfolio_equity": 10759685.19,
+      "portfolio_return_pct": 7.5969,
+      "benchmark_equity": null,
+      "benchmark_return_pct": null,
       "open_positions": 4,
       "new_entries": 1,
       "exits": 1,
       "top_score": 720,
-      "top_symbol": "8035.T"
+      "top_symbol": "8035.T",
+      "benchmark_quality": "invalid",
+      "benchmark_quality_reason": "benchmark return -88.27% exceeds ±35.0% guardrail",
+      "benchmark_equity_raw": 1173037.04,
+      "benchmark_return_pct_raw": -88.2696
     },
     {
-      "date": "2026-05-01",
+      "date": "2026-05-07",
+      "eval_date": "2026-05-01",
+      "execution_date": "2026-05-07",
       "cash": 3672169.94,
-      "market_value": 7150800.0,
-      "portfolio_equity": 10822969.94,
-      "portfolio_return_pct": 8.2297,
-      "benchmark_equity": 1187123.95,
-      "benchmark_return_pct": -88.1288,
+      "market_value": 7670200.0,
+      "portfolio_equity": 11342369.94,
+      "portfolio_return_pct": 13.4237,
+      "benchmark_equity": null,
+      "benchmark_return_pct": null,
       "open_positions": 6,
       "new_entries": 2,
       "exits": 0,
       "top_score": 720,
-      "top_symbol": "8035.T"
+      "top_symbol": "8035.T",
+      "benchmark_quality": "invalid",
+      "benchmark_quality_reason": "benchmark return -87.93% exceeds ±35.0% guardrail",
+      "benchmark_equity_raw": 1206518.52,
+      "benchmark_return_pct_raw": -87.9348
     },
     {
-      "date": "2026-05-08",
+      "date": "2026-05-11",
+      "eval_date": "2026-05-08",
+      "execution_date": "2026-05-11",
       "cash": 5026135.94,
-      "market_value": 6765000.0,
-      "portfolio_equity": 11791135.94,
-      "portfolio_return_pct": 17.9114,
-      "benchmark_equity": 1221119.13,
-      "benchmark_return_pct": -87.7888,
+      "market_value": 7017400.0,
+      "portfolio_equity": 12043535.94,
+      "portfolio_return_pct": 20.4354,
+      "benchmark_equity": null,
+      "benchmark_return_pct": null,
       "open_positions": 5,
       "new_entries": 0,
       "exits": 1,
       "top_score": 720,
-      "top_symbol": "8035.T"
+      "top_symbol": "8035.T",
+      "benchmark_quality": "invalid",
+      "benchmark_quality_reason": "benchmark return -87.94% exceeds ±35.0% guardrail",
+      "benchmark_equity_raw": 1206222.22,
+      "benchmark_return_pct_raw": -87.9378
     },
     {
-      "date": "2026-05-15",
+      "date": "2026-05-18",
+      "eval_date": "2026-05-15",
+      "execution_date": "2026-05-18",
       "cash": 9156658.94,
-      "market_value": 2432200.0,
-      "portfolio_equity": 11588858.94,
-      "portfolio_return_pct": 15.8886,
-      "benchmark_equity": 1233152.83,
-      "benchmark_return_pct": -87.6685,
+      "market_value": 2388600.0,
+      "portfolio_equity": 11545258.94,
+      "portfolio_return_pct": 15.4526,
+      "benchmark_equity": null,
+      "benchmark_return_pct": null,
       "open_positions": 2,
       "new_entries": 1,
       "exits": 4,
       "top_score": 698,
-      "top_symbol": "6503.T"
-    },
-    {
-      "date": "2026-05-20",
-      "cash": 9156658.94,
-      "market_value": 2137400.0,
-      "portfolio_equity": 11294058.94,
-      "portfolio_return_pct": 12.9406,
-      "benchmark_equity": 1206979.54,
-      "benchmark_return_pct": -87.9302,
-      "open_positions": 2,
-      "new_entries": 0,
-      "exits": 0,
-      "top_score": 610,
-      "top_symbol": "135A.T"
+      "top_symbol": "6503.T",
+      "benchmark_quality": "invalid",
+      "benchmark_quality_reason": "benchmark return -87.97% exceeds ±35.0% guardrail",
+      "benchmark_equity_raw": 1202666.67,
+      "benchmark_return_pct_raw": -87.9733
     }
   ],
   "snapshots": [
     {
       "eval_date": "2025-10-17",
+      "execution_date": "2025-10-20",
       "score_candidates": 10,
       "new_entries": 3,
       "exits": 0,
       "cash": 7078624.5,
-      "market_value": 2850400.0,
-      "portfolio_equity": 9929024.5,
+      "market_value": 2952400.0,
+      "portfolio_equity": 10031024.5,
       "top3": [
         {
           "rank": 1,
@@ -546,12 +734,13 @@
     },
     {
       "eval_date": "2025-10-23",
+      "execution_date": "2025-10-27",
       "score_candidates": 10,
       "new_entries": 1,
       "exits": 0,
       "cash": 5946929.5,
-      "market_value": 4197100.0,
-      "portfolio_equity": 10144029.5,
+      "market_value": 4390000.0,
+      "portfolio_equity": 10336929.5,
       "top3": [
         {
           "rank": 1,
@@ -578,12 +767,13 @@
     },
     {
       "eval_date": "2025-10-31",
+      "execution_date": "2025-11-04",
       "score_candidates": 10,
       "new_entries": 3,
       "exits": 0,
       "cash": 2729410.45,
-      "market_value": 7856100.0,
-      "portfolio_equity": 10585510.45,
+      "market_value": 7750500.0,
+      "portfolio_equity": 10479910.45,
       "top3": [
         {
           "rank": 1,
@@ -610,12 +800,13 @@
     },
     {
       "eval_date": "2025-11-07",
+      "execution_date": "2025-11-10",
       "score_candidates": 10,
       "new_entries": 1,
       "exits": 2,
       "cash": 4118857.7,
-      "market_value": 6063300.0,
-      "portfolio_equity": 10182157.7,
+      "market_value": 6101500.0,
+      "portfolio_equity": 10220357.7,
       "top3": [
         {
           "rank": 1,
@@ -642,12 +833,13 @@
     },
     {
       "eval_date": "2025-11-14",
+      "execution_date": "2025-11-17",
       "score_candidates": 10,
       "new_entries": 2,
       "exits": 1,
       "cash": 3124113.0,
-      "market_value": 7078700.0,
-      "portfolio_equity": 10202813.0,
+      "market_value": 7038900.0,
+      "portfolio_equity": 10163013.0,
       "top3": [
         {
           "rank": 1,
@@ -674,12 +866,13 @@
     },
     {
       "eval_date": "2025-11-21",
+      "execution_date": "2025-11-25",
       "score_candidates": 10,
       "new_entries": 0,
       "exits": 5,
       "cash": 7978520.45,
-      "market_value": 1903200.0,
-      "portfolio_equity": 9881720.45,
+      "market_value": 1892800.0,
+      "portfolio_equity": 9871320.45,
       "top3": [
         {
           "rank": 1,
@@ -706,12 +899,13 @@
     },
     {
       "eval_date": "2025-11-28",
+      "execution_date": "2025-12-01",
       "score_candidates": 10,
       "new_entries": 3,
       "exits": 1,
       "cash": 5511596.2,
-      "market_value": 4430400.0,
-      "portfolio_equity": 9941996.2,
+      "market_value": 4333500.0,
+      "portfolio_equity": 9845096.2,
       "top3": [
         {
           "rank": 1,
@@ -738,12 +932,13 @@
     },
     {
       "eval_date": "2025-12-05",
+      "execution_date": "2025-12-08",
       "score_candidates": 10,
       "new_entries": 2,
       "exits": 1,
       "cash": 4277614.95,
-      "market_value": 5722500.0,
-      "portfolio_equity": 10000114.95,
+      "market_value": 5878300.0,
+      "portfolio_equity": 10155914.95,
       "top3": [
         {
           "rank": 1,
@@ -770,12 +965,13 @@
     },
     {
       "eval_date": "2025-12-12",
+      "execution_date": "2025-12-15",
       "score_candidates": 10,
       "new_entries": 2,
       "exits": 3,
       "cash": 5369467.6,
-      "market_value": 4462900.0,
-      "portfolio_equity": 9832367.6,
+      "market_value": 4461300.0,
+      "portfolio_equity": 9830767.6,
       "top3": [
         {
           "rank": 1,
@@ -802,12 +998,13 @@
     },
     {
       "eval_date": "2025-12-19",
+      "execution_date": "2025-12-22",
       "score_candidates": 10,
       "new_entries": 0,
       "exits": 2,
       "cash": 7486886.7,
-      "market_value": 2179800.0,
-      "portfolio_equity": 9666686.7,
+      "market_value": 2287400.0,
+      "portfolio_equity": 9774286.7,
       "top3": [
         {
           "rank": 1,
@@ -834,12 +1031,13 @@
     },
     {
       "eval_date": "2025-12-26",
+      "execution_date": "2025-12-29",
       "score_candidates": 10,
       "new_entries": 0,
       "exits": 1,
       "cash": 8750188.9,
-      "market_value": 927400.0,
-      "portfolio_equity": 9677588.9,
+      "market_value": 923800.0,
+      "portfolio_equity": 9673988.9,
       "top3": [
         {
           "rank": 1,
@@ -866,12 +1064,13 @@
     },
     {
       "eval_date": "2025-12-30",
+      "execution_date": "2026-01-05",
       "score_candidates": 10,
       "new_entries": 0,
       "exits": 0,
       "cash": 8750188.9,
-      "market_value": 917000.0,
-      "portfolio_equity": 9667188.9,
+      "market_value": 958000.0,
+      "portfolio_equity": 9708188.9,
       "top3": [
         {
           "rank": 1,
@@ -898,12 +1097,13 @@
     },
     {
       "eval_date": "2026-01-09",
+      "execution_date": "2026-01-13",
       "score_candidates": 10,
       "new_entries": 3,
       "exits": 0,
       "cash": 6021702.3,
-      "market_value": 3537500.0,
-      "portfolio_equity": 9559202.3,
+      "market_value": 3755200.0,
+      "portfolio_equity": 9776902.3,
       "top3": [
         {
           "rank": 1,
@@ -930,12 +1130,13 @@
     },
     {
       "eval_date": "2026-01-16",
+      "execution_date": "2026-01-19",
       "score_candidates": 10,
       "new_entries": 2,
       "exits": 0,
       "cash": 3923760.1,
-      "market_value": 5928900.0,
-      "portfolio_equity": 9852660.1,
+      "market_value": 6032800.0,
+      "portfolio_equity": 9956560.1,
       "top3": [
         {
           "rank": 1,
@@ -962,12 +1163,13 @@
     },
     {
       "eval_date": "2026-01-23",
+      "execution_date": "2026-01-26",
       "score_candidates": 10,
       "new_entries": 0,
       "exits": 0,
       "cash": 3923760.1,
-      "market_value": 5955900.0,
-      "portfolio_equity": 9879660.1,
+      "market_value": 6001300.0,
+      "portfolio_equity": 9925060.1,
       "top3": [
         {
           "rank": 1,
@@ -994,12 +1196,13 @@
     },
     {
       "eval_date": "2026-01-30",
+      "execution_date": "2026-02-02",
       "score_candidates": 10,
       "new_entries": 2,
       "exits": 2,
       "cash": 3744907.36,
-      "market_value": 6040300.01,
-      "portfolio_equity": 9785207.37,
+      "market_value": 6018300.0,
+      "portfolio_equity": 9763207.36,
       "top3": [
         {
           "rank": 1,
@@ -1026,12 +1229,13 @@
     },
     {
       "eval_date": "2026-02-06",
+      "execution_date": "2026-02-09",
       "score_candidates": 10,
       "new_entries": 2,
       "exits": 0,
       "cash": 1533995.96,
-      "market_value": 8755950.0,
-      "portfolio_equity": 10289945.96,
+      "market_value": 9367850.01,
+      "portfolio_equity": 10901845.97,
       "top3": [
         {
           "rank": 1,
@@ -1058,12 +1262,13 @@
     },
     {
       "eval_date": "2026-02-13",
+      "execution_date": "2026-02-16",
       "score_candidates": 10,
       "new_entries": 0,
       "exits": 3,
       "cash": 5022105.93,
-      "market_value": 5848100.0,
-      "portfolio_equity": 10870205.93,
+      "market_value": 6136500.0,
+      "portfolio_equity": 11158605.93,
       "top3": [
         {
           "rank": 1,
@@ -1090,12 +1295,13 @@
     },
     {
       "eval_date": "2026-02-20",
+      "execution_date": "2026-02-24",
       "score_candidates": 10,
       "new_entries": 3,
       "exits": 3,
       "cash": 5003447.33,
-      "market_value": 6056400.01,
-      "portfolio_equity": 11059847.34,
+      "market_value": 6020400.05,
+      "portfolio_equity": 11023847.38,
       "top3": [
         {
           "rank": 1,
@@ -1122,12 +1328,13 @@
     },
     {
       "eval_date": "2026-02-27",
+      "execution_date": "2026-03-02",
       "score_candidates": 10,
       "new_entries": 0,
       "exits": 0,
       "cash": 5003447.33,
-      "market_value": 6290550.05,
-      "portfolio_equity": 11293997.38,
+      "market_value": 6458350.0,
+      "portfolio_equity": 11461797.33,
       "top3": [
         {
           "rank": 1,
@@ -1154,12 +1361,13 @@
     },
     {
       "eval_date": "2026-03-06",
+      "execution_date": "2026-03-09",
       "score_candidates": 10,
       "new_entries": 0,
       "exits": 4,
       "cash": 9142729.09,
-      "market_value": 1307200.0,
-      "portfolio_equity": 10449929.09,
+      "market_value": 1255600.0,
+      "portfolio_equity": 10398329.09,
       "top3": [
         {
           "rank": 1,
@@ -1186,12 +1394,13 @@
     },
     {
       "eval_date": "2026-03-13",
+      "execution_date": "2026-03-16",
       "score_candidates": 10,
       "new_entries": 3,
       "exits": 0,
       "cash": 6205329.59,
-      "market_value": 4237800.0,
-      "portfolio_equity": 10443129.59,
+      "market_value": 4176533.3,
+      "portfolio_equity": 10381862.89,
       "top3": [
         {
           "rank": 1,
@@ -1218,12 +1427,13 @@
     },
     {
       "eval_date": "2026-03-19",
+      "execution_date": "2026-03-23",
       "score_candidates": 10,
       "new_entries": 1,
       "exits": 0,
       "cash": 5279142.39,
-      "market_value": 5225333.3,
-      "portfolio_equity": 10504475.69,
+      "market_value": 4893800.0,
+      "portfolio_equity": 10172942.39,
       "top3": [
         {
           "rank": 1,
@@ -1250,12 +1460,13 @@
     },
     {
       "eval_date": "2026-03-27",
+      "execution_date": "2026-03-30",
       "score_candidates": 10,
       "new_entries": 1,
       "exits": 3,
       "cash": 7065365.29,
-      "market_value": 3158400.0,
-      "portfolio_equity": 10223765.29,
+      "market_value": 3022600.0,
+      "portfolio_equity": 10087965.29,
       "top3": [
         {
           "rank": 1,
@@ -1282,12 +1493,13 @@
     },
     {
       "eval_date": "2026-04-03",
+      "execution_date": "2026-04-06",
       "score_candidates": 10,
       "new_entries": 1,
       "exits": 1,
       "cash": 7058075.69,
-      "market_value": 3197200.0,
-      "portfolio_equity": 10255275.69,
+      "market_value": 3251800.0,
+      "portfolio_equity": 10309875.69,
       "top3": [
         {
           "rank": 1,
@@ -1314,12 +1526,13 @@
     },
     {
       "eval_date": "2026-04-10",
+      "execution_date": "2026-04-13",
       "score_candidates": 10,
       "new_entries": 3,
       "exits": 1,
       "cash": 4789847.69,
-      "market_value": 5693500.0,
-      "portfolio_equity": 10483347.69,
+      "market_value": 5683900.0,
+      "portfolio_equity": 10473747.69,
       "top3": [
         {
           "rank": 1,
@@ -1346,12 +1559,13 @@
     },
     {
       "eval_date": "2026-04-17",
+      "execution_date": "2026-04-20",
       "score_candidates": 10,
       "new_entries": 0,
       "exits": 1,
       "cash": 5719051.79,
-      "market_value": 4822400.0,
-      "portfolio_equity": 10541451.79,
+      "market_value": 4908600.0,
+      "portfolio_equity": 10627651.79,
       "top3": [
         {
           "rank": 1,
@@ -1378,12 +1592,13 @@
     },
     {
       "eval_date": "2026-04-24",
+      "execution_date": "2026-04-27",
       "score_candidates": 10,
       "new_entries": 1,
       "exits": 1,
       "cash": 6019185.19,
-      "market_value": 4667200.0,
-      "portfolio_equity": 10686385.19,
+      "market_value": 4740500.0,
+      "portfolio_equity": 10759685.19,
       "top3": [
         {
           "rank": 1,
@@ -1410,12 +1625,13 @@
     },
     {
       "eval_date": "2026-05-01",
+      "execution_date": "2026-05-07",
       "score_candidates": 10,
       "new_entries": 2,
       "exits": 0,
       "cash": 3672169.94,
-      "market_value": 7150800.0,
-      "portfolio_equity": 10822969.94,
+      "market_value": 7670200.0,
+      "portfolio_equity": 11342369.94,
       "top3": [
         {
           "rank": 1,
@@ -1442,12 +1658,13 @@
     },
     {
       "eval_date": "2026-05-08",
+      "execution_date": "2026-05-11",
       "score_candidates": 10,
       "new_entries": 0,
       "exits": 1,
       "cash": 5026135.94,
-      "market_value": 6765000.0,
-      "portfolio_equity": 11791135.94,
+      "market_value": 7017400.0,
+      "portfolio_equity": 12043535.94,
       "top3": [
         {
           "rank": 1,
@@ -1474,12 +1691,13 @@
     },
     {
       "eval_date": "2026-05-15",
+      "execution_date": "2026-05-18",
       "score_candidates": 10,
       "new_entries": 1,
       "exits": 4,
       "cash": 9156658.94,
-      "market_value": 2432200.0,
-      "portfolio_equity": 11588858.94,
+      "market_value": 2388600.0,
+      "portfolio_equity": 11545258.94,
       "top3": [
         {
           "rank": 1,
@@ -1503,38 +1721,6 @@
           "quality": "C Early Watch"
         }
       ]
-    },
-    {
-      "eval_date": "2026-05-20",
-      "score_candidates": 10,
-      "new_entries": 0,
-      "exits": 0,
-      "cash": 9156658.94,
-      "market_value": 2137400.0,
-      "portfolio_equity": 11294058.94,
-      "top3": [
-        {
-          "rank": 1,
-          "symbol": "135A.T",
-          "score_pts": 610,
-          "signal": "Monitor",
-          "quality": "C Early Watch"
-        },
-        {
-          "rank": 2,
-          "symbol": "3652.T",
-          "score_pts": 593,
-          "signal": "Avoid",
-          "quality": "E Avoid"
-        },
-        {
-          "rank": 3,
-          "symbol": "8035.T",
-          "score_pts": 545,
-          "signal": "Avoid",
-          "quality": "E Avoid"
-        }
-      ]
     }
   ],
   "open_positions": [
@@ -1555,16 +1741,16 @@
       "cash_flow": -1150122.6,
       "benchmark_entry_price": 394.5,
       "benchmark_units": 2915.39315589,
-      "weeks_held": 6,
+      "weeks_held": 5,
       "max_unrealized_pct": 12.3359,
-      "min_unrealized_pct": -1.6279,
+      "min_unrealized_pct": 0.0,
       "last_score_pts": 698,
       "last_signal": "Monitor",
       "last_quality": "B Constructive Setup",
-      "current_price": 5657.0,
-      "market_value": 1131400.0,
-      "unrealized_pct": -1.6279,
-      "weight_pct": 10.02
+      "current_price": 6350.0,
+      "market_value": 1270000.0,
+      "unrealized_pct": 10.423,
+      "weight_pct": 11.0
     },
     {
       "symbol": "9984.T",
@@ -1583,16 +1769,16 @@
       "cash_flow": -1090633.5,
       "benchmark_entry_price": 410.0,
       "benchmark_units": 2660.08170732,
-      "weeks_held": 1,
+      "weeks_held": 0,
       "max_unrealized_pct": 0.0,
-      "min_unrealized_pct": -7.76,
+      "min_unrealized_pct": 0.0,
       "last_score_pts": 627,
       "last_signal": "Monitor",
       "last_quality": "C Early Watch",
-      "current_price": 5030.0,
-      "market_value": 1006000.0,
-      "unrealized_pct": -7.76,
-      "weight_pct": 8.91
+      "current_price": 5593.0,
+      "market_value": 1118600.0,
+      "unrealized_pct": 2.5642,
+      "weight_pct": 9.69
     }
   ],
   "closed_trades": [
@@ -3119,6 +3305,46 @@
   ],
   "skipped_orders": [
     {
+      "eval_date": "2026-01-23",
+      "symbol": "8035.T",
+      "rank": 4,
+      "score_pts": 694,
+      "signal": "Monitor",
+      "reason": "insufficient cash for round lot"
+    },
+    {
+      "eval_date": "2026-01-23",
+      "symbol": "6920.T",
+      "rank": 5,
+      "score_pts": 693,
+      "signal": "Monitor",
+      "reason": "insufficient cash for round lot"
+    },
+    {
+      "eval_date": "2026-01-30",
+      "symbol": "6857.T",
+      "rank": 1,
+      "score_pts": 720,
+      "signal": "Monitor",
+      "reason": "insufficient cash for round lot"
+    },
+    {
+      "eval_date": "2026-01-30",
+      "symbol": "7013.T",
+      "rank": 3,
+      "score_pts": 659,
+      "signal": "Monitor",
+      "reason": "already held"
+    },
+    {
+      "eval_date": "2026-01-30",
+      "symbol": "5802.T",
+      "rank": 5,
+      "score_pts": 632,
+      "signal": "Monitor",
+      "reason": "already held"
+    },
+    {
       "eval_date": "2026-02-06",
       "symbol": "7013.T",
       "rank": 1,
@@ -3717,51 +3943,98 @@
       "score_pts": 617,
       "signal": "Avoid",
       "reason": "not trade or monitor"
-    },
-    {
-      "eval_date": "2026-05-20",
-      "symbol": "135A.T",
-      "rank": 1,
-      "score_pts": 610,
-      "signal": "Monitor",
-      "reason": "distribution / weak close"
-    },
-    {
-      "eval_date": "2026-05-20",
-      "symbol": "3652.T",
-      "rank": 2,
-      "score_pts": 593,
-      "signal": "Avoid",
-      "reason": "not trade or monitor"
-    },
-    {
-      "eval_date": "2026-05-20",
-      "symbol": "8035.T",
-      "rank": 3,
-      "score_pts": 545,
-      "signal": "Avoid",
-      "reason": "not trade or monitor"
-    },
-    {
-      "eval_date": "2026-05-20",
-      "symbol": "5802.T",
-      "rank": 4,
-      "score_pts": 541,
-      "signal": "Avoid",
-      "reason": "not trade or monitor"
-    },
-    {
-      "eval_date": "2026-05-20",
-      "symbol": "9984.T",
-      "rank": 5,
-      "score_pts": 492,
-      "signal": "Avoid",
-      "reason": "already held"
     }
   ],
   "weekly_decisions": [
     {
+      "eval_date": "2025-12-30",
+      "execution_date": "2026-01-05",
+      "top10": [
+        {
+          "rank": 1,
+          "symbol": "6503.T",
+          "score_pts": 619,
+          "signal": "Monitor",
+          "quality": "C Early Watch",
+          "liquidity_band": "Institutional"
+        },
+        {
+          "rank": 2,
+          "symbol": "8035.T",
+          "score_pts": 605,
+          "signal": "Monitor",
+          "quality": "C Early Watch",
+          "liquidity_band": "Institutional"
+        },
+        {
+          "rank": 3,
+          "symbol": "5802.T",
+          "score_pts": 588,
+          "signal": "Avoid",
+          "quality": "E Avoid",
+          "liquidity_band": "Institutional"
+        },
+        {
+          "rank": 4,
+          "symbol": "6920.T",
+          "score_pts": 584,
+          "signal": "Avoid",
+          "quality": "E Avoid",
+          "liquidity_band": "Institutional"
+        },
+        {
+          "rank": 5,
+          "symbol": "6146.T",
+          "score_pts": 518,
+          "signal": "Avoid",
+          "quality": "E Avoid",
+          "liquidity_band": "Institutional"
+        },
+        {
+          "rank": 6,
+          "symbol": "6501.T",
+          "score_pts": 516,
+          "signal": "Avoid",
+          "quality": "E Avoid",
+          "liquidity_band": "Institutional"
+        },
+        {
+          "rank": 7,
+          "symbol": "4425.T",
+          "score_pts": 509,
+          "signal": "Avoid",
+          "quality": "E Avoid",
+          "liquidity_band": "High Liquidity"
+        },
+        {
+          "rank": 8,
+          "symbol": "6857.T",
+          "score_pts": 505,
+          "signal": "Avoid",
+          "quality": "E Avoid",
+          "liquidity_band": "Institutional"
+        },
+        {
+          "rank": 9,
+          "symbol": "5803.T",
+          "score_pts": 498,
+          "signal": "Avoid",
+          "quality": "E Avoid",
+          "liquidity_band": "Institutional"
+        },
+        {
+          "rank": 10,
+          "symbol": "7013.T",
+          "score_pts": 464,
+          "signal": "Avoid",
+          "quality": "E Avoid",
+          "liquidity_band": "Institutional"
+        }
+      ]
+    },
+    {
       "eval_date": "2026-01-09",
+      "execution_date": "2026-01-13",
       "top10": [
         {
           "rank": 1,
@@ -3847,6 +4120,7 @@
     },
     {
       "eval_date": "2026-01-16",
+      "execution_date": "2026-01-19",
       "top10": [
         {
           "rank": 1,
@@ -3932,6 +4206,7 @@
     },
     {
       "eval_date": "2026-01-23",
+      "execution_date": "2026-01-26",
       "top10": [
         {
           "rank": 1,
@@ -4017,6 +4292,7 @@
     },
     {
       "eval_date": "2026-01-30",
+      "execution_date": "2026-02-02",
       "top10": [
         {
           "rank": 1,
@@ -4102,6 +4378,7 @@
     },
     {
       "eval_date": "2026-02-06",
+      "execution_date": "2026-02-09",
       "top10": [
         {
           "rank": 1,
@@ -4187,6 +4464,7 @@
     },
     {
       "eval_date": "2026-02-13",
+      "execution_date": "2026-02-16",
       "top10": [
         {
           "rank": 1,
@@ -4272,6 +4550,7 @@
     },
     {
       "eval_date": "2026-02-20",
+      "execution_date": "2026-02-24",
       "top10": [
         {
           "rank": 1,
@@ -4357,6 +4636,7 @@
     },
     {
       "eval_date": "2026-02-27",
+      "execution_date": "2026-03-02",
       "top10": [
         {
           "rank": 1,
@@ -4442,6 +4722,7 @@
     },
     {
       "eval_date": "2026-03-06",
+      "execution_date": "2026-03-09",
       "top10": [
         {
           "rank": 1,
@@ -4527,6 +4808,7 @@
     },
     {
       "eval_date": "2026-03-13",
+      "execution_date": "2026-03-16",
       "top10": [
         {
           "rank": 1,
@@ -4612,6 +4894,7 @@
     },
     {
       "eval_date": "2026-03-19",
+      "execution_date": "2026-03-23",
       "top10": [
         {
           "rank": 1,
@@ -4697,6 +4980,7 @@
     },
     {
       "eval_date": "2026-03-27",
+      "execution_date": "2026-03-30",
       "top10": [
         {
           "rank": 1,
@@ -4782,6 +5066,7 @@
     },
     {
       "eval_date": "2026-04-03",
+      "execution_date": "2026-04-06",
       "top10": [
         {
           "rank": 1,
@@ -4867,6 +5152,7 @@
     },
     {
       "eval_date": "2026-04-10",
+      "execution_date": "2026-04-13",
       "top10": [
         {
           "rank": 1,
@@ -4952,6 +5238,7 @@
     },
     {
       "eval_date": "2026-04-17",
+      "execution_date": "2026-04-20",
       "top10": [
         {
           "rank": 1,
@@ -5037,6 +5324,7 @@
     },
     {
       "eval_date": "2026-04-24",
+      "execution_date": "2026-04-27",
       "top10": [
         {
           "rank": 1,
@@ -5122,6 +5410,7 @@
     },
     {
       "eval_date": "2026-05-01",
+      "execution_date": "2026-05-07",
       "top10": [
         {
           "rank": 1,
@@ -5207,6 +5496,7 @@
     },
     {
       "eval_date": "2026-05-08",
+      "execution_date": "2026-05-11",
       "top10": [
         {
           "rank": 1,
@@ -5292,6 +5582,7 @@
     },
     {
       "eval_date": "2026-05-15",
+      "execution_date": "2026-05-18",
       "top10": [
         {
           "rank": 1,
@@ -5374,105 +5665,22 @@
           "liquidity_band": "High Liquidity"
         }
       ]
-    },
-    {
-      "eval_date": "2026-05-20",
-      "top10": [
-        {
-          "rank": 1,
-          "symbol": "135A.T",
-          "score_pts": 610,
-          "signal": "Monitor",
-          "quality": "C Early Watch",
-          "liquidity_band": "High Liquidity"
-        },
-        {
-          "rank": 2,
-          "symbol": "3652.T",
-          "score_pts": 593,
-          "signal": "Avoid",
-          "quality": "E Avoid",
-          "liquidity_band": "Tradable"
-        },
-        {
-          "rank": 3,
-          "symbol": "8035.T",
-          "score_pts": 545,
-          "signal": "Avoid",
-          "quality": "E Avoid",
-          "liquidity_band": "Institutional"
-        },
-        {
-          "rank": 4,
-          "symbol": "5802.T",
-          "score_pts": 541,
-          "signal": "Avoid",
-          "quality": "E Avoid",
-          "liquidity_band": "Institutional"
-        },
-        {
-          "rank": 5,
-          "symbol": "9984.T",
-          "score_pts": 492,
-          "signal": "Avoid",
-          "quality": "E Avoid",
-          "liquidity_band": "Institutional"
-        },
-        {
-          "rank": 6,
-          "symbol": "6503.T",
-          "score_pts": 476,
-          "signal": "Avoid",
-          "quality": "E Avoid",
-          "liquidity_band": "Institutional"
-        },
-        {
-          "rank": 7,
-          "symbol": "6758.T",
-          "score_pts": 454,
-          "signal": "Avoid",
-          "quality": "E Avoid",
-          "liquidity_band": "Institutional"
-        },
-        {
-          "rank": 8,
-          "symbol": "6857.T",
-          "score_pts": 445,
-          "signal": "Avoid",
-          "quality": "E Avoid",
-          "liquidity_band": "Institutional"
-        },
-        {
-          "rank": 9,
-          "symbol": "7012.T",
-          "score_pts": 433,
-          "signal": "Avoid",
-          "quality": "E Avoid",
-          "liquidity_band": "Institutional"
-        },
-        {
-          "rank": 10,
-          "symbol": "6920.T",
-          "score_pts": 412,
-          "signal": "Avoid",
-          "quality": "E Avoid",
-          "liquidity_band": "Institutional"
-        }
-      ]
     }
   ],
   "strategy_comparison": [
     {
       "label": "Weekly Strategy",
-      "equity": 11294058.94,
-      "return_pct": 12.9406,
-      "max_drawdown_pct": -9.6954
+      "equity": 11545258.94,
+      "return_pct": 15.4526,
+      "max_drawdown_pct": -11.9862
     },
     {
       "label": "TOPIX Same Initial Capital",
-      "equity": 1206979.54,
-      "return_pct": -87.9302,
-      "max_drawdown_pct": -90.6415
+      "equity": null,
+      "return_pct": null,
+      "max_drawdown_pct": null,
+      "status": "invalid",
+      "message": "TOPIX benchmark comparison suspended because cached benchmark prices failed the sanity check. Strategy return and cash accounting remain valid."
     }
   ],
   "signal_summary": {
@@ -5666,50 +5874,21 @@
   "open_theme_exposure": [
     {
       "theme": "Factory Automation and Power Systems",
-      "market_value": 1131400.0,
-      "weight_pct": 52.93
+      "market_value": 1270000.0,
+      "weight_pct": 53.17
     },
     {
       "theme": "AI and Technology Investment",
-      "market_value": 1006000.0,
-      "weight_pct": 47.07
+      "market_value": 1118600.0,
+      "weight_pct": 46.83
     }
   ],
   "open_bucket_exposure": [
     {
       "bucket": "Core",
-      "market_value": 2137400.0,
+      "market_value": 2388600.0,
       "weight_pct": 100.0
     }
   ],
-  "liquidity_warnings": [
-    {
-      "symbol": "9984.T",
-      "name": "SoftBank Group",
-      "theme": "AI and Technology Investment",
-      "bucket": "Core",
-      "entry_signal": "Monitor",
-      "entry_quality": "C Early Watch",
-      "entry_rank": 3,
-      "entry_score_pts": 627,
-      "entry_date": "2026-05-18",
-      "entry_price": 5453.1675,
-      "raw_entry_open": 5445.0,
-      "shares": 200,
-      "cost_basis": 1090633.5,
-      "cash_flow": -1090633.5,
-      "benchmark_entry_price": 410.0,
-      "benchmark_units": 2660.08170732,
-      "weeks_held": 1,
-      "max_unrealized_pct": 0.0,
-      "min_unrealized_pct": -7.76,
-      "last_score_pts": 627,
-      "last_signal": "Monitor",
-      "last_quality": "C Early Watch",
-      "current_price": 5030.0,
-      "market_value": 1006000.0,
-      "unrealized_pct": -7.76,
-      "weight_pct": 8.91
-    }
-  ]
+  "liquidity_warnings": []
 }
