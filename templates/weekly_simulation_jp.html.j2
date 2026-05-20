@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Weekly JP Simulation | Neon Tokyo Signals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="Japan weekly signal portfolio simulation with cash, open positions, closed trades, benchmark comparison and equity curve."/>
+  <meta name="theme-color" content="#050711"/>
+  <link rel="stylesheet" href="/assets/weekly_simulation_jp.css?v={{ asset_version }}"/>
+</head>
+<body>
+<div class="page">
+  <div class="glow glow-a"></div>
+  <div class="glow glow-b"></div>
+  <main class="wrap">
+    <header class="topbar">
+      <a class="brand" href="/">
+        <span class="mark">NTS</span>
+        <span><strong>NEON TOKYO SIGNALS</strong><em>Japan weekly portfolio simulation</em></span>
+      </a>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/japan/weekly/">Weekly</a>
+        <a href="/japan/weekly-backtest/">Backtest</a>
+        <a class="active" href="/japan/weekly-simulation/">Simulation</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <div class="kicker"><span></span> WEEKLY JP SIMULATION V1</div>
+        <h1>Portfolio behavior, not just signal returns.</h1>
+        <p>
+          Weekly signals are converted into a cash-accounted Japan equity portfolio:
+          next-open execution, round-lot sizing, explicit cash, open positions, closed trades,
+          benchmark comparison and drawdown tracking.
+        </p>
+      </div>
+      <aside class="verdict-card {{ summary.net_return_pct | return_class }}">
+        <span>Strategy Return</span>
+        <strong>{{ summary.net_return_pct | fmt_pct(1) }}</strong>
+        <em>Alpha vs TOPIX {{ summary.alpha_pct | fmt_pct(1) }}</em>
+      </aside>
+    </section>
+
+    <section class="quick-grid" aria-label="5-second simulation read">
+      <article>
+        <span>Portfolio Equity</span>
+        <strong>{{ summary.portfolio_equity | fmt_jpy }}</strong>
+        <em>Capital {{ summary.external_capital | fmt_jpy }}</em>
+      </article>
+      <article>
+        <span>Cash</span>
+        <strong>{{ summary.cash | fmt_jpy }}</strong>
+        <em>Market value {{ summary.market_value | fmt_jpy }}</em>
+      </article>
+      <article>
+        <span>Open Positions</span>
+        <strong>{{ summary.open_positions_count | fmt_int }}</strong>
+        <em>Closed trades {{ summary.closed_trades_count | fmt_int }}</em>
+      </article>
+      <article class="{{ summary.max_drawdown_pct | return_class }}">
+        <span>Max Drawdown</span>
+        <strong>{{ summary.max_drawdown_pct | fmt_pct(1) }}</strong>
+        <em>Benchmark {{ summary.benchmark_max_drawdown_pct | fmt_pct(1) }}</em>
+      </article>
+    </section>
+
+    <section class="chart-panel">
+      <div class="section-head">
+        <div><div class="kicker"><span></span> EQUITY CURVE</div><h2>Strategy vs TOPIX, same initial capital.</h2></div>
+        <div class="chip">{{ summary.eval_date_start or '—' }} → {{ summary.eval_date_end or '—' }}</div>
+      </div>
+      <div class="legend"><span class="strategy"></span>Strategy <span class="benchmark"></span>TOPIX</div>
+      <svg class="equity-chart" viewBox="0 0 920 260" role="img" aria-label="Weekly simulation equity curve">
+        <defs>
+          <linearGradient id="strategyLine" x1="0" x2="1"><stop offset="0%" stop-color="#7df9ff"/><stop offset="100%" stop-color="#5dffb1"/></linearGradient>
+          <linearGradient id="benchLine" x1="0" x2="1"><stop offset="0%" stop-color="#b779ff"/><stop offset="100%" stop-color="#ff4fd8"/></linearGradient>
+        </defs>
+        <line x1="26" y1="224" x2="894" y2="224" class="axis"/>
+        <line x1="26" y1="36" x2="894" y2="36" class="gridline"/>
+        <line x1="26" y1="130" x2="894" y2="130" class="gridline soft"/>
+        {% if chart.benchmark_line %}<polyline points="{{ chart.benchmark_line }}" class="line benchmark"/>{% endif %}
+        {% if chart.strategy_line %}<polyline points="{{ chart.strategy_line }}" class="line strategy"/>{% endif %}
+      </svg>
+      <div class="curve-footer">
+        <div><span>Strategy</span><strong>{{ summary.portfolio_equity | fmt_jpy }}</strong></div>
+        <div><span>TOPIX</span><strong>{{ summary.benchmark_equity | fmt_jpy }}</strong></div>
+        <div><span>Alpha</span><strong class="{{ summary.alpha_pct | return_class }}">{{ summary.alpha_pct | fmt_pct(1) }}</strong></div>
+      </div>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <div class="section-head compact"><div><div class="kicker"><span></span> POLICY</div><h2>Execution rules</h2></div></div>
+        <div class="policy-grid">
+          <div><span>Position size</span><strong>{{ (policy.position_pct * 100) | fmt_num(1) }}%</strong></div>
+          <div><span>Max positions</span><strong>{{ policy.max_positions }}</strong></div>
+          <div><span>Entry floor</span><strong>{{ policy.min_entry_score }} pts</strong></div>
+          <div><span>Score exit</span><strong>{{ policy.score_exit }} pts</strong></div>
+          <div><span>Stop</span><strong>{{ policy.stop_pct | fmt_pct(1) }}</strong></div>
+          <div><span>Time exit</span><strong>{{ policy.time_exit_weeks }}w</strong></div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="section-head compact"><div><div class="kicker"><span></span> CLOSED TRADE QUALITY</div><h2>Realized trades</h2></div></div>
+        <div class="trade-quality">
+          <div><span>Win rate</span><strong>{{ summary.closed_trade_summary.win_rate_pct | fmt_pct(1, false) }}</strong></div>
+          <div><span>Avg return</span><strong class="{{ summary.closed_trade_summary.avg_return_pct | return_class }}">{{ summary.closed_trade_summary.avg_return_pct | fmt_pct(1) }}</strong></div>
+          <div><span>Avg alpha</span><strong class="{{ summary.closed_trade_summary.avg_alpha_pct | return_class }}">{{ summary.closed_trade_summary.avg_alpha_pct | fmt_pct(1) }}</strong></div>
+        </div>
+        <div class="exit-pills">
+          {% for reason, count in summary.exit_reasons.items() %}<span>{{ reason }} · {{ count }}</span>{% endfor %}
+        </div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-head"><div><div class="kicker"><span></span> OPEN POSITIONS</div><h2>Current exposure.</h2></div><div class="chip">{{ summary.open_positions_count }} positions</div></div>
+      <div class="position-grid">
+        {% for p in open_positions %}
+          <article class="position-card">
+            <div class="rank-row"><strong>{{ p.symbol }}</strong><span>{{ p.weight_pct | fmt_pct(1, false) }}</span></div>
+            <em>{{ p.name }}</em>
+            <div class="position-meta"><span>{{ p.entry_signal }}</span><span>{{ p.entry_quality }}</span><span>{{ p.bucket }}</span></div>
+            <div class="position-return {{ p.unrealized_pct | return_class }}">{{ p.unrealized_pct | fmt_pct(1) }}</div>
+            <div class="mini-line"><span>Entry {{ p.entry_date }}</span><span>{{ p.market_value | fmt_jpy }}</span></div>
+          </article>
+        {% else %}
+          <article class="empty">No open positions. The policy is fully in cash.</article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <div class="section-head compact"><div><div class="kicker"><span></span> OPEN THEME EXPOSURE</div><h2>Where capital is allocated.</h2></div></div>
+        <div class="bars">
+          {% for row in theme_exposure[:8] %}
+          <div class="bar-row"><span>{{ row.theme }}</span><i style="width:{{ row.weight_pct or 0 }}%"></i><strong>{{ row.weight_pct | fmt_pct(1, false) }}</strong></div>
+          {% else %}<div class="empty small">No active theme exposure.</div>{% endfor %}
+        </div>
+      </article>
+      <article class="panel">
+        <div class="section-head compact"><div><div class="kicker"><span></span> SIGNAL PERFORMANCE</div><h2>Realized return by entry signal.</h2></div></div>
+        <div class="bars performance">
+          {% for row in signal_bars %}
+          <div class="bar-row {{ row.class }}"><span>{{ row.label }}</span><i style="width:{{ row.width }}%"></i><strong>{{ row.value | fmt_pct(1) }}</strong></div>
+          {% else %}<div class="empty small">No closed signal history yet.</div>{% endfor %}
+        </div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-head"><div><div class="kicker"><span></span> CLOSED TRADES</div><h2>Recent realized exits.</h2></div></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Exit</th><th>Symbol</th><th>Signal</th><th>Entry</th><th>Return</th><th>Alpha</th><th>Reason</th><th>P/L</th></tr></thead>
+          <tbody>
+          {% for t in closed_trades %}
+            <tr>
+              <td>{{ t.exit_date }}</td>
+              <td><strong>{{ t.symbol }}</strong><br><span>{{ t.name }}</span></td>
+              <td>{{ t.entry_signal }}<br><span>{{ t.entry_quality }}</span></td>
+              <td>{{ t.entry_date }}</td>
+              <td class="{{ t.return_pct | return_class }}">{{ t.return_pct | fmt_pct(1) }}</td>
+              <td class="{{ t.alpha_pct | return_class }}">{{ t.alpha_pct | fmt_pct(1) }}</td>
+              <td>{{ t.exit_reason }}</td>
+              <td class="{{ t.pnl_jpy | return_class }}">{{ t.pnl_jpy | fmt_jpy }}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="8">No closed trades yet.</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="notes">
+      <strong>Simulation only.</strong>
+      <span>Not investment advice. Results use cached prices, next-open execution, slippage assumptions and 100-share JP round lots. Real fills, limit moves, taxes, fees and liquidity may differ.</span>
+    </section>
+  </main>
+</div>
+</body>
+</html>
