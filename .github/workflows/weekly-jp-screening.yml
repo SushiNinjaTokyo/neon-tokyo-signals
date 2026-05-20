@@ -123,8 +123,13 @@ jobs:
           assert isinstance(data.get("items"), list), "items must be list"
           assert isinstance(data.get("summary"), dict), "summary must be dict"
           assert "methodology" in data, "methodology missing"
+          assert data.get("latest_trading_date"), "latest_trading_date missing"
+          assert data.get("week_label"), "week_label missing"
+          assert isinstance(data.get("is_partial_week"), bool), "is_partial_week must be bool"
           print("weekly schema_version=", data.get("schema_version"))
-          print("weekly date=", data.get("date"))
+          print("weekly latest_trading_date=", data.get("latest_trading_date"))
+          print("weekly week_label=", data.get("week_label"))
+          print("weekly is_partial_week=", data.get("is_partial_week"))
           print("weekly items=", len(data.get("items") or []))
           print("weekly trade=", data.get("summary", {}).get("trade"))
           print("weekly watch=", data.get("summary", {}).get("watch"))
