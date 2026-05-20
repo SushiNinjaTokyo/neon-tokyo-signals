@@ -133,11 +133,16 @@ def polyline(points: list[dict[str, Any]], key: str, width: int = 920, height: i
 
 def build_chart(payload: dict[str, Any]) -> dict[str, Any]:
     curve = payload.get("equity_curve") or []
+    benchmark_quality = payload.get("benchmark_quality") or {}
+    benchmark_valid = benchmark_quality.get("status") == "valid"
     return {
         "strategy_line": polyline(curve, "portfolio_equity"),
-        "benchmark_line": polyline(curve, "benchmark_equity"),
+        "benchmark_line": polyline(curve, "benchmark_equity") if benchmark_valid else "",
         "return_line": polyline(curve, "portfolio_return_pct"),
-        "benchmark_return_line": polyline(curve, "benchmark_return_pct"),
+        "benchmark_return_line": polyline(curve, "benchmark_return_pct") if benchmark_valid else "",
+        "benchmark_valid": benchmark_valid,
+        "benchmark_status": benchmark_quality.get("status") or "unknown",
+        "benchmark_message": benchmark_quality.get("message"),
         "points": curve,
         "last": curve[-1] if curve else {},
         "first": curve[0] if curve else {},
@@ -174,6 +179,8 @@ def render() -> None:
         summary=summary,
         policy=payload.get("policy") or {},
         chart=chart,
+        benchmark_quality=payload.get("benchmark_quality") or {},
+        benchmark_valid=(payload.get("benchmark_quality") or {}).get("status") == "valid",
         open_positions=open_positions,
         closed_trades=closed[:12],
         skipped_orders=(payload.get("skipped_orders") or [])[-12:],
