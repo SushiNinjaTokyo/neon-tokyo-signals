@@ -4,38 +4,192 @@
   <meta charset="utf-8"/>
   <title>Japan Weekly Signals | Neon Tokyo Signals</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Weekly Japan equity momentum signals for global investors."/>
-  <link rel="stylesheet" href="/assets/weekly_jp.css?v=prototype-001"/>
+  <meta name="description" content="Weekly Japan equity momentum signals for global investors. Trend, relative strength, breakout and liquidity filtered after the Tokyo close."/>
+  <meta name="theme-color" content="#050711"/>
+  <link rel="stylesheet" href="/assets/weekly_jp.css?v={{ asset_version }}"/>
 </head>
 <body>
-<div class="page"><div class="ambient ambient-a"></div><div class="ambient ambient-b"></div><div class="grid"></div>
-<main class="wrap">
-  <nav class="top-nav">
-    <a class="brand" href="/"><strong>NEON TOKYO SIGNALS</strong><span>Weekly Japan equity signals</span></a>
-    <div class="top-links"><a href="/">Home</a><a href="/japan/daily/">Daily</a><a href="/disclaimer/">Disclaimer</a></div>
-  </nav>
+<div class="page">
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <div class="grid"></div>
 
-  <section class="market-panel">
-    <div class="pulse-stage" style="min-height:320px">
-      <div class="pulse-bg-grid"></div><div class="pulse-bg-word" data-text="WEEKLY">WEEKLY</div><div class="pulse-scan"></div>
-      <div class="hero-content"><div class="kicker">Japan Weekly Signals</div><h1>WEEKLY<br/>SIGNALS</h1><p>As of {{ weekly.date }}. Prototype weekly list using sample data.</p></div>
-    </div>
-  </section>
+  <main class="wrap">
+    <header class="header">
+      <a class="brand" href="/">
+        <span class="brand-mark">NTS</span>
+        <span><strong>NEON TOKYO SIGNALS</strong><em>Japan weekly momentum board</em></span>
+      </a>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/japan/daily/">Daily</a>
+        <a class="active" href="/japan/weekly/">Weekly</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </nav>
+    </header>
 
-  <section class="reaction-panel">
-    <div class="section-head"><div class="nav-kicker">Medium-term</div><h2>Weekly Signal List</h2></div>
-    {% for item in items %}
-    <div class="ticker-row">
-      <div>
-        <strong>#{{ item.rank }} {{ item.symbol }}</strong>
-        <span>{{ item.name }} · {{ item.theme }} · Grade {{ item.classification }} · {{ item.score | int }} pts</span>
-        <span>{{ item.why_now }}</span>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="kicker"><span class="live-dot"></span> WEEKLY JP SIGNAL BOARD</div>
+        <h1>Japan weekly setups,<span>filtered for global investors.</span></h1>
+        <p>
+          Medium-term weekly screen using trend template, TOPIX-relative strength,
+          breakout freshness, base quality, volume accumulation and Japan-specific liquidity controls.
+        </p>
+        <div class="hero-meta">
+          <span>As of {{ weekly.date or '—' }}</span>
+          <span>Benchmark: {{ weekly.benchmark or 'TOPIX' }}</span>
+          <span>News excluded · Price / Volume / Timing</span>
+        </div>
       </div>
-      <div><span class="pill">Weekly candidate</span></div>
-    </div>
-    {% endfor %}
-  </section>
-  <footer class="footer">Generated at {{ generated_at }} · Informational only. Not investment advice.</footer>
-</main></div>
+      <aside class="verdict-card {{ 'trade-card' if summary.trade else 'watch-card' if summary.watch else 'avoid-card' }}">
+        <div class="card-label">WEEKLY MODEL VERDICT</div>
+        <strong>{{ summary.verdict or 'NO DATA' }}</strong>
+        <p>{{ summary.risk_message or 'Weekly signal JSON has not been generated yet.' }}</p>
+        <div class="verdict-counts">
+          <div><span>Trade</span><b>{{ summary.trade or 0 }}</b></div>
+          <div><span>Watch</span><b>{{ summary.watch or 0 }}</b></div>
+          <div><span>Avoid</span><b>{{ summary.avoid or 0 }}</b></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="read-grid" aria-label="5 second weekly read">
+      <article class="read-card primary">
+        <span>Market State</span>
+        <strong>{{ summary.market_state.broad_trend if summary.market_state else '—' }}</strong>
+        <em>{{ summary.market_state.short_term_tape if summary.market_state else '—' }}</em>
+      </article>
+      <article class="read-card">
+        <span>Weekly Signals</span>
+        <strong>{{ summary.items_count or items|length }}</strong>
+        <em>{{ summary.tradable_count or 0 }} trade/watch candidates</em>
+      </article>
+      <article class="read-card">
+        <span>Best Theme</span>
+        <strong>{{ summary.best_theme or '—' }}</strong>
+        <em>based on top weekly scores</em>
+      </article>
+      <article class="read-card danger">
+        <span>Risk Flags</span>
+        <strong>{{ summary.risk_count or 0 }}</strong>
+        <em>avoid / extended / liquidity risk</em>
+      </article>
+    </section>
+
+    <section class="visual-panel">
+      <div class="section-heading split-heading">
+        <div><div class="kicker">5-SECOND READ</div><h2>Signal mix and score concentration.</h2></div>
+        <div class="method-chip">Trade is selective · Watch is not a buy signal</div>
+      </div>
+      <div class="visual-grid">
+        <article class="chart-card wide">
+          <div class="chart-title">Signal Mix</div>
+          <div class="stacked-bar">
+            {% for bar in visual.signal_mix %}
+              <span class="{{ bar.class }}" style="width:{{ bar.width }}%"></span>
+            {% endfor %}
+          </div>
+          <div class="legend-row">
+            {% for bar in visual.signal_mix %}<span><i class="{{ bar.class }}"></i>{{ bar.label }} {{ bar.value }}</span>{% endfor %}
+          </div>
+        </article>
+        <article class="chart-card">
+          <div class="chart-title">Core / Discovery</div>
+          {% for b in visual.bucket_mix %}
+            <div class="mini-bar"><span>{{ b.label }}</span><i style="width:{{ b.width }}%"></i><b>{{ b.value }}</b></div>
+          {% endfor %}
+        </article>
+        <article class="chart-card">
+          <div class="chart-title">Top Score Bars</div>
+          {% for s in visual.score_bars %}
+            <div class="score-bar"><span>{{ s.label }}</span><i class="{{ s.class }}" style="width:{{ s.width }}%"></i><b>{{ s.score }}</b></div>
+          {% endfor %}
+        </article>
+      </div>
+    </section>
+
+    <section class="market-panel">
+      <div class="section-heading"><div class="kicker">MARKET CONTEXT</div><h2>TOPIX, Nikkei and Growth tape.</h2></div>
+      <div class="market-grid">
+        {% for label, b in benchmarks.items() %}
+          <article class="market-card">
+            <span>{{ label }}</span>
+            <strong>{{ b.broad_trend or '—' }}</strong>
+            <em>{{ b.short_term_tape or '—' }}</em>
+            <div class="market-metrics">
+              <div><small>4W</small><b>{{ b.ret4w_pct | fmt_pct }}</b></div>
+              <div><small>12W</small><b>{{ b.ret12w_pct | fmt_pct }}</b></div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="top3-section">
+      <div class="section-heading split-heading">
+        <div><div class="kicker">TOP 3 CANDIDATES</div><h2>The cleanest weekly setups first.</h2></div>
+        <div class="method-chip">Ranked by weekly score, not market cap</div>
+      </div>
+      <div class="top3-grid">
+        {% for item in top3 %}
+          <article class="signal-card hero-signal {{ item.signal_class }} {{ item.score_class }}">
+            <div class="card-top"><div class="rank">#{{ item.rank }}</div><div class="score">{{ item.score_pts }}<span>pts</span></div></div>
+            <div class="signal-tags"><span class="tag {{ item.signal_class }}">{{ item.signal }}</span><span class="tag">{{ item.quality }}</span><span class="tag">{{ item.bucket }}</span></div>
+            <h3>{{ item.symbol }}</h3><div class="name">{{ item.name }}</div><div class="theme">{{ item.theme }}</div>
+            <p class="why">{{ item.why_now }}</p><p class="risk">Risk: {{ item.main_risk }}</p>
+            <div class="metric-grid"><div><span>4W</span><b>{{ item.ret4w | fmt_pct }}</b></div><div><span>12W RS</span><b>{{ item.rs12w | fmt_pct }}</b></div><div><span>Liquidity</span><b>{{ item.avg_value | fmt_jpy }}</b></div></div>
+          </article>
+        {% else %}
+          <article class="empty-card">No weekly candidates generated yet.</article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="board-section">
+      <div class="section-heading split-heading">
+        <div><div class="kicker">WEEKLY BOARD</div><h2>Trade, Watch and Avoid lanes.</h2></div>
+        <div class="method-chip">B setups remain Watch unless quality/liquidity clear</div>
+      </div>
+      <div class="lane-grid">
+        <article class="lane trade-lane"><h3>Trade</h3>{% for item in trade_items %}<div class="lane-row"><b>#{{ item.rank }} {{ item.symbol }}</b><span>{{ item.name }} · {{ item.quality }} · {{ item.score_pts }} pts</span><em>{{ item.why_now }}</em></div>{% else %}<div class="empty-lane">No full Trade setup this week.</div>{% endfor %}
+        </article>
+        <article class="lane watch-lane"><h3>Watch</h3>
+          {% for item in watch_items %}<div class="lane-row"><b>#{{ item.rank }} {{ item.symbol }}</b><span>{{ item.name }} · {{ item.quality }} · {{ item.score_pts }} pts</span><em>{{ item.why_now }}</em></div>{% else %}<div class="empty-lane">No Watch candidate this week.</div>{% endfor %}
+        </article>
+        <article class="lane avoid-lane"><h3>Avoid / Blocked</h3>
+          {% for item in avoid_items[:8] %}<div class="lane-row compact"><b>#{{ item.rank }} {{ item.symbol }}</b><span>{{ item.score_pts }} pts · {{ item.main_risk }}</span></div>{% else %}<div class="empty-lane">No avoid names in the top list.</div>{% endfor %}
+        </article>
+      </div>
+    </section>
+
+    <section class="table-section">
+      <div class="section-heading split-heading">
+        <div><div class="kicker">FULL WEEKLY RANKING</div><h2>Compact view for verification.</h2></div>
+        <div class="method-chip">Score includes JP liquidity and extension caps</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Rank</th><th>Signal</th><th>Symbol</th><th>Name</th><th>Bucket</th><th>Score</th><th>Quality</th><th>4W</th><th>12W RS</th><th>Liquidity</th><th>Risk</th></tr></thead>
+          <tbody>
+            {% for item in items %}
+              <tr>
+                <td>#{{ item.rank }}</td><td><span class="mini-tag {{ item.signal_class }}">{{ item.signal }}</span></td><td><strong>{{ item.symbol }}</strong></td><td>{{ item.name }}</td><td>{{ item.bucket }}</td><td>{{ item.score_pts }}</td><td>{{ item.quality }}</td><td>{{ item.ret4w | fmt_pct }}</td><td>{{ item.rs12w | fmt_pct }}</td><td>{{ item.liquidity_band }}</td><td>{{ item.main_risk }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="method-section">
+      <article class="method-card"><div class="kicker">METHODOLOGY</div><h2>Weekly JP Score v1</h2><p>Trend template, TOPIX-relative strength, breakout freshness, base/VCP quality, volume accumulation, liquidity/tradability, theme context and extension control.</p></article>
+      <article class="method-card warning"><div class="kicker">CONTROL</div><h2>Japan-specific risk filter</h2><p>Thin liquidity, low price, distribution weeks, extreme extension and limit-move-like weeks cap or block signals. Watch is not a buy signal.</p></article>
+    </section>
+
+    <section class="notes"><strong>Not investment advice.</strong><span>Weekly JP excludes news and fundamentals in v1. It is a price/volume/timing signal layer for research only.</span></section>
+    <footer class="footer"><span>Generated {{ generated_at or weekly.generated_at }}</span><nav><a href="/">Home</a><a href="/privacy/">Privacy</a><a href="/disclaimer/">Disclaimer</a></nav></footer>
+  </main>
+</div>
 </body>
 </html>
