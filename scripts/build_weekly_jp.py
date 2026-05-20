@@ -179,14 +179,22 @@ def bars_to_df(item: dict[str, Any]) -> pd.DataFrame:
 def daily_to_weekly(df: pd.DataFrame) -> pd.DataFrame:
     if df.empty:
         return pd.DataFrame()
+
+    # Use W-FRI as the weekly bucket label, but keep the real latest
+    # trading date separately. Without this, a Wednesday run can look like
+    # it used a future Friday close.
+    date_series = pd.Series(df.index, index=df.index)
     wk = pd.DataFrame({
         "Open": df["Open"].resample("W-FRI").first(),
         "High": df["High"].resample("W-FRI").max(),
         "Low": df["Low"].resample("W-FRI").min(),
         "Close": df["Close"].resample("W-FRI").last(),
         "Volume": df["Volume"].resample("W-FRI").sum(),
-    }).dropna(subset=["Open", "High", "Low", "Close"])
+        "LastTradingDate": date_series.resample("W-FRI").max(),
+    }).dropna(subset=["Open", "High", "Low", "Close", "LastTradingDate"])
     wk = wk[wk["Close"] > 0]
+    wk["WeekLabel"] = wk.index
+    wk["IsPartialWeek"] = wk["LastTradingDate"].dt.normalize() < wk.index.normalize()
     return wk
 
 
@@ -319,6 +327,12 @@ def score_item(item: dict[str, Any], meta: dict[str, str], topix_row: pd.Series 
         return None
     last = w.iloc[-1]
     prev = w.iloc[-2] if len(w) >= 2 else last
+
+    week_label_ts = pd.Timestamp(last.name).normalize()
+    latest_trading_ts = pd.Timestamp(last.get("LastTradingDate")).normalize() if pd.notna(last.get("LastTradingDate")) else week_label_ts
+    week_label = str(week_label_ts.date())
+    latest_trading_date = str(latest_trading_ts.date())
+    is_partial_week = bool(latest_trading_ts < week_label_ts)
 
     close = to_float(last.get("Close"))
     if close is None:
@@ -542,7 +556,10 @@ def score_item(item: dict[str, Any], meta: dict[str, str], topix_row: pd.Series 
         "priority": priority,
         "market": "JP",
         "currency": "JPY",
-        "latest_week": str(last.name.date()),
+        "latest_week": latest_trading_date,
+        "latest_trading_date": latest_trading_date,
+        "week_label": week_label,
+        "is_partial_week": is_partial_week,
         "price": safe_round(close, 4),
         "score_pts": score_pts,
         "score_0_1": safe_round(score_pts / 1000.0, 4),
@@ -629,6 +646,9 @@ def summarize(items: list[dict[str, Any]], benchmark_state: dict[str, Any], late
         risk_message = "Weekly model did not find a strong enough setup."
     return {
         "latest_week": latest_week,
+        "latest_trading_date": items[0].get("latest_trading_date") if items else latest_week,
+        "week_label": items[0].get("week_label") if items else latest_week,
+        "is_partial_week": bool(items[0].get("is_partial_week")) if items else False,
         "items_count": len(items),
         "top_symbol": items[0].get("symbol") if items else None,
         "top_name": items[0].get("name") if items else None,
@@ -685,12 +705,18 @@ def main() -> int:
         item["rank"] = idx
 
     latest_week = scored[0].get("latest_week") if scored else None
-    date_key = latest_week or now_jst().strftime("%Y-%m-%d")
+    latest_trading_date = scored[0].get("latest_trading_date") if scored else latest_week
+    week_label = scored[0].get("week_label") if scored else latest_week
+    is_partial_week = bool(scored[0].get("is_partial_week")) if scored else False
+    date_key = latest_trading_date or latest_week or now_jst().strftime("%Y-%m-%d")
     items = scored[:TOP_ITEMS_LIMIT]
 
     payload = {
         "schema_version": "weekly-jp-v1",
         "date": date_key,
+        "latest_trading_date": latest_trading_date,
+        "week_label": week_label,
+        "is_partial_week": is_partial_week,
         "generated_at": iso_now(),
         "market": "JP",
         "timezone": "Asia/Tokyo",
