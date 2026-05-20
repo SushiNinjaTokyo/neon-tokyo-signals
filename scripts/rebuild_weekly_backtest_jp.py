@@ -353,6 +353,12 @@ def top_bucket_performance(records: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def daily_trend(records: list[dict[str, Any]], horizon: str) -> list[dict[str, Any]]:
+    """Build a forward-performance index for the requested horizon only.
+
+    Important: each horizon is allowed to mature independently. The trend chart
+    must not force 12W completion when the page is focused on 4W, and it must
+    not plot empty/pending weeks as flat performance.
+    """
     by_date: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for r in records:
         by_date[str(r.get("eval_date"))].append(r)
@@ -362,6 +368,8 @@ def daily_trend(records: list[dict[str, Any]], horizon: str) -> list[dict[str, A
     for eval_date in sorted(by_date.keys()):
         rows = by_date[eval_date]
         point: dict[str, Any] = {"eval_date": eval_date}
+        has_any_completed_bucket = False
+
         for label, limit in TOP_BUCKETS.items():
             bucket_rows = [r for r in rows if int(r.get("rank") or 999) <= limit]
             returns = []
@@ -374,16 +382,55 @@ def daily_trend(records: list[dict[str, Any]], horizon: str) -> list[dict[str, A
                     returns.append(ret)
                 if alpha is not None:
                     alphas.append(alpha)
+
             avg_ret = avg(returns)
             avg_alpha = avg(alphas)
             if avg_ret is not None:
                 curve[label] *= 1.0 + avg_ret / 100.0
+                has_any_completed_bucket = True
+
             key = label.lower().replace(" ", "_")
             point[f"{key}_avg_return_pct"] = safe_round(avg_ret, 4)
             point[f"{key}_avg_alpha_pct"] = safe_round(avg_alpha, 4)
-            point[f"{key}_equity_index"] = safe_round(curve[label], 4)
-            point[f"{key}_count"] = len(bucket_rows)
-        out.append(point)
+            point[f"{key}_equity_index"] = safe_round(curve[label], 4) if avg_ret is not None else None
+            point[f"{key}_count"] = len(returns)
+
+        if has_any_completed_bucket:
+            out.append(point)
+
+    return out
+
+
+def horizon_windows(records: list[dict[str, Any]]) -> dict[str, Any]:
+    """Return maturity windows and coverage by horizon.
+
+    This explicitly fixes the old conceptual bug where the entire backtest was
+    effectively bounded by the longest horizon. Each horizon now reports its own
+    mature eval window.
+    """
+    out: dict[str, Any] = {}
+    expected_dates = sorted({str(r.get("eval_date")) for r in records if r.get("eval_date")})
+    for h in HORIZONS:
+        valid_records: list[dict[str, Any]] = []
+        valid_dates: set[str] = set()
+        pending_records = 0
+        for r in records:
+            f = (r.get("forward") or {}).get(h) or {}
+            if to_float(f.get("return_pct")) is not None:
+                valid_records.append(r)
+                valid_dates.add(str(r.get("eval_date")))
+            else:
+                pending_records += 1
+        dates_sorted = sorted(valid_dates)
+        out[h] = {
+            "eval_date_start": dates_sorted[0] if dates_sorted else None,
+            "eval_date_end": dates_sorted[-1] if dates_sorted else None,
+            "eval_date_count": len(dates_sorted),
+            "valid_signal_count": len(valid_records),
+            "pending_or_missing_signal_count": pending_records,
+            "expected_signal_count": len(expected_dates) * RANK_LIMIT,
+            "coverage_pct": safe_round((len(valid_records) / (len(records) or 1)) * 100.0, 2) if records else None,
+        }
     return out
 
 
@@ -427,27 +474,36 @@ def build_backtest() -> dict[str, Any]:
     if not eval_dates_all:
         raise RuntimeError("No weekly evaluation dates found from cached prices.")
 
-    max_days = max(TRADING_DAYS_BY_HORIZON.values())
+    # Do NOT filter evaluation dates by the longest horizon.
+    # The previous implementation required 12W completion before a week could
+    # enter the backtest at all. That made a 4W-primary page stop around the
+    # 12W maturity date. We now include all weeks with at least the shortest
+    # horizon available and let each horizon mature independently.
+    min_days = min(TRADING_DAYS_BY_HORIZON.values())
     topix_idx = date_index(topix_df) if not topix_df.empty else {}
 
     eligible_eval_dates: list[pd.Timestamp] = []
+    skipped_dates: list[dict[str, Any]] = []
     for d in eval_dates_all:
         if d not in topix_idx:
             prior = [x for x in topix_idx.keys() if x <= d]
             if not prior:
+                skipped_dates.append({"eval_date": str(d.date()), "reason": "no benchmark bar at or before eval date"})
                 continue
             d_key = max(prior)
         else:
             d_key = d
         idx = topix_idx.get(d_key)
         if idx is None:
+            skipped_dates.append({"eval_date": str(d.date()), "reason": "benchmark index lookup failed"})
             continue
-        if idx + 1 + max_days - 1 < len(topix_df):
+        if idx + 1 + min_days - 1 < len(topix_df):
             eligible_eval_dates.append(d_key)
+        else:
+            skipped_dates.append({"eval_date": str(d_key.date()), "reason": "shortest horizon not mature yet"})
 
     selected_dates = eligible_eval_dates[-WEEKS:]
     records: list[dict[str, Any]] = []
-    skipped_dates: list[dict[str, Any]] = []
 
     for eval_date in selected_dates:
         truncated = build_truncated_price_payload(prices, eval_date)
@@ -541,6 +597,8 @@ def build_backtest() -> dict[str, Any]:
     top_perf = top_bucket_performance(records)
 
     primary = PRIMARY_HORIZON if PRIMARY_HORIZON in HORIZONS else HORIZONS[min(2, len(HORIZONS)-1)]
+    windows = horizon_windows(records)
+    primary_window = windows.get(primary) or {}
     trend = daily_trend(records, primary)
 
     best = sorted(
@@ -556,15 +614,35 @@ def build_backtest() -> dict[str, Any]:
     signal_counts = Counter(str(r.get("signal") or "Unknown") for r in records)
     quality_counts = Counter(str(r.get("quality") or "Unknown") for r in records)
 
+    selected_start = str(selected_dates[0].date()) if selected_dates else None
+    selected_end = str(selected_dates[-1].date()) if selected_dates else None
+    primary_signal_count = int((overall.get(primary) or {}).get("count") or 0)
+    expected_signal_count = len(selected_dates) * RANK_LIMIT
+
     summary = {
-        "eval_date_count": len(selected_dates),
-        "eval_date_start": str(selected_dates[0].date()) if selected_dates else None,
-        "eval_date_end": str(selected_dates[-1].date()) if selected_dates else None,
-        "signal_count": len(records),
+        # Primary-window fields used by the page header. These are based on the
+        # primary horizon, not the longest configured horizon.
+        "eval_date_count": primary_window.get("eval_date_count") or 0,
+        "eval_date_start": primary_window.get("eval_date_start"),
+        "eval_date_end": primary_window.get("eval_date_end"),
+        "signal_count": primary_signal_count,
+
+        # Full selected replay window. This can include more recent weeks whose
+        # longer horizons are still pending.
+        "selected_eval_date_count": len(selected_dates),
+        "selected_eval_date_start": selected_start,
+        "selected_eval_date_end": selected_end,
+        "expected_signal_count": expected_signal_count,
+        "outcome_row_count": len(records),
+        "primary_signal_count": primary_signal_count,
+        "primary_pending_or_missing_signal_count": (primary_window.get("pending_or_missing_signal_count") or 0),
+        "skipped_eval_date_count": len(skipped_dates),
+
         "rank_limit": RANK_LIMIT,
         "weeks_requested": WEEKS,
         "primary_horizon": primary,
         "horizons": HORIZONS,
+        "horizon_windows": windows,
         "top_bucket_performance": top_perf,
         "overall": overall,
         "signal_counts": dict(signal_counts),
@@ -581,6 +659,7 @@ def build_backtest() -> dict[str, Any]:
         "timezone": "Asia/Tokyo",
         "source_prices": safe_relative(PRICES_JSON),
         "source_prices_generated_at": prices.get("generated_at"),
+        "latest_price_date": max([str(pd.Timestamp(idx).date()) for df in full_dfs.values() if not df.empty for idx in [df.index[-1]]] + ([str(pd.Timestamp(topix_df.index[-1]).date())] if not topix_df.empty else []), default=None),
         "benchmark": "TOPIX",
         "primary_horizon": primary,
         "horizons": HORIZONS,
@@ -634,11 +713,17 @@ def write_outputs(payload: dict[str, Any]) -> None:
     })
 
     # Compatibility copy for older links/tools.
-    write_json(LEGACY_OUT_BACKTEST_DIR / "latest.json", payload)
+    legacy_latest = LEGACY_OUT_BACKTEST_DIR / "latest.json"
+    legacy_dated = LEGACY_OUT_BACKTEST_DIR / f"{date_key}.json"
+    write_json(legacy_latest, payload)
+    write_json(legacy_dated, payload)
     write_json(LEGACY_OUT_BACKTEST_DIR / "manifest.json", {
         "schema_version": "weekly-jp-backtest-manifest-v1",
         "generated_at": payload.get("generated_at"),
-        "latest": safe_relative(LEGACY_OUT_BACKTEST_DIR / "latest.json"),
+        "latest": safe_relative(legacy_latest),
+        "items": [
+            {"date": date_key, "path": safe_relative(legacy_dated), "generated_at": payload.get("generated_at")}
+        ],
     })
 
 
