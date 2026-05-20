@@ -20,7 +20,7 @@ on:
           - "false"
           - "true"
       end_date:
-        description: "Backtest end date. Leave blank for latest cached date. Format: YYYY-MM-DD"
+        description: "Analysis end date. Leave blank for latest cached date. Format: YYYY-MM-DD"
         required: false
         default: ""
       weeks:
@@ -36,13 +36,13 @@ on:
           - "true"
           - "false"
       run_weekly_simulation:
-        description: "Reserved. Weekly JP Simulation is not implemented in this workflow yet."
+        description: "Run Weekly JP Simulation"
         required: true
-        default: "false"
+        default: "true"
         type: choice
         options:
-          - "false"
           - "true"
+          - "false"
   schedule:
     # 08:00 JST every Tuesday. This gives Japan weekly signals time to receive following-session data.
     - cron: "0 23 * * 1"
@@ -52,11 +52,15 @@ on:
     paths:
       - "scripts/rebuild_weekly_backtest_jp.py"
       - "scripts/render_weekly_backtest_jp.py"
+      - "scripts/rebuild_weekly_simulation_jp.py"
+      - "scripts/render_weekly_simulation_jp.py"
       - "scripts/build_weekly_jp.py"
       - "scripts/fetch_prices_jp.py"
       - "scripts/render_index.py"
       - "templates/weekly_backtest_jp.html.j2"
       - "templates/weekly_backtest_jp.css"
+      - "templates/weekly_simulation_jp.html.j2"
+      - "templates/weekly_simulation_jp.css"
       - "templates/index.html.j2"
       - "templates/index.css"
       - "requirements-render.txt"
@@ -82,6 +86,19 @@ jobs:
       WEEKLY_JP_PRIMARY_HORIZON: "4w"
       WEEKLY_JP_HORIZONS: "1,2,4,8,12"
       WEEKLY_JP_BENCHMARK_RETURN_ABS_LIMIT_PCT: "35"
+      WEEKLY_JP_SIM_WEEKS: ${{ github.event.inputs.weeks || '32' }}
+      WEEKLY_JP_SIM_END_DATE: ${{ github.event.inputs.end_date || '' }}
+      WEEKLY_JP_SIM_RANK_LIMIT: "10"
+      WEEKLY_JP_SIM_INITIAL_CAPITAL: "10000000"
+      WEEKLY_JP_SIM_POSITION_PCT: "0.125"
+      WEEKLY_JP_SIM_MAX_POSITIONS: "8"
+      WEEKLY_JP_SIM_MAX_NEW_POSITIONS_PER_WEEK: "3"
+      WEEKLY_JP_SIM_MIN_ENTRY_SCORE: "600"
+      WEEKLY_JP_SIM_REINVESTMENT_MIN_SCORE: "650"
+      WEEKLY_JP_SIM_SCORE_EXIT: "560"
+      WEEKLY_JP_SIM_STOP_PCT: "-8"
+      WEEKLY_JP_SIM_TIME_EXIT_WEEKS: "12"
+      WEEKLY_JP_SIM_ROUND_LOT: "100"
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
@@ -106,6 +123,8 @@ jobs:
             scripts/build_weekly_jp.py \
             scripts/rebuild_weekly_backtest_jp.py \
             scripts/render_weekly_backtest_jp.py \
+            scripts/rebuild_weekly_simulation_jp.py \
+            scripts/render_weekly_simulation_jp.py \
             scripts/fetch_prices_jp.py \
             scripts/render_index.py
 
@@ -145,10 +164,41 @@ jobs:
           assert isinstance(data.get("summary"), dict), "summary missing"
           assert isinstance(data.get("outcomes"), list), "outcomes missing"
           assert int(data.get("summary", {}).get("rank_limit") or 0) <= 10, "rank_limit must be <= 10"
-          print("schema_version=", data.get("schema_version"))
-          print("eval_date_count=", data.get("summary", {}).get("eval_date_count"))
-          print("signal_count=", data.get("summary", {}).get("signal_count"))
-          print("rank_limit=", data.get("summary", {}).get("rank_limit"))
+          print("backtest schema_version=", data.get("schema_version"))
+          print("backtest eval_date_count=", data.get("summary", {}).get("eval_date_count"))
+          print("backtest signal_count=", data.get("summary", {}).get("signal_count"))
+          PY
+
+      - name: Rebuild Weekly JP simulation JSON
+        if: ${{ github.event_name != 'workflow_dispatch' || (github.event.inputs.run_mode == 'full' && github.event.inputs.run_weekly_simulation == 'true') }}
+        run: |
+          set -euo pipefail
+          python scripts/rebuild_weekly_simulation_jp.py
+
+      - name: Verify Weekly JP simulation JSON
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.run_weekly_simulation == 'true' }}
+        run: |
+          set -euo pipefail
+          test -f site/data/japan/weekly/simulation/latest.json
+          test -f site/data/japan/weekly/simulation/manifest.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("site/data/japan/weekly/simulation/latest.json")
+          data = json.loads(p.read_text(encoding="utf-8"))
+          assert data.get("schema_version") == "weekly-jp-simulation-v1", data.get("schema_version")
+          assert isinstance(data.get("summary"), dict), "summary missing"
+          assert isinstance(data.get("equity_curve"), list), "equity_curve missing"
+          assert isinstance(data.get("open_positions"), list), "open_positions missing"
+          assert isinstance(data.get("closed_trades"), list), "closed_trades missing"
+          s = data.get("summary", {})
+          assert s.get("external_capital") is not None, "external capital missing"
+          assert s.get("portfolio_equity") is not None, "portfolio equity missing"
+          print("simulation schema_version=", data.get("schema_version"))
+          print("simulation eval_date_count=", s.get("eval_date_count"))
+          print("simulation net_return_pct=", s.get("net_return_pct"))
+          print("simulation open_positions=", s.get("open_positions_count"))
+          print("simulation closed_trades=", s.get("closed_trades_count"))
           PY
 
       - name: Render Weekly JP backtest page
@@ -157,31 +207,41 @@ jobs:
           set -euo pipefail
           python scripts/render_weekly_backtest_jp.py
 
+      - name: Render Weekly JP simulation page
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.run_weekly_simulation == 'true' }}
+        run: |
+          set -euo pipefail
+          python scripts/render_weekly_simulation_jp.py
+
       - name: Render index page
         run: |
           set -euo pipefail
           python scripts/render_index.py
 
       - name: Verify rendered outputs
-        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.run_weekly_backtest == 'true' }}
         run: |
           set -euo pipefail
-          test -f site/japan/weekly-backtest/index.html
-          test -f site/assets/weekly_backtest_jp.css
           python - <<'PY'
           from pathlib import Path
-          html = Path("site/japan/weekly-backtest/index.html").read_text(encoding="utf-8")
-          css = Path("site/assets/weekly_backtest_jp.css").read_text(encoding="utf-8")
-          assert len(html) > 1000, "weekly backtest html unexpectedly small"
-          assert len(css) > 1000, "weekly backtest css unexpectedly small"
-          for token in ["<!doctype html>", "<html", "<head>", "<body>", "</html>", "Neon Tokyo Signals", "weekly_backtest_jp.css"]:
-              assert token in html, f"missing html skeleton token: {token}"
-          for token in ["{{", "{%", "%}", "UndefinedError", "Traceback"]:
-              assert token not in html, f"unrendered/error token in html: {token}"
-          for token in [":root", "body"]:
-              assert token in css, f"missing css skeleton token: {token}"
-          print("weekly backtest html bytes=", len(html))
-          print("weekly backtest css bytes=", len(css))
+          checks = []
+          if Path("site/japan/weekly-backtest/index.html").exists():
+              checks.append(("site/japan/weekly-backtest/index.html", "site/assets/weekly_backtest_jp.css", "weekly_backtest_jp.css"))
+          if Path("site/japan/weekly-simulation/index.html").exists():
+              checks.append(("site/japan/weekly-simulation/index.html", "site/assets/weekly_simulation_jp.css", "weekly_simulation_jp.css"))
+          assert checks, "no weekly analysis pages were rendered"
+          for html_path, css_path, css_name in checks:
+              html = Path(html_path).read_text(encoding="utf-8")
+              css = Path(css_path).read_text(encoding="utf-8")
+              assert len(html) > 1000, f"{html_path} unexpectedly small"
+              assert len(css) > 1000, f"{css_path} unexpectedly small"
+              for token in ["<!doctype html>", "<html", "<head>", "<body>", "</html>", "Neon Tokyo Signals", css_name]:
+                  assert token in html, f"missing html skeleton token in {html_path}: {token}"
+              for token in ["{{", "{%", "%}", "UndefinedError", "Traceback"]:
+                  assert token not in html, f"unrendered/error token in {html_path}: {token}"
+              for token in [":root", "body"]:
+                  assert token in css, f"missing css skeleton token in {css_path}: {token}"
+              print(html_path, "bytes=", len(html))
+              print(css_path, "bytes=", len(css))
           PY
 
       - name: Commit generated weekly analysis artifacts
@@ -196,6 +256,10 @@ jobs:
             "site/data/weekly-jp/backtest"
             "site/japan/weekly-backtest/index.html"
             "site/assets/weekly_backtest_jp.css"
+            "site/data/japan/weekly/simulation"
+            "site/data/weekly-jp/simulation"
+            "site/japan/weekly-simulation/index.html"
+            "site/assets/weekly_simulation_jp.css"
             "site/index.html"
             "site/assets/index.css"
           )
