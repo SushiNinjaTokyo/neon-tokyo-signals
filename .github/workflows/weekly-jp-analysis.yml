@@ -194,6 +194,9 @@ jobs:
           s = data.get("summary", {})
           assert s.get("external_capital") is not None, "external capital missing"
           assert s.get("portfolio_equity") is not None, "portfolio equity missing"
+          for point in data.get("equity_curve") or []:
+              assert point.get("date") == point.get("execution_date"), "equity curve date must equal execution_date"
+              assert point.get("eval_date") <= point.get("execution_date"), "execution_date must be >= eval_date"
           print("simulation schema_version=", data.get("schema_version"))
           print("simulation eval_date_count=", s.get("eval_date_count"))
           print("simulation net_return_pct=", s.get("net_return_pct"))
