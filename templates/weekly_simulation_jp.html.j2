@@ -39,7 +39,11 @@
       <aside class="verdict-card {{ summary.net_return_pct | return_class }}">
         <span>Strategy Return</span>
         <strong>{{ summary.net_return_pct | fmt_pct(1) }}</strong>
-        <em>Alpha vs TOPIX {{ summary.alpha_pct | fmt_pct(1) }}</em>
+        {% if benchmark_valid %}
+          <em>Alpha vs TOPIX {{ summary.alpha_pct | fmt_pct(1) }}</em>
+        {% else %}
+          <em class="suspended">Alpha suspended · TOPIX data anomaly</em>
+        {% endif %}
       </aside>
     </section>
 
@@ -62,7 +66,7 @@
       <article class="{{ summary.max_drawdown_pct | return_class }}">
         <span>Max Drawdown</span>
         <strong>{{ summary.max_drawdown_pct | fmt_pct(1) }}</strong>
-        <em>Benchmark {{ summary.benchmark_max_drawdown_pct | fmt_pct(1) }}</em>
+        <em>{% if benchmark_valid %}Benchmark {{ summary.benchmark_max_drawdown_pct | fmt_pct(1) }}{% else %}Benchmark suspended{% endif %}</em>
       </article>
     </section>
 
@@ -71,7 +75,20 @@
         <div><div class="kicker"><span></span> EQUITY CURVE</div><h2>Strategy vs TOPIX, same initial capital.</h2></div>
         <div class="chip">{{ summary.eval_date_start or '—' }} → {{ summary.eval_date_end or '—' }}</div>
       </div>
-      <div class="legend"><span class="strategy"></span>Strategy <span class="benchmark"></span>TOPIX</div>
+      <div class="legend">
+        <span class="strategy"></span>Strategy
+        {% if benchmark_valid %}
+          <span class="benchmark"></span>TOPIX
+        {% else %}
+          <span class="benchmark muted"></span>TOPIX suspended
+        {% endif %}
+      </div>
+      {% if not benchmark_valid %}
+        <div class="benchmark-alert">
+          <strong>Benchmark invalid.</strong>
+          <span>{{ benchmark_quality.message or "TOPIX benchmark comparison is suspended because cached benchmark prices failed sanity checks." }}</span>
+        </div>
+      {% endif %}
       <svg class="equity-chart" viewBox="0 0 920 260" role="img" aria-label="Weekly simulation equity curve">
         <defs>
           <linearGradient id="strategyLine" x1="0" x2="1"><stop offset="0%" stop-color="#7df9ff"/><stop offset="100%" stop-color="#5dffb1"/></linearGradient>
@@ -85,8 +102,8 @@
       </svg>
       <div class="curve-footer">
         <div><span>Strategy</span><strong>{{ summary.portfolio_equity | fmt_jpy }}</strong></div>
-        <div><span>TOPIX</span><strong>{{ summary.benchmark_equity | fmt_jpy }}</strong></div>
-        <div><span>Alpha</span><strong class="{{ summary.alpha_pct | return_class }}">{{ summary.alpha_pct | fmt_pct(1) }}</strong></div>
+        <div><span>TOPIX</span><strong>{% if benchmark_valid %}{{ summary.benchmark_equity | fmt_jpy }}{% else %}Invalid{% endif %}</strong></div>
+        <div><span>Alpha</span><strong class="{{ summary.alpha_pct | return_class }}">{% if benchmark_valid %}{{ summary.alpha_pct | fmt_pct(1) }}{% else %}Suspended{% endif %}</strong></div>
       </div>
     </section>
 
@@ -165,7 +182,7 @@
               <td>{{ t.entry_signal }}<br><span>{{ t.entry_quality }}</span></td>
               <td>{{ t.entry_date }}</td>
               <td class="{{ t.return_pct | return_class }}">{{ t.return_pct | fmt_pct(1) }}</td>
-              <td class="{{ t.alpha_pct | return_class }}">{{ t.alpha_pct | fmt_pct(1) }}</td>
+              <td class="{{ t.alpha_pct | return_class }}">{% if t.alpha_pct is not none %}{{ t.alpha_pct | fmt_pct(1) }}{% else %}<span class="suspended-text">Benchmark invalid</span>{% endif %}</td>
               <td>{{ t.exit_reason }}</td>
               <td class="{{ t.pnl_jpy | return_class }}">{{ t.pnl_jpy | fmt_jpy }}</td>
             </tr>
