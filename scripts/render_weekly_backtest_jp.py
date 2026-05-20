@@ -172,6 +172,30 @@ def bar_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
     return rows
 
 
+
+def horizon_coverage_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
+    summary = payload.get("summary") or {}
+    windows = summary.get("horizon_windows") or {}
+    horizons = payload.get("horizons") or ["1w", "2w", "4w", "8w", "12w"]
+    rows: list[dict[str, Any]] = []
+    for h in horizons:
+        w = windows.get(h) or {}
+        valid = as_float(w.get("valid_signal_count")) or 0
+        expected = as_float(w.get("expected_signal_count")) or 0
+        coverage = as_float(w.get("coverage_pct"))
+        rows.append({
+            "horizon": str(h).upper(),
+            "start": w.get("eval_date_start"),
+            "end": w.get("eval_date_end"),
+            "eval_date_count": w.get("eval_date_count") or 0,
+            "valid_signal_count": int(valid),
+            "pending_or_missing_signal_count": w.get("pending_or_missing_signal_count") or 0,
+            "expected_signal_count": int(expected),
+            "coverage_pct": coverage,
+            "coverage_width": clamp(float(coverage or 0), 4.0, 100.0),
+        })
+    return rows
+
 def path_from_points(points: list[tuple[float, float]]) -> str:
     if not points:
         return ""
@@ -284,6 +308,7 @@ def render() -> None:
         top_bucket_cards=top_bucket_cards(payload),
         signal_cards=signal_cards(payload),
         bar_rows=bar_rows(payload),
+        coverage_rows=horizon_coverage_rows(payload),
         trend_chart=build_trend_chart(payload),
         recent_outcomes=compact_outcomes(payload, 40),
         best_movers=top_movers(payload, "return_pct", 8, True),
