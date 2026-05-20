@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Japan Weekly Backtest | Neon Tokyo Signals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="Weekly Japan equity signal backtest for Neon Tokyo Signals. Top 3, Top 5 and Top 10 forward performance with TOPIX alpha."/>
+  <meta name="theme-color" content="#050711"/>
+  <link rel="stylesheet" href="/assets/weekly_backtest_jp.css?v={{ asset_version }}"/>
+</head>
+<body>
+<div class="page">
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <div class="grid"></div>
+
+  <main class="wrap">
+    <header class="header">
+      <a class="brand" href="/">
+        <span class="brand-mark">NTS</span>
+        <span><strong>NEON TOKYO SIGNALS</strong><em>Japan weekly quant research</em></span>
+      </a>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/japan/daily/">Daily</a>
+        <a href="/japan/weekly/">Weekly</a>
+        <a class="active" href="/japan/weekly-backtest/">Weekly Backtest</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="kicker"><span class="live-dot"></span> WEEKLY JP BACKTEST</div>
+        <h1>Top-ranked Japan weekly signals,<span>tested without the noise.</span></h1>
+        <p>
+          The model is evaluated on score-ranked weekly Top 10 only. Top 3, Top 5 and Top 10 are separated so the board does not hide weak lower-ranked candidates inside a broad average.
+        </p>
+        <div class="hero-meta">
+          <span>{{ summary.eval_date_start or '—' }} → {{ summary.eval_date_end or '—' }}</span>
+          <span>{{ summary.eval_date_count or 0 }} eval dates</span>
+          <span>{{ summary.signal_count or 0 }} signals</span>
+          <span>Primary {{ primary_horizon|upper }}</span>
+        </div>
+      </div>
+
+      <aside class="verdict-card">
+        <div class="card-label">MODEL READ</div>
+        {% set top3_alpha = top_bucket_cards[0].avg_alpha_pct if top_bucket_cards else none %}
+        {% set top10_alpha = top_bucket_cards[2].avg_alpha_pct if top_bucket_cards|length > 2 else none %}
+        {% if top3_alpha is not none and top10_alpha is not none and top3_alpha > top10_alpha %}
+          <strong>FOCUS TOP 3</strong>
+          <p>Highest conviction ranks are outperforming the wider Top 10 basket.</p>
+        {% elif top10_alpha is not none and top10_alpha > 0 %}
+          <strong>TOP 10 EDGE</strong>
+          <p>The full weekly board is producing positive TOPIX alpha.</p>
+        {% else %}
+          <strong>NO CLEAR EDGE</strong>
+          <p>Current weekly settings need tighter filters before promotion.</p>
+        {% endif %}
+        <div class="verdict-stats">
+          <div><span>Benchmark</span><b>{{ payload.benchmark or 'TOPIX' }}</b></div>
+          <div><span>Entry</span><b>Next open</b></div>
+          <div><span>Rank cap</span><b>Top {{ summary.rank_limit or 10 }}</b></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="read-grid" aria-label="Five second weekly backtest read">
+      {% for card in top_bucket_cards %}
+        <article class="read-card {{ card.return_class }}">
+          <span>{{ card.label }}</span>
+          <strong>{{ card.avg_return_pct|fmt_pct }}</strong>
+          <em>{{ primary_horizon|upper }} return · {{ card.avg_alpha_pct|fmt_pct }} alpha · {{ card.win_rate_pct|fmt_num(0) }}% win</em>
+        </article>
+      {% endfor %}
+      <article class="read-card neutral">
+        <span>Evaluation</span>
+        <strong>{{ summary.eval_date_count or 0 }}</strong>
+        <em>weekly snapshots, no API calls during replay</em>
+      </article>
+    </section>
+
+    <section class="chart-section">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">DAILY PERFORMANCE TREND</div>
+          <h2>Top 3 / Top 5 / Top 10 forward-performance curve.</h2>
+        </div>
+        <div class="method-chip">{{ primary_horizon|upper }} forward return index · not a live portfolio</div>
+      </div>
+
+      <div class="chart-card trend-card">
+        {% if trend_chart.available %}
+          <svg class="trend-svg" viewBox="0 0 {{ trend_chart.width }} {{ trend_chart.height }}" role="img" aria-label="Weekly backtest performance trend">
+            <defs>
+              <linearGradient id="gridGlow" x1="0" x2="1">
+                <stop offset="0%" stop-color="rgba(125,249,255,.24)"/>
+                <stop offset="100%" stop-color="rgba(255,79,216,.24)"/>
+              </linearGradient>
+            </defs>
+            <line x1="42" y1="34" x2="42" y2="266" class="axis"/>
+            <line x1="42" y1="266" x2="878" y2="266" class="axis"/>
+            <line x1="42" y1="150" x2="878" y2="150" class="midline"/>
+            {% for s in trend_chart.series %}
+              <polyline class="line line-{{ loop.index }}" points="{{ s.points }}" fill="none"/>
+            {% endfor %}
+          </svg>
+          <div class="trend-legend">
+            {% for s in trend_chart.series %}
+              <span class="legend-line legend-{{ loop.index }}"><i></i>{{ s.label }} <b>{{ s.latest|fmt_num(1) }}</b></span>
+            {% endfor %}
+            <em>{{ trend_chart.start }} → {{ trend_chart.end }}</em>
+          </div>
+        {% else %}
+          <div class="empty-card">Trend chart is not available yet. Run Weekly JP Backtest with enough historical weeks.</div>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="visual-section">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">VISUAL PERFORMANCE MAP</div>
+          <h2>Where the edge is coming from.</h2>
+        </div>
+        <div class="method-chip">{{ primary_horizon|upper }} TOPIX alpha</div>
+      </div>
+      <div class="visual-grid">
+        <article class="chart-card">
+          <div class="chart-title">Rank bucket alpha</div>
+          {% for row in bar_rows %}
+            <div class="bar-row">
+              <span>{{ row.label }}</span>
+              <i class="{{ row.class }}" style="width:{{ row.width }}%"></i>
+              <b class="{{ row.class }}">{{ row.value|fmt_pct }}</b>
+            </div>
+          {% endfor %}
+        </article>
+        <article class="chart-card">
+          <div class="chart-title">Signal quality</div>
+          {% for card in signal_cards %}
+            <div class="mini-stat">
+              <span>{{ card.label }}</span>
+              <b class="{{ card.return_class }}">{{ card.avg_return_pct|fmt_pct }}</b>
+              <em>{{ card.avg_alpha_pct|fmt_pct }} alpha · {{ card.win_rate_pct|fmt_num(0) }}% win</em>
+            </div>
+          {% endfor %}
+        </article>
+        <article class="chart-card">
+          <div class="chart-title">Benchmark quality</div>
+          {% set bq = summary.benchmark_quality or {} %}
+          {% for h, q in bq.items() %}
+            <div class="quality-row">
+              <span>{{ h|upper }}</span>
+              <b>{{ q.valid_alpha_count or 0 }} valid</b>
+              <em>{{ q.invalid_alpha_count or 0 }} invalid</em>
+            </div>
+          {% endfor %}
+        </article>
+      </div>
+    </section>
+
+    <section class="movers-section">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">FORWARD MOVES</div>
+          <h2>Best and worst {{ primary_horizon|upper }} outcomes.</h2>
+        </div>
+        <div class="method-chip">Entry = next trading day open</div>
+      </div>
+      <div class="mover-grid">
+        <article class="lane positive-lane">
+          <h3>Best forward moves</h3>
+          {% for item in best_movers %}
+            <div class="lane-row">
+              <b>#{{ item.rank }} {{ item.symbol }} · {{ item.metric_value|fmt_pct }}</b>
+              <span>{{ item.eval_date }} · {{ item.quality }} · {{ item.theme }}</span>
+            </div>
+          {% else %}
+            <div class="empty-lane">No best movers yet.</div>
+          {% endfor %}
+        </article>
+        <article class="lane negative-lane">
+          <h3>Worst forward moves</h3>
+          {% for item in worst_movers %}
+            <div class="lane-row">
+              <b>#{{ item.rank }} {{ item.symbol }} · {{ item.metric_value|fmt_pct }}</b>
+              <span>{{ item.eval_date }} · {{ item.quality }} · {{ item.main_risk }}</span>
+            </div>
+          {% else %}
+            <div class="empty-lane">No worst movers yet.</div>
+          {% endfor %}
+        </article>
+      </div>
+    </section>
+
+    <section class="table-section">
+      <div class="section-heading split-heading">
+        <div>
+          <div class="kicker">RECENT REPLAY</div>
+          <h2>Most recent weekly Top 10 candidates.</h2>
+        </div>
+        <div class="method-chip">Compact audit table</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th><th>Rank</th><th>Symbol</th><th>Signal</th><th>Score</th><th>Quality</th><th>{{ primary_horizon|upper }} Ret</th><th>{{ primary_horizon|upper }} Alpha</th><th>Drawdown</th><th>Liquidity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in recent_outcomes %}
+              <tr>
+                <td>{{ item.eval_date }}</td>
+                <td>#{{ item.rank }}</td>
+                <td><strong>{{ item.symbol }}</strong></td>
+                <td>{{ item.signal }}</td>
+                <td>{{ item.score_pts }}</td>
+                <td>{{ item.quality }}</td>
+                <td class="{{ item.return_class }}">{{ item.primary_return_pct|fmt_pct }}</td>
+                <td class="{{ item.alpha_class }}">{{ item.primary_alpha_pct|fmt_pct }}</td>
+                <td>{{ item.primary_drawdown_pct|fmt_pct }}</td>
+                <td>{{ item.liquidity_band }}</td>
+              </tr>
+            {% else %}
+              <tr><td colspan="10">No replay rows yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="method-section">
+      <article class="method-card">
+        <div class="kicker">METHODOLOGY</div>
+        <h2>Weekly JP Backtest v1</h2>
+        <p>
+          Each evaluation date replays the Weekly JP scoring engine using only historical bars visible at that time. The test keeps score-ranked Top 10 only, then separately reports Top 3, Top 5 and Top 10 performance.
+        </p>
+      </article>
+      <article class="method-card warning">
+        <div class="kicker">IMPORTANT CONTROL</div>
+        <h2>No broad-basket dilution.</h2>
+        <p>
+          Rank 11+ is intentionally cut from this backtest. The goal is to verify the actual weekly board candidates, not dilute results with low-conviction names.
+        </p>
+      </article>
+    </section>
+
+    <section class="notes">
+      <strong>Not investment advice.</strong>
+      <span>Backtest results are informational. Slippage, taxes, liquidity, limit moves and execution failure can materially change realized results.</span>
+    </section>
+
+    <footer class="footer">
+      <span>Informational only. Not investment advice.</span>
+      <nav><a href="/">Home</a><a href="/japan/weekly/">Weekly</a><a href="/privacy/">Privacy</a><a href="/disclaimer/">Disclaimer</a></nav>
+    </footer>
+  </main>
+</div>
+</body>
+</html>
