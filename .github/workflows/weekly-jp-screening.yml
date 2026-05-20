@@ -1,0 +1,218 @@
+name: Weekly JP screening
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_mode:
+        description: "full = build JSON and render HTML, render_only = render existing JSON only"
+        required: true
+        default: "full"
+        type: choice
+        options:
+          - full
+          - render_only
+      fetch_data:
+        description: "Fetch fresh JP prices before weekly build"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+      end_date:
+        description: "Reserved for future market-date control. Leave blank for latest cached date."
+        required: false
+        default: ""
+  schedule:
+    # 09:00 JST every Saturday, after Friday Tokyo close.
+    - cron: "0 0 * * 6"
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/build_weekly_jp.py"
+      - "scripts/render_weekly_jp.py"
+      - "scripts/fetch_prices_jp.py"
+      - "scripts/render_index.py"
+      - "templates/weekly_jp.html.j2"
+      - "templates/weekly_jp.css"
+      - "templates/index.html.j2"
+      - "templates/index.css"
+      - "data/weekly_candidates_jp.csv"
+      - "data/universe_jp.csv"
+      - "site/data/prices-jp/latest.json"
+      - "requirements-render.txt"
+      - ".github/workflows/weekly-jp-screening.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-jp-screening-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  weekly-jp-screening:
+    runs-on: ubuntu-latest
+
+    env:
+      OUT_DIR: site
+      PRICES_JSON: site/data/prices-jp/latest.json
+      WEEKLY_CANDIDATES_CSV: data/weekly_candidates_jp.csv
+      UNIVERSE_CSV: data/universe_jp.csv
+      WEEKLY_JSON: site/data/japan/weekly/latest.json
+      WEEKLY_MIN_BARS: "42"
+      WEEKLY_TOP_ITEMS_LIMIT: "40"
+      WEEKLY_WRITE_LEGACY_COPY: "true"
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install -r requirements-render.txt
+
+      - name: Validate scripts
+        run: |
+          set -euo pipefail
+          python -m compileall scripts/build_weekly_jp.py scripts/render_weekly_jp.py scripts/render_index.py scripts/fetch_prices_jp.py
+
+      - name: Optionally fetch fresh JP prices
+        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.fetch_data == 'true' && github.event.inputs.run_mode == 'full') }}
+        run: |
+          set -euo pipefail
+          python scripts/fetch_prices_jp.py
+
+      - name: Verify price cache exists
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.run_mode == 'full' }}
+        run: |
+          set -euo pipefail
+          if [ ! -f site/data/prices-jp/latest.json ]; then
+            echo "site/data/prices-jp/latest.json does not exist. Run Fetch JP prices first or set fetch_data=true."
+            exit 1
+          fi
+
+      - name: Build Weekly JP screening JSON
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.run_mode == 'full' }}
+        run: |
+          set -euo pipefail
+          python scripts/build_weekly_jp.py
+
+      - name: Verify Weekly JP JSON
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.run_mode == 'full' }}
+        run: |
+          set -euo pipefail
+          test -f site/data/japan/weekly/latest.json
+          test -f site/data/japan/weekly/manifest.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("site/data/japan/weekly/latest.json")
+          data = json.loads(p.read_text(encoding="utf-8"))
+          assert data.get("schema_version") == "weekly-jp-v1", data.get("schema_version")
+          assert data.get("market") == "JP", data.get("market")
+          assert isinstance(data.get("items"), list), "items must be list"
+          assert isinstance(data.get("summary"), dict), "summary must be dict"
+          assert "methodology" in data, "methodology missing"
+          print("weekly schema_version=", data.get("schema_version"))
+          print("weekly date=", data.get("date"))
+          print("weekly items=", len(data.get("items") or []))
+          print("weekly trade=", data.get("summary", {}).get("trade"))
+          print("weekly watch=", data.get("summary", {}).get("watch"))
+          PY
+
+      - name: Verify existing Weekly JP JSON for render-only
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.run_mode == 'render_only' }}
+        run: |
+          set -euo pipefail
+          if [ ! -f site/data/japan/weekly/latest.json ] && [ ! -f site/data/weekly-jp/latest.json ]; then
+            echo "No weekly JSON found for render_only. Run full mode first."
+            exit 1
+          fi
+
+      - name: Render Weekly JP page
+        run: |
+          set -euo pipefail
+          python scripts/render_weekly_jp.py
+
+      - name: Render index page
+        run: |
+          set -euo pipefail
+          python scripts/render_index.py
+
+      - name: Verify rendered outputs
+        run: |
+          set -euo pipefail
+          test -f site/japan/weekly/index.html
+          test -f site/assets/weekly_jp.css
+          test -f site/index.html
+          python - <<'PY'
+          from pathlib import Path
+          checks = [
+              (Path("site/japan/weekly/index.html"), ["<!doctype html>", "Neon Tokyo Signals", "weekly_jp.css"]),
+              (Path("site/assets/weekly_jp.css"), [":root", "body"]),
+              (Path("site/index.html"), ["<!doctype html>", "Neon Tokyo Signals"]),
+          ]
+          for path, tokens in checks:
+              text = path.read_text(encoding="utf-8")
+              assert len(text) > 1000, f"{path} is unexpectedly small"
+              for token in tokens:
+                  assert token in text, f"{path} missing stable token: {token}"
+              for bad in ["{{", "{%", "%}", "UndefinedError", "Traceback"]:
+                  assert bad not in text, f"{path} contains unrendered/error token: {bad}"
+              print(path, "bytes=", len(text))
+          PY
+
+      - name: Commit Weekly JP outputs
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+
+          paths=(
+            "site/data/japan/weekly"
+            "site/data/weekly-jp"
+            "site/japan/weekly/index.html"
+            "site/assets/weekly_jp.css"
+            "site/index.html"
+            "site/assets/index.css"
+          )
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.fetch_data || 'false' }}" = "true" ] && [ "${{ github.event.inputs.run_mode || 'full' }}" = "full" ]; then
+            paths+=("site/data/prices-jp")
+          fi
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            paths+=("site/data/prices-jp")
+          fi
+
+          for path in "${paths[@]}"; do
+            if [ -e "$path" ] || [ -n "$(git ls-files -- "$path")" ]; then
+              git add -A -- "$path"
+            else
+              echo "Skip missing and untracked path: $path"
+            fi
+          done
+
+          if git diff --cached --quiet; then
+            echo "No Weekly JP changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Update Weekly JP screening"
+          git push
+
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Working tree is still dirty after commit. Add missing generated paths to the commit path list."
+            git status --short
+            exit 1
+          fi
