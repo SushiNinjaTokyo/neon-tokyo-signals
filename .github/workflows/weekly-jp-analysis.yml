@@ -1,0 +1,226 @@
+name: Weekly JP analysis
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_mode:
+        description: "full = rebuild JSON and render HTML, render_only = render existing JSON only"
+        required: true
+        default: "full"
+        type: choice
+        options:
+          - full
+          - render_only
+      fetch_data:
+        description: "Fetch fresh JP prices before analysis"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+      end_date:
+        description: "Backtest end date. Leave blank for latest cached date. Format: YYYY-MM-DD"
+        required: false
+        default: ""
+      weeks:
+        description: "Number of eligible weekly evaluation dates"
+        required: true
+        default: "32"
+      run_weekly_backtest:
+        description: "Run Weekly JP Backtest"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      run_weekly_simulation:
+        description: "Reserved. Weekly JP Simulation is not implemented in this workflow yet."
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+  schedule:
+    # 08:00 JST every Tuesday. This gives Japan weekly signals time to receive following-session data.
+    - cron: "0 23 * * 1"
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/rebuild_weekly_backtest_jp.py"
+      - "scripts/render_weekly_backtest_jp.py"
+      - "scripts/build_weekly_jp.py"
+      - "scripts/fetch_prices_jp.py"
+      - "scripts/render_index.py"
+      - "templates/weekly_backtest_jp.html.j2"
+      - "templates/weekly_backtest_jp.css"
+      - "templates/index.html.j2"
+      - "templates/index.css"
+      - "requirements-render.txt"
+      - ".github/workflows/weekly-jp-analysis.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-jp-analysis-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  weekly-analysis:
+    runs-on: ubuntu-latest
+
+    env:
+      OUT_DIR: site
+      PRICES_JSON: site/data/prices-jp/latest.json
+      WEEKLY_JP_BACKTEST_WEEKS: ${{ github.event.inputs.weeks || '32' }}
+      WEEKLY_JP_BACKTEST_END_DATE: ${{ github.event.inputs.end_date || '' }}
+      WEEKLY_JP_BACKTEST_RANK_LIMIT: "10"
+      WEEKLY_JP_PRIMARY_HORIZON: "4w"
+      WEEKLY_JP_HORIZONS: "1,2,4,8,12"
+      WEEKLY_JP_BENCHMARK_RETURN_ABS_LIMIT_PCT: "35"
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install -r requirements-render.txt
+
+      - name: Validate Python scripts
+        run: |
+          set -euo pipefail
+          python -m compileall \
+            scripts/build_weekly_jp.py \
+            scripts/rebuild_weekly_backtest_jp.py \
+            scripts/render_weekly_backtest_jp.py \
+            scripts/fetch_prices_jp.py \
+            scripts/render_index.py
+
+      - name: Optionally fetch fresh JP prices
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.run_mode == 'full' && github.event.inputs.fetch_data == 'true' }}
+        run: |
+          set -euo pipefail
+          python scripts/fetch_prices_jp.py
+
+      - name: Verify cached price JSON exists
+        run: |
+          set -euo pipefail
+          if [ ! -f site/data/prices-jp/latest.json ]; then
+            echo "site/data/prices-jp/latest.json does not exist."
+            echo "Run Fetch JP prices or Weekly JP analysis with fetch_data=true."
+            exit 1
+          fi
+
+      - name: Rebuild Weekly JP backtest JSON
+        if: ${{ github.event_name != 'workflow_dispatch' || (github.event.inputs.run_mode == 'full' && github.event.inputs.run_weekly_backtest == 'true') }}
+        run: |
+          set -euo pipefail
+          python scripts/rebuild_weekly_backtest_jp.py
+
+      - name: Verify Weekly JP backtest JSON
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.run_weekly_backtest == 'true' }}
+        run: |
+          set -euo pipefail
+          test -f site/data/japan/weekly/backtest/latest.json
+          test -f site/data/japan/weekly/backtest/manifest.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("site/data/japan/weekly/backtest/latest.json")
+          data = json.loads(p.read_text(encoding="utf-8"))
+          assert data.get("schema_version") == "weekly-jp-backtest-v1", data.get("schema_version")
+          assert isinstance(data.get("summary"), dict), "summary missing"
+          assert isinstance(data.get("outcomes"), list), "outcomes missing"
+          assert int(data.get("summary", {}).get("rank_limit") or 0) <= 10, "rank_limit must be <= 10"
+          print("schema_version=", data.get("schema_version"))
+          print("eval_date_count=", data.get("summary", {}).get("eval_date_count"))
+          print("signal_count=", data.get("summary", {}).get("signal_count"))
+          print("rank_limit=", data.get("summary", {}).get("rank_limit"))
+          PY
+
+      - name: Render Weekly JP backtest page
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.run_weekly_backtest == 'true' }}
+        run: |
+          set -euo pipefail
+          python scripts/render_weekly_backtest_jp.py
+
+      - name: Render index page
+        run: |
+          set -euo pipefail
+          python scripts/render_index.py
+
+      - name: Verify rendered outputs
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.run_weekly_backtest == 'true' }}
+        run: |
+          set -euo pipefail
+          test -f site/japan/weekly-backtest/index.html
+          test -f site/assets/weekly_backtest_jp.css
+          python - <<'PY'
+          from pathlib import Path
+          html = Path("site/japan/weekly-backtest/index.html").read_text(encoding="utf-8")
+          css = Path("site/assets/weekly_backtest_jp.css").read_text(encoding="utf-8")
+          assert len(html) > 1000, "weekly backtest html unexpectedly small"
+          assert len(css) > 1000, "weekly backtest css unexpectedly small"
+          for token in ["<!doctype html>", "<html", "<head>", "<body>", "</html>", "Neon Tokyo Signals", "weekly_backtest_jp.css"]:
+              assert token in html, f"missing html skeleton token: {token}"
+          for token in ["{{", "{%", "%}", "UndefinedError", "Traceback"]:
+              assert token not in html, f"unrendered/error token in html: {token}"
+          for token in [":root", "body"]:
+              assert token in css, f"missing css skeleton token: {token}"
+          print("weekly backtest html bytes=", len(html))
+          print("weekly backtest css bytes=", len(css))
+          PY
+
+      - name: Commit generated weekly analysis artifacts
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+
+          paths=(
+            "site/data/japan/weekly/backtest"
+            "site/data/weekly-jp/backtest"
+            "site/japan/weekly-backtest/index.html"
+            "site/assets/weekly_backtest_jp.css"
+            "site/index.html"
+            "site/assets/index.css"
+          )
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.fetch_data || 'false' }}" = "true" ]; then
+            paths+=("site/data/prices-jp")
+          fi
+
+          for path in "${paths[@]}"; do
+            if [ -e "$path" ] || [ -n "$(git ls-files -- "$path")" ]; then
+              git add -A -- "$path"
+            else
+              echo "Skip missing and untracked path: $path"
+            fi
+          done
+
+          if git diff --cached --quiet; then
+            echo "No weekly analysis changes to commit."
+          else
+            git commit -m "Update Weekly JP analysis"
+            git push
+          fi
+
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Working tree is still dirty after commit. Add missing generated paths to the commit path list."
+            git status --short
+            exit 1
+          fi
