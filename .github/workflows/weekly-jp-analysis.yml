@@ -163,10 +163,22 @@ jobs:
           assert data.get("schema_version") == "weekly-jp-backtest-v1", data.get("schema_version")
           assert isinstance(data.get("summary"), dict), "summary missing"
           assert isinstance(data.get("outcomes"), list), "outcomes missing"
-          assert int(data.get("summary", {}).get("rank_limit") or 0) <= 10, "rank_limit must be <= 10"
+          summary = data.get("summary", {})
+          assert int(summary.get("rank_limit") or 0) <= 10, "rank_limit must be <= 10"
+          windows = summary.get("horizon_windows") or {}
+          assert "4w" in windows, "4w horizon window missing"
+          assert "12w" in windows, "12w horizon window missing"
+          # 4W primary must not be truncated by 12W maturity. It should be at
+          # least as recent as 12W whenever both windows exist.
+          if windows["4w"].get("eval_date_end") and windows["12w"].get("eval_date_end"):
+              assert windows["4w"]["eval_date_end"] >= windows["12w"]["eval_date_end"], "4w window is incorrectly bounded by 12w"
+          assert isinstance(data.get("performance_trend"), list), "performance_trend missing"
           print("backtest schema_version=", data.get("schema_version"))
-          print("backtest eval_date_count=", data.get("summary", {}).get("eval_date_count"))
-          print("backtest signal_count=", data.get("summary", {}).get("signal_count"))
+          print("backtest primary_eval_date_count=", summary.get("eval_date_count"))
+          print("backtest selected_eval_date_count=", summary.get("selected_eval_date_count"))
+          print("backtest primary_signal_count=", summary.get("signal_count"))
+          print("backtest 4w_window=", windows.get("4w"))
+          print("backtest 12w_window=", windows.get("12w"))
           PY
 
       - name: Rebuild Weekly JP simulation JSON
