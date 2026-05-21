@@ -1,0 +1,954 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Daily JP Simulation | Neon Tokyo Signals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="Cash-accounted Japan daily signal simulation for Neon Tokyo Signals."/>
+  <meta name="theme-color" content="#050711"/>
+  <link rel="stylesheet" href="/assets/daily_simulation_jp.css?v=202605211108"/>
+</head>
+<body>
+<div class="page">
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <div class="grid"></div>
+
+  <main class="wrap">
+    <header class="header">
+      <a class="brand" href="/">
+        <span class="brand-mark">NTS</span>
+        <span>
+          <strong>NEON TOKYO SIGNALS</strong>
+          <em>Japan daily portfolio simulation</em>
+        </span>
+      </a>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/japan/daily/">Daily</a>
+        <a href="/japan/daily/backtest/">Backtest</a>
+        <a class="active" href="/japan/daily/simulation/">Simulation</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="kicker">DAILY JP SIMULATION V1</div>
+        <h1>Short-term signals, converted into cash reality.</h1>
+        <p>
+          Daily Top 10 signals are replayed with next-open execution, JP round lots,
+          slippage, explicit cash, open positions, closed trades and benchmark sanity controls.
+        </p>
+      </div>
+      <div class="hero-metrics">
+        <div class="metric hero-main">
+          <span>Strategy Return</span>
+          <strong class="positive">
+            +20.9%
+          </strong>
+          
+            <em>Alpha suspended · TOPIX data anomaly</em>
+          
+        </div>
+        <div class="metric">
+          <span>Portfolio Equity</span>
+          <strong>¥12.1M</strong>
+          <em>Capital ¥10.0M</em>
+        </div>
+        <div class="metric">
+          <span>Cash</span>
+          <strong>¥12.1M</strong>
+          <em>Market value ¥0</em>
+        </div>
+        <div class="metric">
+          <span>Open / Closed</span>
+          <strong>0 / 249</strong>
+          <em>Max DD -14.2%</em>
+        </div>
+      </div>
+    </section>
+
+    <section class="meta-strip">
+      <div><span>Execution Window</span><strong>2025-06-20 → 2026-05-20</strong></div>
+      <div><span>Eval Days</span><strong>220</strong></div>
+      <div><span>Entry</span><strong>Next open</strong></div>
+      <div><span>Rank Cap</span><strong>Top 10</strong></div>
+    </section>
+
+    <section class="chart-section">
+      <div class="section-heading split">
+        <div>
+          <div class="kicker">EQUITY CURVE</div>
+          <h2>Strategy equity, marked after execution.</h2>
+        </div>
+        <div class="legend">
+          <span><i class="line-strategy"></i>Strategy</span>
+          
+            <span><i class="line-disabled"></i>TOPIX suspended</span>
+          
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <svg viewBox="0 0 920 280" role="img" aria-label="Daily simulation equity curve">
+          <defs>
+            <linearGradient id="strategyFill" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="rgba(93,255,177,.26)"/>
+              <stop offset="100%" stop-color="rgba(93,255,177,0)"/>
+            </linearGradient>
+          </defs>
+          <polyline class="axis" points="20,240 900,240"/>
+          
+            <polygon class="area-strategy" points="20.0,260.0 20.0,257.9 24.0,260.0 28.0,246.6 32.1,243.1 36.1,227.1 40.1,214.2 44.1,207.8 48.1,214.5 52.1,227.5 56.2,230.3 60.2,238.7 64.2,248.4 68.2,237.2 72.2,244.2 76.3,247.0 80.3,248.7 84.3,254.9 88.3,246.7 92.3,237.4 96.3,236.7 100.4,242.3 104.4,221.6 108.4,218.2 112.4,201.2 116.4,207.0 120.5,210.5 124.5,219.6 128.5,207.9 132.5,193.9 136.5,194.8 140.5,203.8 144.6,185.6 148.6,182.5 152.6,177.5 156.6,172.5 160.6,156.9 164.7,151.1 168.7,145.2 172.7,139.7 176.7,134.9 180.7,140.5 184.7,163.8 188.8,171.7 192.8,172.1 196.8,174.1 200.8,176.5 204.8,184.9 208.9,178.4 212.9,170.9 216.9,197.7 220.9,197.7 224.9,198.2 228.9,199.5 233.0,196.1 237.0,210.0 241.0,227.8 245.0,204.3 249.0,188.3 253.1,209.1 257.1,200.7 261.1,212.5 265.1,194.3 269.1,217.8 273.2,205.0 277.2,198.6 281.2,195.0 285.2,205.2 289.2,208.1 293.2,209.9 297.3,223.5 301.3,221.8 305.3,217.2 309.3,198.0 313.3,198.4 317.4,195.1 321.4,179.8 325.4,193.1 329.4,204.2 333.4,203.7 337.4,196.2 341.5,203.3 345.5,189.6 349.5,191.7 353.5,199.9 357.5,183.9 361.6,148.9 365.6,164.1 369.6,155.5 373.6,131.7 377.6,95.4 381.6,95.9 385.7,109.0 389.7,101.7 393.7,99.6 397.7,106.4 401.7,107.2 405.8,103.1 409.8,104.9 413.8,129.8 417.8,131.6 421.8,139.8 425.8,142.5 429.9,142.5 433.9,142.5 437.9,142.5 441.9,142.5 445.9,142.5 450.0,142.5 454.0,147.3 458.0,144.3 462.0,142.6 466.0,120.9 470.0,125.8 474.1,117.9 478.1,120.3 482.1,123.4 486.1,133.0 490.1,130.8 494.2,126.3 498.2,132.7 502.2,135.2 506.2,135.5 510.2,134.2 514.2,134.2 518.3,135.4 522.3,136.7 526.3,136.9 530.3,136.9 534.3,136.9 538.4,139.4 542.4,139.3 546.4,132.0 550.4,142.5 554.4,150.7 558.4,150.4 562.5,120.5 566.5,92.3 570.5,95.4 574.5,104.6 578.5,102.8 582.6,114.9 586.6,121.7 590.6,139.6 594.6,140.4 598.6,138.2 602.6,137.7 606.7,148.2 610.7,149.1 614.7,151.3 618.7,152.9 622.7,151.0 626.8,150.3 630.8,163.0 634.8,160.6 638.8,152.3 642.8,148.2 646.8,155.8 650.9,169.8 654.9,168.4 658.9,168.4 662.9,167.7 666.9,166.0 671.0,164.5 675.0,174.2 679.0,168.7 683.0,165.6 687.0,168.5 691.1,166.3 695.1,205.2 699.1,214.7 703.1,214.7 707.1,214.7 711.1,214.7 715.2,214.7 719.2,214.1 723.2,212.0 727.2,211.3 731.2,218.2 735.3,227.2 739.3,223.3 743.3,226.2 747.3,235.9 751.3,234.7 755.3,234.7 759.4,233.4 763.4,235.0 767.4,239.2 771.4,245.4 775.4,240.6 779.5,255.9 783.5,244.6 787.5,240.7 791.5,251.7 795.5,232.9 799.5,232.8 803.6,208.0 807.6,218.3 811.6,202.9 815.6,193.7 819.6,163.3 823.7,166.2 827.7,155.7 831.7,136.6 835.7,128.3 839.7,134.1 843.7,131.8 847.8,119.9 851.8,128.2 855.8,124.6 859.8,129.2 863.8,99.5 867.9,50.1 871.9,34.3 875.9,20.0 879.9,26.5 883.9,25.9 887.9,42.7 892.0,45.5 896.0,48.9 900.0,51.1 900.0,260.0"/>
+            <polyline class="curve strategy" points="20.0,257.9 24.0,260.0 28.0,246.6 32.1,243.1 36.1,227.1 40.1,214.2 44.1,207.8 48.1,214.5 52.1,227.5 56.2,230.3 60.2,238.7 64.2,248.4 68.2,237.2 72.2,244.2 76.3,247.0 80.3,248.7 84.3,254.9 88.3,246.7 92.3,237.4 96.3,236.7 100.4,242.3 104.4,221.6 108.4,218.2 112.4,201.2 116.4,207.0 120.5,210.5 124.5,219.6 128.5,207.9 132.5,193.9 136.5,194.8 140.5,203.8 144.6,185.6 148.6,182.5 152.6,177.5 156.6,172.5 160.6,156.9 164.7,151.1 168.7,145.2 172.7,139.7 176.7,134.9 180.7,140.5 184.7,163.8 188.8,171.7 192.8,172.1 196.8,174.1 200.8,176.5 204.8,184.9 208.9,178.4 212.9,170.9 216.9,197.7 220.9,197.7 224.9,198.2 228.9,199.5 233.0,196.1 237.0,210.0 241.0,227.8 245.0,204.3 249.0,188.3 253.1,209.1 257.1,200.7 261.1,212.5 265.1,194.3 269.1,217.8 273.2,205.0 277.2,198.6 281.2,195.0 285.2,205.2 289.2,208.1 293.2,209.9 297.3,223.5 301.3,221.8 305.3,217.2 309.3,198.0 313.3,198.4 317.4,195.1 321.4,179.8 325.4,193.1 329.4,204.2 333.4,203.7 337.4,196.2 341.5,203.3 345.5,189.6 349.5,191.7 353.5,199.9 357.5,183.9 361.6,148.9 365.6,164.1 369.6,155.5 373.6,131.7 377.6,95.4 381.6,95.9 385.7,109.0 389.7,101.7 393.7,99.6 397.7,106.4 401.7,107.2 405.8,103.1 409.8,104.9 413.8,129.8 417.8,131.6 421.8,139.8 425.8,142.5 429.9,142.5 433.9,142.5 437.9,142.5 441.9,142.5 445.9,142.5 450.0,142.5 454.0,147.3 458.0,144.3 462.0,142.6 466.0,120.9 470.0,125.8 474.1,117.9 478.1,120.3 482.1,123.4 486.1,133.0 490.1,130.8 494.2,126.3 498.2,132.7 502.2,135.2 506.2,135.5 510.2,134.2 514.2,134.2 518.3,135.4 522.3,136.7 526.3,136.9 530.3,136.9 534.3,136.9 538.4,139.4 542.4,139.3 546.4,132.0 550.4,142.5 554.4,150.7 558.4,150.4 562.5,120.5 566.5,92.3 570.5,95.4 574.5,104.6 578.5,102.8 582.6,114.9 586.6,121.7 590.6,139.6 594.6,140.4 598.6,138.2 602.6,137.7 606.7,148.2 610.7,149.1 614.7,151.3 618.7,152.9 622.7,151.0 626.8,150.3 630.8,163.0 634.8,160.6 638.8,152.3 642.8,148.2 646.8,155.8 650.9,169.8 654.9,168.4 658.9,168.4 662.9,167.7 666.9,166.0 671.0,164.5 675.0,174.2 679.0,168.7 683.0,165.6 687.0,168.5 691.1,166.3 695.1,205.2 699.1,214.7 703.1,214.7 707.1,214.7 711.1,214.7 715.2,214.7 719.2,214.1 723.2,212.0 727.2,211.3 731.2,218.2 735.3,227.2 739.3,223.3 743.3,226.2 747.3,235.9 751.3,234.7 755.3,234.7 759.4,233.4 763.4,235.0 767.4,239.2 771.4,245.4 775.4,240.6 779.5,255.9 783.5,244.6 787.5,240.7 791.5,251.7 795.5,232.9 799.5,232.8 803.6,208.0 807.6,218.3 811.6,202.9 815.6,193.7 819.6,163.3 823.7,166.2 827.7,155.7 831.7,136.6 835.7,128.3 839.7,134.1 843.7,131.8 847.8,119.9 851.8,128.2 855.8,124.6 859.8,129.2 863.8,99.5 867.9,50.1 871.9,34.3 875.9,20.0 879.9,26.5 883.9,25.9 887.9,42.7 892.0,45.5 896.0,48.9 900.0,51.1"/>
+          
+          
+        </svg>
+
+        <div class="chart-foot">
+          <div><span>Start</span><strong>2025-06-20</strong></div>
+          <div><span>End</span><strong>2026-05-20</strong></div>
+          <div><span>Strategy</span><strong>¥12.1M</strong></div>
+          <div>
+            <span>TOPIX</span>
+            <strong>Invalid</strong>
+          </div>
+        </div>
+      </div>
+
+      
+        <div class="warning-strip">
+          <strong>Benchmark suspended.</strong>
+          <span>TOPIX benchmark comparison suspended because cached benchmark prices failed the sanity check. Strategy return and cash accounting remain valid.</span>
+        </div>
+      
+    </section>
+
+    <section class="policy-section">
+      <div class="section-heading split">
+        <div>
+          <div class="kicker">POLICY MATRIX</div>
+          <h2>Which execution policy works best?</h2>
+        </div>
+        <div class="method-chip">Same cached prices · no API during replay</div>
+      </div>
+      <div class="policy-grid">
+        
+          <article class="policy-card positive">
+            <div class="policy-top">
+              <span>Default</span>
+              <strong>+20.9%</strong>
+            </div>
+            <div class="policy-bar"><i style="width: 81.87815471299449%"></i></div>
+            <div class="policy-meta">
+              <span>DD -14.2%</span>
+              <span>Win 45.4%</span>
+              <span>249 trades</span>
+            </div>
+          </article>
+        
+          <article class="policy-card positive">
+            <div class="policy-top">
+              <span>Top 3</span>
+              <strong>+16.3%</strong>
+            </div>
+            <div class="policy-bar"><i style="width: 63.85921665297178%"></i></div>
+            <div class="policy-meta">
+              <span>DD -12.8%</span>
+              <span>Win 44.3%</span>
+              <span>192 trades</span>
+            </div>
+          </article>
+        
+          <article class="policy-card positive">
+            <div class="policy-top">
+              <span>Top 5</span>
+              <strong>+20.9%</strong>
+            </div>
+            <div class="policy-bar"><i style="width: 81.59290996595846%"></i></div>
+            <div class="policy-meta">
+              <span>DD -13.5%</span>
+              <span>Win 45.3%</span>
+              <span>234 trades</span>
+            </div>
+          </article>
+        
+          <article class="policy-card positive">
+            <div class="policy-top">
+              <span>Trade only</span>
+              <strong>+24.7%</strong>
+            </div>
+            <div class="policy-bar"><i style="width: 96.52658762765583%"></i></div>
+            <div class="policy-meta">
+              <span>DD -3.5%</span>
+              <span>Win 47.8%</span>
+              <span>111 trades</span>
+            </div>
+          </article>
+        
+          <article class="policy-card positive">
+            <div class="policy-top">
+              <span>Score ≥600</span>
+              <strong>+20.9%</strong>
+            </div>
+            <div class="policy-bar"><i style="width: 81.87815471299449%"></i></div>
+            <div class="policy-meta">
+              <span>DD -14.2%</span>
+              <span>Win 45.4%</span>
+              <span>249 trades</span>
+            </div>
+          </article>
+        
+          <article class="policy-card positive">
+            <div class="policy-top">
+              <span>Stop -8%</span>
+              <strong>+25.6%</strong>
+            </div>
+            <div class="policy-bar"><i style="width: 100.0%"></i></div>
+            <div class="policy-meta">
+              <span>DD -15.6%</span>
+              <span>Win 46.0%</span>
+              <span>248 trades</span>
+            </div>
+          </article>
+        
+      </div>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="panel">
+        <div class="kicker">EXECUTION RULES</div>
+        <h2>Policy</h2>
+        <div class="stat-grid">
+          <div><span>Position</span><strong>12.5%</strong></div>
+          <div><span>Max Pos</span><strong>8</strong></div>
+          <div><span>Score Floor</span><strong>500</strong></div>
+          <div><span>Stop</span><strong>+5.0%</strong></div>
+          <div><span>Time Exit</span><strong>5D</strong></div>
+          <div><span>Round Lot</span><strong>100</strong></div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="kicker">CLOSED TRADE QUALITY</div>
+        <h2>Realized Trades</h2>
+        <div class="stat-grid">
+          <div><span>Win Rate</span><strong>45.4%</strong></div>
+          <div><span>Avg Return</span><strong class="positive">+0.7%</strong></div>
+          <div><span>Avg Alpha</span><strong>+0.1%</strong></div>
+          <div><span>Valid Alpha</span><strong>181</strong></div>
+        </div>
+        <div class="chips">
+          
+            <span>signal decay exit · 84</span>
+          
+            <span>close stop -5.0% · 52</span>
+          
+            <span>time exit 5D · 46</span>
+          
+            <span>distribution / weak close exit · 32</span>
+          
+            <span>score exit < 420 · 29</span>
+          
+        </div>
+      </article>
+    </section>
+
+    <section class="cards-section">
+      <div class="section-heading split">
+        <div>
+          <div class="kicker">OPEN POSITIONS</div>
+          <h2>Current exposure.</h2>
+        </div>
+        <div class="method-chip">0 positions</div>
+      </div>
+
+      <div class="position-grid">
+        
+          <article class="empty-card">No open positions.</article>
+        
+      </div>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="panel">
+        <div class="kicker">THEME EXPOSURE</div>
+        <h2>Capital allocation.</h2>
+        <div class="bar-list">
+          
+            <p class="muted">No current exposure.</p>
+          
+        </div>
+      </article>
+      <article class="panel">
+        <div class="kicker">SIGNAL PERFORMANCE</div>
+        <h2>Realized return by entry signal.</h2>
+        <div class="bar-list">
+          
+            <div>
+              <span>Monitor</span>
+              <strong class="positive">+0.1%</strong>
+              <i style="width: 44.63%"></i>
+            </div>
+          
+            <div>
+              <span>Trade</span>
+              <strong class="positive">+2.2%</strong>
+              <i style="width: 47.22%"></i>
+            </div>
+          
+        </div>
+      </article>
+    </section>
+
+    <section class="table-section">
+      <div class="section-heading split">
+        <div>
+          <div class="kicker">CLOSED TRADES</div>
+          <h2>Recent realized exits.</h2>
+        </div>
+        <div class="method-chip">Latest 40</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Exit</th>
+              <th>Symbol</th>
+              <th>Signal</th>
+              <th>Entry</th>
+              <th>Return</th>
+              <th>Alpha</th>
+              <th>Reason</th>
+              <th>P/L</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>2026-01-27</td>
+                <td><strong>5803.T</strong><span>Fujikura</span></td>
+                <td>Monitor<span>B Watch</span></td>
+                <td>2026-01-22</td>
+                <td class="negative">-2.0%</td>
+                <td class="positive">
+                  
+                    +0.3%
+                  
+                </td>
+                <td>signal decay exit</td>
+                <td class="negative">¥-25K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-01-29</td>
+                <td><strong>7013.T</strong><span>IHI</span></td>
+                <td>Monitor<span>B Watch</span></td>
+                <td>2026-01-21</td>
+                <td class="positive">+1.3%</td>
+                <td class="positive">
+                  
+                    +2.3%
+                  
+                </td>
+                <td>score exit < 420</td>
+                <td class="positive">¥19K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-01-29</td>
+                <td><strong>5802.T</strong><span>Sumitomo Electric</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-01-28</td>
+                <td class="positive">+0.8%</td>
+                <td class="positive">
+                  
+                    +0.7%
+                  
+                </td>
+                <td>distribution / weak close exit</td>
+                <td class="positive">¥6K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-01-30</td>
+                <td><strong>4425.T</strong><span>Kudan</span></td>
+                <td>Trade<span>A+ Timing</span></td>
+                <td>2026-01-26</td>
+                <td class="negative">-6.0%</td>
+                <td class="negative">
+                  
+                    -5.9%
+                  
+                </td>
+                <td>signal decay exit</td>
+                <td class="negative">¥-78K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-01-30</td>
+                <td><strong>5803.T</strong><span>Fujikura</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-01-28</td>
+                <td class="negative">-0.7%</td>
+                <td class="negative">
+                  
+                    -1.4%
+                  
+                </td>
+                <td>signal decay exit</td>
+                <td class="negative">¥-9K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-02-06</td>
+                <td><strong>6501.T</strong><span>Hitachi</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-02-02</td>
+                <td class="negative">-3.2%</td>
+                <td class="negative">
+                  
+                    -3.9%
+                  
+                </td>
+                <td>signal decay exit</td>
+                <td class="negative">¥-34K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-02-06</td>
+                <td><strong>5803.T</strong><span>Fujikura</span></td>
+                <td>Trade<span>A Setup</span></td>
+                <td>2026-02-04</td>
+                <td class="negative">-3.5%</td>
+                <td class="negative">
+                  
+                    -3.4%
+                  
+                </td>
+                <td>signal decay exit</td>
+                <td class="negative">¥-38K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-02-06</td>
+                <td><strong>7013.T</strong><span>IHI</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-02-04</td>
+                <td class="negative">-0.1%</td>
+                <td class="negative">
+                  
+                    -0.0%
+                  
+                </td>
+                <td>signal decay exit</td>
+                <td class="negative">¥-2K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-02-06</td>
+                <td><strong>7012.T</strong><span>Kawasaki Heavy Industries</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-02-04</td>
+                <td class="negative">-2.2%</td>
+                <td class="negative">
+                  
+                    -2.1%
+                  
+                </td>
+                <td>signal decay exit</td>
+                <td class="negative">¥-25K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-02-06</td>
+                <td><strong>7011.T</strong><span>Mitsubishi Heavy Industries</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-02-05</td>
+                <td class="negative">-1.8%</td>
+                <td class="negative">
+                  
+                    -0.7%
+                  
+                </td>
+                <td>distribution / weak close exit</td>
+                <td class="negative">¥-17K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-02-10</td>
+                <td><strong>6954.T</strong><span>FANUC</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-02-05</td>
+                <td class="positive">+2.5%</td>
+                <td class="negative">
+                  
+                    -1.4%
+                  
+                </td>
+                <td>signal decay exit</td>
+                <td class="positive">¥33K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-02-10</td>
+                <td><strong>7011.T</strong><span>Mitsubishi Heavy Industries</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-02-09</td>
+                <td class="negative">-1.4%</td>
+                <td class="negative">
+                  
+                    -1.2%
+                  
+                </td>
+                <td>distribution / weak close exit</td>
+                <td class="negative">¥-14K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-02-12</td>
+                <td><strong>7013.T</strong><span>IHI</span></td>
+                <td>Trade<span>A+ Timing</span></td>
+                <td>2026-02-09</td>
+                <td class="positive">+1.2%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>distribution / weak close exit</td>
+                <td class="positive">¥15K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-02-13</td>
+                <td><strong>6503.T</strong><span>Mitsubishi Electric</span></td>
+                <td>Trade<span>A+ Timing</span></td>
+                <td>2026-02-05</td>
+                <td class="positive">+7.2%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>signal decay exit</td>
+                <td class="positive">¥76K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-02-13</td>
+                <td><strong>6501.T</strong><span>Hitachi</span></td>
+                <td>Trade<span>A Setup</span></td>
+                <td>2026-02-10</td>
+                <td class="negative">-9.0%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-106K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-02-16</td>
+                <td><strong>7011.T</strong><span>Mitsubishi Heavy Industries</span></td>
+                <td>Trade<span>A+ Timing</span></td>
+                <td>2026-02-12</td>
+                <td class="positive">+1.0%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>signal decay exit</td>
+                <td class="positive">¥10K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-02-16</td>
+                <td><strong>9984.T</strong><span>SoftBank Group</span></td>
+                <td>Trade<span>A Setup</span></td>
+                <td>2026-02-12</td>
+                <td class="negative">-7.6%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-72K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-02-20</td>
+                <td><strong>6981.T</strong><span>Murata Manufacturing</span></td>
+                <td>Trade<span>A+ Timing</span></td>
+                <td>2026-02-18</td>
+                <td class="positive">+3.7%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>signal decay exit</td>
+                <td class="positive">¥40K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-02-25</td>
+                <td><strong>7013.T</strong><span>IHI</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-02-24</td>
+                <td class="negative">-9.0%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-121K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-03-03</td>
+                <td><strong>5803.T</strong><span>Fujikura</span></td>
+                <td>Trade<span>A Setup</span></td>
+                <td>2026-02-25</td>
+                <td class="positive">+15.0%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>score exit < 420</td>
+                <td class="positive">¥190K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-03-03</td>
+                <td><strong>6954.T</strong><span>FANUC</span></td>
+                <td>Monitor<span>B Watch</span></td>
+                <td>2026-02-27</td>
+                <td class="negative">-2.6%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>signal decay exit</td>
+                <td class="negative">¥-18K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-03-04</td>
+                <td><strong>6758.T</strong><span>Sony Group</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-03-02</td>
+                <td class="negative">-6.2%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-66K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-03-04</td>
+                <td><strong>3993.T</strong><span>PKSHA Technology</span></td>
+                <td>Monitor<span>B Watch</span></td>
+                <td>2026-03-02</td>
+                <td class="negative">-5.5%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-74K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-03-04</td>
+                <td><strong>7012.T</strong><span>Kawasaki Heavy Industries</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-03-02</td>
+                <td class="negative">-10.0%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-111K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-03-04</td>
+                <td><strong>7011.T</strong><span>Mitsubishi Heavy Industries</span></td>
+                <td>Trade<span>A+ Timing</span></td>
+                <td>2026-03-03</td>
+                <td class="negative">-7.0%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>score exit < 420</td>
+                <td class="negative">¥-72K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-03-04</td>
+                <td><strong>5574.T</strong><span>ABEJA</span></td>
+                <td>Trade<span>A Setup</span></td>
+                <td>2026-03-03</td>
+                <td class="negative">-11.3%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-150K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-03-04</td>
+                <td><strong>6503.T</strong><span>Mitsubishi Electric</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-03-03</td>
+                <td class="negative">-7.1%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-84K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-03-17</td>
+                <td><strong>7974.T</strong><span>Nintendo</span></td>
+                <td>Monitor<span>A Setup</span></td>
+                <td>2026-03-11</td>
+                <td class="positive">+2.9%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>distribution / weak close exit</td>
+                <td class="positive">¥28K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-03-18</td>
+                <td><strong>5803.T</strong><span>Fujikura</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-03-16</td>
+                <td class="negative">-6.6%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-59K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-03-18</td>
+                <td><strong>5802.T</strong><span>Sumitomo Electric</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-03-16</td>
+                <td class="negative">-5.5%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-57K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-03-23</td>
+                <td><strong>7011.T</strong><span>Mitsubishi Heavy Industries</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-03-19</td>
+                <td class="negative">-4.3%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>score exit < 420</td>
+                <td class="negative">¥-43K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-03-24</td>
+                <td><strong>7012.T</strong><span>Kawasaki Heavy Industries</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-03-19</td>
+                <td class="negative">-7.2%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-72K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-03-30</td>
+                <td><strong>5803.T</strong><span>Fujikura</span></td>
+                <td>Monitor<span>B Watch</span></td>
+                <td>2026-03-26</td>
+                <td class="negative">-3.9%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>signal decay exit</td>
+                <td class="negative">¥-36K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-01</td>
+                <td><strong>4425.T</strong><span>Kudan</span></td>
+                <td>Monitor<span>B Watch</span></td>
+                <td>2026-03-30</td>
+                <td class="negative">-2.0%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-24K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-03</td>
+                <td><strong>5803.T</strong><span>Fujikura</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-04-02</td>
+                <td class="negative">-2.6%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-24K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-03</td>
+                <td><strong>6981.T</strong><span>Murata Manufacturing</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-04-02</td>
+                <td class="negative">-0.2%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-2K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-03</td>
+                <td><strong>7012.T</strong><span>Kawasaki Heavy Industries</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-04-02</td>
+                <td class="negative">-1.4%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>score exit < 420</td>
+                <td class="negative">¥-14K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-08</td>
+                <td><strong>5803.T</strong><span>Fujikura</span></td>
+                <td>Monitor<span>Discovery Watch</span></td>
+                <td>2026-04-06</td>
+                <td class="positive">+3.0%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="positive">¥28K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-08</td>
+                <td><strong>4425.T</strong><span>Kudan</span></td>
+                <td>Monitor<span>B Watch</span></td>
+                <td>2026-04-06</td>
+                <td class="positive">+2.1%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>signal decay exit</td>
+                <td class="positive">¥23K</td>
+              </tr>
+            
+              <tr>
+                <td>2026-04-13</td>
+                <td><strong>4425.T</strong><span>Kudan</span></td>
+                <td>Monitor<span>B Watch</span></td>
+                <td>2026-04-09</td>
+                <td class="negative">-8.6%</td>
+                <td class="neutral">
+                  
+                    Benchmark invalid
+                  
+                </td>
+                <td>close stop -5.0%</td>
+                <td class="negative">¥-103K</td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="notes">
+      <strong>Simulation only.</strong>
+      <span>
+        Not investment advice. Results use cached prices, next-open execution,
+        slippage assumptions and 100-share JP round lots. Real fills, limit moves,
+        taxes, fees and liquidity may differ.
+      </span>
+    </section>
+
+    <footer class="footer">
+      <span>Informational only. Not investment advice.</span>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/japan/daily/">Daily</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </nav>
+    </footer>
+  </main>
+</div>
+</body>
+</html>
