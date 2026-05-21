@@ -33,9 +33,7 @@
       <div class="hero-copy">
         <div class="kicker"><span class="live-dot"></span> WEEKLY JP BACKTEST</div>
         <h1>Top-ranked Japan weekly signals,<span>tested without the noise.</span></h1>
-        <p>
-          The model is evaluated on score-ranked weekly Top 10 only. Top 3, Top 5 and Top 10 are separated so the board does not hide weak lower-ranked candidates inside a broad average.
-        </p>
+        
         <div class="hero-meta">
           <span>Primary {{ primary_horizon|upper }}: {{ summary.eval_date_start or '—' }} → {{ summary.eval_date_end or '—' }}</span>
           <span>{{ summary.eval_date_count or 0 }} mature weeks</span>
@@ -186,7 +184,7 @@
           {% for item in best_movers %}
             <div class="lane-row">
               <b>#{{ item.rank }} {{ item.symbol }} · {{ item.metric_value|fmt_pct }}</b>
-              <span>{{ item.eval_date }} · {{ item.quality }} · {{ item.theme }}</span>
+              <span>{{ item.eval_date }} · {{ item.quality }}</span>
             </div>
           {% else %}
             <div class="empty-lane">No best movers yet.</div>
@@ -197,7 +195,7 @@
           {% for item in worst_movers %}
             <div class="lane-row">
               <b>#{{ item.rank }} {{ item.symbol }} · {{ item.metric_value|fmt_pct }}</b>
-              <span>{{ item.eval_date }} · {{ item.quality }} · {{ item.main_risk }}</span>
+              <span>{{ item.eval_date }} · {{ item.quality }}</span>
             </div>
           {% else %}
             <div class="empty-lane">No worst movers yet.</div>
@@ -243,27 +241,9 @@
       </div>
     </section>
 
-    <section class="method-section">
-      <article class="method-card">
-        <div class="kicker">METHODOLOGY</div>
-        <h2>Weekly JP Backtest v1</h2>
-        <p>
-          Each evaluation date replays the Weekly JP scoring engine using only historical bars visible at that time. The test keeps score-ranked Top 10 only, then separately reports Top 3, Top 5 and Top 10 performance.
-        </p>
-      </article>
-      <article class="method-card warning">
-        <div class="kicker">IMPORTANT CONTROL</div>
-        <h2>No broad-basket dilution.</h2>
-        <p>
-          Rank 11+ is intentionally cut from this backtest. The goal is to verify the actual weekly board candidates, not dilute results with low-conviction names.
-        </p>
-      </article>
-    </section>
+    
 
-    <section class="notes">
-      <strong>Not investment advice.</strong>
-      <span>Backtest results are informational. Slippage, taxes, liquidity, limit moves and execution failure can materially change realized results.</span>
-    </section>
+    
 
     <footer class="footer">
       <span>Informational only. Not investment advice.</span>
