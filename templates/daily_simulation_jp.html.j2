@@ -28,110 +28,128 @@
       </nav>
     </header>
 
-    <section class="hero">
-      <div class="hero-copy">
+    <section class="hero hero-clean">
+      <div>
         <div class="kicker">DAILY JP TRADE-ONLY SIMULATION</div>
-        <h1>Only the strongest daily signals become capital.</h1>
+        <h1>Trade-only capital. No noisy alternatives.</h1>
         <p>
-          Trade-only replay. No Monitor expansion, no broad policy matrix, no noisy alternatives.
-          Signals are judged at the Tokyo close and executed at the next open with JP round lots.
+          Only Daily signals classified as Trade are allowed into the portfolio. Orders are generated after the Tokyo close,
+          executed at the next open, and marked at the execution-day close with JP round lots.
         </p>
-        <div class="verdict-pill {{ 'good' if summary.strategy_return_pct and summary.strategy_return_pct > 0 else 'bad' }}">
-          {% if summary.strategy_return_pct and summary.strategy_return_pct > 0 %}TRADE-ONLY EDGE{% else %}NO EDGE CONFIRMED{% endif %}
-        </div>
       </div>
+      <aside class="return-tile {{ 'good' if summary.strategy_return_pct and summary.strategy_return_pct > 0 else 'bad' }}">
+        <span>Strategy Return</span>
+        <strong>{{ summary.strategy_return_pct | fmt_pct }}</strong>
+        {% if benchmark_quality.status == "invalid" %}
+          <em>Alpha suspended · benchmark anomaly</em>
+        {% else %}
+          <em>Alpha {{ summary.alpha_pct | fmt_pct }} · {{ benchmark_quality.benchmark_symbol or 'Benchmark' }}</em>
+        {% endif %}
+      </aside>
+    </section>
 
-      <div class="hero-metrics">
-        <div class="metric hero-main">
-          <span>Strategy Return</span>
-          <strong class="{{ 'positive' if summary.strategy_return_pct and summary.strategy_return_pct > 0 else 'negative' if summary.strategy_return_pct and summary.strategy_return_pct < 0 else '' }}">
-            {{ summary.strategy_return_pct | fmt_pct }}
-          </strong>
-          {% if benchmark_quality.status == "invalid" %}
-            <em>Alpha suspended · benchmark anomaly</em>
-          {% else %}
-            <em>Alpha {{ summary.alpha_pct | fmt_pct }}</em>
-          {% endif %}
-        </div>
-        <div class="metric">
-          <span>Portfolio Equity</span>
-          <strong>{{ summary.portfolio_equity_jpy | fmt_jpy }}</strong>
-          <em>Capital {{ summary.initial_capital_jpy | fmt_jpy }}</em>
-        </div>
-        <div class="metric">
-          <span>Max Drawdown</span>
-          <strong class="negative">{{ summary.max_drawdown_pct | fmt_pct }}</strong>
-          <em>Closed {{ summary.closed_trades_count | fmt_num }} trades</em>
-        </div>
-        <div class="metric">
-          <span>Cash / Exposure</span>
-          <strong>{{ summary.cash_jpy | fmt_jpy }}</strong>
-          <em>Market value {{ summary.market_value_jpy | fmt_jpy }}</em>
-        </div>
-      </div>
+    <section class="kpi-rail" aria-label="Portfolio summary">
+      <article>
+        <span>Portfolio Equity</span>
+        <strong>{{ summary.portfolio_equity_jpy | fmt_jpy }}</strong>
+        <em>Capital {{ summary.initial_capital_jpy | fmt_jpy }}</em>
+      </article>
+      <article>
+        <span>Max Drawdown</span>
+        <strong class="negative">{{ summary.max_drawdown_pct | fmt_pct }}</strong>
+        <em>Closed {{ summary.closed_trades_count | fmt_num }} trades</em>
+      </article>
+      <article>
+        <span>Cash</span>
+        <strong>{{ summary.cash_jpy | fmt_jpy }}</strong>
+        <em>Current dry powder</em>
+      </article>
+      <article>
+        <span>Market Value</span>
+        <strong>{{ summary.market_value_jpy | fmt_jpy }}</strong>
+        <em>Open exposure</em>
+      </article>
     </section>
 
     <section class="meta-strip">
       <div><span>Execution Window</span><strong>{{ payload.range.execution_date_start or "—" }} → {{ payload.range.execution_date_end or "—" }}</strong></div>
       <div><span>Eval Days</span><strong>{{ payload.range.eval_days | fmt_num }}</strong></div>
       <div><span>Policy</span><strong>Trade only · Top {{ policy.entry_rank_limit or 10 }}</strong></div>
-      <div><span>Benchmark</span><strong>{{ benchmark_quality.benchmark_symbol or "TOPIX" }} · {{ benchmark_quality.status | title }}</strong></div>
+      <div><span>Benchmark</span><strong>{{ benchmark_quality.benchmark_symbol or "—" }} · {{ benchmark_quality.status | title }}</strong></div>
     </section>
 
-    <section class="dashboard-grid">
-      <article class="panel chart-panel">
-        <div class="section-heading split">
-          <div><div class="kicker">EQUITY CURVE</div><h2>Strategy equity, clean and cash-accounted.</h2></div>
-          <div class="method-chip">Next-open execution · close mark-to-market</div>
-        </div>
-        <svg class="line-chart" viewBox="0 0 920 280" preserveAspectRatio="none" aria-label="Trade-only equity curve">
-          <polygon points="{{ prepared.strategy_chart.area_points }}" class="area strategy-area"></polygon>
-          <polyline points="{{ prepared.strategy_chart.points }}" class="line strategy-line"></polyline>
+    <section class="chart-section">
+      <div class="section-heading split">
+        <div><div class="kicker">EQUITY CURVE</div><h2>Strategy equity, clean and cash-accounted.</h2></div>
+        <div class="method-chip">Next-open execution · close mark-to-market</div>
+      </div>
+      <article class="chart-card hero-chart">
+        <svg class="line-chart" viewBox="0 0 980 330" preserveAspectRatio="none" aria-label="Trade-only equity curve">
+          <defs>
+            <linearGradient id="strategyFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(93,255,177,.24)"/>
+              <stop offset="100%" stop-color="rgba(93,255,177,0)"/>
+            </linearGradient>
+          </defs>
+          <line x1="20" y1="290" x2="960" y2="290" class="axis"></line>
+          <line x1="20" y1="40" x2="960" y2="40" class="axis faint"></line>
+          {% if prepared.strategy_chart.area_points %}
+            <polygon points="{{ prepared.strategy_chart.area_points }}" class="area-strategy"></polygon>
+            <polyline points="{{ prepared.strategy_chart.points }}" class="curve strategy"></polyline>
+          {% endif %}
           {% if benchmark_quality.status != "invalid" and prepared.benchmark_chart.points %}
-            <polyline points="{{ prepared.benchmark_chart.points }}" class="line benchmark-line"></polyline>
+            <polyline points="{{ prepared.benchmark_chart.points }}" class="curve benchmark"></polyline>
           {% endif %}
         </svg>
-        <div class="chart-foot">
+        <div class="chart-foot compact">
           <div><span>Start</span><strong>{{ prepared.strategy_chart.first_date or "—" }}</strong></div>
           <div><span>End</span><strong>{{ prepared.strategy_chart.last_date or "—" }}</strong></div>
           <div><span>Strategy</span><strong>{{ summary.portfolio_equity_jpy | fmt_jpy }}</strong></div>
           <div><span>Benchmark</span><strong>{% if benchmark_quality.status == "invalid" %}Suspended{% else %}{{ summary.benchmark_return_pct | fmt_pct }}{% endif %}</strong></div>
         </div>
-        {% if benchmark_quality.status == "invalid" %}
-          <div class="warning-note">Benchmark comparison is suspended. Strategy return and cash accounting remain valid.</div>
-        {% endif %}
+        <div class="benchmark-note {{ benchmark_quality.status }}">{{ prepared.benchmark_note }}</div>
+      </article>
+    </section>
+
+    <section class="dashboard-grid clean-grid">
+      <article class="panel compact-panel quality-panel">
+        <div class="kicker">TRADE QUALITY</div>
+        <h2>Realized edge.</h2>
+        <div class="stat-grid">
+          <div><span>Win Rate</span><strong>{{ prepared.closed_summary.win_rate_pct | fmt_pct }}</strong></div>
+          <div><span>Avg Return</span><strong class="{{ 'positive' if prepared.closed_summary.avg_return_pct and prepared.closed_summary.avg_return_pct > 0 else 'negative' }}">{{ prepared.closed_summary.avg_return_pct | fmt_pct }}</strong></div>
+          <div><span>Avg Alpha</span><strong>{{ prepared.closed_summary.avg_alpha_pct | fmt_pct }}</strong><em>valid trades only · {{ prepared.closed_summary.valid_alpha_count | fmt_num }} / {{ prepared.closed_summary.count | fmt_num }}</em></div>
+        </div>
       </article>
 
-      <article class="panel compact-panel">
-        <div class="kicker">TRADE QUALITY</div>
-        <h2>Realized trades.</h2>
-        <div class="stat-grid">
-          <div><span>Win rate</span><strong>{{ prepared.closed_summary.win_rate_pct | fmt_pct }}</strong></div>
-          <div><span>Avg return</span><strong class="{{ 'positive' if prepared.closed_summary.avg_return_pct and prepared.closed_summary.avg_return_pct > 0 else 'negative' }}">{{ prepared.closed_summary.avg_return_pct | fmt_pct }}</strong></div>
-          <div><span>Avg alpha</span><strong>{{ prepared.closed_summary.avg_alpha_pct | fmt_pct }}</strong><em>valid trades only · {{ prepared.closed_summary.valid_alpha_count | fmt_num }}/{{ prepared.closed_summary.count | fmt_num }}</em></div>
-          <div><span>Open</span><strong>{{ summary.open_positions_count | fmt_num }}</strong></div>
-        </div>
-        <div class="reason-list">
-          {% for reason in prepared.closed_summary.exit_reasons[:5] %}
-            <div><span>{{ reason.reason }}</span><strong>{{ reason.count }}</strong></div>
+      <article class="panel exit-panel">
+        <div class="kicker">EXIT MAP</div>
+        <h2>Why trades closed.</h2>
+        <div class="exit-bars">
+          {% for reason in prepared.exit_reasons %}
+            <div class="exit-row">
+              <div class="exit-label"><span>{{ reason.label }}</span><strong>{{ reason.count }}</strong></div>
+              <i style="width: {{ reason.bar_width }}%"></i>
+            </div>
           {% endfor %}
         </div>
       </article>
     </section>
 
-    <section class="section-block">
+    <section class="section-block rules-block">
       <div class="section-heading split">
         <div><div class="kicker">EXECUTION RULES</div><h2>One policy. No noise.</h2></div>
         <div class="method-chip">Monitor names are excluded</div>
       </div>
       <div class="rule-grid">
         <div><span>Entry</span><strong>Trade only</strong></div>
-        <div><span>Rank cap</span><strong>Top {{ policy.entry_rank_limit or 10 }}</strong></div>
-        <div><span>Score floor</span><strong>{{ policy.entry_score_floor or 0 }} pts</strong></div>
+        <div><span>Rank Cap</span><strong>Top {{ policy.entry_rank_limit or 10 }}</strong></div>
+        <div><span>Score Floor</span><strong>{{ policy.entry_score_floor or 0 }} pts</strong></div>
         <div><span>Stop</span><strong>-{{ (policy.stop_loss_pct * 100) | round(1) }}%</strong></div>
-        <div><span>Time exit</span><strong>{{ policy.time_exit_days }}D</strong></div>
-        <div><span>Round lot</span><strong>{{ policy.round_lot | fmt_num }}</strong></div>
+        <div><span>Time Exit</span><strong>{{ policy.time_exit_days }}D</strong></div>
+        <div><span>Round Lot</span><strong>{{ policy.round_lot | fmt_num }}</strong></div>
       </div>
+      <p class="micro-note">Stop is close-based; realized loss may exceed the threshold because exits are executed at the next open and gaps can occur.</p>
     </section>
 
     <section class="section-block">
@@ -165,10 +183,10 @@
     </section>
     {% endif %}
 
-    <section class="section-block">
+    <section class="section-block exits-section">
       <div class="section-heading split">
-        <div><div class="kicker">RECENT EXITS</div><h2>Closed trade audit.</h2></div>
-        <div class="method-chip">Latest {{ prepared.closed_trades|length }} trades</div>
+        <div><div class="kicker">RECENT EXITS</div><h2>Latest realized trades.</h2></div>
+        <div class="method-chip">Newest first · {{ prepared.closed_trades|length }} trades</div>
       </div>
       <div class="table-wrap">
         <table>
@@ -181,7 +199,7 @@
                 <td>{{ t.entry_date }}</td>
                 <td class="{{ t.return_class }}">{{ t.return_pct | fmt_pct }}</td>
                 <td class="{{ t.alpha_class }}">{% if t.alpha_pct is none %}Benchmark invalid{% else %}{{ t.alpha_pct | fmt_pct }}{% endif %}</td>
-                <td>{{ t.exit_reason }}</td>
+                <td><span class="reason-pill">{{ t.exit_reason_label }}</span></td>
                 <td class="{{ t.pnl_class }}">{{ t.pnl_jpy | fmt_jpy }}</td>
               </tr>
             {% else %}
