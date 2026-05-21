@@ -108,7 +108,7 @@ def value_class(value: Any) -> str:
     return "neutral"
 
 
-def chart_points(series: list[dict[str, Any]], key: str, width: int = 920, height: int = 280, pad: int = 20) -> dict[str, Any]:
+def chart_points(series: list[dict[str, Any]], key: str, width: int = 980, height: int = 330, pad: int = 24) -> dict[str, Any]:
     rows = []
     for row in series:
         v = as_float(row.get(key))
@@ -148,6 +148,28 @@ def bar_width(value: Any, max_abs: float | None = None) -> float:
     return max(2.0, min(100.0, abs(v) / denom * 100.0))
 
 
+def human_exit_reason(reason: Any) -> str:
+    raw = str(reason or "").strip()
+    mapping = {
+        "signal decay exit": "Signal decay",
+        "time exit 5D": "5D time exit",
+        "distribution / weak close exit": "Distribution / weak close",
+        "close stop -5.0%": "Close stop -5%",
+        "score exit < 420": "Score exit",
+        "profit / extension harvest": "Profit harvest",
+    }
+    return mapping.get(raw, raw.replace("_", " ").strip().title() or "Other")
+
+
+def sort_date_desc(rows: list[dict[str, Any]], key: str) -> list[dict[str, Any]]:
+    def parse(row: dict[str, Any]):
+        try:
+            return datetime.fromisoformat(str(row.get(key)))
+        except Exception:
+            return datetime.min
+    return sorted(rows, key=parse, reverse=True)
+
+
 def prepare(payload: dict[str, Any]) -> dict[str, Any]:
     equity_curve = payload.get("equity_curve") or []
     strategy_chart = chart_points(equity_curve, "portfolio_equity_jpy")
@@ -162,11 +184,12 @@ def prepare(payload: dict[str, Any]) -> dict[str, Any]:
         p["alpha_class"] = value_class(p.get("alpha_pct"))
         p["bar_width"] = bar_width(p.get("strategy_return_pct"), max_policy_ret)
 
-    closed = payload.get("closed_trades") or []
+    closed = sort_date_desc(payload.get("closed_trades") or [], "exit_date")
     for t in closed:
         t["return_class"] = value_class(t.get("return_pct"))
         t["alpha_class"] = value_class(t.get("alpha_pct"))
         t["pnl_class"] = value_class(t.get("pnl_jpy"))
+        t["exit_reason_label"] = human_exit_reason(t.get("exit_reason"))
 
     open_positions = payload.get("open_positions") or []
     for p in open_positions:
@@ -176,6 +199,24 @@ def prepare(payload: dict[str, Any]) -> dict[str, Any]:
     for r in closed_summary.get("by_signal") or []:
         r["return_class"] = value_class(r.get("avg_return_pct"))
 
+    exit_reasons = closed_summary.get("exit_reasons") or []
+    max_exit_count = max([int(as_float(r.get("count")) or 0) for r in exit_reasons] + [1])
+    for r in exit_reasons:
+        r["label"] = human_exit_reason(r.get("reason"))
+        r["bar_width"] = bar_width(r.get("count"), max_exit_count)
+
+    benchmark_quality = payload.get("benchmark_quality") or {}
+    benchmark_note = ""
+    if benchmark_quality.get("status") == "fallback":
+        attempted = ", ".join(benchmark_quality.get("attempted_symbols") or [])
+        benchmark_note = f"Fallback benchmark selected after sanity check: {benchmark_quality.get('benchmark_symbol')}."
+        if attempted:
+            benchmark_note += f" Tested: {attempted}."
+    elif benchmark_quality.get("status") == "valid":
+        benchmark_note = f"Benchmark valid: {benchmark_quality.get('benchmark_symbol') or '—'}."
+    elif benchmark_quality.get("status") == "invalid":
+        benchmark_note = "Benchmark comparison suspended after sanity check. Strategy return remains valid."
+
     return {
         "strategy_chart": strategy_chart,
         "benchmark_chart": benchmark_chart,
@@ -184,6 +225,8 @@ def prepare(payload: dict[str, Any]) -> dict[str, Any]:
         "open_positions": open_positions,
         "closed_trades": closed[:40],
         "closed_summary": closed_summary,
+        "exit_reasons": exit_reasons[:5],
+        "benchmark_note": benchmark_note,
     }
 
 
