@@ -32,10 +32,7 @@
       <div class="hero-copy">
         <div class="kicker"><span class="live-dot"></span> WEEKLY JP SIGNAL BOARD</div>
         <h1>Japan weekly setups,<span>filtered for global investors.</span></h1>
-        <p>
-          Medium-term weekly screen using trend template, TOPIX-relative strength,
-          breakout freshness, base quality, volume accumulation and Japan-specific liquidity controls.
-        </p>
+        
         <div class="hero-meta">
           <span>Latest trading date: {{ weekly.latest_trading_date or weekly.date or '—' }}</span>
           <span>Week ending: {{ weekly.week_label or weekly.date or '—' }}{% if weekly.is_partial_week %} · partial week{% endif %}</span>
@@ -138,7 +135,7 @@
             <div class="card-top"><div class="rank">#{{ item.rank }}</div><div class="score">{{ item.score_pts }}<span>pts</span></div></div>
             <div class="signal-tags"><span class="tag {{ item.signal_class }}">{{ item.signal }}</span><span class="tag">{{ item.quality }}</span><span class="tag">{{ item.bucket }}</span></div>
             <h3>{{ item.symbol }}</h3><div class="name">{{ item.name }}</div><div class="theme">{{ item.theme }}</div>
-            <p class="why">{{ item.why_now }}</p><p class="risk">Risk: {{ item.main_risk }}</p>
+            
             <div class="metric-grid"><div><span>4W</span><b>{{ item.ret4w | fmt_pct }}</b></div><div><span>12W RS</span><b>{{ item.rs12w | fmt_pct }}</b></div><div><span>Liquidity</span><b>{{ item.avg_value | fmt_jpy }}</b></div></div>
           </article>
         {% else %}
@@ -153,13 +150,13 @@
         <div class="method-chip">B setups remain Watch unless quality/liquidity clear</div>
       </div>
       <div class="lane-grid">
-        <article class="lane trade-lane"><h3>Trade</h3>{% for item in trade_items %}<div class="lane-row"><b>#{{ item.rank }} {{ item.symbol }}</b><span>{{ item.name }} · {{ item.quality }} · {{ item.score_pts }} pts</span><em>{{ item.why_now }}</em></div>{% else %}<div class="empty-lane">No full Trade setup this week.</div>{% endfor %}
+        <article class="lane trade-lane"><h3>Trade</h3>{% for item in trade_items %}<div class="lane-row"><b>#{{ item.rank }} {{ item.symbol }}</b><span>{{ item.name }} · {{ item.quality }} · {{ item.score_pts }} pts</span></div>{% else %}<div class="empty-lane">No full Trade setup this week.</div>{% endfor %}
         </article>
         <article class="lane watch-lane"><h3>Watch</h3>
-          {% for item in watch_items %}<div class="lane-row"><b>#{{ item.rank }} {{ item.symbol }}</b><span>{{ item.name }} · {{ item.quality }} · {{ item.score_pts }} pts</span><em>{{ item.why_now }}</em></div>{% else %}<div class="empty-lane">No Watch candidate this week.</div>{% endfor %}
+          {% for item in watch_items %}<div class="lane-row"><b>#{{ item.rank }} {{ item.symbol }}</b><span>{{ item.name }} · {{ item.quality }} · {{ item.score_pts }} pts</span></div>{% else %}<div class="empty-lane">No Watch candidate this week.</div>{% endfor %}
         </article>
         <article class="lane avoid-lane"><h3>Avoid / Blocked</h3>
-          {% for item in avoid_items[:8] %}<div class="lane-row compact"><b>#{{ item.rank }} {{ item.symbol }}</b><span>{{ item.score_pts }} pts · {{ item.main_risk }}</span></div>{% else %}<div class="empty-lane">No avoid names in the top list.</div>{% endfor %}
+          {% for item in avoid_items[:8] %}<div class="lane-row compact"><b>#{{ item.rank }} {{ item.symbol }}</b><span>{{ item.score_pts }} pts</span></div>{% else %}<div class="empty-lane">No avoid names in the top list.</div>{% endfor %}
         </article>
       </div>
     </section>
@@ -183,12 +180,9 @@
       </div>
     </section>
 
-    <section class="method-section">
-      <article class="method-card"><div class="kicker">METHODOLOGY</div><h2>Weekly JP Score v1</h2><p>Trend template, TOPIX-relative strength, breakout freshness, base/VCP quality, volume accumulation, liquidity/tradability, theme context and extension control.</p></article>
-      <article class="method-card warning"><div class="kicker">CONTROL</div><h2>Japan-specific risk filter</h2><p>Thin liquidity, low price, distribution weeks, extreme extension and limit-move-like weeks cap or block signals. Watch is not a buy signal.</p></article>
-    </section>
+    
 
-    <section class="notes"><strong>Not investment advice.</strong><span>Weekly JP excludes news and fundamentals in v1. It is a price/volume/timing signal layer for research only.</span></section>
+    
     <footer class="footer"><span>Generated {{ generated_at or weekly.generated_at }}</span><nav><a href="/">Home</a><a href="/privacy/">Privacy</a><a href="/disclaimer/">Disclaimer</a></nav></footer>
   </main>
 </div>
