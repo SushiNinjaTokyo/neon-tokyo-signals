@@ -1,0 +1,233 @@
+name: Render all pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/render_index.py"
+      - "scripts/render_daily_jp.py"
+      - "scripts/render_backtest_daily_jp.py"
+      - "scripts/render_daily_simulation_jp.py"
+      - "scripts/render_weekly_jp.py"
+      - "scripts/render_weekly_backtest_jp.py"
+      - "scripts/render_weekly_simulation_jp.py"
+      - "templates/**"
+      - "requirements-render.txt"
+      - ".github/workflows/render-all-pages.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render-all-pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  render-all:
+    runs-on: ubuntu-latest
+
+    env:
+      OUT_DIR: site
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+      DAILY_JSON: site/data/daily-jp/latest.json
+      BACKTEST_JSON: site/data/backtest-daily-jp/latest.json
+      DAILY_SIM_JSON: site/data/japan/daily/simulation/latest.json
+
+      WEEKLY_JSON: site/data/japan/weekly/latest.json
+      WEEKLY_BACKTEST_JSON: site/data/japan/weekly/backtest/latest.json
+      WEEKLY_SIM_JSON: site/data/japan/weekly/simulation/latest.json
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install -r requirements-render.txt
+
+      - name: Validate render scripts
+        run: |
+          set -euo pipefail
+
+          scripts=(
+            "scripts/render_index.py"
+            "scripts/render_daily_jp.py"
+            "scripts/render_backtest_daily_jp.py"
+            "scripts/render_daily_simulation_jp.py"
+            "scripts/render_weekly_jp.py"
+            "scripts/render_weekly_backtest_jp.py"
+            "scripts/render_weekly_simulation_jp.py"
+          )
+
+          for script in "${scripts[@]}"; do
+            if [ -f "$script" ]; then
+              python -m py_compile "$script"
+            else
+              echo "Skip missing render script: $script"
+            fi
+          done
+
+      - name: Verify source JSON files
+        run: |
+          set -euo pipefail
+
+          required_jsons=(
+            "site/data/daily-jp/latest.json"
+            "site/data/backtest-daily-jp/latest.json"
+            "site/data/japan/daily/simulation/latest.json"
+            "site/data/japan/weekly/latest.json"
+            "site/data/japan/weekly/backtest/latest.json"
+            "site/data/japan/weekly/simulation/latest.json"
+          )
+
+          for json_path in "${required_jsons[@]}"; do
+            if [ ! -f "$json_path" ]; then
+              echo "::error::Missing required JSON: $json_path"
+              echo "Run the corresponding build/backtest/simulation workflow first."
+              exit 1
+            fi
+          done
+
+      - name: Render index
+        run: |
+          set -euo pipefail
+          python scripts/render_index.py
+
+      - name: Render Daily pages
+        run: |
+          set -euo pipefail
+          python scripts/render_daily_jp.py
+          python scripts/render_backtest_daily_jp.py
+          python scripts/render_daily_simulation_jp.py
+
+      - name: Render Weekly pages
+        run: |
+          set -euo pipefail
+          python scripts/render_weekly_jp.py
+          python scripts/render_weekly_backtest_jp.py
+          python scripts/render_weekly_simulation_jp.py
+
+      - name: Verify rendered files
+        run: |
+          set -euo pipefail
+
+          required_files=(
+            "site/index.html"
+            "site/assets/index.css"
+
+            "site/japan/daily/index.html"
+            "site/assets/daily_jp.css"
+
+            "site/japan/daily/backtest/index.html"
+            "site/assets/backtest_daily_jp.css"
+
+            "site/japan/daily/simulation/index.html"
+            "site/assets/daily_simulation_jp.css"
+
+            "site/japan/weekly/index.html"
+            "site/assets/weekly_jp.css"
+
+            "site/japan/weekly-backtest/index.html"
+            "site/assets/weekly_backtest_jp.css"
+
+            "site/japan/weekly-simulation/index.html"
+            "site/assets/weekly_simulation_jp.css"
+          )
+
+          for f in "${required_files[@]}"; do
+            test -f "$f"
+          done
+
+          python - <<'PY'
+          from pathlib import Path
+
+          files = [
+              "site/index.html",
+              "site/japan/daily/index.html",
+              "site/japan/daily/backtest/index.html",
+              "site/japan/daily/simulation/index.html",
+              "site/japan/weekly/index.html",
+              "site/japan/weekly-backtest/index.html",
+              "site/japan/weekly-simulation/index.html",
+          ]
+
+          forbidden = ["{{", "{%", "%}", "UndefinedError", "Traceback"]
+
+          for fp in files:
+              p = Path(fp)
+              text = p.read_text(encoding="utf-8")
+              assert len(text) > 1000, f"{fp} is unexpectedly small"
+              assert "<html" in text, f"{fp} missing html tag"
+              assert "</html>" in text, f"{fp} missing closing html tag"
+              for token in forbidden:
+                  assert token not in text, f"{fp} contains unrendered/error token: {token}"
+              print("verified", fp, len(text))
+          PY
+
+      - name: Commit rendered pages
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+
+          paths=(
+            "site/index.html"
+            "site/assets/index.css"
+
+            "site/japan/daily/index.html"
+            "site/assets/daily_jp.css"
+
+            "site/japan/daily/backtest/index.html"
+            "site/assets/backtest_daily_jp.css"
+
+            "site/japan/daily/simulation/index.html"
+            "site/assets/daily_simulation_jp.css"
+
+            "site/japan/weekly/index.html"
+            "site/assets/weekly_jp.css"
+
+            "site/japan/weekly-backtest/index.html"
+            "site/assets/weekly_backtest_jp.css"
+
+            "site/japan/weekly-simulation/index.html"
+            "site/assets/weekly_simulation_jp.css"
+          )
+
+          for path in "${paths[@]}"; do
+            if [ -e "$path" ] || [ -n "$(git ls-files -- "$path")" ]; then
+              git add -A -- "$path"
+            else
+              echo "Skip missing and untracked path: $path"
+            fi
+          done
+
+          if git diff --cached --quiet; then
+            echo "No rendered page changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Render all pages"
+
+          git pull --rebase origin main
+          git push origin main
+
+      - name: Verify clean working tree
+        run: |
+          set -euo pipefail
+
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Working tree is still dirty after commit."
+            git status --short
+            exit 1
+          fi
