@@ -4,12 +4,12 @@
   <meta charset="utf-8"/>
   <title>Daily Japan Signals | Neon Tokyo Signals</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Daily Japan equity decision board after the Tokyo close. Top 20 short-term screen with Trade, Monitor, Blocked High Score, market tape and risk controls."/>
+  <meta name="description" content="Daily Japan equity decision board after the Tokyo close. Trade-first short-term signal board with market pulse charts and recent Trade outcomes."/>
   <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/daily_jp.css?v=202605211853"/>
+  <link rel="stylesheet" href="/assets/daily_jp.css?v=202605211854"/>
 </head>
 <body>
-<div class="page-shell">
+<div class="page-shell daily-premium">
   <div class="ambient ambient-a"></div>
   <div class="ambient ambient-b"></div>
   <div class="ambient ambient-c"></div>
@@ -26,450 +26,264 @@
         <a href="/">Home</a>
         <a href="/japan/daily/" class="active">Daily</a>
         <a href="/japan/daily/backtest/">Backtest</a>
+        <a href="/japan/daily/simulation/">Simulation</a>
         <a href="/japan/weekly/">Weekly</a>
-        <a href="/disclaimer/">Disclaimer</a>
       </nav>
     </header>
 
-    <section class="hero cockpit">
+    <section class="hero cockpit hero-compact">
       <div class="hero-copy">
         <div class="kicker"><span class="live-dot"></span> DAILY JP DECISION BOARD · TOP 20</div>
-        <h1>Five-second decision.<span>Zero signal ambiguity.</span></h1>
-        
-        <div class="verdict-card verdict-monitor">
-          <div><span>Today’s model verdict</span><strong>MONITOR ONLY</strong></div>
-          <p>No full Trade today. 1 Monitor candidate. Wait for next-day price/volume confirmation.</p>
+        <h1>Trade only.<span>Noise off.</span></h1>
+        <div class="verdict-card verdict-monitor compact-verdict">
+          <div><span>Today</span><strong>MONITOR ONLY</strong></div>
+          <p>0 Trade · 1 Monitor · 19 Blocked</p>
+        </div>
+        <div class="hero-mini-strip">
+          <div><span>Trade</span><strong>0</strong></div>
+          <div><span>Monitor</span><strong>1</strong></div>
+          <div><span>Risk</span><strong>17</strong></div>
         </div>
       </div>
 
-      <aside class="hero-panels asymmetric">
-        <article class="hero-panel trade-panel">
+      <aside class="hero-panels premium-stack">
+        <article class="hero-panel trade-panel focus-card">
           <div class="panel-label">TRADE SIGNAL</div>
           
             <div class="ticker-row no-action"><strong>NO TRADE</strong><span class="tag triage-ignore">Capital first</span></div>
-            <div class="panel-name">No name cleared the full daily Trade threshold.</div>
             <div class="panel-score muted">0 <span>trades</span></div>
-            <p>Monitor candidates are not buy signals. Wait for confirmation.</p>
           
         </article>
 
-        <article class="hero-panel monitor-panel">
+        <article class="hero-panel monitor-panel focus-card soft">
           <div class="panel-label">TOP MONITOR</div>
           
             <div class="ticker-row"><strong>6758.T</strong><span class="tag triage-watch">Monitor</span></div>
             <div class="panel-name">Sony Group</div>
             <div class="panel-score">599 <span>pts</span></div>
-            <div class="decision-line">Monitor Only · Discovery</div>
-            <p>Monitor only. Abnormal accumulation or catalyst digestion is present, but this is not a Trade signal.</p>
-          
-        </article>
-
-        <article class="hero-panel score-panel">
-          <div class="panel-label">HIGHEST SCORE</div>
-          
-            <div class="ticker-row"><strong>#1 6758.T</strong><span class="tag triage-watch">Monitor Only</span></div>
-            <div class="panel-name">Sony Group</div>
-            <div class="panel-score">599 <span>pts</span></div>
-            <div class="decision-line">Monitor Only · Discovery</div>
-            <p>Monitor only. Abnormal accumulation or catalyst digestion is present, but this is not a Trade signal.</p>
           
         </article>
       </aside>
     </section>
 
-    <section class="meta-strip">
-      <div><span>Generated</span><strong>2026-05-19T17:46:25+09:00</strong></div>
-      <div><span>Price Data</span><strong>2026-05-19T17:44:57+09:00</strong></div>
-      <div><span>Regime</span><strong>Neutral</strong></div>
-      <div><span>Universe</span><strong>36 names</strong></div>
-    </section>
-
-    <section class="decision-summary" aria-label="5-second daily decision summary">
-      <article class="summary-tile trade"><span>Trade</span><strong>0</strong><em>Actionable only</em></article>
-      <article class="summary-tile watch"><span>Monitor Only</span><strong>1</strong><em>Wait for confirmation</em></article>
-      <article class="summary-tile blocked"><span>Blocked High Score</span><strong>3</strong><em>Score ≥ 500</em></article>
-      <article class="summary-tile danger"><span>High Risk</span><strong>1</strong><em>Severe blockers</em></article>
-      <article class="summary-tile favored"><span>Strict Favored</span><strong>2</strong><em>Validated setup flags</em></article>
-    </section>
-
-    <section class="visual-board">
-      <div class="section-heading split-heading">
-        <div><div class="kicker">5-SECOND READ</div><h2>Actionability before detail.</h2></div>
-        <div class="method-chip">Primary Daily lens: 1D / 3D / 5D / 10D · 20D reference only</div>
+    <section class="market-section premium-pulse-section">
+      <div class="section-heading split-heading compact-heading">
+        <div><div class="kicker">MARKET PULSE</div><h2>Index tape.</h2></div>
+        <div class="method-chip">Animated 1Y weekly path</div>
       </div>
-      <div class="visual-grid">
-        <article class="visual-card large-bar-card">
-          <div class="visual-title">Decision mix</div>
-          <div class="stacked-bar jumbo" aria-label="Decision distribution">
-            <span class="seg seg-trade" style="width:0.0%"></span><span class="seg seg-monitor" style="width:5.0%"></span><span class="seg seg-blocked" style="width:95.0%"></span>
-          </div>
-          <div class="bar-legend big-legend">
-            <span><i class="dot dot-trade"></i><strong>0</strong> Trade</span><span><i class="dot dot-monitor"></i><strong>1</strong> Monitor</span><span><i class="dot dot-blocked"></i><strong>19</strong> Blocked</span>
-          </div>
-        </article>
-        <article class="visual-card">
-          <div class="visual-title">Score distribution</div>
-          <div class="score-bars">
-            <div><span>800+</span><i style="width:0.0%"></i><strong>0</strong></div><div><span>700-799</span><i style="width:0.0%"></i><strong>0</strong></div><div><span>600-699</span><i style="width:0.0%"></i><strong>0</strong></div><div><span>500-599</span><i style="width:15.0%"></i><strong>3</strong></div><div><span><500</span><i style="width:85.0%"></i><strong>17</strong></div>
-          </div>
-        </article>
-        <article class="visual-card">
-          <div class="visual-title">Board role</div>
-          <div class="role-meter"><div><strong>20</strong><span>Main Top 20</span></div><div><strong>16</strong><span>Reference 21–50</span></div></div>
-          <p>Reference names are intentionally lightweight and not part of the core daily decision set.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="market-section">
-      <div class="section-heading split-heading"><div><div class="kicker">MARKET CONTEXT</div><h2>Broad trend versus short-term tape.</h2></div><div class="method-chip">Risk-On trend can still have weak short-term tape</div></div>
-      <div class="pulse-grid">
+      <div class="pulse-chart-grid">
         
-          <article class="pulse-card">
-            <div class="pulse-top"><div><div class="pulse-label">TOPIX</div><div class="pulse-regime">Neutral trend</div></div><div class="pulse-score">43.2<span>pulse</span></div></div>
-            <div class="tape-badge">Mixed tape</div>
-            <div class="pulse-metrics"><div><span>1D</span><strong class="ret-up">+0.6%</strong></div><div><span>5D Tape</span><strong class="ret-down">-0.5%</strong></div><div><span>20D Trend</span><strong class="ret-up">+2.2%</strong></div></div>
+          <article class="pulse-chart-card">
+            <div class="pulse-chart-head">
+              <div><strong>TOPIX</strong><span>Mixed tape</span></div>
+              <div class="pulse-performance ret-up">+37.6%<em>1Y</em></div>
+            </div>
+            <svg class="pulse-spark" viewBox="0 0 100 44" preserveAspectRatio="none" aria-label="TOPIX one year performance chart">
+              <defs>
+                <linearGradient id="pulseGrad1" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#7df9ff"/>
+                  <stop offset="0.55" stop-color="#5dffb1"/>
+                  <stop offset="1" stop-color="#ff4fd8"/>
+                </linearGradient>
+              </defs>
+              <polyline class="pulse-fill" points="0,44 0.00,38.61 1.96,39.49 3.92,40.00 5.88,39.44 7.84,37.21 9.80,37.58 11.76,39.77 13.73,39.44 15.69,36.02 17.65,35.96 19.61,33.76 21.57,31.18 23.53,31.44 25.49,32.14 27.45,31.15 29.41,29.59 31.37,30.11 33.33,28.95 35.29,29.70 37.25,27.68 39.22,28.43 41.18,26.03 43.14,23.57 45.10,24.64 47.06,22.70 49.02,24.58 50.98,22.12 52.94,22.70 54.90,20.64 56.86,21.80 58.82,20.79 60.78,21.05 62.75,17.83 64.71,13.26 66.67,14.27 68.63,16.27 70.59,12.18 72.55,8.51 74.51,8.82 76.47,5.06 78.43,11.66 80.39,14.39 82.35,14.91 84.31,13.86 86.27,10.86 88.24,7.95 90.20,7.18 92.16,8.77 94.12,8.50 96.08,5.18 98.04,4.00 100.00,6.27 100,44"/>
+              <polyline class="pulse-line" points="0.00,38.61 1.96,39.49 3.92,40.00 5.88,39.44 7.84,37.21 9.80,37.58 11.76,39.77 13.73,39.44 15.69,36.02 17.65,35.96 19.61,33.76 21.57,31.18 23.53,31.44 25.49,32.14 27.45,31.15 29.41,29.59 31.37,30.11 33.33,28.95 35.29,29.70 37.25,27.68 39.22,28.43 41.18,26.03 43.14,23.57 45.10,24.64 47.06,22.70 49.02,24.58 50.98,22.12 52.94,22.70 54.90,20.64 56.86,21.80 58.82,20.79 60.78,21.05 62.75,17.83 64.71,13.26 66.67,14.27 68.63,16.27 70.59,12.18 72.55,8.51 74.51,8.82 76.47,5.06 78.43,11.66 80.39,14.39 82.35,14.91 84.31,13.86 86.27,10.86 88.24,7.95 90.20,7.18 92.16,8.77 94.12,8.50 96.08,5.18 98.04,4.00 100.00,6.27" stroke="url(#pulseGrad1)"/>
+            </svg>
+            <div class="pulse-mini-metrics">
+              <span class="ret-up">1D +0.6%</span>
+              <span class="ret-down">5D -0.5%</span>
+              <span class="ret-up">20D +2.2%</span>
+            </div>
           </article>
         
-          <article class="pulse-card">
-            <div class="pulse-top"><div><div class="pulse-label">NIKKEI</div><div class="pulse-regime">Risk-On trend</div></div><div class="pulse-score">52.0<span>pulse</span></div></div>
-            <div class="tape-badge">Weak tape</div>
-            <div class="pulse-metrics"><div><span>1D</span><strong class="ret-down">-0.4%</strong></div><div><span>5D Tape</span><strong class="ret-down">-3.2%</strong></div><div><span>20D Trend</span><strong class="ret-up">+4.3%</strong></div></div>
+          <article class="pulse-chart-card">
+            <div class="pulse-chart-head">
+              <div><strong>NIKKEI</strong><span>Weak tape</span></div>
+              <div class="pulse-performance ret-up">+57.4%<em>1Y</em></div>
+            </div>
+            <svg class="pulse-spark" viewBox="0 0 100 44" preserveAspectRatio="none" aria-label="NIKKEI one year performance chart">
+              <defs>
+                <linearGradient id="pulseGrad2" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#7df9ff"/>
+                  <stop offset="0.55" stop-color="#5dffb1"/>
+                  <stop offset="1" stop-color="#ff4fd8"/>
+                </linearGradient>
+              </defs>
+              <polyline class="pulse-fill" points="0,44 0.00,39.54 1.96,40.00 3.92,39.89 5.88,38.98 7.84,36.47 9.80,36.92 11.76,38.26 13.73,37.89 15.69,35.62 17.65,36.45 19.61,35.09 21.57,32.86 23.53,33.95 25.49,33.71 27.45,33.33 29.41,30.89 31.37,30.52 33.33,29.96 35.29,28.98 37.25,25.74 39.22,26.38 41.18,24.90 43.14,19.47 45.10,22.47 47.06,22.37 49.02,24.79 50.98,22.61 52.94,22.23 54.90,21.70 56.86,23.63 58.82,21.92 60.78,22.33 62.75,20.10 64.71,17.17 66.67,17.31 68.63,18.09 70.59,16.71 72.55,12.83 74.51,13.00 76.47,10.18 78.43,14.73 80.39,17.46 82.35,18.05 84.31,17.97 86.27,17.82 88.24,12.39 90.20,9.85 92.16,8.43 94.12,8.65 96.08,4.00 98.04,5.82 100.00,7.98 100,44"/>
+              <polyline class="pulse-line" points="0.00,39.54 1.96,40.00 3.92,39.89 5.88,38.98 7.84,36.47 9.80,36.92 11.76,38.26 13.73,37.89 15.69,35.62 17.65,36.45 19.61,35.09 21.57,32.86 23.53,33.95 25.49,33.71 27.45,33.33 29.41,30.89 31.37,30.52 33.33,29.96 35.29,28.98 37.25,25.74 39.22,26.38 41.18,24.90 43.14,19.47 45.10,22.47 47.06,22.37 49.02,24.79 50.98,22.61 52.94,22.23 54.90,21.70 56.86,23.63 58.82,21.92 60.78,22.33 62.75,20.10 64.71,17.17 66.67,17.31 68.63,18.09 70.59,16.71 72.55,12.83 74.51,13.00 76.47,10.18 78.43,14.73 80.39,17.46 82.35,18.05 84.31,17.97 86.27,17.82 88.24,12.39 90.20,9.85 92.16,8.43 94.12,8.65 96.08,4.00 98.04,5.82 100.00,7.98" stroke="url(#pulseGrad2)"/>
+            </svg>
+            <div class="pulse-mini-metrics">
+              <span class="ret-down">1D -0.4%</span>
+              <span class="ret-down">5D -3.2%</span>
+              <span class="ret-up">20D +4.3%</span>
+            </div>
           </article>
         
-          <article class="pulse-card">
-            <div class="pulse-top"><div><div class="pulse-label">GROWTH</div><div class="pulse-regime">Risk-On trend</div></div><div class="pulse-score">73.5<span>pulse</span></div></div>
-            <div class="tape-badge">Trend intact</div>
-            <div class="pulse-metrics"><div><span>1D</span><strong class="ret-up">+3.2%</strong></div><div><span>5D Tape</span><strong class="ret-up">+1.0%</strong></div><div><span>20D Trend</span><strong class="ret-up">+6.3%</strong></div></div>
+          <article class="pulse-chart-card">
+            <div class="pulse-chart-head">
+              <div><strong>GROWTH</strong><span>Trend intact</span></div>
+              <div class="pulse-performance ret-up">+7.0%<em>1Y</em></div>
+            </div>
+            <svg class="pulse-spark" viewBox="0 0 100 44" preserveAspectRatio="none" aria-label="GROWTH one year performance chart">
+              <defs>
+                <linearGradient id="pulseGrad3" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#7df9ff"/>
+                  <stop offset="0.55" stop-color="#5dffb1"/>
+                  <stop offset="1" stop-color="#ff4fd8"/>
+                </linearGradient>
+              </defs>
+              <polyline class="pulse-fill" points="0,44 0.00,23.18 1.96,22.36 3.92,21.18 5.88,21.02 7.84,25.13 9.80,29.34 11.76,22.54 13.73,24.31 15.69,19.05 17.65,18.89 19.61,15.73 21.57,14.14 23.53,15.20 25.49,15.40 27.45,18.05 29.41,19.36 31.37,16.66 33.33,19.41 35.29,25.34 37.25,22.21 39.22,29.57 41.18,25.24 43.14,27.78 45.10,31.53 47.06,29.63 49.02,35.81 50.98,31.99 52.94,38.18 54.90,39.61 56.86,40.00 58.82,35.25 60.78,36.97 62.75,29.57 64.71,24.26 66.67,25.16 68.63,30.17 70.59,30.29 72.55,27.80 74.51,22.54 76.47,16.81 78.43,16.92 80.39,19.97 82.35,22.54 84.31,24.59 86.27,24.85 88.24,18.41 90.20,12.70 92.16,16.86 94.12,15.91 96.08,4.00 98.04,11.01 100.00,12.68 100,44"/>
+              <polyline class="pulse-line" points="0.00,23.18 1.96,22.36 3.92,21.18 5.88,21.02 7.84,25.13 9.80,29.34 11.76,22.54 13.73,24.31 15.69,19.05 17.65,18.89 19.61,15.73 21.57,14.14 23.53,15.20 25.49,15.40 27.45,18.05 29.41,19.36 31.37,16.66 33.33,19.41 35.29,25.34 37.25,22.21 39.22,29.57 41.18,25.24 43.14,27.78 45.10,31.53 47.06,29.63 49.02,35.81 50.98,31.99 52.94,38.18 54.90,39.61 56.86,40.00 58.82,35.25 60.78,36.97 62.75,29.57 64.71,24.26 66.67,25.16 68.63,30.17 70.59,30.29 72.55,27.80 74.51,22.54 76.47,16.81 78.43,16.92 80.39,19.97 82.35,22.54 84.31,24.59 86.27,24.85 88.24,18.41 90.20,12.70 92.16,16.86 94.12,15.91 96.08,4.00 98.04,11.01 100.00,12.68" stroke="url(#pulseGrad3)"/>
+            </svg>
+            <div class="pulse-mini-metrics">
+              <span class="ret-up">1D +3.2%</span>
+              <span class="ret-up">5D +1.0%</span>
+              <span class="ret-up">20D +6.3%</span>
+            </div>
           </article>
         
       </div>
     </section>
 
-    <section class="actionable-section">
-      <div class="section-heading split-heading"><div><div class="kicker">TRADE / MONITOR BOARD</div><h2>Trade is actionable. Monitor is not.</h2></div><div class="method-chip">Monitor Only means wait for confirmation</div></div>
-      <div class="cards action-cards">
+    <section class="action-section">
+      <div class="section-heading split-heading compact-heading"><div><div class="kicker">LIVE BOARD</div><h2>Trade / Monitor.</h2></div><div class="method-chip">Trade is the only buy lane</div></div>
+      <div class="cards action-cards premium-action-cards">
         
-          <article class="signal-card monitor score-watch">
+          <article class="signal-card monitor score-watch lean-card">
             <div class="card-top"><div class="rank">#1</div><div class="score">599<span>pts</span></div></div>
-            <div class="signal-tags"><span class="tag triage-watch">Monitor Only</span><span class="tag liq-high-liquidity">High Liquidity</span><span class="tag signal-risk-low">Signal Risk: Low</span></div>
-            <div class="symbol-row"><h3>6758.T</h3><span class="bucket">Core</span></div>
+            <div class="symbol-row"><h3>6758.T</h3><span class="tag triage-watch">Monitor Only</span></div>
             <div class="name">Sony Group</div>
-            <div class="decision-box"><strong>Monitor Only · Discovery</strong><span>Monitor only. Abnormal accumulation or catalyst digestion is present, but this is not a Trade signal.</span></div>
-            <div class="metric-grid"><div><span>1D</span><strong class="ret-up">+3.4%</strong></div><div><span>5D</span><strong class="ret-up">+6.8%</strong></div><div><span>RVOL</span><strong>0.9</strong></div></div>
-            <div class="component-bars"><div><span>Volume</span><i style="width:69%"></i></div><div><span>Compression</span><i style="width:11%"></i></div><div><span>Breakout</span><i style="width:55%"></i></div><div><span>RS</span><i style="width:69%"></i></div></div>
-            <div class="flags"></div>
+            <div class="metric-grid compact-metrics">
+              <div><span>1D</span><strong class="ret-up">+3.4%</strong></div>
+              <div><span>5D</span><strong class="ret-up">+6.8%</strong></div>
+              <div><span>Liquidity</span><strong>High Liquidity</strong></div>
+            </div>
           </article>
         
       </div>
     </section>
 
-    <section class="blocked-section">
-      <div class="section-heading split-heading"><div><div class="kicker">BLOCKED HIGH SCORE</div><h2>Strong tape, no trigger yet.</h2></div><div class="method-chip">Top 5 only · watchlist material, not buy signals</div></div>
-      <div class="cards compact-cards">
+    <section class="trade-history-section">
+      <div class="section-heading split-heading compact-heading">
+        <div><div class="kicker">LAST 10 TRADE SIGNALS</div><h2>Then vs now.</h2></div>
+        <div class="method-chip">Latest price 2026-05-20</div>
+      </div>
+      <div class="trade-history-grid">
         
-          <article class="signal-card blocked-card score-watch ">
-            <div class="card-top"><div class="rank">#2</div><div class="score">590<span>pts</span></div></div>
-            <div class="symbol-row"><h3>6762.T</h3><span class="tag triage-ignore">Blocked · Needs Confirmation</span></div>
-            <div class="name">TDK</div>
-            <div class="decision-box"><strong>Blocked by Confirmation Rules</strong><span>Blocked until confirmation improves: Low-volume confirmation cap.</span></div>
-            <div class="mini-metrics"><span class="ret-up">1D +0.3%</span><span class="ret-up">5D +0.8%</span><span>High Liquidity</span></div>
-            <div class="flags"><span class="good">Favored RS setup</span><span class="warn">Low-volume confirmation cap</span></div>
+          <article class="trade-history-card">
+            <div class="trade-history-top"><span>2026-03-11</span><strong>#1</strong></div>
+            <div class="trade-symbol"><strong>7974.T</strong><em>Nintendo</em></div>
+            <div class="trade-history-score"><span>790 pts</span><span>A Setup</span></div>
+            <div class="trade-history-metrics">
+              <div><span>Signal 1D</span><strong class="ret-up">+8.9%</strong></div>
+              <div><span>Signal 5D</span><strong class="ret-up">+14.1%</strong></div>
+              <div><span>Now</span><strong class="ret-down">-24.5%</strong></div>
+            </div>
           </article>
         
-          <article class="signal-card blocked-card score-watch ">
-            <div class="card-top"><div class="rank">#3</div><div class="score">514<span>pts</span></div></div>
-            <div class="symbol-row"><h3>6701.T</h3><span class="tag triage-ignore">Blocked · No Trigger</span></div>
-            <div class="name">NEC</div>
-            <div class="decision-box"><strong>Constructive, But Not Actionable</strong><span>Constructive tape, but still below Monitor/Trade rules: Institutional-size turnover, Tradable liquidity.</span></div>
-            <div class="mini-metrics"><span class="ret-up">1D +3.2%</span><span class="ret-up">5D +4.0%</span><span>High Liquidity</span></div>
-            <div class="flags"></div>
+          <article class="trade-history-card">
+            <div class="trade-history-top"><span>2026-03-11</span><strong>#2</strong></div>
+            <div class="trade-symbol"><strong>6920.T</strong><em>Lasertec</em></div>
+            <div class="trade-history-score"><span>760 pts</span><span>A Setup</span></div>
+            <div class="trade-history-metrics">
+              <div><span>Signal 1D</span><strong class="ret-up">+4.1%</strong></div>
+              <div><span>Signal 5D</span><strong class="ret-up">+9.4%</strong></div>
+              <div><span>Now</span><strong class="ret-down">-1.5%</strong></div>
+            </div>
           </article>
         
-          <article class="signal-card blocked-card score-muted ">
-            <div class="card-top"><div class="rank">#9</div><div class="score">329<span>pts</span></div></div>
-            <div class="symbol-row"><h3>6954.T</h3><span class="tag triage-ignore">Blocked · Needs Confirmation</span></div>
-            <div class="name">FANUC</div>
-            <div class="decision-box"><strong>Blocked by Confirmation Rules</strong><span>Blocked until confirmation improves: No daily confirmation, Low-volume confirmation cap.</span></div>
-            <div class="mini-metrics"><span class="ret-down">1D -3.8%</span><span class="ret-down">5D -1.1%</span><span>High Liquidity</span></div>
-            <div class="flags"><span class="good">Favored RS setup</span><span class="warn">No daily confirmation</span><span class="warn">Low-volume confirmation cap</span></div>
+          <article class="trade-history-card">
+            <div class="trade-history-top"><span>2026-03-02</span><strong>#1</strong></div>
+            <div class="trade-symbol"><strong>7011.T</strong><em>Mitsubishi Heavy Industries</em></div>
+            <div class="trade-history-score"><span>837 pts</span><span>A+ Timing</span></div>
+            <div class="trade-history-metrics">
+              <div><span>Signal 1D</span><strong class="ret-up">+3.6%</strong></div>
+              <div><span>Signal 5D</span><strong class="ret-up">+4.6%</strong></div>
+              <div><span>Now</span><strong class="ret-down">-22.5%</strong></div>
+            </div>
+          </article>
+        
+          <article class="trade-history-card">
+            <div class="trade-history-top"><span>2026-03-02</span><strong>#2</strong></div>
+            <div class="trade-symbol"><strong>5574.T</strong><em>ABEJA</em></div>
+            <div class="trade-history-score"><span>807 pts</span><span>A+ Timing</span></div>
+            <div class="trade-history-metrics">
+              <div><span>Signal 1D</span><strong class="ret-up">+4.1%</strong></div>
+              <div><span>Signal 5D</span><strong class="ret-up">+9.7%</strong></div>
+              <div><span>Now</span><strong class="ret-down">-23.6%</strong></div>
+            </div>
+          </article>
+        
+          <article class="trade-history-card">
+            <div class="trade-history-top"><span>2026-02-25</span><strong>#1</strong></div>
+            <div class="trade-symbol"><strong>8035.T</strong><em>Tokyo Electron</em></div>
+            <div class="trade-history-score"><span>837 pts</span><span>A+ Timing</span></div>
+            <div class="trade-history-metrics">
+              <div><span>Signal 1D</span><strong class="ret-up">+4.2%</strong></div>
+              <div><span>Signal 5D</span><strong class="ret-up">+9.7%</strong></div>
+              <div><span>Now</span><strong class="ret-down">-0.3%</strong></div>
+            </div>
+          </article>
+        
+          <article class="trade-history-card">
+            <div class="trade-history-top"><span>2026-02-25</span><strong>#2</strong></div>
+            <div class="trade-symbol"><strong>6146.T</strong><em>DISCO</em></div>
+            <div class="trade-history-score"><span>815 pts</span><span>A+ Timing</span></div>
+            <div class="trade-history-metrics">
+              <div><span>Signal 1D</span><strong class="ret-up">+5.8%</strong></div>
+              <div><span>Signal 5D</span><strong class="ret-up">+11.5%</strong></div>
+              <div><span>Now</span><strong class="ret-down">-23.3%</strong></div>
+            </div>
+          </article>
+        
+          <article class="trade-history-card">
+            <div class="trade-history-top"><span>2026-02-24</span><strong>#1</strong></div>
+            <div class="trade-symbol"><strong>5803.T</strong><em>Fujikura</em></div>
+            <div class="trade-history-score"><span>806 pts</span><span>A+ Timing</span></div>
+            <div class="trade-history-metrics">
+              <div><span>Signal 1D</span><strong class="ret-up">+10.0%</strong></div>
+              <div><span>Signal 5D</span><strong class="ret-up">+17.5%</strong></div>
+              <div><span>Now</span><strong class="ret-up">+2.3%</strong></div>
+            </div>
+          </article>
+        
+          <article class="trade-history-card">
+            <div class="trade-history-top"><span>2026-02-18</span><strong>#1</strong></div>
+            <div class="trade-symbol"><strong>6981.T</strong><em>Murata Manufacturing</em></div>
+            <div class="trade-history-score"><span>803 pts</span><span>A+ Timing</span></div>
+            <div class="trade-history-metrics">
+              <div><span>Signal 1D</span><strong class="ret-up">+2.9%</strong></div>
+              <div><span>Signal 5D</span><strong class="ret-up">+8.8%</strong></div>
+              <div><span>Now</span><strong class="ret-up">+70.7%</strong></div>
+            </div>
+          </article>
+        
+          <article class="trade-history-card">
+            <div class="trade-history-top"><span>2026-02-17</span><strong>#1</strong></div>
+            <div class="trade-symbol"><strong>6981.T</strong><em>Murata Manufacturing</em></div>
+            <div class="trade-history-score"><span>824 pts</span><span>A+ Timing</span></div>
+            <div class="trade-history-metrics">
+              <div><span>Signal 1D</span><strong class="ret-up">+6.9%</strong></div>
+              <div><span>Signal 5D</span><strong class="ret-up">+7.3%</strong></div>
+              <div><span>Now</span><strong class="ret-up">+75.7%</strong></div>
+            </div>
+          </article>
+        
+          <article class="trade-history-card">
+            <div class="trade-history-top"><span>2026-02-10</span><strong>#1</strong></div>
+            <div class="trade-symbol"><strong>7011.T</strong><em>Mitsubishi Heavy Industries</em></div>
+            <div class="trade-history-score"><span>846 pts</span><span>A+ Timing</span></div>
+            <div class="trade-history-metrics">
+              <div><span>Signal 1D</span><strong class="ret-up">+2.8%</strong></div>
+              <div><span>Signal 5D</span><strong class="ret-up">+9.9%</strong></div>
+              <div><span>Now</span><strong class="ret-down">-21.2%</strong></div>
+            </div>
           </article>
         
       </div>
     </section>
 
-    <section class="main-board-section">
-      <div class="section-heading split-heading"><div><div class="kicker">MAIN DAILY BOARD</div><h2>Top 20 ranked candidates.</h2></div><div class="method-chip">Compact decision table · rank equals score order</div></div>
-      <div class="table-wrap decision-table">
-        <table>
-          <thead><tr><th>Rank</th><th>Status</th><th>Symbol</th><th>Score</th><th>Setup / Blocker</th><th>1D</th><th>5D</th><th>Liquidity</th><th>Signal Risk</th></tr></thead>
-          <tbody>
-            
-              <tr class="row-monitor-only">
-                <td>#1</td>
-                <td><span class="mini-tag triage-watch">Monitor Only</span></td>
-                <td><strong>6758.T</strong><span>Sony Group</span></td>
-                <td><div class="score-cell"><strong>599</strong><i style="width:60%"></i></div></td>
-                <td class="decision-cell">Monitor Only · Discovery</td>
-                <td class="ret-up">+3.4%</td>
-                <td class="ret-up">+6.8%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-low">Low</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#2</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>6762.T</strong><span>TDK</span></td>
-                <td><div class="score-cell"><strong>590</strong><i style="width:59%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-up">+0.3%</td>
-                <td class="ret-up">+0.8%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-no-trigger">
-                <td>#3</td>
-                <td><span class="mini-tag triage-ignore">Blocked · No Trigger</span></td>
-                <td><strong>6701.T</strong><span>NEC</span></td>
-                <td><div class="score-cell"><strong>514</strong><i style="width:51%"></i></div></td>
-                <td class="decision-cell">Constructive, But Not Actionable</td>
-                <td class="ret-up">+3.2%</td>
-                <td class="ret-up">+4.0%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-low">Low</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-no-trigger">
-                <td>#4</td>
-                <td><span class="mini-tag triage-ignore">Blocked · No Trigger</span></td>
-                <td><strong>6501.T</strong><span>Hitachi</span></td>
-                <td><div class="score-cell"><strong>485</strong><i style="width:48%"></i></div></td>
-                <td class="decision-cell">Constructive, But Not Actionable</td>
-                <td class="ret-up">+2.8%</td>
-                <td class="ret-up">+1.6%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-low">Low</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#5</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>5574.T</strong><span>ABEJA</span></td>
-                <td><div class="score-cell"><strong>418</strong><i style="width:42%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-up">+0.1%</td>
-                <td class="ret-up">+3.6%</td>
-                <td><span class="liq-pill liq-tradable">Tradable</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-no-trigger">
-                <td>#6</td>
-                <td><span class="mini-tag triage-ignore">Blocked · No Trigger</span></td>
-                <td><strong>7974.T</strong><span>Nintendo</span></td>
-                <td><div class="score-cell"><strong>402</strong><i style="width:40%"></i></div></td>
-                <td class="decision-cell">Constructive, But Not Actionable</td>
-                <td class="ret-up">+4.7%</td>
-                <td class="ret-up">+4.7%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-low">Low</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#7</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>6981.T</strong><span>Murata Manufacturing</span></td>
-                <td><div class="score-cell"><strong>400</strong><i style="width:40%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-up">+0.1%</td>
-                <td class="ret-up">+1.7%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-high-risk">
-                <td>#8</td>
-                <td><span class="mini-tag triage-ignore">Blocked · High Risk</span></td>
-                <td><strong>135A.T</strong><span>VRAIN Solution</span></td>
-                <td><div class="score-cell"><strong>335</strong><i style="width:34%"></i></div></td>
-                <td class="decision-cell">Blocked by High-Severity Risk</td>
-                <td class="ret-up">+1.5%</td>
-                <td class="ret-up">+6.3%</td>
-                <td><span class="liq-pill liq-tradable">Tradable</span></td>
-                <td><span class="signal-risk signal-risk-high">High</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#9</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>6954.T</strong><span>FANUC</span></td>
-                <td><div class="score-cell"><strong>329</strong><i style="width:33%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-down">-3.8%</td>
-                <td class="ret-down">-1.1%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#10</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>6503.T</strong><span>Mitsubishi Electric</span></td>
-                <td><div class="score-cell"><strong>319</strong><i style="width:32%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-down">-5.2%</td>
-                <td class="ret-down">-5.5%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#11</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>7011.T</strong><span>Mitsubishi Heavy Industries</span></td>
-                <td><div class="score-cell"><strong>304</strong><i style="width:30%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-up">+0.6%</td>
-                <td class="ret-down">-4.0%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#12</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>5572.T</strong><span>Ridge-i</span></td>
-                <td><div class="score-cell"><strong>293</strong><i style="width:29%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-up">+2.0%</td>
-                <td class="ret-up">+5.4%</td>
-                <td><span class="liq-pill liq-very-thin">Very Thin</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#13</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>4011.T</strong><span>Headwaters</span></td>
-                <td><div class="score-cell"><strong>287</strong><i style="width:29%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-down">-0.8%</td>
-                <td class="ret-up">+14.5%</td>
-                <td><span class="liq-pill liq-very-thin">Very Thin</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#14</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>5802.T</strong><span>Sumitomo Electric</span></td>
-                <td><div class="score-cell"><strong>253</strong><i style="width:25%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-down">-4.7%</td>
-                <td class="ret-down">-7.0%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#15</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>3914.T</strong><span>JIG-SAW</span></td>
-                <td><div class="score-cell"><strong>250</strong><i style="width:25%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-up">+1.1%</td>
-                <td class="ret-down">-4.7%</td>
-                <td><span class="liq-pill liq-thin">Thin</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#16</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>6861.T</strong><span>Keyence</span></td>
-                <td><div class="score-cell"><strong>225</strong><i style="width:22%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-down">-2.4%</td>
-                <td class="ret-down">-5.4%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#17</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>3905.T</strong><span>Data Section</span></td>
-                <td><div class="score-cell"><strong>225</strong><i style="width:22%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-up">+17.7%</td>
-                <td class="ret-up">+48.7%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#18</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>9984.T</strong><span>SoftBank Group</span></td>
-                <td><div class="score-cell"><strong>214</strong><i style="width:21%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-down">-4.1%</td>
-                <td class="ret-down">-10.5%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#19</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>4425.T</strong><span>Kudan</span></td>
-                <td><div class="score-cell"><strong>209</strong><i style="width:21%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-down">-0.2%</td>
-                <td class="ret-down">-26.9%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-              <tr class="row-blocked-·-needs-confirmation">
-                <td>#20</td>
-                <td><span class="mini-tag triage-ignore">Blocked · Needs Confirmation</span></td>
-                <td><strong>7741.T</strong><span>HOYA</span></td>
-                <td><div class="score-cell"><strong>200</strong><i style="width:20%"></i></div></td>
-                <td class="decision-cell">Blocked by Confirmation Rules</td>
-                <td class="ret-down">-3.0%</td>
-                <td class="ret-down">-1.4%</td>
-                <td><span class="liq-pill liq-high-liquidity">High Liquidity</span></td>
-                <td><span class="signal-risk signal-risk-medium">Medium</span></td>
-              </tr>
-            
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="insight-lanes-section">
-      <div class="section-heading split-heading"><div><div class="kicker">SETUP INTELLIGENCE</div><h2>Validated positives and blockers.</h2></div><div class="method-chip">Strict favored flags only · risks split by severity</div></div>
-      <div class="insight-lanes three">
-        <article class="lane-card favored"><div class="lane-head"><span>STRICT FAVORED</span><strong>2</strong></div><div class="mini-list"><div class="mini-row good"><strong>#2 6762.T</strong><span>Favored RS setup</span><em>590 pts</em></div><div class="mini-row good"><strong>#9 6954.T</strong><span>Favored RS setup</span><em>329 pts</em></div></div></article>
-        <article class="lane-card danger"><div class="lane-head"><span>HIGH RISK</span><strong>1</strong></div><div class="mini-list"><div class="mini-row danger"><strong>#8 135A.T</strong><span>Weak close on volume</span><em>Blocked · High Risk</em></div></div></article>
-        <article class="lane-card warning"><div class="lane-head"><span>MEDIUM RISK</span><strong>8</strong></div><div class="mini-list"><div class="mini-row warn"><strong>#2 6762.T</strong><span>Low-volume confirmation cap</span><em>Blocked · Needs Confirmation</em></div><div class="mini-row warn"><strong>#5 5574.T</strong><span>Weak volume cap</span><em>Blocked · Needs Confirmation</em></div><div class="mini-row warn"><strong>#7 6981.T</strong><span>Extended risk</span><em>Blocked · Needs Confirmation</em></div><div class="mini-row warn"><strong>#9 6954.T</strong><span>No daily confirmation</span><em>Blocked · Needs Confirmation</em></div><div class="mini-row warn"><strong>#10 6503.T</strong><span>Weak 5D momentum</span><em>Blocked · Needs Confirmation</em></div><div class="mini-row warn"><strong>#11 7011.T</strong><span>Low-volume confirmation cap</span><em>Blocked · Needs Confirmation</em></div><div class="mini-row warn"><strong>#12 5572.T</strong><span>Very low liquidity</span><em>Blocked · Needs Confirmation</em></div><div class="mini-row warn"><strong>#13 4011.T</strong><span>Very low liquidity</span><em>Blocked · Needs Confirmation</em></div></div></article>
-      </div>
-    </section>
-
-    <section class="reference-section">
-      <div class="section-heading split-heading"><div><div class="kicker">REFERENCE ONLY</div><h2>Rank 21–50 is lightweight context.</h2></div><div class="method-chip">Not part of the core Daily board</div></div>
-      <div class="reference-grid slim">
-        <div class="reference-pill "><strong>#21 8035.T · 173 pts</strong><span>Blocked · Needs Confirmation · 5D -9.6%</span></div><div class="reference-pill "><strong>#22 6857.T · 151 pts</strong><span>Blocked · Needs Confirmation · 5D -11.9%</span></div><div class="reference-pill "><strong>#23 7012.T · 140 pts</strong><span>Blocked · Needs Confirmation · 5D -16.0%</span></div><div class="reference-pill risk"><strong>#24 269A.T · 137 pts</strong><span>Blocked · High Risk · 5D -0.4%</span></div><div class="reference-pill "><strong>#25 6920.T · 108 pts</strong><span>Blocked · Needs Confirmation · 5D -17.1%</span></div><div class="reference-pill "><strong>#26 6146.T · 99 pts</strong><span>Blocked · Needs Confirmation · 5D -15.4%</span></div><div class="reference-pill "><strong>#27 3652.T · 95 pts</strong><span>Blocked · Needs Confirmation · 5D +7.7%</span></div><div class="reference-pill "><strong>#28 5132.T · 89 pts</strong><span>Blocked · Needs Confirmation · 5D -5.4%</span></div><div class="reference-pill "><strong>#29 4382.T · 86 pts</strong><span>Blocked · Needs Confirmation · 5D -1.0%</span></div><div class="reference-pill "><strong>#30 5256.T · 83 pts</strong><span>Blocked · Needs Confirmation · 5D -4.3%</span></div><div class="reference-pill "><strong>#31 7013.T · 74 pts</strong><span>Blocked · Needs Confirmation · 5D -8.7%</span></div><div class="reference-pill risk"><strong>#32 3993.T · 72 pts</strong><span>Blocked · High Risk · 5D -11.5%</span></div>
-      </div>
-    </section>
-
-    
-
-    
-    <footer class="footer"><span>Informational only. Not investment advice.</span><nav><a href="/">Home</a><a href="/japan/daily/backtest/">Backtest</a><a href="/privacy/">Privacy</a><a href="/disclaimer/">Disclaimer</a></nav></footer>
+    <footer class="footer"><span>Informational only. Not investment advice.</span><nav><a href="/">Home</a><a href="/japan/daily/backtest/">Backtest</a><a href="/japan/daily/simulation/">Simulation</a><a href="/privacy/">Privacy</a><a href="/disclaimer/">Disclaimer</a></nav></footer>
   </main>
 </div>
 </body>
