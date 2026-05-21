@@ -30,12 +30,6 @@
             </span>
           </a>
 
-          <nav class="top-nav" aria-label="Primary navigation">
-            <a href="/japan/daily/">Daily</a>
-            <a href="/japan/weekly/">Weekly</a>
-            <a href="/japan/daily/simulation/">Simulation</a>
-            <a href="/japan/weekly-backtest/">Research</a>
-          </nav>
         </div>
 
         <div class="pulse-bg-word" id="pulseBgWord" data-text="NIKKEI">NIKKEI</div>
@@ -53,7 +47,6 @@
             <span class="hero-title-line signal-line">The signals are live.</span>
           </h1>
 
-          <p>Momentum. Breakouts. Liquidity shocks. Japan themes.</p>
         </div>
 
         <div class="pulse-chart-wrap">
@@ -66,7 +59,6 @@
         </div>
 
         <div class="pulse-corner-meta">
-          <span id="pulseLabel">NIKKEI</span>
           <strong id="pulsePerf" class="ret-flat">1Y —</strong>
           <em id="pulseSymbol">JP MARKET PULSE</em>
         </div>
@@ -95,18 +87,17 @@
           <span class="hub-kicker">SIGNAL ACCESS</span>
           <h2>Choose the time frame.</h2>
         </div>
-        <p>Daily is for short-term execution. Weekly is for trend discovery.</p>
       </div>
 
       <div class="hub-grid">
-        <details class="hub-card daily" open>
+        <details class="hub-card daily">
           <summary>
             <span class="hub-no">01</span>
             <span>
               <em>Tokyo Close</em>
               <strong>Daily</strong>
             </span>
-            <i>Open</i>
+            <i>View</i>
           </summary>
           <div class="hub-links">
             <a href="/japan/daily/"><span>Signal</span><strong>Daily Symbol</strong></a>
@@ -122,7 +113,7 @@
               <em>Trend Layer</em>
               <strong>Weekly</strong>
             </span>
-            <i>Open</i>
+            <i>View</i>
           </summary>
           <div class="hub-links">
             <a href="/japan/weekly/"><span>Signal</span><strong>Weekly Symbol</strong></a>
@@ -133,14 +124,6 @@
       </div>
     </section>
 
-    <section class="theme-pills" aria-label="Featured themes">
-      <span>SEMICONDUCTOR CAPEX</span>
-      <span>DEFENSE & AEROSPACE</span>
-      <span>PHYSICAL AI</span>
-      <span>DATA CENTER INFRA</span>
-      <span>ROBOTICS</span>
-      <span>EDGE AI</span>
-    </section>
 
     <footer class="footer">
       <span>Informational only. Not investment advice.</span>
@@ -222,7 +205,7 @@ function activatePulse(i) {
   bgWord.setAttribute("data-text", item.label);
 
   if (label) label.textContent = item.label;
-  if (symbol) symbol.textContent = `${item.symbol} · 1Y PERFORMANCE`;
+  if (symbol) symbol.textContent = "1Y PERFORMANCE";
   if (perf) {
     perf.textContent = item.performance;
     perf.className = item.performanceClass;
