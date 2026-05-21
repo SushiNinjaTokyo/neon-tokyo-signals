@@ -71,23 +71,19 @@ RANK_LIMIT = min(10, max(1, int(os.getenv("DAILY_JP_SIM_RANK_LIMIT", "10"))))
 ENTRY_RANK_LIMIT = min(RANK_LIMIT, max(1, int(os.getenv("DAILY_JP_SIM_ENTRY_RANK_LIMIT", "10"))))
 ENTRY_SCORE_FLOOR = int(os.getenv("DAILY_JP_SIM_ENTRY_SCORE_FLOOR", "500"))
 REINVESTMENT_SCORE_FLOOR = int(os.getenv("DAILY_JP_SIM_REINVESTMENT_SCORE_FLOOR", "600"))
-ALLOW_MONITOR = os.getenv("DAILY_JP_SIM_ALLOW_MONITOR", "true").strip().lower() == "true"
-TRADE_ONLY = os.getenv("DAILY_JP_SIM_TRADE_ONLY", "false").strip().lower() == "true"
+ALLOW_MONITOR = os.getenv("DAILY_JP_SIM_ALLOW_MONITOR", "false").strip().lower() == "true"
+TRADE_ONLY = os.getenv("DAILY_JP_SIM_TRADE_ONLY", "true").strip().lower() == "true"
 
 STOP_LOSS_PCT = float(os.getenv("DAILY_JP_SIM_STOP_LOSS_PCT", "0.05"))
 SCORE_EXIT_FLOOR = int(os.getenv("DAILY_JP_SIM_SCORE_EXIT_FLOOR", "420"))
 TIME_EXIT_DAYS = int(os.getenv("DAILY_JP_SIM_TIME_EXIT_DAYS", "5"))
 PROFIT_TAKE_PCT = float(os.getenv("DAILY_JP_SIM_PROFIT_TAKE_PCT", "0.18"))
-BENCHMARK_SYMBOL = os.getenv("DAILY_JP_SIM_BENCHMARK_SYMBOL", "1306.T")
+BENCHMARK_SYMBOLS = [x.strip() for x in os.getenv("DAILY_JP_SIM_BENCHMARK_SYMBOLS", "1306.T,1321.T,2516.T").split(",") if x.strip()]
+BENCHMARK_SYMBOL = BENCHMARK_SYMBOLS[0] if BENCHMARK_SYMBOLS else "1306.T"
 BENCHMARK_ABS_LIMIT_PCT = float(os.getenv("DAILY_JP_SIM_BENCHMARK_RETURN_ABS_LIMIT_PCT", "35"))
 
 POLICY_PRESETS = [
-    {"id": "default", "label": "Default", "rank_limit": 10, "score_floor": 500, "allow_monitor": True, "stop": 0.05, "time_exit": 5},
-    {"id": "top3", "label": "Top 3", "rank_limit": 3, "score_floor": 500, "allow_monitor": True, "stop": 0.05, "time_exit": 5},
-    {"id": "top5", "label": "Top 5", "rank_limit": 5, "score_floor": 500, "allow_monitor": True, "stop": 0.05, "time_exit": 5},
     {"id": "trade_only", "label": "Trade only", "rank_limit": 10, "score_floor": 500, "allow_monitor": False, "stop": 0.05, "time_exit": 5},
-    {"id": "score600", "label": "Score ≥600", "rank_limit": 10, "score_floor": 600, "allow_monitor": True, "stop": 0.05, "time_exit": 5},
-    {"id": "stop8", "label": "Stop -8%", "rank_limit": 10, "score_floor": 500, "allow_monitor": True, "stop": 0.08, "time_exit": 5},
 ]
 
 RISK_FLAGS = {
@@ -426,6 +422,8 @@ def run_simulation(
     equities: list[dict[str, Any]],
     benchmark_item: dict[str, Any] | None,
     policy: dict[str, Any],
+    selected_benchmark_symbol: str,
+    benchmark_selection: dict[str, Any],
     eval_dates: list[pd.Timestamp],
     snapshots_by_date: dict[str, list[dict[str, Any]]],
     dfs: dict[str, pd.DataFrame],
@@ -689,7 +687,9 @@ def run_simulation(
         ]
 
     benchmark_quality = {
-        "benchmark_symbol": BENCHMARK_SYMBOL,
+        "benchmark_symbol": selected_benchmark_symbol,
+        "benchmark_candidates": BENCHMARK_SYMBOLS,
+        "benchmark_selection": benchmark_selection,
         "abs_return_limit_pct": BENCHMARK_ABS_LIMIT_PCT,
         "status": "invalid" if benchmark_invalid else "valid",
         "message": (
@@ -761,6 +761,65 @@ def select_eval_dates(equities: list[dict[str, Any]], benchmark_item: dict[str, 
     return dates
 
 
+
+def find_price_item(prices: dict[str, Any], symbol: str) -> dict[str, Any] | None:
+    for item in (prices.get("market_pulse") or []) + (prices.get("equities") or []):
+        if item.get("symbol") == symbol or item.get("source_symbol") == symbol:
+            return item
+    return None
+
+
+def choose_benchmark_item(prices: dict[str, Any], eval_dates: list[pd.Timestamp]) -> tuple[dict[str, Any] | None, str, dict[str, Any]]:
+    """Choose the first benchmark whose cached price series passes sanity checks.
+
+    The simulation previously used only 1306.T. The cached 1306.T series can contain
+    adjustment breaks, so we fall back to 1321.T / 2516.T before suspending alpha.
+    """
+    checks: list[dict[str, Any]] = []
+    if not eval_dates:
+        return None, BENCHMARK_SYMBOL, {"status": "invalid", "checks": checks, "message": "No eval dates available for benchmark selection."}
+
+    for symbol in BENCHMARK_SYMBOLS:
+        item = find_price_item(prices, symbol)
+        if item is None:
+            checks.append({"symbol": symbol, "status": "missing"})
+            continue
+        df = bars_to_df_from_item(item)
+        if df.empty:
+            checks.append({"symbol": symbol, "status": "empty"})
+            continue
+        first_exec = next_trading_date(df, eval_dates[0])
+        last_exec = next_trading_date(df, eval_dates[-1]) or df.index[-1]
+        if first_exec is None or last_exec is None:
+            checks.append({"symbol": symbol, "status": "no_execution_window"})
+            continue
+        _, first_open = open_on_or_after(df, first_exec)
+        _, last_close = close_on_or_before(df, last_exec)
+        raw_ret = pct_return(first_open, last_close)
+        sane = raw_ret is not None and abs(raw_ret) <= BENCHMARK_ABS_LIMIT_PCT
+        checks.append({
+            "symbol": symbol,
+            "status": "valid" if sane else "invalid",
+            "first_execution_date": first_exec.strftime("%Y-%m-%d") if first_exec is not None else None,
+            "last_execution_date": last_exec.strftime("%Y-%m-%d") if last_exec is not None else None,
+            "window_return_pct": safe_round(raw_ret, 4),
+        })
+        if sane:
+            return item, symbol, {
+                "status": "valid",
+                "selected_symbol": symbol,
+                "checks": checks,
+                "message": f"Benchmark selected: {symbol}."
+            }
+
+    selected_symbol = BENCHMARK_SYMBOLS[0] if BENCHMARK_SYMBOLS else BENCHMARK_SYMBOL
+    return find_price_item(prices, selected_symbol), selected_symbol, {
+        "status": "invalid",
+        "selected_symbol": selected_symbol,
+        "checks": checks,
+        "message": "All benchmark candidates failed sanity checks. Strategy return remains valid; alpha is suspended."
+    }
+
 def main() -> int:
     print(f"ROOT={ROOT}")
     print(f"OUT_DIR={safe_relative(OUT_DIR)}")
@@ -772,15 +831,14 @@ def main() -> int:
     if not equities:
         raise RuntimeError("No equities in price JSON")
 
-    benchmark_item = None
-    for item in (prices.get("market_pulse") or []) + equities:
-        if item.get("symbol") == BENCHMARK_SYMBOL or item.get("source_symbol") == BENCHMARK_SYMBOL:
-            benchmark_item = item
-            break
-
-    eval_dates = select_eval_dates(equities, benchmark_item)
+    # Pick eval dates from TOPIX if available first, then select a sane benchmark for alpha.
+    base_benchmark_item = find_price_item(prices, BENCHMARK_SYMBOL)
+    eval_dates = select_eval_dates(equities, base_benchmark_item)
     if not eval_dates:
         raise RuntimeError("No evaluation dates available for Daily JP simulation")
+
+    benchmark_item, selected_benchmark_symbol, benchmark_selection = choose_benchmark_item(prices, eval_dates)
+    print(f"Selected benchmark={selected_benchmark_symbol} status={benchmark_selection.get('status')}")
 
     dfs = {item["symbol"]: bars_to_df_from_item(item) for item in equities}
     bdf = bars_to_df_from_item(benchmark_item) if benchmark_item else pd.DataFrame()
@@ -793,30 +851,19 @@ def main() -> int:
         if i % 25 == 0 or i == len(eval_dates):
             print(f"  snapshots {i}/{len(eval_dates)}")
 
-    default_policy = dict(POLICY_PRESETS[0])
-    default_policy.update({
+    default_policy = {
+        "id": "trade_only",
+        "label": "Trade only",
         "rank_limit": ENTRY_RANK_LIMIT,
         "score_floor": ENTRY_SCORE_FLOOR,
-        "allow_monitor": ALLOW_MONITOR and not TRADE_ONLY,
+        "allow_monitor": False,
         "stop": STOP_LOSS_PCT,
         "time_exit": TIME_EXIT_DAYS,
-    })
+    }
 
-    default_result = run_simulation(equities, benchmark_item, default_policy, eval_dates, snapshots_by_date, dfs, bdf)
+    default_result = run_simulation(equities, benchmark_item, default_policy, selected_benchmark_symbol, benchmark_selection, eval_dates, snapshots_by_date, dfs, bdf)
 
     comparisons = []
-    for p in POLICY_PRESETS:
-        result = run_simulation(equities, benchmark_item, p, eval_dates, snapshots_by_date, dfs, bdf)
-        comparisons.append({
-            "policy_id": p["id"],
-            "label": p["label"],
-            "strategy_return_pct": result["summary"].get("strategy_return_pct"),
-            "alpha_pct": result["summary"].get("alpha_pct"),
-            "max_drawdown_pct": result["summary"].get("max_drawdown_pct"),
-            "closed_trades_count": result["summary"].get("closed_trades_count"),
-            "win_rate_pct": result["closed_trade_summary"].get("win_rate_pct"),
-            "portfolio_equity_jpy": result["summary"].get("portfolio_equity_jpy"),
-        })
 
     generated_at = iso_now()
     asof = default_result["summary"].get("date_end")
@@ -849,7 +896,7 @@ def main() -> int:
         "methodology": {
             "entry": "Signal date close, next trading day open execution.",
             "mark_to_market": "Execution date close. New entries are never marked on pre-entry dates.",
-            "benchmark": f"{BENCHMARK_SYMBOL} initialized at the same first execution open.",
+            "benchmark": f"{selected_benchmark_symbol} initialized at the same first execution open. Fallback candidates are recorded in benchmark_quality.",
             "controls": "JP round lots, slippage, cash accounting, benchmark sanity guard, no API calls during replay.",
         },
     }
