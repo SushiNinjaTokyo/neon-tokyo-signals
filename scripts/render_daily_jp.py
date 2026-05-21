@@ -34,6 +34,10 @@ OUT_DIR = Path(os.getenv("OUT_DIR", str(ROOT / "site")))
 OUT_DIR = (ROOT / OUT_DIR).resolve() if not OUT_DIR.is_absolute() else OUT_DIR.resolve()
 DAILY_JSON = Path(os.getenv("DAILY_JSON", str(OUT_DIR / "data" / "daily-jp" / "latest.json")))
 DAILY_JSON = (ROOT / DAILY_JSON).resolve() if not DAILY_JSON.is_absolute() else DAILY_JSON.resolve()
+PRICES_JSON = Path(os.getenv("PRICES_JSON", str(OUT_DIR / "data" / "prices-jp" / "latest.json")))
+PRICES_JSON = (ROOT / PRICES_JSON).resolve() if not PRICES_JSON.is_absolute() else PRICES_JSON.resolve()
+DAILY_BACKTEST_JSON = Path(os.getenv("DAILY_BACKTEST_JSON", str(OUT_DIR / "data" / "backtest-daily-jp" / "latest.json")))
+DAILY_BACKTEST_JSON = (ROOT / DAILY_BACKTEST_JSON).resolve() if not DAILY_BACKTEST_JSON.is_absolute() else DAILY_BACKTEST_JSON.resolve()
 TEMPLATE_DIR = ROOT / "templates"
 TEMPLATE_HTML = "daily_jp.html.j2"
 TEMPLATE_CSS = TEMPLATE_DIR / "daily_jp.css"
@@ -150,6 +154,15 @@ def read_json(path: Path) -> dict[str, Any]:
     if not path.exists():
         raise FileNotFoundError(f"Daily JSON not found: {safe_relative(path)}")
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def read_json_optional(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
 
 
 def as_float(value: Any) -> float | None:
@@ -565,8 +578,163 @@ def build_bar_data(main_items: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def adjusted_close_series(bars: list[dict[str, Any]]) -> list[tuple[str, float]]:
+    series: list[tuple[str, float]] = []
+    factor = 1.0
+    prev_adj: float | None = None
+    for bar in bars:
+        if not isinstance(bar, dict):
+            continue
+        date = str(bar.get("date") or "")
+        close = as_float(bar.get("close"))
+        if not date or close is None or close <= 0:
+            continue
+        adj = close * factor
+        if prev_adj and prev_adj > 0:
+            ratio = adj / prev_adj
+            if ratio < 0.40 or ratio > 2.50:
+                # Display-only split/anomaly continuity guard. It does not affect scoring.
+                factor *= prev_adj / adj
+                adj = close * factor
+        series.append((date, adj))
+        prev_adj = adj
+    return series
+
+
+def weekly_points(series: list[tuple[str, float]], max_weeks: int = 52) -> list[tuple[str, float]]:
+    if not series:
+        return []
+    # Use the last close in each ISO week. This avoids a pandas dependency in render.
+    weekly: dict[tuple[int, int], tuple[str, float]] = {}
+    for date, close in series:
+        try:
+            dt = datetime.fromisoformat(date[:10])
+            key = (dt.isocalendar().year, dt.isocalendar().week)
+            weekly[key] = (date, close)
+        except Exception:
+            continue
+    values = list(weekly.values())[-max_weeks:]
+    return values
+
+
+def svg_polyline_points(values: list[tuple[str, float]], width: int = 100, height: int = 44, pad: int = 4) -> str:
+    if not values:
+        return ""
+    closes = [v for _, v in values if v is not None and math.isfinite(v)]
+    if not closes:
+        return ""
+    lo, hi = min(closes), max(closes)
+    if hi == lo:
+        hi = lo + 1.0
+    n = max(1, len(closes) - 1)
+    pts = []
+    for i, v in enumerate(closes):
+        x = (i / n) * width
+        y = pad + (1 - ((v - lo) / (hi - lo))) * (height - pad * 2)
+        pts.append(f"{x:.2f},{y:.2f}")
+    return " ".join(pts)
+
+
+def build_price_context(prices_payload: dict[str, Any]) -> dict[str, Any]:
+    items = prices_payload.get("items") or []
+    pulse_items = prices_payload.get("market_pulse") or []
+    current_close: dict[str, float] = {}
+    latest_date = None
+    by_symbol: dict[str, dict[str, Any]] = {}
+    for item in items + pulse_items:
+        if not isinstance(item, dict):
+            continue
+        symbol = str(item.get("symbol") or "")
+        if not symbol:
+            continue
+        by_symbol[symbol] = item
+        metrics = item.get("metrics") if isinstance(item.get("metrics"), dict) else {}
+        close = as_float(metrics.get("latest_close") or item.get("latest_close"))
+        if close is None:
+            bars = item.get("bars") or []
+            if bars and isinstance(bars[-1], dict):
+                close = as_float(bars[-1].get("close"))
+        if close is not None:
+            current_close[symbol] = close
+        date = metrics.get("latest_date") or item.get("latest_date") or item.get("date_end")
+        if date and (latest_date is None or str(date) > str(latest_date)):
+            latest_date = str(date)
+    return {"by_symbol": by_symbol, "current_close": current_close, "latest_date": latest_date}
+
+
+def build_market_pulse_charts(payload: dict[str, Any], prices_payload: dict[str, Any]) -> list[dict[str, Any]]:
+    price_ctx = build_price_context(prices_payload)
+    by_symbol = price_ctx["by_symbol"]
+    pulse = normalize_market_pulse(payload)
+    out: list[dict[str, Any]] = []
+    for item in pulse:
+        symbol = str(item.get("symbol") or "")
+        price_item = by_symbol.get(symbol) or {}
+        bars = price_item.get("bars") if isinstance(price_item.get("bars"), list) else []
+        weekly = weekly_points(adjusted_close_series(bars), 52)
+        perf = None
+        if len(weekly) >= 2 and weekly[0][1] > 0:
+            perf = (weekly[-1][1] / weekly[0][1] - 1.0) * 100.0
+        out.append({
+            **item,
+            "points": svg_polyline_points(weekly),
+            "perf_1y_pct": perf,
+            "perf_1y_display": fmt_pct(perf),
+            "perf_1y_class": css_class_for_return(perf),
+            "first_date": weekly[0][0] if weekly else None,
+            "last_date": weekly[-1][0] if weekly else None,
+        })
+    return out
+
+
+def build_recent_trade_signals(backtest_payload: dict[str, Any], prices_payload: dict[str, Any], limit: int = 10) -> list[dict[str, Any]]:
+    items = backtest_payload.get("items") or []
+    if not isinstance(items, list):
+        return []
+    price_ctx = build_price_context(prices_payload)
+    current_close = price_ctx["current_close"]
+    rows: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for item in sorted((x for x in items if isinstance(x, dict)), key=lambda x: str(x.get("eval_date") or ""), reverse=True):
+        if str(item.get("triage") or "") != "Trade":
+            continue
+        symbol = str(item.get("symbol") or "")
+        eval_date = str(item.get("eval_date") or "")
+        if not symbol or not eval_date:
+            continue
+        key = (eval_date, symbol)
+        if key in seen:
+            continue
+        seen.add(key)
+        entry = as_float(item.get("entry_close") or item.get("latest_close"))
+        now_close = current_close.get(symbol)
+        current_perf = None
+        if entry and now_close:
+            current_perf = (now_close / entry - 1.0) * 100.0
+        rows.append({
+            "eval_date": eval_date,
+            "symbol": symbol,
+            "name": item.get("name") or "",
+            "rank": int(as_float(item.get("rank")) or 0),
+            "score_pts": int(round(as_float(item.get("score_pts")) or 0)),
+            "classification": item.get("classification") or item.get("archetype") or "Trade",
+            "return_1d_pct": item.get("return_1d_pct"),
+            "return_5d_pct": item.get("return_5d_pct"),
+            "current_perf_pct": current_perf,
+            "current_perf_class": css_class_for_return(current_perf),
+            "return_1d_pct_class": css_class_for_return(item.get("return_1d_pct")),
+            "return_5d_pct_class": css_class_for_return(item.get("return_5d_pct")),
+            "liquidity_band": item.get("liquidity_band") or "—",
+        })
+        if len(rows) >= limit:
+            break
+    return rows
+
+
 def render() -> None:
     payload = read_json(DAILY_JSON)
+    prices_payload = read_json_optional(PRICES_JSON)
+    backtest_payload = read_json_optional(DAILY_BACKTEST_JSON)
     env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)), autoescape=select_autoescape(["html", "xml"]))
     env.filters["fmt_pct"] = fmt_pct
     env.filters["fmt_score"] = fmt_score
@@ -610,7 +778,9 @@ def render() -> None:
         favored_items=favored_items,
         high_risk_items=high_risk_items,
         medium_risk_items=medium_risk_items,
-        market_pulse=normalize_market_pulse(payload),
+        market_pulse=build_market_pulse_charts(payload, prices_payload),
+        recent_trade_signals=build_recent_trade_signals(backtest_payload, prices_payload, limit=10),
+        prices_latest_date=build_price_context(prices_payload).get("latest_date"),
         setup_quality=setup_quality,
         bar_data=bar_data,
         summary=payload.get("summary") or {},
@@ -641,6 +811,8 @@ def main() -> int:
     print(f"ROOT={ROOT}")
     print(f"OUT_DIR={safe_relative(OUT_DIR)}")
     print(f"DAILY_JSON={safe_relative(DAILY_JSON)}")
+    print(f"PRICES_JSON={safe_relative(PRICES_JSON)}")
+    print(f"DAILY_BACKTEST_JSON={safe_relative(DAILY_BACKTEST_JSON)}")
     render()
     return 0
 
