@@ -48,6 +48,10 @@ jobs:
       PRICES_JSON: site/data/prices-jp/latest.json
       DAILY_SIM_JSON: site/data/japan/daily/simulation/latest.json
       DAILY_JP_SIM_DAYS: ${{ github.event.inputs.sim_days || '220' }}
+      DAILY_JP_SIM_TRADE_ONLY: "true"
+      DAILY_JP_SIM_ALLOW_MONITOR: "false"
+      DAILY_JP_SIM_ENTRY_SCORE_FLOOR: "500"
+      DAILY_JP_SIM_BENCHMARK_SYMBOLS: "1306.T,1321.T,2516.T"
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
@@ -113,8 +117,9 @@ jobs:
           assert isinstance(data.get("summary"), dict), "summary missing"
           assert isinstance(data.get("equity_curve"), list), "equity_curve missing"
           assert isinstance(data.get("closed_trades"), list), "closed_trades missing"
-          assert isinstance(data.get("policy_comparison"), list), "policy_comparison missing"
           assert data.get("benchmark_quality"), "benchmark_quality missing"
+          policy = data.get("policy") or {}
+          assert policy.get("allow_monitor") is False, "Daily simulation must be trade-only"
 
           for point in data.get("equity_curve") or []:
             assert point.get("date") == point.get("execution_date"), "equity date must equal execution_date"
@@ -148,7 +153,7 @@ jobs:
           css = Path("site/assets/daily_simulation_jp.css").read_text(encoding="utf-8")
           assert len(html) > 1000, "simulation HTML too small"
           assert len(css) > 1000, "simulation CSS too small"
-          for token in ["<!doctype html>", "Daily JP Simulation", "EQUITY CURVE", "POLICY MATRIX"]:
+          for token in ["<!doctype html>", "Daily JP Trade Simulation", "EQUITY CURVE", "TRADE QUALITY"]:
               assert token in html, f"missing skeleton token: {token}"
           for token in ["{{", "{%", "%}", "Traceback", "UndefinedError"]:
               assert token not in html, f"unrendered/error token: {token}"
