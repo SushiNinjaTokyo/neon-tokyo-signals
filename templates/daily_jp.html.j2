@@ -35,10 +35,7 @@
       <div class="hero-copy">
         <div class="kicker"><span class="live-dot"></span> DAILY JP DECISION BOARD · TOP {{ main_rank_limit }}</div>
         <h1>Five-second decision.<span>Zero signal ambiguity.</span></h1>
-        <p>
-          Top-ranked Japanese equity signals after the Tokyo close. Trade is the only actionable lane;
-          Monitor Only means wait for next-day confirmation; Blocked means strength exists but the model is not ready.
-        </p>
+        
         <div class="verdict-card verdict-{{ setup_quality.verdict_tone }}">
           <div><span>Today’s model verdict</span><strong>{{ setup_quality.verdict }}</strong></div>
           <p>{{ setup_quality.verdict_text }}</p>
@@ -225,12 +222,9 @@
       </div>
     </section>
 
-    <section class="method-section">
-      <div class="method-card"><div class="kicker">METHODOLOGY</div><h2>Daily Event Score v2</h2><p>This page is a short-term decision board, not a generic momentum ranking. It rewards volume/liquidity shock, compression release, breakout setup, relative strength versus TOPIX and entry timing, while blocking noisy volume, distribution and exhaustion patterns.</p><div class="method-grid"><div><span>Volume / Liquidity</span><strong>24%</strong></div><div><span>Compression Release</span><strong>22%</strong></div><div><span>Breakout Setup</span><strong>20%</strong></div><div><span>Relative Strength</span><strong>16%</strong></div><div><span>Entry Timing</span><strong>15%</strong></div><div><span>Market Regime</span><strong>3%</strong></div></div></div>
-      <div class="method-card warning"><div class="kicker">HOW TO READ</div><h2>Blocked can be useful.</h2><p>A high-score Blocked name can be the best watchlist for tomorrow. It is not a buy signal. Trade is the only actionable lane; Monitor Only requires next-day confirmation.</p></div>
-    </section>
+    
 
-    <section class="notes"><strong>Not investment advice.</strong><span>Daily v2 excludes news, disclosures and fundamentals. It is a price/volume/timing signal layer only. Small-cap and low-liquidity stocks can move violently.</span></section>
+    
     <footer class="footer"><span>Informational only. Not investment advice.</span><nav><a href="/">Home</a><a href="/japan/daily/backtest/">Backtest</a><a href="/privacy/">Privacy</a><a href="/disclaimer/">Disclaimer</a></nav></footer>
   </main>
 </div>
