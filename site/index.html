@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description" content="Neon Tokyo Signals turns Japan equity momentum, breakouts, liquidity shocks and themes into readable signals for global investors after the Tokyo close."/>
   <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/index.css?v=20260515-tokyo-pulse-light"/>
+  <link rel="stylesheet" href="/assets/index.css?v=20260521-market-pulse-real"/>
 </head>
 
 <body>
@@ -33,8 +33,8 @@
           <nav class="top-nav" aria-label="Primary navigation">
             <a href="/japan/daily/">Daily</a>
             <a href="/japan/weekly/">Weekly</a>
-            <a href="#themes">Themes</a>
-            <a href="#reaction">Reaction</a>
+            <a href="/japan/daily/simulation/">Simulation</a>
+            <a href="/japan/weekly-backtest/">Research</a>
           </nav>
         </div>
 
@@ -58,16 +58,21 @@
 
         <div class="pulse-chart-wrap">
           <svg class="pulse-chart" viewBox="0 0 1000 360" preserveAspectRatio="none" aria-hidden="true">
-            <path class="pulse-path pulse-path-0" data-label="NIKKEI" data-tone="nikkei" data-points="34,38,36,42,48,46,57,61,58,66,71,69,78,82"></path>
-            <path class="pulse-path pulse-path-1" data-label="TOPIX" data-tone="topix" data-points="42,41,45,47,46,51,55,53,58,61,60,65,68,72"></path>
-            <path class="pulse-path pulse-path-2" data-label="GROWTH" data-tone="growth" data-points="28,35,31,44,39,52,47,63,55,68,60,74,66,80"></path>
+            
+            <path class="pulse-path pulse-path-0" data-label="NIKKEI" data-tone="nikkei" data-perf="+61.2%" data-perf-class="ret-up" data-symbol="1321.T" data-points="18,20,20,20,21,26,25,23,23,28,26,29,33,31,31,32,36,37,38,40,46,45,47,57,52,52,48,52,52,53,50,53,52,56,62,61,60,63,70,69,75,66,61,60,60,61,71,75,78,77,86,83,79"></path>
+            
+            <path class="pulse-path pulse-path-1" data-label="TOPIX" data-tone="topix" data-perf="+40.7%" data-perf-class="ret-up" data-symbol="1306.T" data-points="18,22,20,19,20,24,23,19,20,26,27,31,35,35,34,35,38,37,40,38,42,41,45,50,48,51,48,52,51,55,53,55,54,60,69,67,63,71,78,77,84,72,67,66,68,73,79,80,77,78,84,86,82"></path>
+            
+            <path class="pulse-path pulse-path-2" data-label="GROWTH" data-tone="growth" data-perf="+11.0%" data-perf-class="ret-up" data-symbol="2516.T" data-points="40,50,51,54,54,46,38,51,48,58,58,64,67,65,64,59,57,62,57,46,52,38,46,41,34,38,26,33,21,19,18,27,24,38,48,46,37,36,41,51,62,62,56,51,47,47,59,70,62,63,86,73,70"></path>
+            
             <path class="pulse-trace" d=""></path>
           </svg>
         </div>
 
         <div class="pulse-corner-meta">
           <span id="pulseLabel">NIKKEI</span>
-          <strong>JP MARKET PULSE</strong>
+          <strong id="pulsePerf" class="ret-flat">1Y —</strong>
+          <em id="pulseSymbol">JP MARKET PULSE</em>
         </div>
       </div>
     </section>
@@ -75,72 +80,202 @@
     <section class="ticker-strip" aria-label="Signal watch ticker">
       <div class="ticker-noise"></div>
       <div class="ticker-track">
-        <span><b>SIGNAL WATCH</b></span>
-        <span><b>8035.T</b> Tokyo Electron</span>
-        <span><b>6857.T</b> Advantest</span>
-        <span><b>6146.T</b> DISCO</span>
-        <span><b>6920.T</b> Lasertec</span>
-        <span><b>5803.T</b> Fujikura</span>
-        <span><b>7011.T</b> Mitsubishi Heavy Industries</span>
-        <span><b>4425.T</b> Kudan</span>
-        <span><b>135A.T</b> VRAIN Solution</span>
-        <span><b>3993.T</b> PKSHA Technology</span>
-        <span><b>5582.T</b> GRID</span>
-
-        <span><b>SIGNAL WATCH</b></span>
-        <span><b>8035.T</b> Tokyo Electron</span>
-        <span><b>6857.T</b> Advantest</span>
-        <span><b>6146.T</b> DISCO</span>
-        <span><b>6920.T</b> Lasertec</span>
-        <span><b>5803.T</b> Fujikura</span>
-        <span><b>7011.T</b> Mitsubishi Heavy Industries</span>
-        <span><b>4425.T</b> Kudan</span>
-        <span><b>135A.T</b> VRAIN Solution</span>
-        <span><b>3993.T</b> PKSHA Technology</span>
-        <span><b>5582.T</b> GRID</span>
+        
+        <span class="ticker-chip"><b>SIGNAL WATCH</b></span>
+        
+        <span class="ticker-chip">
+          <b>6758.T</b>
+          <small>Sony Group</small>
+          <i class="ret-down">-3.1%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>6762.T</b>
+          <small>TDK</small>
+          <i class="ret-down">-1.4%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>6701.T</b>
+          <small>NEC</small>
+          <i class="ret-down">-3.7%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>6501.T</b>
+          <small>Hitachi</small>
+          <i class="ret-down">-0.7%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>5574.T</b>
+          <small>ABEJA</small>
+          <i class="ret-down">-7.0%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>7974.T</b>
+          <small>Nintendo</small>
+          <i class="ret-down">-0.3%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>6981.T</b>
+          <small>Murata Manufacturing</small>
+          <i class="ret-down">-0.3%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>135A.T</b>
+          <small>VRAIN Solution</small>
+          <i class="ret-down">-8.3%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>6954.T</b>
+          <small>FANUC</small>
+          <i class="ret-down">-4.4%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>6503.T</b>
+          <small>Mitsubishi Electric</small>
+          <i class="ret-down">-4.5%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>7011.T</b>
+          <small>Mitsubishi Heavy Industries</small>
+          <i class="ret-down">-2.5%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>5572.T</b>
+          <small>Ridge-i</small>
+          <i class="ret-down">-6.1%</i>
+        </span>
+        
+        
+        <span class="ticker-chip"><b>SIGNAL WATCH</b></span>
+        
+        <span class="ticker-chip">
+          <b>6758.T</b>
+          <small>Sony Group</small>
+          <i class="ret-down">-3.1%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>6762.T</b>
+          <small>TDK</small>
+          <i class="ret-down">-1.4%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>6701.T</b>
+          <small>NEC</small>
+          <i class="ret-down">-3.7%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>6501.T</b>
+          <small>Hitachi</small>
+          <i class="ret-down">-0.7%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>5574.T</b>
+          <small>ABEJA</small>
+          <i class="ret-down">-7.0%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>7974.T</b>
+          <small>Nintendo</small>
+          <i class="ret-down">-0.3%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>6981.T</b>
+          <small>Murata Manufacturing</small>
+          <i class="ret-down">-0.3%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>135A.T</b>
+          <small>VRAIN Solution</small>
+          <i class="ret-down">-8.3%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>6954.T</b>
+          <small>FANUC</small>
+          <i class="ret-down">-4.4%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>6503.T</b>
+          <small>Mitsubishi Electric</small>
+          <i class="ret-down">-4.5%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>7011.T</b>
+          <small>Mitsubishi Heavy Industries</small>
+          <i class="ret-down">-2.5%</i>
+        </span>
+        
+        <span class="ticker-chip">
+          <b>5572.T</b>
+          <small>Ridge-i</small>
+          <i class="ret-down">-6.1%</i>
+        </span>
+        
+        
       </div>
     </section>
 
-    <section class="nav-grid" aria-label="Signal mode navigation">
-      <a class="nav-card primary" href="/japan/daily/">
-        <div class="nav-visual">
-          <span class="nav-no">01</span>
+    <section class="signal-hub" aria-label="Signal navigation hub">
+      <div class="hub-heading">
+        <div>
+          <span class="hub-kicker">SIGNAL ACCESS</span>
+          <h2>Choose the time frame.</h2>
         </div>
-        <div class="nav-kicker">Tokyo Close</div>
-        <h2>Daily Signals</h2>
-        <p>Momentum board after the Tokyo close.</p>
-        <div class="nav-meta">Volume Shock / Breakout / RS</div>
-      </a>
+        <p>Daily is for short-term execution. Weekly is for trend discovery.</p>
+      </div>
 
-      <a class="nav-card" href="/japan/weekly/">
-        <div class="nav-visual">
-          <span class="nav-no">02</span>
-        </div>
-        <div class="nav-kicker">Trend Layer</div>
-        <h2>Weekly Board</h2>
-        <p>Trend candidates with staying power.</p>
-        <div class="nav-meta">Compression / Base / Theme</div>
-      </a>
+      <div class="hub-grid">
+        <details class="hub-card daily" open>
+          <summary>
+            <span class="hub-no">01</span>
+            <span>
+              <em>Tokyo Close</em>
+              <strong>Daily</strong>
+            </span>
+            <i>Open</i>
+          </summary>
+          <div class="hub-links">
+            <a href="/japan/daily/"><span>Signal</span><strong>Daily Symbol</strong></a>
+            <a href="/japan/daily/backtest/"><span>Research</span><strong>Backtest</strong></a>
+            <a href="/japan/daily/simulation/"><span>Capital replay</span><strong>Simulation</strong></a>
+          </div>
+        </details>
 
-      <a class="nav-card accent" href="#themes" id="themes">
-        <div class="nav-visual">
-          <span class="nav-no">03</span>
-        </div>
-        <div class="nav-kicker">Japan Themes</div>
-        <h2>Theme Radar</h2>
-        <p>Semis, defense, robotics, AI and infrastructure.</p>
-        <div class="nav-meta">Core / Discovery / Watch</div>
-      </a>
-
-      <a class="nav-card" href="#reaction" id="reaction">
-        <div class="nav-visual">
-          <span class="nav-no">04</span>
-        </div>
-        <div class="nav-kicker">Crowd Pulse</div>
-        <h2>Ticker Reaction</h2>
-        <p>Controlled reactions without open-chat noise.</p>
-        <div class="nav-meta">Bullish / Watching / Extended</div>
-      </a>
+        <details class="hub-card weekly">
+          <summary>
+            <span class="hub-no">02</span>
+            <span>
+              <em>Trend Layer</em>
+              <strong>Weekly</strong>
+            </span>
+            <i>Open</i>
+          </summary>
+          <div class="hub-links">
+            <a href="/japan/weekly/"><span>Signal</span><strong>Weekly Symbol</strong></a>
+            <a href="/japan/weekly-backtest/"><span>Research</span><strong>Backtest</strong></a>
+            <a href="/japan/weekly-simulation/"><span>Capital replay</span><strong>Simulation</strong></a>
+          </div>
+        </details>
+      </div>
     </section>
 
     <section class="theme-pills" aria-label="Featured themes">
@@ -154,6 +289,7 @@
 
     <footer class="footer">
       <span>Informational only. Not investment advice.</span>
+      <span>Latest prices: 2026-05-20</span>
       <nav aria-label="Footer navigation">
         <a href="/disclaimer/">Disclaimer</a>
         <a href="/privacy/">Privacy</a>
@@ -188,6 +324,8 @@ function pathFromPoints(points, width = 1000, height = 360) {
 const stage = document.getElementById("pulseStage");
 const bgWord = document.getElementById("pulseBgWord");
 const label = document.getElementById("pulseLabel");
+const perf = document.getElementById("pulsePerf");
+const symbol = document.getElementById("pulseSymbol");
 const paths = Array.from(document.querySelectorAll(".pulse-path"));
 const trace = document.querySelector(".pulse-trace");
 
@@ -203,7 +341,10 @@ const pulseData = paths.map((path) => {
     points,
     smooth,
     label: path.getAttribute("data-label") || "TOKYO",
-    tone: path.getAttribute("data-tone") || "nikkei"
+    tone: path.getAttribute("data-tone") || "nikkei",
+    performance: path.getAttribute("data-perf") || "—",
+    performanceClass: path.getAttribute("data-perf-class") || "ret-flat",
+    symbol: path.getAttribute("data-symbol") || "JP MARKET"
   };
 }).filter(d => d.points.length >= 2);
 
@@ -225,8 +366,11 @@ function activatePulse(i) {
   bgWord.textContent = item.label;
   bgWord.setAttribute("data-text", item.label);
 
-  if (label) {
-    label.textContent = item.label;
+  if (label) label.textContent = item.label;
+  if (symbol) symbol.textContent = `${item.symbol} · 1Y PERFORMANCE`;
+  if (perf) {
+    perf.textContent = item.performance;
+    perf.className = item.performanceClass;
   }
 
   paths.forEach(p => p.classList.remove("active"));
@@ -246,17 +390,11 @@ setInterval(() => {
 if (bgWord) {
   function triggerPulseNoise() {
     bgWord.classList.add("is-noisy");
-
     const noiseDuration = 70 + Math.random() * 150;
-
-    setTimeout(() => {
-      bgWord.classList.remove("is-noisy");
-    }, noiseDuration);
-
+    setTimeout(() => bgWord.classList.remove("is-noisy"), noiseDuration);
     const nextNoise = 1800 + Math.random() * 4200;
     setTimeout(triggerPulseNoise, nextNoise);
   }
-
   setTimeout(triggerPulseNoise, 1200 + Math.random() * 1600);
 }
 </script>

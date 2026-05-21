@@ -1107,3 +1107,318 @@ button{
     transition-duration: .001ms !important;
   }
 }
+
+/* === 2026-05-21 real-market pulse + signal hub refinement === */
+.pulse-trace{
+  animation-duration: .36s;
+}
+
+.pulse-corner-meta{
+  min-width: 230px;
+  padding: 14px 16px;
+  border: 1px solid rgba(148,163,184,.13);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(125,249,255,.10), transparent 46%),
+    rgba(5,7,17,.44);
+  backdrop-filter: blur(10px);
+}
+
+.pulse-corner-meta strong{
+  display: block;
+  margin-top: 2px;
+  font-size: clamp(18px,2.6vw,34px);
+  line-height: 1;
+  letter-spacing: -.06em;
+}
+
+.pulse-corner-meta em{
+  color: rgba(184,199,222,.82);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 950;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.ret-up{
+  color: var(--cyan)!important;
+  text-shadow: 0 0 10px rgba(125,249,255,.42);
+}
+
+.ret-down{
+  color: var(--red)!important;
+  text-shadow: 0 0 10px rgba(255,107,138,.30);
+}
+
+.ret-flat{
+  color: var(--soft)!important;
+}
+
+.ticker-chip{
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ticker-chip small{
+  color: rgba(184,199,222,.74);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: .04em;
+  text-transform: none;
+}
+
+.ticker-chip i{
+  min-width: 48px;
+  text-align: right;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 950;
+  letter-spacing: .06em;
+}
+
+.signal-hub{
+  margin-top: 28px;
+  padding: 22px;
+  border: 1px solid rgba(148,163,184,.14);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 14% 0%, rgba(125,249,255,.10), transparent 36%),
+    radial-gradient(circle at 86% 100%, rgba(255,79,216,.08), transparent 34%),
+    rgba(7,10,18,.50);
+  box-shadow: 0 18px 52px rgba(0,0,0,.24);
+}
+
+.hub-heading{
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.hub-kicker{
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.hub-heading h2{
+  margin: 8px 0 0;
+  color: #fff;
+  font-size: clamp(26px,3vw,42px);
+  line-height: 1;
+  letter-spacing: -.07em;
+}
+
+.hub-heading p{
+  max-width: 420px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: right;
+}
+
+.hub-grid{
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 14px;
+}
+
+.hub-card{
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(148,163,184,.16);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(16,25,48,.86), rgba(8,13,25,.76));
+  box-shadow: 0 16px 44px rgba(0,0,0,.22);
+}
+
+.hub-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity:.72;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(125,249,255,.11), transparent 36%),
+    linear-gradient(120deg, transparent, rgba(255,255,255,.025), transparent);
+}
+
+.hub-card.weekly::before{
+  background:
+    radial-gradient(circle at 18% 0%, rgba(183,121,255,.12), transparent 36%),
+    linear-gradient(120deg, transparent, rgba(255,255,255,.025), transparent);
+}
+
+.hub-card summary{
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 46px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.hub-card summary::-webkit-details-marker{
+  display:none;
+}
+
+.hub-no{
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(125,249,255,.30);
+  border-radius: 16px;
+  color: var(--cyan);
+  background: rgba(125,249,255,.06);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.hub-card.weekly .hub-no{
+  border-color: rgba(183,121,255,.30);
+  color: var(--violet);
+  background: rgba(183,121,255,.06);
+}
+
+.hub-card summary em{
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 950;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.hub-card summary strong{
+  display: block;
+  margin-top: 4px;
+  color: #fff;
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -.06em;
+}
+
+.hub-card summary i{
+  padding: 7px 9px;
+  border: 1px solid rgba(148,163,184,.16);
+  border-radius: 999px;
+  color: var(--soft);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 950;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+}
+
+.hub-card[open] summary i{
+  border-color: rgba(93,255,177,.24);
+  color: var(--green);
+  background: rgba(93,255,177,.05);
+}
+
+.hub-links{
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 8px;
+  padding: 0 20px 20px;
+}
+
+.hub-links a{
+  min-height: 82px;
+  padding: 14px;
+  border: 1px solid rgba(148,163,184,.12);
+  border-radius: 18px;
+  background: rgba(255,255,255,.025);
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.hub-links a:hover{
+  transform: translateY(-2px);
+  border-color: rgba(125,249,255,.28);
+  background: rgba(125,249,255,.055);
+}
+
+.hub-card.weekly .hub-links a:hover{
+  border-color: rgba(183,121,255,.30);
+  background: rgba(183,121,255,.055);
+}
+
+.hub-links span{
+  display:block;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.hub-links strong{
+  display:block;
+  margin-top: 8px;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.1;
+  letter-spacing: -.035em;
+}
+
+@media (max-width: 980px){
+  .hub-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .hub-heading{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .hub-heading p{
+    text-align:left;
+  }
+}
+
+@media (max-width: 760px){
+  .pulse-corner-meta{
+    display: grid;
+    right: 18px;
+    bottom: 112px;
+    min-width: 168px;
+    padding: 11px 12px;
+  }
+
+  .pulse-corner-meta span{
+    font-size: 24px;
+  }
+
+  .pulse-corner-meta strong{
+    font-size: 18px;
+  }
+
+  .pulse-corner-meta em{
+    font-size: 8px;
+  }
+
+  .hub-links{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px){
+  .ticker-chip small{
+    display:none;
+  }
+}
