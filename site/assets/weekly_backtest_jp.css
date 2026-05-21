@@ -18,3 +18,290 @@
 .coverage-card em{display:block;margin-top:8px;color:var(--muted);font-size:10px;font-style:normal;line-height:1.35}
 @media(max-width:1000px){.coverage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.coverage-grid{grid-template-columns:1fr}}
+
+
+/* === NTS Premium Signal UI v4: minimal labels / animated neon charts === */
+:root{
+  --nts-bg:#040611;
+  --nts-panel:rgba(9,15,30,.72);
+  --nts-panel-strong:rgba(13,22,42,.88);
+  --nts-line:rgba(125,249,255,.16);
+  --nts-text:#eef6ff;
+  --nts-soft:#9fb2cf;
+  --nts-cyan:#7df9ff;
+  --nts-blue:#53b7ff;
+  --nts-green:#5dffb1;
+  --nts-red:#ff5576;
+  --nts-pink:#ff4fd8;
+  --nts-violet:#b779ff;
+  --nts-amber:#ffd166;
+}
+
+body{
+  background:
+    radial-gradient(circle at 8% 8%,rgba(125,249,255,.14),transparent 28%),
+    radial-gradient(circle at 90% 3%,rgba(255,79,216,.12),transparent 28%),
+    linear-gradient(180deg,#040611 0%,#071120 52%,#03050b 100%) !important;
+}
+
+.header,.topbar{
+  border-bottom:1px solid rgba(125,249,255,.10);
+  padding-bottom:14px;
+}
+
+.nav a,.topbar nav a{
+  border-color:rgba(125,249,255,.12)!important;
+  background:rgba(255,255,255,.025)!important;
+  transition:transform .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease;
+}
+.nav a:hover,.topbar nav a:hover,.nav a.active,.topbar nav a.active{
+  transform:translateY(-1px);
+  border-color:rgba(125,249,255,.42)!important;
+  background:rgba(125,249,255,.08)!important;
+  box-shadow:0 0 22px rgba(125,249,255,.12);
+}
+
+.hero{
+  position:relative;
+  overflow:hidden;
+  border-color:rgba(125,249,255,.18)!important;
+  background:
+    radial-gradient(circle at 14% 0%,rgba(125,249,255,.16),transparent 32%),
+    radial-gradient(circle at 88% 8%,rgba(255,79,216,.10),transparent 34%),
+    linear-gradient(180deg,rgba(12,20,38,.82),rgba(5,8,18,.74))!important;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:auto -20% 0 -20%;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--nts-cyan),var(--nts-pink),transparent);
+  box-shadow:0 0 24px rgba(125,249,255,.45);
+  animation:nts-scan-x 3.8s ease-in-out infinite;
+  opacity:.8;
+}
+
+.hero p,
+.method-section,
+.notes,
+.reference-section,
+.insight-lanes-section,
+.method-card p,
+.why,
+.risk,
+.reason,
+.theme,
+.decision-box span,
+.card-copy,
+.summary-sub,
+.warning-block p{
+  display:none!important;
+}
+
+h1,h2{
+  letter-spacing:-.065em!important;
+}
+
+.section-heading h2,.section-head h2{
+  max-width:720px;
+}
+
+/* Cards: less text, more signal */
+.signal-card,.read-card,.summary-tile,.chart-card,.panel,.lane,.position-card,.method-card,.verdict-card,.return-tile,.mini-card,.coverage-card{
+  border-color:rgba(125,249,255,.14)!important;
+  background:
+    linear-gradient(180deg,rgba(13,22,42,.86),rgba(5,8,18,.74))!important;
+  box-shadow:0 20px 70px rgba(0,0,0,.32), inset 0 0 0 1px rgba(255,255,255,.025);
+}
+
+.signal-card:hover,.read-card:hover,.chart-card:hover,.position-card:hover,.coverage-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(125,249,255,.34)!important;
+  box-shadow:0 22px 84px rgba(0,0,0,.42),0 0 34px rgba(125,249,255,.10);
+}
+
+/* De-emphasize non-buy/noise lanes */
+.avoid-lane,
+.reference-section,
+.blocked-section,
+.table-section.compact-audit,
+.method-section{
+  opacity:.42;
+}
+
+/* Symbol rows should feel like signal tiles */
+.symbol-row h3,
+.signal-card h3,
+.rank-row strong,
+td strong{
+  color:#fff!important;
+  text-shadow:0 0 16px rgba(125,249,255,.18);
+}
+
+.score strong,.score,.summary-main,.return-tile strong,.verdict-card strong{
+  text-shadow:0 0 22px rgba(125,249,255,.20);
+}
+
+/* Animated neon charts */
+svg polyline,
+svg .curve,
+svg .line,
+svg .return-line,
+svg .alpha-line,
+svg .strategy,
+svg .benchmark{
+  vector-effect:non-scaling-stroke;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  filter:drop-shadow(0 0 7px rgba(125,249,255,.38));
+  stroke-dasharray:1600;
+  stroke-dashoffset:1600;
+  animation:nts-line-draw .9s cubic-bezier(.22,.72,.22,1) forwards, nts-line-glow 3.2s ease-in-out infinite;
+}
+
+svg .benchmark,.line-2{
+  filter:drop-shadow(0 0 7px rgba(255,79,216,.32));
+}
+
+svg polygon,
+.area-strategy{
+  opacity:.20;
+  animation:nts-area-rise 1.4s ease-out both;
+}
+
+.chart-card,
+.chart-section,
+.line-chart-block,
+.trend-panel,
+.equity-panel{
+  position:relative;
+  overflow:hidden;
+}
+
+.chart-card::before,
+.chart-section::before,
+.line-chart-block::before,
+.trend-panel::before,
+.equity-panel::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg,transparent,rgba(125,249,255,.05),transparent);
+  transform:translateX(-100%);
+  animation:nts-panel-sweep 5.4s ease-in-out infinite;
+}
+
+/* Bars */
+.bar-fill,
+.bar-row i,
+.coverage-bar i,
+.score-bar i,
+.mini-bar i,
+.bar-track i{
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 0 16px rgba(125,249,255,.22);
+}
+
+.bar-fill::after,
+.bar-row i::after,
+.coverage-bar i::after,
+.score-bar i::after,
+.mini-bar i::after,
+.bar-track i::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent);
+  transform:translateX(-110%);
+  animation:nts-bar-shine 2.8s ease-in-out infinite;
+}
+
+/* Minimal table presentation */
+table{
+  border-spacing:0!important;
+}
+th{
+  color:rgba(159,178,207,.72)!important;
+}
+td{
+  color:rgba(238,246,255,.82)!important;
+}
+td span,
+.mini-meta,
+.name{
+  color:rgba(159,178,207,.72)!important;
+}
+
+/* Hide overly explanatory footer copy; keep legal links */
+.footer span:first-child{
+  opacity:.48;
+}
+
+/* Positive / negative correctness: only colors, never sign mutation */
+.value-up,.ret-up,.positive,.good,.return-up,.value-positive{
+  color:var(--nts-green)!important;
+}
+.value-down,.ret-down,.negative,.bad,.return-down,.value-negative{
+  color:var(--nts-red)!important;
+}
+.value-flat,.neutral,.suspended-text{
+  color:var(--nts-soft)!important;
+}
+
+@keyframes nts-line-draw{
+  to{stroke-dashoffset:0;}
+}
+@keyframes nts-line-glow{
+  0%,100%{opacity:.92;}
+  50%{opacity:1;filter:drop-shadow(0 0 14px rgba(125,249,255,.55));}
+}
+@keyframes nts-area-rise{
+  from{opacity:0;transform:translateY(12px);}
+  to{opacity:.20;transform:translateY(0);}
+}
+@keyframes nts-panel-sweep{
+  0%,55%{transform:translateX(-110%);opacity:0;}
+  66%{opacity:1;}
+  100%{transform:translateX(110%);opacity:0;}
+}
+@keyframes nts-bar-shine{
+  0%,60%{transform:translateX(-110%);}
+  100%{transform:translateX(110%);}
+}
+@keyframes nts-scan-x{
+  0%,100%{transform:translateX(-18%);opacity:.30;}
+  50%{transform:translateX(18%);opacity:.92;}
+}
+
+@media (max-width:760px){
+  .hero{
+    padding:22px!important;
+  }
+  .hero h1{
+    font-size:clamp(34px,11vw,48px)!important;
+    line-height:.96!important;
+  }
+  .hero-meta,
+  .meta-strip,
+  .quick-grid,
+  .read-grid{
+    gap:8px!important;
+  }
+  .nav,.topbar nav{
+    display:none!important;
+  }
+  .signal-card,.read-card,.summary-tile,.chart-card,.panel,.lane,.position-card,.verdict-card,.return-tile{
+    border-radius:22px!important;
+  }
+  .table-wrap{
+    border-radius:20px!important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important;}
+}
