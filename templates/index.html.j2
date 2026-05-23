@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description" content="Neon Tokyo Signals turns Japan equity momentum, breakouts, liquidity shocks and themes into readable signals for global investors after the Tokyo close."/>
   <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/index.css?v=20260522-top-tune"/>
+  <link rel="stylesheet" href="/assets/index.css?v=20260523-us-clock"/>
 </head>
 
 <body>
@@ -33,6 +33,11 @@
         </div>
 
         <div class="pulse-bg-word" id="pulseBgWord" data-text="NIKKEI">NIKKEI</div>
+        <div class="us-clock" aria-label="US Eastern time">
+          <span>US TIME</span>
+          <strong id="usClock">--:--:--</strong>
+          <em>ET</em>
+        </div>
         <div class="pulse-scan"></div>
         <div class="pulse-noise"></div>
 
@@ -234,6 +239,25 @@ if (bgWord) {
   }
   setTimeout(triggerPulseNoise, 1200 + Math.random() * 1600);
 }
+
+const usClock = document.getElementById("usClock");
+function updateUsClock() {
+  if (!usClock) return;
+  try {
+    usClock.textContent = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/New_York",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    }).format(new Date());
+  } catch (e) {
+    const now = new Date();
+    usClock.textContent = now.toISOString().slice(11, 19);
+  }
+}
+updateUsClock();
+setInterval(updateUsClock, 1000);
 </script>
 </body>
 </html>
