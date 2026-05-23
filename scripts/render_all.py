@@ -11,6 +11,7 @@ for script in [
     "render_index.py",
     "render_daily_jp.py",
     "render_weekly_jp.py",
+    "render_ai_arena_jp.py",
     "render_static_pages.py",
 ]:
     print(f"==> {script}")
