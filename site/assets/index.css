@@ -1920,18 +1920,3 @@ button{
     display: none;
   }
 }
-
-/* AI Arena navigation card. Kept isolated so future Arena UI iterations do not
-   disturb the existing Daily / Weekly top-page design. */
-.hub-card.arena summary{
-  background:
-    radial-gradient(circle at 12% 18%, rgba(255,79,216,.13), transparent 36%),
-    radial-gradient(circle at 88% 20%, rgba(125,249,255,.10), transparent 34%),
-    linear-gradient(180deg, rgba(14,18,42,.84), rgba(7,10,20,.78));
-}
-
-.hub-card.arena .hub-no{
-  color: var(--pink);
-  border-color: rgba(255,79,216,.28);
-  box-shadow: 0 0 14px rgba(255,79,216,.12);
-}
