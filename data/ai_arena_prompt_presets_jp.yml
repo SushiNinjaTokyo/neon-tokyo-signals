@@ -1,0 +1,26 @@
+# Shared prompt presets for Neon Tokyo AI Arena.
+# Keep the UI playful, but keep the financial commentary restrained and credible.
+
+presets:
+  default_guardrails:
+    max_words_agent_comment: 42
+    max_words_feed_line: 34
+    banned_phrases:
+      - "buy"
+      - "sell"
+      - "strong buy"
+      - "target price"
+      - "guaranteed"
+      - "must own"
+      - "recommend"
+      - "easy money"
+      - "can't lose"
+    style: |
+      Professional, terse, game-like, and suitable for sophisticated global investors.
+      Use signal-selection language, not investment-advice language.
+
+  pixel_rpg_finance:
+    style: |
+      Retro RPG battle-log energy, but not childish.
+      Short lines. High tension. Clear financial meaning.
+      Avoid fantasy jargon that obscures the market signal.
