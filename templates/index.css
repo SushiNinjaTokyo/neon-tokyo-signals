@@ -1810,3 +1810,113 @@ button{
     font-size: clamp(50px, 16.8vw, 120px);
   }
 }
+
+
+/* === 2026-05-23 US clock single-line + pulse word spacing tune v5 === */
+.pulse-bg-word{
+  font-size: clamp(62px, 12.2vw, 190px);
+  letter-spacing: .032em;
+  text-rendering: geometricPrecision;
+}
+
+.us-clock{
+  position: absolute;
+  right: 24px;
+  top: 22px;
+  z-index: 14;
+  height: 46px;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 13px;
+  border: 1px solid rgba(125,249,255,.14);
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(125,249,255,.08), rgba(255,79,216,.05)),
+    rgba(7,10,18,.50);
+  box-shadow:
+    0 0 16px rgba(125,249,255,.08),
+    inset 0 0 16px rgba(255,255,255,.024);
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+}
+
+.us-clock span,
+.us-clock em{
+  color: rgba(234,242,255,.82);
+  font-size: 10px;
+  line-height: 1;
+  font-style: normal;
+  font-weight: 950;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.us-clock strong{
+  color: transparent;
+  background: linear-gradient(90deg, #ffffff 0%, #7DF9FF 52%, #FF4FD8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-size: clamp(14px, 1.35vw, 18px);
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: .02em;
+  font-variant-numeric: tabular-nums;
+  text-shadow:
+    0 0 12px rgba(125,249,255,.14),
+    0 0 22px rgba(255,79,216,.10);
+}
+
+@media (max-width: 760px){
+  .pulse-bg-word{
+    top: 48%;
+    font-size: clamp(42px, 13.7vw, 104px);
+    letter-spacing: .018em;
+  }
+
+  .us-clock{
+    top: 18px;
+    right: 18px;
+    height: 38px;
+    gap: 6px;
+    padding: 0 10px;
+    border-radius: 14px;
+  }
+
+  .us-clock span,
+  .us-clock em{
+    font-size: 8px;
+    letter-spacing: .10em;
+  }
+
+  .us-clock strong{
+    font-size: clamp(12px, 3.15vw, 15px);
+    letter-spacing: .01em;
+  }
+}
+
+@media (max-width: 520px){
+  .pulse-bg-word{
+    font-size: clamp(34px, 12.4vw, 72px);
+    letter-spacing: .01em;
+  }
+
+  .us-clock{
+    left: auto;
+    right: 16px;
+    max-width: calc(100% - 132px);
+    overflow: hidden;
+  }
+
+  .us-clock span{
+    display: inline;
+  }
+}
+
+@media (max-width: 390px){
+  .us-clock span{
+    display: none;
+  }
+}
