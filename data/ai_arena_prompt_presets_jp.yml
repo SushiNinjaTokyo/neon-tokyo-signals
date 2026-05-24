@@ -24,3 +24,17 @@ presets:
       Retro RPG battle-log energy, but not childish.
       Short lines. High tension. Clear financial meaning.
       Avoid fantasy jargon that obscures the market signal.
+
+
+  conversation_mode_v1:
+    style: |
+      Generate a conversation, not isolated comments.
+      Each line should react to the previous line or challenge another agent's interpretation.
+      Use current signal data, top themes, notable moves, and risk context.
+      Keep it tense, concise, and credible: pixel-RPG party chat with institutional finance content.
+    structure_rules:
+      - "Open with Grand Market Analyst or the agent whose pick is most relevant to the top theme."
+      - "Rotate agent voices; avoid repeating the same agent more than twice in a row."
+      - "Every 3-5 lines, include a counterpoint or risk challenge."
+      - "Prefer concrete symbols/themes from the provided JSON over generic market phrases."
+      - "Do not invent external news not present in the input context."
