@@ -1,6 +1,6 @@
 {
   "schema_version": "neon_tokyo_ai_arena_v1",
-  "generated_at": "2026-05-24T09:09:54+09:00",
+  "generated_at": "2026-05-24T09:34:14+09:00",
   "arena_date": "2026-05-19",
   "market": "Japan",
   "timezone": "Asia/Tokyo",
@@ -14,17 +14,17 @@
     "backtest_generated_at": "2026-05-22T21:07:43+09:00"
   },
   "ai": {
-    "enabled": false,
+    "enabled": true,
     "model": "gpt-4o-mini",
     "future_daily_analyst_model": "gpt-5.5",
-    "status": "fallback",
-    "fallback_used": true
+    "status": "ok",
+    "fallback_used": false
   },
   "daily_brief": {
     "analyst_id": "grand_market_analyst",
-    "title": "Tokyo signal field: Expert AI and Human AI",
-    "body": "The current Arena is built from the latest Japan signal board. Regime: {'regime': 'Neutral', 'regime_score': 0.55, 'topix': {'symbol': '1306.T', 'label': 'TOPIX', 'close': 408.3, 'ret1': 0.5913, 'ret5': -0.4874, 'ret20': 2.1772, 'ret60': -89.7438, 'above_sma20': True, 'above_sma50': False}, 'nikkei': {'symbol': '1321.T', 'label': 'NIKKEI', 'close': 63470.0, 'ret1': -0.4236, 'ret5': -3.2322, 'ret20': 4.2885, 'ret60': 7.4124, 'above_sma20': False, 'above_sma50': True}, 'growth': {'symbol': '2516.T', 'label': 'GROWTH', 'close': 651.6, 'ret1': 3.2156, 'ret5': 1.0233, 'ret20': 6.2969, 'ret60': 11.5945, 'above_sma20': True, 'above_sma50': True}}. Theme leadership is concentrated around Expert AI and Human AI.",
-    "risk_note": "Signal quality matters more than raw heat. This is a signal-selection game, not investment advice."
+    "title": "Neon Tokyo Market Pulse: May 19, 2026",
+    "body": "Japanese equities reflect a neutral regime with mixed performance, as growth themes thrive amid cautious sentiment. Notable signals emerge in AI and defense sectors.",
+    "risk_note": "Market volatility persists; caution is advised."
   },
   "top_themes": [
     {
@@ -105,8 +105,8 @@
         "risk_guard": 21,
         "liquidity": 78
       },
-      "agent_comment": "Momentum Hunter tracks acceleration in 3652.T. Strength, volume, and relative pressure are the setup.",
-      "battle_line": "Momentum Hunter enters the Arena: 3652.T",
+      "agent_comment": "Digital Media Professionals shows strong momentum signals.",
+      "battle_line": "Chasing the edge in Edge AI.",
       "result": {
         "agent_id": "momentum_hunter",
         "symbol": "3652.T",
@@ -172,8 +172,8 @@
         "risk_guard": 66,
         "liquidity": 100
       },
-      "agent_comment": "Theme Raider frames 7012.T through Defense Aerospace and Energy. Narrative strength is the edge to watch.",
-      "battle_line": "Theme Raider enters the Arena: 7012.T",
+      "agent_comment": "Kawasaki Heavy Industries aligns with global defense narratives.",
+      "battle_line": "Defense themes gaining traction.",
       "result": {
         "agent_id": "theme_raider",
         "symbol": "7012.T",
@@ -239,8 +239,8 @@
         "risk_guard": 54,
         "liquidity": 100
       },
-      "agent_comment": "Risk Sentinel chooses discipline over heat. 6146.T must prove it can survive volatility.",
-      "battle_line": "Risk Sentinel enters the Arena: 6146.T",
+      "agent_comment": "DISCO faces challenges; liquidity needs monitoring.",
+      "battle_line": "Guarding against semiconductor volatility.",
       "result": {
         "agent_id": "risk_sentinel",
         "symbol": "6146.T",
@@ -306,8 +306,8 @@
         "risk_guard": 52,
         "liquidity": 100
       },
-      "agent_comment": "Discovery Scout scouts 6758.T as an under-watched signal. Liquidity risk stays on the screen.",
-      "battle_line": "Discovery Scout enters the Arena: 6758.T",
+      "agent_comment": "Sony Group remains a top discovery signal.",
+      "battle_line": "Uncovering entertainment opportunities.",
       "result": {
         "agent_id": "discovery_scout",
         "symbol": "6758.T",
@@ -373,8 +373,8 @@
         "risk_guard": 81,
         "liquidity": 100
       },
-      "agent_comment": "Contrarian Quant avoids the hottest candle. 9984.T is judged by setup quality and controlled extension.",
-      "battle_line": "Contrarian Quant enters the Arena: 9984.T",
+      "agent_comment": "SoftBank Group may present a re-entry opportunity.",
+      "battle_line": "Looking for value in tech dips.",
       "result": {
         "agent_id": "contrarian_quant",
         "symbol": "9984.T",
@@ -398,651 +398,543 @@
   "feed": [
     {
       "id": "feed_001",
-      "show_at": "2026-05-24T09:09:00+09:00",
+      "show_at": "2026-05-24T09:34:00+09:00",
       "agent_id": "momentum_hunter",
       "type": "agent_line",
-      "body": "Momentum Hunter tracks acceleration in 3652.T. Strength, volume, and relative pressure are the setup.",
+      "body": "Digital Media Professionals accelerates with notable volume.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
       "id": "feed_002",
-      "show_at": "2026-05-24T09:19:00+09:00",
-      "agent_id": "theme_raider",
-      "type": "agent_line",
-      "body": "Theme Raider frames 7012.T through Defense Aerospace and Energy. Narrative strength is the edge to watch.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_003",
-      "show_at": "2026-05-24T09:29:00+09:00",
-      "agent_id": "risk_sentinel",
-      "type": "agent_line",
-      "body": "Risk Sentinel chooses discipline over heat. 6146.T must prove it can survive volatility.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
-    },
-    {
-      "id": "feed_004",
-      "show_at": "2026-05-24T09:39:00+09:00",
-      "agent_id": "discovery_scout",
-      "type": "agent_line",
-      "body": "Discovery Scout scouts 6758.T as an under-watched signal. Liquidity risk stays on the screen.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
-    },
-    {
-      "id": "feed_005",
-      "show_at": "2026-05-24T09:49:00+09:00",
-      "agent_id": "contrarian_quant",
-      "type": "agent_line",
-      "body": "Contrarian Quant avoids the hottest candle. 9984.T is judged by setup quality and controlled extension.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_006",
-      "show_at": "2026-05-24T09:59:00+09:00",
+      "show_at": "2026-05-24T09:44:00+09:00",
       "agent_id": "momentum_hunter",
       "type": "agent_line",
-      "body": "Momentum Hunter: watching 3652.T through the Breakout lens.",
+      "body": "Strength suggests rising institutional interest.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
-      "id": "feed_007",
-      "show_at": "2026-05-24T10:09:00+09:00",
+      "id": "feed_003",
+      "show_at": "2026-05-24T09:54:00+09:00",
+      "agent_id": "momentum_hunter",
+      "type": "agent_line",
+      "body": "Edge AI themes are gaining traction.",
+      "linked_symbol": "3652.T",
+      "linked_theme": "Edge AI and AI Processor"
+    },
+    {
+      "id": "feed_004",
+      "show_at": "2026-05-24T10:04:00+09:00",
       "agent_id": "theme_raider",
       "type": "agent_line",
-      "body": "Theme Raider: watching 7012.T through the Narrative lens.",
+      "body": "Kawasaki Heavy Industries reflects strong defense signals.",
       "linked_symbol": "7012.T",
       "linked_theme": "Defense Aerospace and Energy"
     },
     {
-      "id": "feed_008",
-      "show_at": "2026-05-24T10:19:00+09:00",
+      "id": "feed_005",
+      "show_at": "2026-05-24T10:14:00+09:00",
+      "agent_id": "theme_raider",
+      "type": "agent_line",
+      "body": "Aligning with global themes enhances appeal.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_006",
+      "show_at": "2026-05-24T10:24:00+09:00",
+      "agent_id": "theme_raider",
+      "type": "agent_line",
+      "body": "Energy defense narratives remain compelling.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_007",
+      "show_at": "2026-05-24T10:34:00+09:00",
       "agent_id": "risk_sentinel",
       "type": "agent_line",
-      "body": "Risk Sentinel: watching 6146.T through the Defender lens.",
+      "body": "Monitoring liquidity in semiconductor sectors.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
+    },
+    {
+      "id": "feed_008",
+      "show_at": "2026-05-24T10:44:00+09:00",
+      "agent_id": "risk_sentinel",
+      "type": "agent_line",
+      "body": "Volatility remains a key risk factor.",
       "linked_symbol": "6146.T",
       "linked_theme": "Semiconductor Equipment"
     },
     {
       "id": "feed_009",
-      "show_at": "2026-05-24T10:29:00+09:00",
-      "agent_id": "discovery_scout",
-      "type": "agent_line",
-      "body": "Discovery Scout: watching 6758.T through the Scout lens.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
-    },
-    {
-      "id": "feed_010",
-      "show_at": "2026-05-24T10:39:00+09:00",
-      "agent_id": "contrarian_quant",
-      "type": "agent_line",
-      "body": "Contrarian Quant: watching 9984.T through the Reversal lens.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_011",
-      "show_at": "2026-05-24T10:49:00+09:00",
-      "agent_id": "momentum_hunter",
-      "type": "agent_line",
-      "body": "Momentum Hunter: watching 3652.T through the Breakout lens.",
-      "linked_symbol": "3652.T",
-      "linked_theme": "Edge AI and AI Processor"
-    },
-    {
-      "id": "feed_012",
-      "show_at": "2026-05-24T10:59:00+09:00",
-      "agent_id": "theme_raider",
-      "type": "agent_line",
-      "body": "Theme Raider: watching 7012.T through the Narrative lens.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_013",
-      "show_at": "2026-05-24T11:09:00+09:00",
+      "show_at": "2026-05-24T10:54:00+09:00",
       "agent_id": "risk_sentinel",
       "type": "agent_line",
-      "body": "Risk Sentinel: watching 6146.T through the Defender lens.",
+      "body": "Assessing DISCO's resilience amid pressures.",
       "linked_symbol": "6146.T",
       "linked_theme": "Semiconductor Equipment"
     },
     {
-      "id": "feed_014",
-      "show_at": "2026-05-24T11:19:00+09:00",
+      "id": "feed_010",
+      "show_at": "2026-05-24T11:04:00+09:00",
       "agent_id": "discovery_scout",
       "type": "agent_line",
-      "body": "Discovery Scout: watching 6758.T through the Scout lens.",
+      "body": "Sony Group's signals suggest a robust outlook.",
       "linked_symbol": "6758.T",
       "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
-      "id": "feed_015",
-      "show_at": "2026-05-24T11:29:00+09:00",
+      "id": "feed_011",
+      "show_at": "2026-05-24T11:14:00+09:00",
+      "agent_id": "discovery_scout",
+      "type": "agent_line",
+      "body": "Gaming and entertainment sectors show promise.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
+    },
+    {
+      "id": "feed_012",
+      "show_at": "2026-05-24T11:24:00+09:00",
+      "agent_id": "discovery_scout",
+      "type": "agent_line",
+      "body": "Identifying under-the-radar opportunities.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
+    },
+    {
+      "id": "feed_013",
+      "show_at": "2026-05-24T11:34:00+09:00",
       "agent_id": "contrarian_quant",
       "type": "agent_line",
-      "body": "Contrarian Quant: watching 9984.T through the Reversal lens.",
+      "body": "SoftBank Group may offer future value.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
+    },
+    {
+      "id": "feed_014",
+      "show_at": "2026-05-24T11:44:00+09:00",
+      "agent_id": "contrarian_quant",
+      "type": "agent_line",
+      "body": "Controlled entries could yield benefits.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
+    },
+    {
+      "id": "feed_015",
+      "show_at": "2026-05-24T11:54:00+09:00",
+      "agent_id": "contrarian_quant",
+      "type": "agent_line",
+      "body": "Focusing on improving setups for re-entry.",
       "linked_symbol": "9984.T",
       "linked_theme": "AI and Technology Investment"
     },
     {
       "id": "feed_016",
-      "show_at": "2026-05-24T11:39:00+09:00",
+      "show_at": "2026-05-24T12:04:00+09:00",
       "agent_id": "momentum_hunter",
       "type": "agent_line",
-      "body": "Momentum Hunter: watching 3652.T through the Breakout lens.",
+      "body": "High volume on Digital Media Professionals signals strength.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
       "id": "feed_017",
-      "show_at": "2026-05-24T11:49:00+09:00",
-      "agent_id": "theme_raider",
-      "type": "agent_line",
-      "body": "Theme Raider: watching 7012.T through the Narrative lens.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_018",
-      "show_at": "2026-05-24T11:59:00+09:00",
-      "agent_id": "risk_sentinel",
-      "type": "agent_line",
-      "body": "Risk Sentinel: watching 6146.T through the Defender lens.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
-    },
-    {
-      "id": "feed_019",
-      "show_at": "2026-05-24T12:09:00+09:00",
-      "agent_id": "discovery_scout",
-      "type": "agent_line",
-      "body": "Discovery Scout: watching 6758.T through the Scout lens.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
-    },
-    {
-      "id": "feed_020",
-      "show_at": "2026-05-24T12:19:00+09:00",
-      "agent_id": "contrarian_quant",
-      "type": "agent_line",
-      "body": "Contrarian Quant: watching 9984.T through the Reversal lens.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_021",
-      "show_at": "2026-05-24T12:29:00+09:00",
+      "show_at": "2026-05-24T12:14:00+09:00",
       "agent_id": "momentum_hunter",
       "type": "agent_line",
-      "body": "Momentum Hunter: watching 3652.T through the Breakout lens.",
+      "body": "Price action supports bullish momentum.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
-      "id": "feed_022",
-      "show_at": "2026-05-24T12:39:00+09:00",
+      "id": "feed_018",
+      "show_at": "2026-05-24T12:24:00+09:00",
+      "agent_id": "momentum_hunter",
+      "type": "agent_line",
+      "body": "Edge AI focus remains strong.",
+      "linked_symbol": "3652.T",
+      "linked_theme": "Edge AI and AI Processor"
+    },
+    {
+      "id": "feed_019",
+      "show_at": "2026-05-24T12:34:00+09:00",
       "agent_id": "theme_raider",
       "type": "agent_line",
-      "body": "Theme Raider: watching 7012.T through the Narrative lens.",
+      "body": "Kawasaki Heavy Industries shows potential in defense.",
       "linked_symbol": "7012.T",
       "linked_theme": "Defense Aerospace and Energy"
     },
     {
-      "id": "feed_023",
-      "show_at": "2026-05-24T12:49:00+09:00",
+      "id": "feed_020",
+      "show_at": "2026-05-24T12:44:00+09:00",
+      "agent_id": "theme_raider",
+      "type": "agent_line",
+      "body": "Defense spending narratives are gaining traction.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_021",
+      "show_at": "2026-05-24T12:54:00+09:00",
+      "agent_id": "theme_raider",
+      "type": "agent_line",
+      "body": "High liquidity in defense sectors aids stability.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_022",
+      "show_at": "2026-05-24T13:04:00+09:00",
       "agent_id": "risk_sentinel",
       "type": "agent_line",
-      "body": "Risk Sentinel: watching 6146.T through the Defender lens.",
+      "body": "Monitoring DISCO amid semiconductor market shifts.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
+    },
+    {
+      "id": "feed_023",
+      "show_at": "2026-05-24T13:14:00+09:00",
+      "agent_id": "risk_sentinel",
+      "type": "agent_line",
+      "body": "Liquidity gaps remain a concern.",
       "linked_symbol": "6146.T",
       "linked_theme": "Semiconductor Equipment"
     },
     {
       "id": "feed_024",
-      "show_at": "2026-05-24T12:59:00+09:00",
-      "agent_id": "discovery_scout",
-      "type": "agent_line",
-      "body": "Discovery Scout: watching 6758.T through the Scout lens.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
-    },
-    {
-      "id": "feed_025",
-      "show_at": "2026-05-24T13:09:00+09:00",
-      "agent_id": "contrarian_quant",
-      "type": "agent_line",
-      "body": "Contrarian Quant: watching 9984.T through the Reversal lens.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_026",
-      "show_at": "2026-05-24T13:19:00+09:00",
-      "agent_id": "momentum_hunter",
-      "type": "agent_line",
-      "body": "Momentum Hunter: watching 3652.T through the Breakout lens.",
-      "linked_symbol": "3652.T",
-      "linked_theme": "Edge AI and AI Processor"
-    },
-    {
-      "id": "feed_027",
-      "show_at": "2026-05-24T13:29:00+09:00",
-      "agent_id": "theme_raider",
-      "type": "agent_line",
-      "body": "Theme Raider: watching 7012.T through the Narrative lens.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_028",
-      "show_at": "2026-05-24T13:39:00+09:00",
+      "show_at": "2026-05-24T13:24:00+09:00",
       "agent_id": "risk_sentinel",
       "type": "agent_line",
-      "body": "Risk Sentinel: watching 6146.T through the Defender lens.",
+      "body": "Volatility in semiconductors must be managed.",
       "linked_symbol": "6146.T",
       "linked_theme": "Semiconductor Equipment"
     },
     {
-      "id": "feed_029",
-      "show_at": "2026-05-24T13:49:00+09:00",
+      "id": "feed_025",
+      "show_at": "2026-05-24T13:34:00+09:00",
       "agent_id": "discovery_scout",
       "type": "agent_line",
-      "body": "Discovery Scout: watching 6758.T through the Scout lens.",
+      "body": "Sony Group's gaming segment shows resilience.",
       "linked_symbol": "6758.T",
       "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
-      "id": "feed_030",
-      "show_at": "2026-05-24T13:59:00+09:00",
+      "id": "feed_026",
+      "show_at": "2026-05-24T13:44:00+09:00",
+      "agent_id": "discovery_scout",
+      "type": "agent_line",
+      "body": "Exploring entertainment trends for investment potential.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
+    },
+    {
+      "id": "feed_027",
+      "show_at": "2026-05-24T13:54:00+09:00",
+      "agent_id": "discovery_scout",
+      "type": "agent_line",
+      "body": "High liquidity supports Sony's performance.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
+    },
+    {
+      "id": "feed_028",
+      "show_at": "2026-05-24T14:04:00+09:00",
       "agent_id": "contrarian_quant",
       "type": "agent_line",
-      "body": "Contrarian Quant: watching 9984.T through the Reversal lens.",
+      "body": "SoftBank Group's positioning warrants attention.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
+    },
+    {
+      "id": "feed_029",
+      "show_at": "2026-05-24T14:14:00+09:00",
+      "agent_id": "contrarian_quant",
+      "type": "agent_line",
+      "body": "Re-evaluating tech positions for future gains.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
+    },
+    {
+      "id": "feed_030",
+      "show_at": "2026-05-24T14:24:00+09:00",
+      "agent_id": "contrarian_quant",
+      "type": "agent_line",
+      "body": "Cautious optimism in tech sector re-entry.",
       "linked_symbol": "9984.T",
       "linked_theme": "AI and Technology Investment"
     },
     {
       "id": "feed_031",
-      "show_at": "2026-05-24T14:09:00+09:00",
+      "show_at": "2026-05-24T14:34:00+09:00",
       "agent_id": "momentum_hunter",
       "type": "agent_line",
-      "body": "Momentum Hunter: watching 3652.T through the Breakout lens.",
+      "body": "Digital Media Professionals showcases breakout potential.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
       "id": "feed_032",
-      "show_at": "2026-05-24T14:19:00+09:00",
-      "agent_id": "theme_raider",
-      "type": "agent_line",
-      "body": "Theme Raider: watching 7012.T through the Narrative lens.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_033",
-      "show_at": "2026-05-24T14:29:00+09:00",
-      "agent_id": "risk_sentinel",
-      "type": "agent_line",
-      "body": "Risk Sentinel: watching 6146.T through the Defender lens.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
-    },
-    {
-      "id": "feed_034",
-      "show_at": "2026-05-24T14:39:00+09:00",
-      "agent_id": "discovery_scout",
-      "type": "agent_line",
-      "body": "Discovery Scout: watching 6758.T through the Scout lens.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
-    },
-    {
-      "id": "feed_035",
-      "show_at": "2026-05-24T14:49:00+09:00",
-      "agent_id": "contrarian_quant",
-      "type": "agent_line",
-      "body": "Contrarian Quant: watching 9984.T through the Reversal lens.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_036",
-      "show_at": "2026-05-24T14:59:00+09:00",
+      "show_at": "2026-05-24T14:44:00+09:00",
       "agent_id": "momentum_hunter",
       "type": "agent_line",
-      "body": "Momentum Hunter: watching 3652.T through the Breakout lens.",
+      "body": "Tracking volume spikes for momentum confirmation.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
-      "id": "feed_037",
-      "show_at": "2026-05-24T15:09:00+09:00",
+      "id": "feed_033",
+      "show_at": "2026-05-24T14:54:00+09:00",
+      "agent_id": "momentum_hunter",
+      "type": "agent_line",
+      "body": "Edge AI sector remains vibrant.",
+      "linked_symbol": "3652.T",
+      "linked_theme": "Edge AI and AI Processor"
+    },
+    {
+      "id": "feed_034",
+      "show_at": "2026-05-24T15:04:00+09:00",
       "agent_id": "theme_raider",
       "type": "agent_line",
-      "body": "Theme Raider: watching 7012.T through the Narrative lens.",
+      "body": "Kawasaki Heavy Industries benefits from rising defense budgets.",
       "linked_symbol": "7012.T",
       "linked_theme": "Defense Aerospace and Energy"
     },
     {
-      "id": "feed_038",
-      "show_at": "2026-05-24T15:19:00+09:00",
+      "id": "feed_035",
+      "show_at": "2026-05-24T15:14:00+09:00",
+      "agent_id": "theme_raider",
+      "type": "agent_line",
+      "body": "Global narratives enhance local equities.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_036",
+      "show_at": "2026-05-24T15:24:00+09:00",
+      "agent_id": "theme_raider",
+      "type": "agent_line",
+      "body": "Strong defense signals bolster investor confidence.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_037",
+      "show_at": "2026-05-24T15:34:00+09:00",
       "agent_id": "risk_sentinel",
       "type": "agent_line",
-      "body": "Risk Sentinel: watching 6146.T through the Defender lens.",
+      "body": "Evaluating DISCO's market position critically.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
+    },
+    {
+      "id": "feed_038",
+      "show_at": "2026-05-24T15:44:00+09:00",
+      "agent_id": "risk_sentinel",
+      "type": "agent_line",
+      "body": "Liquidity and volatility are key considerations.",
       "linked_symbol": "6146.T",
       "linked_theme": "Semiconductor Equipment"
     },
     {
       "id": "feed_039",
-      "show_at": "2026-05-24T15:29:00+09:00",
-      "agent_id": "discovery_scout",
-      "type": "agent_line",
-      "body": "Discovery Scout: watching 6758.T through the Scout lens.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
-    },
-    {
-      "id": "feed_040",
-      "show_at": "2026-05-24T15:39:00+09:00",
-      "agent_id": "contrarian_quant",
-      "type": "agent_line",
-      "body": "Contrarian Quant: watching 9984.T through the Reversal lens.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_041",
-      "show_at": "2026-05-24T15:49:00+09:00",
-      "agent_id": "momentum_hunter",
-      "type": "agent_line",
-      "body": "Momentum Hunter: watching 3652.T through the Breakout lens.",
-      "linked_symbol": "3652.T",
-      "linked_theme": "Edge AI and AI Processor"
-    },
-    {
-      "id": "feed_042",
-      "show_at": "2026-05-24T15:59:00+09:00",
-      "agent_id": "theme_raider",
-      "type": "agent_line",
-      "body": "Theme Raider: watching 7012.T through the Narrative lens.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_043",
-      "show_at": "2026-05-24T16:09:00+09:00",
+      "show_at": "2026-05-24T15:54:00+09:00",
       "agent_id": "risk_sentinel",
       "type": "agent_line",
-      "body": "Risk Sentinel: watching 6146.T through the Defender lens.",
+      "body": "Maintaining a cautious stance on semiconductors.",
       "linked_symbol": "6146.T",
       "linked_theme": "Semiconductor Equipment"
     },
     {
-      "id": "feed_044",
-      "show_at": "2026-05-24T16:19:00+09:00",
+      "id": "feed_040",
+      "show_at": "2026-05-24T16:04:00+09:00",
       "agent_id": "discovery_scout",
       "type": "agent_line",
-      "body": "Discovery Scout: watching 6758.T through the Scout lens.",
+      "body": "Sony Group is a standout in entertainment.",
       "linked_symbol": "6758.T",
       "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
-      "id": "feed_045",
-      "show_at": "2026-05-24T16:29:00+09:00",
+      "id": "feed_041",
+      "show_at": "2026-05-24T16:14:00+09:00",
+      "agent_id": "discovery_scout",
+      "type": "agent_line",
+      "body": "Entertainment trends may drive future growth.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
+    },
+    {
+      "id": "feed_042",
+      "show_at": "2026-05-24T16:24:00+09:00",
+      "agent_id": "discovery_scout",
+      "type": "agent_line",
+      "body": "High liquidity aids Sony's market presence.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
+    },
+    {
+      "id": "feed_043",
+      "show_at": "2026-05-24T16:34:00+09:00",
       "agent_id": "contrarian_quant",
       "type": "agent_line",
-      "body": "Contrarian Quant: watching 9984.T through the Reversal lens.",
+      "body": "SoftBank Group shows promise for strategic entry.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
+    },
+    {
+      "id": "feed_044",
+      "show_at": "2026-05-24T16:44:00+09:00",
+      "agent_id": "contrarian_quant",
+      "type": "agent_line",
+      "body": "Value in tech sectors requires careful timing.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
+    },
+    {
+      "id": "feed_045",
+      "show_at": "2026-05-24T16:54:00+09:00",
+      "agent_id": "contrarian_quant",
+      "type": "agent_line",
+      "body": "Looking for signs of improvement in tech.",
       "linked_symbol": "9984.T",
       "linked_theme": "AI and Technology Investment"
     },
     {
       "id": "feed_046",
-      "show_at": "2026-05-24T16:39:00+09:00",
+      "show_at": "2026-05-24T17:04:00+09:00",
       "agent_id": "momentum_hunter",
       "type": "agent_line",
-      "body": "Momentum Hunter: watching 3652.T through the Breakout lens.",
+      "body": "Digital Media Professionals continues to outperform.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
       "id": "feed_047",
-      "show_at": "2026-05-24T16:49:00+09:00",
-      "agent_id": "theme_raider",
-      "type": "agent_line",
-      "body": "Theme Raider: watching 7012.T through the Narrative lens.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_048",
-      "show_at": "2026-05-24T16:59:00+09:00",
-      "agent_id": "risk_sentinel",
-      "type": "agent_line",
-      "body": "Risk Sentinel: watching 6146.T through the Defender lens.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
-    },
-    {
-      "id": "feed_049",
-      "show_at": "2026-05-24T17:09:00+09:00",
-      "agent_id": "discovery_scout",
-      "type": "agent_line",
-      "body": "Discovery Scout: watching 6758.T through the Scout lens.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
-    },
-    {
-      "id": "feed_050",
-      "show_at": "2026-05-24T17:19:00+09:00",
-      "agent_id": "contrarian_quant",
-      "type": "agent_line",
-      "body": "Contrarian Quant: watching 9984.T through the Reversal lens.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_051",
-      "show_at": "2026-05-24T17:29:00+09:00",
+      "show_at": "2026-05-24T17:14:00+09:00",
       "agent_id": "momentum_hunter",
       "type": "agent_line",
-      "body": "Momentum Hunter: watching 3652.T through the Breakout lens.",
+      "body": "Confirming bullish momentum through volume analysis.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
-      "id": "feed_052",
-      "show_at": "2026-05-24T17:39:00+09:00",
+      "id": "feed_048",
+      "show_at": "2026-05-24T17:24:00+09:00",
+      "agent_id": "momentum_hunter",
+      "type": "agent_line",
+      "body": "Edge AI remains a focus area.",
+      "linked_symbol": "3652.T",
+      "linked_theme": "Edge AI and AI Processor"
+    },
+    {
+      "id": "feed_049",
+      "show_at": "2026-05-24T17:34:00+09:00",
       "agent_id": "theme_raider",
       "type": "agent_line",
-      "body": "Theme Raider: watching 7012.T through the Narrative lens.",
+      "body": "Kawasaki Heavy Industries aligns with global strategies.",
       "linked_symbol": "7012.T",
       "linked_theme": "Defense Aerospace and Energy"
     },
     {
-      "id": "feed_053",
-      "show_at": "2026-05-24T17:49:00+09:00",
+      "id": "feed_050",
+      "show_at": "2026-05-24T17:44:00+09:00",
+      "agent_id": "theme_raider",
+      "type": "agent_line",
+      "body": "Defense narratives strengthen local equities.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_051",
+      "show_at": "2026-05-24T17:54:00+09:00",
+      "agent_id": "theme_raider",
+      "type": "agent_line",
+      "body": "High liquidity supports industry stability.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_052",
+      "show_at": "2026-05-24T18:04:00+09:00",
       "agent_id": "risk_sentinel",
       "type": "agent_line",
-      "body": "Risk Sentinel: watching 6146.T through the Defender lens.",
+      "body": "DISCO’s performance under scrutiny.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
+    },
+    {
+      "id": "feed_053",
+      "show_at": "2026-05-24T18:14:00+09:00",
+      "agent_id": "risk_sentinel",
+      "type": "agent_line",
+      "body": "Liquidity challenges remain pertinent.",
       "linked_symbol": "6146.T",
       "linked_theme": "Semiconductor Equipment"
     },
     {
       "id": "feed_054",
-      "show_at": "2026-05-24T17:59:00+09:00",
-      "agent_id": "discovery_scout",
+      "show_at": "2026-05-24T18:24:00+09:00",
+      "agent_id": "risk_sentinel",
       "type": "agent_line",
-      "body": "Discovery Scout: watching 6758.T through the Scout lens.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
+      "body": "Evaluating semiconductor volatility closely.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
     },
     {
       "id": "feed_055",
-      "show_at": "2026-05-24T18:09:00+09:00",
-      "agent_id": "contrarian_quant",
+      "show_at": "2026-05-24T18:34:00+09:00",
+      "agent_id": "discovery_scout",
       "type": "agent_line",
-      "body": "Contrarian Quant: watching 9984.T through the Reversal lens.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
+      "body": "Sony Group's signals indicate strong momentum.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
       "id": "feed_056",
-      "show_at": "2026-05-24T18:19:00+09:00",
-      "agent_id": "momentum_hunter",
+      "show_at": "2026-05-24T18:44:00+09:00",
+      "agent_id": "discovery_scout",
       "type": "agent_line",
-      "body": "Momentum Hunter: watching 3652.T through the Breakout lens.",
-      "linked_symbol": "3652.T",
-      "linked_theme": "Edge AI and AI Processor"
+      "body": "Entertainment sector trends are favorable.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
       "id": "feed_057",
-      "show_at": "2026-05-24T18:29:00+09:00",
-      "agent_id": "theme_raider",
+      "show_at": "2026-05-24T18:54:00+09:00",
+      "agent_id": "discovery_scout",
       "type": "agent_line",
-      "body": "Theme Raider: watching 7012.T through the Narrative lens.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
+      "body": "High liquidity enhances Sony's market position.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
       "id": "feed_058",
-      "show_at": "2026-05-24T18:39:00+09:00",
-      "agent_id": "risk_sentinel",
+      "show_at": "2026-05-24T19:04:00+09:00",
+      "agent_id": "contrarian_quant",
       "type": "agent_line",
-      "body": "Risk Sentinel: watching 6146.T through the Defender lens.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
+      "body": "SoftBank Group could present future opportunities.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
     },
     {
       "id": "feed_059",
-      "show_at": "2026-05-24T18:49:00+09:00",
-      "agent_id": "discovery_scout",
+      "show_at": "2026-05-24T19:14:00+09:00",
+      "agent_id": "contrarian_quant",
       "type": "agent_line",
-      "body": "Discovery Scout: watching 6758.T through the Scout lens.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
+      "body": "Tech sector re-entry requires careful analysis.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
     },
     {
       "id": "feed_060",
-      "show_at": "2026-05-24T18:59:00+09:00",
+      "show_at": "2026-05-24T19:24:00+09:00",
       "agent_id": "contrarian_quant",
       "type": "agent_line",
-      "body": "Contrarian Quant: watching 9984.T through the Reversal lens.",
+      "body": "Monitoring for signs of recovery in tech.",
       "linked_symbol": "9984.T",
       "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_061",
-      "show_at": "2026-05-24T19:09:00+09:00",
-      "agent_id": "momentum_hunter",
-      "type": "agent_line",
-      "body": "Momentum Hunter: watching 3652.T through the Breakout lens.",
-      "linked_symbol": "3652.T",
-      "linked_theme": "Edge AI and AI Processor"
-    },
-    {
-      "id": "feed_062",
-      "show_at": "2026-05-24T19:19:00+09:00",
-      "agent_id": "theme_raider",
-      "type": "agent_line",
-      "body": "Theme Raider: watching 7012.T through the Narrative lens.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_063",
-      "show_at": "2026-05-24T19:29:00+09:00",
-      "agent_id": "risk_sentinel",
-      "type": "agent_line",
-      "body": "Risk Sentinel: watching 6146.T through the Defender lens.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
-    },
-    {
-      "id": "feed_064",
-      "show_at": "2026-05-24T19:39:00+09:00",
-      "agent_id": "discovery_scout",
-      "type": "agent_line",
-      "body": "Discovery Scout: watching 6758.T through the Scout lens.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
-    },
-    {
-      "id": "feed_065",
-      "show_at": "2026-05-24T19:49:00+09:00",
-      "agent_id": "contrarian_quant",
-      "type": "agent_line",
-      "body": "Contrarian Quant: watching 9984.T through the Reversal lens.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_066",
-      "show_at": "2026-05-24T19:59:00+09:00",
-      "agent_id": "momentum_hunter",
-      "type": "agent_line",
-      "body": "Momentum Hunter: watching 3652.T through the Breakout lens.",
-      "linked_symbol": "3652.T",
-      "linked_theme": "Edge AI and AI Processor"
-    },
-    {
-      "id": "feed_067",
-      "show_at": "2026-05-24T20:09:00+09:00",
-      "agent_id": "theme_raider",
-      "type": "agent_line",
-      "body": "Theme Raider: watching 7012.T through the Narrative lens.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_068",
-      "show_at": "2026-05-24T20:19:00+09:00",
-      "agent_id": "risk_sentinel",
-      "type": "agent_line",
-      "body": "Risk Sentinel: watching 6146.T through the Defender lens.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
-    },
-    {
-      "id": "feed_069",
-      "show_at": "2026-05-24T20:29:00+09:00",
-      "agent_id": "discovery_scout",
-      "type": "agent_line",
-      "body": "Discovery Scout: watching 6758.T through the Scout lens.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
-    },
-    {
-      "id": "feed_070",
-      "show_at": "2026-05-24T20:39:00+09:00",
-      "agent_id": "contrarian_quant",
-      "type": "agent_line",
-      "body": "Contrarian Quant: watching 9984.T through the Reversal lens.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_071",
-      "show_at": "2026-05-24T20:49:00+09:00",
-      "agent_id": "momentum_hunter",
-      "type": "agent_line",
-      "body": "Momentum Hunter: watching 3652.T through the Breakout lens.",
-      "linked_symbol": "3652.T",
-      "linked_theme": "Edge AI and AI Processor"
-    },
-    {
-      "id": "feed_072",
-      "show_at": "2026-05-24T20:59:00+09:00",
-      "agent_id": "theme_raider",
-      "type": "agent_line",
-      "body": "Theme Raider: watching 7012.T through the Narrative lens.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
     }
   ],
   "user_interaction": {
