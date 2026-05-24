@@ -1,12 +1,21 @@
 {
   "schema_version": "neon_tokyo_ai_arena_simulation_v1",
-  "generated_at": "2026-05-24T23:17:35+09:00",
+  "generated_at": "2026-05-24T23:25:09+09:00",
   "market": "Japan",
   "timezone": "Asia/Tokyo",
   "range": {
-    "start_date": "2026-02-18",
-    "end_date": "2026-05-19",
+    "start_date": "2026-02-21",
+    "end_date": "2026-05-22",
     "trading_days": 59
+  },
+  "diagnostics": {
+    "daily_snapshots_used": 2,
+    "scheduled_orders": 16,
+    "executed_entries": 16,
+    "closed_exits": 12,
+    "pending_orders_after_end": 0,
+    "initial_capital_jpy": 10000000.0,
+    "lot_size": 100
   },
   "season": "2026-05",
   "config": {
@@ -35,494 +44,554 @@
         "name": "Daily Striker",
         "class": "Daily",
         "screening_profile": "daily_v2_core",
-        "initial_capital_jpy": 1000000.0,
-        "cash_jpy": 1000000.0,
-        "market_value_jpy": 0,
-        "portfolio_equity_jpy": 1000000.0,
-        "return_pct": 0.0,
-        "max_drawdown_pct": 0.0,
-        "closed_trades": 0,
-        "win_rate_pct": null,
-        "open_positions": 0,
-        "rank": 1
+        "initial_capital_jpy": 10000000.0,
+        "cash_jpy": 8018000.0,
+        "market_value_jpy": 1762500.0,
+        "portfolio_equity_jpy": 9780500.0,
+        "return_pct": -2.195,
+        "max_drawdown_pct": -2.195,
+        "closed_trades": 1,
+        "win_rate_pct": 0.0,
+        "open_positions": 1,
+        "rank": 5
       },
-      "open_positions": [],
-      "closed_trades": [],
+      "open_positions": [
+        {
+          "agent_id": "daily_striker",
+          "symbol": "6758.T",
+          "name": "Sony Group",
+          "theme": "Semiconductors Gaming and Entertainment",
+          "entry_date": "2026-05-20",
+          "entry_price": 3676.0,
+          "current_date": "2026-05-22",
+          "current_price": 3525.0,
+          "shares": 500,
+          "market_value_jpy": 1762500.0,
+          "unrealized_return_pct": -4.1077,
+          "unrealized_pnl_jpy": -75500.0,
+          "holding_days": 3,
+          "agent_score": 0.6093,
+          "entry_reason": "Daily Striker daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation"
+        }
+      ],
+      "closed_trades": [
+        {
+          "agent_id": "daily_striker",
+          "symbol": "3652.T",
+          "name": "Digital Media Professionals",
+          "theme": "Edge AI and AI Processor",
+          "entry_date": "2026-05-20",
+          "exit_date": "2026-05-20",
+          "entry_price": 3550.0,
+          "exit_price": 3190.0,
+          "shares": 400,
+          "return_pct": -10.1408,
+          "pnl_jpy": -144000.0,
+          "holding_days": 1,
+          "exit_reason": "stop_loss",
+          "entry_reason": "Daily Striker daily_v2_core score 0.57; relative strength; no daily confirmation; penalty drag"
+        }
+      ],
       "equity_curve": [
         {
-          "date": "2026-02-18",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
-          "date": "2026-02-19",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
-          "date": "2026-02-20",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
           "date": "2026-02-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-25",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-26",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-02",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-03",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-04",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-05",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-06",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-09",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-10",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-11",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-12",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-16",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-17",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-18",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-19",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-23",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-25",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-26",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-30",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-31",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-01",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-02",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-03",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-06",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-07",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-08",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-09",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-10",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-14",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-15",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-16",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-17",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-20",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-21",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-22",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-23",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-28",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-30",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-01",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-07",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-08",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-11",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-12",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-14",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-15",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-18",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-19",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
+        },
+        {
+          "date": "2026-05-20",
+          "cash_jpy": 8018000.0,
+          "market_value_jpy": 1803000.0,
+          "portfolio_equity_jpy": 9821000.0,
+          "return_pct": -1.79,
+          "open_positions": 1
+        },
+        {
+          "date": "2026-05-21",
+          "cash_jpy": 8018000.0,
+          "market_value_jpy": 1777000.0,
+          "portfolio_equity_jpy": 9795000.0,
+          "return_pct": -2.05,
+          "open_positions": 1
+        },
+        {
+          "date": "2026-05-22",
+          "cash_jpy": 8018000.0,
+          "market_value_jpy": 1762500.0,
+          "portfolio_equity_jpy": 9780500.0,
+          "return_pct": -2.195,
+          "open_positions": 1
         }
       ],
-      "recent_actions": []
+      "recent_actions": [
+        {
+          "date": "2026-05-20",
+          "action": "entry",
+          "symbol": "6758.T",
+          "price": 3676.0,
+          "shares": 500,
+          "reason": "Daily Striker daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "entry",
+          "symbol": "3652.T",
+          "price": 3550.0,
+          "shares": 400,
+          "reason": "Daily Striker daily_v2_core score 0.57; relative strength; no daily confirmation; penalty drag"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "exit",
+          "symbol": "3652.T",
+          "price": 3190.0,
+          "shares": 400,
+          "reason": "stop_loss"
+        }
+      ]
     },
     {
       "agent_id": "weekly_sage",
@@ -537,494 +606,611 @@
         "name": "Weekly Sage",
         "class": "Weekly",
         "screening_profile": "weekly_stage2",
-        "initial_capital_jpy": 1000000.0,
-        "cash_jpy": 1000000.0,
-        "market_value_jpy": 0,
-        "portfolio_equity_jpy": 1000000.0,
-        "return_pct": 0.0,
-        "max_drawdown_pct": 0.0,
-        "closed_trades": 0,
-        "win_rate_pct": null,
-        "open_positions": 0,
-        "rank": 2
+        "initial_capital_jpy": 10000000.0,
+        "cash_jpy": 7958100.0,
+        "market_value_jpy": 2521500.0,
+        "portfolio_equity_jpy": 10479600.0,
+        "return_pct": 4.796,
+        "max_drawdown_pct": -3.726,
+        "closed_trades": 2,
+        "win_rate_pct": 50.0,
+        "open_positions": 2,
+        "rank": 1
       },
-      "open_positions": [],
-      "closed_trades": [],
+      "open_positions": [
+        {
+          "agent_id": "weekly_sage",
+          "symbol": "135A.T",
+          "name": "VRAIN Solution",
+          "theme": "Manufacturing AI and Visual Inspection",
+          "entry_date": "2026-05-18",
+          "entry_price": 4210.0,
+          "current_date": "2026-05-22",
+          "current_price": 4465.0,
+          "shares": 300,
+          "market_value_jpy": 1339500.0,
+          "unrealized_return_pct": 6.057,
+          "unrealized_pnl_jpy": 76500.0,
+          "holding_days": 5,
+          "agent_score": 0.6753,
+          "entry_reason": "Weekly Sage weekly_stage2 score 0.68; relative strength"
+        },
+        {
+          "agent_id": "weekly_sage",
+          "symbol": "5802.T",
+          "name": "Sumitomo Electric",
+          "theme": "Data Center and Power Infrastructure",
+          "entry_date": "2026-05-20",
+          "entry_price": 10285.0,
+          "current_date": "2026-05-22",
+          "current_price": 11820.0,
+          "shares": 100,
+          "market_value_jpy": 1182000.0,
+          "unrealized_return_pct": 14.9246,
+          "unrealized_pnl_jpy": 153500.0,
+          "holding_days": 3,
+          "agent_score": 0.6058,
+          "entry_reason": "Weekly Sage weekly_stage2 score 0.61; no daily confirmation"
+        }
+      ],
+      "closed_trades": [
+        {
+          "agent_id": "weekly_sage",
+          "symbol": "3652.T",
+          "name": "Digital Media Professionals",
+          "theme": "Edge AI and AI Processor",
+          "entry_date": "2026-05-20",
+          "exit_date": "2026-05-20",
+          "entry_price": 3550.0,
+          "exit_price": 3190.0,
+          "shares": 400,
+          "return_pct": -10.1408,
+          "pnl_jpy": -144000.0,
+          "holding_days": 1,
+          "exit_reason": "stop_loss",
+          "entry_reason": "Weekly Sage weekly_stage2 score 0.71; relative strength; no daily confirmation; penalty drag"
+        },
+        {
+          "agent_id": "weekly_sage",
+          "symbol": "9984.T",
+          "name": "SoftBank Group",
+          "theme": "AI and Technology Investment",
+          "entry_date": "2026-05-18",
+          "exit_date": "2026-05-22",
+          "entry_price": 5445.0,
+          "exit_price": 6757.0,
+          "shares": 300,
+          "return_pct": 24.0955,
+          "pnl_jpy": 393600.0,
+          "holding_days": 5,
+          "exit_reason": "take_profit",
+          "entry_reason": "Weekly Sage weekly_stage2 score 0.68; relative strength"
+        }
+      ],
       "equity_curve": [
         {
-          "date": "2026-02-18",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
-          "date": "2026-02-19",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
-          "date": "2026-02-20",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
           "date": "2026-02-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-25",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-26",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-02",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-03",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-04",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-05",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-06",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-09",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-10",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-11",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-12",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-16",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-17",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-18",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-19",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-23",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-25",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-26",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-30",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-31",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-01",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-02",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-03",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-06",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-07",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-08",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-09",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-10",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-14",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-15",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-16",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-17",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-20",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-21",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-22",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-23",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-28",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-30",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-01",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-07",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-08",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-11",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-12",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-14",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-15",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-18",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
+          "cash_jpy": 7103500.0,
+          "market_value_jpy": 2952900.0,
+          "portfolio_equity_jpy": 10056400.0,
+          "return_pct": 0.564,
+          "open_positions": 2
         },
         {
           "date": "2026-05-19",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
+          "cash_jpy": 7103500.0,
+          "market_value_jpy": 2902800.0,
+          "portfolio_equity_jpy": 10006300.0,
+          "return_pct": 0.063,
+          "open_positions": 2
+        },
+        {
+          "date": "2026-05-20",
+          "cash_jpy": 5931000.0,
+          "market_value_jpy": 3750700.0,
+          "portfolio_equity_jpy": 9681700.0,
+          "return_pct": -3.183,
+          "open_positions": 3
+        },
+        {
+          "date": "2026-05-21",
+          "cash_jpy": 5931000.0,
+          "market_value_jpy": 4161200.0,
+          "portfolio_equity_jpy": 10092200.0,
+          "return_pct": 0.922,
+          "open_positions": 3
+        },
+        {
+          "date": "2026-05-22",
+          "cash_jpy": 7958100.0,
+          "market_value_jpy": 2521500.0,
+          "portfolio_equity_jpy": 10479600.0,
+          "return_pct": 4.796,
+          "open_positions": 2
         }
       ],
-      "recent_actions": []
+      "recent_actions": [
+        {
+          "date": "2026-05-18",
+          "action": "entry",
+          "symbol": "9984.T",
+          "price": 5445.0,
+          "shares": 300,
+          "reason": "Weekly Sage weekly_stage2 score 0.68; relative strength"
+        },
+        {
+          "date": "2026-05-18",
+          "action": "entry",
+          "symbol": "135A.T",
+          "price": 4210.0,
+          "shares": 300,
+          "reason": "Weekly Sage weekly_stage2 score 0.68; relative strength"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "entry",
+          "symbol": "3652.T",
+          "price": 3550.0,
+          "shares": 400,
+          "reason": "Weekly Sage weekly_stage2 score 0.71; relative strength; no daily confirmation; penalty drag"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "entry",
+          "symbol": "5802.T",
+          "price": 10285.0,
+          "shares": 100,
+          "reason": "Weekly Sage weekly_stage2 score 0.61; no daily confirmation"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "exit",
+          "symbol": "3652.T",
+          "price": 3190.0,
+          "shares": 400,
+          "reason": "stop_loss"
+        },
+        {
+          "date": "2026-05-22",
+          "action": "exit",
+          "symbol": "9984.T",
+          "price": 6757.0,
+          "shares": 300,
+          "reason": "take_profit"
+        }
+      ]
     },
     {
       "agent_id": "risk_sentinel",
@@ -1039,494 +1225,560 @@
         "name": "Risk Sentinel",
         "class": "Defender",
         "screening_profile": "risk_defender",
-        "initial_capital_jpy": 1000000.0,
-        "cash_jpy": 1000000.0,
+        "initial_capital_jpy": 10000000.0,
+        "cash_jpy": 10077350.0,
         "market_value_jpy": 0,
-        "portfolio_equity_jpy": 1000000.0,
-        "return_pct": 0.0,
-        "max_drawdown_pct": 0.0,
-        "closed_trades": 0,
-        "win_rate_pct": null,
+        "portfolio_equity_jpy": 10077350.0,
+        "return_pct": 0.7735,
+        "max_drawdown_pct": -0.2165,
+        "closed_trades": 2,
+        "win_rate_pct": 50.0,
         "open_positions": 0,
-        "rank": 3
+        "rank": 2
       },
       "open_positions": [],
-      "closed_trades": [],
+      "closed_trades": [
+        {
+          "agent_id": "risk_sentinel",
+          "symbol": "6701.T",
+          "name": "NEC",
+          "theme": "IT Defense and Communications",
+          "entry_date": "2026-05-20",
+          "exit_date": "2026-05-20",
+          "entry_price": 4308.0,
+          "exit_price": 4140.0,
+          "shares": 300,
+          "return_pct": -3.8997,
+          "pnl_jpy": -50400.0,
+          "holding_days": 1,
+          "exit_reason": "stop_loss",
+          "entry_reason": "Risk Sentinel risk_defender score 0.73; mixed signal"
+        },
+        {
+          "agent_id": "risk_sentinel",
+          "symbol": "6762.T",
+          "name": "TDK",
+          "theme": "Electronic Components",
+          "entry_date": "2026-05-20",
+          "exit_date": "2026-05-21",
+          "entry_price": 2885.5,
+          "exit_price": 3141.0,
+          "shares": 500,
+          "return_pct": 8.8546,
+          "pnl_jpy": 127750.0,
+          "holding_days": 2,
+          "exit_reason": "take_profit",
+          "entry_reason": "Risk Sentinel risk_defender score 0.74; relative strength; favored relative strength"
+        }
+      ],
       "equity_curve": [
         {
-          "date": "2026-02-18",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
-          "date": "2026-02-19",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
-          "date": "2026-02-20",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
           "date": "2026-02-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-25",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-26",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-02",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-03",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-04",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-05",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-06",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-09",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-10",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-11",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-12",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-16",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-17",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-18",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-19",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-23",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-25",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-26",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-30",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-31",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-01",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-02",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-03",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-06",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-07",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-08",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-09",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-10",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-14",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-15",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-16",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-17",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-20",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-21",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-22",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-23",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-28",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-30",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-01",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-07",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-08",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-11",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-12",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-14",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-15",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-18",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-19",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
+          "open_positions": 0
+        },
+        {
+          "date": "2026-05-20",
+          "cash_jpy": 8506850.0,
+          "market_value_jpy": 1471500.0,
+          "portfolio_equity_jpy": 9978350.0,
+          "return_pct": -0.2165,
+          "open_positions": 1
+        },
+        {
+          "date": "2026-05-21",
+          "cash_jpy": 10077350.0,
+          "market_value_jpy": 0,
+          "portfolio_equity_jpy": 10077350.0,
+          "return_pct": 0.7735,
+          "open_positions": 0
+        },
+        {
+          "date": "2026-05-22",
+          "cash_jpy": 10077350.0,
+          "market_value_jpy": 0,
+          "portfolio_equity_jpy": 10077350.0,
+          "return_pct": 0.7735,
           "open_positions": 0
         }
       ],
-      "recent_actions": []
+      "recent_actions": [
+        {
+          "date": "2026-05-20",
+          "action": "entry",
+          "symbol": "6762.T",
+          "price": 2885.5,
+          "shares": 500,
+          "reason": "Risk Sentinel risk_defender score 0.74; relative strength; favored relative strength"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "entry",
+          "symbol": "6701.T",
+          "price": 4308.0,
+          "shares": 300,
+          "reason": "Risk Sentinel risk_defender score 0.73; mixed signal"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "exit",
+          "symbol": "6701.T",
+          "price": 4140.0,
+          "shares": 300,
+          "reason": "stop_loss"
+        },
+        {
+          "date": "2026-05-21",
+          "action": "exit",
+          "symbol": "6762.T",
+          "price": 3141.0,
+          "shares": 500,
+          "reason": "take_profit"
+        }
+      ]
     },
     {
       "agent_id": "discovery_scout",
@@ -1541,494 +1793,618 @@
         "name": "Discovery Scout",
         "class": "Scout",
         "screening_profile": "discovery_alpha",
-        "initial_capital_jpy": 1000000.0,
-        "cash_jpy": 1000000.0,
-        "market_value_jpy": 0,
-        "portfolio_equity_jpy": 1000000.0,
-        "return_pct": 0.0,
-        "max_drawdown_pct": 0.0,
-        "closed_trades": 0,
-        "win_rate_pct": null,
-        "open_positions": 0,
-        "rank": 4
+        "initial_capital_jpy": 10000000.0,
+        "cash_jpy": 9157300.0,
+        "market_value_jpy": 893000.0,
+        "portfolio_equity_jpy": 10050300.0,
+        "return_pct": 0.503,
+        "max_drawdown_pct": -1.9505,
+        "closed_trades": 3,
+        "win_rate_pct": 33.33,
+        "open_positions": 1,
+        "rank": 3
       },
-      "open_positions": [],
-      "closed_trades": [],
+      "open_positions": [
+        {
+          "agent_id": "discovery_scout",
+          "symbol": "135A.T",
+          "name": "VRAIN Solution",
+          "theme": "Manufacturing AI and Visual Inspection",
+          "entry_date": "2026-05-20",
+          "entry_price": 4250.0,
+          "current_date": "2026-05-22",
+          "current_price": 4465.0,
+          "shares": 200,
+          "market_value_jpy": 893000.0,
+          "unrealized_return_pct": 5.0588,
+          "unrealized_pnl_jpy": 43000.0,
+          "holding_days": 3,
+          "agent_score": 0.6555,
+          "entry_reason": "Discovery Scout discovery_alpha score 0.66; breakout setup; relative strength; penalty drag"
+        }
+      ],
+      "closed_trades": [
+        {
+          "agent_id": "discovery_scout",
+          "symbol": "3905.T",
+          "name": "Data Section",
+          "theme": "AI Infrastructure and Data Center",
+          "entry_date": "2026-05-18",
+          "exit_date": "2026-05-19",
+          "entry_price": 2843.0,
+          "exit_price": 3345.0,
+          "shares": 400,
+          "return_pct": 17.6574,
+          "pnl_jpy": 200800.0,
+          "holding_days": 2,
+          "exit_reason": "take_profit",
+          "entry_reason": "Discovery Scout discovery_alpha score 0.65; relative strength; penalty drag"
+        },
+        {
+          "agent_id": "discovery_scout",
+          "symbol": "3993.T",
+          "name": "PKSHA Technology",
+          "theme": "AI SaaS and Algorithms",
+          "entry_date": "2026-05-18",
+          "exit_date": "2026-05-20",
+          "entry_price": 3000.0,
+          "exit_price": 2715.0,
+          "shares": 300,
+          "return_pct": -9.5,
+          "pnl_jpy": -85500.0,
+          "holding_days": 3,
+          "exit_reason": "stop_loss",
+          "entry_reason": "Discovery Scout discovery_alpha score 0.56; penalty drag"
+        },
+        {
+          "agent_id": "discovery_scout",
+          "symbol": "3652.T",
+          "name": "Digital Media Professionals",
+          "theme": "Edge AI and AI Processor",
+          "entry_date": "2026-05-20",
+          "exit_date": "2026-05-20",
+          "entry_price": 3550.0,
+          "exit_price": 3190.0,
+          "shares": 300,
+          "return_pct": -10.1408,
+          "pnl_jpy": -108000.0,
+          "holding_days": 1,
+          "exit_reason": "stop_loss",
+          "entry_reason": "Discovery Scout discovery_alpha score 0.75; relative strength; no daily confirmation; penalty drag"
+        }
+      ],
       "equity_curve": [
         {
-          "date": "2026-02-18",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
-          "date": "2026-02-19",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
-          "date": "2026-02-20",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
           "date": "2026-02-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-25",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-26",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-02",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-03",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-04",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-05",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-06",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-09",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-10",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-11",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-12",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-16",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-17",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-18",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-19",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-23",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-25",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-26",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-30",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-31",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-01",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-02",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-03",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-06",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-07",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-08",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-09",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-10",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-14",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-15",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-16",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-17",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-20",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-21",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-22",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-23",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-28",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-30",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-01",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-07",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-08",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-11",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-12",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-14",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-15",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-18",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
+          "cash_jpy": 7962800.0,
+          "market_value_jpy": 2001200.0,
+          "portfolio_equity_jpy": 9964000.0,
+          "return_pct": -0.36,
+          "open_positions": 2
         },
         {
           "date": "2026-05-19",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
+          "cash_jpy": 9300800.0,
+          "market_value_jpy": 845400.0,
+          "portfolio_equity_jpy": 10146200.0,
+          "return_pct": 1.462,
+          "open_positions": 1
+        },
+        {
+          "date": "2026-05-20",
+          "cash_jpy": 9157300.0,
+          "market_value_jpy": 791000.0,
+          "portfolio_equity_jpy": 9948300.0,
+          "return_pct": -0.517,
+          "open_positions": 1
+        },
+        {
+          "date": "2026-05-21",
+          "cash_jpy": 9157300.0,
+          "market_value_jpy": 851000.0,
+          "portfolio_equity_jpy": 10008300.0,
+          "return_pct": 0.083,
+          "open_positions": 1
+        },
+        {
+          "date": "2026-05-22",
+          "cash_jpy": 9157300.0,
+          "market_value_jpy": 893000.0,
+          "portfolio_equity_jpy": 10050300.0,
+          "return_pct": 0.503,
+          "open_positions": 1
         }
       ],
-      "recent_actions": []
+      "recent_actions": [
+        {
+          "date": "2026-05-18",
+          "action": "entry",
+          "symbol": "3905.T",
+          "price": 2843.0,
+          "shares": 400,
+          "reason": "Discovery Scout discovery_alpha score 0.65; relative strength; penalty drag"
+        },
+        {
+          "date": "2026-05-18",
+          "action": "entry",
+          "symbol": "3993.T",
+          "price": 3000.0,
+          "shares": 300,
+          "reason": "Discovery Scout discovery_alpha score 0.56; penalty drag"
+        },
+        {
+          "date": "2026-05-19",
+          "action": "exit",
+          "symbol": "3905.T",
+          "price": 3345.0,
+          "shares": 400,
+          "reason": "take_profit"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "entry",
+          "symbol": "3652.T",
+          "price": 3550.0,
+          "shares": 300,
+          "reason": "Discovery Scout discovery_alpha score 0.75; relative strength; no daily confirmation; penalty drag"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "entry",
+          "symbol": "135A.T",
+          "price": 4250.0,
+          "shares": 200,
+          "reason": "Discovery Scout discovery_alpha score 0.66; breakout setup; relative strength; penalty drag"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "exit",
+          "symbol": "3993.T",
+          "price": 2715.0,
+          "shares": 300,
+          "reason": "stop_loss"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "exit",
+          "symbol": "3652.T",
+          "price": 3190.0,
+          "shares": 300,
+          "reason": "stop_loss"
+        }
+      ]
     },
     {
       "agent_id": "contrarian_monk",
@@ -2043,577 +2419,707 @@
         "name": "Contrarian Monk",
         "class": "Reversal",
         "screening_profile": "contrarian_reentry",
-        "initial_capital_jpy": 1000000.0,
-        "cash_jpy": 1000000.0,
+        "initial_capital_jpy": 10000000.0,
+        "cash_jpy": 10037700.0,
         "market_value_jpy": 0,
-        "portfolio_equity_jpy": 1000000.0,
-        "return_pct": 0.0,
-        "max_drawdown_pct": 0.0,
-        "closed_trades": 0,
-        "win_rate_pct": null,
+        "portfolio_equity_jpy": 10037700.0,
+        "return_pct": 0.377,
+        "max_drawdown_pct": -3.6135,
+        "closed_trades": 4,
+        "win_rate_pct": 50.0,
         "open_positions": 0,
-        "rank": 5
+        "rank": 4
       },
       "open_positions": [],
-      "closed_trades": [],
+      "closed_trades": [
+        {
+          "agent_id": "contrarian_monk",
+          "symbol": "9984.T",
+          "name": "SoftBank Group",
+          "theme": "AI and Technology Investment",
+          "entry_date": "2026-05-18",
+          "exit_date": "2026-05-20",
+          "entry_price": 5445.0,
+          "exit_price": 5039.0,
+          "shares": 300,
+          "return_pct": -7.4564,
+          "pnl_jpy": -121800.0,
+          "holding_days": 3,
+          "exit_reason": "stop_loss",
+          "entry_reason": "Contrarian Monk contrarian_reentry score 0.72; relative strength"
+        },
+        {
+          "agent_id": "contrarian_monk",
+          "symbol": "3652.T",
+          "name": "Digital Media Professionals",
+          "theme": "Edge AI and AI Processor",
+          "entry_date": "2026-05-18",
+          "exit_date": "2026-05-20",
+          "entry_price": 3460.0,
+          "exit_price": 3190.0,
+          "shares": 400,
+          "return_pct": -7.8035,
+          "pnl_jpy": -108000.0,
+          "holding_days": 3,
+          "exit_reason": "stop_loss",
+          "entry_reason": "Contrarian Monk contrarian_reentry score 0.72; relative strength; no daily confirmation; penalty drag"
+        },
+        {
+          "agent_id": "contrarian_monk",
+          "symbol": "6981.T",
+          "name": "Murata Manufacturing",
+          "theme": "Electronic Components",
+          "entry_date": "2026-05-20",
+          "exit_date": "2026-05-21",
+          "entry_price": 5990.0,
+          "exit_price": 6727.0,
+          "shares": 100,
+          "return_pct": 12.3038,
+          "pnl_jpy": 73700.0,
+          "holding_days": 2,
+          "exit_reason": "take_profit",
+          "entry_reason": "Contrarian Monk contrarian_reentry score 0.73; relative strength"
+        },
+        {
+          "agent_id": "contrarian_monk",
+          "symbol": "6762.T",
+          "name": "TDK",
+          "theme": "Electronic Components",
+          "entry_date": "2026-05-20",
+          "exit_date": "2026-05-22",
+          "entry_price": 2885.5,
+          "exit_price": 3370.0,
+          "shares": 400,
+          "return_pct": 16.7909,
+          "pnl_jpy": 193800.0,
+          "holding_days": 3,
+          "exit_reason": "take_profit",
+          "entry_reason": "Contrarian Monk contrarian_reentry score 0.80; relative strength; favored relative strength"
+        }
+      ],
       "equity_curve": [
         {
-          "date": "2026-02-18",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
-          "date": "2026-02-19",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
-          "date": "2026-02-20",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
-        },
-        {
           "date": "2026-02-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-25",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-26",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-02-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-02",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-03",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-04",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-05",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-06",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-09",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-10",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-11",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-12",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-16",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-17",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-18",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-19",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-23",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-25",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-26",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-30",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-03-31",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-01",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-02",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-03",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-06",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-07",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-08",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-09",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-10",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-14",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-15",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-16",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-17",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-20",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-21",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-22",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-23",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-24",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-27",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-28",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-04-30",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-01",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-07",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-08",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-11",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-12",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-13",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-14",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-15",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 10000000.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
+          "portfolio_equity_jpy": 10000000.0,
           "return_pct": 0.0,
           "open_positions": 0
         },
         {
           "date": "2026-05-18",
-          "cash_jpy": 1000000.0,
-          "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
-          "open_positions": 0
+          "cash_jpy": 6982500.0,
+          "market_value_jpy": 3195900.0,
+          "portfolio_equity_jpy": 10178400.0,
+          "return_pct": 1.784,
+          "open_positions": 2
         },
         {
           "date": "2026-05-19",
-          "cash_jpy": 1000000.0,
+          "cash_jpy": 6982500.0,
+          "market_value_jpy": 3042300.0,
+          "portfolio_equity_jpy": 10024800.0,
+          "return_pct": 0.248,
+          "open_positions": 2
+        },
+        {
+          "date": "2026-05-20",
+          "cash_jpy": 8017000.0,
+          "market_value_jpy": 1793600.0,
+          "portfolio_equity_jpy": 9810600.0,
+          "return_pct": -1.894,
+          "open_positions": 2
+        },
+        {
+          "date": "2026-05-21",
+          "cash_jpy": 8689700.0,
+          "market_value_jpy": 1256400.0,
+          "portfolio_equity_jpy": 9946100.0,
+          "return_pct": -0.539,
+          "open_positions": 1
+        },
+        {
+          "date": "2026-05-22",
+          "cash_jpy": 10037700.0,
           "market_value_jpy": 0,
-          "portfolio_equity_jpy": 1000000.0,
-          "return_pct": 0.0,
+          "portfolio_equity_jpy": 10037700.0,
+          "return_pct": 0.377,
           "open_positions": 0
         }
       ],
-      "recent_actions": []
+      "recent_actions": [
+        {
+          "date": "2026-05-18",
+          "action": "entry",
+          "symbol": "9984.T",
+          "price": 5445.0,
+          "shares": 300,
+          "reason": "Contrarian Monk contrarian_reentry score 0.72; relative strength"
+        },
+        {
+          "date": "2026-05-18",
+          "action": "entry",
+          "symbol": "3652.T",
+          "price": 3460.0,
+          "shares": 400,
+          "reason": "Contrarian Monk contrarian_reentry score 0.72; relative strength; no daily confirmation; penalty drag"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "entry",
+          "symbol": "6762.T",
+          "price": 2885.5,
+          "shares": 400,
+          "reason": "Contrarian Monk contrarian_reentry score 0.80; relative strength; favored relative strength"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "entry",
+          "symbol": "6981.T",
+          "price": 5990.0,
+          "shares": 100,
+          "reason": "Contrarian Monk contrarian_reentry score 0.73; relative strength"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "exit",
+          "symbol": "9984.T",
+          "price": 5039.0,
+          "shares": 300,
+          "reason": "stop_loss"
+        },
+        {
+          "date": "2026-05-20",
+          "action": "exit",
+          "symbol": "3652.T",
+          "price": 3190.0,
+          "shares": 400,
+          "reason": "stop_loss"
+        },
+        {
+          "date": "2026-05-21",
+          "action": "exit",
+          "symbol": "6981.T",
+          "price": 6727.0,
+          "shares": 100,
+          "reason": "take_profit"
+        },
+        {
+          "date": "2026-05-22",
+          "action": "exit",
+          "symbol": "6762.T",
+          "price": 3370.0,
+          "shares": 400,
+          "reason": "take_profit"
+        }
+      ]
     }
   ],
   "ranking": {
     "season": "2026-05",
     "agents": [
       {
-        "agent_id": "daily_striker",
-        "name": "Daily Striker",
-        "class": "Daily",
-        "screening_profile": "daily_v2_core",
-        "initial_capital_jpy": 1000000.0,
-        "cash_jpy": 1000000.0,
-        "market_value_jpy": 0,
-        "portfolio_equity_jpy": 1000000.0,
-        "return_pct": 0.0,
-        "max_drawdown_pct": 0.0,
-        "closed_trades": 0,
-        "win_rate_pct": null,
-        "open_positions": 0,
-        "rank": 1
-      },
-      {
         "agent_id": "weekly_sage",
         "name": "Weekly Sage",
         "class": "Weekly",
         "screening_profile": "weekly_stage2",
-        "initial_capital_jpy": 1000000.0,
-        "cash_jpy": 1000000.0,
-        "market_value_jpy": 0,
-        "portfolio_equity_jpy": 1000000.0,
-        "return_pct": 0.0,
-        "max_drawdown_pct": 0.0,
-        "closed_trades": 0,
-        "win_rate_pct": null,
-        "open_positions": 0,
-        "rank": 2
+        "initial_capital_jpy": 10000000.0,
+        "cash_jpy": 7958100.0,
+        "market_value_jpy": 2521500.0,
+        "portfolio_equity_jpy": 10479600.0,
+        "return_pct": 4.796,
+        "max_drawdown_pct": -3.726,
+        "closed_trades": 2,
+        "win_rate_pct": 50.0,
+        "open_positions": 2,
+        "rank": 1
       },
       {
         "agent_id": "risk_sentinel",
         "name": "Risk Sentinel",
         "class": "Defender",
         "screening_profile": "risk_defender",
-        "initial_capital_jpy": 1000000.0,
-        "cash_jpy": 1000000.0,
+        "initial_capital_jpy": 10000000.0,
+        "cash_jpy": 10077350.0,
         "market_value_jpy": 0,
-        "portfolio_equity_jpy": 1000000.0,
-        "return_pct": 0.0,
-        "max_drawdown_pct": 0.0,
-        "closed_trades": 0,
-        "win_rate_pct": null,
+        "portfolio_equity_jpy": 10077350.0,
+        "return_pct": 0.7735,
+        "max_drawdown_pct": -0.2165,
+        "closed_trades": 2,
+        "win_rate_pct": 50.0,
         "open_positions": 0,
-        "rank": 3
+        "rank": 2
       },
       {
         "agent_id": "discovery_scout",
         "name": "Discovery Scout",
         "class": "Scout",
         "screening_profile": "discovery_alpha",
-        "initial_capital_jpy": 1000000.0,
-        "cash_jpy": 1000000.0,
-        "market_value_jpy": 0,
-        "portfolio_equity_jpy": 1000000.0,
-        "return_pct": 0.0,
-        "max_drawdown_pct": 0.0,
-        "closed_trades": 0,
-        "win_rate_pct": null,
-        "open_positions": 0,
-        "rank": 4
+        "initial_capital_jpy": 10000000.0,
+        "cash_jpy": 9157300.0,
+        "market_value_jpy": 893000.0,
+        "portfolio_equity_jpy": 10050300.0,
+        "return_pct": 0.503,
+        "max_drawdown_pct": -1.9505,
+        "closed_trades": 3,
+        "win_rate_pct": 33.33,
+        "open_positions": 1,
+        "rank": 3
       },
       {
         "agent_id": "contrarian_monk",
         "name": "Contrarian Monk",
         "class": "Reversal",
         "screening_profile": "contrarian_reentry",
-        "initial_capital_jpy": 1000000.0,
-        "cash_jpy": 1000000.0,
+        "initial_capital_jpy": 10000000.0,
+        "cash_jpy": 10037700.0,
         "market_value_jpy": 0,
-        "portfolio_equity_jpy": 1000000.0,
-        "return_pct": 0.0,
-        "max_drawdown_pct": 0.0,
-        "closed_trades": 0,
-        "win_rate_pct": null,
+        "portfolio_equity_jpy": 10037700.0,
+        "return_pct": 0.377,
+        "max_drawdown_pct": -3.6135,
+        "closed_trades": 4,
+        "win_rate_pct": 50.0,
         "open_positions": 0,
+        "rank": 4
+      },
+      {
+        "agent_id": "daily_striker",
+        "name": "Daily Striker",
+        "class": "Daily",
+        "screening_profile": "daily_v2_core",
+        "initial_capital_jpy": 10000000.0,
+        "cash_jpy": 8018000.0,
+        "market_value_jpy": 1762500.0,
+        "portfolio_equity_jpy": 9780500.0,
+        "return_pct": -2.195,
+        "max_drawdown_pct": -2.195,
+        "closed_trades": 1,
+        "win_rate_pct": 0.0,
+        "open_positions": 1,
         "rank": 5
       }
     ]
