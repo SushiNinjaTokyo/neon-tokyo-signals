@@ -411,6 +411,106 @@ def top_theme_summary(ctx: ArenaContext, limit: int = 6) -> list[dict[str, Any]]
     return out
 
 
+def top_symbols_summary(ctx: ArenaContext, limit: int = 10) -> list[dict[str, Any]]:
+    """Compact current-symbol context for AI conversation.
+
+    The Arena should feel topical, but we avoid web/news dependencies in V1.
+    This summary gives the model enough concrete material to discuss the current
+    Japan signal board without inventing external facts.
+    """
+    rows: list[dict[str, Any]] = []
+    for item in ctx.daily_items[: max(limit * 3, limit)]:
+        sym = item_symbol(item)
+        if not sym:
+            continue
+        rows.append({
+            "symbol": sym,
+            "name": item.get("name"),
+            "theme": item.get("theme"),
+            "score_pts": item.get("score_pts"),
+            "return_1d_pct": item.get("return_1d_pct"),
+            "return_5d_pct": item.get("return_5d_pct"),
+            "return_20d_pct": item.get("return_20d_pct"),
+            "volume_ratio_20d": item.get("volume_ratio_20d"),
+            "triage": item.get("triage") or item.get("signal"),
+            "bucket": item.get("bucket"),
+        })
+    rows.sort(key=lambda x: as_float(x.get("score_pts"), 0.0), reverse=True)
+    return rows[:limit]
+
+
+def notable_move_lines(ctx: ArenaContext, top_symbols: list[dict[str, Any]], limit: int = 8) -> list[str]:
+    """Generate concise, data-grounded topic lines for the AI prompt/fallback."""
+    lines: list[str] = []
+    for row in top_symbols[:limit]:
+        sym = row.get("symbol") or "Unknown"
+        name = row.get("name") or sym
+        theme = row.get("theme") or "Japan signal"
+        ret5 = row.get("return_5d_pct")
+        vol = row.get("volume_ratio_20d")
+        score = row.get("score_pts")
+        pieces = [f"{sym} {name} appears in {theme}"]
+        if ret5 is not None:
+            pieces.append(f"5D {as_float(ret5):.2f}%")
+        if vol is not None:
+            pieces.append(f"RVOL {as_float(vol):.2f}x")
+        if score is not None:
+            pieces.append(f"score {as_float(score):.1f}")
+        lines.append("; ".join(pieces))
+    return lines
+
+
+def build_market_context(ctx: ArenaContext, top_themes: list[dict[str, Any]], agents: list[dict[str, Any]], generated: datetime) -> dict[str, Any]:
+    """Build the shared context all Agents are reacting to.
+
+    V1 deliberately avoids external news calls. The 'latest topics' are derived
+    from the most recent Daily/Weekly signal data and current Agent picks. This
+    keeps the Arena grounded and cheap. Later, real news headlines can be added
+    here without touching templates or the Agent YAML structure.
+    """
+    top_symbols = top_symbols_summary(ctx)
+    picks = []
+    for agent in agents:
+        pick = agent.get("pick") or {}
+        if pick:
+            picks.append({
+                "agent_id": agent.get("agent_id"),
+                "agent_name": agent.get("name"),
+                "symbol": pick.get("symbol"),
+                "name": pick.get("name"),
+                "theme": pick.get("theme"),
+                "score_pts": pick.get("score_pts"),
+                "return_5d_pct": pick.get("return_5d_pct"),
+                "volume_ratio_20d": pick.get("volume_ratio_20d"),
+                "liquidity_score_0_1": pick.get("liquidity_score_0_1"),
+                "extension_risk_0_1": pick.get("extension_risk_0_1"),
+            })
+    regime = ctx.daily.get("regime_state") or ctx.daily.get("regime") or "unknown"
+    risk_context = [
+        "Do not treat a hot candle as a full thesis.",
+        "Smaller discovery names require explicit liquidity caution.",
+        "If TOPIX alpha quality is invalid, raw return should not be over-interpreted.",
+    ]
+    if top_themes:
+        risk_context.append(f"Theme concentration is highest around {top_themes[0].get('theme')}.")
+    return {
+        "arena_date": extract_latest_daily_date(ctx.daily, ctx.daily_items, generated),
+        "generated_at": iso_jst(generated),
+        "daily_generated_at": ctx.daily.get("generated_at"),
+        "weekly_generated_at": ctx.weekly.get("generated_at"),
+        "market_regime": regime,
+        "top_themes": top_themes,
+        "top_symbols": top_symbols,
+        "agent_picks": picks,
+        "notable_moves": notable_move_lines(ctx, top_symbols),
+        "news_context": [
+            "No external news feed is used in this V1 run; topics are inferred from latest signal data.",
+            "Use only provided signal context. Do not invent macro headlines or company news.",
+        ],
+        "risk_context": risk_context,
+    }
+
+
 
 def extract_latest_daily_date(daily: dict[str, Any], daily_items: list[dict[str, Any]], generated: datetime) -> str:
     """Return the clearest Arena date from Daily JSON.
@@ -570,23 +670,80 @@ def fallback_battle_line(agent: dict[str, Any], pick: dict[str, Any] | None) -> 
     return f"{agent.get('name', 'Agent')} enters the Arena: {(pick or {}).get('symbol', 'No pick')}"
 
 
-def fallback_feed(agents: list[dict[str, Any]], start: datetime, interval_minutes: int, max_posts: int) -> list[dict[str, Any]]:
-    lines = []
+def fallback_feed(agents: list[dict[str, Any]], start: datetime, interval_minutes: int, max_posts: int, market_context: dict[str, Any] | None = None) -> list[dict[str, Any]]:
+    """Generate conversation-like feed without AI.
+
+    This fallback is important: even with OPENAI_ENABLE_AI=false, the Arena must
+    feel like five differentiated Agents reacting to the same Tokyo tape. The
+    lines are deterministic and grounded in current picks/context.
+    """
+    lines: list[dict[str, Any]] = []
     if not agents:
         return lines
-    for i in range(max_posts):
+
+    market_context = market_context or {}
+    top_theme = "Japan signals"
+    if market_context.get("top_themes"):
+        top_theme = str(market_context["top_themes"][0].get("theme") or top_theme)
+    notable = market_context.get("notable_moves") or []
+
+    # Opening thread: each Agent reacts to the same market context through a
+    # different philosophy. These five lines are what users see first.
+    by_profile = {str(a.get("selection_profile")): a for a in agents}
+    ordered_profiles = ["momentum", "risk_control", "theme", "discovery", "contrarian"]
+    opening: list[tuple[dict[str, Any], str]] = []
+    for profile in ordered_profiles:
+        agent = by_profile.get(profile) or (agents[len(opening) % len(agents)])
+        pick = agent.get("pick") or {}
+        sym = pick.get("symbol") or "the board"
+        theme = pick.get("theme") or top_theme
+        if profile == "momentum":
+            body = f"{sym} is the pressure point. Price moved first; I want the tape to explain later."
+        elif profile == "risk_control":
+            body = f"Pressure is not enough. If liquidity fades, {sym} becomes noise instead of edge."
+        elif profile == "theme":
+            body = f"The bigger story is {theme}. Global investors understand themes before they memorize tickers."
+        elif profile == "discovery":
+            body = f"The obvious names are crowded. I am watching where global screens still miss Japan."
+        else:
+            body = f"Everyone chases the loud candle. I prefer the quieter setup before the crowd returns."
+        opening.append((agent, body))
+
+    schedule: list[tuple[dict[str, Any], str, str]] = []
+    if notable:
+        schedule.append((agents[0], f"Latest signal topic: {notable[0]}", "market_topic"))
+    for agent, body in opening:
+        schedule.append((agent, body, "conversation"))
+
+    # Continue with rotating challenge/counterpoint lines. These are deterministic
+    # but deliberately conversational rather than status updates.
+    templates = [
+        "I still want confirmation beyond the first move.",
+        "Theme heat matters, but the entry has to stay clean.",
+        "If the tape narrows, selectivity beats excitement.",
+        "Liquidity decides whether this is tradable signal or just noise.",
+        "The quiet setup may outlast the obvious candle.",
+        "Today's Arena is not about being loud; it is about surviving the next check.",
+    ]
+    i = 0
+    while len(schedule) < max_posts:
         agent = agents[i % len(agents)]
         pick = agent.get("pick") or {}
-        body = agent.get("agent_comment") or fallback_agent_comment(agent, pick)
-        # Add variation without calling AI every 10 minutes.
-        if i >= len(agents):
-            body = f"{agent.get('name')}: watching {pick.get('symbol', 'the board')} through the {agent.get('class', 'signal')} lens."
+        sym = pick.get("symbol") or "the board"
+        body = templates[i % len(templates)]
+        if i % 3 == 0:
+            body = f"{sym} stays on my screen, but I need the next signal to confirm the story."
+        schedule.append((agent, body, "counterpoint"))
+        i += 1
+
+    for i, (agent, body, kind) in enumerate(schedule[:max_posts]):
+        pick = agent.get("pick") or {}
         lines.append({
             "id": f"feed_{i+1:03d}",
             "show_at": iso_jst(start + timedelta(minutes=i * interval_minutes)),
             "agent_id": agent.get("agent_id"),
             "agent_name": agent.get("name"),
-            "type": "agent_line",
+            "type": kind,
             "body": sanitize_text(body),
             "linked_symbol": pick.get("symbol"),
             "linked_theme": pick.get("theme"),
@@ -669,14 +826,19 @@ def sanitize_text(text: Any, banned: list[str] | None = None) -> str:
     return s[:520]
 
 
-def build_ai_payload(config: dict[str, Any], ctx: ArenaContext, agents: list[dict[str, Any]], top_themes: list[dict[str, Any]]) -> dict[str, Any] | None:
+def build_ai_payload(config: dict[str, Any], ctx: ArenaContext, agents: list[dict[str, Any]], top_themes: list[dict[str, Any]], market_context: dict[str, Any]) -> dict[str, Any] | None:
+    """Ask the model for a daily brief plus a conversation-style feed.
+
+    V1.1 change: the model is no longer asked for isolated agent blurbs. It is
+    given a shared market_context and explicit voice rules so the Arena Log feels
+    like Agents reacting to each other around current Japan signal topics.
+    """
     if not ai_enabled():
         print("AI disabled by OPENAI_ENABLE_AI")
         return None
 
     analyst = config.get("global_market_analyst") or {}
     model = os.getenv("OPENAI_MODEL_MINI") or analyst.get("model") or config.get("arena", {}).get("default_model") or "gpt-4o-mini"
-    interval = int(config.get("arena", {}).get("feed_interval_minutes") or 10)
     max_posts = int(os.getenv("OPENAI_MAX_AGENT_FEED_POSTS") or config.get("arena", {}).get("max_feed_posts") or 72)
     max_posts = max(5, min(160, max_posts))
 
@@ -689,48 +851,61 @@ def build_ai_payload(config: dict[str, Any], ctx: ArenaContext, agents: list[dic
             "class": a.get("class"),
             "personality": a.get("personality"),
             "philosophy": a.get("philosophy"),
+            "conversation_role": a.get("conversation_role"),
+            "speech_style": a.get("speech_style"),
             "selection_profile": a.get("selection_profile"),
             "pick": {
                 "symbol": pick.get("symbol"),
                 "name": pick.get("name"),
                 "theme": pick.get("theme"),
                 "score_pts": pick.get("score_pts"),
+                "return_1d_pct": pick.get("return_1d_pct"),
                 "return_5d_pct": pick.get("return_5d_pct"),
+                "return_20d_pct": pick.get("return_20d_pct"),
                 "volume_ratio_20d": pick.get("volume_ratio_20d"),
-                "liquidity_band": pick.get("liquidity_band"),
-                "risk_level": pick.get("risk_level"),
+                "liquidity_score_0_1": pick.get("liquidity_score_0_1"),
+                "extension_risk_0_1": pick.get("extension_risk_0_1"),
             },
         })
 
     system = analyst.get("system_prompt") or "You are a concise market commentator. Return strict JSON."
-    system += "\nReturn valid JSON only. Never use buy/sell/recommendation/target-price language."
+    system += """
+
+Return valid JSON only.
+Never use buy/sell/recommendation/target-price/guaranteed language.
+Do not invent external news. Use only the provided market_context and signal data.
+The Arena Log must feel like a conversation: agents react to, challenge, or build on other agents' lines.
+Keep lines short, concrete, and grounded in symbols/themes from the input.
+"""
     user = json.dumps({
-        "task": "Generate Neon Tokyo AI Arena daily brief, agent comments, battle lines, and scheduled feed lines.",
-        "arena_style": "Neon cyber + pixel RPG battle log, but credible institutional finance commentary.",
+        "task": "Generate Neon Tokyo AI Arena daily brief, agent comments, battle lines, and a conversation-style scheduled feed.",
+        "arena_style": "KAWAII pixel RPG party chat + serious institutional Japan equity signal commentary.",
+        "conversation_rules": [
+            "Create a conversation, not standalone status updates.",
+            "Use each Agent's conversation_role and speech_style.",
+            "Mention concrete symbols or themes when useful, but avoid pretending to know news not in the data.",
+            "Every few lines, include a challenge, warning, or counterpoint.",
+            "Do not repeat the same Agent more than twice in a row.",
+            "Each feed body must be <= 30 words.",
+        ],
         "requirements": {
             "daily_brief": {"title": "<= 9 words", "body": "<= 70 words", "risk_note": "<= 28 words"},
-            "agents": "For each agent_id, provide agent_comment <= 36 words and battle_line <= 16 words.",
-            "feed": f"Create {max_posts} feed lines. One agent per line. Short, varied, no investment advice.",
+            "agents": "For each agent_id, provide agent_comment <= 34 words and battle_line <= 14 words.",
+            "feed": f"Create {max_posts} feed lines. Use a conversational sequence across Agents. One agent per line.",
             "json_shape": {
                 "daily_brief": {"title": "...", "body": "...", "risk_note": "..."},
                 "agents": [{"agent_id": "...", "agent_comment": "...", "battle_line": "..."}],
-                "feed": [{"agent_id": "...", "body": "..."}],
+                "feed": [{"agent_id": "...", "type": "conversation|challenge|warning|theme|discovery|counterpoint", "body": "..."}],
             },
         },
-        "market_context": {
-            "arena_date": extract_latest_daily_date(ctx.daily, ctx.daily_items, now_jst()),
-            "generated_at": ctx.daily.get("generated_at"),
-            "regime": ctx.daily.get("regime_state") or ctx.daily.get("regime"),
-            "summary": ctx.daily.get("summary"),
-            "top_themes": top_themes,
-        },
+        "market_context": market_context,
         "agents": compact_agents,
     }, ensure_ascii=False)
 
     return openai_chat_json(model=model, system=system, user=user, max_output_tokens=int(os.getenv("OPENAI_MAX_OUTPUT_TOKENS") or 6000))
 
 
-def merge_ai_text(arena: dict[str, Any], ai_payload: dict[str, Any] | None, config: dict[str, Any], ctx: ArenaContext) -> None:
+def merge_ai_text(arena: dict[str, Any], ai_payload: dict[str, Any] | None, config: dict[str, Any], ctx: ArenaContext, market_context: dict[str, Any] | None = None) -> None:
     agents = arena["agents"]
     interval = int(config.get("arena", {}).get("feed_interval_minutes") or 10)
     max_posts = int(os.getenv("OPENAI_MAX_AGENT_FEED_POSTS") or config.get("arena", {}).get("max_feed_posts") or 72)
@@ -744,7 +919,7 @@ def merge_ai_text(arena: dict[str, Any], ai_payload: dict[str, Any] | None, conf
         for agent in agents:
             agent["agent_comment"] = fallback_agent_comment(agent, agent.get("pick"))
             agent["battle_line"] = fallback_battle_line(agent, agent.get("pick"))
-        arena["feed"] = fallback_feed(agents, show_start, interval, max_posts)
+        arena["feed"] = fallback_feed(agents, show_start, interval, max_posts, market_context=market_context)
         arena["ai"]["fallback_used"] = True
         arena["ai"]["status"] = "fallback"
         return
@@ -782,13 +957,13 @@ def merge_ai_text(arena: dict[str, Any], ai_payload: dict[str, Any] | None, conf
                 "show_at": iso_jst(show_start + timedelta(minutes=len(feed) * interval)),
                 "agent_id": aid,
                 "agent_name": (agent or {}).get("name") or aid,
-                "type": "agent_line",
+                "type": sanitize_text(item.get("type") or "conversation"),
                 "body": sanitize_text(item.get("body")),
                 "linked_symbol": pick.get("symbol"),
                 "linked_theme": pick.get("theme"),
             })
     if len(feed) < max(5, len(agents)):
-        feed = fallback_feed(agents, show_start, interval, max_posts)
+        feed = fallback_feed(agents, show_start, interval, max_posts, market_context=market_context)
         arena["ai"]["fallback_used"] = True
     else:
         arena["ai"]["fallback_used"] = False
@@ -848,6 +1023,7 @@ def build_arena() -> dict[str, Any]:
     analyst = config.get("global_market_analyst") or {}
     generated = now_jst()
     arena_date = extract_latest_daily_date(daily, daily_items, generated)
+    market_context = build_market_context(ctx, top_themes, agents, generated)
 
     arena = {
         "schema_version": "neon_tokyo_ai_arena_v1",
@@ -872,6 +1048,7 @@ def build_arena() -> dict[str, Any]:
             "fallback_used": False,
         },
         "daily_brief": fallback_daily_brief(ctx, top_themes),
+        "market_context": market_context,
         "top_themes": top_themes,
         "agents": agents,
         "feed": [],
@@ -881,10 +1058,10 @@ def build_arena() -> dict[str, Any]:
     }
 
     if daily_items:
-        ai_payload = build_ai_payload(config, ctx, agents, top_themes)
-        merge_ai_text(arena, ai_payload, config, ctx)
+        ai_payload = build_ai_payload(config, ctx, agents, top_themes, market_context)
+        merge_ai_text(arena, ai_payload, config, ctx, market_context=market_context)
     else:
-        merge_ai_text(arena, None, config, ctx)
+        merge_ai_text(arena, None, config, ctx, market_context=market_context)
         arena["daily_brief"] = {
             "analyst_id": "grand_market_analyst",
             "title": "Arena awaiting signal data",
