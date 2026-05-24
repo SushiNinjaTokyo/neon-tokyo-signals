@@ -196,21 +196,42 @@ def daily_date(snapshot: dict[str, Any]) -> str | None:
 
 
 def collect_daily_snapshots() -> list[tuple[str, dict[str, Any]]]:
-    out: list[tuple[str, dict[str, Any]]] = []
+    """Collect Daily signal snapshots.
+
+    Important operational note:
+    ---------------------------
+    The current repo sometimes has only ``site/data/daily-jp/latest.json``
+    and a small number of historical dated snapshots.  The first V2 engine
+    intentionally skipped latest.json to avoid duplicated dates. That was too
+    strict: if only one dated signal snapshot exists, entries are scheduled for
+    the next trading day but never executed because the default simulation end
+    date was the same signal date.
+
+    This function now reads dated files *and* latest.json.  Duplicates are
+    deduplicated by actual signal date and latest.json wins only when it is the
+    freshest copy for that same date.
+    """
+    out: list[tuple[str, dict[str, Any], str]] = []
     if not DAILY_DIR.exists():
-        return out
+        return []
+
     for path in sorted(DAILY_DIR.glob("*.json")):
-        if path.name in {"latest.json", "manifest.json"}:
+        if path.name == "manifest.json":
             continue
         data = read_json(path, {})
         if not isinstance(data, dict):
             continue
-        d = daily_date(data) or parse_date(path.stem)
+        d = daily_date(data) or (parse_date(path.stem) if path.name != "latest.json" else None)
         if d:
-            out.append((d, data))
-    # Deduplicate by date; last file wins.
-    by_date = {d: data for d, data in out}
-    return sorted(by_date.items())
+            out.append((d, data, path.name))
+
+    by_date: dict[str, tuple[dict[str, Any], str]] = {}
+    for d, data, source_name in out:
+        # Dated files usually win; latest.json may be the only available source
+        # or may contain a fresher rebuilt copy for the same signal date.
+        if d not in by_date or source_name == "latest.json":
+            by_date[d] = (data, source_name)
+    return sorted((d, data) for d, (data, _source) in by_date.items())
 
 
 def snapshot_items(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
@@ -412,7 +433,11 @@ def run_simulation(config: dict[str, Any], prices: dict[str, dict[str, Any]], da
     if not calendar:
         raise SystemExit("No trading calendar from prices JSON")
 
-    end_date = os.getenv("AI_ARENA_END_DATE") or (daily_snaps[-1][0] if daily_snaps else calendar[-1])
+    # Default simulation end date must be the latest available price date, not
+    # the latest signal date.  Entries are generated after the signal close and
+    # executed on the next trading day; using the signal date as end_date causes
+    # valid orders to be scheduled but never executed.
+    end_date = os.getenv("AI_ARENA_END_DATE") or calendar[-1]
     lookback = int(os.getenv("AI_ARENA_LOOKBACK_DAYS") or sim_cfg.get("default_lookback_days") or 90)
     start_date = os.getenv("AI_ARENA_START_DATE")
     if not start_date:
@@ -422,6 +447,14 @@ def run_simulation(config: dict[str, Any], prices: dict[str, dict[str, Any]], da
     daily_by_date = {d: snap for d, snap in daily_snaps if start_date <= d <= end_date}
     sim_dates = [d for d in calendar if start_date <= d <= end_date]
 
+    print(
+        "AI Arena simulation input:",
+        f"daily_snapshots={len(daily_by_date)}",
+        f"price_days={len(sim_dates)}",
+        f"start_date={start_date}",
+        f"end_date={end_date}",
+    )
+
     initial_capital = as_float(arena_cfg.get("initial_capital_jpy"), 1_000_000)
     lot_size = int(arena_cfg.get("lot_size") or 100)
     max_orders_per_day = int(sim_cfg.get("max_orders_per_agent_per_day") or 2)
@@ -429,6 +462,9 @@ def run_simulation(config: dict[str, Any], prices: dict[str, dict[str, Any]], da
 
     states = {a["id"]: AgentState(agent=a, cash=initial_capital) for a in agents}
     pending_orders: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    scheduled_orders_count = 0
+    executed_entries_count = 0
+    closed_exits_count = 0
 
     for current_date in sim_dates:
         # 1) Execute pending entries at today's open.
@@ -447,12 +483,37 @@ def run_simulation(config: dict[str, Any], prices: dict[str, dict[str, Any]], da
             if entry_price <= 0:
                 continue
             policy = state.agent.get("trading_policy") or {}
+            one_lot_cost = entry_price * lot_size
             allocation = state.cash * as_float(policy.get("position_size_pct"), 0.15)
-            shares = int(allocation // (entry_price * lot_size)) * lot_size
+            shares = int(allocation // one_lot_cost) * lot_size
+
+            # Japan equities generally trade in 100-share lots.  With a game
+            # account size that is intentionally modest, high-priced liquid
+            # leaders such as DISCO can otherwise never be traded.  When the
+            # policy allows it, buy the minimum lot if cash can afford it even
+            # if the position-size budget is smaller than one lot.  This keeps
+            # the Arena active while preserving 100-share execution.
+            if shares <= 0 and bool(policy.get("allow_minimum_lot_entry", True)) and state.cash >= one_lot_cost:
+                shares = lot_size
+
             if shares <= 0:
+                state.daily_actions.append({
+                    "date": current_date,
+                    "action": "skip_entry",
+                    "symbol": sym,
+                    "price": round(entry_price, 4),
+                    "reason": "insufficient_cash_for_minimum_lot",
+                })
                 continue
             cost = shares * entry_price
             if cost > state.cash:
+                state.daily_actions.append({
+                    "date": current_date,
+                    "action": "skip_entry",
+                    "symbol": sym,
+                    "price": round(entry_price, 4),
+                    "reason": "insufficient_cash",
+                })
                 continue
             state.cash -= cost
             state.positions[sym] = Position(
@@ -469,6 +530,7 @@ def run_simulation(config: dict[str, Any], prices: dict[str, dict[str, Any]], da
                 take_profit_pct=as_float(policy.get("take_profit_pct"), 10.0),
             )
             state.daily_actions.append({"date": current_date, "action": "entry", "symbol": sym, "price": round(entry_price, 4), "shares": shares, "reason": order.get("entry_reason")})
+            executed_entries_count += 1
 
         # 2) Mark positions and close exits at today's close.
         for state in states.values():
@@ -514,6 +576,7 @@ def run_simulation(config: dict[str, Any], prices: dict[str, dict[str, Any]], da
                 }
                 state.closed_trades.append(trade)
                 state.daily_actions.append({"date": current_date, "action": "exit", "symbol": sym, "price": round(exit_price, 4), "shares": pos.shares, "reason": reason})
+                closed_exits_count += 1
 
         # 3) Record end-of-day equity.
         for state in states.values():
@@ -567,6 +630,7 @@ def run_simulation(config: dict[str, Any], prices: dict[str, dict[str, Any]], da
                     "agent_score": round(s, 4),
                     "entry_reason": f"{agent.get('name')} {profile_name} score {s:.2f}; {it.get('reason') or it.get('archetype') or 'screen match'}",
                 })
+                scheduled_orders_count += 1
 
     # Final snapshot structures.
     agents_out = []
@@ -600,7 +664,7 @@ def run_simulation(config: dict[str, Any], prices: dict[str, dict[str, Any]], da
                 "shares": p.shares,
                 "market_value_jpy": round(p.market_value(), 0),
                 "unrealized_return_pct": round(p.unrealized_pct(), 4),
-                "unrealized_pnl_jpy": round((p.current_price or p.entry_price - p.entry_price) * p.shares, 0),
+                "unrealized_pnl_jpy": round(((p.current_price or p.entry_price) - p.entry_price) * p.shares, 0),
                 "holding_days": p.holding_days(calendar, p.current_date or latest_date),
                 "agent_score": round(p.agent_score, 4),
                 "entry_reason": p.entry_reason,
@@ -640,12 +704,29 @@ def run_simulation(config: dict[str, Any], prices: dict[str, dict[str, Any]], da
     for i, row in enumerate(ranking_agents, 1):
         row["rank"] = i
 
+    print(
+        "AI Arena simulation result:",
+        f"scheduled_orders={scheduled_orders_count}",
+        f"executed_entries={executed_entries_count}",
+        f"closed_exits={closed_exits_count}",
+        f"open_positions={sum(len(s.positions) for s in states.values())}",
+    )
+
     payload = {
         "schema_version": "neon_tokyo_ai_arena_simulation_v1",
         "generated_at": iso_jst(now_jst()),
         "market": "Japan",
         "timezone": "Asia/Tokyo",
         "range": {"start_date": start_date, "end_date": end_date, "trading_days": len(sim_dates)},
+        "diagnostics": {
+            "daily_snapshots_used": len(daily_by_date),
+            "scheduled_orders": scheduled_orders_count,
+            "executed_entries": executed_entries_count,
+            "closed_exits": closed_exits_count,
+            "pending_orders_after_end": sum(len(v) for v in pending_orders.values()),
+            "initial_capital_jpy": round(initial_capital, 0),
+            "lot_size": lot_size,
+        },
         "season": season,
         "config": {"agents_yaml": str(AGENTS_YAML.relative_to(ROOT)), "prices_json": str(PRICES_JSON.relative_to(ROOT)) if PRICES_JSON.is_relative_to(ROOT) else str(PRICES_JSON), "daily_dir": str(DAILY_DIR.relative_to(ROOT)) if DAILY_DIR.is_relative_to(ROOT) else str(DAILY_DIR)},
         "methodology": {
