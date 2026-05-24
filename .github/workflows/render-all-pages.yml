@@ -13,6 +13,7 @@ on:
       - "scripts/render_weekly_jp.py"
       - "scripts/render_weekly_backtest_jp.py"
       - "scripts/render_weekly_simulation_jp.py"
+      - "scripts/render_ai_arena_jp.py"
       - "templates/**"
       - "requirements-render.txt"
       - ".github/workflows/render-all-pages.yml"
@@ -39,6 +40,7 @@ jobs:
       WEEKLY_JSON: site/data/japan/weekly/latest.json
       WEEKLY_BACKTEST_JSON: site/data/japan/weekly/backtest/latest.json
       WEEKLY_SIM_JSON: site/data/japan/weekly/simulation/latest.json
+      ARENA_JSON: site/data/japan/ai-arena/latest.json
 
     steps:
       - name: Checkout repository
@@ -67,6 +69,7 @@ jobs:
             "scripts/render_weekly_jp.py"
             "scripts/render_weekly_backtest_jp.py"
             "scripts/render_weekly_simulation_jp.py"
+            "scripts/render_ai_arena_jp.py"
           )
 
           for script in "${scripts[@]}"; do
@@ -117,6 +120,16 @@ jobs:
           python scripts/render_weekly_backtest_jp.py
           python scripts/render_weekly_simulation_jp.py
 
+      - name: Render AI Arena page
+        run: |
+          set -euo pipefail
+          if [ -f "site/data/japan/ai-arena/latest.json" ]; then
+            python scripts/render_ai_arena_jp.py
+          else
+            echo "Skip AI Arena render because site/data/japan/ai-arena/latest.json is missing."
+            echo "Run AI Arena JP workflow first."
+          fi
+
       - name: Verify rendered files
         run: |
           set -euo pipefail
@@ -142,6 +155,10 @@ jobs:
 
             "site/japan/weekly-simulation/index.html"
             "site/assets/weekly_simulation_jp.css"
+
+            "site/japan/ai-arena/index.html"
+            "site/assets/ai_arena_jp.css"
+            "site/assets/ai_arena_jp.js"
           )
 
           for f in "${required_files[@]}"; do
@@ -202,6 +219,10 @@ jobs:
 
             "site/japan/weekly-simulation/index.html"
             "site/assets/weekly_simulation_jp.css"
+
+            "site/japan/ai-arena/index.html"
+            "site/assets/ai_arena_jp.css"
+            "site/assets/ai_arena_jp.js"
           )
 
           for path in "${paths[@]}"; do

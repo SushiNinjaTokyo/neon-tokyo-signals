@@ -1,0 +1,173 @@
+name: AI Arena JP
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_mode:
+        description: "full = build JSON + render, render_only = render from existing JSON"
+        required: true
+        default: "full"
+        type: choice
+        options:
+          - full
+          - render_only
+      enable_ai:
+        description: "Use OpenAI API if OPENAI_API_KEY is configured"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+  schedule:
+    # JST 18:55 after the Tokyo close / daily signal generation window.
+    - cron: "55 9 * * 1-5"
+
+permissions:
+  contents: write
+
+# Site-updating workflows should eventually share this same group to avoid
+# push conflicts. This workflow uses the safer shared group from day one.
+concurrency:
+  group: neon-tokyo-site-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  ai-arena-jp:
+    runs-on: ubuntu-latest
+
+    env:
+      OUT_DIR: site
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+      DAILY_JSON: site/data/daily-jp/latest.json
+      WEEKLY_JSON: site/data/japan/weekly/latest.json
+      BACKTEST_JSON: site/data/backtest-daily-jp/latest.json
+      ARENA_JSON: site/data/japan/ai-arena/latest.json
+      ARENA_OUT: site/data/japan/ai-arena/latest.json
+
+      OPENAI_ENABLE_AI: ${{ github.event_name == 'workflow_dispatch' && inputs.enable_ai || 'true' }}
+      OPENAI_MODEL_MINI: ${{ vars.OPENAI_MODEL_MINI || 'gpt-4o-mini' }}
+      OPENAI_DAILY_USD_LIMIT: ${{ vars.OPENAI_DAILY_USD_LIMIT || '0.50' }}
+      OPENAI_MAX_AGENT_FEED_POSTS: ${{ vars.OPENAI_MAX_AGENT_FEED_POSTS || '72' }}
+      OPENAI_MAX_OUTPUT_TOKENS: ${{ vars.OPENAI_MAX_OUTPUT_TOKENS || '6000' }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install -r requirements-render.txt
+
+      - name: Validate Arena scripts
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/build_ai_arena_jp.py
+          python -m py_compile scripts/render_ai_arena_jp.py
+
+      - name: Verify source JSON files
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_mode == 'full' }}
+        run: |
+          set -euo pipefail
+          required_jsons=(
+            "site/data/daily-jp/latest.json"
+            "site/data/backtest-daily-jp/latest.json"
+          )
+          for json_path in "${required_jsons[@]}"; do
+            if [ ! -f "$json_path" ]; then
+              echo "::error::Missing required JSON: $json_path"
+              echo "Run Daily JP build/backtest workflows before AI Arena."
+              exit 1
+            fi
+          done
+          if [ ! -f "site/data/japan/weekly/latest.json" ]; then
+            echo "::warning::Missing weekly JSON. Arena will build with weaker theme context."
+          fi
+
+      - name: Build Arena JSON
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_mode == 'full' }}
+        run: |
+          set -euo pipefail
+          python scripts/build_ai_arena_jp.py
+
+      - name: Verify Arena JSON for render only
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_mode == 'render_only' }}
+        run: |
+          set -euo pipefail
+          test -f site/data/japan/ai-arena/latest.json
+
+      - name: Render Arena page
+        run: |
+          set -euo pipefail
+          python scripts/render_ai_arena_jp.py
+
+      - name: Verify rendered Arena files
+        run: |
+          set -euo pipefail
+          required_files=(
+            "site/data/japan/ai-arena/latest.json"
+            "site/japan/ai-arena/index.html"
+            "site/assets/ai_arena_jp.css"
+            "site/assets/ai_arena_jp.js"
+          )
+          for f in "${required_files[@]}"; do
+            test -f "$f"
+          done
+          python - <<'PY'
+          from pathlib import Path
+          html = Path('site/japan/ai-arena/index.html').read_text(encoding='utf-8')
+          forbidden = ['{{', '{%', '%}', 'UndefinedError', 'Traceback']
+          assert '<html' in html and '</html>' in html
+          assert len(html) > 3000
+          for token in forbidden:
+              assert token not in html, f'Arena HTML contains unrendered/error token: {token}'
+          print('verified site/japan/ai-arena/index.html', len(html))
+          PY
+
+      - name: Commit Arena files
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+
+          paths=(
+            "site/data/japan/ai-arena"
+            "site/japan/ai-arena/index.html"
+            "site/assets/ai_arena_jp.css"
+            "site/assets/ai_arena_jp.js"
+          )
+
+          for path in "${paths[@]}"; do
+            if [ -e "$path" ] || [ -n "$(git ls-files -- "$path")" ]; then
+              git add -A -- "$path"
+            else
+              echo "Skip missing and untracked path: $path"
+            fi
+          done
+
+          if git diff --cached --quiet; then
+            echo "No AI Arena changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Build AI Arena JP"
+          git pull --rebase origin main
+          git push origin main
+
+      - name: Verify clean working tree
+        run: |
+          set -euo pipefail
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Working tree is still dirty after commit."
+            git status --short
+            exit 1
+          fi
