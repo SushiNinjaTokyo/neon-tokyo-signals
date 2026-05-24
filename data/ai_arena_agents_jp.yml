@@ -16,7 +16,7 @@ arena:
   timezone: "Asia/Tokyo"
   default_model: "gpt-4o-mini"
   future_market_master_model: "gpt-5.5"
-  initial_capital_jpy: 1000000
+  initial_capital_jpy: 10000000
   lot_size: 100
   benchmark_symbol: "1306.T"
   # The current release does not fetch external news. Market Master only uses
@@ -159,6 +159,7 @@ agents:
     trading_policy:
       max_positions: 5
       position_size_pct: 0.20
+      allow_minimum_lot_entry: true
       max_holding_days: 5
       stop_loss_pct: -6.0
       take_profit_pct: 12.0
@@ -177,6 +178,7 @@ agents:
     trading_policy:
       max_positions: 5
       position_size_pct: 0.20
+      allow_minimum_lot_entry: true
       max_holding_days: 15
       stop_loss_pct: -8.0
       take_profit_pct: 18.0
@@ -195,6 +197,7 @@ agents:
     trading_policy:
       max_positions: 4
       position_size_pct: 0.16
+      allow_minimum_lot_entry: true
       max_holding_days: 6
       stop_loss_pct: -3.5
       take_profit_pct: 8.0
@@ -213,6 +216,7 @@ agents:
     trading_policy:
       max_positions: 6
       position_size_pct: 0.12
+      allow_minimum_lot_entry: true
       max_holding_days: 7
       stop_loss_pct: -7.0
       take_profit_pct: 16.0
@@ -231,6 +235,7 @@ agents:
     trading_policy:
       max_positions: 5
       position_size_pct: 0.18
+      allow_minimum_lot_entry: true
       max_holding_days: 10
       stop_loss_pct: -5.0
       take_profit_pct: 12.0
