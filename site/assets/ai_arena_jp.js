@@ -34,12 +34,21 @@
       return Number.isFinite(t) && t <= now;
     });
 
-    const rows = (visible.length ? visible : feed.slice(0, 5)).map(item => {
+    // Arena Log is the main content. Show the released timeline plus a few
+    // locked upcoming lines so the feed feels alive even immediately after build.
+    const unlocked = visible.slice(-18);
+    const nextLocked = feed.filter(item => {
+      const t = new Date(item.show_at || 0).getTime();
+      return Number.isFinite(t) && t > now;
+    }).slice(0, 4);
+    const display = unlocked.length ? unlocked.concat(nextLocked) : feed.slice(0, 8);
+
+    const rows = display.map(item => {
       const locked = new Date(item.show_at || 0).getTime() > now;
       return `
         <article class="feed-item${locked ? " is-locked" : ""}">
           <div class="feed-meta">
-            <b>${escapeHtml(item.agent_id || "agent")}</b>
+            <b>${escapeHtml(item.agent_name || item.agent_id || "agent")}</b>
             <span>${locked ? "LOCKED " : ""}${formatTime(item.show_at)}</span>
             ${item.linked_symbol ? `<span>${escapeHtml(item.linked_symbol)}</span>` : ""}
           </div>
