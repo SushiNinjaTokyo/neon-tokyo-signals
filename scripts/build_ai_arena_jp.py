@@ -411,6 +411,46 @@ def top_theme_summary(ctx: ArenaContext, limit: int = 6) -> list[dict[str, Any]]
     return out
 
 
+
+def extract_latest_daily_date(daily: dict[str, Any], daily_items: list[dict[str, Any]], generated: datetime) -> str:
+    """Return the clearest Arena date from Daily JSON.
+
+    Daily JSON has evolved over time, so this helper checks summary/date level
+    fields first, then item-level latest_date/as_of values, and finally falls
+    back to the current JST date. Keeping this logic centralized prevents the
+    UI and AI prompt from accidentally showing stale or ambiguous dates.
+    """
+    candidates: list[str] = []
+    summary = daily.get("summary") if isinstance(daily.get("summary"), dict) else {}
+    for value in [
+        summary.get("date"),
+        daily.get("date"),
+        daily.get("latest_trading_date"),
+        daily.get("as_of"),
+    ]:
+        if value:
+            candidates.append(str(value)[:10])
+    for item in daily_items:
+        for key in ("latest_date", "as_of", "eval_date", "date"):
+            value = item.get(key)
+            if value:
+                candidates.append(str(value)[:10])
+    # ISO YYYY-MM-DD sorts lexicographically; ignore non-date-looking values.
+    valid = [x for x in candidates if re.match(r"^\d{4}-\d{2}-\d{2}$", x)]
+    return max(valid) if valid else generated.date().isoformat()
+
+
+def days_between(date_text: Any, reference: datetime | None = None) -> int | None:
+    """Return age in days for ISO date strings, or None when unavailable."""
+    if not date_text:
+        return None
+    try:
+        d = datetime.fromisoformat(str(date_text)[:10]).date()
+        ref = (reference or now_jst()).astimezone(JST).date()
+        return (ref - d).days
+    except Exception:
+        return None
+
 def find_latest_mature_results(backtest: dict[str, Any], symbols: set[str], horizon: str = "1d") -> dict[str, dict[str, Any]]:
     """Return latest valid backtest result per symbol for the requested horizon.
 
@@ -433,7 +473,12 @@ def find_latest_mature_results(backtest: dict[str, Any], symbols: set[str], hori
         prev = by_symbol.get(sym)
         if prev is None or eval_date > str(prev.get("eval_date") or ""):
             by_symbol[sym] = {
+                # In Daily Backtest, eval_date is the signal/evaluation start date.
+                # The exact future close date is not stored in current schema, so
+                # the UI labels this as Signal Date and explains the horizon.
                 "eval_date": eval_date,
+                "signal_date": eval_date,
+                "date_age_days": days_between(eval_date),
                 "symbol": sym,
                 "name": item.get("name"),
                 "theme": item.get("theme"),
@@ -488,6 +533,9 @@ def build_result_payload(agents: list[dict[str, Any]], backtest: dict[str, Any],
         "winner_return_pct": winner.get("return_pct"),
         "winner_alpha_vs_topix_pct": winner.get("alpha_vs_topix_pct"),
         "winner_eval_date": winner.get("eval_date"),
+        "winner_signal_date": winner.get("signal_date") or winner.get("eval_date"),
+        "winner_date_age_days": winner.get("date_age_days"),
+        "result_label": "Latest resolved battle",
         "agent_results": agent_results,
     }
 
@@ -537,6 +585,7 @@ def fallback_feed(agents: list[dict[str, Any]], start: datetime, interval_minute
             "id": f"feed_{i+1:03d}",
             "show_at": iso_jst(start + timedelta(minutes=i * interval_minutes)),
             "agent_id": agent.get("agent_id"),
+            "agent_name": agent.get("name"),
             "type": "agent_line",
             "body": sanitize_text(body),
             "linked_symbol": pick.get("symbol"),
@@ -669,6 +718,7 @@ def build_ai_payload(config: dict[str, Any], ctx: ArenaContext, agents: list[dic
             },
         },
         "market_context": {
+            "arena_date": extract_latest_daily_date(ctx.daily, ctx.daily_items, now_jst()),
             "generated_at": ctx.daily.get("generated_at"),
             "regime": ctx.daily.get("regime_state") or ctx.daily.get("regime"),
             "summary": ctx.daily.get("summary"),
@@ -685,7 +735,10 @@ def merge_ai_text(arena: dict[str, Any], ai_payload: dict[str, Any] | None, conf
     interval = int(config.get("arena", {}).get("feed_interval_minutes") or 10)
     max_posts = int(os.getenv("OPENAI_MAX_AGENT_FEED_POSTS") or config.get("arena", {}).get("max_feed_posts") or 72)
     max_posts = max(5, min(160, max_posts))
-    show_start = now_jst().replace(second=0, microsecond=0)
+    # Start a few intervals in the past so the page never opens with an empty
+    # Arena Log. The feed still contains future scheduled lines, but the first
+    # full party of agent comments is immediately visible.
+    show_start = now_jst().replace(second=0, microsecond=0) - timedelta(minutes=interval * max(0, len(agents) - 1))
 
     if not ai_payload:
         for agent in agents:
@@ -728,6 +781,7 @@ def merge_ai_text(arena: dict[str, Any], ai_payload: dict[str, Any] | None, conf
                 "id": f"feed_{len(feed)+1:03d}",
                 "show_at": iso_jst(show_start + timedelta(minutes=len(feed) * interval)),
                 "agent_id": aid,
+                "agent_name": (agent or {}).get("name") or aid,
                 "type": "agent_line",
                 "body": sanitize_text(item.get("body")),
                 "linked_symbol": pick.get("symbol"),
@@ -793,10 +847,12 @@ def build_arena() -> dict[str, Any]:
     top_themes = top_theme_summary(ctx)
     analyst = config.get("global_market_analyst") or {}
     generated = now_jst()
+    arena_date = extract_latest_daily_date(daily, daily_items, generated)
+
     arena = {
         "schema_version": "neon_tokyo_ai_arena_v1",
         "generated_at": iso_jst(generated),
-        "arena_date": str(daily.get("summary", {}).get("date") or daily.get("date") or daily.get("items", [{}])[0].get("latest_date") if daily.get("items") else generated.date().isoformat()),
+        "arena_date": arena_date,
         "market": "Japan",
         "timezone": "Asia/Tokyo",
         "config_version": arena_cfg.get("version") or config.get("arena", {}).get("version") or "v1",
