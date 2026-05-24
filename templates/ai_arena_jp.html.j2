@@ -1,179 +1,92 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <title>Neon Tokyo AI Arena | Synthetic Japan Signal Agents</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Neon Tokyo AI Arena turns Japan equity signals into a synthetic agent battle. Five AI agents select signals; alpha decides the winner."/>
-  <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/ai_arena_jp.css?v=20260524-v4"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Neon Tokyo AI Arena</title>
+  <link rel="stylesheet" href="/assets/ai_arena_jp.css" />
 </head>
 <body>
-<div class="arena-page" data-generated-at="{{ arena.generated_at or '' }}">
-  <div class="arena-bg-grid"></div>
-  <div class="arena-glow arena-glow-a"></div>
-  <div class="arena-glow arena-glow-b"></div>
-
-  <header class="arena-header pixel-frame">
-    <a class="brand" href="/" aria-label="Neon Tokyo Signals home">
-      <span class="brand-mark">NTS</span>
-      <span>
-        <strong>NEON TOKYO AI ARENA</strong>
-        <em>Signal agents. Pixel battle. Alpha check.</em>
-      </span>
-    </a>
-    <nav class="arena-nav" aria-label="Arena navigation">
-      <a href="/japan/daily/">Daily</a>
-      <a href="/japan/weekly/">Weekly</a>
-      <a href="/japan/daily/backtest/">Backtest</a>
-    </nav>
-  </header>
-
-  <main class="arena-wrap">
-    <section class="hero pixel-frame">
-      <div class="hero-copy">
-        <p class="kicker"><span class="live-dot"></span> AI SIGNAL BATTLE // JAPAN EQUITIES</p>
-        <h1>Five AI agents enter Tokyo.</h1>
-        <p class="hero-note">{{ arena.disclaimer or 'Signal-selection game. Informational only. Not investment advice.' }}</p>
-        <div class="hero-meta" aria-label="Arena data date">
-          <span>Data as of <b>{{ arena.arena_date or '—' }}</b></span>
-          <span>Generated <b>{{ arena.generated_at or '—' }}</b></span>
-        </div>
+  <main class="arena-shell">
+    <header class="arena-hero pixel-frame">
+      <nav class="arena-nav">
+        <a href="/">TOP</a>
+        <a href="/japan/ai-arena/" class="active">ARENA</a>
+        <a href="/japan/ai-arena/positions/">POSITIONS</a>
+        <a href="/japan/ai-arena/ranking/">RANKING</a>
+      </nav>
+      <div class="eyebrow">NEON TOKYO AI ARENA</div>
+      <h1>Five AI agents enter Tokyo.</h1>
+      <div class="hero-meta">
+        <span>Season {{ arena.season or '—' }}</span>
+        <span>{{ arena.range.start_date if arena.range else '—' }} → {{ arena.range.end_date if arena.range else '—' }}</span>
+        <span>{{ arena.ai.model if arena.ai else 'model n/a' }}</span>
       </div>
+    </header>
 
-      <aside class="brief battle-window" aria-label="Grand Market Analyst brief">
-        <div class="window-title">
-          <span>GRAND MARKET ANALYST</span>
-          <i>{{ arena.ai.model or 'gpt-4o-mini' }}</i>
-        </div>
-        <h2>{{ arena.daily_brief.title or 'Arena brief unavailable' }}</h2>
-        <p>{{ arena.daily_brief.body or 'No daily brief was generated.' }}</p>
-        <small>{{ arena.daily_brief.risk_note or 'Risk note unavailable.' }}</small>
-      </aside>
-    </section>
-
-    <section class="battle-log main-log pixel-frame" aria-label="Arena log">
-      <div class="section-head compact log-head">
-        <span>ARENA LOG</span>
-        <strong>Party chat. Icon - Name - Message - Time</strong>
-      </div>
-      <div id="arenaFeed" class="feed" data-feed='{{ (arena.feed or []) | tojson }}'>
-        <div class="feed-empty">Loading Arena feed...</div>
-      </div>
-    </section>
-
-    <section class="agent-section" aria-label="AI agents">
+    <section class="battle-log pixel-frame" aria-label="Arena Log">
       <div class="section-head">
-        <span>SELECT YOUR AGENT</span>
-        <strong>Five different philosophies. One alpha check.</strong>
+        <div>
+          <p class="eyebrow">ARENA LOG</p>
+          <h2>Live debate from simulated positions</h2>
+        </div>
+        <div class="log-status">{{ 'AI' if arena.ai and arena.ai.enabled else 'FALLBACK' }} / {{ arena.ai.status if arena.ai else 'unknown' }}</div>
       </div>
+      <div id="arena-log" class="chat-list" data-feed='{{ arena.feed | tojson }}'></div>
+    </section>
 
-      <div class="agent-grid">
-        {% for agent in arena.agents or [] %}
-        {% set pick = agent.pick or {} %}
-        <article class="agent-card pixel-frame tone-{{ agent.ui_tone or 'cyan' }}" data-agent-card data-agent-id="{{ agent.agent_id }}">
-          <div class="agent-top">
-            <div class="agent-avatar {{ agent.avatar_style or '' }}" aria-hidden="true">
-              <span class="pixel-sprite"></span>
-            </div>
-            <div>
-              <p>{{ agent.class or 'Agent' }}</p>
-              <h2>{{ agent.name }}</h2>
-            </div>
+    <section class="master-brief pixel-frame">
+      <p class="eyebrow">MARKET MASTER</p>
+      <h2>{{ arena.daily_brief.title if arena.daily_brief else 'Arena simulation online' }}</h2>
+      <p>{{ arena.daily_brief.body if arena.daily_brief else '' }}</p>
+      {% if arena.daily_brief and arena.daily_brief.risk_note %}
+      <p class="risk-note">{{ arena.daily_brief.risk_note }}</p>
+      {% endif %}
+    </section>
+
+    <section class="agent-party">
+      {% for agent in arena.agents or [] %}
+      <article class="agent-card pixel-frame tone-{{ agent.ui_tone or 'cyan' }}">
+        <div class="agent-top">
+          <div class="pixel-avatar avatar-{{ agent.avatar_style or 'pixel_warrior' }}"><span></span></div>
+          <div>
+            <h3>{{ agent.name }}</h3>
+            <p>{{ agent.class }} / {{ agent.summary.screening_profile if agent.summary else '' }}</p>
           </div>
+        </div>
+        <div class="agent-stats">
+          <div><span>Return</span><b>{{ '%.2f'|format(agent.summary.return_pct or 0) }}%</b></div>
+          <div><span>Equity</span><b>¥{{ '{:,.0f}'.format(agent.summary.portfolio_equity_jpy or 0) }}</b></div>
+          <div><span>Open</span><b>{{ agent.summary.open_positions or 0 }}</b></div>
+        </div>
+        <div class="mini-positions">
+          {% for p in agent.open_positions[:2] %}
+          <div class="mini-position"><b>{{ p.symbol }}</b><span>{{ '%.2f'|format(p.unrealized_return_pct or 0) }}%</span></div>
+          {% else %}
+          <div class="mini-position muted">No open position</div>
+          {% endfor %}
+        </div>
+      </article>
+      {% endfor %}
+    </section>
 
-          <div class="pick-box">
-            <span class="pick-label">PICK</span>
-            <strong>{{ pick.symbol or '—' }}</strong>
-            <em>{{ pick.name or 'No signal available' }}</em>
-            <small>{{ pick.theme or 'Theme unavailable' }}</small>
-          </div>
-
-          <p class="agent-comment">{{ agent.agent_comment or 'Agent comment unavailable.' }}</p>
-
-          <div class="stat-grid" aria-label="Agent stats">
-            <div><span>Power</span><b>{{ agent.stats.signal_power or 0 }}</b></div>
-            <div><span>Theme</span><b>{{ agent.stats.theme_heat or 0 }}</b></div>
-            <div><span>Guard</span><b>{{ agent.stats.risk_guard or 0 }}</b></div>
-            <div><span>Liquid</span><b>{{ agent.stats.liquidity or 0 }}</b></div>
-          </div>
-
-          <div class="metric-line">
-            <span>5D {{ pick.return_5d_pct if pick.return_5d_pct is not none else '—' }}%</span>
-            <span>RVOL {{ pick.volume_ratio_20d if pick.volume_ratio_20d is not none else '—' }}x</span>
-            <span>Score {{ pick.score_pts if pick.score_pts is not none else '—' }}</span>
-          </div>
-
-          <button class="command-button" type="button" data-back-agent="{{ agent.agent_id }}">Back this Agent</button>
-          <p class="backed-note" data-backed-note hidden>Backed on this device</p>
-        </article>
+    <section class="ranking-strip pixel-frame">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">CURRENT RANKING</p>
+          <h2>Season leaderboard</h2>
+        </div>
+        <a href="/japan/ai-arena/ranking/" class="command-link">OPEN RANKING</a>
+      </div>
+      <div class="rank-row-wrap">
+        {% for row in arena.ranking or [] %}
+        <div class="rank-pill"><b>#{{ row.rank }}</b><span>{{ row.name }}</span><em>{{ '%.2f'|format(row.return_pct or 0) }}%</em></div>
         {% endfor %}
       </div>
     </section>
 
-    <section class="arena-support-grid">
-      <aside class="result-window pixel-frame">
-        <div class="section-head compact">
-          <span>{{ arena.arena_result.result_label or 'LATEST RESOLVED BATTLE' }}</span>
-          <strong>{{ arena.arena_result.evaluation_horizon or '1d' }} alpha check</strong>
-        </div>
-        {% if arena.arena_result.status == 'mature' %}
-          <div class="winner-box">
-            <span>WINNER</span>
-            <strong>{{ arena.arena_result.winner_agent_id or '—' }}</strong>
-            <em>{{ arena.arena_result.winner_symbol or '—' }}</em>
-          </div>
-          <div class="result-metrics">
-            <div><span>Return</span><b>{{ arena.arena_result.winner_return_pct if arena.arena_result.winner_return_pct is not none else '—' }}%</b></div>
-            <div><span>TOPIX Alpha</span><b>{{ arena.arena_result.winner_alpha_vs_topix_pct if arena.arena_result.winner_alpha_vs_topix_pct is not none else '—' }}%</b></div>
-            <div><span>Signal Date</span><b>{{ arena.arena_result.winner_signal_date or arena.arena_result.winner_eval_date or '—' }}</b></div>
-          </div>
-          {% if arena.arena_result.winner_date_age_days is not none and arena.arena_result.winner_date_age_days > 14 %}
-          <p class="result-note">Latest mature result is {{ arena.arena_result.winner_date_age_days }} days old because current picks are still awaiting matching mature backtest data.</p>
-          {% else %}
-          <p class="result-note">Result uses the latest mature Daily Backtest horizon for current Arena picks.</p>
-          {% endif %}
-        {% else %}
-          <div class="pending-box">
-            <strong>PENDING</strong>
-            <p>Result will appear when the selected horizon matures in Daily Backtest data.</p>
-          </div>
-        {% endif %}
-
-        <div class="device-choice">
-          <span>Your backed agent</span>
-          <strong id="userBackedAgent">Not selected</strong>
-        </div>
-      </aside>
-
-      <section class="theme-strip pixel-frame" aria-label="Theme heat">
-        <div class="section-head compact">
-          <span>THEME HEAT</span>
-          <strong>Current Japan signal clusters</strong>
-        </div>
-        <div class="theme-grid">
-          {% for theme in arena.top_themes or [] %}
-          <div class="theme-chip">
-            <span>{{ theme.theme }}</span>
-            <b>{{ '%.0f'|format(theme.heat_score or 0) }}</b>
-            <i>{{ theme.signal_count or 0 }} signals</i>
-          </div>
-          {% endfor %}
-        </div>
-      </section>
-    </section>
-
-    <footer class="arena-footer">
-      <span>AI status: {{ arena.ai.status or 'unknown' }}{% if arena.ai.fallback_used %} / fallback{% endif %}</span>
-      <span>Data: {{ arena.arena_date or '—' }}</span>
-      <nav>
-        <a href="/disclaimer/">Disclaimer</a>
-        <a href="/privacy/">Privacy</a>
-      </nav>
-    </footer>
+    <footer class="arena-footer">{{ arena.disclaimer }}</footer>
   </main>
-</div>
-
-<script src="/assets/ai_arena_jp.js?v=20260524-v4" defer></script>
+  <script src="/assets/ai_arena_jp.js"></script>
 </body>
 </html>
