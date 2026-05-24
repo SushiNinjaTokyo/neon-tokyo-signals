@@ -75,31 +75,25 @@
       return Number.isFinite(t) && t <= now;
     });
 
-    const locked = feed.filter(item => {
-      const t = new Date(item.show_at || 0).getTime();
-      return Number.isFinite(t) && t > now;
-    });
-
     // Arena Log is the main page experience. Keep it vertical and conversation-like.
-    // Show enough released lines to feel alive, then a few scheduled lines as muted previews.
+    // Do not show locked/scheduled rows. Future lines should feel like new party
+    // chat messages appearing later, not placeholders in the conversation.
     const display = released.length
-      ? released.slice(-18).concat(locked.slice(0, 1))
-      : feed.slice(0, 8);
+      ? released.slice(-30)
+      : feed.slice(0, 15);
 
     const rows = display.map(item => {
       const id = normalizeAgentId(item.agent_id);
       const agent = agentMap.get(id) || {name: item.agent_name || item.agent_id || "Agent", avatarClass:"pixel_warrior"};
-      const showAt = new Date(item.show_at || 0).getTime();
-      const isLocked = Number.isFinite(showAt) && showAt > now;
-      const body = isLocked ? "Message unlocks on schedule." : (item.body || "");
+      const body = item.body || "";
       const symbol = item.linked_symbol ? `<span class="chat-symbol">${escapeHtml(item.linked_symbol)}</span>` : "";
 
       return `
-        <article class="chat-line${isLocked ? " is-locked" : ""}" data-feed-agent="${escapeHtml(id)}">
+        <article class="chat-line" data-feed-agent="${escapeHtml(id)}">
           <div class="chat-avatar ${escapeHtml(agent.avatarClass)}" aria-hidden="true"><span class="pixel-sprite"></span></div>
           <b class="chat-name">${escapeHtml(agent.name)}</b>
           <p class="chat-message">${escapeHtml(body)}</p>
-          <time class="chat-time" datetime="${escapeHtml(item.show_at || "")}">${isLocked ? "LOCKED " : ""}${formatTime(item.show_at)}</time>
+          <time class="chat-time" datetime="${escapeHtml(item.show_at || "")}">${formatTime(item.show_at)}</time>
           ${symbol}
         </article>`;
     }).join("");
