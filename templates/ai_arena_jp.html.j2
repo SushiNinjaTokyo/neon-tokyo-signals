@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description" content="Neon Tokyo AI Arena turns Japan equity signals into a synthetic agent battle. Five AI agents select signals; alpha decides the winner."/>
   <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/ai_arena_jp.css?v=20260524-v3"/>
+  <link rel="stylesheet" href="/assets/ai_arena_jp.css?v=20260524-v4"/>
 </head>
 <body>
 <div class="arena-page" data-generated-at="{{ arena.generated_at or '' }}">
@@ -55,7 +55,7 @@
     <section class="battle-log main-log pixel-frame" aria-label="Arena log">
       <div class="section-head compact log-head">
         <span>ARENA LOG</span>
-        <strong>Icon - Name - Message - Time</strong>
+        <strong>Party chat. Icon - Name - Message - Time</strong>
       </div>
       <div id="arenaFeed" class="feed" data-feed='{{ (arena.feed or []) | tojson }}'>
         <div class="feed-empty">Loading Arena feed...</div>
@@ -174,6 +174,6 @@
   </main>
 </div>
 
-<script src="/assets/ai_arena_jp.js?v=20260524-v3" defer></script>
+<script src="/assets/ai_arena_jp.js?v=20260524-v4" defer></script>
 </body>
 </html>

@@ -8,7 +8,7 @@
  * 3. Store the user's backed agent locally in the browser.
  *
  * Feed layout target:
- *   Icon - Name - Message - Time
+ *   Icon - Name - Message - Time. Lines are generated as a conversation, not status cards.
  */
 (function(){
   const STORAGE_KEY = "neon_tokyo_ai_arena_backed_agent_v1";
@@ -83,7 +83,7 @@
     // Arena Log is the main page experience. Keep it vertical and conversation-like.
     // Show enough released lines to feel alive, then a few scheduled lines as muted previews.
     const display = released.length
-      ? released.slice(-16).concat(locked.slice(0, 3))
+      ? released.slice(-18).concat(locked.slice(0, 1))
       : feed.slice(0, 8);
 
     const rows = display.map(item => {
