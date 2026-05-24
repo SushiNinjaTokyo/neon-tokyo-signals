@@ -4,7 +4,7 @@ Copy these files into the repository root, preserving paths.
 
 ## New feature URL
 
-`/japan/arena/`
+`/japan/ai-arena/`
 
 ## Recommended first GitHub Action run
 
@@ -18,19 +18,19 @@ Copy these files into the repository root, preserving paths.
    - `OPENAI_MAX_OUTPUT_TOKENS=6000`
 
 3. First safe run:
-   - Action: `Agent Arena JP`
+   - Action: `AI Arena JP`
    - `run_mode=full`
    - `enable_ai=false`
 
 4. After confirming page generation:
-   - Action: `Agent Arena JP`
+   - Action: `AI Arena JP`
    - `run_mode=full`
    - `enable_ai=true`
 
 ## Design choices
 
-- Agent definitions are in `data/arena_agents_jp.yml`.
-- Prompt presets are in `data/arena_prompt_presets_jp.yml`.
+- Agent definitions are in `data/ai_arena_agents_jp.yml`.
+- Prompt presets are in `data/ai_arena_prompt_presets_jp.yml`.
 - Stock selection is deterministic Python logic.
 - AI only generates commentary/feed text.
 - If AI fails or is disabled, fallback text is generated and the workflow should still succeed.
