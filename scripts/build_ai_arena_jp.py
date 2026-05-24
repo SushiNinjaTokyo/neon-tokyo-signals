@@ -714,11 +714,12 @@ def fallback_battle_line(agent: dict[str, Any], pick: dict[str, Any] | None) -> 
 
 
 def fallback_feed(agents: list[dict[str, Any]], start: datetime, interval_minutes: int, max_posts: int, market_context: dict[str, Any] | None = None) -> list[dict[str, Any]]:
-    """Generate conversation-like feed without AI.
+    """Generate a dense, conversation-like feed without AI.
 
-    This fallback is important: even with OPENAI_ENABLE_AI=false, the Arena must
-    feel like five differentiated Agents reacting to the same Tokyo tape. The
-    lines are deterministic and grounded in current picks/context.
+    This fallback is deliberately more than a status list. It creates an opening
+    party-chat sequence of at least ~15 lines so the Arena feels alive even when
+    OPENAI_ENABLE_AI=false or the API fails. No "locked" or "unlock" wording is
+    generated; future lines simply stay hidden until their show_at time.
     """
     lines: list[dict[str, Any]] = []
     if not agents:
@@ -728,55 +729,60 @@ def fallback_feed(agents: list[dict[str, Any]], start: datetime, interval_minute
     top_theme = "Japan signals"
     if market_context.get("top_themes"):
         top_theme = str(market_context["top_themes"][0].get("theme") or top_theme)
-    notable = market_context.get("notable_moves") or []
+    risk_context = market_context.get("risk_context") or []
 
-    # Opening thread: each Agent reacts to the same market context through a
-    # different philosophy. These five lines are what users see first.
     by_profile = {str(a.get("selection_profile")): a for a in agents}
-    ordered_profiles = ["momentum", "risk_control", "theme", "discovery", "contrarian"]
-    opening: list[tuple[dict[str, Any], str]] = []
-    for profile in ordered_profiles:
-        agent = by_profile.get(profile) or (agents[len(opening) % len(agents)])
-        pick = agent.get("pick") or {}
-        sym = pick.get("symbol") or "the board"
-        theme = pick.get("theme") or top_theme
-        if profile == "momentum":
-            body = f"{sym} is the pressure point. Price moved first; I want the tape to explain later."
-        elif profile == "risk_control":
-            body = f"Pressure is not enough. If liquidity fades, {sym} becomes noise instead of edge."
-        elif profile == "theme":
-            body = f"The bigger story is {theme}. Global investors understand themes before they memorize tickers."
-        elif profile == "discovery":
-            body = f"The obvious names are crowded. I am watching where global screens still miss Japan."
-        else:
-            body = f"Everyone chases the loud candle. I prefer the quieter setup before the crowd returns."
-        opening.append((agent, body))
+    def pick_agent(profile: str, fallback_index: int) -> dict[str, Any]:
+        return by_profile.get(profile) or agents[fallback_index % len(agents)]
 
-    schedule: list[tuple[dict[str, Any], str, str]] = []
-    if notable:
-        schedule.append((agents[0], f"Latest signal topic: {notable[0]}", "market_topic"))
-    for agent, body in opening:
-        schedule.append((agent, body, "conversation"))
+    mh = pick_agent("momentum", 0)
+    tr = pick_agent("theme", 1)
+    rs = pick_agent("risk_control", 2)
+    ds = pick_agent("discovery", 3)
+    cq = pick_agent("contrarian", 4)
 
-    # Continue with rotating challenge/counterpoint lines. These are deterministic
-    # but deliberately conversational rather than status updates.
+    def sym(agent: dict[str, Any]) -> str:
+        return str((agent.get("pick") or {}).get("symbol") or "the board")
+    def theme(agent: dict[str, Any]) -> str:
+        return str((agent.get("pick") or {}).get("theme") or top_theme)
+
+    risk_line = str(risk_context[0]) if risk_context else "Breadth is selective, so signal quality matters more than heat."
+
+    # Opening sequence: a real threaded conversation. Keep it grounded, short,
+    # and different by Agent personality.
+    opening: list[tuple[dict[str, Any], str, str]] = [
+        (mh, f"{sym(mh)} has the pressure. Price moved first; I am listening to the tape.", "conversation"),
+        (rs, f"Pressure is not proof. If liquidity fades, {sym(mh)} turns from signal into noise.", "warning"),
+        (tr, f"The ticker is only half the story. {theme(tr)} is the narrative global investors can actually understand.", "theme"),
+        (ds, f"And the edge may not be in the obvious names. Japan still has blind spots on global screens.", "discovery"),
+        (cq, f"The loud candle gets applause. I prefer the setup people stopped watching too early.", "counterpoint"),
+        (mh, f"Fine, but strength still pays the entry fee. {sym(mh)} earned a seat in this Arena.", "challenge"),
+        (rs, f"Only if it survives the next check. I want clean volume, not one dramatic print.", "warning"),
+        (tr, f"Theme leadership is narrow, but narrow can still be powerful when the story is exportable.", "theme"),
+        (ds, f"Small discovery names are where the room gets interesting. Liquidity is the trap door.", "discovery"),
+        (cq, f"When everyone chases acceleration, I start measuring exhaustion.", "counterpoint"),
+        (mh, f"Exhaustion is tomorrow's problem. Today's board is showing momentum pockets.", "conversation"),
+        (rs, risk_line, "warning"),
+        (tr, f"If {top_theme} stays on top, the Arena belongs to the Agent who reads the theme cleanly.", "theme"),
+        (ds, f"I want the name that still feels undiscovered after the first scan.", "discovery"),
+        (cq, f"Then let the crowd chase noise. I will wait for the quieter edge.", "counterpoint"),
+    ]
+
+    schedule: list[tuple[dict[str, Any], str, str]] = opening[:]
+
+    # Continue rotating with contextual lines. These extra lines are mostly for
+    # future reveal, but never mention schedule/unlock mechanics.
     templates = [
-        "I still want confirmation beyond the first move.",
-        "Theme heat matters, but the entry has to stay clean.",
-        "If the tape narrows, selectivity beats excitement.",
-        "Liquidity decides whether this is tradable signal or just noise.",
-        "The quiet setup may outlast the obvious candle.",
-        "Today's Arena is not about being loud; it is about surviving the next check.",
+        (mh, lambda a: f"{sym(a)} stays on my screen while volume keeps confirming the move.", "conversation"),
+        (rs, lambda a: f"I still need survivability. Strong signals should not collapse when the tape gets choppy.", "warning"),
+        (tr, lambda a: f"The best Japan signal today needs both price action and a story foreign capital can parse.", "theme"),
+        (ds, lambda a: f"The obvious mega-cap answer is not always the best discovery edge.", "discovery"),
+        (cq, lambda a: f"I like the setup that improves while attention is elsewhere.", "counterpoint"),
     ]
     i = 0
     while len(schedule) < max_posts:
-        agent = agents[i % len(agents)]
-        pick = agent.get("pick") or {}
-        sym = pick.get("symbol") or "the board"
-        body = templates[i % len(templates)]
-        if i % 3 == 0:
-            body = f"{sym} stays on my screen, but I need the next signal to confirm the story."
-        schedule.append((agent, body, "counterpoint"))
+        agent, fn, kind = templates[i % len(templates)]
+        schedule.append((agent, fn(agent), kind))
         i += 1
 
     for i, (agent, body, kind) in enumerate(schedule[:max_posts]):
@@ -792,7 +798,6 @@ def fallback_feed(agents: list[dict[str, Any]], start: datetime, interval_minute
             "linked_theme": pick.get("theme"),
         })
     return lines
-
 
 def approx_tokens(text: str) -> int:
     # Conservative enough for budget gating, not exact billing.
@@ -919,17 +924,21 @@ Never use buy/sell/recommendation/target-price/guaranteed language.
 Do not invent external news. Use only the provided market_context and signal data.
 Never quote or restate raw JSON, Python dictionaries, field names, or nested market data. Convert data into plain market language.
 The Arena Log must feel like a conversation: agents react to, challenge, or build on other agents' lines.
+Do not write scheduling/meta text such as unlock, locked, scheduled, later, or reveal.
 Keep lines short, concrete, and grounded in symbols/themes from the input.
 """
     user = json.dumps({
         "task": "Generate Neon Tokyo AI Arena daily brief, agent comments, battle lines, and a conversation-style scheduled feed.",
         "arena_style": "KAWAII pixel RPG party chat + serious institutional Japan equity signal commentary.",
         "conversation_rules": [
-            "Create a conversation, not standalone status updates.",
-            "Use each Agent's conversation_role and speech_style.",
+            "Create a flowing party chat, not standalone status updates.",
+            "The first 15 feed lines must read like a real conversation where each Agent responds to the previous idea.",
+            "Use each Agent's conversation_role and speech_style so all voices feel clearly different.",
             "Mention concrete symbols or themes when useful, but avoid pretending to know news not in the data.",
             "Every few lines, include a challenge, warning, or counterpoint.",
             "Do not repeat the same Agent more than twice in a row.",
+            "Avoid generic lines such as 'watch for signs', 'monitor closely', or 'focus on trends' unless tied to a specific symbol/theme.",
+            "Never mention scheduling, unlocking, locked messages, or future reveal mechanics.",
             "Each feed body must be <= 30 words.",
         ],
         "requirements": {
@@ -954,10 +963,17 @@ def merge_ai_text(arena: dict[str, Any], ai_payload: dict[str, Any] | None, conf
     interval = int(config.get("arena", {}).get("feed_interval_minutes") or 10)
     max_posts = int(os.getenv("OPENAI_MAX_AGENT_FEED_POSTS") or config.get("arena", {}).get("max_feed_posts") or 72)
     max_posts = max(5, min(160, max_posts))
-    # Start a few intervals in the past so the page never opens with an empty
-    # Arena Log. The feed still contains future scheduled lines, but the first
-    # full party of agent comments is immediately visible.
-    show_start = now_jst().replace(second=0, microsecond=0) - timedelta(minutes=interval * max(0, len(agents) - 1))
+    # Start far enough in the past so the first page view already feels like a
+    # live party chat. We intentionally avoid showing "locked/unlock" rows in
+    # the UI; instead, the generated feed contains many already-visible lines
+    # plus future lines that simply appear later.
+    #
+    # 15 visible lines is roughly 3x the first prototype density. Keep the number
+    # independent from Agent count so adding/removing Agents does not make the
+    # opening screen feel empty.
+    initial_visible_lines = int(os.getenv("AI_ARENA_INITIAL_VISIBLE_LINES") or config.get("arena", {}).get("initial_visible_lines") or 15)
+    initial_visible_lines = max(len(agents), min(30, initial_visible_lines))
+    show_start = now_jst().replace(second=0, microsecond=0) - timedelta(minutes=interval * max(0, initial_visible_lines - 1))
 
     if not ai_payload:
         for agent in agents:
