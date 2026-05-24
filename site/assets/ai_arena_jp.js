@@ -1,12 +1,45 @@
 /* Neon Tokyo AI Arena frontend behavior.
  * ------------------------------------------------------------
- * The site is static. This script does not call any AI API.
- * It only:
- * 1. Reveals pre-generated feed lines when show_at <= now.
- * 2. Stores the user's backed agent locally in the browser.
+ * Static-site only. This script never calls OpenAI or any backend.
+ *
+ * Responsibilities:
+ * 1. Render the pre-generated Arena feed as a vertical, chat-like timeline.
+ * 2. Reveal scheduled messages by Tokyo time without re-generating content.
+ * 3. Store the user's backed agent locally in the browser.
+ *
+ * Feed layout target:
+ *   Icon - Name - Message - Time
  */
 (function(){
   const STORAGE_KEY = "neon_tokyo_ai_arena_backed_agent_v1";
+
+  function escapeHtml(value){
+    return String(value ?? "")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/\"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+  }
+
+  function normalizeAgentId(value){
+    return String(value || "").trim().toLowerCase();
+  }
+
+  function buildAgentMap(){
+    const map = new Map();
+    document.querySelectorAll("[data-agent-card]").forEach(card => {
+      const id = normalizeAgentId(card.getAttribute("data-agent-id"));
+      if(!id) return;
+      const name = card.querySelector(".agent-top h2")?.textContent?.trim() || id;
+      const avatar = card.querySelector(".agent-avatar");
+      const avatarClass = avatar
+        ? Array.from(avatar.classList).filter(c => c !== "agent-avatar").join(" ")
+        : "pixel_warrior";
+      map.set(id, {name, avatarClass});
+    });
+    return map;
+  }
 
   function parseFeed(){
     const el = document.getElementById("arenaFeed");
@@ -21,51 +54,57 @@
 
   function formatTime(value){
     const d = new Date(value);
-    if(Number.isNaN(d.getTime())) return "--:--";
-    return d.toLocaleTimeString("en-US", {hour:"2-digit", minute:"2-digit", hour12:false, timeZone:"Asia/Tokyo"}) + " JST";
+    if(Number.isNaN(d.getTime())) return "--:-- JST";
+    return d.toLocaleTimeString("en-US", {
+      hour:"2-digit",
+      minute:"2-digit",
+      hour12:false,
+      timeZone:"Asia/Tokyo"
+    }) + " JST";
   }
 
   function renderFeed(){
     const {el, feed} = parseFeed();
     if(!el) return;
+
+    const agentMap = buildAgentMap();
     const now = Date.now();
-    const visible = feed.filter(item => {
+
+    const released = feed.filter(item => {
       const t = new Date(item.show_at || 0).getTime();
       return Number.isFinite(t) && t <= now;
     });
 
-    // Arena Log is the main content. Show the released timeline plus a few
-    // locked upcoming lines so the feed feels alive even immediately after build.
-    const unlocked = visible.slice(-18);
-    const nextLocked = feed.filter(item => {
+    const locked = feed.filter(item => {
       const t = new Date(item.show_at || 0).getTime();
       return Number.isFinite(t) && t > now;
-    }).slice(0, 4);
-    const display = unlocked.length ? unlocked.concat(nextLocked) : feed.slice(0, 8);
+    });
+
+    // Arena Log is the main page experience. Keep it vertical and conversation-like.
+    // Show enough released lines to feel alive, then a few scheduled lines as muted previews.
+    const display = released.length
+      ? released.slice(-16).concat(locked.slice(0, 3))
+      : feed.slice(0, 8);
 
     const rows = display.map(item => {
-      const locked = new Date(item.show_at || 0).getTime() > now;
+      const id = normalizeAgentId(item.agent_id);
+      const agent = agentMap.get(id) || {name: item.agent_name || item.agent_id || "Agent", avatarClass:"pixel_warrior"};
+      const showAt = new Date(item.show_at || 0).getTime();
+      const isLocked = Number.isFinite(showAt) && showAt > now;
+      const body = isLocked ? "Message unlocks on schedule." : (item.body || "");
+      const symbol = item.linked_symbol ? `<span class="chat-symbol">${escapeHtml(item.linked_symbol)}</span>` : "";
+
       return `
-        <article class="feed-item${locked ? " is-locked" : ""}">
-          <div class="feed-meta">
-            <b>${escapeHtml(item.agent_name || item.agent_id || "agent")}</b>
-            <span>${locked ? "LOCKED " : ""}${formatTime(item.show_at)}</span>
-            ${item.linked_symbol ? `<span>${escapeHtml(item.linked_symbol)}</span>` : ""}
-          </div>
-          <p class="feed-body">${escapeHtml(locked ? "Message unlocks on schedule." : (item.body || ""))}</p>
+        <article class="chat-line${isLocked ? " is-locked" : ""}" data-feed-agent="${escapeHtml(id)}">
+          <div class="chat-avatar ${escapeHtml(agent.avatarClass)}" aria-hidden="true"><span class="pixel-sprite"></span></div>
+          <b class="chat-name">${escapeHtml(agent.name)}</b>
+          <p class="chat-message">${escapeHtml(body)}</p>
+          <time class="chat-time" datetime="${escapeHtml(item.show_at || "")}">${isLocked ? "LOCKED " : ""}${formatTime(item.show_at)}</time>
+          ${symbol}
         </article>`;
     }).join("");
 
     el.innerHTML = rows || '<div class="feed-empty">No Arena feed available.</div>';
-  }
-
-  function escapeHtml(value){
-    return String(value ?? "")
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;")
-      .replace(/'/g,"&#039;");
   }
 
   function applyBackedState(){
