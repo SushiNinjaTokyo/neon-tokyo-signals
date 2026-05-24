@@ -1,1 +1,92 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI Arena Ranking</title><link rel="stylesheet" href="/assets/ai_arena_ranking_jp.css"></head><body><main class="page"><nav><a href="/">TOP</a><a href="/japan/ai-arena/">ARENA</a><a href="/japan/ai-arena/positions/">POSITIONS</a><a class="active" href="/japan/ai-arena/ranking/">RANKING</a></nav><header class="hero"><p>SEASON {{ ranking.season or '—' }}</p><h1>Agent Ranking</h1>{% if ranking.champion %}<div class="champion"><span>CHAMPION</span><b>#{{ ranking.champion.rank }} {{ ranking.champion.name }}</b><em>{{ '%.2f'|format(ranking.champion.return_pct or 0) }}%</em></div>{% endif %}</header><section class="board">{% for a in ranking.agents or [] %}<article class="rank rank-{{ a.rank }}"><div class="place">#{{ a.rank }}</div><div class="name"><h2>{{ a.name }}</h2><p>{{ a.class }} / {{ a.screening_profile }}</p></div><div class="stat"><span>Return</span><b>{{ '%.2f'|format(a.return_pct or 0) }}%</b></div><div class="stat"><span>Equity</span><b>¥{{ '{:,.0f}'.format(a.portfolio_equity_jpy or 0) }}</b></div><div class="stat"><span>Win Rate</span><b>{{ '%.1f'|format(a.win_rate_pct or 0) if a.win_rate_pct is not none else '—' }}%</b></div><div class="stat"><span>Max DD</span><b>{{ '%.2f'|format(a.max_drawdown_pct or 0) }}%</b></div></article>{% endfor %}</section><footer>{{ ranking.season_archive_note or '' }}</footer></main></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Arena Ranking</title>
+  <link rel="stylesheet" href="/assets/ai_arena_ranking_jp.css" />
+</head>
+<body>
+  <main class="ranking-page">
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+
+    <nav class="arena-nav">
+      <a href="/">TOP</a>
+      <a href="/japan/ai-arena/">ARENA</a>
+      <a href="/japan/ai-arena/positions/">POSITIONS</a>
+      <a class="active" href="/japan/ai-arena/ranking/">RANKING</a>
+    </nav>
+
+    <header class="ranking-hero neon-panel">
+      <div class="hero-copy">
+        <p class="eyebrow">SEASON {{ ranking.season or '—' }}</p>
+        <h1>Agent<br />Leaderboard</h1>
+        <p class="hero-sub">Monthly simulation ranking. Five strategies enter the Tokyo tape; one agent takes the crown.</p>
+      </div>
+      {% if ranking.champion %}
+      <div class="champion-card">
+        <p class="eyebrow">CURRENT CHAMPION</p>
+        <div class="champion-avatar pixel-avatar avatar-{{ ranking.champion.avatar_style or 'pixel_mage' }}"><span></span></div>
+        <h2>#{{ ranking.champion.rank }} {{ ranking.champion.name }}</h2>
+        <div class="champion-return">{{ '%.2f'|format(ranking.champion.return_pct or 0) }}%</div>
+      </div>
+      {% endif %}
+    </header>
+
+    <section class="score-stream neon-panel">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">LIVE SEASON GRAPH</p>
+          <h2>Return bars</h2>
+        </div>
+        <span>{{ ranking.range.start_date if ranking.range else '—' }} → {{ ranking.range.end_date if ranking.range else '—' }}</span>
+      </div>
+      <div class="bar-stage">
+        {% for a in ranking.agents or [] %}
+        <div class="score-bar-row tone-{{ a.ui_tone }} {{ a.return_class }}">
+          <div class="score-agent"><b>#{{ a.rank }}</b><span>{{ a.name }}</span></div>
+          <div class="score-track"><i style="width: {{ '%.1f'|format(a.bar_width_pct or 10) }}%"></i></div>
+          <div class="score-return">{{ '%.2f'|format(a.return_pct or 0) }}%</div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="ranking-board">
+      {% for a in ranking.agents or [] %}
+      <article class="rank-card neon-panel rank-{{ a.rank }} tone-{{ a.ui_tone }}">
+        <div class="rank-card-top">
+          <div class="place">#{{ a.rank }}</div>
+          <div class="pixel-avatar avatar-{{ a.avatar_style }}"><span></span></div>
+          <div class="agent-name">
+            <h2>{{ a.name }}</h2>
+            <p>{{ a.class }} / {{ a.screening_profile }}</p>
+          </div>
+        </div>
+
+        <svg class="spark" viewBox="0 0 220 62" aria-hidden="true">
+          <defs>
+            <linearGradient id="spark-{{ loop.index }}" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#7DF9FF"/>
+              <stop offset="1" stop-color="#FF4FD8"/>
+            </linearGradient>
+          </defs>
+          <polyline points="{{ a.spark_points }}" fill="none" stroke="url(#spark-{{ loop.index }})" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/>
+          <polyline points="{{ a.spark_points }}" fill="none" stroke="rgba(125,249,255,.22)" stroke-width="9" stroke-linecap="square" stroke-linejoin="round"/>
+        </svg>
+
+        <div class="rank-stats">
+          <div><span>Return</span><b class="{{ a.return_class }}">{{ '%.2f'|format(a.return_pct or 0) }}%</b></div>
+          <div><span>Equity</span><b>¥{{ '{:,.0f}'.format(a.portfolio_equity_jpy or 0) }}</b></div>
+          <div><span>Win Rate</span><b>{{ '%.1f'|format(a.win_rate_pct or 0) if a.win_rate_pct is not none else '—' }}%</b></div>
+          <div><span>Max DD</span><b>{{ '%.2f'|format(a.max_drawdown_pct or 0) }}%</b></div>
+        </div>
+      </article>
+      {% endfor %}
+    </section>
+
+    <footer class="ranking-footer">{{ ranking.season_archive_note or '' }}</footer>
+  </main>
+</body>
+</html>
