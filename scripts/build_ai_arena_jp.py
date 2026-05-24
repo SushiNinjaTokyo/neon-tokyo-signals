@@ -439,6 +439,49 @@ def top_symbols_summary(ctx: ArenaContext, limit: int = 10) -> list[dict[str, An
     return rows[:limit]
 
 
+def compact_regime_label(regime: Any) -> str:
+    """Convert evolving Daily regime payloads into a short human-readable label.
+
+    Daily JSON sometimes stores regime as a nested dict with TOPIX/NIKKEI/Growth
+    internals. Passing that raw dict into the LLM caused ugly UI leakage such as
+    ``Regime: {'regime': 'Neutral', ...}``. The Arena prompt should only receive
+    concise, presentation-safe context.
+    """
+    if isinstance(regime, str):
+        return regime.strip() or "Unknown"
+    if isinstance(regime, dict):
+        label = regime.get("label") or regime.get("state") or regime.get("regime") or regime.get("market_regime")
+        score = regime.get("regime_score") or regime.get("score")
+        if label and score is not None:
+            return f"{str(label).strip()} ({as_float(score):.2f})"
+        if label:
+            return str(label).strip()
+        # Last-resort summary: count positive index trends instead of dumping raw JSON.
+        positives = []
+        for key in ("topix", "nikkei", "growth"):
+            value = regime.get(key)
+            if isinstance(value, dict):
+                ret20 = value.get("ret20")
+                above20 = value.get("above_sma20")
+                label2 = value.get("label") or key.upper()
+                if ret20 is not None:
+                    positives.append(f"{label2} 20D {as_float(ret20):+.1f}%")
+                elif above20 is not None:
+                    positives.append(f"{label2} {'above' if above20 else 'below'} SMA20")
+        return "; ".join(positives[:3]) if positives else "Mixed regime"
+    return "Unknown"
+
+
+def strip_raw_json_leak(text: Any) -> str:
+    """Sanitize AI/fallback prose so raw Python/JSON blobs never hit the UI."""
+    s = sanitize_text(text)
+    # Raw context leakage usually contains Python dict markers or JSON braces with
+    # market internals. If found, replace the sentence with a clean generic line.
+    if re.search(r"\{[\'\"]|[\'\"]regime_score[\'\"]|[\'\"]topix[\'\"]|[\'\"]above_sma20[\'\"]", s, flags=re.IGNORECASE):
+        return "Tokyo signals are mixed, with leadership concentrated in the strongest current themes."
+    return s
+
+
 def notable_move_lines(ctx: ArenaContext, top_symbols: list[dict[str, Any]], limit: int = 8) -> list[str]:
     """Generate concise, data-grounded topic lines for the AI prompt/fallback."""
     lines: list[str] = []
@@ -485,7 +528,7 @@ def build_market_context(ctx: ArenaContext, top_themes: list[dict[str, Any]], ag
                 "liquidity_score_0_1": pick.get("liquidity_score_0_1"),
                 "extension_risk_0_1": pick.get("extension_risk_0_1"),
             })
-    regime = ctx.daily.get("regime_state") or ctx.daily.get("regime") or "unknown"
+    regime = compact_regime_label(ctx.daily.get("regime_state") or ctx.daily.get("regime") or "unknown")
     risk_context = [
         "Do not treat a hot candle as a full thesis.",
         "Smaller discovery names require explicit liquidity caution.",
@@ -641,7 +684,7 @@ def build_result_payload(agents: list[dict[str, Any]], backtest: dict[str, Any],
 
 
 def fallback_daily_brief(ctx: ArenaContext, top_themes: list[dict[str, Any]]) -> dict[str, str]:
-    regime = ctx.daily.get("regime_state") or ctx.daily.get("regime") or "Unknown regime"
+    regime = compact_regime_label(ctx.daily.get("regime_state") or ctx.daily.get("regime") or "Unknown regime")
     theme = top_themes[0]["theme"] if top_themes else "No dominant theme"
     return {
         "analyst_id": "grand_market_analyst",
@@ -874,6 +917,7 @@ def build_ai_payload(config: dict[str, Any], ctx: ArenaContext, agents: list[dic
 Return valid JSON only.
 Never use buy/sell/recommendation/target-price/guaranteed language.
 Do not invent external news. Use only the provided market_context and signal data.
+Never quote or restate raw JSON, Python dictionaries, field names, or nested market data. Convert data into plain market language.
 The Arena Log must feel like a conversation: agents react to, challenge, or build on other agents' lines.
 Keep lines short, concrete, and grounded in symbols/themes from the input.
 """
@@ -928,17 +972,17 @@ def merge_ai_text(arena: dict[str, Any], ai_payload: dict[str, Any] | None, conf
     if isinstance(daily_brief, dict):
         arena["daily_brief"] = {
             "analyst_id": "grand_market_analyst",
-            "title": sanitize_text(daily_brief.get("title")),
-            "body": sanitize_text(daily_brief.get("body")),
-            "risk_note": sanitize_text(daily_brief.get("risk_note")),
+            "title": strip_raw_json_leak(daily_brief.get("title")),
+            "body": strip_raw_json_leak(daily_brief.get("body")),
+            "risk_note": strip_raw_json_leak(daily_brief.get("risk_note")),
         }
 
     ai_agents = ai_payload.get("agents") if isinstance(ai_payload, dict) else []
     by_id = {str(x.get("agent_id")): x for x in ai_agents if isinstance(x, dict) and x.get("agent_id")}
     for agent in agents:
         generated = by_id.get(str(agent.get("agent_id")), {})
-        agent["agent_comment"] = sanitize_text(generated.get("agent_comment") or fallback_agent_comment(agent, agent.get("pick")))
-        agent["battle_line"] = sanitize_text(generated.get("battle_line") or fallback_battle_line(agent, agent.get("pick")))
+        agent["agent_comment"] = strip_raw_json_leak(generated.get("agent_comment") or fallback_agent_comment(agent, agent.get("pick")))
+        agent["battle_line"] = strip_raw_json_leak(generated.get("battle_line") or fallback_battle_line(agent, agent.get("pick")))
 
     raw_feed = ai_payload.get("feed") if isinstance(ai_payload, dict) else []
     feed = []
