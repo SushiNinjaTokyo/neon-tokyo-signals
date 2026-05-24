@@ -714,12 +714,13 @@ def fallback_battle_line(agent: dict[str, Any], pick: dict[str, Any] | None) -> 
 
 
 def fallback_feed(agents: list[dict[str, Any]], start: datetime, interval_minutes: int, max_posts: int, market_context: dict[str, Any] | None = None) -> list[dict[str, Any]]:
-    """Generate a dense, conversation-like feed without AI.
+    """Generate a dense, threaded party-chat feed without AI.
 
-    This fallback is deliberately more than a status list. It creates an opening
-    party-chat sequence of at least ~15 lines so the Arena feels alive even when
-    OPENAI_ENABLE_AI=false or the API fails. No "locked" or "unlock" wording is
-    generated; future lines simply stay hidden until their show_at time.
+    This function is also used as a quality fallback when the model returns
+    repetitive one-liners. The goal is not to create perfect market prose; it is
+    to guarantee that the Arena never looks like a status ticker. Every line is
+    written as a reply, challenge, agreement, or counterpoint in a short RPG
+    party-chat style.
     """
     lines: list[dict[str, Any]] = []
     if not agents:
@@ -729,9 +730,12 @@ def fallback_feed(agents: list[dict[str, Any]], start: datetime, interval_minute
     top_theme = "Japan signals"
     if market_context.get("top_themes"):
         top_theme = str(market_context["top_themes"][0].get("theme") or top_theme)
+    top_symbols = market_context.get("top_symbols") or []
+    notable = market_context.get("notable_moves") or []
     risk_context = market_context.get("risk_context") or []
 
     by_profile = {str(a.get("selection_profile")): a for a in agents}
+
     def pick_agent(profile: str, fallback_index: int) -> dict[str, Any]:
         return by_profile.get(profile) or agents[fallback_index % len(agents)]
 
@@ -743,49 +747,76 @@ def fallback_feed(agents: list[dict[str, Any]], start: datetime, interval_minute
 
     def sym(agent: dict[str, Any]) -> str:
         return str((agent.get("pick") or {}).get("symbol") or "the board")
+
+    def name(agent: dict[str, Any]) -> str:
+        return str((agent.get("pick") or {}).get("name") or sym(agent))
+
     def theme(agent: dict[str, Any]) -> str:
         return str((agent.get("pick") or {}).get("theme") or top_theme)
 
+    def ret5(agent: dict[str, Any]) -> str:
+        value = (agent.get("pick") or {}).get("return_5d_pct")
+        return f"{as_float(value):+.1f}% over 5D" if value is not None else "fresh pressure"
+
     risk_line = str(risk_context[0]) if risk_context else "Breadth is selective, so signal quality matters more than heat."
+    board_symbol = str(top_symbols[0].get("symbol") if top_symbols and isinstance(top_symbols[0], dict) else sym(mh))
+    board_theme = str(top_symbols[0].get("theme") if top_symbols and isinstance(top_symbols[0], dict) else top_theme)
+    notable_line = str(notable[0]) if notable else f"{board_symbol} is one of the clearest current pressure points."
 
-    # Opening sequence: a real threaded conversation. Keep it grounded, short,
-    # and different by Agent personality.
-    opening: list[tuple[dict[str, Any], str, str]] = [
-        (mh, f"{sym(mh)} has the pressure. Price moved first; I am listening to the tape.", "conversation"),
-        (rs, f"Pressure is not proof. If liquidity fades, {sym(mh)} turns from signal into noise.", "warning"),
-        (tr, f"The ticker is only half the story. {theme(tr)} is the narrative global investors can actually understand.", "theme"),
-        (ds, f"And the edge may not be in the obvious names. Japan still has blind spots on global screens.", "discovery"),
-        (cq, f"The loud candle gets applause. I prefer the setup people stopped watching too early.", "counterpoint"),
-        (mh, f"Fine, but strength still pays the entry fee. {sym(mh)} earned a seat in this Arena.", "challenge"),
-        (rs, f"Only if it survives the next check. I want clean volume, not one dramatic print.", "warning"),
-        (tr, f"Theme leadership is narrow, but narrow can still be powerful when the story is exportable.", "theme"),
-        (ds, f"Small discovery names are where the room gets interesting. Liquidity is the trap door.", "discovery"),
-        (cq, f"When everyone chases acceleration, I start measuring exhaustion.", "counterpoint"),
-        (mh, f"Exhaustion is tomorrow's problem. Today's board is showing momentum pockets.", "conversation"),
-        (rs, risk_line, "warning"),
-        (tr, f"If {top_theme} stays on top, the Arena belongs to the Agent who reads the theme cleanly.", "theme"),
-        (ds, f"I want the name that still feels undiscovered after the first scan.", "discovery"),
-        (cq, f"Then let the crowd chase noise. I will wait for the quieter edge.", "counterpoint"),
+    # Each tuple is (speaker, body, type). The sequence is intentionally ordered
+    # so later lines respond to earlier lines. Avoid exact repetition even when
+    # max_posts is large by using a long bank before any template reuse.
+    scripted: list[tuple[dict[str, Any], str, str]] = [
+        (mh, f"I will start with the tape: {sym(mh)} is showing pressure, and {ret5(mh)} keeps it on my screen.", "conversation"),
+        (rs, f"Pressure is only step one. I want to know whether {sym(mh)} can hold when liquidity thins.", "warning"),
+        (tr, f"Both of you are too ticker-first. The larger question is whether {top_theme} is the story global capital can parse.", "theme"),
+        (ds, f"That story may not live only in the obvious names. Japan's edge often hides below the first screen.", "discovery"),
+        (cq, f"When the room agrees too quickly, I slow down. Crowded conviction is not the same as edge.", "counterpoint"),
+        (mh, f"Crowded or not, strength pays the entry fee. {name(mh)} did not get here by being quiet.", "challenge"),
+        (rs, f"And yet a clean signal should survive more than one loud candle. {risk_line}", "warning"),
+        (tr, f"The exportable narrative still matters. {theme(tr)} gives foreign investors a reason to keep watching.", "theme"),
+        (ds, f"I agree on narrative, but I want the name global screens still miss, not the headline everyone already owns.", "discovery"),
+        (cq, f"Exactly. The best setup may be the one improving while attention is trapped somewhere louder.", "counterpoint"),
+        (mh, f"Then test the board, not the opinion. {sym(mh)} has acceleration; that is my evidence.", "conversation"),
+        (rs, f"My evidence is different: liquidity, drawdown behavior, and whether the move avoids turning into volume noise.", "warning"),
+        (tr, f"Today feels like a narrative filter. Price action without a global story may not travel far.", "theme"),
+        (ds, f"But a small discovery signal with real volume can travel fast once the story becomes legible.", "discovery"),
+        (cq, f"I am watching for the opposite: the signal that improves after the crowd stops cheering.", "counterpoint"),
+        (mh, f"{notable_line} That is enough for me to keep pressing the momentum case.", "conversation"),
+        (rs, f"Pressing is fine. Chasing is not. I want tomorrow's tape to confirm today's excitement.", "warning"),
+        (tr, f"If {top_theme} remains the leadership cluster, the Agent who reads the theme cleanly has the advantage.", "theme"),
+        (ds, f"Leadership clusters create shadows. I want to search the shadows for the next signal.", "discovery"),
+        (cq, f"Search the shadows, yes. But never pay full price for a story that already became obvious.", "counterpoint"),
+        (mh, f"You can wait for quiet. I will follow the pressure while it is still visible.", "challenge"),
+        (rs, f"And I will ask whether that pressure is durable enough to deserve trust.", "warning"),
+        (tr, f"Durability plus narrative is the combination. Japan needs signals foreign capital can explain in one sentence.", "theme"),
+        (ds, f"Then my question is simple: which current signal is still under-owned by that foreign capital?", "discovery"),
+        (cq, f"My question is colder: which signal has the least regret priced into it?", "counterpoint"),
     ]
 
-    schedule: list[tuple[dict[str, Any], str, str]] = opening[:]
-
-    # Continue rotating with contextual lines. These extra lines are mostly for
-    # future reveal, but never mention schedule/unlock mechanics.
-    templates = [
-        (mh, lambda a: f"{sym(a)} stays on my screen while volume keeps confirming the move.", "conversation"),
-        (rs, lambda a: f"I still need survivability. Strong signals should not collapse when the tape gets choppy.", "warning"),
-        (tr, lambda a: f"The best Japan signal today needs both price action and a story foreign capital can parse.", "theme"),
-        (ds, lambda a: f"The obvious mega-cap answer is not always the best discovery edge.", "discovery"),
-        (cq, lambda a: f"I like the setup that improves while attention is elsewhere.", "counterpoint"),
+    # If a user asks for more feed lines than the scripted bank, continue with
+    # varied response templates rather than repeating the same five sentences.
+    continuation = [
+        (mh, lambda: f"I am not asking for a perfect story. I am asking whether {sym(mh)} still has force behind the move.", "conversation"),
+        (rs, lambda: f"Force without control is just volatility. My vote stays with survivability.", "warning"),
+        (tr, lambda: f"The strongest Japan signals today need two engines: price action and a theme that travels overseas.", "theme"),
+        (ds, lambda: f"The discovery edge appears before the global label becomes obvious. That is where I want to look.", "discovery"),
+        (cq, lambda: f"I prefer the setup that gets stronger while the crowd argues about yesterday's winner.", "counterpoint"),
+        (mh, lambda: f"If volume keeps confirming, I do not need consensus. I need momentum to stay honest.", "conversation"),
+        (rs, lambda: f"Honest momentum leaves footprints. Noisy momentum leaves traps.", "warning"),
+        (tr, lambda: f"This Arena is not only about which ticker jumps. It is about which Japan story becomes investable to outsiders.", "theme"),
+        (ds, lambda: f"Outsiders usually arrive late. I am trying to meet the signal before it gets translated.", "discovery"),
+        (cq, lambda: f"And I am trying to meet it after the first wave gets tired.", "counterpoint"),
     ]
-    i = 0
-    while len(schedule) < max_posts:
-        agent, fn, kind = templates[i % len(templates)]
-        schedule.append((agent, fn(agent), kind))
-        i += 1
 
-    for i, (agent, body, kind) in enumerate(schedule[:max_posts]):
+    scheduled: list[tuple[dict[str, Any], str, str]] = scripted[:]
+    j = 0
+    while len(scheduled) < max_posts:
+        agent, fn, kind = continuation[j % len(continuation)]
+        scheduled.append((agent, fn(), kind))
+        j += 1
+
+    for i, (agent, body, kind) in enumerate(scheduled[:max_posts]):
         pick = agent.get("pick") or {}
         lines.append({
             "id": f"feed_{i+1:03d}",
@@ -798,6 +829,57 @@ def fallback_feed(agents: list[dict[str, Any]], start: datetime, interval_minute
             "linked_theme": pick.get("theme"),
         })
     return lines
+
+
+def normalized_feed_body(text: Any) -> str:
+    """Normalize a feed body for repetition checks."""
+    s = sanitize_text(text).lower()
+    s = re.sub(r"[^a-z0-9.%]+", " ", s)
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def feed_needs_quality_fallback(feed: list[dict[str, Any]], agents: list[dict[str, Any]]) -> bool:
+    """Detect model output that looks like repeated status lines, not dialogue.
+
+    The Arena should feel like a party chat. If the model produces a small set of
+    repeated slogans, or if too many bodies are generic and non-reactive, replace
+    the feed with the deterministic threaded fallback. This is stricter than a
+    normal AI text acceptance check because the UI quality depends on dialogue.
+    """
+    if len(feed) < max(12, len(agents) * 2):
+        return True
+
+    bodies = [normalized_feed_body(x.get("body")) for x in feed if normalized_feed_body(x.get("body"))]
+    if not bodies:
+        return True
+    unique_ratio = len(set(bodies)) / max(1, len(bodies))
+    if unique_ratio < 0.72:
+        return True
+
+    # Exact repetition in a chat feed is visually obvious and should never ship.
+    counts = Counter(bodies)
+    if counts and max(counts.values()) >= 3:
+        return True
+
+    generic_patterns = [
+        r"watch for signs",
+        r"focus on .*trends",
+        r"monitoring .*movements",
+        r"best japan signal today needs both price action",
+        r"obvious mega cap answer is not always",
+        r"i like the setup that improves while attention is elsewhere",
+    ]
+    generic_hits = sum(1 for body in bodies if any(re.search(p, body) for p in generic_patterns))
+    if generic_hits / max(1, len(bodies)) > 0.25:
+        return True
+
+    # A conversational feed should include several rebuttal/continuation markers.
+    reactive_words = ("but", "and", "then", "if", "yet", "still", "exactly", "agree", "not enough", "rather", "while")
+    reactive_hits = sum(1 for body in bodies[:20] if any(w in body for w in reactive_words))
+    if reactive_hits < 6:
+        return True
+
+    return False
 
 def approx_tokens(text: str) -> int:
     # Conservative enough for budget gating, not exact billing.
@@ -923,7 +1005,8 @@ Return valid JSON only.
 Never use buy/sell/recommendation/target-price/guaranteed language.
 Do not invent external news. Use only the provided market_context and signal data.
 Never quote or restate raw JSON, Python dictionaries, field names, or nested market data. Convert data into plain market language.
-The Arena Log must feel like a conversation: agents react to, challenge, or build on other agents' lines.
+The Arena Log must feel like a real conversation: each line should respond to a prior line, challenge it, agree with it, or extend it.
+Do not produce a rotating list of independent slogans. Do not repeat the same sentence template.
 Do not write scheduling/meta text such as unlock, locked, scheduled, later, or reveal.
 Keep lines short, concrete, and grounded in symbols/themes from the input.
 """
@@ -932,7 +1015,9 @@ Keep lines short, concrete, and grounded in symbols/themes from the input.
         "arena_style": "KAWAII pixel RPG party chat + serious institutional Japan equity signal commentary.",
         "conversation_rules": [
             "Create a flowing party chat, not standalone status updates.",
-            "The first 15 feed lines must read like a real conversation where each Agent responds to the previous idea.",
+            "The first 20 feed lines must read like one continuous conversation where each Agent responds to the previous idea.",
+            "Use conversational links such as agreement, disagreement, warning, or reframing. Avoid isolated generic observations.",
+            "Do not reuse the same sentence pattern or repeat a body with minor wording changes.",
             "Use each Agent's conversation_role and speech_style so all voices feel clearly different.",
             "Mention concrete symbols or themes when useful, but avoid pretending to know news not in the data.",
             "Every few lines, include a challenge, warning, or counterpoint.",
@@ -1022,9 +1107,14 @@ def merge_ai_text(arena: dict[str, Any], ai_payload: dict[str, Any] | None, conf
                 "linked_symbol": pick.get("symbol"),
                 "linked_theme": pick.get("theme"),
             })
-    if len(feed) < max(5, len(agents)):
+    if feed_needs_quality_fallback(feed, agents):
+        # The API may succeed but still return a repetitive ticker-like feed.
+        # In that case, protect the product experience by switching to the
+        # deterministic threaded conversation. This keeps the UI from looking
+        # like a copy-pasted alert loop.
         feed = fallback_feed(agents, show_start, interval, max_posts, market_context=market_context)
         arena["ai"]["fallback_used"] = True
+        arena["ai"]["status"] = "fallback_quality_guard"
     else:
         arena["ai"]["fallback_used"] = False
         arena["ai"]["status"] = "ok"
