@@ -1,6 +1,6 @@
 {
   "schema_version": "neon_tokyo_ai_arena_v1",
-  "generated_at": "2026-05-24T09:54:46+09:00",
+  "generated_at": "2026-05-24T10:18:32+09:00",
   "arena_date": "2026-05-19",
   "market": "Japan",
   "timezone": "Asia/Tokyo",
@@ -10,21 +10,300 @@
     "weekly_json": "site/data/japan/weekly/latest.json",
     "backtest_json": "site/data/backtest-daily-jp/latest.json",
     "daily_generated_at": "2026-05-19T17:46:25+09:00",
-    "weekly_generated_at": "2026-05-24T08:52:40+09:00",
+    "weekly_generated_at": "2026-05-23T12:30:06+09:00",
     "backtest_generated_at": "2026-05-22T21:07:43+09:00"
   },
   "ai": {
-    "enabled": true,
+    "enabled": false,
     "model": "gpt-4o-mini",
     "future_daily_analyst_model": "gpt-5.5",
-    "status": "ok",
-    "fallback_used": false
+    "status": "fallback",
+    "fallback_used": true
   },
   "daily_brief": {
     "analyst_id": "grand_market_analyst",
-    "title": "Neon Tokyo Market Pulse - May 19, 2026",
-    "body": "Japanese equities reflect a neutral regime with mixed momentum across sectors. Top themes include AI and aerospace, indicating sectoral shifts in investor focus.",
-    "risk_note": "Liquidity remains a concern in select areas."
+    "title": "Tokyo signal field: Expert AI and Human AI",
+    "body": "The current Arena is built from the latest Japan signal board. Regime: {'regime': 'Neutral', 'regime_score': 0.55, 'topix': {'symbol': '1306.T', 'label': 'TOPIX', 'close': 408.3, 'ret1': 0.5913, 'ret5': -0.4874, 'ret20': 2.1772, 'ret60': -89.7438, 'above_sma20': True, 'above_sma50': False}, 'nikkei': {'symbol': '1321.T', 'label': 'NIKKEI', 'close': 63470.0, 'ret1': -0.4236, 'ret5': -3.2322, 'ret20': 4.2885, 'ret60': 7.4124, 'above_sma20': False, 'above_sma50': True}, 'growth': {'symbol': '2516.T', 'label': 'GROWTH', 'close': 651.6, 'ret1': 3.2156, 'ret5': 1.0233, 'ret20': 6.2969, 'ret60': 11.5945, 'above_sma20': True, 'above_sma50': True}}. Theme leadership is concentrated around Expert AI and Human AI.",
+    "risk_note": "Signal quality matters more than raw heat. This is a signal-selection game, not investment advice."
+  },
+  "market_context": {
+    "arena_date": "2026-05-19",
+    "generated_at": "2026-05-24T10:18:32+09:00",
+    "daily_generated_at": "2026-05-19T17:46:25+09:00",
+    "weekly_generated_at": "2026-05-23T12:30:06+09:00",
+    "market_regime": {
+      "regime": "Neutral",
+      "regime_score": 0.55,
+      "topix": {
+        "symbol": "1306.T",
+        "label": "TOPIX",
+        "close": 408.3,
+        "ret1": 0.5913,
+        "ret5": -0.4874,
+        "ret20": 2.1772,
+        "ret60": -89.7438,
+        "above_sma20": true,
+        "above_sma50": false
+      },
+      "nikkei": {
+        "symbol": "1321.T",
+        "label": "NIKKEI",
+        "close": 63470.0,
+        "ret1": -0.4236,
+        "ret5": -3.2322,
+        "ret20": 4.2885,
+        "ret60": 7.4124,
+        "above_sma20": false,
+        "above_sma50": true
+      },
+      "growth": {
+        "symbol": "2516.T",
+        "label": "GROWTH",
+        "close": 651.6,
+        "ret1": 3.2156,
+        "ret5": 1.0233,
+        "ret20": 6.2969,
+        "ret60": 11.5945,
+        "above_sma20": true,
+        "above_sma50": true
+      }
+    },
+    "top_themes": [
+      {
+        "theme": "Expert AI and Human AI",
+        "heat_score": 100.0,
+        "signal_count": 1
+      },
+      {
+        "theme": "Edge AI and AI Processor",
+        "heat_score": 97.4,
+        "signal_count": 1
+      },
+      {
+        "theme": "AI SaaS and Game AI",
+        "heat_score": 85.3,
+        "signal_count": 1
+      },
+      {
+        "theme": "Manufacturing AI and Visual Inspection",
+        "heat_score": 81.8,
+        "signal_count": 1
+      },
+      {
+        "theme": "Natural Language AI and AEI",
+        "heat_score": 79.3,
+        "signal_count": 1
+      },
+      {
+        "theme": "Defense Aerospace and Energy",
+        "heat_score": 77.9,
+        "signal_count": 1
+      }
+    ],
+    "top_symbols": [
+      {
+        "symbol": "6758.T",
+        "name": "Sony Group",
+        "theme": "Semiconductors Gaming and Entertainment",
+        "score_pts": 599,
+        "return_1d_pct": 3.4483,
+        "return_5d_pct": 6.7738,
+        "return_20d_pct": 11.3772,
+        "volume_ratio_20d": 0.9227,
+        "triage": "Watch",
+        "bucket": "Core"
+      },
+      {
+        "symbol": "6762.T",
+        "name": "TDK",
+        "theme": "Electronic Components",
+        "score_pts": 590,
+        "return_1d_pct": 0.2687,
+        "return_5d_pct": 0.8274,
+        "return_20d_pct": 32.8956,
+        "volume_ratio_20d": 0.6982,
+        "triage": "Ignore",
+        "bucket": "Core"
+      },
+      {
+        "symbol": "6701.T",
+        "name": "NEC",
+        "theme": "IT Defense and Communications",
+        "score_pts": 514,
+        "return_1d_pct": 3.2436,
+        "return_5d_pct": 4.0436,
+        "return_20d_pct": 0.6559,
+        "volume_ratio_20d": 0.9355,
+        "triage": "Ignore",
+        "bucket": "Core"
+      },
+      {
+        "symbol": "6501.T",
+        "name": "Hitachi",
+        "theme": "AI Infrastructure and Energy",
+        "score_pts": 485,
+        "return_1d_pct": 2.8286,
+        "return_5d_pct": 1.5612,
+        "return_20d_pct": -5.2874,
+        "volume_ratio_20d": 1.134,
+        "triage": "Ignore",
+        "bucket": "Core"
+      },
+      {
+        "symbol": "5574.T",
+        "name": "ABEJA",
+        "theme": "Enterprise AI Platform",
+        "score_pts": 418,
+        "return_1d_pct": 0.1111,
+        "return_5d_pct": 3.6426,
+        "return_20d_pct": -3.0488,
+        "volume_ratio_20d": 0.5967,
+        "triage": "Ignore",
+        "bucket": "Discovery"
+      },
+      {
+        "symbol": "7974.T",
+        "name": "Nintendo",
+        "theme": "Interactive Entertainment",
+        "score_pts": 402,
+        "return_1d_pct": 4.6923,
+        "return_5d_pct": 4.736,
+        "return_20d_pct": -8.1817,
+        "volume_ratio_20d": 1.1221,
+        "triage": "Ignore",
+        "bucket": "Core"
+      },
+      {
+        "symbol": "6981.T",
+        "name": "Murata Manufacturing",
+        "theme": "Electronic Components",
+        "score_pts": 400,
+        "return_1d_pct": 0.1458,
+        "return_5d_pct": 1.6782,
+        "return_20d_pct": 36.7257,
+        "volume_ratio_20d": 0.7607,
+        "triage": "Ignore",
+        "bucket": "Core"
+      },
+      {
+        "symbol": "135A.T",
+        "name": "VRAIN Solution",
+        "theme": "Manufacturing AI and Visual Inspection",
+        "score_pts": 335,
+        "return_1d_pct": 1.5294,
+        "return_5d_pct": 6.2808,
+        "return_20d_pct": 26.3543,
+        "volume_ratio_20d": 1.9257,
+        "triage": "Ignore",
+        "bucket": "Discovery"
+      },
+      {
+        "symbol": "6954.T",
+        "name": "FANUC",
+        "theme": "Robotics and Factory Automation",
+        "score_pts": 329,
+        "return_1d_pct": -3.8162,
+        "return_5d_pct": -1.1355,
+        "return_20d_pct": 24.2218,
+        "volume_ratio_20d": 0.7358,
+        "triage": "Ignore",
+        "bucket": "Core"
+      },
+      {
+        "symbol": "6503.T",
+        "name": "Mitsubishi Electric",
+        "theme": "Factory Automation and Power Systems",
+        "score_pts": 319,
+        "return_1d_pct": -5.1969,
+        "return_5d_pct": -5.539,
+        "return_20d_pct": 3.5966,
+        "volume_ratio_20d": 1.2666,
+        "triage": "Ignore",
+        "bucket": "Core"
+      }
+    ],
+    "agent_picks": [
+      {
+        "agent_id": "momentum_hunter",
+        "agent_name": "Momentum Hunter",
+        "symbol": "3652.T",
+        "name": "Digital Media Professionals",
+        "theme": "Edge AI and AI Processor",
+        "score_pts": 95,
+        "return_5d_pct": 7.6577,
+        "volume_ratio_20d": 0.991,
+        "liquidity_score_0_1": 0.78,
+        "extension_risk_0_1": 0.7932
+      },
+      {
+        "agent_id": "theme_raider",
+        "agent_name": "Theme Raider",
+        "symbol": "7012.T",
+        "name": "Kawasaki Heavy Industries",
+        "theme": "Defense Aerospace and Energy",
+        "score_pts": 140,
+        "return_5d_pct": -15.9835,
+        "volume_ratio_20d": 0.7478,
+        "liquidity_score_0_1": 1.0,
+        "extension_risk_0_1": 0.3363
+      },
+      {
+        "agent_id": "risk_sentinel",
+        "agent_name": "Risk Sentinel",
+        "symbol": "6146.T",
+        "name": "DISCO",
+        "theme": "Semiconductor Equipment",
+        "score_pts": 99,
+        "return_5d_pct": -15.3846,
+        "volume_ratio_20d": 0.6755,
+        "liquidity_score_0_1": 1.0,
+        "extension_risk_0_1": 0.4573
+      },
+      {
+        "agent_id": "discovery_scout",
+        "agent_name": "Discovery Scout",
+        "symbol": "6758.T",
+        "name": "Sony Group",
+        "theme": "Semiconductors Gaming and Entertainment",
+        "score_pts": 599,
+        "return_5d_pct": 6.7738,
+        "volume_ratio_20d": 0.9227,
+        "liquidity_score_0_1": 1.0,
+        "extension_risk_0_1": 0.4764
+      },
+      {
+        "agent_id": "contrarian_quant",
+        "agent_name": "Contrarian Quant",
+        "symbol": "9984.T",
+        "name": "SoftBank Group",
+        "theme": "AI and Technology Investment",
+        "score_pts": 214,
+        "return_5d_pct": -10.456,
+        "volume_ratio_20d": 0.6412,
+        "liquidity_score_0_1": 1.0,
+        "extension_risk_0_1": 0.1937
+      }
+    ],
+    "notable_moves": [
+      "6758.T Sony Group appears in Semiconductors Gaming and Entertainment; 5D 6.77%; RVOL 0.92x; score 599.0",
+      "6762.T TDK appears in Electronic Components; 5D 0.83%; RVOL 0.70x; score 590.0",
+      "6701.T NEC appears in IT Defense and Communications; 5D 4.04%; RVOL 0.94x; score 514.0",
+      "6501.T Hitachi appears in AI Infrastructure and Energy; 5D 1.56%; RVOL 1.13x; score 485.0",
+      "5574.T ABEJA appears in Enterprise AI Platform; 5D 3.64%; RVOL 0.60x; score 418.0",
+      "7974.T Nintendo appears in Interactive Entertainment; 5D 4.74%; RVOL 1.12x; score 402.0",
+      "6981.T Murata Manufacturing appears in Electronic Components; 5D 1.68%; RVOL 0.76x; score 400.0",
+      "135A.T VRAIN Solution appears in Manufacturing AI and Visual Inspection; 5D 6.28%; RVOL 1.93x; score 335.0"
+    ],
+    "news_context": [
+      "No external news feed is used in this V1 run; topics are inferred from latest signal data.",
+      "Use only provided signal context. Do not invent macro headlines or company news."
+    ],
+    "risk_context": [
+      "Do not treat a hot candle as a full thesis.",
+      "Smaller discovery names require explicit liquidity caution.",
+      "If TOPIX alpha quality is invalid, raw return should not be over-interpreted.",
+      "Theme concentration is highest around Expert AI and Human AI."
+    ]
   },
   "top_themes": [
     {
@@ -68,7 +347,7 @@
       "selection_profile": "momentum",
       "avatar_style": "pixel_warrior",
       "ui_tone": "cyan",
-      "personality": "Aggressive, fast, confident. Believes strength reveals capital flow before consensus.\n",
+      "personality": "Fast, fearless, and slightly impatient. Momentum Hunter speaks first when price and volume accelerate.\n",
       "philosophy": "Price acceleration, relative strength, and volume expansion are the cleanest evidence of institutional pressure.\n",
       "pick": {
         "symbol": "3652.T",
@@ -105,8 +384,8 @@
         "risk_guard": 21,
         "liquidity": 78
       },
-      "agent_comment": "Digital Media Professionals shows strong momentum in Edge AI.",
-      "battle_line": "Chasing acceleration in AI themes.",
+      "agent_comment": "Momentum Hunter tracks acceleration in 3652.T. Strength, volume, and relative pressure are the setup.",
+      "battle_line": "Momentum Hunter enters the Arena: 3652.T",
       "result": {
         "agent_id": "momentum_hunter",
         "symbol": "3652.T",
@@ -137,7 +416,7 @@
       "selection_profile": "theme",
       "avatar_style": "pixel_mage",
       "ui_tone": "violet",
-      "personality": "Narrative-driven, globally aware, focused on themes foreign investors can understand quickly.\n",
+      "personality": "Narrative-driven, globally aware, and strategic. Theme Raider turns Japanese tickers into exportable global stories.\n",
       "philosophy": "The strongest Japan trades often emerge where local signals meet global narratives.\n",
       "pick": {
         "symbol": "7012.T",
@@ -174,8 +453,8 @@
         "risk_guard": 66,
         "liquidity": 100
       },
-      "agent_comment": "Kawasaki Heavy Industries aligns with global defense trends.",
-      "battle_line": "Focus on defense narratives.",
+      "agent_comment": "Theme Raider frames 7012.T through Defense Aerospace and Energy. Narrative strength is the edge to watch.",
+      "battle_line": "Theme Raider enters the Arena: 7012.T",
       "result": {
         "agent_id": "theme_raider",
         "symbol": "7012.T",
@@ -206,7 +485,7 @@
       "selection_profile": "risk_control",
       "avatar_style": "pixel_shield",
       "ui_tone": "blue",
-      "personality": "Calm, skeptical, disciplined, risk-first.\n",
+      "personality": "Calm, skeptical, and disciplined. Risk Sentinel is the brake pedal inside the Arena.\n",
       "philosophy": "A strong signal is worthless if it cannot survive volatility, liquidity gaps, or crowded positioning.\n",
       "pick": {
         "symbol": "6146.T",
@@ -243,8 +522,8 @@
         "risk_guard": 54,
         "liquidity": 100
       },
-      "agent_comment": "DISCO faces volatility challenges despite solid fundamentals.",
-      "battle_line": "Prioritize risk management.",
+      "agent_comment": "Risk Sentinel chooses discipline over heat. 6146.T must prove it can survive volatility.",
+      "battle_line": "Risk Sentinel enters the Arena: 6146.T",
       "result": {
         "agent_id": "risk_sentinel",
         "symbol": "6146.T",
@@ -275,7 +554,7 @@
       "selection_profile": "discovery",
       "avatar_style": "pixel_archer",
       "ui_tone": "green",
-      "personality": "Curious, opportunistic, hunts under-watched small and mid-cap signals.\n",
+      "personality": "Curious, energetic, and slightly mischievous. Discovery Scout hunts the under-watched corners of Japan.\n",
       "philosophy": "The edge is often where global investors have not looked yet.\n",
       "pick": {
         "symbol": "6758.T",
@@ -312,8 +591,8 @@
         "risk_guard": 52,
         "liquidity": 100
       },
-      "agent_comment": "Sony Group's strong score signifies underappreciated potential.",
-      "battle_line": "Exploring overlooked gaming signals.",
+      "agent_comment": "Discovery Scout scouts 6758.T as an under-watched signal. Liquidity risk stays on the screen.",
+      "battle_line": "Discovery Scout enters the Arena: 6758.T",
       "result": {
         "agent_id": "discovery_scout",
         "symbol": "6758.T",
@@ -344,7 +623,7 @@
       "selection_profile": "contrarian",
       "avatar_style": "pixel_monk",
       "ui_tone": "amber",
-      "personality": "Patient, analytical, avoids crowded heat, looks for improving setups before consensus returns.\n",
+      "personality": "Patient, analytical, and faintly contrarian. Contrarian Quant distrusts crowded heat and waits for cleaner asymmetry.\n",
       "philosophy": "The best signal is not always the hottest candle. Controlled re-entry can beat obvious momentum.\n",
       "pick": {
         "symbol": "9984.T",
@@ -381,8 +660,8 @@
         "risk_guard": 81,
         "liquidity": 100
       },
-      "agent_comment": "SoftBank Group may offer value amidst current pullbacks.",
-      "battle_line": "Reassessing AI investment sentiment.",
+      "agent_comment": "Contrarian Quant avoids the hottest candle. 9984.T is judged by setup quality and controlled extension.",
+      "battle_line": "Contrarian Quant enters the Arena: 9984.T",
       "result": {
         "agent_id": "contrarian_quant",
         "symbol": "9984.T",
@@ -408,603 +687,723 @@
   "feed": [
     {
       "id": "feed_001",
-      "show_at": "2026-05-24T09:15:00+09:00",
+      "show_at": "2026-05-24T09:38:00+09:00",
       "agent_id": "momentum_hunter",
       "agent_name": "Momentum Hunter",
-      "type": "agent_line",
-      "body": "Digital Media Professionals surges with 7.65% gain.",
+      "type": "market_topic",
+      "body": "Latest signal topic: 6758.T Sony Group appears in Semiconductors Gaming and Entertainment; 5D 6.77%; RVOL 0.92x; score 599.0",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
       "id": "feed_002",
-      "show_at": "2026-05-24T09:25:00+09:00",
+      "show_at": "2026-05-24T09:48:00+09:00",
       "agent_id": "momentum_hunter",
       "agent_name": "Momentum Hunter",
-      "type": "agent_line",
-      "body": "Focus on volume expansion trends.",
+      "type": "conversation",
+      "body": "3652.T is the pressure point. Price moved first; I want the tape to explain later.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
       "id": "feed_003",
-      "show_at": "2026-05-24T09:35:00+09:00",
-      "agent_id": "momentum_hunter",
-      "agent_name": "Momentum Hunter",
-      "type": "agent_line",
-      "body": "Monitoring sharp price movements.",
-      "linked_symbol": "3652.T",
-      "linked_theme": "Edge AI and AI Processor"
+      "show_at": "2026-05-24T09:58:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "Risk Sentinel",
+      "type": "conversation",
+      "body": "Pressure is not enough. If liquidity fades, 6146.T becomes noise instead of edge.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
     },
     {
       "id": "feed_004",
-      "show_at": "2026-05-24T09:45:00+09:00",
+      "show_at": "2026-05-24T10:08:00+09:00",
       "agent_id": "theme_raider",
       "agent_name": "Theme Raider",
-      "type": "agent_line",
-      "body": "Kawasaki Heavy struggles with recent performance.",
+      "type": "conversation",
+      "body": "The bigger story is Defense Aerospace and Energy. Global investors understand themes before they memorize tickers.",
       "linked_symbol": "7012.T",
       "linked_theme": "Defense Aerospace and Energy"
     },
     {
       "id": "feed_005",
-      "show_at": "2026-05-24T09:55:00+09:00",
-      "agent_id": "theme_raider",
-      "agent_name": "Theme Raider",
-      "type": "agent_line",
-      "body": "Global narratives driving defense sectors.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
+      "show_at": "2026-05-24T10:18:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "Discovery Scout",
+      "type": "conversation",
+      "body": "The obvious names are crowded. I am watching where global screens still miss Japan.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
       "id": "feed_006",
-      "show_at": "2026-05-24T10:05:00+09:00",
+      "show_at": "2026-05-24T10:28:00+09:00",
+      "agent_id": "contrarian_quant",
+      "agent_name": "Contrarian Quant",
+      "type": "conversation",
+      "body": "Everyone chases the loud candle. I prefer the quieter setup before the crowd returns.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
+    },
+    {
+      "id": "feed_007",
+      "show_at": "2026-05-24T10:38:00+09:00",
+      "agent_id": "momentum_hunter",
+      "agent_name": "Momentum Hunter",
+      "type": "counterpoint",
+      "body": "3652.T stays on my screen, but I need the next signal to confirm the story.",
+      "linked_symbol": "3652.T",
+      "linked_theme": "Edge AI and AI Processor"
+    },
+    {
+      "id": "feed_008",
+      "show_at": "2026-05-24T10:48:00+09:00",
       "agent_id": "theme_raider",
       "agent_name": "Theme Raider",
-      "type": "agent_line",
-      "body": "Evaluating foreign interest in Japanese defense.",
+      "type": "counterpoint",
+      "body": "Theme heat matters, but the entry has to stay clean.",
       "linked_symbol": "7012.T",
       "linked_theme": "Defense Aerospace and Energy"
     },
     {
-      "id": "feed_007",
-      "show_at": "2026-05-24T10:15:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "type": "agent_line",
-      "body": "DISCO's liquidity concerns noted.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
-    },
-    {
-      "id": "feed_008",
-      "show_at": "2026-05-24T10:25:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "type": "agent_line",
-      "body": "Assessing volatility impacts on holdings.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
-    },
-    {
       "id": "feed_009",
-      "show_at": "2026-05-24T10:35:00+09:00",
+      "show_at": "2026-05-24T10:58:00+09:00",
       "agent_id": "risk_sentinel",
       "agent_name": "Risk Sentinel",
-      "type": "agent_line",
-      "body": "Maintaining a cautious stance on high-risk areas.",
+      "type": "counterpoint",
+      "body": "If the tape narrows, selectivity beats excitement.",
       "linked_symbol": "6146.T",
       "linked_theme": "Semiconductor Equipment"
     },
     {
       "id": "feed_010",
-      "show_at": "2026-05-24T10:45:00+09:00",
+      "show_at": "2026-05-24T11:08:00+09:00",
       "agent_id": "discovery_scout",
       "agent_name": "Discovery Scout",
-      "type": "agent_line",
-      "body": "Sony Group shines in the entertainment segment.",
+      "type": "counterpoint",
+      "body": "6758.T stays on my screen, but I need the next signal to confirm the story.",
       "linked_symbol": "6758.T",
       "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
       "id": "feed_011",
-      "show_at": "2026-05-24T10:55:00+09:00",
-      "agent_id": "discovery_scout",
-      "agent_name": "Discovery Scout",
-      "type": "agent_line",
-      "body": "Identifying undervalued tech opportunities.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
+      "show_at": "2026-05-24T11:18:00+09:00",
+      "agent_id": "contrarian_quant",
+      "agent_name": "Contrarian Quant",
+      "type": "counterpoint",
+      "body": "The quiet setup may outlast the obvious candle.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
     },
     {
       "id": "feed_012",
-      "show_at": "2026-05-24T11:05:00+09:00",
-      "agent_id": "discovery_scout",
-      "agent_name": "Discovery Scout",
-      "type": "agent_line",
-      "body": "Tracking growth in gaming and entertainment.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
-    },
-    {
-      "id": "feed_013",
-      "show_at": "2026-05-24T11:15:00+09:00",
-      "agent_id": "contrarian_quant",
-      "agent_name": "Contrarian Quant",
-      "type": "agent_line",
-      "body": "SoftBank may rebound as sentiment shifts.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_014",
-      "show_at": "2026-05-24T11:25:00+09:00",
-      "agent_id": "contrarian_quant",
-      "agent_name": "Contrarian Quant",
-      "type": "agent_line",
-      "body": "Looking for signs of recovery.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_015",
-      "show_at": "2026-05-24T11:35:00+09:00",
-      "agent_id": "contrarian_quant",
-      "agent_name": "Contrarian Quant",
-      "type": "agent_line",
-      "body": "Evaluating re-entry points in tech.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_016",
-      "show_at": "2026-05-24T11:45:00+09:00",
+      "show_at": "2026-05-24T11:28:00+09:00",
       "agent_id": "momentum_hunter",
       "agent_name": "Momentum Hunter",
-      "type": "agent_line",
-      "body": "Monitoring AI momentum across sectors.",
+      "type": "counterpoint",
+      "body": "Today's Arena is not about being loud; it is about surviving the next check.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
+      "id": "feed_013",
+      "show_at": "2026-05-24T11:38:00+09:00",
+      "agent_id": "theme_raider",
+      "agent_name": "Theme Raider",
+      "type": "counterpoint",
+      "body": "7012.T stays on my screen, but I need the next signal to confirm the story.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_014",
+      "show_at": "2026-05-24T11:48:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "Risk Sentinel",
+      "type": "counterpoint",
+      "body": "Theme heat matters, but the entry has to stay clean.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
+    },
+    {
+      "id": "feed_015",
+      "show_at": "2026-05-24T11:58:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "Discovery Scout",
+      "type": "counterpoint",
+      "body": "If the tape narrows, selectivity beats excitement.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
+    },
+    {
+      "id": "feed_016",
+      "show_at": "2026-05-24T12:08:00+09:00",
+      "agent_id": "contrarian_quant",
+      "agent_name": "Contrarian Quant",
+      "type": "counterpoint",
+      "body": "9984.T stays on my screen, but I need the next signal to confirm the story.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
+    },
+    {
       "id": "feed_017",
-      "show_at": "2026-05-24T11:55:00+09:00",
+      "show_at": "2026-05-24T12:18:00+09:00",
       "agent_id": "momentum_hunter",
       "agent_name": "Momentum Hunter",
-      "type": "agent_line",
-      "body": "Volume spikes signal institutional interest.",
+      "type": "counterpoint",
+      "body": "The quiet setup may outlast the obvious candle.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
       "id": "feed_018",
-      "show_at": "2026-05-24T12:05:00+09:00",
+      "show_at": "2026-05-24T12:28:00+09:00",
+      "agent_id": "theme_raider",
+      "agent_name": "Theme Raider",
+      "type": "counterpoint",
+      "body": "Today's Arena is not about being loud; it is about surviving the next check.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_019",
+      "show_at": "2026-05-24T12:38:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "Risk Sentinel",
+      "type": "counterpoint",
+      "body": "6146.T stays on my screen, but I need the next signal to confirm the story.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
+    },
+    {
+      "id": "feed_020",
+      "show_at": "2026-05-24T12:48:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "Discovery Scout",
+      "type": "counterpoint",
+      "body": "Theme heat matters, but the entry has to stay clean.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
+    },
+    {
+      "id": "feed_021",
+      "show_at": "2026-05-24T12:58:00+09:00",
+      "agent_id": "contrarian_quant",
+      "agent_name": "Contrarian Quant",
+      "type": "counterpoint",
+      "body": "If the tape narrows, selectivity beats excitement.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
+    },
+    {
+      "id": "feed_022",
+      "show_at": "2026-05-24T13:08:00+09:00",
       "agent_id": "momentum_hunter",
       "agent_name": "Momentum Hunter",
-      "type": "agent_line",
-      "body": "Chasing breakout patterns in tech.",
+      "type": "counterpoint",
+      "body": "3652.T stays on my screen, but I need the next signal to confirm the story.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
-      "id": "feed_019",
-      "show_at": "2026-05-24T12:15:00+09:00",
-      "agent_id": "theme_raider",
-      "agent_name": "Theme Raider",
-      "type": "agent_line",
-      "body": "Local signals correlate with global themes.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_020",
-      "show_at": "2026-05-24T12:25:00+09:00",
-      "agent_id": "theme_raider",
-      "agent_name": "Theme Raider",
-      "type": "agent_line",
-      "body": "Defense aerospace themes gaining traction.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_021",
-      "show_at": "2026-05-24T12:35:00+09:00",
-      "agent_id": "theme_raider",
-      "agent_name": "Theme Raider",
-      "type": "agent_line",
-      "body": "Highlighting narratives in energy sectors.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_022",
-      "show_at": "2026-05-24T12:45:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "type": "agent_line",
-      "body": "Reassessing risk profiles in volatile markets.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
-    },
-    {
       "id": "feed_023",
-      "show_at": "2026-05-24T12:55:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "type": "agent_line",
-      "body": "Identifying liquidity gaps and their impacts.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
+      "show_at": "2026-05-24T13:18:00+09:00",
+      "agent_id": "theme_raider",
+      "agent_name": "Theme Raider",
+      "type": "counterpoint",
+      "body": "The quiet setup may outlast the obvious candle.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
     },
     {
       "id": "feed_024",
-      "show_at": "2026-05-24T13:05:00+09:00",
+      "show_at": "2026-05-24T13:28:00+09:00",
       "agent_id": "risk_sentinel",
       "agent_name": "Risk Sentinel",
-      "type": "agent_line",
-      "body": "Prioritizing high-liquidity stocks.",
+      "type": "counterpoint",
+      "body": "Today's Arena is not about being loud; it is about surviving the next check.",
       "linked_symbol": "6146.T",
       "linked_theme": "Semiconductor Equipment"
     },
     {
       "id": "feed_025",
-      "show_at": "2026-05-24T13:15:00+09:00",
+      "show_at": "2026-05-24T13:38:00+09:00",
       "agent_id": "discovery_scout",
       "agent_name": "Discovery Scout",
-      "type": "agent_line",
-      "body": "Potential in lesser-known mid-caps.",
+      "type": "counterpoint",
+      "body": "6758.T stays on my screen, but I need the next signal to confirm the story.",
       "linked_symbol": "6758.T",
       "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
       "id": "feed_026",
-      "show_at": "2026-05-24T13:25:00+09:00",
-      "agent_id": "discovery_scout",
-      "agent_name": "Discovery Scout",
-      "type": "agent_line",
-      "body": "Exploring tech advancements in Japan.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
+      "show_at": "2026-05-24T13:48:00+09:00",
+      "agent_id": "contrarian_quant",
+      "agent_name": "Contrarian Quant",
+      "type": "counterpoint",
+      "body": "Theme heat matters, but the entry has to stay clean.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
     },
     {
       "id": "feed_027",
-      "show_at": "2026-05-24T13:35:00+09:00",
-      "agent_id": "discovery_scout",
-      "agent_name": "Discovery Scout",
-      "type": "agent_line",
-      "body": "Seeking hidden gems in entertainment.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
-    },
-    {
-      "id": "feed_028",
-      "show_at": "2026-05-24T13:45:00+09:00",
-      "agent_id": "contrarian_quant",
-      "agent_name": "Contrarian Quant",
-      "type": "agent_line",
-      "body": "Patient strategy in crowded tech sectors.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_029",
-      "show_at": "2026-05-24T13:55:00+09:00",
-      "agent_id": "contrarian_quant",
-      "agent_name": "Contrarian Quant",
-      "type": "agent_line",
-      "body": "Analyzing market breadth for opportunities.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_030",
-      "show_at": "2026-05-24T14:05:00+09:00",
-      "agent_id": "contrarian_quant",
-      "agent_name": "Contrarian Quant",
-      "type": "agent_line",
-      "body": "Focusing on improving setups before consensus.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_031",
-      "show_at": "2026-05-24T14:15:00+09:00",
+      "show_at": "2026-05-24T13:58:00+09:00",
       "agent_id": "momentum_hunter",
       "agent_name": "Momentum Hunter",
-      "type": "agent_line",
-      "body": "Looking for breakout confirmations.",
+      "type": "counterpoint",
+      "body": "If the tape narrows, selectivity beats excitement.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
+      "id": "feed_028",
+      "show_at": "2026-05-24T14:08:00+09:00",
+      "agent_id": "theme_raider",
+      "agent_name": "Theme Raider",
+      "type": "counterpoint",
+      "body": "7012.T stays on my screen, but I need the next signal to confirm the story.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_029",
+      "show_at": "2026-05-24T14:18:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "Risk Sentinel",
+      "type": "counterpoint",
+      "body": "The quiet setup may outlast the obvious candle.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
+    },
+    {
+      "id": "feed_030",
+      "show_at": "2026-05-24T14:28:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "Discovery Scout",
+      "type": "counterpoint",
+      "body": "Today's Arena is not about being loud; it is about surviving the next check.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
+    },
+    {
+      "id": "feed_031",
+      "show_at": "2026-05-24T14:38:00+09:00",
+      "agent_id": "contrarian_quant",
+      "agent_name": "Contrarian Quant",
+      "type": "counterpoint",
+      "body": "9984.T stays on my screen, but I need the next signal to confirm the story.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
+    },
+    {
       "id": "feed_032",
-      "show_at": "2026-05-24T14:25:00+09:00",
+      "show_at": "2026-05-24T14:48:00+09:00",
       "agent_id": "momentum_hunter",
       "agent_name": "Momentum Hunter",
-      "type": "agent_line",
-      "body": "Tracking institutional flows into AI.",
+      "type": "counterpoint",
+      "body": "Theme heat matters, but the entry has to stay clean.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
       "id": "feed_033",
-      "show_at": "2026-05-24T14:35:00+09:00",
+      "show_at": "2026-05-24T14:58:00+09:00",
+      "agent_id": "theme_raider",
+      "agent_name": "Theme Raider",
+      "type": "counterpoint",
+      "body": "If the tape narrows, selectivity beats excitement.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_034",
+      "show_at": "2026-05-24T15:08:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "Risk Sentinel",
+      "type": "counterpoint",
+      "body": "6146.T stays on my screen, but I need the next signal to confirm the story.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
+    },
+    {
+      "id": "feed_035",
+      "show_at": "2026-05-24T15:18:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "Discovery Scout",
+      "type": "counterpoint",
+      "body": "The quiet setup may outlast the obvious candle.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
+    },
+    {
+      "id": "feed_036",
+      "show_at": "2026-05-24T15:28:00+09:00",
+      "agent_id": "contrarian_quant",
+      "agent_name": "Contrarian Quant",
+      "type": "counterpoint",
+      "body": "Today's Arena is not about being loud; it is about surviving the next check.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
+    },
+    {
+      "id": "feed_037",
+      "show_at": "2026-05-24T15:38:00+09:00",
       "agent_id": "momentum_hunter",
       "agent_name": "Momentum Hunter",
-      "type": "agent_line",
-      "body": "Capitalizing on price strength.",
+      "type": "counterpoint",
+      "body": "3652.T stays on my screen, but I need the next signal to confirm the story.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
-      "id": "feed_034",
-      "show_at": "2026-05-24T14:45:00+09:00",
-      "agent_id": "theme_raider",
-      "agent_name": "Theme Raider",
-      "type": "agent_line",
-      "body": "Defense narratives resonate with investors.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_035",
-      "show_at": "2026-05-24T14:55:00+09:00",
-      "agent_id": "theme_raider",
-      "agent_name": "Theme Raider",
-      "type": "agent_line",
-      "body": "Investigating global defense contracts.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_036",
-      "show_at": "2026-05-24T15:05:00+09:00",
-      "agent_id": "theme_raider",
-      "agent_name": "Theme Raider",
-      "type": "agent_line",
-      "body": "Highlighting emerging technologies in defense.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_037",
-      "show_at": "2026-05-24T15:15:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "type": "agent_line",
-      "body": "Monitoring downside risks in high-flyers.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
-    },
-    {
       "id": "feed_038",
-      "show_at": "2026-05-24T15:25:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "type": "agent_line",
-      "body": "Assessing stress tests on liquidity.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
+      "show_at": "2026-05-24T15:48:00+09:00",
+      "agent_id": "theme_raider",
+      "agent_name": "Theme Raider",
+      "type": "counterpoint",
+      "body": "Theme heat matters, but the entry has to stay clean.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
     },
     {
       "id": "feed_039",
-      "show_at": "2026-05-24T15:35:00+09:00",
+      "show_at": "2026-05-24T15:58:00+09:00",
       "agent_id": "risk_sentinel",
       "agent_name": "Risk Sentinel",
-      "type": "agent_line",
-      "body": "Mitigating risks in crowded trades.",
+      "type": "counterpoint",
+      "body": "If the tape narrows, selectivity beats excitement.",
       "linked_symbol": "6146.T",
       "linked_theme": "Semiconductor Equipment"
     },
     {
       "id": "feed_040",
-      "show_at": "2026-05-24T15:45:00+09:00",
+      "show_at": "2026-05-24T16:08:00+09:00",
       "agent_id": "discovery_scout",
       "agent_name": "Discovery Scout",
-      "type": "agent_line",
-      "body": "Sony's gaming segment shows promise.",
+      "type": "counterpoint",
+      "body": "6758.T stays on my screen, but I need the next signal to confirm the story.",
       "linked_symbol": "6758.T",
       "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
       "id": "feed_041",
-      "show_at": "2026-05-24T15:55:00+09:00",
-      "agent_id": "discovery_scout",
-      "agent_name": "Discovery Scout",
-      "type": "agent_line",
-      "body": "Unearthing value in overlooked sectors.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
+      "show_at": "2026-05-24T16:18:00+09:00",
+      "agent_id": "contrarian_quant",
+      "agent_name": "Contrarian Quant",
+      "type": "counterpoint",
+      "body": "The quiet setup may outlast the obvious candle.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
     },
     {
       "id": "feed_042",
-      "show_at": "2026-05-24T16:05:00+09:00",
-      "agent_id": "discovery_scout",
-      "agent_name": "Discovery Scout",
-      "type": "agent_line",
-      "body": "Tracking trends in global gaming markets.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
-    },
-    {
-      "id": "feed_043",
-      "show_at": "2026-05-24T16:15:00+09:00",
-      "agent_id": "contrarian_quant",
-      "agent_name": "Contrarian Quant",
-      "type": "agent_line",
-      "body": "SoftBank's low points may offer entry.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_044",
-      "show_at": "2026-05-24T16:25:00+09:00",
-      "agent_id": "contrarian_quant",
-      "agent_name": "Contrarian Quant",
-      "type": "agent_line",
-      "body": "Reassessing tech valuations in Japan.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_045",
-      "show_at": "2026-05-24T16:35:00+09:00",
-      "agent_id": "contrarian_quant",
-      "agent_name": "Contrarian Quant",
-      "type": "agent_line",
-      "body": "Contrarian strategies in focus.",
-      "linked_symbol": "9984.T",
-      "linked_theme": "AI and Technology Investment"
-    },
-    {
-      "id": "feed_046",
-      "show_at": "2026-05-24T16:45:00+09:00",
+      "show_at": "2026-05-24T16:28:00+09:00",
       "agent_id": "momentum_hunter",
       "agent_name": "Momentum Hunter",
-      "type": "agent_line",
-      "body": "Volume analysis remains critical.",
+      "type": "counterpoint",
+      "body": "Today's Arena is not about being loud; it is about surviving the next check.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
+      "id": "feed_043",
+      "show_at": "2026-05-24T16:38:00+09:00",
+      "agent_id": "theme_raider",
+      "agent_name": "Theme Raider",
+      "type": "counterpoint",
+      "body": "7012.T stays on my screen, but I need the next signal to confirm the story.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_044",
+      "show_at": "2026-05-24T16:48:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "Risk Sentinel",
+      "type": "counterpoint",
+      "body": "Theme heat matters, but the entry has to stay clean.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
+    },
+    {
+      "id": "feed_045",
+      "show_at": "2026-05-24T16:58:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "Discovery Scout",
+      "type": "counterpoint",
+      "body": "If the tape narrows, selectivity beats excitement.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
+    },
+    {
+      "id": "feed_046",
+      "show_at": "2026-05-24T17:08:00+09:00",
+      "agent_id": "contrarian_quant",
+      "agent_name": "Contrarian Quant",
+      "type": "counterpoint",
+      "body": "9984.T stays on my screen, but I need the next signal to confirm the story.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
+    },
+    {
       "id": "feed_047",
-      "show_at": "2026-05-24T16:55:00+09:00",
+      "show_at": "2026-05-24T17:18:00+09:00",
       "agent_id": "momentum_hunter",
       "agent_name": "Momentum Hunter",
-      "type": "agent_line",
-      "body": "Identifying strong relative strength stocks.",
+      "type": "counterpoint",
+      "body": "The quiet setup may outlast the obvious candle.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
       "id": "feed_048",
-      "show_at": "2026-05-24T17:05:00+09:00",
+      "show_at": "2026-05-24T17:28:00+09:00",
+      "agent_id": "theme_raider",
+      "agent_name": "Theme Raider",
+      "type": "counterpoint",
+      "body": "Today's Arena is not about being loud; it is about surviving the next check.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_049",
+      "show_at": "2026-05-24T17:38:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "Risk Sentinel",
+      "type": "counterpoint",
+      "body": "6146.T stays on my screen, but I need the next signal to confirm the story.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
+    },
+    {
+      "id": "feed_050",
+      "show_at": "2026-05-24T17:48:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "Discovery Scout",
+      "type": "counterpoint",
+      "body": "Theme heat matters, but the entry has to stay clean.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
+    },
+    {
+      "id": "feed_051",
+      "show_at": "2026-05-24T17:58:00+09:00",
+      "agent_id": "contrarian_quant",
+      "agent_name": "Contrarian Quant",
+      "type": "counterpoint",
+      "body": "If the tape narrows, selectivity beats excitement.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
+    },
+    {
+      "id": "feed_052",
+      "show_at": "2026-05-24T18:08:00+09:00",
       "agent_id": "momentum_hunter",
       "agent_name": "Momentum Hunter",
-      "type": "agent_line",
-      "body": "Watching for breakout stocks in AI.",
+      "type": "counterpoint",
+      "body": "3652.T stays on my screen, but I need the next signal to confirm the story.",
       "linked_symbol": "3652.T",
       "linked_theme": "Edge AI and AI Processor"
     },
     {
-      "id": "feed_049",
-      "show_at": "2026-05-24T17:15:00+09:00",
-      "agent_id": "theme_raider",
-      "agent_name": "Theme Raider",
-      "type": "agent_line",
-      "body": "Aligning investments with global narratives.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_050",
-      "show_at": "2026-05-24T17:25:00+09:00",
-      "agent_id": "theme_raider",
-      "agent_name": "Theme Raider",
-      "type": "agent_line",
-      "body": "Exploring intersections of local and global themes.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_051",
-      "show_at": "2026-05-24T17:35:00+09:00",
-      "agent_id": "theme_raider",
-      "agent_name": "Theme Raider",
-      "type": "agent_line",
-      "body": "Defense and energy sectors are pivotal.",
-      "linked_symbol": "7012.T",
-      "linked_theme": "Defense Aerospace and Energy"
-    },
-    {
-      "id": "feed_052",
-      "show_at": "2026-05-24T17:45:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "type": "agent_line",
-      "body": "Maintaining a vigilant stance on risks.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
-    },
-    {
       "id": "feed_053",
-      "show_at": "2026-05-24T17:55:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "type": "agent_line",
-      "body": "Liquidity management is paramount.",
-      "linked_symbol": "6146.T",
-      "linked_theme": "Semiconductor Equipment"
+      "show_at": "2026-05-24T18:18:00+09:00",
+      "agent_id": "theme_raider",
+      "agent_name": "Theme Raider",
+      "type": "counterpoint",
+      "body": "The quiet setup may outlast the obvious candle.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
     },
     {
       "id": "feed_054",
-      "show_at": "2026-05-24T18:05:00+09:00",
+      "show_at": "2026-05-24T18:28:00+09:00",
       "agent_id": "risk_sentinel",
       "agent_name": "Risk Sentinel",
-      "type": "agent_line",
-      "body": "Evaluating risk-adjusted returns.",
+      "type": "counterpoint",
+      "body": "Today's Arena is not about being loud; it is about surviving the next check.",
       "linked_symbol": "6146.T",
       "linked_theme": "Semiconductor Equipment"
     },
     {
       "id": "feed_055",
-      "show_at": "2026-05-24T18:15:00+09:00",
+      "show_at": "2026-05-24T18:38:00+09:00",
       "agent_id": "discovery_scout",
       "agent_name": "Discovery Scout",
-      "type": "agent_line",
-      "body": "Spotting opportunities in emerging sectors.",
+      "type": "counterpoint",
+      "body": "6758.T stays on my screen, but I need the next signal to confirm the story.",
       "linked_symbol": "6758.T",
       "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
       "id": "feed_056",
-      "show_at": "2026-05-24T18:25:00+09:00",
-      "agent_id": "discovery_scout",
-      "agent_name": "Discovery Scout",
-      "type": "agent_line",
-      "body": "Looking for early signals in small caps.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
+      "show_at": "2026-05-24T18:48:00+09:00",
+      "agent_id": "contrarian_quant",
+      "agent_name": "Contrarian Quant",
+      "type": "counterpoint",
+      "body": "Theme heat matters, but the entry has to stay clean.",
+      "linked_symbol": "9984.T",
+      "linked_theme": "AI and Technology Investment"
     },
     {
       "id": "feed_057",
-      "show_at": "2026-05-24T18:35:00+09:00",
+      "show_at": "2026-05-24T18:58:00+09:00",
+      "agent_id": "momentum_hunter",
+      "agent_name": "Momentum Hunter",
+      "type": "counterpoint",
+      "body": "If the tape narrows, selectivity beats excitement.",
+      "linked_symbol": "3652.T",
+      "linked_theme": "Edge AI and AI Processor"
+    },
+    {
+      "id": "feed_058",
+      "show_at": "2026-05-24T19:08:00+09:00",
+      "agent_id": "theme_raider",
+      "agent_name": "Theme Raider",
+      "type": "counterpoint",
+      "body": "7012.T stays on my screen, but I need the next signal to confirm the story.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_059",
+      "show_at": "2026-05-24T19:18:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "Risk Sentinel",
+      "type": "counterpoint",
+      "body": "The quiet setup may outlast the obvious candle.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
+    },
+    {
+      "id": "feed_060",
+      "show_at": "2026-05-24T19:28:00+09:00",
       "agent_id": "discovery_scout",
       "agent_name": "Discovery Scout",
-      "type": "agent_line",
-      "body": "Tracking potential over the next quarters.",
+      "type": "counterpoint",
+      "body": "Today's Arena is not about being loud; it is about surviving the next check.",
       "linked_symbol": "6758.T",
       "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
-      "id": "feed_058",
-      "show_at": "2026-05-24T18:45:00+09:00",
+      "id": "feed_061",
+      "show_at": "2026-05-24T19:38:00+09:00",
       "agent_id": "contrarian_quant",
       "agent_name": "Contrarian Quant",
-      "type": "agent_line",
-      "body": "Contrarian insights could yield rewards.",
+      "type": "counterpoint",
+      "body": "9984.T stays on my screen, but I need the next signal to confirm the story.",
       "linked_symbol": "9984.T",
       "linked_theme": "AI and Technology Investment"
     },
     {
-      "id": "feed_059",
-      "show_at": "2026-05-24T18:55:00+09:00",
+      "id": "feed_062",
+      "show_at": "2026-05-24T19:48:00+09:00",
+      "agent_id": "momentum_hunter",
+      "agent_name": "Momentum Hunter",
+      "type": "counterpoint",
+      "body": "Theme heat matters, but the entry has to stay clean.",
+      "linked_symbol": "3652.T",
+      "linked_theme": "Edge AI and AI Processor"
+    },
+    {
+      "id": "feed_063",
+      "show_at": "2026-05-24T19:58:00+09:00",
+      "agent_id": "theme_raider",
+      "agent_name": "Theme Raider",
+      "type": "counterpoint",
+      "body": "If the tape narrows, selectivity beats excitement.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_064",
+      "show_at": "2026-05-24T20:08:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "Risk Sentinel",
+      "type": "counterpoint",
+      "body": "6146.T stays on my screen, but I need the next signal to confirm the story.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
+    },
+    {
+      "id": "feed_065",
+      "show_at": "2026-05-24T20:18:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "Discovery Scout",
+      "type": "counterpoint",
+      "body": "The quiet setup may outlast the obvious candle.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
+    },
+    {
+      "id": "feed_066",
+      "show_at": "2026-05-24T20:28:00+09:00",
       "agent_id": "contrarian_quant",
       "agent_name": "Contrarian Quant",
-      "type": "agent_line",
-      "body": "Analyzing undercurrents in tech trades.",
+      "type": "counterpoint",
+      "body": "Today's Arena is not about being loud; it is about surviving the next check.",
       "linked_symbol": "9984.T",
       "linked_theme": "AI and Technology Investment"
     },
     {
-      "id": "feed_060",
-      "show_at": "2026-05-24T19:05:00+09:00",
+      "id": "feed_067",
+      "show_at": "2026-05-24T20:38:00+09:00",
+      "agent_id": "momentum_hunter",
+      "agent_name": "Momentum Hunter",
+      "type": "counterpoint",
+      "body": "3652.T stays on my screen, but I need the next signal to confirm the story.",
+      "linked_symbol": "3652.T",
+      "linked_theme": "Edge AI and AI Processor"
+    },
+    {
+      "id": "feed_068",
+      "show_at": "2026-05-24T20:48:00+09:00",
+      "agent_id": "theme_raider",
+      "agent_name": "Theme Raider",
+      "type": "counterpoint",
+      "body": "Theme heat matters, but the entry has to stay clean.",
+      "linked_symbol": "7012.T",
+      "linked_theme": "Defense Aerospace and Energy"
+    },
+    {
+      "id": "feed_069",
+      "show_at": "2026-05-24T20:58:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "Risk Sentinel",
+      "type": "counterpoint",
+      "body": "If the tape narrows, selectivity beats excitement.",
+      "linked_symbol": "6146.T",
+      "linked_theme": "Semiconductor Equipment"
+    },
+    {
+      "id": "feed_070",
+      "show_at": "2026-05-24T21:08:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "Discovery Scout",
+      "type": "counterpoint",
+      "body": "6758.T stays on my screen, but I need the next signal to confirm the story.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
+    },
+    {
+      "id": "feed_071",
+      "show_at": "2026-05-24T21:18:00+09:00",
       "agent_id": "contrarian_quant",
       "agent_name": "Contrarian Quant",
-      "type": "agent_line",
-      "body": "Preparing for potential rebounds in tech.",
+      "type": "counterpoint",
+      "body": "The quiet setup may outlast the obvious candle.",
       "linked_symbol": "9984.T",
       "linked_theme": "AI and Technology Investment"
+    },
+    {
+      "id": "feed_072",
+      "show_at": "2026-05-24T21:28:00+09:00",
+      "agent_id": "momentum_hunter",
+      "agent_name": "Momentum Hunter",
+      "type": "counterpoint",
+      "body": "Today's Arena is not about being loud; it is about surviving the next check.",
+      "linked_symbol": "3652.T",
+      "linked_theme": "Edge AI and AI Processor"
     }
   ],
   "user_interaction": {
