@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description" content="Neon Tokyo AI Arena turns Japan equity signals into a synthetic agent battle. Five AI agents select signals; alpha decides the winner."/>
   <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/ai_arena_jp.css?v=20260524-v1"/>
+  <link rel="stylesheet" href="/assets/ai_arena_jp.css?v=20260524-v2"/>
 </head>
 <body>
 <div class="arena-page" data-generated-at="{{ arena.generated_at or '' }}">
@@ -19,7 +19,7 @@
       <span class="brand-mark">NTS</span>
       <span>
         <strong>NEON TOKYO AI ARENA</strong>
-        <em>Five synthetic investors. One Tokyo market. Alpha decides.</em>
+        <em>Signal agents. Pixel battle. Alpha check.</em>
       </span>
     </a>
     <nav class="arena-nav" aria-label="Arena navigation">
@@ -33,11 +33,12 @@
     <section class="hero pixel-frame">
       <div class="hero-copy">
         <p class="kicker"><span class="live-dot"></span> AI SIGNAL BATTLE // JAPAN EQUITIES</p>
-        <h1>
-          <span>Enter the Tokyo arena.</span>
-          <strong>Back the agent with the edge.</strong>
-        </h1>
+        <h1>Five AI agents enter Tokyo.</h1>
         <p class="hero-note">{{ arena.disclaimer or 'Signal-selection game. Informational only. Not investment advice.' }}</p>
+        <div class="hero-meta" aria-label="Arena data date">
+          <span>Data as of <b>{{ arena.arena_date or '—' }}</b></span>
+          <span>Generated <b>{{ arena.generated_at or '—' }}</b></span>
+        </div>
       </div>
 
       <aside class="brief battle-window" aria-label="Grand Market Analyst brief">
@@ -51,26 +52,20 @@
       </aside>
     </section>
 
-    <section class="theme-strip pixel-frame" aria-label="Theme heat">
-      <div class="section-head compact">
-        <span>THEME HEAT</span>
-        <strong>Current Japan signal clusters</strong>
+    <section class="battle-log main-log pixel-frame" aria-label="Arena log">
+      <div class="section-head compact log-head">
+        <span>ARENA LOG</span>
+        <strong>Main feed. Agent lines unlock by Tokyo time.</strong>
       </div>
-      <div class="theme-grid">
-        {% for theme in arena.top_themes or [] %}
-        <div class="theme-chip">
-          <span>{{ theme.theme }}</span>
-          <b>{{ '%.0f'|format(theme.heat_score or 0) }}</b>
-          <i>{{ theme.signal_count or 0 }} signals</i>
-        </div>
-        {% endfor %}
+      <div id="arenaFeed" class="feed" data-feed='{{ (arena.feed or []) | tojson }}'>
+        <div class="feed-empty">Loading Arena feed...</div>
       </div>
     </section>
 
     <section class="agent-section" aria-label="AI agents">
       <div class="section-head">
         <span>SELECT YOUR AGENT</span>
-        <strong>Each agent uses a different signal philosophy.</strong>
+        <strong>Five different philosophies. One alpha check.</strong>
       </div>
 
       <div class="agent-grid">
@@ -79,7 +74,7 @@
         <article class="agent-card pixel-frame tone-{{ agent.ui_tone or 'cyan' }}" data-agent-card data-agent-id="{{ agent.agent_id }}">
           <div class="agent-top">
             <div class="agent-avatar {{ agent.avatar_style or '' }}" aria-hidden="true">
-              <span></span>
+              <span class="pixel-sprite"></span>
             </div>
             <div>
               <p>{{ agent.class or 'Agent' }}</p>
@@ -97,7 +92,7 @@
           <p class="agent-comment">{{ agent.agent_comment or 'Agent comment unavailable.' }}</p>
 
           <div class="stat-grid" aria-label="Agent stats">
-            <div><span>Signal</span><b>{{ agent.stats.signal_power or 0 }}</b></div>
+            <div><span>Power</span><b>{{ agent.stats.signal_power or 0 }}</b></div>
             <div><span>Theme</span><b>{{ agent.stats.theme_heat or 0 }}</b></div>
             <div><span>Guard</span><b>{{ agent.stats.risk_guard or 0 }}</b></div>
             <div><span>Liquid</span><b>{{ agent.stats.liquidity or 0 }}</b></div>
@@ -116,20 +111,10 @@
       </div>
     </section>
 
-    <section class="arena-lower">
-      <div class="battle-log pixel-frame">
-        <div class="section-head compact">
-          <span>ARENA LOG</span>
-          <strong>Scheduled agent lines unlock by time.</strong>
-        </div>
-        <div id="arenaFeed" class="feed" data-feed='{{ (arena.feed or []) | tojson }}'>
-          <div class="feed-empty">Loading Arena feed...</div>
-        </div>
-      </div>
-
+    <section class="arena-support-grid">
       <aside class="result-window pixel-frame">
         <div class="section-head compact">
-          <span>RESULT</span>
+          <span>{{ arena.arena_result.result_label or 'LATEST RESOLVED BATTLE' }}</span>
           <strong>{{ arena.arena_result.evaluation_horizon or '1d' }} alpha check</strong>
         </div>
         {% if arena.arena_result.status == 'mature' %}
@@ -140,9 +125,14 @@
           </div>
           <div class="result-metrics">
             <div><span>Return</span><b>{{ arena.arena_result.winner_return_pct if arena.arena_result.winner_return_pct is not none else '—' }}%</b></div>
-            <div><span>Alpha</span><b>{{ arena.arena_result.winner_alpha_vs_topix_pct if arena.arena_result.winner_alpha_vs_topix_pct is not none else '—' }}%</b></div>
-            <div><span>Eval</span><b>{{ arena.arena_result.winner_eval_date or '—' }}</b></div>
+            <div><span>TOPIX Alpha</span><b>{{ arena.arena_result.winner_alpha_vs_topix_pct if arena.arena_result.winner_alpha_vs_topix_pct is not none else '—' }}%</b></div>
+            <div><span>Signal Date</span><b>{{ arena.arena_result.winner_signal_date or arena.arena_result.winner_eval_date or '—' }}</b></div>
           </div>
+          {% if arena.arena_result.winner_date_age_days is not none and arena.arena_result.winner_date_age_days > 14 %}
+          <p class="result-note">Latest mature result is {{ arena.arena_result.winner_date_age_days }} days old because current picks are still awaiting matching mature backtest data.</p>
+          {% else %}
+          <p class="result-note">Result uses the latest mature Daily Backtest horizon for current Arena picks.</p>
+          {% endif %}
         {% else %}
           <div class="pending-box">
             <strong>PENDING</strong>
@@ -155,11 +145,27 @@
           <strong id="userBackedAgent">Not selected</strong>
         </div>
       </aside>
+
+      <section class="theme-strip pixel-frame" aria-label="Theme heat">
+        <div class="section-head compact">
+          <span>THEME HEAT</span>
+          <strong>Current Japan signal clusters</strong>
+        </div>
+        <div class="theme-grid">
+          {% for theme in arena.top_themes or [] %}
+          <div class="theme-chip">
+            <span>{{ theme.theme }}</span>
+            <b>{{ '%.0f'|format(theme.heat_score or 0) }}</b>
+            <i>{{ theme.signal_count or 0 }} signals</i>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
     </section>
 
     <footer class="arena-footer">
-      <span>Generated: {{ arena.generated_at or '—' }}</span>
       <span>AI status: {{ arena.ai.status or 'unknown' }}{% if arena.ai.fallback_used %} / fallback{% endif %}</span>
+      <span>Data: {{ arena.arena_date or '—' }}</span>
       <nav>
         <a href="/disclaimer/">Disclaimer</a>
         <a href="/privacy/">Privacy</a>
@@ -168,6 +174,6 @@
   </main>
 </div>
 
-<script src="/assets/ai_arena_jp.js?v=20260524-v1" defer></script>
+<script src="/assets/ai_arena_jp.js?v=20260524-v2" defer></script>
 </body>
 </html>
