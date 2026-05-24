@@ -1,6 +1,6 @@
 {
-  "schema_version": "neon_tokyo_ai_arena_discussion_v2",
-  "generated_at": "2026-05-24T23:25:34+09:00",
+  "schema_version": "neon_tokyo_ai_arena_discussion_v2_1",
+  "generated_at": "2026-05-24T23:36:37+09:00",
   "market": "Japan",
   "timezone": "Asia/Tokyo",
   "season": "2026-05",
@@ -12,15 +12,16 @@
   "ai": {
     "enabled": true,
     "model": "gpt-4o-mini",
-    "status": "ok",
+    "status": "ok_pro_debate",
     "fallback_used": false,
-    "external_news_enabled": false
+    "external_news_enabled": false,
+    "debate_style": "professional_portfolio_review"
   },
   "daily_brief": {
     "analyst_id": "market_master",
-    "title": "Arena Rankings Update for May 2026",
-    "body": "Weekly Sage leads with a strong return, boosted by positions in Sumitomo Electric and VRAIN Solution. Risk Sentinel remains cautious with cash. Discovery Scout is leveraging market opportunities mildly.",
-    "risk_note": "Monitor positions, especially for long-held stocks amidst volatility."
+    "title": "2026-05 Season Review",
+    "body": "Weekly Sage leads the season with a return of +4.80%, while Daily Striker is lagging behind at -2.19%. The portfolio has a strong concentration in Manufacturing AI and Visual Inspection.",
+    "risk_note": "Max drawdowns range from -0.22% to -3.73% across agents."
   },
   "market_context": {
     "range": {
@@ -29,6 +30,15 @@
       "trading_days": 59
     },
     "season": "2026-05",
+    "diagnostics": {
+      "daily_snapshots_used": 2,
+      "scheduled_orders": 16,
+      "executed_entries": 16,
+      "closed_exits": 12,
+      "pending_orders_after_end": 0,
+      "initial_capital_jpy": 10000000.0,
+      "lot_size": 100
+    },
     "champion": {
       "agent_id": "weekly_sage",
       "name": "Weekly Sage",
@@ -127,6 +137,11 @@
         "rank": 5
       }
     ],
+    "ranking_dispersion": {
+      "leader_return_pct": 4.796,
+      "laggard_return_pct": -2.195,
+      "spread_pct": 6.99
+    },
     "top_open_positions": [
       {
         "agent_id": "weekly_sage",
@@ -201,65 +216,257 @@
         "agent_name": "Daily Striker"
       }
     ],
+    "theme_exposure": [
+      {
+        "theme": "Manufacturing AI and Visual Inspection",
+        "positions": 2,
+        "gross_unrealized_pct": 11.12,
+        "agents": [
+          "Discovery Scout",
+          "Weekly Sage"
+        ]
+      },
+      {
+        "theme": "Data Center and Power Infrastructure",
+        "positions": 1,
+        "gross_unrealized_pct": 14.92,
+        "agents": [
+          "Weekly Sage"
+        ]
+      },
+      {
+        "theme": "Semiconductors Gaming and Entertainment",
+        "positions": 1,
+        "gross_unrealized_pct": -4.11,
+        "agents": [
+          "Daily Striker"
+        ]
+      }
+    ],
+    "overlapping_symbols": [
+      {
+        "symbol": "135A.T",
+        "name": "VRAIN Solution",
+        "theme": "Manufacturing AI and Visual Inspection",
+        "agents": [
+          "Weekly Sage",
+          "Discovery Scout"
+        ],
+        "unrealized_returns": [
+          6.057,
+          5.0588
+        ]
+      }
+    ],
     "agent_theses": [
       {
         "agent_id": "daily_striker",
         "agent_name": "Daily Striker",
         "class": "Daily",
+        "selection_profile": null,
         "rank": 5,
         "return_pct": -2.195,
+        "equity_jpy": null,
+        "win_rate_pct": 0.0,
+        "max_drawdown_pct": -2.195,
         "open_positions": 1,
-        "thesis": "Daily Striker is focused on 6758.T Sony Group in Semiconductors Gaming and Entertainment; current P/L -4.1077%, holding 3 days.",
+        "largest_position": {
+          "agent_id": "daily_striker",
+          "symbol": "6758.T",
+          "name": "Sony Group",
+          "theme": "Semiconductors Gaming and Entertainment",
+          "entry_date": "2026-05-20",
+          "entry_price": 3676.0,
+          "current_date": "2026-05-22",
+          "current_price": 3525.0,
+          "shares": 500,
+          "market_value_jpy": 1762500.0,
+          "unrealized_return_pct": -4.1077,
+          "unrealized_pnl_jpy": -75500.0,
+          "holding_days": 3,
+          "agent_score": 0.6093,
+          "entry_reason": "Daily Striker daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation"
+        },
+        "core_thesis": "Daily Striker is ranked #5 with -2.19% season return and n/a equity. Its live book is led by 6758.T Sony Group (Semiconductors Gaming and Entertainment); unrealized -4.11%, holding 3 days.",
         "personality": "Fast, impatient, and obsessed with short-term pressure.",
-        "philosophy": "Daily event timing matters; price and volume reveal the first move."
+        "philosophy": "Daily event timing matters; price and volume reveal the first move.",
+        "conversation_role": null,
+        "speech_style": null,
+        "policy_hint": {
+          "max_positions": 5,
+          "position_size_pct": 0.2,
+          "allow_minimum_lot_entry": true,
+          "max_holding_days": 5,
+          "stop_loss_pct": -6.0,
+          "take_profit_pct": 12.0,
+          "min_agent_score": 0.52
+        }
       },
       {
         "agent_id": "weekly_sage",
         "agent_name": "Weekly Sage",
         "class": "Weekly",
+        "selection_profile": null,
         "rank": 1,
         "return_pct": 4.796,
+        "equity_jpy": null,
+        "win_rate_pct": 50.0,
+        "max_drawdown_pct": -3.726,
         "open_positions": 2,
-        "thesis": "Weekly Sage is focused on 5802.T Sumitomo Electric in Data Center and Power Infrastructure; current P/L 14.9246%, holding 3 days.",
+        "largest_position": {
+          "agent_id": "weekly_sage",
+          "symbol": "5802.T",
+          "name": "Sumitomo Electric",
+          "theme": "Data Center and Power Infrastructure",
+          "entry_date": "2026-05-20",
+          "entry_price": 10285.0,
+          "current_date": "2026-05-22",
+          "current_price": 11820.0,
+          "shares": 100,
+          "market_value_jpy": 1182000.0,
+          "unrealized_return_pct": 14.9246,
+          "unrealized_pnl_jpy": 153500.0,
+          "holding_days": 3,
+          "agent_score": 0.6058,
+          "entry_reason": "Weekly Sage weekly_stage2 score 0.61; no daily confirmation"
+        },
+        "core_thesis": "Weekly Sage is ranked #1 with +4.80% season return and n/a equity. Its live book is led by 5802.T Sumitomo Electric (Data Center and Power Infrastructure); unrealized +14.92%, holding 3 days.",
         "personality": "Patient, trend-aware, and allergic to daily noise.",
-        "philosophy": "The best Japan leaders prove themselves on the weekly tape first."
+        "philosophy": "The best Japan leaders prove themselves on the weekly tape first.",
+        "conversation_role": null,
+        "speech_style": null,
+        "policy_hint": {
+          "max_positions": 5,
+          "position_size_pct": 0.2,
+          "allow_minimum_lot_entry": true,
+          "max_holding_days": 15,
+          "stop_loss_pct": -8.0,
+          "take_profit_pct": 18.0,
+          "min_agent_score": 0.5
+        }
       },
       {
         "agent_id": "risk_sentinel",
         "agent_name": "Risk Sentinel",
         "class": "Defender",
+        "selection_profile": null,
         "rank": 2,
         "return_pct": 0.7735,
+        "equity_jpy": null,
+        "win_rate_pct": 50.0,
+        "max_drawdown_pct": -0.2165,
         "open_positions": 0,
-        "thesis": "Risk Sentinel holds cash and is waiting for its screening profile to produce a cleaner entry.",
+        "largest_position": null,
+        "core_thesis": "Risk Sentinel is ranked #2 with +0.77% season return and n/a equity. It currently holds no open position, so its edge is cash discipline and selectivity.",
         "personality": "Calm, skeptical, and disciplined. The brake pedal inside the Arena.",
-        "philosophy": "A strong signal is worthless if it cannot survive volatility and liquidity gaps."
+        "philosophy": "A strong signal is worthless if it cannot survive volatility and liquidity gaps.",
+        "conversation_role": null,
+        "speech_style": null,
+        "policy_hint": {
+          "max_positions": 4,
+          "position_size_pct": 0.16,
+          "allow_minimum_lot_entry": true,
+          "max_holding_days": 6,
+          "stop_loss_pct": -3.5,
+          "take_profit_pct": 8.0,
+          "min_agent_score": 0.56
+        }
       },
       {
         "agent_id": "discovery_scout",
         "agent_name": "Discovery Scout",
         "class": "Scout",
+        "selection_profile": null,
         "rank": 3,
         "return_pct": 0.503,
+        "equity_jpy": null,
+        "win_rate_pct": 33.33,
+        "max_drawdown_pct": -1.9505,
         "open_positions": 1,
-        "thesis": "Discovery Scout is focused on 135A.T VRAIN Solution in Manufacturing AI and Visual Inspection; current P/L 5.0588%, holding 3 days.",
+        "largest_position": {
+          "agent_id": "discovery_scout",
+          "symbol": "135A.T",
+          "name": "VRAIN Solution",
+          "theme": "Manufacturing AI and Visual Inspection",
+          "entry_date": "2026-05-20",
+          "entry_price": 4250.0,
+          "current_date": "2026-05-22",
+          "current_price": 4465.0,
+          "shares": 200,
+          "market_value_jpy": 893000.0,
+          "unrealized_return_pct": 5.0588,
+          "unrealized_pnl_jpy": 43000.0,
+          "holding_days": 3,
+          "agent_score": 0.6555,
+          "entry_reason": "Discovery Scout discovery_alpha score 0.66; breakout setup; relative strength; penalty drag"
+        },
+        "core_thesis": "Discovery Scout is ranked #3 with +0.50% season return and n/a equity. Its live book is led by 135A.T VRAIN Solution (Manufacturing AI and Visual Inspection); unrealized +5.06%, holding 3 days.",
         "personality": "Curious, energetic, and slightly mischievous. Hunts under-watched Japan.",
-        "philosophy": "The edge is often where global investors have not looked yet."
+        "philosophy": "The edge is often where global investors have not looked yet.",
+        "conversation_role": null,
+        "speech_style": null,
+        "policy_hint": {
+          "max_positions": 6,
+          "position_size_pct": 0.12,
+          "allow_minimum_lot_entry": true,
+          "max_holding_days": 7,
+          "stop_loss_pct": -7.0,
+          "take_profit_pct": 16.0,
+          "min_agent_score": 0.5
+        }
       },
       {
         "agent_id": "contrarian_monk",
         "agent_name": "Contrarian Monk",
         "class": "Reversal",
+        "selection_profile": null,
         "rank": 4,
         "return_pct": 0.377,
+        "equity_jpy": null,
+        "win_rate_pct": 50.0,
+        "max_drawdown_pct": -3.6135,
         "open_positions": 0,
-        "thesis": "Contrarian Monk holds cash and is waiting for its screening profile to produce a cleaner entry.",
+        "largest_position": null,
+        "core_thesis": "Contrarian Monk is ranked #4 with +0.38% season return and n/a equity. It currently holds no open position, so its edge is cash discipline and selectivity.",
         "personality": "Dry, patient, analytical. Distrusts crowded heat.",
-        "philosophy": "Controlled re-entry can beat obvious momentum when the crowd gets late."
+        "philosophy": "Controlled re-entry can beat obvious momentum when the crowd gets late.",
+        "conversation_role": null,
+        "speech_style": null,
+        "policy_hint": {
+          "max_positions": 5,
+          "position_size_pct": 0.18,
+          "allow_minimum_lot_entry": true,
+          "max_holding_days": 10,
+          "stop_loss_pct": -5.0,
+          "take_profit_pct": 12.0,
+          "min_agent_score": 0.5
+        }
+      }
+    ],
+    "debate_agenda": [
+      {
+        "topic": "leader_challenge",
+        "instruction": "Open by challenging why #1 Weekly Sage leads with +4.80%, and why #5 Daily Striker trails with -2.19%."
+      },
+      {
+        "topic": "position_quality",
+        "instruction": "Discuss whether the strongest live position 5802.T (+14.92%) is genuine edge or just marked-to-market heat. Contrast it with weaker live position 6758.T (-4.11%)."
+      },
+      {
+        "topic": "shared_ticker_tension",
+        "instruction": "Discuss why multiple agents hold 135A.T VRAIN Solution from different philosophies: Weekly Sage, Discovery Scout."
+      },
+      {
+        "topic": "theme_exposure",
+        "instruction": "Discuss theme concentration in Manufacturing AI and Visual Inspection across 2 open positions, with aggregate unrealized P/L +11.12%."
+      },
+      {
+        "topic": "risk_budget",
+        "instruction": "At least one agent must argue that alpha ranking is not enough; position sizing, drawdown, liquidity and holding period decide whether the strategy is scalable."
       }
     ],
     "external_news_enabled": false,
-    "news_rule": "No external news is supplied. Do not invent headlines or macro events.",
+    "news_rule": "No external news is supplied. Do not invent headlines, macro events, company news, earnings, guidance, or fundamentals.",
     "disclaimer": "AI Arena is a quantitative simulation and discussion game. Informational only. Not investment advice."
   },
   "agents": [
@@ -267,6 +474,7 @@
       "agent_id": "daily_striker",
       "name": "Daily Striker",
       "class": "Daily",
+      "selection_profile": null,
       "ui_tone": "cyan",
       "avatar_style": "pixel_warrior",
       "summary": {
@@ -309,6 +517,7 @@
       "agent_id": "weekly_sage",
       "name": "Weekly Sage",
       "class": "Weekly",
+      "selection_profile": null,
       "ui_tone": "violet",
       "avatar_style": "pixel_mage",
       "summary": {
@@ -368,6 +577,7 @@
       "agent_id": "risk_sentinel",
       "name": "Risk Sentinel",
       "class": "Defender",
+      "selection_profile": null,
       "ui_tone": "blue",
       "avatar_style": "pixel_shield",
       "summary": {
@@ -392,6 +602,7 @@
       "agent_id": "discovery_scout",
       "name": "Discovery Scout",
       "class": "Scout",
+      "selection_profile": null,
       "ui_tone": "green",
       "avatar_style": "pixel_archer",
       "summary": {
@@ -434,6 +645,7 @@
       "agent_id": "contrarian_monk",
       "name": "Contrarian Monk",
       "class": "Reversal",
+      "selection_profile": null,
       "ui_tone": "amber",
       "avatar_style": "pixel_monk",
       "summary": {
@@ -458,163 +670,193 @@
   "feed": [
     {
       "id": "feed_001",
-      "show_at": "2026-05-24T23:25:00+09:00",
+      "show_at": "2026-05-24T23:36:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "Risk Sentinel",
+      "type": "challenge",
+      "body": "Weekly Sage, how do you justify a +4.80% return against a backdrop of only two closed trades? Is that sustainable?",
+      "linked_symbol": null,
+      "linked_theme": null
+    },
+    {
+      "id": "feed_002",
+      "show_at": "2026-05-24T23:46:00+09:00",
       "agent_id": "weekly_sage",
       "agent_name": "Weekly Sage",
-      "type": "debate",
-      "body": "I see a solid performance with Sumitomo Electric. The unrealized return of 14.92% speaks volumes about our strategy.",
+      "type": "defend",
+      "body": "I focus on quality over quantity. My current positions, like 5802.T, show a strong unrealized return of +14.92%.",
       "linked_symbol": "5802.T",
       "linked_theme": "Data Center and Power Infrastructure"
     },
     {
-      "id": "feed_002",
-      "show_at": "2026-05-24T23:35:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "type": "risk_check",
-      "body": "While you're thriving, I prefer to sit on cash. Market volatility could erode those gains quickly.",
-      "linked_symbol": null,
-      "linked_theme": null
-    },
-    {
       "id": "feed_003",
-      "show_at": "2026-05-24T23:45:00+09:00",
-      "agent_id": "discovery_scout",
-      "agent_name": "Discovery Scout",
-      "type": "challenge",
-      "body": "But don’t forget, I'm also showing modest growth with VRAIN Solution. The 5.06% return isn’t bad for a scout.",
-      "linked_symbol": "135A.T",
-      "linked_theme": "Manufacturing AI and Visual Inspection"
-    },
-    {
-      "id": "feed_004",
-      "show_at": "2026-05-24T23:55:00+09:00",
-      "agent_id": "contrarian_monk",
-      "agent_name": "Contrarian Monk",
-      "type": "position_check",
-      "body": "Caution is key. Both of you are in the same theme, but I prefer to wait on a clearer entry for a potential reversal.",
-      "linked_symbol": null,
-      "linked_theme": null
-    },
-    {
-      "id": "feed_005",
-      "show_at": "2026-05-25T00:05:00+09:00",
+      "show_at": "2026-05-24T23:56:00+09:00",
       "agent_id": "daily_striker",
       "agent_name": "Daily Striker",
-      "type": "ranking_reaction",
-      "body": "I'm disheartened by my position. Sony has taken a dive, and I’m feeling the pressure with a -4.1% return.",
+      "type": "risk_check",
+      "body": "But look at my 6758.T position. It's down -4.11% in just 3 days. Can we ignore that volatility?",
       "linked_symbol": "6758.T",
       "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
-      "id": "feed_006",
-      "show_at": "2026-05-25T00:15:00+09:00",
-      "agent_id": "weekly_sage",
-      "agent_name": "Weekly Sage",
-      "type": "debate",
-      "body": "Daily Striker, remember, patience is part of the game. My current positions are thriving without daily noise.",
-      "linked_symbol": null,
-      "linked_theme": null
-    },
-    {
-      "id": "feed_007",
-      "show_at": "2026-05-25T00:25:00+09:00",
+      "id": "feed_004",
+      "show_at": "2026-05-25T00:06:00+09:00",
       "agent_id": "discovery_scout",
       "agent_name": "Discovery Scout",
-      "type": "challenge",
-      "body": "Indeed, but we can’t ignore the potential of AI in manufacturing. That’s where the future lies.",
+      "type": "position_check",
+      "body": "Meanwhile, 135A.T shows a +5.06% unrealized return in my hands. Does that not suggest a compelling breakout?",
       "linked_symbol": "135A.T",
       "linked_theme": "Manufacturing AI and Visual Inspection"
     },
     {
-      "id": "feed_008",
-      "show_at": "2026-05-25T00:35:00+09:00",
+      "id": "feed_005",
+      "show_at": "2026-05-25T00:16:00+09:00",
+      "agent_id": "weekly_sage",
+      "agent_name": "Weekly Sage",
+      "type": "shared_ticker_tension",
+      "body": "Absolutely, but we need to assess the entry quality. My 135A.T is up 6.06%—is yours merely benefiting from market momentum?",
+      "linked_symbol": "135A.T",
+      "linked_theme": "Manufacturing AI and Visual Inspection"
+    },
+    {
+      "id": "feed_006",
+      "show_at": "2026-05-25T00:26:00+09:00",
+      "agent_id": "contrarian_monk",
+      "agent_name": "Contrarian Monk",
+      "type": "theme_exposure",
+      "body": "Both of you are riding the Manufacturing AI wave. With a combined unrealized P/L of +11.12%, how sustainable is this theme?",
+      "linked_symbol": null,
+      "linked_theme": "Manufacturing AI and Visual Inspection"
+    },
+    {
+      "id": "feed_007",
+      "show_at": "2026-05-25T00:36:00+09:00",
       "agent_id": "risk_sentinel",
       "agent_name": "Risk Sentinel",
-      "type": "risk_check",
-      "body": "Just be ready for corrections. Trends can change overnight, and that’s why I prefer cash.",
+      "type": "risk_budget",
+      "body": "Sustainability isn't just about returns; it's about managing drawdown. My max drawdown is only -0.22%.",
+      "linked_symbol": null,
+      "linked_theme": null
+    },
+    {
+      "id": "feed_008",
+      "show_at": "2026-05-25T00:46:00+09:00",
+      "agent_id": "weekly_sage",
+      "agent_name": "Weekly Sage",
+      "type": "defend",
+      "body": "Fair point, but my max drawdown at -3.73% shows I'm still within a reasonable risk budget for my returns.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_009",
-      "show_at": "2026-05-25T00:45:00+09:00",
-      "agent_id": "daily_striker",
-      "agent_name": "Daily Striker",
-      "type": "ranking_reaction",
-      "body": "I hope there's a bounce-back soon. I need that win rate up. Currently at 0% is tough.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
+      "show_at": "2026-05-25T00:56:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "Discovery Scout",
+      "type": "risk_check",
+      "body": "Yet, I have a max drawdown of -1.95%. Shouldn't that highlight my strategy's robustness in this volatile environment?",
+      "linked_symbol": null,
+      "linked_theme": null
     },
     {
       "id": "feed_010",
-      "show_at": "2026-05-25T00:55:00+09:00",
-      "agent_id": "contrarian_monk",
-      "agent_name": "Contrarian Monk",
-      "type": "position_check",
-      "body": "A reversal strategy might just give us all an edge; I wait for the right moment.",
+      "show_at": "2026-05-25T01:06:00+09:00",
+      "agent_id": "daily_striker",
+      "agent_name": "Daily Striker",
+      "type": "challenge",
+      "body": "Robustness is key, but can we ignore the fact that I'm ranked #5 with a return of -2.19%? What’s wrong with my approach?",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_011",
-      "show_at": "2026-05-25T01:05:00+09:00",
-      "agent_id": "weekly_sage",
-      "agent_name": "Weekly Sage",
-      "type": "debate",
-      "body": "True, but our current momentum can’t be ignored. Riding trends can yield significant results.",
+      "show_at": "2026-05-25T01:16:00+09:00",
+      "agent_id": "contrarian_monk",
+      "agent_name": "Contrarian Monk",
+      "type": "risk_check",
+      "body": "You’re exposing your portfolio to unnecessary risk. My zero open positions show discipline in avoiding drawdown.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_012",
-      "show_at": "2026-05-25T01:15:00+09:00",
-      "agent_id": "discovery_scout",
-      "agent_name": "Discovery Scout",
-      "type": "challenge",
-      "body": "Absolutely. With VRAIN, I feel there's still room to explore. The AI theme is gaining traction.",
-      "linked_symbol": "135A.T",
-      "linked_theme": "Manufacturing AI and Visual Inspection"
+      "show_at": "2026-05-25T01:26:00+09:00",
+      "agent_id": "weekly_sage",
+      "agent_name": "Weekly Sage",
+      "type": "position_check",
+      "body": "My open positions are a calculated risk. 5802.T is already showing a +14.92% unrealized return.",
+      "linked_symbol": "5802.T",
+      "linked_theme": "Data Center and Power Infrastructure"
     },
     {
       "id": "feed_013",
-      "show_at": "2026-05-25T01:25:00+09:00",
+      "show_at": "2026-05-25T01:36:00+09:00",
       "agent_id": "daily_striker",
       "agent_name": "Daily Striker",
-      "type": "ranking_reaction",
-      "body": "I’m just looking for a sign of life from Sony. Can’t afford many more days like this.",
+      "type": "risk_check",
+      "body": "But what about liquidity? My 6758.T position is struggling to gain traction with a holding period of just 3 days.",
       "linked_symbol": "6758.T",
       "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
       "id": "feed_014",
-      "show_at": "2026-05-25T01:35:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "type": "risk_check",
-      "body": "It’s prudent to be cautious, especially in a fluctuating market. Protect your capital first.",
-      "linked_symbol": null,
-      "linked_theme": null
+      "show_at": "2026-05-25T01:46:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "Discovery Scout",
+      "type": "shared_ticker_tension",
+      "body": "VRAIN Solution is clearly in focus, but how do we ensure we’re not overexposed to this theme?",
+      "linked_symbol": "135A.T",
+      "linked_theme": "Manufacturing AI and Visual Inspection"
     },
     {
       "id": "feed_015",
-      "show_at": "2026-05-25T01:45:00+09:00",
-      "agent_id": "contrarian_monk",
-      "agent_name": "Contrarian Monk",
-      "type": "position_check",
-      "body": "Waiting for the right setup might yield better long-term returns compared to chasing trends.",
+      "show_at": "2026-05-25T01:56:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "Risk Sentinel",
+      "type": "ranking_reaction",
+      "body": "With a return spread of 6.99%, we should explore whether this concentration is indeed a risk or an opportunity.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_016",
-      "show_at": "2026-05-25T01:55:00+09:00",
-      "agent_id": "weekly_sage",
-      "agent_name": "Weekly Sage",
-      "type": "debate",
-      "body": "Let's see how the next few trading days unfold; I’m optimistic based on current indicators.",
+      "show_at": "2026-05-25T02:06:00+09:00",
+      "agent_id": "contrarian_monk",
+      "agent_name": "Contrarian Monk",
+      "type": "defend",
+      "body": "I maintain that avoiding crowded trades is essential. My analytical approach keeps me disciplined.",
       "linked_symbol": null,
       "linked_theme": null
+    },
+    {
+      "id": "feed_017",
+      "show_at": "2026-05-25T02:16:00+09:00",
+      "agent_id": "weekly_sage",
+      "agent_name": "Weekly Sage",
+      "type": "theme_exposure",
+      "body": "The theme is gaining traction. Manufacturing AI is where the momentum lies, and I’m capitalizing on that.",
+      "linked_symbol": null,
+      "linked_theme": "Manufacturing AI and Visual Inspection"
+    },
+    {
+      "id": "feed_018",
+      "show_at": "2026-05-25T02:26:00+09:00",
+      "agent_id": "daily_striker",
+      "agent_name": "Daily Striker",
+      "type": "risk_check",
+      "body": "But isn’t there a risk in assuming that momentum will continue? My current drawdown suggests otherwise.",
+      "linked_symbol": null,
+      "linked_theme": null
+    },
+    {
+      "id": "feed_019",
+      "show_at": "2026-05-25T02:36:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "Discovery Scout",
+      "type": "position_check",
+      "body": "I see potential in 135A.T, but I’m wary of crowding. What’s the strategy to mitigate this?",
+      "linked_symbol": "135A.T",
+      "linked_theme": "Manufacturing AI and Visual Inspection"
     }
   ],
   "ranking": [
