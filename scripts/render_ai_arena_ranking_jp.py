@@ -25,6 +25,14 @@ AVATAR_BY_AGENT = {
     "contrarian_quant": "pixel_monk",
 }
 
+AVATAR_IMAGE_BY_AGENT = {
+    "daily_striker": "/assets/ai-arena/agents/daily_striker.png",
+    "weekly_sage": "/assets/ai-arena/agents/weekly_sage.png",
+    "risk_sentinel": "/assets/ai-arena/agents/risk_sentinel.png",
+    "discovery_scout": "/assets/ai-arena/agents/discovery_scout.png",
+    "contrarian_monk": "/assets/ai-arena/agents/contrarian_monk.png",
+}
+
 TONE_BY_AGENT = {
     "daily_striker": "cyan",
     "weekly_sage": "violet",
@@ -90,13 +98,17 @@ def enrich_ranking(ranking: dict) -> dict:
         # Use a 10-100 visual range so negative performers still remain visible.
         item["bar_width_pct"] = max(10.0, min(100.0, 10.0 + ((ret - min_ret) / span) * 90.0)) if agents else 50.0
         item["return_class"] = "positive" if ret >= 0 else "negative"
-        item["avatar_style"] = AVATAR_BY_AGENT.get(agent_id, "pixel_warrior")
-        item["ui_tone"] = TONE_BY_AGENT.get(agent_id, "cyan")
+        item["avatar_style"] = item.get("avatar_style") or AVATAR_BY_AGENT.get(agent_id, "pixel_warrior")
+        item["avatar_image"] = item.get("avatar_image") or AVATAR_IMAGE_BY_AGENT.get(agent_id)
+        item["ui_tone"] = item.get("ui_tone") or TONE_BY_AGENT.get(agent_id, "cyan")
         item["spark_points"] = _spark_points(ret, dd, rank)
         item["rank_glow"] = "champion" if rank == 1 else "challenger"
         enriched.append(item)
     ranking = dict(ranking)
     ranking["agents"] = enriched
+    if enriched:
+        champion_id = (ranking.get("champion") or {}).get("agent_id")
+        ranking["champion"] = next((a for a in enriched if a.get("agent_id") == champion_id), enriched[0])
     return ranking
 
 

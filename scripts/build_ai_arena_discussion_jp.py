@@ -374,6 +374,8 @@ def agent_theses(
         theses.append({
             "agent_id": aid,
             "agent_name": agent.get("name"),
+            "avatar_style": agent.get("avatar_style") or cfg.get("avatar_style"),
+            "avatar_image": agent.get("avatar_image") or cfg.get("avatar_image"),
             "class": agent.get("class") or cfg.get("class"),
             "selection_profile": agent.get("selection_profile") or cfg.get("selection_profile"),
             "rank": rank_row.get("rank"),
@@ -606,6 +608,13 @@ Feed rules:
     allowed_themes = {p.get("theme") for p in context.get("top_open_positions", []) if p.get("theme")}
     allowed_agents = {t.get("agent_id") for t in context.get("agent_theses", []) if t.get("agent_id")}
     agent_name_by_id = {t.get("agent_id"): t.get("agent_name") for t in context.get("agent_theses", [])}
+    agent_avatar_by_id = {
+        t.get("agent_id"): {
+            "avatar_style": t.get("avatar_style"),
+            "avatar_image": t.get("avatar_image"),
+        }
+        for t in context.get("agent_theses", [])
+    }
 
     sanitized: list[dict[str, Any]] = []
     base = now_jst().replace(second=0, microsecond=0)
@@ -645,6 +654,8 @@ Feed rules:
             "show_at": iso_jst(base + timedelta(minutes=len(sanitized) * 10)),
             "agent_id": aid,
             "agent_name": agent_name_by_id.get(aid, aid),
+            "avatar_style": (agent_avatar_by_id.get(aid) or {}).get("avatar_style"),
+            "avatar_image": (agent_avatar_by_id.get(aid) or {}).get("avatar_image"),
             "type": row.get("type") or "debate",
             "body": body,
             "linked_symbol": linked_symbol,
@@ -685,6 +696,8 @@ def fallback_debate(theses: list[dict[str, Any]], context: dict[str, Any]) -> li
             "show_at": iso_jst(base + timedelta(minutes=len(lines) * 10)),
             "agent_id": agent.get("agent_id"),
             "agent_name": agent.get("agent_name"),
+            "avatar_style": agent.get("avatar_style"),
+            "avatar_image": agent.get("avatar_image"),
             "type": typ,
             "body": safe_text(body, 260),
             "linked_symbol": symbol,
@@ -753,6 +766,28 @@ def build_payload(
         feed = ai_payload["feed"]
         daily_brief = ai_payload["daily_brief"]
 
+    # Ensure every log row carries avatar metadata so the front end can render
+    # real PNG character icons.  Older AI responses only include agent_id, so
+    # we enrich here from the positions/config-derived agent list.
+    avatar_by_id = {
+        a.get("agent_id"): {
+            "avatar_style": a.get("avatar_style"),
+            "avatar_image": a.get("avatar_image"),
+            "agent_name": a.get("name"),
+        }
+        for a in positions.get("agents", [])
+        if a.get("agent_id")
+    }
+    enriched_feed = []
+    for row in feed or []:
+        item = dict(row)
+        meta = avatar_by_id.get(item.get("agent_id")) or {}
+        item.setdefault("agent_name", meta.get("agent_name") or item.get("agent_id"))
+        item.setdefault("avatar_style", meta.get("avatar_style"))
+        item.setdefault("avatar_image", meta.get("avatar_image"))
+        enriched_feed.append(item)
+    feed = enriched_feed
+
     return {
         "schema_version": "neon_tokyo_ai_arena_discussion_v2_1",
         "generated_at": iso_jst(now_jst()),
@@ -778,6 +813,7 @@ def build_payload(
                 "selection_profile": a.get("selection_profile"),
                 "ui_tone": a.get("ui_tone"),
                 "avatar_style": a.get("avatar_style"),
+                "avatar_image": a.get("avatar_image"),
                 "summary": a.get("summary"),
                 "open_positions": a.get("open_positions", [])[:4],
             }

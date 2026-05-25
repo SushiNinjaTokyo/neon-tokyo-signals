@@ -683,6 +683,11 @@ def run_simulation(config: dict[str, Any], prices: dict[str, dict[str, Any]], da
             "closed_trades": len(state.closed_trades),
             "win_rate_pct": round(len(wins) / len(state.closed_trades) * 100, 2) if state.closed_trades else None,
             "open_positions": len(open_positions),
+            # UI identity fields are copied from YAML so Ranking can use
+            # real PNG avatars when present and fall back to CSS sprites.
+            "ui_tone": state.agent.get("ui_tone"),
+            "avatar_style": state.agent.get("avatar_style"),
+            "avatar_image": state.agent.get("avatar_image"),
         }
         agents_out.append({
             "agent_id": state.agent["id"],
@@ -690,6 +695,7 @@ def run_simulation(config: dict[str, Any], prices: dict[str, dict[str, Any]], da
             "class": state.agent.get("class"),
             "ui_tone": state.agent.get("ui_tone"),
             "avatar_style": state.agent.get("avatar_style"),
+            "avatar_image": state.agent.get("avatar_image"),
             "personality": state.agent.get("personality"),
             "philosophy": state.agent.get("philosophy"),
             "summary": summary,
@@ -747,7 +753,7 @@ def run_simulation(config: dict[str, Any], prices: dict[str, dict[str, Any]], da
         "range": payload["range"],
         "season": season,
         "agents": [
-            {k: a[k] for k in ("agent_id", "name", "class", "ui_tone", "avatar_style", "personality", "philosophy", "summary", "open_positions", "recent_actions")}
+            {k: a.get(k) for k in ("agent_id", "name", "class", "ui_tone", "avatar_style", "avatar_image", "personality", "philosophy", "summary", "open_positions", "recent_actions")}
             for a in agents_out
         ],
     }
