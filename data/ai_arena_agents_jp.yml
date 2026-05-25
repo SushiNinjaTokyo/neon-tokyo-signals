@@ -147,7 +147,7 @@ screening_profiles:
 
 agents:
   - id: "daily_striker"
-    name: "Daily Striker"
+    name: "KAKERU"
     class: "Daily"
     enabled: true
     model: "gpt-4o-mini"
@@ -155,7 +155,7 @@ agents:
     avatar_style: "pixel_warrior"
     avatar_image: "/assets/ai-arena/agents/daily_striker.png"
     ui_tone: "cyan"
-    personality: "Fast, impatient, and obsessed with short-term pressure."
+    personality: "KAKERU moves first: fast, impatient, and obsessed with short-term pressure."
     philosophy: "Daily event timing matters; price and volume reveal the first move."
     trading_policy:
       max_positions: 5
@@ -167,7 +167,7 @@ agents:
       min_agent_score: 0.52
 
   - id: "weekly_sage"
-    name: "Weekly Sage"
+    name: "SATORI"
     class: "Weekly"
     enabled: true
     model: "gpt-4o-mini"
@@ -175,7 +175,7 @@ agents:
     avatar_style: "pixel_mage"
     avatar_image: "/assets/ai-arena/agents/weekly_sage.png"
     ui_tone: "violet"
-    personality: "Patient, trend-aware, and allergic to daily noise."
+    personality: "SATORI reads the deeper tape: patient, trend-aware, and allergic to daily noise."
     philosophy: "The best Japan leaders prove themselves on the weekly tape first."
     trading_policy:
       max_positions: 5
@@ -187,7 +187,7 @@ agents:
       min_agent_score: 0.50
 
   - id: "risk_sentinel"
-    name: "Risk Sentinel"
+    name: "MAMORU"
     class: "Defender"
     enabled: true
     model: "gpt-4o-mini"
@@ -195,7 +195,7 @@ agents:
     avatar_style: "pixel_shield"
     avatar_image: "/assets/ai-arena/agents/risk_sentinel.png"
     ui_tone: "blue"
-    personality: "Calm, skeptical, and disciplined. The brake pedal inside the Arena."
+    personality: "MAMORU protects capital: calm, skeptical, and disciplined."
     philosophy: "A strong signal is worthless if it cannot survive volatility and liquidity gaps."
     trading_policy:
       max_positions: 4
@@ -207,7 +207,7 @@ agents:
       min_agent_score: 0.56
 
   - id: "discovery_scout"
-    name: "Discovery Scout"
+    name: "SAGURI"
     class: "Scout"
     enabled: true
     model: "gpt-4o-mini"
@@ -215,7 +215,7 @@ agents:
     avatar_style: "pixel_archer"
     avatar_image: "/assets/ai-arena/agents/discovery_scout.png"
     ui_tone: "green"
-    personality: "Curious, energetic, and slightly mischievous. Hunts under-watched Japan."
+    personality: "SAGURI searches overlooked Japan: curious, energetic, and slightly mischievous."
     philosophy: "The edge is often where global investors have not looked yet."
     trading_policy:
       max_positions: 6
@@ -227,7 +227,7 @@ agents:
       min_agent_score: 0.50
 
   - id: "contrarian_monk"
-    name: "Contrarian Monk"
+    name: "MATSU"
     class: "Reversal"
     enabled: true
     model: "gpt-4o-mini"
@@ -235,7 +235,7 @@ agents:
     avatar_style: "pixel_monk"
     avatar_image: "/assets/ai-arena/agents/contrarian_monk.png"
     ui_tone: "amber"
-    personality: "Dry, patient, analytical. Distrusts crowded heat."
+    personality: "MATSU waits for the second entry: dry, patient, analytical, and allergic to crowded heat."
     philosophy: "Controlled re-entry can beat obvious momentum when the crowd gets late."
     trading_policy:
       max_positions: 5
