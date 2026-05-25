@@ -64,3 +64,16 @@ a{color:inherit;text-decoration:none}.arena-shell{position:relative;width:min(11
    The AI Arena can use generated character PNGs under
    /assets/ai-arena/agents/*.png.  CSS pixel avatars remain as fallback. */
 .avatar-shell{width:48px;height:48px;display:grid;place-items:center;position:relative;flex:0 0 auto}.agent-avatar-img{width:48px;height:48px;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 0 12px rgba(125,249,255,.34)) drop-shadow(0 0 3px rgba(255,255,255,.35))}.avatar-fallback{display:none}.avatar-chat-shell{width:42px;height:42px}.chat-avatar-img{width:42px;height:42px;object-fit:contain}.chat-line:hover .agent-avatar-img{filter:drop-shadow(0 0 16px rgba(125,249,255,.55)) drop-shadow(0 0 5px rgba(255,255,255,.5))}.agent-card .avatar-shell{width:58px;height:58px}.agent-card .agent-avatar-img{width:58px;height:58px}.agent-card:hover .agent-avatar-img{transform:translateY(-2px) scale(1.05);transition:transform .18s ease,filter .18s ease}
+
+/* V2.2 character presence update -----------------------------------------
+   Keep Arena Log icons compact, but make agent portraits substantially
+   larger everywhere else so the new generated character art becomes part of
+   the product identity. */
+.agent-card{padding:18px;min-height:318px;display:flex;flex-direction:column;justify-content:space-between}
+.agent-card .agent-top{flex-direction:column;align-items:flex-start;gap:14px}
+.agent-card .avatar-shell{width:128px;height:128px;margin:-4px 0 2px;filter:drop-shadow(0 0 20px rgba(125,249,255,.18))}
+.agent-card .agent-avatar-img{width:128px;height:128px;object-fit:contain;filter:drop-shadow(0 0 24px rgba(125,249,255,.34)) drop-shadow(0 0 8px rgba(255,255,255,.28))}
+.agent-card h3{font-size:20px;letter-spacing:.02em;text-shadow:0 0 14px rgba(125,249,255,.18)}
+.agent-card p{font-size:12px}
+.agent-card:hover .agent-avatar-img{transform:translateY(-4px) scale(1.08);transition:transform .2s ease,filter .2s ease}
+@media(max-width:900px){.agent-card .avatar-shell,.agent-card .agent-avatar-img{width:112px;height:112px}.agent-card{min-height:270px}}

@@ -12,3 +12,16 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;background-ima
 
 /* Real PNG avatar support. */
 .champion-avatar-wrap,.rank-avatar-wrap{display:grid;place-items:center;position:relative}.rank-avatar-img{width:58px;height:58px;object-fit:contain;filter:drop-shadow(0 0 13px rgba(125,249,255,.34)) drop-shadow(0 0 4px rgba(255,255,255,.28))}.champion-avatar-img{width:132px;height:132px;filter:drop-shadow(0 0 24px rgba(255,209,102,.35)) drop-shadow(0 0 10px rgba(125,249,255,.20))}.avatar-fallback{display:none}.rank-card:hover .rank-avatar-img{transform:translateY(-2px) scale(1.05);transition:transform .18s ease,filter .18s ease}.champion-card:hover .champion-avatar-img{transform:scale(1.04);transition:transform .2s ease,filter .2s ease}
+
+/* V2.2 larger ranking portraits. */
+.champion-card{align-items:center;text-align:center}
+.champion-avatar-wrap{width:230px;height:230px;margin:0 auto 6px}
+.champion-avatar-img{width:230px;height:230px;object-fit:contain;filter:drop-shadow(0 0 34px rgba(255,209,102,.42)) drop-shadow(0 0 16px rgba(125,249,255,.26))}
+.rank-card-top{grid-template-columns:auto 112px 1fr;gap:14px;align-items:center}
+.rank-avatar-wrap{width:112px;height:112px}
+.rank-avatar-img{width:112px;height:112px;object-fit:contain;filter:drop-shadow(0 0 22px rgba(125,249,255,.32)) drop-shadow(0 0 8px rgba(255,255,255,.20))}
+.rank-card{min-height:390px;padding:18px}
+.agent-name h2{font-size:20px;letter-spacing:-.03em}
+.rank-card:hover .rank-avatar-img{transform:translateY(-4px) scale(1.08);transition:transform .2s ease,filter .2s ease}
+.champion-card:hover .champion-avatar-img{transform:scale(1.06);transition:transform .22s ease,filter .22s ease}
+@media(max-width:680px){.champion-avatar-wrap{width:180px;height:180px}.champion-avatar-img{width:180px;height:180px}.rank-card-top{grid-template-columns:auto 92px 1fr}.rank-avatar-wrap,.rank-avatar-img{width:92px;height:92px}}
