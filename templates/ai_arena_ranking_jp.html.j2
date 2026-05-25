@@ -10,6 +10,7 @@
   <main class="ranking-page">
     <div class="ambient ambient-a"></div>
     <div class="ambient ambient-b"></div>
+    <div class="ambient ambient-c"></div>
 
     <nav class="arena-nav">
       <a href="/">TOP</a>
@@ -21,11 +22,17 @@
     <header class="ranking-hero neon-panel">
       <div class="hero-copy">
         <p class="eyebrow">SEASON {{ ranking.season or '—' }}</p>
-        <h1>Agent<br />Leaderboard</h1>
-        <p class="hero-sub">Monthly simulation ranking. Five strategies enter the Tokyo tape; one agent takes the crown.</p>
+        <h1>AI Agent<br />Grand Prix</h1>
+        <p class="hero-sub">Monthly simulation leaderboard. Five strategies compete across the Tokyo tape.</p>
+        <div class="hero-kpis">
+          <div><span>Range</span><b>{{ ranking.range.start_date if ranking.range else '—' }} → {{ ranking.range.end_date if ranking.range else '—' }}</b></div>
+          <div><span>Leader Spread</span><b>{{ '%.2f'|format(ranking.return_spread_pct or 0) }} pts</b></div>
+          <div><span>Agents</span><b>{{ ranking.agents|length }}</b></div>
+        </div>
       </div>
       {% if ranking.champion %}
-      <div class="champion-card">
+      <div class="champion-card tone-{{ ranking.champion.ui_tone }}">
+        <div class="champion-orbit"></div>
         <p class="eyebrow">CURRENT CHAMPION</p>
         <div class="champion-avatar-wrap">
           {% if ranking.champion.avatar_image %}
@@ -35,24 +42,60 @@
           <div class="champion-avatar pixel-avatar avatar-{{ ranking.champion.avatar_style or 'pixel_mage' }}"><span></span></div>
           {% endif %}
         </div>
-        <h2>#{{ ranking.champion.rank }} {{ ranking.champion.name }}</h2>
-        <div class="champion-return">{{ '%.2f'|format(ranking.champion.return_pct or 0) }}%</div>
+        <div class="champion-copy">
+          <h2>#{{ ranking.champion.rank }} {{ ranking.champion.name }}</h2>
+          <p>{{ ranking.champion.class }} / {{ ranking.champion.screening_profile }}</p>
+        </div>
+        <div class="champion-return {{ ranking.champion.return_class }}">{{ '%.2f'|format(ranking.champion.return_pct or 0) }}%</div>
       </div>
       {% endif %}
     </header>
+
+    {% if ranking.podium %}
+    <section class="podium-grid" aria-label="Top 3 Agents">
+      {% for a in ranking.podium %}
+      <article class="podium-card neon-panel podium-{{ a.rank }} tone-{{ a.ui_tone }}">
+        <div class="podium-place">#{{ a.rank }}</div>
+        <div class="podium-avatar-wrap">
+          {% if a.avatar_image %}
+          <img src="{{ a.avatar_image }}" alt="{{ a.name }}" class="podium-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+          <div class="pixel-avatar avatar-{{ a.avatar_style }} avatar-fallback"><span></span></div>
+          {% else %}
+          <div class="pixel-avatar avatar-{{ a.avatar_style }}"><span></span></div>
+          {% endif %}
+        </div>
+        <div class="podium-copy">
+          <h2>{{ a.name }}</h2>
+          <p>{{ a.class }} / {{ a.screening_profile }}</p>
+        </div>
+        <div class="podium-return {{ a.return_class }}">{{ '%.2f'|format(a.return_pct or 0) }}%</div>
+        <div class="podium-mini">
+          <span>Equity <b>¥{{ '{:,.0f}'.format(a.portfolio_equity_jpy or 0) }}</b></span>
+          <span>Max DD <b>{{ '%.2f'|format(a.max_drawdown_pct or 0) }}%</b></span>
+        </div>
+      </article>
+      {% endfor %}
+    </section>
+    {% endif %}
 
     <section class="score-stream neon-panel">
       <div class="section-head">
         <div>
           <p class="eyebrow">LIVE SEASON GRAPH</p>
-          <h2>Return bars</h2>
+          <h2>Return race</h2>
         </div>
         <span>{{ ranking.range.start_date if ranking.range else '—' }} → {{ ranking.range.end_date if ranking.range else '—' }}</span>
       </div>
       <div class="bar-stage">
         {% for a in ranking.agents or [] %}
         <div class="score-bar-row tone-{{ a.ui_tone }} {{ a.return_class }}">
-          <div class="score-agent"><b>#{{ a.rank }}</b><span>{{ a.name }}</span></div>
+          <div class="score-agent">
+            <b>#{{ a.rank }}</b>
+            {% if a.avatar_image %}
+            <img src="{{ a.avatar_image }}" alt="" class="score-avatar" loading="lazy" />
+            {% endif %}
+            <span>{{ a.name }}</span>
+          </div>
           <div class="score-track"><i style="width: {{ '%.1f'|format(a.bar_width_pct or 10) }}%"></i></div>
           <div class="score-return">{{ '%.2f'|format(a.return_pct or 0) }}%</div>
         </div>
@@ -62,8 +105,8 @@
 
     <section class="ranking-board">
       {% for a in ranking.agents or [] %}
-      <article class="rank-card neon-panel rank-{{ a.rank }} tone-{{ a.ui_tone }}">
-        <div class="rank-card-top">
+      <article class="rank-row neon-panel rank-{{ a.rank }} tone-{{ a.ui_tone }}">
+        <div class="rank-left">
           <div class="place">#{{ a.rank }}</div>
           <div class="rank-avatar-wrap">
             {% if a.avatar_image %}
@@ -79,15 +122,15 @@
           </div>
         </div>
 
-        <svg class="spark" viewBox="0 0 220 62" aria-hidden="true">
+        <svg class="spark" viewBox="0 0 260 70" aria-hidden="true">
           <defs>
             <linearGradient id="spark-{{ loop.index }}" x1="0" x2="1" y1="0" y2="0">
               <stop offset="0" stop-color="#7DF9FF"/>
               <stop offset="1" stop-color="#FF4FD8"/>
             </linearGradient>
           </defs>
-          <polyline points="{{ a.spark_points }}" fill="none" stroke="url(#spark-{{ loop.index }})" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/>
-          <polyline points="{{ a.spark_points }}" fill="none" stroke="rgba(125,249,255,.22)" stroke-width="9" stroke-linecap="square" stroke-linejoin="round"/>
+          <polyline points="{{ a.spark_points }}" fill="none" stroke="rgba(125,249,255,.18)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="{{ a.spark_points }}" fill="none" stroke="url(#spark-{{ loop.index }})" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
 
         <div class="rank-stats">
