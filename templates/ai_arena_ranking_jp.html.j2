@@ -27,7 +27,14 @@
       {% if ranking.champion %}
       <div class="champion-card">
         <p class="eyebrow">CURRENT CHAMPION</p>
-        <div class="champion-avatar pixel-avatar avatar-{{ ranking.champion.avatar_style or 'pixel_mage' }}"><span></span></div>
+        <div class="champion-avatar-wrap">
+          {% if ranking.champion.avatar_image %}
+          <img src="{{ ranking.champion.avatar_image }}" alt="{{ ranking.champion.name }}" class="rank-avatar-img champion-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+          <div class="champion-avatar pixel-avatar avatar-{{ ranking.champion.avatar_style or 'pixel_mage' }} avatar-fallback"><span></span></div>
+          {% else %}
+          <div class="champion-avatar pixel-avatar avatar-{{ ranking.champion.avatar_style or 'pixel_mage' }}"><span></span></div>
+          {% endif %}
+        </div>
         <h2>#{{ ranking.champion.rank }} {{ ranking.champion.name }}</h2>
         <div class="champion-return">{{ '%.2f'|format(ranking.champion.return_pct or 0) }}%</div>
       </div>
@@ -58,7 +65,14 @@
       <article class="rank-card neon-panel rank-{{ a.rank }} tone-{{ a.ui_tone }}">
         <div class="rank-card-top">
           <div class="place">#{{ a.rank }}</div>
-          <div class="pixel-avatar avatar-{{ a.avatar_style }}"><span></span></div>
+          <div class="rank-avatar-wrap">
+            {% if a.avatar_image %}
+            <img src="{{ a.avatar_image }}" alt="{{ a.name }}" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+            <div class="pixel-avatar avatar-{{ a.avatar_style }} avatar-fallback"><span></span></div>
+            {% else %}
+            <div class="pixel-avatar avatar-{{ a.avatar_style }}"><span></span></div>
+            {% endif %}
+          </div>
           <div class="agent-name">
             <h2>{{ a.name }}</h2>
             <p>{{ a.class }} / {{ a.screening_profile }}</p>
