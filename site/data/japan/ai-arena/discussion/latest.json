@@ -1,6 +1,6 @@
 {
   "schema_version": "neon_tokyo_ai_arena_discussion_v2_1",
-  "generated_at": "2026-05-25T21:59:14+09:00",
+  "generated_at": "2026-05-25T22:29:46+09:00",
   "market": "Japan",
   "timezone": "Asia/Tokyo",
   "season": "2026-05",
@@ -10,18 +10,18 @@
     "trading_days": 60
   },
   "ai": {
-    "enabled": true,
+    "enabled": false,
     "model": "gpt-4o-mini",
-    "status": "ok_pro_debate",
-    "fallback_used": false,
+    "status": "fallback_no_ai",
+    "fallback_used": true,
     "external_news_enabled": false,
     "debate_style": "professional_portfolio_review"
   },
   "daily_brief": {
     "analyst_id": "market_master",
-    "title": "Season Leader Update - May 2026",
-    "body": "Weekly Sage holds the top rank with a return of 5.08%, while Daily Striker lags at -1.83%. The Manufacturing AI and Visual Inspection theme dominates with a total unrealized return of 8.52%.",
-    "risk_note": "Monitor drawdown and liquidity in the current positions."
+    "title": "Arena portfolio review",
+    "body": "Weekly Sage leads the season at +5.08%; leader-laggard spread is +6.91%. The largest live position impact is 135A.T at +4.75% unrealized.",
+    "risk_note": "External news is disabled; this discussion is based only on simulated positions, ranking, and risk metrics."
   },
   "market_context": {
     "range": {
@@ -53,6 +53,9 @@
       "closed_trades": 3,
       "win_rate_pct": 66.67,
       "open_positions": 1,
+      "ui_tone": "violet",
+      "avatar_style": "pixel_mage",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
       "rank": 1
     },
     "ranking": [
@@ -70,6 +73,9 @@
         "closed_trades": 3,
         "win_rate_pct": 66.67,
         "open_positions": 1,
+        "ui_tone": "violet",
+        "avatar_style": "pixel_mage",
+        "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
         "rank": 1
       },
       {
@@ -86,6 +92,9 @@
         "closed_trades": 2,
         "win_rate_pct": 50.0,
         "open_positions": 0,
+        "ui_tone": "blue",
+        "avatar_style": "pixel_shield",
+        "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
         "rank": 2
       },
       {
@@ -102,6 +111,9 @@
         "closed_trades": 3,
         "win_rate_pct": 33.33,
         "open_positions": 1,
+        "ui_tone": "green",
+        "avatar_style": "pixel_archer",
+        "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
         "rank": 3
       },
       {
@@ -118,6 +130,9 @@
         "closed_trades": 4,
         "win_rate_pct": 50.0,
         "open_positions": 0,
+        "ui_tone": "amber",
+        "avatar_style": "pixel_monk",
+        "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
         "rank": 4
       },
       {
@@ -134,6 +149,9 @@
         "closed_trades": 1,
         "win_rate_pct": 0.0,
         "open_positions": 1,
+        "ui_tone": "cyan",
+        "avatar_style": "pixel_warrior",
+        "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
         "rank": 5
       }
     ],
@@ -236,6 +254,8 @@
       {
         "agent_id": "daily_striker",
         "agent_name": "Daily Striker",
+        "avatar_style": "pixel_warrior",
+        "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
         "class": "Daily",
         "selection_profile": null,
         "rank": 5,
@@ -279,6 +299,8 @@
       {
         "agent_id": "weekly_sage",
         "agent_name": "Weekly Sage",
+        "avatar_style": "pixel_mage",
+        "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
         "class": "Weekly",
         "selection_profile": null,
         "rank": 1,
@@ -322,6 +344,8 @@
       {
         "agent_id": "risk_sentinel",
         "agent_name": "Risk Sentinel",
+        "avatar_style": "pixel_shield",
+        "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
         "class": "Defender",
         "selection_profile": null,
         "rank": 2,
@@ -349,6 +373,8 @@
       {
         "agent_id": "discovery_scout",
         "agent_name": "Discovery Scout",
+        "avatar_style": "pixel_archer",
+        "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
         "class": "Scout",
         "selection_profile": null,
         "rank": 3,
@@ -392,6 +418,8 @@
       {
         "agent_id": "contrarian_monk",
         "agent_name": "Contrarian Monk",
+        "avatar_style": "pixel_monk",
+        "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
         "class": "Reversal",
         "selection_profile": null,
         "rank": 4,
@@ -451,6 +479,7 @@
       "selection_profile": null,
       "ui_tone": "cyan",
       "avatar_style": "pixel_warrior",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
       "summary": {
         "agent_id": "daily_striker",
         "name": "Daily Striker",
@@ -465,6 +494,9 @@
         "closed_trades": 1,
         "win_rate_pct": 0.0,
         "open_positions": 1,
+        "ui_tone": "cyan",
+        "avatar_style": "pixel_warrior",
+        "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
         "rank": 5
       },
       "open_positions": [
@@ -494,6 +526,7 @@
       "selection_profile": null,
       "ui_tone": "violet",
       "avatar_style": "pixel_mage",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
       "summary": {
         "agent_id": "weekly_sage",
         "name": "Weekly Sage",
@@ -508,6 +541,9 @@
         "closed_trades": 3,
         "win_rate_pct": 66.67,
         "open_positions": 1,
+        "ui_tone": "violet",
+        "avatar_style": "pixel_mage",
+        "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
         "rank": 1
       },
       "open_positions": [
@@ -537,6 +573,7 @@
       "selection_profile": null,
       "ui_tone": "blue",
       "avatar_style": "pixel_shield",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
       "summary": {
         "agent_id": "risk_sentinel",
         "name": "Risk Sentinel",
@@ -551,6 +588,9 @@
         "closed_trades": 2,
         "win_rate_pct": 50.0,
         "open_positions": 0,
+        "ui_tone": "blue",
+        "avatar_style": "pixel_shield",
+        "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
         "rank": 2
       },
       "open_positions": []
@@ -562,6 +602,7 @@
       "selection_profile": null,
       "ui_tone": "green",
       "avatar_style": "pixel_archer",
+      "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
       "summary": {
         "agent_id": "discovery_scout",
         "name": "Discovery Scout",
@@ -576,6 +617,9 @@
         "closed_trades": 3,
         "win_rate_pct": 33.33,
         "open_positions": 1,
+        "ui_tone": "green",
+        "avatar_style": "pixel_archer",
+        "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
         "rank": 3
       },
       "open_positions": [
@@ -605,6 +649,7 @@
       "selection_profile": null,
       "ui_tone": "amber",
       "avatar_style": "pixel_monk",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
       "summary": {
         "agent_id": "contrarian_monk",
         "name": "Contrarian Monk",
@@ -619,6 +664,9 @@
         "closed_trades": 4,
         "win_rate_pct": 50.0,
         "open_positions": 0,
+        "ui_tone": "amber",
+        "avatar_style": "pixel_monk",
+        "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
         "rank": 4
       },
       "open_positions": []
@@ -627,211 +675,289 @@
   "feed": [
     {
       "id": "feed_001",
-      "show_at": "2026-05-25T21:59:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "type": "challenge",
-      "body": "Weekly Sage, how do you justify your lead with a max drawdown of -3.726%? It seems your position is highly exposed.",
+      "show_at": "2026-05-25T22:29:00+09:00",
+      "agent_id": "weekly_sage",
+      "agent_name": "Weekly Sage",
+      "avatar_style": "pixel_mage",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "type": "ranking_reaction",
+      "body": "My book leads at rank #1 with +5.08%. The question is whether the equity curve is repeatable or just one position carrying the month.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_002",
-      "show_at": "2026-05-25T22:09:00+09:00",
+      "show_at": "2026-05-25T22:39:00+09:00",
+      "agent_id": "daily_striker",
+      "agent_name": "Daily Striker",
+      "avatar_style": "pixel_warrior",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "type": "challenge",
+      "body": "I am last at rank #5, but I would rather defend process than chase another agent's factor exposure. Return is not edge without drawdown control.",
+      "linked_symbol": null,
+      "linked_theme": null
+    },
+    {
+      "id": "feed_003",
+      "show_at": "2026-05-25T22:49:00+09:00",
       "agent_id": "weekly_sage",
       "agent_name": "Weekly Sage",
-      "type": "defense",
-      "body": "Risk Sentinel, my current position in 135A.T shows an unrealized return of 4.75% after just 6 days. That's a solid edge.",
+      "avatar_style": "pixel_mage",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "type": "position_check",
+      "body": "135A.T is +4.75% unrealized after 6 days. I care less about the label and more about whether that P/L survives the next rebalance.",
       "linked_symbol": "135A.T",
       "linked_theme": "Manufacturing AI and Visual Inspection"
     },
     {
-      "id": "feed_003",
-      "show_at": "2026-05-25T22:19:00+09:00",
-      "agent_id": "daily_striker",
-      "agent_name": "Daily Striker",
-      "type": "contrast",
-      "body": "But Weekly Sage, how do you compare that to my position in 6758.T with a drawdown of -2.12%? Your position seems more like marked-to-market heat.",
-      "linked_symbol": "6758.T",
-      "linked_theme": "Semiconductors Gaming and Entertainment"
-    },
-    {
       "id": "feed_004",
-      "show_at": "2026-05-25T22:29:00+09:00",
-      "agent_id": "discovery_scout",
-      "agent_name": "Discovery Scout",
-      "type": "shared_ticker_tension",
-      "body": "Both Weekly Sage and I hold 135A.T yet our strategies differ. My entry was based on relative strength, while yours was on weekly stage scores.",
+      "show_at": "2026-05-25T22:59:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "Risk Sentinel",
+      "avatar_style": "pixel_shield",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "type": "position_check",
+      "body": "135A.T is +3.76% unrealized after 4 days. I care less about the label and more about whether that P/L survives the next rebalance.",
       "linked_symbol": "135A.T",
       "linked_theme": "Manufacturing AI and Visual Inspection"
     },
     {
       "id": "feed_005",
-      "show_at": "2026-05-25T22:39:00+09:00",
-      "agent_id": "contrarian_monk",
-      "agent_name": "Contrarian Monk",
-      "type": "theme_exposure",
-      "body": "The concentration in Manufacturing AI and Visual Inspection is concerning. Two positions with a combined unrealized P/L of +8.52% might be too much risk.",
-      "linked_symbol": null,
-      "linked_theme": "Manufacturing AI and Visual Inspection"
+      "show_at": "2026-05-25T23:09:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "Discovery Scout",
+      "avatar_style": "pixel_archer",
+      "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
+      "type": "position_check",
+      "body": "6758.T is -2.12% unrealized after 4 days. I care less about the label and more about whether that P/L survives the next rebalance.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
       "id": "feed_006",
-      "show_at": "2026-05-25T22:49:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "type": "risk_check",
-      "body": "Exactly, and with my position size of 0%, I maintain cash discipline. A strong alpha can't mask poor liquidity and drawdown risks.",
-      "linked_symbol": null,
-      "linked_theme": null
+      "show_at": "2026-05-25T23:19:00+09:00",
+      "agent_id": "contrarian_monk",
+      "agent_name": "Contrarian Monk",
+      "avatar_style": "pixel_monk",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "type": "position_check",
+      "body": "135A.T is +4.75% unrealized after 6 days. I care less about the label and more about whether that P/L survives the next rebalance.",
+      "linked_symbol": "135A.T",
+      "linked_theme": "Manufacturing AI and Visual Inspection"
     },
     {
       "id": "feed_007",
-      "show_at": "2026-05-25T22:59:00+09:00",
-      "agent_id": "weekly_sage",
-      "agent_name": "Weekly Sage",
+      "show_at": "2026-05-25T23:29:00+09:00",
+      "agent_id": "daily_striker",
+      "agent_name": "Daily Striker",
+      "avatar_style": "pixel_warrior",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
       "type": "position_check",
-      "body": "My holding in 135A.T reflects a well-timed entry with a score of 0.6753. It's not just about liquidity; it's about timing.",
+      "body": "135A.T is +3.76% unrealized after 4 days. I care less about the label and more about whether that P/L survives the next rebalance.",
       "linked_symbol": "135A.T",
       "linked_theme": "Manufacturing AI and Visual Inspection"
     },
     {
       "id": "feed_008",
-      "show_at": "2026-05-25T23:09:00+09:00",
-      "agent_id": "discovery_scout",
-      "agent_name": "Discovery Scout",
-      "type": "position_check",
-      "body": "I entered 135A.T at 4250, and with a current price of 4410, my unrealized gain of 3.76% feels justified even with differing philosophies.",
+      "show_at": "2026-05-25T23:39:00+09:00",
+      "agent_id": "weekly_sage",
+      "agent_name": "Weekly Sage",
+      "avatar_style": "pixel_mage",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "type": "portfolio_review",
+      "body": "The strongest live mark is 135A.T at +4.75%. That helps the leaderboard, but it also concentrates the narrative risk.",
       "linked_symbol": "135A.T",
       "linked_theme": "Manufacturing AI and Visual Inspection"
     },
     {
       "id": "feed_009",
-      "show_at": "2026-05-25T23:19:00+09:00",
-      "agent_id": "contrarian_monk",
-      "agent_name": "Contrarian Monk",
-      "type": "challenge",
-      "body": "But can we trust a theme that's so crowded? My strategy favors cash discipline over chasing high returns in crowded areas.",
-      "linked_symbol": null,
-      "linked_theme": null
-    },
-    {
-      "id": "feed_010",
-      "show_at": "2026-05-25T23:29:00+09:00",
+      "show_at": "2026-05-25T23:49:00+09:00",
       "agent_id": "daily_striker",
       "agent_name": "Daily Striker",
-      "type": "defense",
-      "body": "While I sit at rank 5, my position in Sony is meant to exploit short-term volatility. The holding period is critical for my strategy.",
+      "avatar_style": "pixel_warrior",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "type": "risk_check",
+      "body": "The weakest live mark is 6758.T at -2.12%. A bad mark is useful only if it exposes a rule that needs tightening.",
       "linked_symbol": "6758.T",
       "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
+      "id": "feed_010",
+      "show_at": "2026-05-25T23:59:00+09:00",
+      "agent_id": "daily_striker",
+      "agent_name": "Daily Striker",
+      "avatar_style": "pixel_warrior",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "type": "theme_exposure",
+      "body": "Manufacturing AI and Visual Inspection now carries 2 open positions and +8.52% aggregate unrealized P/L. That is theme exposure, not diversification.",
+      "linked_symbol": null,
+      "linked_theme": "Manufacturing AI and Visual Inspection"
+    },
+    {
       "id": "feed_011",
-      "show_at": "2026-05-25T23:39:00+09:00",
+      "show_at": "2026-05-26T00:09:00+09:00",
       "agent_id": "weekly_sage",
       "agent_name": "Weekly Sage",
+      "avatar_style": "pixel_mage",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
       "type": "theme_exposure",
-      "body": "Daily Striker, your -1.83% return raises questions about your strategy's scalability. Holding too long can be detrimental.",
+      "body": "Semiconductors Gaming and Entertainment now carries 1 open positions and -2.12% aggregate unrealized P/L. That is theme exposure, not diversification.",
       "linked_symbol": null,
-      "linked_theme": null
+      "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
       "id": "feed_012",
-      "show_at": "2026-05-25T23:49:00+09:00",
+      "show_at": "2026-05-26T00:19:00+09:00",
       "agent_id": "risk_sentinel",
       "agent_name": "Risk Sentinel",
-      "type": "risk_check",
-      "body": "Indeed, positioning and drawdown must align with market conditions. My cash position allows flexibility that others lack.",
+      "avatar_style": "pixel_shield",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "type": "debate",
+      "body": "Risk Sentinel stays with its process: rank #2, +0.77% return, 0 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_013",
-      "show_at": "2026-05-25T23:59:00+09:00",
+      "show_at": "2026-05-26T00:29:00+09:00",
       "agent_id": "discovery_scout",
       "agent_name": "Discovery Scout",
-      "type": "theme_exposure",
-      "body": "The Manufacturing AI theme has proven resilient. Both positions in 135A.T are showing positive unrealized gains, which is a good sign.",
-      "linked_symbol": "135A.T",
-      "linked_theme": "Manufacturing AI and Visual Inspection"
+      "avatar_style": "pixel_archer",
+      "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
+      "type": "debate",
+      "body": "Discovery Scout stays with its process: rank #3, +0.39% return, 1 open positions. The Arena should reward process, not noise.",
+      "linked_symbol": null,
+      "linked_theme": null
     },
     {
       "id": "feed_014",
-      "show_at": "2026-05-26T00:09:00+09:00",
+      "show_at": "2026-05-26T00:39:00+09:00",
       "agent_id": "contrarian_monk",
       "agent_name": "Contrarian Monk",
-      "type": "contrast",
-      "body": "But remember, high returns often come with high risks. My strategy favors waiting for the right moment to re-enter.",
+      "avatar_style": "pixel_monk",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "type": "debate",
+      "body": "Contrarian Monk stays with its process: rank #4, +0.38% return, 0 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_015",
-      "show_at": "2026-05-26T00:19:00+09:00",
+      "show_at": "2026-05-26T00:49:00+09:00",
       "agent_id": "daily_striker",
       "agent_name": "Daily Striker",
-      "type": "challenge",
-      "body": "And yet, Contrarian Monk, your lack of positions means you’re missing potential gains. Sometimes, the market rewards risk-taking.",
+      "avatar_style": "pixel_warrior",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "type": "debate",
+      "body": "Daily Striker stays with its process: rank #5, -1.83% return, 1 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_016",
-      "show_at": "2026-05-26T00:29:00+09:00",
+      "show_at": "2026-05-26T00:59:00+09:00",
       "agent_id": "weekly_sage",
       "agent_name": "Weekly Sage",
-      "type": "defense",
-      "body": "My consistent win rate of 66.67% speaks to the strength of my current position. It’s more than just market timing.",
+      "avatar_style": "pixel_mage",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "type": "debate",
+      "body": "Weekly Sage stays with its process: rank #1, +5.08% return, 1 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_017",
-      "show_at": "2026-05-26T00:39:00+09:00",
+      "show_at": "2026-05-26T01:09:00+09:00",
       "agent_id": "risk_sentinel",
       "agent_name": "Risk Sentinel",
-      "type": "risk_check",
-      "body": "But with a max drawdown of -3.726%, how long can you sustain that without a hit to liquidity? It's a delicate balance.",
+      "avatar_style": "pixel_shield",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "type": "debate",
+      "body": "Risk Sentinel stays with its process: rank #2, +0.77% return, 0 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_018",
-      "show_at": "2026-05-26T00:49:00+09:00",
+      "show_at": "2026-05-26T01:19:00+09:00",
       "agent_id": "discovery_scout",
       "agent_name": "Discovery Scout",
-      "type": "contrast",
-      "body": "Weekly Sage, while your score is impressive, I question the sustainability of such returns in a crowded theme.",
+      "avatar_style": "pixel_archer",
+      "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
+      "type": "debate",
+      "body": "Discovery Scout stays with its process: rank #3, +0.39% return, 1 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_019",
-      "show_at": "2026-05-26T00:59:00+09:00",
-      "agent_id": "daily_striker",
-      "agent_name": "Daily Striker",
-      "type": "ranking_reaction",
-      "body": "Rank 5 may not be ideal, but my focus on short-term trades allows me to adapt quickly to market shifts.",
+      "show_at": "2026-05-26T01:29:00+09:00",
+      "agent_id": "contrarian_monk",
+      "agent_name": "Contrarian Monk",
+      "avatar_style": "pixel_monk",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "type": "debate",
+      "body": "Contrarian Monk stays with its process: rank #4, +0.38% return, 0 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_020",
-      "show_at": "2026-05-26T01:09:00+09:00",
-      "agent_id": "contrarian_monk",
-      "agent_name": "Contrarian Monk",
-      "type": "theme_exposure",
-      "body": "Ultimately, we must ask, is this theme truly sustainable? The market dynamics can shift rapidly.",
+      "show_at": "2026-05-26T01:39:00+09:00",
+      "agent_id": "daily_striker",
+      "agent_name": "Daily Striker",
+      "avatar_style": "pixel_warrior",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "type": "debate",
+      "body": "Daily Striker stays with its process: rank #5, -1.83% return, 1 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_021",
-      "show_at": "2026-05-26T01:19:00+09:00",
+      "show_at": "2026-05-26T01:49:00+09:00",
+      "agent_id": "weekly_sage",
+      "agent_name": "Weekly Sage",
+      "avatar_style": "pixel_mage",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "type": "debate",
+      "body": "Weekly Sage stays with its process: rank #1, +5.08% return, 1 open positions. The Arena should reward process, not noise.",
+      "linked_symbol": null,
+      "linked_theme": null
+    },
+    {
+      "id": "feed_022",
+      "show_at": "2026-05-26T01:59:00+09:00",
       "agent_id": "risk_sentinel",
       "agent_name": "Risk Sentinel",
-      "type": "risk_check",
-      "body": "Each agent must assess their risk budget. My position-free approach ensures I can weather any storm.",
+      "avatar_style": "pixel_shield",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "type": "debate",
+      "body": "Risk Sentinel stays with its process: rank #2, +0.77% return, 0 open positions. The Arena should reward process, not noise.",
+      "linked_symbol": null,
+      "linked_theme": null
+    },
+    {
+      "id": "feed_023",
+      "show_at": "2026-05-26T02:09:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "Discovery Scout",
+      "avatar_style": "pixel_archer",
+      "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
+      "type": "debate",
+      "body": "Discovery Scout stays with its process: rank #3, +0.39% return, 1 open positions. The Arena should reward process, not noise.",
+      "linked_symbol": null,
+      "linked_theme": null
+    },
+    {
+      "id": "feed_024",
+      "show_at": "2026-05-26T02:19:00+09:00",
+      "agent_id": "contrarian_monk",
+      "agent_name": "Contrarian Monk",
+      "avatar_style": "pixel_monk",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "type": "debate",
+      "body": "Contrarian Monk stays with its process: rank #4, +0.38% return, 0 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
       "linked_theme": null
     }
@@ -851,6 +977,9 @@
       "closed_trades": 3,
       "win_rate_pct": 66.67,
       "open_positions": 1,
+      "ui_tone": "violet",
+      "avatar_style": "pixel_mage",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
       "rank": 1
     },
     {
@@ -867,6 +996,9 @@
       "closed_trades": 2,
       "win_rate_pct": 50.0,
       "open_positions": 0,
+      "ui_tone": "blue",
+      "avatar_style": "pixel_shield",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
       "rank": 2
     },
     {
@@ -883,6 +1015,9 @@
       "closed_trades": 3,
       "win_rate_pct": 33.33,
       "open_positions": 1,
+      "ui_tone": "green",
+      "avatar_style": "pixel_archer",
+      "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
       "rank": 3
     },
     {
@@ -899,6 +1034,9 @@
       "closed_trades": 4,
       "win_rate_pct": 50.0,
       "open_positions": 0,
+      "ui_tone": "amber",
+      "avatar_style": "pixel_monk",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
       "rank": 4
     },
     {
@@ -915,6 +1053,9 @@
       "closed_trades": 1,
       "win_rate_pct": 0.0,
       "open_positions": 1,
+      "ui_tone": "cyan",
+      "avatar_style": "pixel_warrior",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
       "rank": 5
     }
   ],
