@@ -18,17 +18,6 @@
     grand_market_analyst: 'pixel_master'
   };
 
-  // Prefer real PNG character art when present.  The CSS pixel avatar remains
-  // as a fallback so the page never shows broken identity markers if an image
-  // file is missing during development.
-  const avatarImageByAgent = {
-    daily_striker: '/assets/ai-arena/agents/daily_striker.png',
-    weekly_sage: '/assets/ai-arena/agents/weekly_sage.png',
-    risk_sentinel: '/assets/ai-arena/agents/risk_sentinel.png',
-    discovery_scout: '/assets/ai-arena/agents/discovery_scout.png',
-    contrarian_monk: '/assets/ai-arena/agents/contrarian_monk.png'
-  };
-
   let feed = [];
   try { feed = JSON.parse(root.dataset.feed || '[]'); } catch(e) { feed = []; }
 
@@ -48,12 +37,8 @@
       hour:'2-digit', minute:'2-digit', hour12:false, timeZone:'Asia/Tokyo'
     }) + ' JST' : '';
     const avatarStyle = item.avatar_style || avatarByAgent[item.agent_id] || 'pixel_warrior';
-    const avatarImage = item.avatar_image || avatarImageByAgent[item.agent_id] || '';
-    const avatarHtml = avatarImage
-      ? `<div class="chat-icon avatar-shell avatar-chat-shell"><img src="${escapeAttr(avatarImage)}" alt="${escapeAttr(item.agent_name || item.agent_id || 'Agent')}" class="agent-avatar-img chat-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" /><div class="pixel-avatar avatar-small avatar-${safeClass(avatarStyle)} avatar-fallback"><span></span></div></div>`
-      : `<div class="chat-icon pixel-avatar avatar-small avatar-${safeClass(avatarStyle)}"><span></span></div>`;
     row.innerHTML = `
-      ${avatarHtml}
+      <div class="chat-icon pixel-avatar avatar-small avatar-${safeClass(avatarStyle)}"><span></span></div>
       <div class="chat-name">${escapeHtml(item.agent_name || item.agent_id || 'Agent')}</div>
       <div class="chat-message">${escapeHtml(item.body || '')}</div>
       <div class="chat-time">${escapeHtml(time)}</div>
@@ -64,9 +49,6 @@
 
   function escapeHtml(s){
     return String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-  }
-  function escapeAttr(s){
-    return escapeHtml(s).replace(/`/g, '&#96;');
   }
   function safeClass(s){
     return String(s || '').toLowerCase().replace(/[^a-z0-9_-]/g, '_');
