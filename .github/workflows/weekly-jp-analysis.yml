@@ -44,8 +44,8 @@ on:
           - "true"
           - "false"
   schedule:
-    # 08:00 JST every Tuesday. This gives Japan weekly signals time to receive following-session data.
-    - cron: "0 23 * * 1"
+    # 08:17 JST every Tuesday. Avoid :00 cron congestion and fetch fresh prices on schedule.
+    - cron: "17 23 * * 1"
   push:
     branches:
       - main
@@ -70,8 +70,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: weekly-jp-analysis-${{ github.ref }}
-  cancel-in-progress: true
+  group: neon-tokyo-site-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   weekly-analysis:
@@ -129,7 +129,9 @@ jobs:
             scripts/render_index.py
 
       - name: Optionally fetch fresh JP prices
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.run_mode == 'full' && github.event.inputs.fetch_data == 'true' }}
+        # Scheduled weekly analysis should not rely on stale cached prices.
+        # Manual runs keep the explicit fetch_data switch for API-limit control.
+        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.run_mode == 'full' && github.event.inputs.fetch_data == 'true') }}
         run: |
           set -euo pipefail
           python scripts/fetch_prices_jp.py
@@ -279,7 +281,7 @@ jobs:
             "site/assets/index.css"
           )
 
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.fetch_data || 'false' }}" = "true" ]; then
+          if [ "${{ github.event_name }}" = "schedule" ] || { [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.fetch_data || 'false' }}" = "true" ]; }; then
             paths+=("site/data/prices-jp")
           fi
 
@@ -295,7 +297,8 @@ jobs:
             echo "No weekly analysis changes to commit."
           else
             git commit -m "Update Weekly JP analysis"
-            git push
+            git pull --rebase origin main
+            git push origin main
           fi
 
           if [ -n "$(git status --porcelain)" ]; then

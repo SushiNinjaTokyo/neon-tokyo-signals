@@ -24,8 +24,8 @@ on:
         required: false
         default: ""
   schedule:
-    # 09:00 JST every Saturday, after Friday Tokyo close.
-    - cron: "0 0 * * 6"
+    # 09:17 JST every Saturday, after Friday Tokyo close. Avoid :00 cron congestion.
+    - cron: "17 0 * * 6"
   push:
     branches:
       - main
@@ -48,8 +48,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: weekly-jp-screening-${{ github.ref }}
-  cancel-in-progress: true
+  group: neon-tokyo-site-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   weekly-jp-screening:
@@ -214,7 +214,8 @@ jobs:
           fi
 
           git commit -m "Update Weekly JP screening"
-          git push
+          git pull --rebase origin main
+          git push origin main
 
           if [ -n "$(git status --porcelain)" ]; then
             echo "::error::Working tree is still dirty after commit. Add missing generated paths to the commit path list."

@@ -15,9 +15,9 @@ on:
         options:
           - "false"
           - "true"
-  schedule:
-    # 18:45 JST on weekdays. Uses existing prices-jp/latest.json only.
-    - cron: "45 9 * * 1-5"
+  # Deliberately no schedule. Daily JP auto pipeline already runs the
+  # incremental backtest after rebuilding fresh daily signals. Keeping a
+  # separate cron here caused same-time pushes and stale/duplicate results.
   push:
     branches:
       - main
@@ -32,8 +32,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: backtest-daily-jp-incremental-${{ github.ref }}
-  cancel-in-progress: true
+  group: neon-tokyo-site-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   backtest-incremental:
@@ -145,4 +145,5 @@ jobs:
           fi
 
           git commit -m "Update JP daily backtest"
-          git push
+          git pull --rebase origin main
+          git push origin main

@@ -27,19 +27,23 @@ on:
         description: "Used when start_date is blank"
         required: false
         default: "90"
-  schedule:
-    # JST 18:58, after daily signal generation window.
-    - cron: "58 9 * * 1-5"
+  workflow_run:
+    workflows: ["Daily JP auto pipeline"]
+    types: [completed]
 
 permissions:
   contents: write
 
 concurrency:
+  # All workflows that commit generated site/ artifacts should share this group.
+  # This prevents concurrent scheduled runs from racing and producing rejected pushes.
   group: neon-tokyo-site-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   ai-arena-jp:
+    # Run automatically only when the upstream Daily pipeline actually succeeded.
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     env:
       OUT_DIR: site
@@ -56,6 +60,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -76,7 +82,8 @@ jobs:
             scripts/build_ai_arena_discussion_jp.py \
             scripts/render_ai_arena_jp.py \
             scripts/render_ai_arena_positions_jp.py \
-            scripts/render_ai_arena_ranking_jp.py
+            scripts/render_ai_arena_ranking_jp.py \
+            scripts/render_index.py
 
       - name: Verify source data
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_mode == 'full' }}
