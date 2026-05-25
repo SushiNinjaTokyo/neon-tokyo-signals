@@ -2,3 +2,11 @@
 
 /* Real PNG avatar support. */
 .agent-id-block{display:flex;align-items:center;gap:14px}.avatar-shell{width:64px;height:64px;display:grid;place-items:center;flex:0 0 auto}.agent-avatar-img{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 0 14px rgba(125,249,255,.28)) drop-shadow(0 0 4px rgba(255,255,255,.25))}.avatar-fallback{display:none}.pixel-avatar{width:58px;height:58px;image-rendering:pixelated;position:relative;border-radius:14px;background:#101827;border:2px solid rgba(255,255,255,.8);box-shadow:0 0 14px rgba(125,249,255,.35),inset 0 -8px 0 rgba(0,0,0,.18)}.pixel-avatar span,.pixel-avatar:before,.pixel-avatar:after{content:"";position:absolute}.pixel-avatar span{left:14px;top:12px;width:24px;height:26px;background:#7df9ff;border-radius:6px}
+
+/* V2.2 larger position-page portraits. */
+.agent-id-block{gap:20px}
+.agent-id-block .avatar-shell{width:124px;height:124px}
+.agent-id-block .agent-avatar-img{width:124px;height:124px;object-fit:contain;filter:drop-shadow(0 0 24px rgba(125,249,255,.28)) drop-shadow(0 0 8px rgba(255,255,255,.22))}
+.agent-id-block h2{font-size:clamp(28px,4vw,46px);letter-spacing:-.06em;margin:.05em 0}
+.agent-head{align-items:center}
+@media(max-width:900px){.agent-id-block .avatar-shell,.agent-id-block .agent-avatar-img{width:104px;height:104px}.agent-id-block{align-items:flex-start}}
