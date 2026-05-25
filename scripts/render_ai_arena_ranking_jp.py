@@ -61,7 +61,7 @@ def _spark_points(return_pct: float, drawdown_pct: float, rank: int) -> str:
     This view-only sparkline is therefore a compact visual encoding of current
     return, drawdown, and rank rather than a historical performance chart.
     """
-    width, height = 220, 62
+    width, height = 260, 70
     ret = max(-8.0, min(12.0, return_pct))
     dd = max(-12.0, min(0.0, drawdown_pct))
     rank_bias = max(0, 6 - rank) * 1.8
@@ -75,7 +75,7 @@ def _spark_points(return_pct: float, drawdown_pct: float, rank: int) -> str:
     ]
     points = []
     for i, y in enumerate(levels):
-        x = 10 + i * ((width - 20) / (len(levels) - 1))
+        x = 12 + i * ((width - 24) / (len(levels) - 1))
         y = max(8, min(height - 8, y))
         points.append(f"{x:.1f},{y:.1f}")
     return " ".join(points)
@@ -106,6 +106,8 @@ def enrich_ranking(ranking: dict) -> dict:
         enriched.append(item)
     ranking = dict(ranking)
     ranking["agents"] = enriched
+    ranking["podium"] = enriched[:3]
+    ranking["return_spread_pct"] = (max_ret - min_ret) if enriched else 0.0
     if enriched:
         champion_id = (ranking.get("champion") or {}).get("agent_id")
         ranking["champion"] = next((a for a in enriched if a.get("agent_id") == champion_id), enriched[0])
