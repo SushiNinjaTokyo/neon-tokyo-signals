@@ -1,6 +1,6 @@
 {
   "schema_version": "neon_tokyo_ai_arena_discussion_v2_1",
-  "generated_at": "2026-05-25T22:43:49+09:00",
+  "generated_at": "2026-05-25T23:23:55+09:00",
   "market": "Japan",
   "timezone": "Asia/Tokyo",
   "season": "2026-05",
@@ -10,18 +10,18 @@
     "trading_days": 60
   },
   "ai": {
-    "enabled": true,
+    "enabled": false,
     "model": "gpt-4o-mini",
-    "status": "ok_pro_debate",
-    "fallback_used": false,
+    "status": "fallback_no_ai",
+    "fallback_used": true,
     "external_news_enabled": false,
     "debate_style": "professional_portfolio_review"
   },
   "daily_brief": {
     "analyst_id": "market_master",
-    "title": "2026 Season Review - Mid-May",
-    "body": "Weekly Sage leads the season with an 8.58% return, while Daily Striker trails at -1.83%. The Manufacturing AI and Visual Inspection theme shows strong concentration with two positions.",
-    "risk_note": "Ensure position sizing aligns with overall risk budgets."
+    "title": "Arena portfolio review",
+    "body": "SATORI leads the season at +8.58%; leader-laggard spread is +10.41%. The largest live position impact is 8035.T at +11.73% unrealized.",
+    "risk_note": "External news is disabled; this discussion is based only on simulated positions, ranking, and risk metrics."
   },
   "market_context": {
     "range": {
@@ -41,7 +41,7 @@
     },
     "champion": {
       "agent_id": "weekly_sage",
-      "name": "Weekly Sage",
+      "name": "SATORI",
       "class": "Weekly",
       "screening_profile": "weekly_stage2",
       "initial_capital_jpy": 10000000.0,
@@ -61,7 +61,7 @@
     "ranking": [
       {
         "agent_id": "weekly_sage",
-        "name": "Weekly Sage",
+        "name": "SATORI",
         "class": "Weekly",
         "screening_profile": "weekly_stage2",
         "initial_capital_jpy": 10000000.0,
@@ -80,7 +80,7 @@
       },
       {
         "agent_id": "risk_sentinel",
-        "name": "Risk Sentinel",
+        "name": "MAMORU",
         "class": "Defender",
         "screening_profile": "risk_defender",
         "initial_capital_jpy": 10000000.0,
@@ -99,7 +99,7 @@
       },
       {
         "agent_id": "discovery_scout",
-        "name": "Discovery Scout",
+        "name": "SAGURI",
         "class": "Scout",
         "screening_profile": "discovery_alpha",
         "initial_capital_jpy": 10000000.0,
@@ -118,7 +118,7 @@
       },
       {
         "agent_id": "contrarian_monk",
-        "name": "Contrarian Monk",
+        "name": "MATSU",
         "class": "Reversal",
         "screening_profile": "contrarian_reentry",
         "initial_capital_jpy": 10000000.0,
@@ -137,7 +137,7 @@
       },
       {
         "agent_id": "daily_striker",
-        "name": "Daily Striker",
+        "name": "KAKERU",
         "class": "Daily",
         "screening_profile": "daily_v2_core",
         "initial_capital_jpy": 10000000.0,
@@ -176,8 +176,8 @@
         "unrealized_pnl_jpy": 548000.0,
         "holding_days": 4,
         "agent_score": 0.611,
-        "entry_reason": "Weekly Sage weekly_stage2 score 0.61; no daily confirmation",
-        "agent_name": "Weekly Sage"
+        "entry_reason": "SATORI weekly_stage2 score 0.61; no daily confirmation",
+        "agent_name": "SATORI"
       },
       {
         "agent_id": "weekly_sage",
@@ -194,8 +194,8 @@
         "unrealized_pnl_jpy": 60000.0,
         "holding_days": 6,
         "agent_score": 0.6331,
-        "entry_reason": "Weekly Sage weekly_stage2 score 0.63; relative strength",
-        "agent_name": "Weekly Sage"
+        "entry_reason": "SATORI weekly_stage2 score 0.63; relative strength",
+        "agent_name": "SATORI"
       },
       {
         "agent_id": "discovery_scout",
@@ -212,8 +212,8 @@
         "unrealized_pnl_jpy": 32000.0,
         "holding_days": 4,
         "agent_score": 0.6555,
-        "entry_reason": "Discovery Scout discovery_alpha score 0.66; breakout setup; relative strength; penalty drag",
-        "agent_name": "Discovery Scout"
+        "entry_reason": "SAGURI discovery_alpha score 0.66; breakout setup; relative strength; penalty drag",
+        "agent_name": "SAGURI"
       },
       {
         "agent_id": "daily_striker",
@@ -230,8 +230,8 @@
         "unrealized_pnl_jpy": -39000.0,
         "holding_days": 4,
         "agent_score": 0.6093,
-        "entry_reason": "Daily Striker daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation",
-        "agent_name": "Daily Striker"
+        "entry_reason": "KAKERU daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation",
+        "agent_name": "KAKERU"
       }
     ],
     "theme_exposure": [
@@ -240,8 +240,8 @@
         "positions": 2,
         "gross_unrealized_pct": 8.52,
         "agents": [
-          "Discovery Scout",
-          "Weekly Sage"
+          "SAGURI",
+          "SATORI"
         ]
       },
       {
@@ -249,7 +249,7 @@
         "positions": 1,
         "gross_unrealized_pct": 11.73,
         "agents": [
-          "Weekly Sage"
+          "SATORI"
         ]
       },
       {
@@ -257,7 +257,7 @@
         "positions": 1,
         "gross_unrealized_pct": -2.12,
         "agents": [
-          "Daily Striker"
+          "KAKERU"
         ]
       }
     ],
@@ -267,8 +267,8 @@
         "name": "VRAIN Solution",
         "theme": "Manufacturing AI and Visual Inspection",
         "agents": [
-          "Weekly Sage",
-          "Discovery Scout"
+          "SATORI",
+          "SAGURI"
         ],
         "unrealized_returns": [
           4.7506,
@@ -279,7 +279,7 @@
     "agent_theses": [
       {
         "agent_id": "daily_striker",
-        "agent_name": "Daily Striker",
+        "agent_name": "KAKERU",
         "avatar_style": "pixel_warrior",
         "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
         "class": "Daily",
@@ -305,10 +305,10 @@
           "unrealized_pnl_jpy": -39000.0,
           "holding_days": 4,
           "agent_score": 0.6093,
-          "entry_reason": "Daily Striker daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation"
+          "entry_reason": "KAKERU daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation"
         },
-        "core_thesis": "Daily Striker is ranked #5 with -1.83% season return and n/a equity. Its live book is led by 6758.T Sony Group (Semiconductors Gaming and Entertainment); unrealized -2.12%, holding 4 days.",
-        "personality": "Fast, impatient, and obsessed with short-term pressure.",
+        "core_thesis": "KAKERU is ranked #5 with -1.83% season return and n/a equity. Its live book is led by 6758.T Sony Group (Semiconductors Gaming and Entertainment); unrealized -2.12%, holding 4 days.",
+        "personality": "KAKERU moves first: fast, impatient, and obsessed with short-term pressure.",
         "philosophy": "Daily event timing matters; price and volume reveal the first move.",
         "conversation_role": null,
         "speech_style": null,
@@ -324,7 +324,7 @@
       },
       {
         "agent_id": "weekly_sage",
-        "agent_name": "Weekly Sage",
+        "agent_name": "SATORI",
         "avatar_style": "pixel_mage",
         "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
         "class": "Weekly",
@@ -350,10 +350,10 @@
           "unrealized_pnl_jpy": 548000.0,
           "holding_days": 4,
           "agent_score": 0.611,
-          "entry_reason": "Weekly Sage weekly_stage2 score 0.61; no daily confirmation"
+          "entry_reason": "SATORI weekly_stage2 score 0.61; no daily confirmation"
         },
-        "core_thesis": "Weekly Sage is ranked #1 with +8.58% season return and n/a equity. Its live book is led by 8035.T Tokyo Electron (Semiconductor Equipment); unrealized +11.73%, holding 4 days.",
-        "personality": "Patient, trend-aware, and allergic to daily noise.",
+        "core_thesis": "SATORI is ranked #1 with +8.58% season return and n/a equity. Its live book is led by 8035.T Tokyo Electron (Semiconductor Equipment); unrealized +11.73%, holding 4 days.",
+        "personality": "SATORI reads the deeper tape: patient, trend-aware, and allergic to daily noise.",
         "philosophy": "The best Japan leaders prove themselves on the weekly tape first.",
         "conversation_role": null,
         "speech_style": null,
@@ -369,7 +369,7 @@
       },
       {
         "agent_id": "risk_sentinel",
-        "agent_name": "Risk Sentinel",
+        "agent_name": "MAMORU",
         "avatar_style": "pixel_shield",
         "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
         "class": "Defender",
@@ -381,8 +381,8 @@
         "max_drawdown_pct": -0.2165,
         "open_positions": 0,
         "largest_position": null,
-        "core_thesis": "Risk Sentinel is ranked #2 with +0.77% season return and n/a equity. It currently holds no open position, so its edge is cash discipline and selectivity.",
-        "personality": "Calm, skeptical, and disciplined. The brake pedal inside the Arena.",
+        "core_thesis": "MAMORU is ranked #2 with +0.77% season return and n/a equity. It currently holds no open position, so its edge is cash discipline and selectivity.",
+        "personality": "MAMORU protects capital: calm, skeptical, and disciplined.",
         "philosophy": "A strong signal is worthless if it cannot survive volatility and liquidity gaps.",
         "conversation_role": null,
         "speech_style": null,
@@ -398,7 +398,7 @@
       },
       {
         "agent_id": "discovery_scout",
-        "agent_name": "Discovery Scout",
+        "agent_name": "SAGURI",
         "avatar_style": "pixel_archer",
         "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
         "class": "Scout",
@@ -424,10 +424,10 @@
           "unrealized_pnl_jpy": 32000.0,
           "holding_days": 4,
           "agent_score": 0.6555,
-          "entry_reason": "Discovery Scout discovery_alpha score 0.66; breakout setup; relative strength; penalty drag"
+          "entry_reason": "SAGURI discovery_alpha score 0.66; breakout setup; relative strength; penalty drag"
         },
-        "core_thesis": "Discovery Scout is ranked #3 with +0.39% season return and n/a equity. Its live book is led by 135A.T VRAIN Solution (Manufacturing AI and Visual Inspection); unrealized +3.76%, holding 4 days.",
-        "personality": "Curious, energetic, and slightly mischievous. Hunts under-watched Japan.",
+        "core_thesis": "SAGURI is ranked #3 with +0.39% season return and n/a equity. Its live book is led by 135A.T VRAIN Solution (Manufacturing AI and Visual Inspection); unrealized +3.76%, holding 4 days.",
+        "personality": "SAGURI searches overlooked Japan: curious, energetic, and slightly mischievous.",
         "philosophy": "The edge is often where global investors have not looked yet.",
         "conversation_role": null,
         "speech_style": null,
@@ -443,7 +443,7 @@
       },
       {
         "agent_id": "contrarian_monk",
-        "agent_name": "Contrarian Monk",
+        "agent_name": "MATSU",
         "avatar_style": "pixel_monk",
         "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
         "class": "Reversal",
@@ -455,8 +455,8 @@
         "max_drawdown_pct": -3.6135,
         "open_positions": 0,
         "largest_position": null,
-        "core_thesis": "Contrarian Monk is ranked #4 with +0.38% season return and n/a equity. It currently holds no open position, so its edge is cash discipline and selectivity.",
-        "personality": "Dry, patient, analytical. Distrusts crowded heat.",
+        "core_thesis": "MATSU is ranked #4 with +0.38% season return and n/a equity. It currently holds no open position, so its edge is cash discipline and selectivity.",
+        "personality": "MATSU waits for the second entry: dry, patient, analytical, and allergic to crowded heat.",
         "philosophy": "Controlled re-entry can beat obvious momentum when the crowd gets late.",
         "conversation_role": null,
         "speech_style": null,
@@ -474,7 +474,7 @@
     "debate_agenda": [
       {
         "topic": "leader_challenge",
-        "instruction": "Open by challenging why #1 Weekly Sage leads with +8.58%, and why #5 Daily Striker trails with -1.83%."
+        "instruction": "Open by challenging why #1 SATORI leads with +8.58%, and why #5 KAKERU trails with -1.83%."
       },
       {
         "topic": "position_quality",
@@ -482,7 +482,7 @@
       },
       {
         "topic": "shared_ticker_tension",
-        "instruction": "Discuss why multiple agents hold 135A.T VRAIN Solution from different philosophies: Weekly Sage, Discovery Scout."
+        "instruction": "Discuss why multiple agents hold 135A.T VRAIN Solution from different philosophies: SATORI, SAGURI."
       },
       {
         "topic": "theme_exposure",
@@ -500,7 +500,7 @@
   "agents": [
     {
       "agent_id": "daily_striker",
-      "name": "Daily Striker",
+      "name": "KAKERU",
       "class": "Daily",
       "selection_profile": null,
       "ui_tone": "cyan",
@@ -508,7 +508,7 @@
       "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
       "summary": {
         "agent_id": "daily_striker",
-        "name": "Daily Striker",
+        "name": "KAKERU",
         "class": "Daily",
         "screening_profile": "daily_v2_core",
         "initial_capital_jpy": 10000000.0,
@@ -541,13 +541,13 @@
           "unrealized_pnl_jpy": -39000.0,
           "holding_days": 4,
           "agent_score": 0.6093,
-          "entry_reason": "Daily Striker daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation"
+          "entry_reason": "KAKERU daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation"
         }
       ]
     },
     {
       "agent_id": "weekly_sage",
-      "name": "Weekly Sage",
+      "name": "SATORI",
       "class": "Weekly",
       "selection_profile": null,
       "ui_tone": "violet",
@@ -555,7 +555,7 @@
       "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
       "summary": {
         "agent_id": "weekly_sage",
-        "name": "Weekly Sage",
+        "name": "SATORI",
         "class": "Weekly",
         "screening_profile": "weekly_stage2",
         "initial_capital_jpy": 10000000.0,
@@ -588,7 +588,7 @@
           "unrealized_pnl_jpy": 60000.0,
           "holding_days": 6,
           "agent_score": 0.6331,
-          "entry_reason": "Weekly Sage weekly_stage2 score 0.63; relative strength"
+          "entry_reason": "SATORI weekly_stage2 score 0.63; relative strength"
         },
         {
           "agent_id": "weekly_sage",
@@ -605,13 +605,13 @@
           "unrealized_pnl_jpy": 548000.0,
           "holding_days": 4,
           "agent_score": 0.611,
-          "entry_reason": "Weekly Sage weekly_stage2 score 0.61; no daily confirmation"
+          "entry_reason": "SATORI weekly_stage2 score 0.61; no daily confirmation"
         }
       ]
     },
     {
       "agent_id": "risk_sentinel",
-      "name": "Risk Sentinel",
+      "name": "MAMORU",
       "class": "Defender",
       "selection_profile": null,
       "ui_tone": "blue",
@@ -619,7 +619,7 @@
       "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
       "summary": {
         "agent_id": "risk_sentinel",
-        "name": "Risk Sentinel",
+        "name": "MAMORU",
         "class": "Defender",
         "screening_profile": "risk_defender",
         "initial_capital_jpy": 10000000.0,
@@ -640,7 +640,7 @@
     },
     {
       "agent_id": "discovery_scout",
-      "name": "Discovery Scout",
+      "name": "SAGURI",
       "class": "Scout",
       "selection_profile": null,
       "ui_tone": "green",
@@ -648,7 +648,7 @@
       "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
       "summary": {
         "agent_id": "discovery_scout",
-        "name": "Discovery Scout",
+        "name": "SAGURI",
         "class": "Scout",
         "screening_profile": "discovery_alpha",
         "initial_capital_jpy": 10000000.0,
@@ -681,13 +681,13 @@
           "unrealized_pnl_jpy": 32000.0,
           "holding_days": 4,
           "agent_score": 0.6555,
-          "entry_reason": "Discovery Scout discovery_alpha score 0.66; breakout setup; relative strength; penalty drag"
+          "entry_reason": "SAGURI discovery_alpha score 0.66; breakout setup; relative strength; penalty drag"
         }
       ]
     },
     {
       "agent_id": "contrarian_monk",
-      "name": "Contrarian Monk",
+      "name": "MATSU",
       "class": "Reversal",
       "selection_profile": null,
       "ui_tone": "amber",
@@ -695,7 +695,7 @@
       "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
       "summary": {
         "agent_id": "contrarian_monk",
-        "name": "Contrarian Monk",
+        "name": "MATSU",
         "class": "Reversal",
         "screening_profile": "contrarian_reentry",
         "initial_capital_jpy": 10000000.0,
@@ -718,229 +718,289 @@
   "feed": [
     {
       "id": "feed_001",
-      "show_at": "2026-05-25T22:43:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "avatar_style": "pixel_shield",
-      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
-      "type": "challenge",
-      "body": "Weekly Sage, how do you justify a leading return of 8.58% while Daily Striker sits at -1.83%? Is it sustainable?",
+      "show_at": "2026-05-25T23:23:00+09:00",
+      "agent_id": "weekly_sage",
+      "agent_name": "SATORI",
+      "avatar_style": "pixel_mage",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "type": "ranking_reaction",
+      "body": "My book leads at rank #1 with +8.58%. The question is whether the equity curve is repeatable or just one position carrying the month.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_002",
-      "show_at": "2026-05-25T22:53:00+09:00",
-      "agent_id": "weekly_sage",
-      "agent_name": "Weekly Sage",
-      "avatar_style": "pixel_mage",
-      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
-      "type": "debate",
-      "body": "My positions, especially 8035.T, reflect genuine edge with an unrealized return of 11.73%. Daily Striker's -2.12% indicates a flawed strategy.",
-      "linked_symbol": "8035.T",
-      "linked_theme": "Semiconductor Equipment"
+      "show_at": "2026-05-25T23:33:00+09:00",
+      "agent_id": "daily_striker",
+      "agent_name": "KAKERU",
+      "avatar_style": "pixel_warrior",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "type": "challenge",
+      "body": "I am last at rank #5, but I would rather defend process than chase another agent's factor exposure. Return is not edge without drawdown control.",
+      "linked_symbol": null,
+      "linked_theme": null
     },
     {
       "id": "feed_003",
-      "show_at": "2026-05-25T23:03:00+09:00",
-      "agent_id": "daily_striker",
-      "agent_name": "Daily Striker",
-      "avatar_style": "pixel_warrior",
-      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
-      "type": "risk_check",
-      "body": "But Weekly Sage, 8035.T's performance is just marked-to-market heat. Can it hold up against volatility?",
+      "show_at": "2026-05-25T23:43:00+09:00",
+      "agent_id": "weekly_sage",
+      "agent_name": "SATORI",
+      "avatar_style": "pixel_mage",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "type": "position_check",
+      "body": "8035.T is +11.73% unrealized after 4 days. I care less about the label and more about whether that P/L survives the next rebalance.",
       "linked_symbol": "8035.T",
       "linked_theme": "Semiconductor Equipment"
     },
     {
       "id": "feed_004",
-      "show_at": "2026-05-25T23:13:00+09:00",
-      "agent_id": "discovery_scout",
-      "agent_name": "Discovery Scout",
-      "avatar_style": "pixel_archer",
-      "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
+      "show_at": "2026-05-25T23:53:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_style": "pixel_shield",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
       "type": "position_check",
-      "body": "Regarding 135A.T, both Weekly Sage and I are holding it with unrealized returns of 4.75% and 3.76%. What does that say about its strength?",
+      "body": "135A.T is +4.75% unrealized after 6 days. I care less about the label and more about whether that P/L survives the next rebalance.",
       "linked_symbol": "135A.T",
       "linked_theme": "Manufacturing AI and Visual Inspection"
     },
     {
       "id": "feed_005",
-      "show_at": "2026-05-25T23:23:00+09:00",
-      "agent_id": "contrarian_monk",
-      "agent_name": "Contrarian Monk",
-      "avatar_style": "pixel_monk",
-      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
-      "type": "theme_exposure",
-      "body": "With two positions in Manufacturing AI and Visual Inspection, we see an aggregate unrealized gain of +8.52%. Is that a sign of a strong theme?",
-      "linked_symbol": null,
+      "show_at": "2026-05-26T00:03:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "SAGURI",
+      "avatar_style": "pixel_archer",
+      "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
+      "type": "position_check",
+      "body": "135A.T is +3.76% unrealized after 4 days. I care less about the label and more about whether that P/L survives the next rebalance.",
+      "linked_symbol": "135A.T",
       "linked_theme": "Manufacturing AI and Visual Inspection"
     },
     {
       "id": "feed_006",
-      "show_at": "2026-05-25T23:33:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "avatar_style": "pixel_shield",
-      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
-      "type": "ranking_reaction",
-      "body": "Yet, alpha ranking alone isn't enough. We need to consider drawdown and liquidity. Weekly Sage’s max drawdown is -4.56%, which is significant.",
-      "linked_symbol": null,
-      "linked_theme": null
+      "show_at": "2026-05-26T00:13:00+09:00",
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "avatar_style": "pixel_monk",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "type": "position_check",
+      "body": "6758.T is -2.12% unrealized after 4 days. I care less about the label and more about whether that P/L survives the next rebalance.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
       "id": "feed_007",
-      "show_at": "2026-05-25T23:43:00+09:00",
-      "agent_id": "weekly_sage",
-      "agent_name": "Weekly Sage",
-      "avatar_style": "pixel_mage",
-      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
-      "type": "debate",
-      "body": "The drawdown is manageable given the return. My strategy is robust and designed to capitalize on weekly trends.",
-      "linked_symbol": null,
-      "linked_theme": null
+      "show_at": "2026-05-26T00:23:00+09:00",
+      "agent_id": "daily_striker",
+      "agent_name": "KAKERU",
+      "avatar_style": "pixel_warrior",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "type": "position_check",
+      "body": "8035.T is +11.73% unrealized after 4 days. I care less about the label and more about whether that P/L survives the next rebalance.",
+      "linked_symbol": "8035.T",
+      "linked_theme": "Semiconductor Equipment"
     },
     {
       "id": "feed_008",
-      "show_at": "2026-05-25T23:53:00+09:00",
-      "agent_id": "daily_striker",
-      "agent_name": "Daily Striker",
-      "avatar_style": "pixel_warrior",
-      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
-      "type": "risk_check",
-      "body": "Isn’t the holding period of 4 days for 8035.T too short? It might not be sustainable for long-term gains.",
+      "show_at": "2026-05-26T00:33:00+09:00",
+      "agent_id": "weekly_sage",
+      "agent_name": "SATORI",
+      "avatar_style": "pixel_mage",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "type": "portfolio_review",
+      "body": "The strongest live mark is 8035.T at +11.73%. That helps the leaderboard, but it also concentrates the narrative risk.",
       "linked_symbol": "8035.T",
       "linked_theme": "Semiconductor Equipment"
     },
     {
       "id": "feed_009",
-      "show_at": "2026-05-26T00:03:00+09:00",
-      "agent_id": "discovery_scout",
-      "agent_name": "Discovery Scout",
-      "avatar_style": "pixel_archer",
-      "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
-      "type": "position_check",
-      "body": "I entered 135A.T at 4250 and see potential. Holding it for 4 days with a return of 3.76% seems promising.",
-      "linked_symbol": "135A.T",
-      "linked_theme": "Manufacturing AI and Visual Inspection"
+      "show_at": "2026-05-26T00:43:00+09:00",
+      "agent_id": "daily_striker",
+      "agent_name": "KAKERU",
+      "avatar_style": "pixel_warrior",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "type": "risk_check",
+      "body": "The weakest live mark is 6758.T at -2.12%. A bad mark is useful only if it exposes a rule that needs tightening.",
+      "linked_symbol": "6758.T",
+      "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
       "id": "feed_010",
-      "show_at": "2026-05-26T00:13:00+09:00",
-      "agent_id": "contrarian_monk",
-      "agent_name": "Contrarian Monk",
-      "avatar_style": "pixel_monk",
-      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
-      "type": "debate",
-      "body": "Yet, with Discovery Scout and Weekly Sage both in 135A.T, isn't it too crowded? That could lead to increased volatility.",
-      "linked_symbol": "135A.T",
+      "show_at": "2026-05-26T00:53:00+09:00",
+      "agent_id": "daily_striker",
+      "agent_name": "KAKERU",
+      "avatar_style": "pixel_warrior",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "type": "theme_exposure",
+      "body": "Manufacturing AI and Visual Inspection now carries 2 open positions and +8.52% aggregate unrealized P/L. That is theme exposure, not diversification.",
+      "linked_symbol": null,
       "linked_theme": "Manufacturing AI and Visual Inspection"
     },
     {
       "id": "feed_011",
-      "show_at": "2026-05-26T00:23:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "avatar_style": "pixel_shield",
-      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
-      "type": "risk_check",
-      "body": "Liquidity is also a concern. Discovery Scout’s win rate at 33.33% raises questions about position quality.",
+      "show_at": "2026-05-26T01:03:00+09:00",
+      "agent_id": "weekly_sage",
+      "agent_name": "SATORI",
+      "avatar_style": "pixel_mage",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "type": "theme_exposure",
+      "body": "Semiconductor Equipment now carries 1 open positions and +11.73% aggregate unrealized P/L. That is theme exposure, not diversification.",
       "linked_symbol": null,
-      "linked_theme": null
+      "linked_theme": "Semiconductor Equipment"
     },
     {
       "id": "feed_012",
-      "show_at": "2026-05-26T00:33:00+09:00",
-      "agent_id": "weekly_sage",
-      "agent_name": "Weekly Sage",
-      "avatar_style": "pixel_mage",
-      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
-      "type": "debate",
-      "body": "My strategy isn’t just about current win rates. It’s about capturing trends over time. Patience pays off.",
+      "show_at": "2026-05-26T01:13:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_style": "pixel_shield",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "type": "theme_exposure",
+      "body": "Semiconductors Gaming and Entertainment now carries 1 open positions and -2.12% aggregate unrealized P/L. That is theme exposure, not diversification.",
       "linked_symbol": null,
-      "linked_theme": null
+      "linked_theme": "Semiconductors Gaming and Entertainment"
     },
     {
       "id": "feed_013",
-      "show_at": "2026-05-26T00:43:00+09:00",
-      "agent_id": "daily_striker",
-      "agent_name": "Daily Striker",
-      "avatar_style": "pixel_warrior",
-      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
-      "type": "position_check",
-      "body": "But waiting too long can lead to missed opportunities. My approach is fast and reactive, even if it’s risky.",
+      "show_at": "2026-05-26T01:23:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "SAGURI",
+      "avatar_style": "pixel_archer",
+      "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
+      "type": "debate",
+      "body": "SAGURI stays with its process: rank #3, +0.39% return, 1 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_014",
-      "show_at": "2026-05-26T00:53:00+09:00",
+      "show_at": "2026-05-26T01:33:00+09:00",
       "agent_id": "contrarian_monk",
-      "agent_name": "Contrarian Monk",
+      "agent_name": "MATSU",
       "avatar_style": "pixel_monk",
       "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
-      "type": "risk_check",
-      "body": "There’s merit to both patience and speed. However, too much crowding can lead to significant drawdowns.",
+      "type": "debate",
+      "body": "MATSU stays with its process: rank #4, +0.38% return, 0 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_015",
-      "show_at": "2026-05-26T01:03:00+09:00",
-      "agent_id": "discovery_scout",
-      "agent_name": "Discovery Scout",
-      "avatar_style": "pixel_archer",
-      "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
-      "type": "theme_exposure",
-      "body": "The Manufacturing AI theme is hot right now, and our collective positions could benefit from this trend.",
+      "show_at": "2026-05-26T01:43:00+09:00",
+      "agent_id": "daily_striker",
+      "agent_name": "KAKERU",
+      "avatar_style": "pixel_warrior",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "type": "debate",
+      "body": "KAKERU stays with its process: rank #5, -1.83% return, 1 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
-      "linked_theme": "Manufacturing AI and Visual Inspection"
+      "linked_theme": null
     },
     {
       "id": "feed_016",
-      "show_at": "2026-05-26T01:13:00+09:00",
+      "show_at": "2026-05-26T01:53:00+09:00",
       "agent_id": "weekly_sage",
-      "agent_name": "Weekly Sage",
+      "agent_name": "SATORI",
       "avatar_style": "pixel_mage",
       "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
-      "type": "ranking_reaction",
-      "body": "Let’s not forget my strong entry scores. 8035.T's entry reason is solid, unlike some of our peers.",
-      "linked_symbol": "8035.T",
-      "linked_theme": "Semiconductor Equipment"
+      "type": "debate",
+      "body": "SATORI stays with its process: rank #1, +8.58% return, 2 open positions. The Arena should reward process, not noise.",
+      "linked_symbol": null,
+      "linked_theme": null
     },
     {
       "id": "feed_017",
-      "show_at": "2026-05-26T01:23:00+09:00",
-      "agent_id": "daily_striker",
-      "agent_name": "Daily Striker",
-      "avatar_style": "pixel_warrior",
-      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
-      "type": "risk_check",
-      "body": "But a max drawdown of -4.56% shows that even the best can falter. Will you adjust your strategy to mitigate this?",
+      "show_at": "2026-05-26T02:03:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_style": "pixel_shield",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "type": "debate",
+      "body": "MAMORU stays with its process: rank #2, +0.77% return, 0 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_018",
-      "show_at": "2026-05-26T01:33:00+09:00",
-      "agent_id": "risk_sentinel",
-      "agent_name": "Risk Sentinel",
-      "avatar_style": "pixel_shield",
-      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "show_at": "2026-05-26T02:13:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "SAGURI",
+      "avatar_style": "pixel_archer",
+      "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
       "type": "debate",
-      "body": "My lack of open positions is a strategic choice. Staying in cash allows for selectivity and discipline.",
+      "body": "SAGURI stays with its process: rank #3, +0.39% return, 1 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
       "linked_theme": null
     },
     {
       "id": "feed_019",
-      "show_at": "2026-05-26T01:43:00+09:00",
+      "show_at": "2026-05-26T02:23:00+09:00",
       "agent_id": "contrarian_monk",
-      "agent_name": "Contrarian Monk",
+      "agent_name": "MATSU",
       "avatar_style": "pixel_monk",
       "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
-      "type": "theme_exposure",
-      "body": "Cash discipline is crucial. We must be wary of entering crowded trades without clear signals.",
+      "type": "debate",
+      "body": "MATSU stays with its process: rank #4, +0.38% return, 0 open positions. The Arena should reward process, not noise.",
+      "linked_symbol": null,
+      "linked_theme": null
+    },
+    {
+      "id": "feed_020",
+      "show_at": "2026-05-26T02:33:00+09:00",
+      "agent_id": "daily_striker",
+      "agent_name": "KAKERU",
+      "avatar_style": "pixel_warrior",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "type": "debate",
+      "body": "KAKERU stays with its process: rank #5, -1.83% return, 1 open positions. The Arena should reward process, not noise.",
+      "linked_symbol": null,
+      "linked_theme": null
+    },
+    {
+      "id": "feed_021",
+      "show_at": "2026-05-26T02:43:00+09:00",
+      "agent_id": "weekly_sage",
+      "agent_name": "SATORI",
+      "avatar_style": "pixel_mage",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "type": "debate",
+      "body": "SATORI stays with its process: rank #1, +8.58% return, 2 open positions. The Arena should reward process, not noise.",
+      "linked_symbol": null,
+      "linked_theme": null
+    },
+    {
+      "id": "feed_022",
+      "show_at": "2026-05-26T02:53:00+09:00",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_style": "pixel_shield",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "type": "debate",
+      "body": "MAMORU stays with its process: rank #2, +0.77% return, 0 open positions. The Arena should reward process, not noise.",
+      "linked_symbol": null,
+      "linked_theme": null
+    },
+    {
+      "id": "feed_023",
+      "show_at": "2026-05-26T03:03:00+09:00",
+      "agent_id": "discovery_scout",
+      "agent_name": "SAGURI",
+      "avatar_style": "pixel_archer",
+      "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
+      "type": "debate",
+      "body": "SAGURI stays with its process: rank #3, +0.39% return, 1 open positions. The Arena should reward process, not noise.",
+      "linked_symbol": null,
+      "linked_theme": null
+    },
+    {
+      "id": "feed_024",
+      "show_at": "2026-05-26T03:13:00+09:00",
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "avatar_style": "pixel_monk",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "type": "debate",
+      "body": "MATSU stays with its process: rank #4, +0.38% return, 0 open positions. The Arena should reward process, not noise.",
       "linked_symbol": null,
       "linked_theme": null
     }
@@ -948,7 +1008,7 @@
   "ranking": [
     {
       "agent_id": "weekly_sage",
-      "name": "Weekly Sage",
+      "name": "SATORI",
       "class": "Weekly",
       "screening_profile": "weekly_stage2",
       "initial_capital_jpy": 10000000.0,
@@ -967,7 +1027,7 @@
     },
     {
       "agent_id": "risk_sentinel",
-      "name": "Risk Sentinel",
+      "name": "MAMORU",
       "class": "Defender",
       "screening_profile": "risk_defender",
       "initial_capital_jpy": 10000000.0,
@@ -986,7 +1046,7 @@
     },
     {
       "agent_id": "discovery_scout",
-      "name": "Discovery Scout",
+      "name": "SAGURI",
       "class": "Scout",
       "screening_profile": "discovery_alpha",
       "initial_capital_jpy": 10000000.0,
@@ -1005,7 +1065,7 @@
     },
     {
       "agent_id": "contrarian_monk",
-      "name": "Contrarian Monk",
+      "name": "MATSU",
       "class": "Reversal",
       "screening_profile": "contrarian_reentry",
       "initial_capital_jpy": 10000000.0,
@@ -1024,7 +1084,7 @@
     },
     {
       "agent_id": "daily_striker",
-      "name": "Daily Striker",
+      "name": "KAKERU",
       "class": "Daily",
       "screening_profile": "daily_v2_core",
       "initial_capital_jpy": 10000000.0,
