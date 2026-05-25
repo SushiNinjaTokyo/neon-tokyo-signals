@@ -1,6 +1,6 @@
 {
   "schema_version": "neon_tokyo_ai_arena_simulation_v1",
-  "generated_at": "2026-05-25T22:43:21+09:00",
+  "generated_at": "2026-05-25T23:23:54+09:00",
   "market": "Japan",
   "timezone": "Asia/Tokyo",
   "range": {
@@ -33,16 +33,16 @@
   "agents": [
     {
       "agent_id": "daily_striker",
-      "name": "Daily Striker",
+      "name": "KAKERU",
       "class": "Daily",
       "ui_tone": "cyan",
       "avatar_style": "pixel_warrior",
       "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
-      "personality": "Fast, impatient, and obsessed with short-term pressure.",
+      "personality": "KAKERU moves first: fast, impatient, and obsessed with short-term pressure.",
       "philosophy": "Daily event timing matters; price and volume reveal the first move.",
       "summary": {
         "agent_id": "daily_striker",
-        "name": "Daily Striker",
+        "name": "KAKERU",
         "class": "Daily",
         "screening_profile": "daily_v2_core",
         "initial_capital_jpy": 10000000.0,
@@ -75,7 +75,7 @@
           "unrealized_pnl_jpy": -39000.0,
           "holding_days": 4,
           "agent_score": 0.6093,
-          "entry_reason": "Daily Striker daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation"
+          "entry_reason": "KAKERU daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation"
         }
       ],
       "closed_trades": [
@@ -93,7 +93,7 @@
           "pnl_jpy": -144000.0,
           "holding_days": 1,
           "exit_reason": "stop_loss",
-          "entry_reason": "Daily Striker daily_v2_core score 0.57; relative strength; no daily confirmation; penalty drag"
+          "entry_reason": "KAKERU daily_v2_core score 0.57; relative strength; no daily confirmation; penalty drag"
         }
       ],
       "equity_curve": [
@@ -585,7 +585,7 @@
           "symbol": "6758.T",
           "price": 3676.0,
           "shares": 500,
-          "reason": "Daily Striker daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation"
+          "reason": "KAKERU daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation"
         },
         {
           "date": "2026-05-20",
@@ -593,7 +593,7 @@
           "symbol": "3652.T",
           "price": 3550.0,
           "shares": 400,
-          "reason": "Daily Striker daily_v2_core score 0.57; relative strength; no daily confirmation; penalty drag"
+          "reason": "KAKERU daily_v2_core score 0.57; relative strength; no daily confirmation; penalty drag"
         },
         {
           "date": "2026-05-20",
@@ -607,16 +607,16 @@
     },
     {
       "agent_id": "weekly_sage",
-      "name": "Weekly Sage",
+      "name": "SATORI",
       "class": "Weekly",
       "ui_tone": "violet",
       "avatar_style": "pixel_mage",
       "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
-      "personality": "Patient, trend-aware, and allergic to daily noise.",
+      "personality": "SATORI reads the deeper tape: patient, trend-aware, and allergic to daily noise.",
       "philosophy": "The best Japan leaders prove themselves on the weekly tape first.",
       "summary": {
         "agent_id": "weekly_sage",
-        "name": "Weekly Sage",
+        "name": "SATORI",
         "class": "Weekly",
         "screening_profile": "weekly_stage2",
         "initial_capital_jpy": 10000000.0,
@@ -649,7 +649,7 @@
           "unrealized_pnl_jpy": 60000.0,
           "holding_days": 6,
           "agent_score": 0.6331,
-          "entry_reason": "Weekly Sage weekly_stage2 score 0.63; relative strength"
+          "entry_reason": "SATORI weekly_stage2 score 0.63; relative strength"
         },
         {
           "agent_id": "weekly_sage",
@@ -666,7 +666,7 @@
           "unrealized_pnl_jpy": 548000.0,
           "holding_days": 4,
           "agent_score": 0.611,
-          "entry_reason": "Weekly Sage weekly_stage2 score 0.61; no daily confirmation"
+          "entry_reason": "SATORI weekly_stage2 score 0.61; no daily confirmation"
         }
       ],
       "closed_trades": [
@@ -684,7 +684,7 @@
           "pnl_jpy": -144000.0,
           "holding_days": 1,
           "exit_reason": "stop_loss",
-          "entry_reason": "Weekly Sage weekly_stage2 score 0.71; relative strength; no daily confirmation; penalty drag"
+          "entry_reason": "SATORI weekly_stage2 score 0.71; relative strength; no daily confirmation; penalty drag"
         },
         {
           "agent_id": "weekly_sage",
@@ -700,7 +700,7 @@
           "pnl_jpy": 393600.0,
           "holding_days": 5,
           "exit_reason": "take_profit",
-          "entry_reason": "Weekly Sage weekly_stage2 score 0.68; relative strength"
+          "entry_reason": "SATORI weekly_stage2 score 0.68; relative strength"
         }
       ],
       "equity_curve": [
@@ -1192,7 +1192,7 @@
           "symbol": "9984.T",
           "price": 5445.0,
           "shares": 300,
-          "reason": "Weekly Sage weekly_stage2 score 0.68; relative strength"
+          "reason": "SATORI weekly_stage2 score 0.68; relative strength"
         },
         {
           "date": "2026-05-18",
@@ -1200,7 +1200,7 @@
           "symbol": "135A.T",
           "price": 4210.0,
           "shares": 300,
-          "reason": "Weekly Sage weekly_stage2 score 0.63; relative strength"
+          "reason": "SATORI weekly_stage2 score 0.63; relative strength"
         },
         {
           "date": "2026-05-20",
@@ -1208,7 +1208,7 @@
           "symbol": "3652.T",
           "price": 3550.0,
           "shares": 400,
-          "reason": "Weekly Sage weekly_stage2 score 0.71; relative strength; no daily confirmation; penalty drag"
+          "reason": "SATORI weekly_stage2 score 0.71; relative strength; no daily confirmation; penalty drag"
         },
         {
           "date": "2026-05-20",
@@ -1216,7 +1216,7 @@
           "symbol": "8035.T",
           "price": 46700.0,
           "shares": 100,
-          "reason": "Weekly Sage weekly_stage2 score 0.61; no daily confirmation"
+          "reason": "SATORI weekly_stage2 score 0.61; no daily confirmation"
         },
         {
           "date": "2026-05-20",
@@ -1238,16 +1238,16 @@
     },
     {
       "agent_id": "risk_sentinel",
-      "name": "Risk Sentinel",
+      "name": "MAMORU",
       "class": "Defender",
       "ui_tone": "blue",
       "avatar_style": "pixel_shield",
       "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
-      "personality": "Calm, skeptical, and disciplined. The brake pedal inside the Arena.",
+      "personality": "MAMORU protects capital: calm, skeptical, and disciplined.",
       "philosophy": "A strong signal is worthless if it cannot survive volatility and liquidity gaps.",
       "summary": {
         "agent_id": "risk_sentinel",
-        "name": "Risk Sentinel",
+        "name": "MAMORU",
         "class": "Defender",
         "screening_profile": "risk_defender",
         "initial_capital_jpy": 10000000.0,
@@ -1280,7 +1280,7 @@
           "pnl_jpy": -50400.0,
           "holding_days": 1,
           "exit_reason": "stop_loss",
-          "entry_reason": "Risk Sentinel risk_defender score 0.73; mixed signal"
+          "entry_reason": "MAMORU risk_defender score 0.73; mixed signal"
         },
         {
           "agent_id": "risk_sentinel",
@@ -1296,7 +1296,7 @@
           "pnl_jpy": 127750.0,
           "holding_days": 2,
           "exit_reason": "take_profit",
-          "entry_reason": "Risk Sentinel risk_defender score 0.74; relative strength; favored relative strength"
+          "entry_reason": "MAMORU risk_defender score 0.74; relative strength; favored relative strength"
         }
       ],
       "equity_curve": [
@@ -1788,7 +1788,7 @@
           "symbol": "6762.T",
           "price": 2885.5,
           "shares": 500,
-          "reason": "Risk Sentinel risk_defender score 0.74; relative strength; favored relative strength"
+          "reason": "MAMORU risk_defender score 0.74; relative strength; favored relative strength"
         },
         {
           "date": "2026-05-20",
@@ -1796,7 +1796,7 @@
           "symbol": "6701.T",
           "price": 4308.0,
           "shares": 300,
-          "reason": "Risk Sentinel risk_defender score 0.73; mixed signal"
+          "reason": "MAMORU risk_defender score 0.73; mixed signal"
         },
         {
           "date": "2026-05-20",
@@ -1818,16 +1818,16 @@
     },
     {
       "agent_id": "discovery_scout",
-      "name": "Discovery Scout",
+      "name": "SAGURI",
       "class": "Scout",
       "ui_tone": "green",
       "avatar_style": "pixel_archer",
       "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
-      "personality": "Curious, energetic, and slightly mischievous. Hunts under-watched Japan.",
+      "personality": "SAGURI searches overlooked Japan: curious, energetic, and slightly mischievous.",
       "philosophy": "The edge is often where global investors have not looked yet.",
       "summary": {
         "agent_id": "discovery_scout",
-        "name": "Discovery Scout",
+        "name": "SAGURI",
         "class": "Scout",
         "screening_profile": "discovery_alpha",
         "initial_capital_jpy": 10000000.0,
@@ -1860,7 +1860,7 @@
           "unrealized_pnl_jpy": 32000.0,
           "holding_days": 4,
           "agent_score": 0.6555,
-          "entry_reason": "Discovery Scout discovery_alpha score 0.66; breakout setup; relative strength; penalty drag"
+          "entry_reason": "SAGURI discovery_alpha score 0.66; breakout setup; relative strength; penalty drag"
         }
       ],
       "closed_trades": [
@@ -1878,7 +1878,7 @@
           "pnl_jpy": 200800.0,
           "holding_days": 2,
           "exit_reason": "take_profit",
-          "entry_reason": "Discovery Scout discovery_alpha score 0.65; relative strength; penalty drag"
+          "entry_reason": "SAGURI discovery_alpha score 0.65; relative strength; penalty drag"
         },
         {
           "agent_id": "discovery_scout",
@@ -1894,7 +1894,7 @@
           "pnl_jpy": -85500.0,
           "holding_days": 3,
           "exit_reason": "stop_loss",
-          "entry_reason": "Discovery Scout discovery_alpha score 0.56; penalty drag"
+          "entry_reason": "SAGURI discovery_alpha score 0.56; penalty drag"
         },
         {
           "agent_id": "discovery_scout",
@@ -1910,7 +1910,7 @@
           "pnl_jpy": -108000.0,
           "holding_days": 1,
           "exit_reason": "stop_loss",
-          "entry_reason": "Discovery Scout discovery_alpha score 0.75; relative strength; no daily confirmation; penalty drag"
+          "entry_reason": "SAGURI discovery_alpha score 0.75; relative strength; no daily confirmation; penalty drag"
         }
       ],
       "equity_curve": [
@@ -2402,7 +2402,7 @@
           "symbol": "3905.T",
           "price": 2843.0,
           "shares": 400,
-          "reason": "Discovery Scout discovery_alpha score 0.65; relative strength; penalty drag"
+          "reason": "SAGURI discovery_alpha score 0.65; relative strength; penalty drag"
         },
         {
           "date": "2026-05-18",
@@ -2410,7 +2410,7 @@
           "symbol": "3993.T",
           "price": 3000.0,
           "shares": 300,
-          "reason": "Discovery Scout discovery_alpha score 0.56; penalty drag"
+          "reason": "SAGURI discovery_alpha score 0.56; penalty drag"
         },
         {
           "date": "2026-05-19",
@@ -2426,7 +2426,7 @@
           "symbol": "3652.T",
           "price": 3550.0,
           "shares": 300,
-          "reason": "Discovery Scout discovery_alpha score 0.75; relative strength; no daily confirmation; penalty drag"
+          "reason": "SAGURI discovery_alpha score 0.75; relative strength; no daily confirmation; penalty drag"
         },
         {
           "date": "2026-05-20",
@@ -2434,7 +2434,7 @@
           "symbol": "135A.T",
           "price": 4250.0,
           "shares": 200,
-          "reason": "Discovery Scout discovery_alpha score 0.66; breakout setup; relative strength; penalty drag"
+          "reason": "SAGURI discovery_alpha score 0.66; breakout setup; relative strength; penalty drag"
         },
         {
           "date": "2026-05-20",
@@ -2456,16 +2456,16 @@
     },
     {
       "agent_id": "contrarian_monk",
-      "name": "Contrarian Monk",
+      "name": "MATSU",
       "class": "Reversal",
       "ui_tone": "amber",
       "avatar_style": "pixel_monk",
       "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
-      "personality": "Dry, patient, analytical. Distrusts crowded heat.",
+      "personality": "MATSU waits for the second entry: dry, patient, analytical, and allergic to crowded heat.",
       "philosophy": "Controlled re-entry can beat obvious momentum when the crowd gets late.",
       "summary": {
         "agent_id": "contrarian_monk",
-        "name": "Contrarian Monk",
+        "name": "MATSU",
         "class": "Reversal",
         "screening_profile": "contrarian_reentry",
         "initial_capital_jpy": 10000000.0,
@@ -2498,7 +2498,7 @@
           "pnl_jpy": -121800.0,
           "holding_days": 3,
           "exit_reason": "stop_loss",
-          "entry_reason": "Contrarian Monk contrarian_reentry score 0.72; relative strength"
+          "entry_reason": "MATSU contrarian_reentry score 0.72; relative strength"
         },
         {
           "agent_id": "contrarian_monk",
@@ -2514,7 +2514,7 @@
           "pnl_jpy": -108000.0,
           "holding_days": 3,
           "exit_reason": "stop_loss",
-          "entry_reason": "Contrarian Monk contrarian_reentry score 0.72; relative strength; no daily confirmation; penalty drag"
+          "entry_reason": "MATSU contrarian_reentry score 0.72; relative strength; no daily confirmation; penalty drag"
         },
         {
           "agent_id": "contrarian_monk",
@@ -2530,7 +2530,7 @@
           "pnl_jpy": 73700.0,
           "holding_days": 2,
           "exit_reason": "take_profit",
-          "entry_reason": "Contrarian Monk contrarian_reentry score 0.73; relative strength"
+          "entry_reason": "MATSU contrarian_reentry score 0.73; relative strength"
         },
         {
           "agent_id": "contrarian_monk",
@@ -2546,7 +2546,7 @@
           "pnl_jpy": 193800.0,
           "holding_days": 3,
           "exit_reason": "take_profit",
-          "entry_reason": "Contrarian Monk contrarian_reentry score 0.80; relative strength; favored relative strength"
+          "entry_reason": "MATSU contrarian_reentry score 0.80; relative strength; favored relative strength"
         }
       ],
       "equity_curve": [
@@ -3038,7 +3038,7 @@
           "symbol": "9984.T",
           "price": 5445.0,
           "shares": 300,
-          "reason": "Contrarian Monk contrarian_reentry score 0.72; relative strength"
+          "reason": "MATSU contrarian_reentry score 0.72; relative strength"
         },
         {
           "date": "2026-05-18",
@@ -3046,7 +3046,7 @@
           "symbol": "3652.T",
           "price": 3460.0,
           "shares": 400,
-          "reason": "Contrarian Monk contrarian_reentry score 0.72; relative strength; no daily confirmation; penalty drag"
+          "reason": "MATSU contrarian_reentry score 0.72; relative strength; no daily confirmation; penalty drag"
         },
         {
           "date": "2026-05-20",
@@ -3054,7 +3054,7 @@
           "symbol": "6762.T",
           "price": 2885.5,
           "shares": 400,
-          "reason": "Contrarian Monk contrarian_reentry score 0.80; relative strength; favored relative strength"
+          "reason": "MATSU contrarian_reentry score 0.80; relative strength; favored relative strength"
         },
         {
           "date": "2026-05-20",
@@ -3062,7 +3062,7 @@
           "symbol": "6981.T",
           "price": 5990.0,
           "shares": 100,
-          "reason": "Contrarian Monk contrarian_reentry score 0.73; relative strength"
+          "reason": "MATSU contrarian_reentry score 0.73; relative strength"
         },
         {
           "date": "2026-05-20",
@@ -3104,7 +3104,7 @@
     "agents": [
       {
         "agent_id": "weekly_sage",
-        "name": "Weekly Sage",
+        "name": "SATORI",
         "class": "Weekly",
         "screening_profile": "weekly_stage2",
         "initial_capital_jpy": 10000000.0,
@@ -3123,7 +3123,7 @@
       },
       {
         "agent_id": "risk_sentinel",
-        "name": "Risk Sentinel",
+        "name": "MAMORU",
         "class": "Defender",
         "screening_profile": "risk_defender",
         "initial_capital_jpy": 10000000.0,
@@ -3142,7 +3142,7 @@
       },
       {
         "agent_id": "discovery_scout",
-        "name": "Discovery Scout",
+        "name": "SAGURI",
         "class": "Scout",
         "screening_profile": "discovery_alpha",
         "initial_capital_jpy": 10000000.0,
@@ -3161,7 +3161,7 @@
       },
       {
         "agent_id": "contrarian_monk",
-        "name": "Contrarian Monk",
+        "name": "MATSU",
         "class": "Reversal",
         "screening_profile": "contrarian_reentry",
         "initial_capital_jpy": 10000000.0,
@@ -3180,7 +3180,7 @@
       },
       {
         "agent_id": "daily_striker",
-        "name": "Daily Striker",
+        "name": "KAKERU",
         "class": "Daily",
         "screening_profile": "daily_v2_core",
         "initial_capital_jpy": 10000000.0,
