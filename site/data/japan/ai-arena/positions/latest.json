@@ -1,6 +1,6 @@
 {
   "schema_version": "neon_tokyo_ai_arena_positions_v1",
-  "generated_at": "2026-05-25T22:29:45+09:00",
+  "generated_at": "2026-05-25T22:43:21+09:00",
   "range": {
     "start_date": "2026-02-24",
     "end_date": "2026-05-25",
@@ -97,14 +97,14 @@
         "class": "Weekly",
         "screening_profile": "weekly_stage2",
         "initial_capital_jpy": 10000000.0,
-        "cash_jpy": 9184600.0,
-        "market_value_jpy": 1323000.0,
-        "portfolio_equity_jpy": 10507600.0,
-        "return_pct": 5.076,
-        "max_drawdown_pct": -3.726,
-        "closed_trades": 3,
-        "win_rate_pct": 66.67,
-        "open_positions": 1,
+        "cash_jpy": 4316600.0,
+        "market_value_jpy": 6541000.0,
+        "portfolio_equity_jpy": 10857600.0,
+        "return_pct": 8.576,
+        "max_drawdown_pct": -4.5613,
+        "closed_trades": 2,
+        "win_rate_pct": 50.0,
+        "open_positions": 2,
         "ui_tone": "violet",
         "avatar_style": "pixel_mage",
         "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
@@ -125,8 +125,25 @@
           "unrealized_return_pct": 4.7506,
           "unrealized_pnl_jpy": 60000.0,
           "holding_days": 6,
-          "agent_score": 0.6753,
-          "entry_reason": "Weekly Sage weekly_stage2 score 0.68; relative strength"
+          "agent_score": 0.6331,
+          "entry_reason": "Weekly Sage weekly_stage2 score 0.63; relative strength"
+        },
+        {
+          "agent_id": "weekly_sage",
+          "symbol": "8035.T",
+          "name": "Tokyo Electron",
+          "theme": "Semiconductor Equipment",
+          "entry_date": "2026-05-20",
+          "entry_price": 46700.0,
+          "current_date": "2026-05-25",
+          "current_price": 52180.0,
+          "shares": 100,
+          "market_value_jpy": 5218000.0,
+          "unrealized_return_pct": 11.7345,
+          "unrealized_pnl_jpy": 548000.0,
+          "holding_days": 4,
+          "agent_score": 0.611,
+          "entry_reason": "Weekly Sage weekly_stage2 score 0.61; no daily confirmation"
         }
       ],
       "recent_actions": [
@@ -144,7 +161,7 @@
           "symbol": "135A.T",
           "price": 4210.0,
           "shares": 300,
-          "reason": "Weekly Sage weekly_stage2 score 0.68; relative strength"
+          "reason": "Weekly Sage weekly_stage2 score 0.63; relative strength"
         },
         {
           "date": "2026-05-20",
@@ -157,8 +174,8 @@
         {
           "date": "2026-05-20",
           "action": "entry",
-          "symbol": "5802.T",
-          "price": 10285.0,
+          "symbol": "8035.T",
+          "price": 46700.0,
           "shares": 100,
           "reason": "Weekly Sage weekly_stage2 score 0.61; no daily confirmation"
         },
@@ -176,14 +193,6 @@
           "symbol": "9984.T",
           "price": 6757.0,
           "shares": 300,
-          "reason": "take_profit"
-        },
-        {
-          "date": "2026-05-25",
-          "action": "exit",
-          "symbol": "5802.T",
-          "price": 12265.0,
-          "shares": 100,
           "reason": "take_profit"
         }
       ]

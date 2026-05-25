@@ -1,6 +1,6 @@
 {
   "schema_version": "neon_tokyo_ai_arena_simulation_v1",
-  "generated_at": "2026-05-25T22:29:45+09:00",
+  "generated_at": "2026-05-25T22:43:21+09:00",
   "market": "Japan",
   "timezone": "Asia/Tokyo",
   "range": {
@@ -12,7 +12,7 @@
     "daily_snapshots_used": 2,
     "scheduled_orders": 16,
     "executed_entries": 16,
-    "closed_exits": 13,
+    "closed_exits": 12,
     "pending_orders_after_end": 0,
     "initial_capital_jpy": 10000000.0,
     "lot_size": 100
@@ -620,14 +620,14 @@
         "class": "Weekly",
         "screening_profile": "weekly_stage2",
         "initial_capital_jpy": 10000000.0,
-        "cash_jpy": 9184600.0,
-        "market_value_jpy": 1323000.0,
-        "portfolio_equity_jpy": 10507600.0,
-        "return_pct": 5.076,
-        "max_drawdown_pct": -3.726,
-        "closed_trades": 3,
-        "win_rate_pct": 66.67,
-        "open_positions": 1,
+        "cash_jpy": 4316600.0,
+        "market_value_jpy": 6541000.0,
+        "portfolio_equity_jpy": 10857600.0,
+        "return_pct": 8.576,
+        "max_drawdown_pct": -4.5613,
+        "closed_trades": 2,
+        "win_rate_pct": 50.0,
+        "open_positions": 2,
         "ui_tone": "violet",
         "avatar_style": "pixel_mage",
         "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
@@ -648,8 +648,25 @@
           "unrealized_return_pct": 4.7506,
           "unrealized_pnl_jpy": 60000.0,
           "holding_days": 6,
-          "agent_score": 0.6753,
-          "entry_reason": "Weekly Sage weekly_stage2 score 0.68; relative strength"
+          "agent_score": 0.6331,
+          "entry_reason": "Weekly Sage weekly_stage2 score 0.63; relative strength"
+        },
+        {
+          "agent_id": "weekly_sage",
+          "symbol": "8035.T",
+          "name": "Tokyo Electron",
+          "theme": "Semiconductor Equipment",
+          "entry_date": "2026-05-20",
+          "entry_price": 46700.0,
+          "current_date": "2026-05-25",
+          "current_price": 52180.0,
+          "shares": 100,
+          "market_value_jpy": 5218000.0,
+          "unrealized_return_pct": 11.7345,
+          "unrealized_pnl_jpy": 548000.0,
+          "holding_days": 4,
+          "agent_score": 0.611,
+          "entry_reason": "Weekly Sage weekly_stage2 score 0.61; no daily confirmation"
         }
       ],
       "closed_trades": [
@@ -684,22 +701,6 @@
           "holding_days": 5,
           "exit_reason": "take_profit",
           "entry_reason": "Weekly Sage weekly_stage2 score 0.68; relative strength"
-        },
-        {
-          "agent_id": "weekly_sage",
-          "symbol": "5802.T",
-          "name": "Sumitomo Electric",
-          "theme": "Data Center and Power Infrastructure",
-          "entry_date": "2026-05-20",
-          "exit_date": "2026-05-25",
-          "entry_price": 10285.0,
-          "exit_price": 12265.0,
-          "shares": 100,
-          "return_pct": 19.2513,
-          "pnl_jpy": 198000.0,
-          "holding_days": 4,
-          "exit_reason": "take_profit",
-          "entry_reason": "Weekly Sage weekly_stage2 score 0.61; no daily confirmation"
         }
       ],
       "equity_curve": [
@@ -1153,35 +1154,35 @@
         },
         {
           "date": "2026-05-20",
-          "cash_jpy": 5931000.0,
-          "market_value_jpy": 3750700.0,
-          "portfolio_equity_jpy": 9681700.0,
-          "return_pct": -3.183,
+          "cash_jpy": 2289500.0,
+          "market_value_jpy": 7308200.0,
+          "portfolio_equity_jpy": 9597700.0,
+          "return_pct": -4.023,
           "open_positions": 3
         },
         {
           "date": "2026-05-21",
-          "cash_jpy": 5931000.0,
-          "market_value_jpy": 4161200.0,
-          "portfolio_equity_jpy": 10092200.0,
-          "return_pct": 0.922,
+          "cash_jpy": 2289500.0,
+          "market_value_jpy": 7968200.0,
+          "portfolio_equity_jpy": 10257700.0,
+          "return_pct": 2.577,
           "open_positions": 3
         },
         {
           "date": "2026-05-22",
-          "cash_jpy": 7958100.0,
-          "market_value_jpy": 2521500.0,
-          "portfolio_equity_jpy": 10479600.0,
-          "return_pct": 4.796,
+          "cash_jpy": 4316600.0,
+          "market_value_jpy": 6322500.0,
+          "portfolio_equity_jpy": 10639100.0,
+          "return_pct": 6.391,
           "open_positions": 2
         },
         {
           "date": "2026-05-25",
-          "cash_jpy": 9184600.0,
-          "market_value_jpy": 1323000.0,
-          "portfolio_equity_jpy": 10507600.0,
-          "return_pct": 5.076,
-          "open_positions": 1
+          "cash_jpy": 4316600.0,
+          "market_value_jpy": 6541000.0,
+          "portfolio_equity_jpy": 10857600.0,
+          "return_pct": 8.576,
+          "open_positions": 2
         }
       ],
       "recent_actions": [
@@ -1199,7 +1200,7 @@
           "symbol": "135A.T",
           "price": 4210.0,
           "shares": 300,
-          "reason": "Weekly Sage weekly_stage2 score 0.68; relative strength"
+          "reason": "Weekly Sage weekly_stage2 score 0.63; relative strength"
         },
         {
           "date": "2026-05-20",
@@ -1212,8 +1213,8 @@
         {
           "date": "2026-05-20",
           "action": "entry",
-          "symbol": "5802.T",
-          "price": 10285.0,
+          "symbol": "8035.T",
+          "price": 46700.0,
           "shares": 100,
           "reason": "Weekly Sage weekly_stage2 score 0.61; no daily confirmation"
         },
@@ -1231,14 +1232,6 @@
           "symbol": "9984.T",
           "price": 6757.0,
           "shares": 300,
-          "reason": "take_profit"
-        },
-        {
-          "date": "2026-05-25",
-          "action": "exit",
-          "symbol": "5802.T",
-          "price": 12265.0,
-          "shares": 100,
           "reason": "take_profit"
         }
       ]
@@ -3115,14 +3108,14 @@
         "class": "Weekly",
         "screening_profile": "weekly_stage2",
         "initial_capital_jpy": 10000000.0,
-        "cash_jpy": 9184600.0,
-        "market_value_jpy": 1323000.0,
-        "portfolio_equity_jpy": 10507600.0,
-        "return_pct": 5.076,
-        "max_drawdown_pct": -3.726,
-        "closed_trades": 3,
-        "win_rate_pct": 66.67,
-        "open_positions": 1,
+        "cash_jpy": 4316600.0,
+        "market_value_jpy": 6541000.0,
+        "portfolio_equity_jpy": 10857600.0,
+        "return_pct": 8.576,
+        "max_drawdown_pct": -4.5613,
+        "closed_trades": 2,
+        "win_rate_pct": 50.0,
+        "open_positions": 2,
         "ui_tone": "violet",
         "avatar_style": "pixel_mage",
         "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
