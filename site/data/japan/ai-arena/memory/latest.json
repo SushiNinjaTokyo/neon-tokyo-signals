@@ -1,63 +1,63 @@
 {
   "schema_version": "ai_arena_agent_memory_v1",
-  "generated_at": "2026-05-26T15:57:16+09:00",
+  "generated_at": "2026-05-26T17:14:17+09:00",
   "memory_date": "2026-05-26",
   "ai": {
-    "enabled": true,
+    "enabled": false,
     "model": "gpt-4o-mini",
-    "status": "ok_memory_ai",
-    "fallback_used": false
+    "status": "fallback_memory_no_ai",
+    "fallback_used": true
   },
   "agents": [
     {
       "agent_id": "daily_striker",
       "agent_name": "KAKERU",
       "mood": "wounded",
-      "yesterday_summary": "Rank #5, -1.83%, 0 open positions.",
-      "last_mistake": "Exited 6758.T via max_holding.",
-      "lesson": "Next signal requires clearer confirmation.",
+      "yesterday_summary": "KAKERU sits at rank #5 with -1.83% and 0 open positions.",
+      "last_mistake": "The last exit was 6758.T via max_holding.",
+      "lesson": "The recent process has not converted into return; the next signal needs cleaner confirmation.",
       "today_bias": "Preserve optionality until a cleaner setup appears.",
-      "memory_line": "Rank #5: Next signal requires clearer confirmation."
+      "memory_line": "KAKERU remembers rank #5: The recent process has not converted into return; the next signal needs cleaner confirmation."
     },
     {
       "agent_id": "weekly_sage",
       "agent_name": "SATORI",
       "mood": "confident",
-      "yesterday_summary": "Rank #1, +8.58%, 2 open positions.",
+      "yesterday_summary": "SATORI sits at rank #1 with +8.58% and 2 open positions.",
       "last_mistake": "135A.T is the weakest live mark at +4.75%.",
-      "lesson": "Lead must survive concentration and drawdown.",
-      "today_bias": "Defend or reassess 8035.T if validation continues.",
-      "memory_line": "Rank #1: Lead must survive concentration and drawdown."
+      "lesson": "The current process is being paid, but the lead still has to survive concentration and drawdown.",
+      "today_bias": "Defend or reassess 8035.T only if the position keeps validating the strategy.",
+      "memory_line": "SATORI remembers rank #1: The current process is being paid, but the lead still has to survive concentration and drawdown."
     },
     {
       "agent_id": "risk_sentinel",
       "agent_name": "MAMORU",
       "mood": "patient",
-      "yesterday_summary": "Rank #2, +0.77%, 0 open positions.",
-      "last_mistake": "Exited 6762.T via take_profit.",
-      "lesson": "No position valid if signal doesn't clear threshold.",
+      "yesterday_summary": "MAMORU sits at rank #2 with +0.77% and 0 open positions.",
+      "last_mistake": "The last exit was 6762.T via take_profit.",
+      "lesson": "No position can be a valid allocation when the signal does not clear the strategy threshold.",
       "today_bias": "Preserve optionality until a cleaner setup appears.",
-      "memory_line": "Rank #2: No position valid if signal doesn't clear threshold."
+      "memory_line": "MAMORU remembers rank #2: No position can be a valid allocation when the signal does not clear the strategy threshold."
     },
     {
       "agent_id": "discovery_scout",
       "agent_name": "SAGURI",
       "mood": "focused",
-      "yesterday_summary": "Rank #3, +0.39%, 1 open position.",
+      "yesterday_summary": "SAGURI sits at rank #3 with +0.39% and 1 open positions.",
       "last_mistake": "135A.T is the weakest live mark at +3.76%.",
-      "lesson": "Open risk must earn its place.",
-      "today_bias": "Defend or reassess 135A.T if validation continues.",
-      "memory_line": "Rank #3: Open risk must earn its place."
+      "lesson": "The book is alive, but open risk still has to earn its place.",
+      "today_bias": "Defend or reassess 135A.T only if the position keeps validating the strategy.",
+      "memory_line": "SAGURI remembers rank #3: The book is alive, but open risk still has to earn its place."
     },
     {
       "agent_id": "contrarian_monk",
       "agent_name": "MATSU",
       "mood": "patient",
-      "yesterday_summary": "Rank #4, +0.38%, 0 open positions.",
-      "last_mistake": "Exited 6762.T via take_profit.",
-      "lesson": "No position valid if signal doesn't clear threshold.",
+      "yesterday_summary": "MATSU sits at rank #4 with +0.38% and 0 open positions.",
+      "last_mistake": "The last exit was 6762.T via take_profit.",
+      "lesson": "No position can be a valid allocation when the signal does not clear the strategy threshold.",
       "today_bias": "Preserve optionality until a cleaner setup appears.",
-      "memory_line": "Rank #4: No position valid if signal doesn't clear threshold."
+      "memory_line": "MATSU remembers rank #4: No position can be a valid allocation when the signal does not clear the strategy threshold."
     }
   ]
 }
