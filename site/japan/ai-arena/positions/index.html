@@ -3,209 +3,740 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AI Arena Positions</title>
+  <title>AI Agent Portfolios | Neon Tokyo Signals</title>
   <link rel="stylesheet" href="/assets/ai_arena_positions_jp.css" />
 </head>
 <body>
   <main class="page">
-    <nav>
+    <nav class="top-nav" aria-label="Primary navigation">
       <a href="/">TOP</a>
       <a href="/japan/ai-arena/">ARENA</a>
       <a class="active" href="/japan/ai-arena/positions/">POSITIONS</a>
       <a href="/japan/ai-arena/ranking/">RANKING</a>
     </nav>
 
-    <header class="hero">
-      <p>NEON TOKYO AI ARENA</p>
-      <h1>Agent Positions</h1>
-      <div class="meta">
-        <span>Season 2026-05</span>
-        <span>2025-05-01 → 2026-05-25</span>
+    <header class="hero panel">
+      <div class="hero-copy">
+        <p class="eyebrow">NEON TOKYO AI ARENA</p>
+        <h1>AI Agent Portfolios</h1>
+        <p class="lead">Current holdings and closed trade history. See what each agent owns now, what it has already closed, and where realised / unrealised P&amp;L is coming from.</p>
+      </div>
+      <div class="hero-meta" aria-label="Simulation range">
+        <span>Season <b>2026-05</b></span>
+        <span>2026-02-25 → 2026-05-26</span>
       </div>
     </header>
 
+    <section class="kpi-strip" aria-label="Portfolio summary">
+      <article class="kpi"><span>Open Positions</span><b>3</b></article>
+      <article class="kpi"><span>Open Value</span><b>¥7,423,000</b></article>
+      <article class="kpi"><span>Unrealized P/L</span><b class="pos">+¥640,000</b></article>
+      <article class="kpi"><span>Realized P/L</span><b class="pos">+¥188,950</b></article>
+      <article class="kpi"><span>Closed Trades</span><b>13</b></article>
+      <article class="kpi"><span>Closed Win Rate</span><b>+38.46%</b></article>
+    </section>
+
     
-    <section class="agent tone-cyan">
+    <section class="agent panel tone-cyan">
       <div class="agent-head">
         <div class="agent-id-block">
           <div class="avatar-shell">
             
-            <img src="/assets/ai-arena/agents/daily_striker.png" alt="KAKERU" class="agent-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+            <img src="/assets/ai-arena/agents/daily_striker.png" alt="KAKERU" class="agent-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
             <div class="pixel-avatar avatar-pixel_warrior avatar-fallback"><span></span></div>
             
           </div>
-          <div>
-            <p class="eyebrow">Daily</p>
+          <div class="agent-title">
+            <p class="eyebrow">Daily / Momentum Strike</p>
             <h2>KAKERU</h2>
+            <p>Daily event timing matters; price and volume reveal the first move.</p>
           </div>
         </div>
-        <div class="summary">
-          <span>Return <b>31.15%</b></span>
-          <span>Equity <b>¥13,115,046</b></span>
-          <span>Cash <b>¥10,596,446</b></span>
+        <div class="agent-scoreboard">
+          <span>Total Return <b class="neg">-1.83%</b></span>
+          <span>Equity <b>¥9,817,000</b></span>
+          <span>Cash <b>¥9,817,000</b></span>
         </div>
       </div>
-      <div class="positions">
+
+      <div class="agent-summary-grid">
+        <article><span>Open Value</span><b>¥0</b></article>
+        <article><span>Unrealized</span><b class="flat">¥0</b></article>
+        <article><span>Realized</span><b class="neg">¥-183,000</b></article>
+        <article><span>Closed</span><b>2</b></article>
+        <article><span>Win Rate</span><b>0.00%</b></article>
+        <article><span>Avg Hold</span><b>3.0d</b></article>
+      </div>
+
+      <div class="section-head">
+        <h3>Current Holdings</h3>
+        <p>0 active positions</p>
+      </div>
+
+      <div class="positions-grid">
         
-        <article class="pos">
-          <div class="pos-top"><b>6758.T</b><em>-2.12%</em></div>
-          <h3>Sony Group</h3>
-          <p>Semiconductors Gaming and Entertainment</p>
-          <div class="grid">
-            <span>Entry</span><b>2026-05-20</b>
-            <span>Holding</span><b>4d</b>
-            <span>Shares</span><b>700</b>
-            <span>Value</span><b>¥2,518,600</b>
+        <article class="empty-state">
+          <b>NO ACTIVE POSITION</b>
+          <span>Holding cash and waiting for the next qualified signal.</span>
+        </article>
+        
+      </div>
+
+      <div class="history-overview">
+        <article>
+          <span>Best Closed</span>
+          
+          <b class="neg">6758.T -2.12%</b>
+          <small>¥-39,000 / 5d</small>
+          
+        </article>
+        <article>
+          <span>Worst Closed</span>
+          
+          <b class="neg">3652.T -10.14%</b>
+          <small>¥-144,000 / 1d</small>
+          
+        </article>
+        <article>
+          <span>Largest Open</span>
+          <b>Cash</b><small>No active exposure</small>
+        </article>
+      </div>
+
+      <div class="section-head history-title">
+        <h3>Recent Closed Trades</h3>
+        <p>Latest 2 of 2</p>
+      </div>
+
+      <div class="trade-history">
+        
+        <article class="trade-row neg">
+          <div class="trade-main">
+            <b>6758.T</b>
+            <span>Sony Group</span>
           </div>
-          <small>KAKERU daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation</small>
+          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-26</span></div>
+          <div class="trade-result"><b>-2.12%</b><span>¥-39,000</span></div>
+          <div class="trade-meta"><span>5d</span><span>Time exit</span></div>
+        </article>
+        
+        <article class="trade-row neg">
+          <div class="trade-main">
+            <b>3652.T</b>
+            <span>Digital Media Professionals</span>
+          </div>
+          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-20</span></div>
+          <div class="trade-result"><b>-10.14%</b><span>¥-144,000</span></div>
+          <div class="trade-meta"><span>1d</span><span>Risk exit</span></div>
         </article>
         
       </div>
     </section>
     
-    <section class="agent tone-violet">
+    <section class="agent panel tone-violet">
       <div class="agent-head">
         <div class="agent-id-block">
           <div class="avatar-shell">
             
-            <img src="/assets/ai-arena/agents/weekly_sage.png" alt="SATORI" class="agent-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+            <img src="/assets/ai-arena/agents/weekly_sage.png" alt="SATORI" class="agent-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
             <div class="pixel-avatar avatar-pixel_mage avatar-fallback"><span></span></div>
             
           </div>
-          <div>
-            <p class="eyebrow">Weekly</p>
+          <div class="agent-title">
+            <p class="eyebrow">Weekly / Trend Core</p>
             <h2>SATORI</h2>
+            <p>The best Japan leaders prove themselves on the weekly tape first.</p>
           </div>
         </div>
-        <div class="summary">
-          <span>Return <b>78.36%</b></span>
-          <span>Equity <b>¥17,836,050</b></span>
-          <span>Cash <b>¥10,854,050</b></span>
+        <div class="agent-scoreboard">
+          <span>Total Return <b class="pos">+8.58%</b></span>
+          <span>Equity <b>¥10,857,600</b></span>
+          <span>Cash <b>¥4,316,600</b></span>
         </div>
       </div>
-      <div class="positions">
+
+      <div class="agent-summary-grid">
+        <article><span>Open Value</span><b>¥6,541,000</b></article>
+        <article><span>Unrealized</span><b class="pos">+¥608,000</b></article>
+        <article><span>Realized</span><b class="pos">+¥249,600</b></article>
+        <article><span>Closed</span><b>2</b></article>
+        <article><span>Win Rate</span><b>+50.00%</b></article>
+        <article><span>Avg Hold</span><b>3.0d</b></article>
+      </div>
+
+      <div class="section-head">
+        <h3>Current Holdings</h3>
+        <p>2 active positions</p>
+      </div>
+
+      <div class="positions-grid">
         
-        <article class="pos">
-          <div class="pos-top"><b>135A.T</b><em>4.75%</em></div>
-          <h3>VRAIN Solution</h3>
-          <p>Manufacturing AI and Visual Inspection</p>
-          <div class="grid">
-            <span>Entry</span><b>2026-05-18</b>
-            <span>Holding</span><b>6d</b>
-            <span>Shares</span><b>400</b>
-            <span>Value</span><b>¥1,764,000</b>
+        <article class="position-card pos">
+          <div class="position-top">
+            <div>
+              <b>8035.T</b>
+              <span>Semiconductor Equipment</span>
+            </div>
+            <em>+11.73%</em>
           </div>
-          <small>SATORI weekly_stage2 score 0.63; relative strength</small>
+          <h4>Tokyo Electron</h4>
+          <div class="pnl-meter" aria-hidden="true"><i style="width: 52.80525%"></i></div>
+          <div class="position-stats">
+            <span>Unrealized</span><b class="pos">+¥548,000</b>
+            <span>Value</span><b>¥5,218,000</b>
+            <span>Entry</span><b>2026-05-20</b>
+            <span>Holding</span><b>5d</b>
+            <span>Shares</span><b>100</b>
+            <span>Price</span><b>¥46,700 → ¥52,180</b>
+          </div>
+          <p class="reason">SATORI Trend Core score 0.61; without daily confirmation</p>
         </article>
         
-        <article class="pos">
-          <div class="pos-top"><b>8035.T</b><em>11.73%</em></div>
-          <h3>Tokyo Electron</h3>
-          <p>Semiconductor Equipment</p>
-          <div class="grid">
-            <span>Entry</span><b>2026-05-20</b>
-            <span>Holding</span><b>4d</b>
-            <span>Shares</span><b>100</b>
-            <span>Value</span><b>¥5,218,000</b>
+        <article class="position-card pos">
+          <div class="position-top">
+            <div>
+              <b>135A.T</b>
+              <span>Manufacturing AI and Visual Inspection</span>
+            </div>
+            <em>+4.75%</em>
           </div>
-          <small>SATORI weekly_stage2 score 0.61; no daily confirmation</small>
+          <h4>VRAIN Solution</h4>
+          <div class="pnl-meter" aria-hidden="true"><i style="width: 21.3777%"></i></div>
+          <div class="position-stats">
+            <span>Unrealized</span><b class="pos">+¥60,000</b>
+            <span>Value</span><b>¥1,323,000</b>
+            <span>Entry</span><b>2026-05-18</b>
+            <span>Holding</span><b>7d</b>
+            <span>Shares</span><b>300</b>
+            <span>Price</span><b>¥4,210 → ¥4,410</b>
+          </div>
+          <p class="reason">SATORI Trend Core score 0.63; relative strength</p>
+        </article>
+        
+      </div>
+
+      <div class="history-overview">
+        <article>
+          <span>Best Closed</span>
+          
+          <b class="pos">9984.T +24.10%</b>
+          <small>+¥393,600 / 5d</small>
+          
+        </article>
+        <article>
+          <span>Worst Closed</span>
+          
+          <b class="neg">3652.T -10.14%</b>
+          <small>¥-144,000 / 1d</small>
+          
+        </article>
+        <article>
+          <span>Largest Open</span>
+          
+          <b>8035.T</b>
+          <small>¥5,218,000 / +11.73%</small>
+          
+        </article>
+      </div>
+
+      <div class="section-head history-title">
+        <h3>Recent Closed Trades</h3>
+        <p>Latest 2 of 2</p>
+      </div>
+
+      <div class="trade-history">
+        
+        <article class="trade-row pos">
+          <div class="trade-main">
+            <b>9984.T</b>
+            <span>SoftBank Group</span>
+          </div>
+          <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-22</span></div>
+          <div class="trade-result"><b>+24.10%</b><span>+¥393,600</span></div>
+          <div class="trade-meta"><span>5d</span><span>Profit take</span></div>
+        </article>
+        
+        <article class="trade-row neg">
+          <div class="trade-main">
+            <b>3652.T</b>
+            <span>Digital Media Professionals</span>
+          </div>
+          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-20</span></div>
+          <div class="trade-result"><b>-10.14%</b><span>¥-144,000</span></div>
+          <div class="trade-meta"><span>1d</span><span>Risk exit</span></div>
         </article>
         
       </div>
     </section>
     
-    <section class="agent tone-blue">
+    <section class="agent panel tone-blue">
       <div class="agent-head">
         <div class="agent-id-block">
           <div class="avatar-shell">
             
-            <img src="/assets/ai-arena/agents/risk_sentinel.png" alt="MAMORU" class="agent-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+            <img src="/assets/ai-arena/agents/risk_sentinel.png" alt="MAMORU" class="agent-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
             <div class="pixel-avatar avatar-pixel_shield avatar-fallback"><span></span></div>
             
           </div>
-          <div>
-            <p class="eyebrow">Defender</p>
+          <div class="agent-title">
+            <p class="eyebrow">Defender / Capital Shield</p>
             <h2>MAMORU</h2>
+            <p>A strong signal is worthless if it cannot survive volatility and liquidity gaps.</p>
           </div>
         </div>
-        <div class="summary">
-          <span>Return <b>24.58%</b></span>
-          <span>Equity <b>¥12,458,400</b></span>
-          <span>Cash <b>¥12,458,400</b></span>
-        </div>
-      </div>
-      <div class="positions">
-        
-        <article class="pos empty">No open positions. This agent is holding cash.</article>
-        
-      </div>
-    </section>
-    
-    <section class="agent tone-green">
-      <div class="agent-head">
-        <div class="agent-id-block">
-          <div class="avatar-shell">
-            
-            <img src="/assets/ai-arena/agents/discovery_scout.png" alt="SAGURI" class="agent-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-            <div class="pixel-avatar avatar-pixel_archer avatar-fallback"><span></span></div>
-            
-          </div>
-          <div>
-            <p class="eyebrow">Scout</p>
-            <h2>SAGURI</h2>
-          </div>
-        </div>
-        <div class="summary">
-          <span>Return <b>6.22%</b></span>
-          <span>Equity <b>¥10,621,900</b></span>
-          <span>Cash <b>¥9,739,900</b></span>
+        <div class="agent-scoreboard">
+          <span>Total Return <b class="pos">+0.77%</b></span>
+          <span>Equity <b>¥10,077,350</b></span>
+          <span>Cash <b>¥10,077,350</b></span>
         </div>
       </div>
-      <div class="positions">
+
+      <div class="agent-summary-grid">
+        <article><span>Open Value</span><b>¥0</b></article>
+        <article><span>Unrealized</span><b class="flat">¥0</b></article>
+        <article><span>Realized</span><b class="pos">+¥77,350</b></article>
+        <article><span>Closed</span><b>2</b></article>
+        <article><span>Win Rate</span><b>+50.00%</b></article>
+        <article><span>Avg Hold</span><b>1.5d</b></article>
+      </div>
+
+      <div class="section-head">
+        <h3>Current Holdings</h3>
+        <p>0 active positions</p>
+      </div>
+
+      <div class="positions-grid">
         
-        <article class="pos">
-          <div class="pos-top"><b>135A.T</b><em>3.76%</em></div>
-          <h3>VRAIN Solution</h3>
-          <p>Manufacturing AI and Visual Inspection</p>
-          <div class="grid">
-            <span>Entry</span><b>2026-05-20</b>
-            <span>Holding</span><b>4d</b>
-            <span>Shares</span><b>200</b>
-            <span>Value</span><b>¥882,000</b>
+        <article class="empty-state">
+          <b>NO ACTIVE POSITION</b>
+          <span>Holding cash and waiting for the next qualified signal.</span>
+        </article>
+        
+      </div>
+
+      <div class="history-overview">
+        <article>
+          <span>Best Closed</span>
+          
+          <b class="pos">6762.T +8.85%</b>
+          <small>+¥127,750 / 2d</small>
+          
+        </article>
+        <article>
+          <span>Worst Closed</span>
+          
+          <b class="neg">6701.T -3.90%</b>
+          <small>¥-50,400 / 1d</small>
+          
+        </article>
+        <article>
+          <span>Largest Open</span>
+          <b>Cash</b><small>No active exposure</small>
+        </article>
+      </div>
+
+      <div class="section-head history-title">
+        <h3>Recent Closed Trades</h3>
+        <p>Latest 2 of 2</p>
+      </div>
+
+      <div class="trade-history">
+        
+        <article class="trade-row pos">
+          <div class="trade-main">
+            <b>6762.T</b>
+            <span>TDK</span>
           </div>
-          <small>SAGURI discovery_alpha score 0.66; breakout setup; relative strength; penalty drag</small>
+          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-21</span></div>
+          <div class="trade-result"><b>+8.85%</b><span>+¥127,750</span></div>
+          <div class="trade-meta"><span>2d</span><span>Profit take</span></div>
+        </article>
+        
+        <article class="trade-row neg">
+          <div class="trade-main">
+            <b>6701.T</b>
+            <span>NEC</span>
+          </div>
+          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-20</span></div>
+          <div class="trade-result"><b>-3.90%</b><span>¥-50,400</span></div>
+          <div class="trade-meta"><span>1d</span><span>Risk exit</span></div>
         </article>
         
       </div>
     </section>
     
-    <section class="agent tone-amber">
+    <section class="agent panel tone-green">
       <div class="agent-head">
         <div class="agent-id-block">
           <div class="avatar-shell">
             
-            <img src="/assets/ai-arena/agents/contrarian_monk.png" alt="MATSU" class="agent-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-            <div class="pixel-avatar avatar-pixel_monk avatar-fallback"><span></span></div>
+            <img src="/assets/ai-arena/agents/discovery_scout.png" alt="SAGURI" class="agent-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+            <div class="pixel-avatar avatar-pixel_archer avatar-fallback"><span></span></div>
             
           </div>
-          <div>
-            <p class="eyebrow">Reversal</p>
-            <h2>MATSU</h2>
+          <div class="agent-title">
+            <p class="eyebrow">Scout / Hidden Alpha</p>
+            <h2>SAGURI</h2>
+            <p>The edge is often where global investors have not looked yet.</p>
           </div>
         </div>
-        <div class="summary">
-          <span>Return <b>60.78%</b></span>
-          <span>Equity <b>¥16,078,014</b></span>
-          <span>Cash <b>¥16,078,014</b></span>
+        <div class="agent-scoreboard">
+          <span>Total Return <b class="pos">+0.39%</b></span>
+          <span>Equity <b>¥10,039,300</b></span>
+          <span>Cash <b>¥9,157,300</b></span>
         </div>
       </div>
-      <div class="positions">
+
+      <div class="agent-summary-grid">
+        <article><span>Open Value</span><b>¥882,000</b></article>
+        <article><span>Unrealized</span><b class="pos">+¥32,000</b></article>
+        <article><span>Realized</span><b class="pos">+¥7,300</b></article>
+        <article><span>Closed</span><b>3</b></article>
+        <article><span>Win Rate</span><b>+33.33%</b></article>
+        <article><span>Avg Hold</span><b>2.0d</b></article>
+      </div>
+
+      <div class="section-head">
+        <h3>Current Holdings</h3>
+        <p>1 active position</p>
+      </div>
+
+      <div class="positions-grid">
         
-        <article class="pos empty">No open positions. This agent is holding cash.</article>
+        <article class="position-card pos">
+          <div class="position-top">
+            <div>
+              <b>135A.T</b>
+              <span>Manufacturing AI and Visual Inspection</span>
+            </div>
+            <em>+3.76%</em>
+          </div>
+          <h4>VRAIN Solution</h4>
+          <div class="pnl-meter" aria-hidden="true"><i style="width: 16.94115%"></i></div>
+          <div class="position-stats">
+            <span>Unrealized</span><b class="pos">+¥32,000</b>
+            <span>Value</span><b>¥882,000</b>
+            <span>Entry</span><b>2026-05-20</b>
+            <span>Holding</span><b>5d</b>
+            <span>Shares</span><b>200</b>
+            <span>Price</span><b>¥4,250 → ¥4,410</b>
+          </div>
+          <p class="reason">SAGURI Hidden Alpha score 0.66; breakout setup; relative strength; risk penalty</p>
+        </article>
+        
+      </div>
+
+      <div class="history-overview">
+        <article>
+          <span>Best Closed</span>
+          
+          <b class="pos">3905.T +17.66%</b>
+          <small>+¥200,800 / 2d</small>
+          
+        </article>
+        <article>
+          <span>Worst Closed</span>
+          
+          <b class="neg">3652.T -10.14%</b>
+          <small>¥-108,000 / 1d</small>
+          
+        </article>
+        <article>
+          <span>Largest Open</span>
+          
+          <b>135A.T</b>
+          <small>¥882,000 / +3.76%</small>
+          
+        </article>
+      </div>
+
+      <div class="section-head history-title">
+        <h3>Recent Closed Trades</h3>
+        <p>Latest 3 of 3</p>
+      </div>
+
+      <div class="trade-history">
+        
+        <article class="trade-row neg">
+          <div class="trade-main">
+            <b>3993.T</b>
+            <span>PKSHA Technology</span>
+          </div>
+          <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-20</span></div>
+          <div class="trade-result"><b>-9.50%</b><span>¥-85,500</span></div>
+          <div class="trade-meta"><span>3d</span><span>Risk exit</span></div>
+        </article>
+        
+        <article class="trade-row neg">
+          <div class="trade-main">
+            <b>3652.T</b>
+            <span>Digital Media Professionals</span>
+          </div>
+          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-20</span></div>
+          <div class="trade-result"><b>-10.14%</b><span>¥-108,000</span></div>
+          <div class="trade-meta"><span>1d</span><span>Risk exit</span></div>
+        </article>
+        
+        <article class="trade-row pos">
+          <div class="trade-main">
+            <b>3905.T</b>
+            <span>Data Section</span>
+          </div>
+          <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-19</span></div>
+          <div class="trade-result"><b>+17.66%</b><span>+¥200,800</span></div>
+          <div class="trade-meta"><span>2d</span><span>Profit take</span></div>
+        </article>
         
       </div>
     </section>
     
+    <section class="agent panel tone-amber">
+      <div class="agent-head">
+        <div class="agent-id-block">
+          <div class="avatar-shell">
+            
+            <img src="/assets/ai-arena/agents/contrarian_monk.png" alt="MATSU" class="agent-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+            <div class="pixel-avatar avatar-pixel_monk avatar-fallback"><span></span></div>
+            
+          </div>
+          <div class="agent-title">
+            <p class="eyebrow">Reversal / Reversal Hunt</p>
+            <h2>MATSU</h2>
+            <p>Controlled re-entry can beat obvious momentum when the crowd gets late.</p>
+          </div>
+        </div>
+        <div class="agent-scoreboard">
+          <span>Total Return <b class="pos">+0.38%</b></span>
+          <span>Equity <b>¥10,037,700</b></span>
+          <span>Cash <b>¥10,037,700</b></span>
+        </div>
+      </div>
+
+      <div class="agent-summary-grid">
+        <article><span>Open Value</span><b>¥0</b></article>
+        <article><span>Unrealized</span><b class="flat">¥0</b></article>
+        <article><span>Realized</span><b class="pos">+¥37,700</b></article>
+        <article><span>Closed</span><b>4</b></article>
+        <article><span>Win Rate</span><b>+50.00%</b></article>
+        <article><span>Avg Hold</span><b>2.8d</b></article>
+      </div>
+
+      <div class="section-head">
+        <h3>Current Holdings</h3>
+        <p>0 active positions</p>
+      </div>
+
+      <div class="positions-grid">
+        
+        <article class="empty-state">
+          <b>NO ACTIVE POSITION</b>
+          <span>Holding cash and waiting for the next qualified signal.</span>
+        </article>
+        
+      </div>
+
+      <div class="history-overview">
+        <article>
+          <span>Best Closed</span>
+          
+          <b class="pos">6762.T +16.79%</b>
+          <small>+¥193,800 / 3d</small>
+          
+        </article>
+        <article>
+          <span>Worst Closed</span>
+          
+          <b class="neg">9984.T -7.46%</b>
+          <small>¥-121,800 / 3d</small>
+          
+        </article>
+        <article>
+          <span>Largest Open</span>
+          <b>Cash</b><small>No active exposure</small>
+        </article>
+      </div>
+
+      <div class="section-head history-title">
+        <h3>Recent Closed Trades</h3>
+        <p>Latest 4 of 4</p>
+      </div>
+
+      <div class="trade-history">
+        
+        <article class="trade-row pos">
+          <div class="trade-main">
+            <b>6762.T</b>
+            <span>TDK</span>
+          </div>
+          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-22</span></div>
+          <div class="trade-result"><b>+16.79%</b><span>+¥193,800</span></div>
+          <div class="trade-meta"><span>3d</span><span>Profit take</span></div>
+        </article>
+        
+        <article class="trade-row pos">
+          <div class="trade-main">
+            <b>6981.T</b>
+            <span>Murata Manufacturing</span>
+          </div>
+          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-21</span></div>
+          <div class="trade-result"><b>+12.30%</b><span>+¥73,700</span></div>
+          <div class="trade-meta"><span>2d</span><span>Profit take</span></div>
+        </article>
+        
+        <article class="trade-row neg">
+          <div class="trade-main">
+            <b>9984.T</b>
+            <span>SoftBank Group</span>
+          </div>
+          <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-20</span></div>
+          <div class="trade-result"><b>-7.46%</b><span>¥-121,800</span></div>
+          <div class="trade-meta"><span>3d</span><span>Risk exit</span></div>
+        </article>
+        
+        <article class="trade-row neg">
+          <div class="trade-main">
+            <b>3652.T</b>
+            <span>Digital Media Professionals</span>
+          </div>
+          <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-20</span></div>
+          <div class="trade-result"><b>-7.80%</b><span>¥-108,000</span></div>
+          <div class="trade-meta"><span>3d</span><span>Risk exit</span></div>
+        </article>
+        
+      </div>
+    </section>
+    
+
+    <section class="panel global-history">
+      <div class="section-head">
+        <h3>Global Closed Trade Tape</h3>
+        <p>Most recent 13 closed trades across all agents</p>
+      </div>
+      <div class="global-tape">
+        
+        <article class="tape-row neg">
+          <span class="agent-chip">KAKERU</span>
+          <b>6758.T</b>
+          <span>2026-05-26</span>
+          <em>-2.12%</em>
+          <strong>¥-39,000</strong>
+          <small>Time exit</small>
+        </article>
+        
+        <article class="tape-row pos">
+          <span class="agent-chip">SATORI</span>
+          <b>9984.T</b>
+          <span>2026-05-22</span>
+          <em>+24.10%</em>
+          <strong>+¥393,600</strong>
+          <small>Profit take</small>
+        </article>
+        
+        <article class="tape-row pos">
+          <span class="agent-chip">MATSU</span>
+          <b>6762.T</b>
+          <span>2026-05-22</span>
+          <em>+16.79%</em>
+          <strong>+¥193,800</strong>
+          <small>Profit take</small>
+        </article>
+        
+        <article class="tape-row pos">
+          <span class="agent-chip">MAMORU</span>
+          <b>6762.T</b>
+          <span>2026-05-21</span>
+          <em>+8.85%</em>
+          <strong>+¥127,750</strong>
+          <small>Profit take</small>
+        </article>
+        
+        <article class="tape-row pos">
+          <span class="agent-chip">MATSU</span>
+          <b>6981.T</b>
+          <span>2026-05-21</span>
+          <em>+12.30%</em>
+          <strong>+¥73,700</strong>
+          <small>Profit take</small>
+        </article>
+        
+        <article class="tape-row neg">
+          <span class="agent-chip">KAKERU</span>
+          <b>3652.T</b>
+          <span>2026-05-20</span>
+          <em>-10.14%</em>
+          <strong>¥-144,000</strong>
+          <small>Risk exit</small>
+        </article>
+        
+        <article class="tape-row neg">
+          <span class="agent-chip">SATORI</span>
+          <b>3652.T</b>
+          <span>2026-05-20</span>
+          <em>-10.14%</em>
+          <strong>¥-144,000</strong>
+          <small>Risk exit</small>
+        </article>
+        
+        <article class="tape-row neg">
+          <span class="agent-chip">MAMORU</span>
+          <b>6701.T</b>
+          <span>2026-05-20</span>
+          <em>-3.90%</em>
+          <strong>¥-50,400</strong>
+          <small>Risk exit</small>
+        </article>
+        
+        <article class="tape-row neg">
+          <span class="agent-chip">SAGURI</span>
+          <b>3993.T</b>
+          <span>2026-05-20</span>
+          <em>-9.50%</em>
+          <strong>¥-85,500</strong>
+          <small>Risk exit</small>
+        </article>
+        
+        <article class="tape-row neg">
+          <span class="agent-chip">SAGURI</span>
+          <b>3652.T</b>
+          <span>2026-05-20</span>
+          <em>-10.14%</em>
+          <strong>¥-108,000</strong>
+          <small>Risk exit</small>
+        </article>
+        
+        <article class="tape-row neg">
+          <span class="agent-chip">MATSU</span>
+          <b>9984.T</b>
+          <span>2026-05-20</span>
+          <em>-7.46%</em>
+          <strong>¥-121,800</strong>
+          <small>Risk exit</small>
+        </article>
+        
+        <article class="tape-row neg">
+          <span class="agent-chip">MATSU</span>
+          <b>3652.T</b>
+          <span>2026-05-20</span>
+          <em>-7.80%</em>
+          <strong>¥-108,000</strong>
+          <small>Risk exit</small>
+        </article>
+        
+        <article class="tape-row pos">
+          <span class="agent-chip">SAGURI</span>
+          <b>3905.T</b>
+          <span>2026-05-19</span>
+          <em>+17.66%</em>
+          <strong>+¥200,800</strong>
+          <small>Profit take</small>
+        </article>
+        
+      </div>
+    </section>
+
+    <footer class="footnote">
+      Current holdings use unrealized P/L from simulation output. Closed trade history is read from <code>simulation/latest.json</code>; no execution, cash, or ranking logic is changed by this page render.
+    </footer>
   </main>
 </body>
 </html>
