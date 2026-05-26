@@ -437,7 +437,32 @@ def build_thread_prompt(event: dict[str, Any], context: dict[str, Any], config: 
     }
 
 
+
+def symbol_name_map_from_context(context: dict[str, Any]) -> dict[str, str]:
+    out: dict[str, str] = {}
+    for p in context.get("top_open_positions", []) or []:
+        if p.get("symbol") and p.get("name"):
+            out[str(p["symbol"])] = str(p["name"])
+    for agent in context.get("positions", []) or []:
+        for pos in agent.get("open_positions", []) or []:
+            if pos.get("symbol") and pos.get("name"):
+                out[str(pos["symbol"])] = str(pos["name"])
+    for e in context.get("events", []) or []:
+        if e.get("symbol") and e.get("name"):
+            out[str(e["symbol"])] = str(e["name"])
+    return out
+
+
+def unique_body_key(body: str) -> str:
+    return re.sub(r"[^a-z0-9.%]+", " ", str(body or "").lower()).strip()[:180]
+
 def fallback_thread(event: dict[str, Any], context: dict[str, Any], config: dict[str, Any], memory: dict[str, Any]) -> dict[str, Any]:
+    """Fact-based fallback with real thread progression.
+
+    The previous fallback could repeat the same generic line across agents.
+    This version builds topic-specific exchanges so the LAB remains usable when
+    OpenAI is disabled or a thread fails validation.
+    """
     name_by_id, avatar_by_id = agent_identity_maps(config)
     ranks = context.get("ranking", [])[:5]
     leader = context.get("leader") or (ranks[0] if ranks else {})
@@ -445,9 +470,20 @@ def fallback_thread(event: dict[str, Any], context: dict[str, Any], config: dict
     involved = [x for x in (event.get("agents_involved") or []) if x in name_by_id]
     if not involved:
         involved = [a.get("agent_id") for a in ranks if a.get("agent_id")] or ["market_master"]
+
+    mem = memory_by_id(memory)
+    symbol_names = symbol_name_map_from_context(context)
     messages: list[dict[str, Any]] = []
+    used_bodies: set[str] = set()
 
     def add(aid: str, body: str, typ: str = "debate", symbol: str | None = None, theme: str | None = None) -> None:
+        body = safe_text(body, 320)
+        if not body:
+            return
+        key = unique_body_key(body)
+        if key in used_bodies:
+            return
+        used_bodies.add(key)
         meta = avatar_by_id.get(aid) or {}
         messages.append({
             "agent_id": aid,
@@ -455,59 +491,141 @@ def fallback_thread(event: dict[str, Any], context: dict[str, Any], config: dict
             "avatar_style": meta.get("avatar_style"),
             "avatar_image": meta.get("avatar_image"),
             "type": typ,
-            "body": safe_text(body, 320),
+            "body": body,
             "linked_symbol": symbol,
+            "linked_name": symbol_names.get(symbol or ""),
             "linked_theme": theme,
         })
 
+    def rank_row(agent_id: str) -> dict[str, Any]:
+        return next((r for r in ranks if r.get("agent_id") == agent_id), {})
+
+    def largest_position(agent_id: str | None = None, reverse: bool = True) -> dict[str, Any]:
+        rows = []
+        for p in context.get("top_open_positions", []) or []:
+            if agent_id and p.get("agent_id") != agent_id and p.get("agent_name") != name_by_id.get(agent_id):
+                continue
+            rows.append(p)
+        if not rows:
+            return {}
+        return sorted(rows, key=lambda x: to_float(x.get("unrealized_return_pct")), reverse=reverse)[0]
+
     etype = event.get("event_type")
     facts = event.get("facts") or []
+
     if etype == "market_master_opening":
-        add("market_master", f"Today's LAB opens with {leader.get('name')} leading at {fmt_pct(leader.get('return_pct'))} and {laggard.get('name')} under pressure at {fmt_pct(laggard.get('return_pct'))}.", "market_master")
+        add("market_master", f"LAB opens with {leader.get('name')} leading at {fmt_pct(leader.get('return_pct'))} and {laggard.get('name')} under pressure at {fmt_pct(laggard.get('return_pct'))}. The question is where the return is really coming from.", "market_master")
+        add("risk_sentinel", f"The spread is {fmt_pct(context.get('leader_laggard_spread_pct'))}. I care less about the headline rank and more about concentration, drawdown, and whether the book can survive another session.", "risk_check")
+        if leader.get("agent_id"):
+            add(leader["agent_id"], f"Rank #{leader.get('rank')} is earned only if the process keeps paying. A lead without repeatability is just a mark-to-market trophy.", "ranking_reaction")
+
     elif etype == "leaderboard":
-        add("risk_sentinel", f"{leader.get('name')}'s lead is real, but the spread to {laggard.get('name')} is {context.get('leader_laggard_spread_pct')} points. I want to know how much of it is concentration.", "ranking_reaction")
-        add(leader.get("agent_id"), f"The book leads because the process paid. Rank #1 is not a slogan; it is equity that survived the tape.", "defend")
-        add(laggard.get("agent_id"), f"Rank #{laggard.get('rank')} is the scar. I need cleaner confirmation before I defend this process again.", "challenge")
+        add("risk_sentinel", f"{leader.get('name')} leads at {fmt_pct(leader.get('return_pct'))}, but the leaderboard is not proof of diversified alpha. Show me the drawdown path and the position that carried it.", "risk_check")
+        lp = largest_position(leader.get("agent_id")) or largest_position()
+        if lp:
+            add(leader.get("agent_id"), f"The book is being carried by {lp.get('symbol')} at {fmt_pct(lp.get('unrealized_return_pct'))} after {lp.get('holding_days', 'n/a')} days. I will defend that only while the structure holds.", "portfolio_review", lp.get("symbol"), lp.get("theme"))
+        add(laggard.get("agent_id"), f"Rank #{laggard.get('rank')} at {fmt_pct(laggard.get('return_pct'))} is not an excuse. My process has to prove the next entry is cleaner than the last one.", "ranking_reaction")
+        add("contrarian_monk", "A leaderboard can seduce the room. I prefer the moment after the applause, when the second entry becomes cheaper and quieter.", "challenge")
+
     elif etype == "shared_position":
         sym = event.get("symbol")
         theme = event.get("theme")
-        add(involved[0], f"{sym} is shared, but not identical. My thesis comes from my own framework, not from copying another agent's exposure.", "shared_position", sym, theme)
+        add("market_master", f"Shared battlefield: {sym}. Same ticker, different thesis. That is where this LAB becomes more than a return table.", "shared_position", sym, theme)
+        if involved:
+            add(involved[0], f"I hold {sym} through my own clock. The same symbol can be trend persistence for one agent and discovery risk for another.", "shared_position", sym, theme)
         if len(involved) > 1:
-            add(involved[1], f"Same ticker, different clock. The question is whether {sym} still validates both time horizons.", "shared_position", sym, theme)
-        add("risk_sentinel", f"Two agents in {sym} makes the P/L more visible, but also raises crowding and position-sizing questions.", "risk_check", sym, theme)
+            add(involved[1], f"Agreed on the symbol, not necessarily on the reason. My edge is the setup that appeared before consensus made it comfortable.", "shared_position", sym, theme)
+        add("risk_sentinel", f"Two agents sharing {sym} improves the story but raises correlation risk. Position sizing matters more when everyone can be wrong together.", "risk_check", sym, theme)
+        add("contrarian_monk", f"When different frameworks crowd the same {sym}, I wait. Crowded conviction is not edge; it is an entry tax.", "challenge", sym, theme)
+
     elif etype == "why_no_trade":
         aid = involved[0]
-        add(aid, f"No position is not empty. It is unused risk budget until the setup clears my threshold.", "why_no_trade")
-        add("risk_sentinel", f"Cash can be a decision when the signal quality does not compensate for drawdown risk.", "risk_check")
+        rr = rank_row(aid)
+        add(aid, f"No position is not empty. With rank #{rr.get('rank', 'n/a')} and {fmt_pct(rr.get('return_pct'))} return, unused cash is part of the strategy until the setup pays for risk.", "why_no_trade")
+        add("risk_sentinel", "Cash is not a failure when the signal quality does not compensate for drawdown risk. The book does not need to swing at every candle.", "risk_check")
+        add("contrarian_monk", "I do not move because the room is bored. I wait for the second entry, when the first wave has stopped forcing the trade.", "why_no_trade")
+
     elif etype == "trade_event":
         aid = involved[0]
         sym = event.get("symbol")
-        add(aid, f"My {event.get('action', {}).get('action') or 'trade'} in {sym} came from the simulation rule, not impulse. The trigger has to prove itself from here.", "trade_event", sym)
-        add("risk_sentinel", f"{sym} now has to justify its risk budget. Entry is only step one; survivability comes next.", "risk_check", sym)
+        action = (event.get("action") or {}).get("action") or event.get("event_type")
+        add(aid, f"The {action} in {sym} came from the simulation rule, not impulse. Now the position has to prove follow-through, holding quality, and risk budget.", "trade_event", sym, event.get("theme"))
+        add("risk_sentinel", f"{sym} is not validated by entry alone. The next test is survivability: liquidity, drawdown, and whether the mark still makes sense after the first reaction.", "risk_check", sym, event.get("theme"))
+        add("weekly_sage", f"If {sym} cannot persist beyond the first signal window, I do not treat it as structure. One trigger is not a trend.", "timeframe", sym, event.get("theme"))
+        add("contrarian_monk", f"I will not chase the first print in {sym}. If the thesis is real, the second entry will still be there after the heat fades.", "challenge", sym, event.get("theme"))
+
     elif etype == "daily_vs_weekly":
-        add("daily_striker", "I move when pressure arrives. Waiting for every confirmation means arriving after the edge is priced.", "timeframe")
-        add("weekly_sage", "One candle is not a thesis. If the trend cannot persist, speed becomes noise.", "timeframe")
-        add("contrarian_monk", "The first move belongs to the impatient. I wait for the second entry.", "timeframe")
+        add("daily_striker", "I move when pressure arrives. Waiting for every confirmation means arriving after the edge is priced. Price moved first.", "timeframe")
+        add("weekly_sage", "One candle is not a thesis. If the trend cannot persist, speed becomes noise rather than a repeatable book.", "timeframe")
+        add("risk_sentinel", "Both clocks can be right and still lose money if sizing ignores volatility. Time horizon is not a substitute for risk budget.", "risk_check")
+        add("contrarian_monk", "The first move belongs to the impatient. I wait for the second entry, when the crowd has already revealed itself.", "timeframe")
+
+    elif etype == "theme_heat":
+        theme = event.get("theme") or ((context.get("theme_exposure") or [{}])[0].get("theme"))
+        add("market_master", f"Theme heat is visible in {theme or 'the current book'}, but heat is not diversification. The LAB needs to separate exposure from edge.", "theme_exposure", None, theme)
+        add("discovery_scout", f"A theme becomes interesting before it becomes obvious. My job is to find the signal while it is still off-screen, not after the label is crowded.", "theme_exposure", None, theme)
+        add("risk_sentinel", f"Theme concentration can lift the book and still increase fragility. If the theme rolls over, correlation does the damage quickly.", "risk_check", None, theme)
+        add("contrarian_monk", "When a theme gets too easy to explain, I become more interested in the exit than the entry.", "challenge", None, theme)
+
+    elif etype == "forecast_challenge":
+        add("market_master", "Next session is not a prediction problem. It is a condition check: which agents can define what would invalidate their current stance?", "forecast_challenge")
+        add("daily_striker", "I need follow-through. If the tape cannot confirm pressure, speed becomes a liability instead of an edge.", "forecast_challenge")
+        add("weekly_sage", "I need structure to remain intact. A pullback is acceptable; a broken trend is not.", "forecast_challenge")
+        add("risk_sentinel", "I need the book to survive volatility without pretending that return alone solves drawdown.", "forecast_challenge")
+        add("contrarian_monk", "I need the room to get too certain. That is when waiting starts to pay.", "forecast_challenge")
+
+    elif etype == "market_master_closing":
+        add("market_master", f"Closing note: {leader.get('name')} still owns the scoreboard, but tomorrow’s LAB will ask whether that lead is process, concentration, or timing luck.", "market_master")
+        add("market_master", "No external news was used. The argument stays inside simulated positions, rankings, memory, and risk budget.", "market_master")
+
     else:
         aid = involved[0]
         fact = facts[0] if facts else event.get("topic", "The Arena has a new point to debate.")
-        add(aid, f"{fact} The question is whether this is true edge or just temporary exposure.", "debate")
+        add(aid, f"{fact} The useful question is not whether it sounds convincing, but whether it improves the book after risk.", "debate")
 
-    # Expand to requested density with agent-specific memory/ambient lines.
+    # Add memory and style-based counterpoints without repeating the same sentence.
     target = min(max(target_messages_for_event(event, config), len(messages)), 18)
-    mem = memory_by_id(memory)
-    ambient = {a.get("id"): (a.get("ambient_lines") or []) for a in agent_configs(config)}
+    style_lines = {
+        "daily_striker": [
+            "No follow-through, no edge. I would rather be early and wrong than late and decorative.",
+            "The tape already voted once. Now I need it to vote twice.",
+        ],
+        "weekly_sage": [
+            "The trend pays the patient, but only if patience does not become denial.",
+            "I do not need the loudest candle. I need structure that keeps compounding.",
+        ],
+        "risk_sentinel": [
+            "Risk budget is not decoration. If the position cannot survive the next session, the thesis is too expensive.",
+            "Survival is alpha when the rest of the room is trading ego.",
+        ],
+        "discovery_scout": [
+            "The edge hides off-screen, but hidden does not mean careless. Discovery still has to clear liquidity.",
+            "Not every signal starts in the large caps. Some of the map is still dark.",
+        ],
+        "contrarian_monk": [
+            "Cash is also a position. I am not late; I am refusing the crowded first entry.",
+            "I wait for the second entry. The first one usually charges too much emotion.",
+        ],
+    }
+    cast = [aid for aid in involved if aid in name_by_id]
+    if not cast:
+        cast = [a.get("agent_id") for a in ranks if a.get("agent_id")] or ["market_master"]
+    cursor = 0
     while len(messages) < target:
-        aid = involved[len(messages) % len(involved)] if involved else (ranks[len(messages) % len(ranks)].get("agent_id") if ranks else "market_master")
+        aid = cast[cursor % len(cast)]
+        cursor += 1
         m = mem.get(aid) or {}
-        lines = ambient.get(aid) or []
-        if m and len(messages) % 3 == 0:
+        if m and len(messages) % 4 == 0 and (m.get("memory_line") or m.get("lesson")):
             body = m.get("memory_line") or m.get("lesson")
-        elif lines:
-            body = lines[len(messages) % len(lines)]
+            typ = "memory"
         else:
-            body = f"{name_by_id.get(aid, aid)} keeps the process tied to the current Arena facts."
-        add(aid, body, "memory" if m else "ambient")
+            lines = style_lines.get(aid) or [f"{name_by_id.get(aid, aid)} keeps the process tied to the current Arena facts."]
+            body = lines[(cursor + len(messages)) % len(lines)]
+            typ = "ambient"
+        add(aid, body, typ)
+        # Prevent infinite loops if all candidate lines were duplicates.
+        if cursor > 60:
+            break
 
     return {
         "thread_id": event.get("event_id") or f"thread_{event.get('event_type')}",
@@ -518,7 +636,6 @@ def fallback_thread(event: dict[str, Any], context: dict[str, Any], config: dict
         "messages": messages[:target],
         "fallback_used": True,
     }
-
 
 def call_thread_ai(event: dict[str, Any], context: dict[str, Any], config: dict[str, Any], memory: dict[str, Any]) -> dict[str, Any]:
     model = os.getenv("OPENAI_MODEL_MINI") or (config.get("arena") or {}).get("default_model") or "gpt-4o-mini"
@@ -608,6 +725,7 @@ Message rules:
             "type": row.get("type") or event.get("event_type") or "debate",
             "body": body,
             "linked_symbol": linked_symbol,
+            "linked_name": symbol_name_map_from_context(context).get(linked_symbol or ""),
             "linked_theme": linked_theme,
         })
 
@@ -694,47 +812,152 @@ def fixed_leader_lines(context: dict[str, Any], config: dict[str, Any]) -> list[
 
 
 def ambient_lines(context: dict[str, Any], config: dict[str, Any], memory: dict[str, Any], needed: int) -> list[dict[str, Any]]:
+    """Generate varied low-intensity LAB chatter for 24h coverage."""
     if needed <= 0:
         return []
     name_by_id, avatar_by_id = agent_identity_maps(config)
     mem = memory_by_id(memory)
-    candidates: list[dict[str, Any]] = []
-    for a in agent_configs(config):
-        aid = a.get("id")
-        meta = avatar_by_id.get(aid) or {}
-        # Include one memory line per agent as richer ambient material.
-        if mem.get(aid, {}).get("memory_line"):
-            candidates.append({
-                "agent_id": aid,
-                "agent_name": name_by_id.get(aid, aid),
-                "avatar_style": meta.get("avatar_style"),
-                "avatar_image": meta.get("avatar_image"),
-                "type": "memory",
-                "body": mem[aid]["memory_line"],
-                "linked_symbol": None,
-                "linked_theme": None,
-            })
-        for line in a.get("ambient_lines") or []:
-            candidates.append({
-                "agent_id": aid,
-                "agent_name": name_by_id.get(aid, aid),
-                "avatar_style": meta.get("avatar_style"),
-                "avatar_image": meta.get("avatar_image"),
-                "type": "ambient",
-                "body": line,
-                "linked_symbol": None,
-                "linked_theme": None,
-            })
-    if not candidates:
-        return []
-    out = []
-    idx = 0
-    while len(out) < needed:
-        row = dict(candidates[idx % len(candidates)])
-        out.append(row)
-        idx += 1
-    return out
+    ranks = context.get("ranking", [])[:5]
+    positions = context.get("top_open_positions", []) or []
+    themes = context.get("theme_exposure", []) or []
+    leader = context.get("leader") or (ranks[0] if ranks else {})
+    laggard = context.get("laggard") or (ranks[-1] if ranks else {})
+    rank_by_id = {r.get("agent_id"): r for r in ranks if r.get("agent_id")}
+    pos_cycle = positions or [{}]
+    theme_cycle = themes or [{}]
 
+    openers = {
+        "daily_striker": [
+            "I need the next print to confirm pressure",
+            "The daily clock is brutal",
+            "Speed only matters when it repeats",
+            "The tape already voted once",
+            "A fast trigger has to earn the second candle",
+            "I do not defend motion without continuation",
+        ],
+        "weekly_sage": [
+            "The book does not need drama",
+            "One session can lie",
+            "Trend persistence is the real audit",
+            "I do not need the loudest candle",
+            "Time is part of the edge",
+            "The weekly structure has to keep absorbing volatility",
+        ],
+        "risk_sentinel": [
+            "The scoreboard is secondary",
+            "Risk budget is not decoration",
+            "A good idea can still be bad sizing",
+            "The mark has to survive volatility",
+            "Return without drawdown context is incomplete",
+            "Liquidity decides whether the thesis is tradable",
+        ],
+        "discovery_scout": [
+            "The obvious names are rarely the whole map",
+            "Discovery begins before consensus",
+            "The edge hides off-screen",
+            "Small signals need liquidity discipline",
+            "The first clue is rarely comfortable",
+            "I am looking where the screen is still dark",
+        ],
+        "contrarian_monk": [
+            "Cash is also a position",
+            "I wait for the second entry",
+            "The loudest move usually charges emotion",
+            "Crowded conviction is not edge",
+            "Patience is not inactivity",
+            "The room gets interesting after the first applause",
+        ],
+    }
+    tails = [
+        "while {leader} holds the crown at {leader_ret}.",
+        "because {laggard} shows what failed follow-through costs at {laggard_ret}.",
+        "and {sym} is the live tape I keep testing at {pnl}.",
+        "with {theme} still shaping the Arena's exposure.",
+        "but rank #{rank} / {ret} is only a mark, not a verdict.",
+        "so the next condition matters more than the last headline.",
+        "and the book has to prove it can survive another rebalance.",
+        "without pretending that one position is diversification.",
+        "before the next trigger spends more risk budget.",
+        "while the LAB separates process from noise.",
+    ]
+
+    out: list[dict[str, Any]] = []
+    used: set[str] = set()
+    agents = [a for a in agent_configs(config) if a.get("id") in openers]
+    if not agents:
+        return []
+    idx = 0
+    safety = 0
+    while len(out) < needed and safety < needed * 50:
+        safety += 1
+        a = agents[idx % len(agents)]
+        aid = a.get("id")
+        rr = rank_by_id.get(aid) or {}
+        pos = pos_cycle[(idx + len(out)) % len(pos_cycle)]
+        theme = theme_cycle[(idx * 2 + len(out)) % len(theme_cycle)]
+        op = openers[aid][(idx // len(agents) + len(out)) % len(openers[aid])]
+        tail = tails[(idx + len(out) * 3) % len(tails)]
+        body = f"{op}, " + tail.format(
+            leader=leader.get("name", "the leader"),
+            leader_ret=fmt_pct(leader.get("return_pct")),
+            laggard=laggard.get("name", "the laggard"),
+            laggard_ret=fmt_pct(laggard.get("return_pct")),
+            rank=rr.get("rank", "—"),
+            ret=fmt_pct(rr.get("return_pct")),
+            sym=pos.get("symbol") or "the next setup",
+            pnl=fmt_pct(pos.get("unrealized_return_pct")),
+            theme=theme.get("theme") or "today's strongest theme",
+        )
+        if len(out) % 13 == 0 and (mem.get(aid) or {}).get("memory_line"):
+            body = f"{(mem.get(aid) or {}).get('memory_line')} That memory still changes how I read this tape."
+        key = unique_body_key(body)
+        if key in used:
+            idx += 1
+            continue
+        used.add(key)
+        meta = avatar_by_id.get(aid) or {}
+        out.append({
+            "agent_id": aid,
+            "agent_name": name_by_id.get(aid, aid),
+            "avatar_style": meta.get("avatar_style"),
+            "avatar_image": meta.get("avatar_image"),
+            "type": "ambient",
+            "body": safe_text(body, 280),
+            "linked_symbol": pos.get("symbol") if pos.get("symbol") and len(out) % 4 == 0 else None,
+            "linked_name": pos.get("name") if pos.get("symbol") and len(out) % 4 == 0 else None,
+            "linked_theme": theme.get("theme") if len(out) % 5 == 0 else None,
+        })
+        idx += 1
+    # If the unique pool is exhausted, extend with numbered LAB pulse lines.
+    # These are intentionally short and factual, so fallback mode still fills
+    # the 24h schedule without repeating the exact same sentence.
+    pulse_templates = {
+        "daily_striker": "LAB pulse {n}: I still need follow-through before I trust the next daily trigger.",
+        "weekly_sage": "LAB pulse {n}: I am watching whether structure survives the next rebalance.",
+        "risk_sentinel": "LAB pulse {n}: The book still has to justify risk before it celebrates return.",
+        "discovery_scout": "LAB pulse {n}: The map is not finished; one quiet setup can change the board.",
+        "contrarian_monk": "LAB pulse {n}: Waiting remains a position until the crowd offers a better entry.",
+    }
+    fill_idx = 0
+    while len(out) < needed and agents:
+        a = agents[fill_idx % len(agents)]
+        aid = a.get("id")
+        pos = pos_cycle[(fill_idx + len(out)) % len(pos_cycle)]
+        meta = avatar_by_id.get(aid) or {}
+        body = pulse_templates.get(aid, "LAB pulse {n}: The Arena keeps testing process against noise.").format(n=len(out) + 1)
+        out.append({
+            "agent_id": aid,
+            "agent_name": name_by_id.get(aid, aid),
+            "avatar_style": meta.get("avatar_style"),
+            "avatar_image": meta.get("avatar_image"),
+            "type": "ambient",
+            "body": safe_text(body, 260),
+            "linked_symbol": pos.get("symbol") if pos.get("symbol") and len(out) % 6 == 0 else None,
+            "linked_name": pos.get("name") if pos.get("symbol") and len(out) % 6 == 0 else None,
+            "linked_theme": None,
+        })
+        fill_idx += 1
+    return out
 
 def schedule_feed(messages: list[dict[str, Any]], config: dict[str, Any], context: dict[str, Any]) -> list[dict[str, Any]]:
     lab = config.get("lab") or {}
@@ -742,31 +965,41 @@ def schedule_feed(messages: list[dict[str, Any]], config: dict[str, Any], contex
     max_interval = int(os.getenv("AI_ARENA_MAX_INTERVAL_MINUTES") or lab.get("max_interval_minutes") or 10)
     target_min = int(os.getenv("AI_ARENA_TARGET_FEED_MIN") or lab.get("target_feed_min") or 160)
     target_max = int(os.getenv("AI_ARENA_TARGET_FEED_MAX") or lab.get("target_feed_max") or 220)
+    reset_timeline = str(os.getenv("AI_ARENA_RESET_TIMELINE", "false")).lower() in {"1", "true", "yes", "on"}
+    backfill_minutes = int(os.getenv("AI_ARENA_BACKFILL_MINUTES") or lab.get("backfill_minutes") or 180)
 
     target = max(target_min, min(target_max, len(messages)))
     if len(messages) < target_min and str(os.getenv("AI_ARENA_ALLOW_AMBIENT_LINES", lab.get("allow_ambient_lines", True))).lower() != "false":
-        # caller should have filled ambient before this, but keep defensive.
         target = len(messages)
 
-    # Deterministic random schedule per season/end date.
-    seed = f"{context.get('season')}|{(context.get('range') or {}).get('end_date')}|{len(messages)}"
+    # Reset mode intentionally uses the current run timestamp as part of the
+    # seed.  This lets a manual Action rebuild create a fresh 24h broadcast
+    # timeline that starts a few hours before "now" and continues forward.
+    now = now_jst().replace(second=0, microsecond=0)
+    if reset_timeline:
+        seed = f"reset|{now.isoformat()}|{context.get('season')}|{len(messages)}"
+        start = now - timedelta(minutes=backfill_minutes)
+    else:
+        seed = f"stable|{context.get('season')}|{(context.get('range') or {}).get('end_date')}|{len(messages)}"
+        start = now - timedelta(minutes=30)
     rng = random.Random(seed)
 
-    # Start slightly in the past so the page is not empty immediately after a build.
-    start = now_jst().replace(second=0, microsecond=0) - timedelta(minutes=30)
-    current = start
     scheduled = []
-    for i, row in enumerate(messages[:target], 1):
-        if i == 1:
+    current = start
+    idx = 0
+    for row in messages:
+        if len(scheduled) >= target:
+            break
+        idx += 1
+        if idx == 1:
             current = start
         else:
             current += timedelta(minutes=rng.randint(min_interval, max_interval))
         item = dict(row)
-        item["id"] = f"feed_{i:03d}"
+        item["id"] = f"feed_{idx:03d}"
         item["show_at"] = iso_jst(current)
         scheduled.append(item)
     return scheduled
-
 
 def build_payload(config: dict[str, Any], sim: dict[str, Any], positions: dict[str, Any], ranking: dict[str, Any], events: dict[str, Any], memory: dict[str, Any]) -> dict[str, Any]:
     context = build_context(sim, positions, ranking, events, memory, config)
