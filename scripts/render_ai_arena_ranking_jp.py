@@ -58,12 +58,37 @@ TONE_BY_AGENT = {
     "contrarian_quant": "amber",
 }
 
-PODIUM_LABEL_BY_RANK = {
-    1: "CROWN",
-    2: "ACE",
-    3: "CORE",
-    4: "SHADOW",
-    5: "LOW",
+RANK_META_BY_RANK = {
+    1: {"podium_label": "GOLD CROWN", "podium_class": "gold", "podium_tier": "crown", "rank_title": "Season Leader"},
+    2: {"podium_label": "SILVER CROWN", "podium_class": "silver", "podium_tier": "crown", "rank_title": "Runner Up"},
+    3: {"podium_label": "BRONZE CROWN", "podium_class": "bronze", "podium_tier": "crown", "rank_title": "Third Force"},
+    4: {"podium_label": "CHALLENGER", "podium_class": "challenger", "podium_tier": "badge", "rank_title": "Challenger"},
+    5: {"podium_label": "LOW SIGNAL", "podium_class": "low", "podium_tier": "badge", "rank_title": "Low Signal"},
+}
+
+PROFILE_LABELS = {
+    "daily_v2_core": "Momentum Strike",
+    "daily_stage1": "Opening Strike",
+    "daily_stage2": "Momentum Chase",
+    "weekly_stage1": "Trend Watch",
+    "weekly_stage2": "Trend Core",
+    "risk_defender": "Capital Shield",
+    "risk_stage1": "Risk Guard",
+    "risk_stage2": "Capital Shield",
+    "discovery_alpha": "Hidden Alpha",
+    "discovery_stage1": "Hidden Alpha",
+    "discovery_stage2": "Early Breakout",
+    "contrarian_reentry": "Reversal Hunt",
+    "contrarian_stage1": "Pullback Watch",
+    "contrarian_stage2": "Reversal Setup",
+}
+
+STYLE_LABEL_BY_AGENT = {
+    "daily_striker": "Momentum Strike",
+    "weekly_sage": "Trend Core",
+    "risk_sentinel": "Capital Shield",
+    "discovery_scout": "Hidden Alpha",
+    "contrarian_monk": "Reversal Hunt",
 }
 
 
@@ -93,8 +118,19 @@ def _fmt_jpy(value: Any) -> str:
     return f"¥{_to_float(value):,.0f}"
 
 
+def _humanize_internal_text(text: Any) -> str:
+    s = str(text or "")
+    for raw, label in PROFILE_LABELS.items():
+        s = s.replace(raw, label)
+    s = s.replace("stop_loss", "Stop loss")
+    s = s.replace("take_profit", "Take profit")
+    s = s.replace("time_exit", "Time exit")
+    s = s.replace("no daily confirmation", "confirmation still forming")
+    return s
+
+
 def _trim(text: Any, limit: int = 132) -> str:
-    s = " ".join(str(text or "").split())
+    s = " ".join(_humanize_internal_text(text).split())
     if len(s) <= limit:
         return s
     return s[: max(0, limit - 1)].rstrip() + "…"
@@ -217,6 +253,29 @@ def _recent_momentum(values: list[float], window: int = 10) -> float:
     return values[-1] - start
 
 
+def _rank_meta(rank: int) -> dict[str, str]:
+    return dict(RANK_META_BY_RANK.get(rank, RANK_META_BY_RANK[5]))
+
+
+def _display_profile(agent_id: str, screening_profile: Any, fallback_class: Any = "") -> str:
+    raw = str(screening_profile or "").strip()
+    if raw in PROFILE_LABELS:
+        return PROFILE_LABELS[raw]
+    if agent_id in STYLE_LABEL_BY_AGENT:
+        return STYLE_LABEL_BY_AGENT[agent_id]
+    if raw:
+        return raw.replace("_", " ").replace("v2", "").title().strip()
+    return str(fallback_class or "AI Strategy")
+
+
+def _closed_pnl_jpy(closed_trades: list[dict]) -> float:
+    return sum(_to_float(t.get("pnl_jpy")) for t in closed_trades if isinstance(t, dict))
+
+
+def _open_unrealized_pnl_jpy(open_positions: list[dict]) -> float:
+    return sum(_to_float(p.get("unrealized_pnl_jpy")) for p in open_positions if isinstance(p, dict))
+
+
 def _build_champion_reasons(champion: dict, agents: list[dict]) -> list[str]:
     if not champion:
         return []
@@ -226,7 +285,7 @@ def _build_champion_reasons(champion: dict, agents: list[dict]) -> list[str]:
     champ_return = _to_float(champion.get("return_pct"))
     best_return = max((_to_float(a.get("return_pct")) for a in agents), default=champ_return)
     if champ_return >= best_return - 0.0001:
-        reasons.append(f"Leads the season return table at {_fmt_pct(champ_return)}.")
+        reasons.append(f"Leads on total portfolio return at {_fmt_pct(champ_return)}.")
 
     strongest = champion.get("strongest_open_position")
     if strongest and _to_float(strongest.get("unrealized_pnl_jpy")) > 0:
@@ -247,7 +306,7 @@ def _build_champion_reasons(champion: dict, agents: list[dict]) -> list[str]:
         reasons.append(f"Drawdown remains controlled at {_fmt_pct(champion.get('max_drawdown_pct'))}.")
 
     if not reasons:
-        reasons.append("Ranks first on current portfolio equity after realised and unrealised P/L.")
+        reasons.append("Ranks first on total portfolio return, including realised and unrealised P/L.")
     return reasons[:3]
 
 
@@ -288,6 +347,24 @@ def enrich_ranking(ranking: dict, simulation: dict) -> dict:
         equity_curve = sim_agent.get("equity_curve") or []
         curve_values = _curve_values(equity_curve)
 
+        initial_capital = _to_float(item.get("initial_capital_jpy") or (sim_agent.get("summary") or {}).get("initial_capital_jpy"))
+        portfolio_equity = _to_float(item.get("portfolio_equity_jpy") or (sim_agent.get("summary") or {}).get("portfolio_equity_jpy"))
+        realised_pnl = _closed_pnl_jpy(closed_trades)
+        unrealised_pnl = _open_unrealized_pnl_jpy(open_positions)
+        total_return_pct = ((portfolio_equity - initial_capital) / initial_capital * 100.0) if initial_capital else ret
+
+        # Ranking is total portfolio equity based: cash + current market value.
+        # Realised and unrealised P/L are shown separately for explainability, but
+        # the rank itself follows total_return_pct.
+        ret = total_return_pct
+        item["return_pct"] = total_return_pct
+        item["total_return_pct"] = total_return_pct
+        item["realized_pnl_jpy"] = realised_pnl
+        item["realized_return_pct"] = (realised_pnl / initial_capital * 100.0) if initial_capital else 0.0
+        item["unrealized_pnl_jpy"] = unrealised_pnl
+        item["unrealized_return_pct"] = (unrealised_pnl / initial_capital * 100.0) if initial_capital else 0.0
+        item["ranking_basis_label"] = "Total Return"
+
         item["bar_width_pct"] = max(10.0, min(100.0, 10.0 + ((ret - min_ret) / span) * 90.0)) if agents else 50.0
         item["return_class"] = "positive" if ret >= 0 else "negative"
         item["avatar_style"] = item.get("avatar_style") or sim_agent.get("avatar_style") or AVATAR_BY_AGENT.get(agent_id, "pixel_warrior")
@@ -295,7 +372,8 @@ def enrich_ranking(ranking: dict, simulation: dict) -> dict:
         item["ui_tone"] = item.get("ui_tone") or sim_agent.get("ui_tone") or TONE_BY_AGENT.get(agent_id, "cyan")
         item["personality"] = sim_agent.get("personality") or ""
         item["philosophy"] = sim_agent.get("philosophy") or ""
-        item["podium_label"] = PODIUM_LABEL_BY_RANK.get(rank, "LOW")
+        item["display_profile"] = _display_profile(agent_id, item.get("screening_profile"), item.get("class"))
+        item.update(_rank_meta(rank))
         item["rank_glow"] = "champion" if rank == 1 else "challenger"
 
         item["equity_curve"] = equity_curve
@@ -314,7 +392,20 @@ def enrich_ranking(ranking: dict, simulation: dict) -> dict:
         item["has_real_curve"] = len(curve_values) >= 2
         enriched.append(item)
 
-    enriched.sort(key=lambda x: _to_int(x.get("rank"), 99))
+    enriched.sort(key=lambda x: (_to_float(x.get("total_return_pct")), _to_float(x.get("portfolio_equity_jpy"))), reverse=True)
+    for idx, item in enumerate(enriched, start=1):
+        item["rank"] = idx
+        item.update(_rank_meta(idx))
+
+    # Recalculate bar widths after the rank basis has been normalised.
+    final_returns = [_to_float(a.get("total_return_pct")) for a in enriched]
+    min_ret = min(final_returns) if final_returns else 0.0
+    max_ret = max(final_returns) if final_returns else 0.0
+    span = max(0.01, max_ret - min_ret)
+    for item in enriched:
+        ret = _to_float(item.get("total_return_pct"))
+        item["bar_width_pct"] = max(10.0, min(100.0, 10.0 + ((ret - min_ret) / span) * 90.0)) if enriched else 50.0
+        item["return_class"] = "positive" if ret >= 0 else "negative"
 
     ranking = dict(ranking)
     ranking["agents"] = enriched
