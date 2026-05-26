@@ -2,17 +2,12 @@
   const root = document.getElementById('arena-log');
   if (!root) return;
 
-  // Keep these maps independent from Python output so older JSON feeds still
-  // render with the correct character identity.
   const avatarByAgent = {
     daily_striker: 'pixel_warrior',
-    momentum_hunter: 'pixel_warrior',
     weekly_sage: 'pixel_mage',
-    theme_raider: 'pixel_mage',
     risk_sentinel: 'pixel_shield',
     discovery_scout: 'pixel_archer',
     contrarian_monk: 'pixel_monk',
-    contrarian_quant: 'pixel_monk',
     market_master: 'pixel_master',
     grand_market_analyst: 'pixel_master'
   };
@@ -30,96 +25,93 @@
   try { feed = JSON.parse(root.dataset.feed || '[]'); } catch(e) { feed = []; }
   try { agents = JSON.parse(root.dataset.agents || '[]'); } catch(e) { agents = []; }
 
-  const symbolNameMap = buildSymbolNameMap(agents);
+  const symbolNameMap = buildSymbolNameMap(feed, agents);
 
-  renderFeed();
-  setInterval(renderFeed, 60 * 1000);
-  initAgentShowcase();
-
-  function renderFeed(){
+  function visibleFeed(){
     const now = new Date();
-    // The generated feed is a 24h broadcast schedule. Show currently unlocked
-    // messages, but keep an initial block visible right after rebuild so the
-    // LAB never feels empty.
     let visible = feed.filter(x => !x.show_at || new Date(x.show_at) <= now);
-    if (visible.length < 22) visible = feed.slice(0, Math.min(36, feed.length));
-
-    root.innerHTML = '';
-    for (const item of visible) {
-      const row = document.createElement('div');
-      row.className = 'chat-line type-' + safeClass(item.type || 'debate');
-
-      const dt = item.show_at ? new Date(item.show_at) : null;
-      const dateText = dt ? formatTokyoDate(dt) : '';
-      const timeText = dt ? formatTokyoTime(dt) + ' JST' : '';
-      const avatarStyle = item.avatar_style || avatarByAgent[item.agent_id] || 'pixel_warrior';
-      const avatarImage = item.avatar_image || avatarImageByAgent[item.agent_id] || '';
-      const companyName = getCompanyName(item);
-      const avatarHtml = avatarImage
-        ? `<div class="chat-icon avatar-shell avatar-chat-shell"><img src="${escapeAttr(avatarImage)}" alt="${escapeAttr(item.agent_name || item.agent_id || 'Agent')}" class="agent-avatar-img chat-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" /><div class="pixel-avatar avatar-small avatar-${safeClass(avatarStyle)} avatar-fallback"><span></span></div></div>`
-        : `<div class="chat-icon pixel-avatar avatar-small avatar-${safeClass(avatarStyle)}"><span></span></div>`;
-
-      row.innerHTML = `
-        ${avatarHtml}
-        <div class="chat-name">${escapeHtml(item.agent_name || item.agent_id || 'Agent')}</div>
-        <div class="chat-message">${escapeHtml(item.body || '')}</div>
-        <div class="chat-time"><span class="chat-date-top">${escapeHtml(dateText)}</span><span class="chat-time-bottom">${escapeHtml(timeText)}</span></div>
-        ${item.linked_symbol ? `<div class="chat-symbol"><span class="chat-symbol-top">${escapeHtml(item.linked_symbol)}</span><span class="chat-company-bottom">${escapeHtml(companyName)}</span></div>` : '<div class="chat-symbol is-empty"></div>'}
-      `;
-      root.appendChild(row);
-    }
+    // After a reset build, show enough backfilled conversation immediately.
+    if (visible.length < 16) visible = feed.slice(0, Math.min(28, feed.length));
+    return visible;
   }
 
-  function initAgentShowcase(){
-    const track = document.getElementById('agent-showcase');
-    if (!track) return;
-    const slides = Array.from(track.querySelectorAll('[data-agent-slide]'));
+  function renderLog(){
+    const visible = visibleFeed();
+    root.innerHTML = '';
+    for (const item of visible) root.appendChild(renderLine(item));
+    // Keep the newest visible messages in view when the user has not manually
+    // scrolled far upward.  This preserves the live terminal feeling.
+    const nearBottom = root.scrollHeight - root.scrollTop - root.clientHeight < 180;
+    if (nearBottom) root.scrollTop = root.scrollHeight;
+  }
+
+  function renderLine(item){
+    const row = document.createElement('div');
+    row.className = 'chat-line type-' + safeClass(item.type || 'debate');
+
+    const dt = item.show_at ? new Date(item.show_at) : null;
+    const dateText = dt ? new Intl.DateTimeFormat('ja-JP', {
+      year:'numeric', month:'2-digit', day:'2-digit', timeZone:'Asia/Tokyo'
+    }).format(dt).replace(/\./g,'/').replace(/-/g,'/') : '';
+    const timeText = dt ? new Intl.DateTimeFormat('en-US', {
+      hour:'2-digit', minute:'2-digit', hour12:false, timeZone:'Asia/Tokyo'
+    }).format(dt) + ' JST' : '';
+
+    const avatarStyle = item.avatar_style || avatarByAgent[item.agent_id] || 'pixel_warrior';
+    const avatarImage = item.avatar_image || avatarImageByAgent[item.agent_id] || '';
+    const agentName = item.agent_name || item.agent_id || 'Agent';
+    const linkedSymbol = item.linked_symbol || '';
+    const linkedName = item.linked_name || item.company_name || item.linked_company || symbolNameMap[linkedSymbol] || item.linked_theme || '';
+
+    const avatarHtml = avatarImage
+      ? `<div class="chat-icon avatar-shell avatar-chat-shell"><img src="${escapeAttr(avatarImage)}" alt="${escapeAttr(agentName)}" class="agent-avatar-img chat-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" /><div class="pixel-avatar avatar-small avatar-${safeClass(avatarStyle)} avatar-fallback"><span></span></div></div>`
+      : `<div class="chat-icon pixel-avatar avatar-small avatar-${safeClass(avatarStyle)}"><span></span></div>`;
+
+    row.innerHTML = `
+      ${avatarHtml}
+      <div class="chat-name"><span>${escapeHtml(agentName)}</span></div>
+      <div class="chat-message">${escapeHtml(item.body || '')}</div>
+      <div class="chat-time"><b>${escapeHtml(dateText)}</b><span>${escapeHtml(timeText)}</span></div>
+      <div class="chat-symbol ${linkedSymbol ? '' : 'is-empty'}">${linkedSymbol ? `<b>${escapeHtml(linkedSymbol)}</b><span>${escapeHtml(linkedName)}</span>` : ''}</div>
+    `;
+    return row;
+  }
+
+  renderLog();
+  window.setInterval(renderLog, 60 * 1000);
+
+  // Compact agent profile carousel.  It gives the character art presence
+  // without repeating a tall full-card list under the LAB.
+  const showcase = document.getElementById('agent-showcase');
+  if (showcase) {
+    const slides = Array.from(showcase.querySelectorAll('[data-agent-slide]'));
     const dots = Array.from(document.querySelectorAll('[data-agent-dot]'));
-    const indexEl = document.getElementById('agent-showcase-index');
-    if (slides.length <= 1) return;
+    const indexLabel = document.getElementById('agent-showcase-index');
     let idx = 0;
-    const setActive = (next) => {
+    const setSlide = (next) => {
+      if (!slides.length) return;
       idx = (next + slides.length) % slides.length;
       slides.forEach((el, i) => el.classList.toggle('is-active', i === idx));
       dots.forEach((el, i) => el.classList.toggle('is-active', i === idx));
-      if (indexEl) indexEl.textContent = String(idx + 1).padStart(2, '0');
+      if (indexLabel) indexLabel.textContent = String(idx + 1).padStart(2, '0');
     };
-    dots.forEach((dot, i) => dot.addEventListener('click', () => setActive(i)));
-    setInterval(() => setActive(idx + 1), 3000);
+    dots.forEach((dot, i) => dot.addEventListener('click', () => setSlide(i)));
+    setInterval(() => setSlide(idx + 1), 3000);
   }
 
-  function buildSymbolNameMap(agentList){
+  function buildSymbolNameMap(feedRows, agentRows){
     const map = {};
-    for (const agent of agentList || []) {
-      for (const p of agent.open_positions || []) {
-        if (p && p.symbol && p.name) map[p.symbol] = p.name;
+    for (const item of feedRows || []) {
+      if (item.linked_symbol && (item.linked_name || item.company_name || item.linked_company)) {
+        map[item.linked_symbol] = item.linked_name || item.company_name || item.linked_company;
       }
-      for (const p of agent.closed_trades || []) {
-        if (p && p.symbol && p.name) map[p.symbol] = p.name;
+    }
+    for (const a of agentRows || []) {
+      for (const p of (a.open_positions || [])) {
+        if (p.symbol && p.name) map[p.symbol] = p.name;
       }
     }
     return map;
-  }
-
-  function getCompanyName(item){
-    if (item.linked_name) return item.linked_name;
-    if (item.name && item.linked_symbol) return item.name;
-    if (item.linked_symbol && symbolNameMap[item.linked_symbol]) return symbolNameMap[item.linked_symbol];
-    if (item.linked_theme) return item.linked_theme;
-    return 'Signal linked';
-  }
-
-  function formatTokyoDate(dt){
-    const parts = new Intl.DateTimeFormat('en-CA', {
-      timeZone:'Asia/Tokyo', year:'numeric', month:'2-digit', day:'2-digit'
-    }).formatToParts(dt).reduce((acc, p) => { acc[p.type] = p.value; return acc; }, {});
-    return `${parts.year}/${parts.month}/${parts.day}`;
-  }
-
-  function formatTokyoTime(dt){
-    return new Intl.DateTimeFormat('en-US', {
-      hour:'2-digit', minute:'2-digit', hour12:false, timeZone:'Asia/Tokyo'
-    }).format(dt);
   }
 
   function escapeHtml(s){
