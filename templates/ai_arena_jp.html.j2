@@ -31,12 +31,11 @@
     </header>
 
     <section class="battle-log pixel-frame" aria-label="Arena Log">
-      <div class="section-head">
+      <div class="section-head lab-log-head">
         <div>
           <p class="eyebrow">ARENA LOG</p>
-          <h2>Live debate from simulated positions</h2>
+          <h2><span>LAB Broadcast</span><em>Simulated positions. Agent memory. Tokyo tape debate.</em></h2>
         </div>
-        <div class="log-status">{{ 'AI' if ai.enabled else 'FALLBACK' }} / {{ ai.status|default('unknown', true) }}</div>
       </div>
       <div id="arena-log" class="chat-list" data-feed='{{ feed | tojson }}' data-agents='{{ agents | tojson }}'></div>
     </section>
@@ -63,7 +62,7 @@
           <div class="showcase-copy">
             <div class="showcase-label">AGENT {{ '%02d'|format(loop.index) }}</div>
             <h3>{{ agent.name }}</h3>
-            <p>{{ agent.class }} / {{ agent.summary.screening_profile if agent.summary else agent.selection_profile }}</p>
+            <p>{{ agent.style_label or agent.class ~ ' / ' ~ (agent.summary.screening_profile if agent.summary else agent.selection_profile) }}</p>
             <div class="showcase-line">
               {% if agent.open_positions and agent.open_positions|length > 0 %}
                 Holding {{ agent.open_positions|length }} position{{ '' if agent.open_positions|length == 1 else 's' }}. Primary focus: {{ agent.open_positions[0].symbol }} / {{ agent.open_positions[0].name }}.
@@ -96,51 +95,23 @@
       {% endif %}
     </section>
 
-    <section class="agent-party">
-      {% for agent in agents %}
-      <article class="agent-card pixel-frame tone-{{ agent.ui_tone or 'cyan' }}">
-        <div class="agent-top">
-          <div class="avatar-shell">
-            {% if agent.avatar_image %}
-            <img src="{{ agent.avatar_image }}" alt="{{ agent.name }}" class="agent-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-            <div class="pixel-avatar avatar-{{ agent.avatar_style or 'pixel_warrior' }} avatar-fallback"><span></span></div>
-            {% else %}
-            <div class="pixel-avatar avatar-{{ agent.avatar_style or 'pixel_warrior' }}"><span></span></div>
-            {% endif %}
-          </div>
-          <div>
-            <h3>{{ agent.name }}</h3>
-            <p>{{ agent.class }} / {{ agent.summary.screening_profile if agent.summary else '' }}</p>
-          </div>
-        </div>
-        <div class="agent-stats">
-          <div><span>Return</span><b>{{ '%.2f'|format(agent.summary.return_pct or 0) }}%</b></div>
-          <div><span>Equity</span><b>¥{{ '{:,.0f}'.format(agent.summary.portfolio_equity_jpy or 0) }}</b></div>
-          <div><span>Open</span><b>{{ agent.summary.open_positions or 0 }}</b></div>
-        </div>
-        <div class="mini-positions">
-          {% for p in agent.open_positions[:2] %}
-          <div class="mini-position"><b>{{ p.symbol }}</b><span>{{ '%.2f'|format(p.unrealized_return_pct or 0) }}%</span></div>
-          {% else %}
-          <div class="mini-position muted">No open position</div>
-          {% endfor %}
-        </div>
-      </article>
-      {% endfor %}
-    </section>
-
-    <section class="ranking-strip pixel-frame">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">CURRENT RANKING</p>
-          <h2>Season leaderboard</h2>
-        </div>
-        <a href="/japan/ai-arena/ranking/" class="command-link">OPEN RANKING</a>
+    <section class="arena-cta pixel-frame" aria-label="Arena navigation">
+      <div class="cta-copy">
+        <p class="eyebrow">DEEPER TERMINALS</p>
+        <h2>Want the score behind the talk?</h2>
+        <p>Open the performance board or inspect each agent’s live book. The LAB is the conversation; Ranking and Positions are the evidence.</p>
       </div>
-      <div class="rank-row-wrap">
-        {% for row in ranking %}
-        <div class="rank-pill"><b>#{{ row.rank }}</b><span>{{ row.name }}</span><em>{{ '%.2f'|format(row.return_pct or 0) }}%</em></div>
-        {% endfor %}
+      <div class="cta-actions">
+        <a class="cta-card cta-ranking" href="/japan/ai-arena/ranking/">
+          <span class="cta-kicker">VIEW</span>
+          <b>Grand Prix Ranking</b>
+          <em>Returns / equity / drawdown</em>
+        </a>
+        <a class="cta-card cta-positions" href="/japan/ai-arena/positions/">
+          <span class="cta-kicker">OPEN</span>
+          <b>Agent Positions</b>
+          <em>Holdings / P&amp;L / triggers</em>
+        </a>
       </div>
     </section>
 
