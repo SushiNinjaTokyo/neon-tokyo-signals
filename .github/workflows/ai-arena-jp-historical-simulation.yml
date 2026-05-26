@@ -1,0 +1,298 @@
+name: AI Arena JP historical simulation
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_date:
+        description: "Historical simulation start date, YYYY-MM-DD"
+        required: true
+        default: "2025-01-01"
+      end_date:
+        description: "Historical simulation end date, YYYY-MM-DD. Leave close to latest price date."
+        required: true
+        default: "2026-05-25"
+      horizons:
+        description: "Daily backtest horizons, comma-separated. Keep 1,3,5,10,20 unless changing Daily diagnostics."
+        required: false
+        default: "1,3,5,10,20"
+      rank_limit:
+        description: "Historical Daily candidates per evaluation date for AI Arena"
+        required: false
+        default: "30"
+      min_history_bars:
+        description: "Minimum prior price bars required before scoring each date"
+        required: false
+        default: "80"
+      refresh_prices:
+        description: "Fetch fresh JP prices before building historical snapshots"
+        required: false
+        default: "false"
+        type: choice
+        options: ["false", "true"]
+      overwrite_daily_snapshots:
+        description: "Overwrite existing site/data/daily-jp/YYYY-MM-DD.json snapshots"
+        required: false
+        default: "false"
+        type: choice
+        options: ["false", "true"]
+      enable_ai:
+        description: "Use OpenAI API for discussion text after simulation"
+        required: true
+        default: "false"
+        type: choice
+        options: ["false", "true"]
+      reset_lab_timeline:
+        description: "Reset LAB feed timeline from current run time"
+        required: false
+        default: "false"
+        type: choice
+        options: ["false", "true"]
+      lab_backfill_minutes:
+        description: "When reset_lab_timeline=true, start generated feed this many minutes before now"
+        required: false
+        default: "180"
+
+permissions:
+  contents: write
+
+concurrency:
+  # Share the same commit lock with other generated site workflows.
+  group: neon-tokyo-site-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  historical-ai-arena:
+    runs-on: ubuntu-latest
+    env:
+      OUT_DIR: site
+      PRICES_JSON: site/data/prices-jp/latest.json
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+      # Daily backtest range generation.
+      BACKTEST_MODE: range
+      BACKTEST_START: ${{ inputs.start_date }}
+      BACKTEST_END: ${{ inputs.end_date }}
+      BACKTEST_HORIZONS: ${{ inputs.horizons }}
+      BACKTEST_PRIMARY_HORIZON: "5"
+      BACKTEST_CORE_HORIZONS: "1,3,5,10"
+      BACKTEST_REFERENCE_HORIZONS: "20"
+      BACKTEST_BENCHMARK_RETURN_ABS_LIMIT_PCT: "30"
+      BACKTEST_RANK_LIMIT: ${{ inputs.rank_limit }}
+      BACKTEST_MAX_RANK_LIMIT: ${{ inputs.rank_limit }}
+      BACKTEST_MIN_HISTORY_BARS: ${{ inputs.min_history_bars }}
+
+      # Convert Daily Backtest output into dated Daily snapshots that AI Arena consumes.
+      AI_ARENA_HISTORICAL_BACKTEST_JSON: site/data/backtest-daily-jp/latest.json
+      AI_ARENA_HISTORICAL_DAILY_DIR: site/data/daily-jp
+      AI_ARENA_HISTORICAL_START_DATE: ${{ inputs.start_date }}
+      AI_ARENA_HISTORICAL_END_DATE: ${{ inputs.end_date }}
+      AI_ARENA_HISTORICAL_OVERWRITE: ${{ inputs.overwrite_daily_snapshots }}
+      AI_ARENA_HISTORICAL_WRITE_LATEST: "false"
+      AI_ARENA_HISTORICAL_MAX_ITEMS: ${{ inputs.rank_limit }}
+
+      # Rebuild AI Arena over the exact same historical date range.
+      AI_ARENA_START_DATE: ${{ inputs.start_date }}
+      AI_ARENA_END_DATE: ${{ inputs.end_date }}
+      AI_ARENA_LOOKBACK_DAYS: "0"
+      AI_ARENA_MAX_DEBATE_THREADS: ${{ vars.AI_ARENA_MAX_DEBATE_THREADS || '9' }}
+      AI_ARENA_IMPORTANT_THREAD_MESSAGES: ${{ vars.AI_ARENA_IMPORTANT_THREAD_MESSAGES || '16' }}
+      AI_ARENA_NORMAL_THREAD_MESSAGES: ${{ vars.AI_ARENA_NORMAL_THREAD_MESSAGES || '12' }}
+      AI_ARENA_TARGET_FEED_MIN: ${{ vars.AI_ARENA_TARGET_FEED_MIN || '160' }}
+      AI_ARENA_TARGET_FEED_MAX: ${{ vars.AI_ARENA_TARGET_FEED_MAX || '220' }}
+      AI_ARENA_MIN_INTERVAL_MINUTES: ${{ vars.AI_ARENA_MIN_INTERVAL_MINUTES || '5' }}
+      AI_ARENA_MAX_INTERVAL_MINUTES: ${{ vars.AI_ARENA_MAX_INTERVAL_MINUTES || '10' }}
+      AI_ARENA_ALLOW_AMBIENT_LINES: ${{ vars.AI_ARENA_ALLOW_AMBIENT_LINES || 'true' }}
+      AI_ARENA_ENABLE_MEMORY: ${{ vars.AI_ARENA_ENABLE_MEMORY || 'true' }}
+      AI_ARENA_RESET_TIMELINE: ${{ inputs.reset_lab_timeline }}
+      AI_ARENA_BACKFILL_MINUTES: ${{ inputs.lab_backfill_minutes }}
+
+      OPENAI_ENABLE_AI: ${{ inputs.enable_ai }}
+      OPENAI_MODEL_MINI: ${{ vars.OPENAI_MODEL_MINI || 'gpt-4o-mini' }}
+      OPENAI_DAILY_USD_LIMIT: ${{ vars.OPENAI_DAILY_USD_LIMIT || '0.50' }}
+      OPENAI_MAX_OUTPUT_TOKENS: ${{ vars.OPENAI_MAX_OUTPUT_TOKENS || '6000' }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install -r requirements-render.txt
+
+      - name: Sync latest main before generation
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin main
+
+      - name: Validate scripts
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            scripts/fetch_prices_jp.py \
+            scripts/backtest_daily_jp.py \
+            scripts/build_ai_arena_historical_daily_snapshots_jp.py \
+            scripts/rebuild_ai_arena_simulation_jp.py \
+            scripts/build_ai_arena_memory_jp.py \
+            scripts/build_ai_arena_discussion_jp.py \
+            scripts/render_ai_arena_jp.py \
+            scripts/render_ai_arena_positions_jp.py \
+            scripts/render_ai_arena_ranking_jp.py \
+            scripts/render_index.py
+
+      - name: Optionally fetch fresh JP prices
+        if: ${{ inputs.refresh_prices == 'true' }}
+        run: |
+          set -euo pipefail
+          python scripts/fetch_prices_jp.py
+
+      - name: Verify source data
+        run: |
+          set -euo pipefail
+          required=(
+            "site/data/prices-jp/latest.json"
+            "data/ai_arena_agents_jp.yml"
+          )
+          for p in "${required[@]}"; do
+            if [ ! -e "$p" ]; then
+              echo "::error::Missing required historical AI Arena input: $p"
+              exit 1
+            fi
+          done
+
+      - name: Run Daily JP backtest range
+        run: |
+          set -euo pipefail
+          python scripts/backtest_daily_jp.py
+
+      - name: Convert backtest rows to historical Daily snapshots
+        run: |
+          set -euo pipefail
+          python scripts/build_ai_arena_historical_daily_snapshots_jp.py
+
+      - name: Verify historical Daily snapshots
+        run: |
+          set -euo pipefail
+          test -f site/data/daily-jp/manifest.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m = json.loads(Path('site/data/daily-jp/manifest.json').read_text(encoding='utf-8'))
+          assert m.get('schema_version') == 'daily-jp-manifest-v2', m.get('schema_version')
+          assert int(m.get('history_count') or 0) > 0
+          print('daily history_count=', m.get('history_count'))
+          print('daily history_start=', m.get('history_start'))
+          print('daily history_end=', m.get('history_end'))
+          PY
+
+      - name: Rebuild AI Arena simulation
+        run: |
+          set -euo pipefail
+          python scripts/rebuild_ai_arena_simulation_jp.py
+
+      - name: Build AI Arena memory
+        run: |
+          set -euo pipefail
+          python scripts/build_ai_arena_memory_jp.py
+
+      - name: Build AI Arena discussion
+        run: |
+          set -euo pipefail
+          python scripts/build_ai_arena_discussion_jp.py
+
+      - name: Render AI Arena pages
+        run: |
+          set -euo pipefail
+          python scripts/render_ai_arena_jp.py
+          python scripts/render_ai_arena_positions_jp.py
+          python scripts/render_ai_arena_ranking_jp.py
+          python scripts/render_index.py
+
+      - name: Verify historical AI Arena outputs
+        run: |
+          set -euo pipefail
+          required_files=(
+            "site/data/backtest-daily-jp/latest.json"
+            "site/data/backtest-daily-jp/manifest.json"
+            "site/data/daily-jp/manifest.json"
+            "site/data/japan/ai-arena/simulation/latest.json"
+            "site/data/japan/ai-arena/discussion/latest.json"
+            "site/data/japan/ai-arena/events/latest.json"
+            "site/data/japan/ai-arena/memory/latest.json"
+            "site/data/japan/ai-arena/positions/latest.json"
+            "site/data/japan/ai-arena/ranking/latest.json"
+            "site/japan/ai-arena/index.html"
+            "site/japan/ai-arena/positions/index.html"
+            "site/japan/ai-arena/ranking/index.html"
+            "site/assets/ai_arena_jp.css"
+            "site/assets/ai_arena_jp.js"
+            "site/assets/ai_arena_positions_jp.css"
+            "site/assets/ai_arena_ranking_jp.css"
+          )
+          for f in "${required_files[@]}"; do
+            test -f "$f"
+          done
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          sim = json.loads(Path('site/data/japan/ai-arena/simulation/latest.json').read_text(encoding='utf-8'))
+          meta = sim.get('simulation') or sim.get('meta') or {}
+          print('AI Arena simulation schema=', sim.get('schema_version'))
+          print('range=', sim.get('range'))
+          print('agents=', len(sim.get('agents') or []))
+          for p in [Path('site/japan/ai-arena/index.html'), Path('site/japan/ai-arena/positions/index.html'), Path('site/japan/ai-arena/ranking/index.html')]:
+              html = p.read_text(encoding='utf-8')
+              assert '<html' in html and '</html>' in html
+              for token in ['{{', '{%', 'UndefinedError', 'Traceback']:
+                  assert token not in html, f'{p} contains {token}'
+              print('verified', p, len(html))
+          PY
+
+      - name: Commit historical AI Arena files
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          paths=(
+            "site/data/backtest-daily-jp"
+            "site/data/daily-jp"
+            "site/data/japan/ai-arena"
+            "site/japan/ai-arena"
+            "site/assets/ai_arena_jp.css"
+            "site/assets/ai_arena_jp.js"
+            "site/assets/ai_arena_positions_jp.css"
+            "site/assets/ai_arena_ranking_jp.css"
+            "site/index.html"
+            "site/assets/index.css"
+          )
+          for path in "${paths[@]}"; do
+            if [ -e "$path" ] || [ -n "$(git ls-files -- "$path")" ]; then
+              git add -A -- "$path"
+            else
+              echo "Skip missing and untracked path: $path"
+            fi
+          done
+          if git diff --cached --quiet; then
+            echo "No historical AI Arena changes to commit."
+            exit 0
+          fi
+          git commit -m "Build historical AI Arena simulation"
+          git push origin main
+
+      - name: Verify clean working tree
+        run: |
+          set -euo pipefail
+          if [ -n "$(git status --porcelain)" ]; then
+            git status --short
+            echo "::error::Working tree is dirty after historical AI Arena commit."
+            exit 1
+          fi
