@@ -10,6 +10,7 @@ champion explanation copy.
 """
 
 import os
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -253,6 +254,72 @@ def _recent_momentum(values: list[float], window: int = 10) -> float:
     return values[-1] - start
 
 
+def _curve_date(point: dict) -> datetime | None:
+    raw = point.get("date") or point.get("execution_date") or point.get("current_date")
+    if not raw:
+        return None
+    try:
+        return datetime.fromisoformat(str(raw)[:10])
+    except Exception:
+        return None
+
+
+def _return_delta_by_sessions(values: list[float], sessions: int) -> float | None:
+    if len(values) < 2:
+        return None
+    idx = max(0, len(values) - 1 - sessions)
+    if idx == len(values) - 1:
+        return None
+    return values[-1] - values[idx]
+
+
+def _curve_equity_values(equity_curve: list[dict]) -> list[float]:
+    values: list[float] = []
+    for point in equity_curve:
+        if not isinstance(point, dict):
+            continue
+        equity = _to_float(point.get("portfolio_equity_jpy") or point.get("equity_jpy"))
+        if equity > 0:
+            values.append(equity)
+    return values
+
+
+def _period_gain_vs_initial_by_sessions(equity_values: list[float], sessions: int, initial_capital: float) -> float | None:
+    """Return period P/L as a % of initial capital.
+
+    Example: if current equity is ¥17.8m, 1W-ago equity is ¥17.4m,
+    and initial capital is ¥10.0m, the 1W value is +4.0%.
+    This is intentionally not a percentage-point label change; it measures
+    how much of the original capital was gained/lost during the period.
+    """
+    if len(equity_values) < 2 or initial_capital <= 0:
+        return None
+    idx = max(0, len(equity_values) - 1 - sessions)
+    if idx == len(equity_values) - 1:
+        return None
+    return (equity_values[-1] - equity_values[idx]) / initial_capital * 100.0
+
+
+def _performance_windows(equity_curve: list[dict], initial_capital: float) -> list[dict]:
+    # Trading-session based windows. Values are period gains/losses measured
+    # against the original capital, not simple changes in return percentages.
+    specs = [("1W", 5), ("1M", 21), ("3M", 63), ("6M", 126)]
+    equity_values = _curve_equity_values(equity_curve)
+    out: list[dict] = []
+    for label, sessions in specs:
+        value = _period_gain_vs_initial_by_sessions(equity_values, sessions, initial_capital)
+        if value is None:
+            out.append({"label": label, "value": None, "class": "neutral", "display": "—"})
+        else:
+            out.append({
+                "label": label,
+                "value": value,
+                "class": "positive" if value >= 0 else "negative",
+                "display": f"{value:+.2f}%",
+            })
+    return out
+
+
 def _rank_meta(rank: int) -> dict[str, str]:
     return dict(RANK_META_BY_RANK.get(rank, RANK_META_BY_RANK[5]))
 
@@ -381,12 +448,18 @@ def enrich_ranking(ranking: dict, simulation: dict) -> dict:
         item["spark_points"] = _normalised_points(curve_values)
         item["race_points"] = _race_points(curve_values or [ret], race_low, race_high)
         item["race_last_xy"] = _last_xy(item["race_points"])
+        item["curve_sessions_label"] = f"{len(equity_curve)} sessions" if equity_curve else "No curve"
         item["recent_momentum_pct"] = _recent_momentum(curve_values)
         item["recent_momentum_class"] = "positive" if item["recent_momentum_pct"] >= 0 else "negative"
+        item["recent_momentum_display"] = f"{item['recent_momentum_pct']:+.2f}%"
+        item["performance_windows"] = _performance_windows(equity_curve, initial_capital)
 
         item["best_trade"] = _best_trade(closed_trades)
         item["worst_trade"] = _worst_trade(closed_trades)
         item["strongest_open_position"] = _strongest_open_position(open_positions)
+        item["best_trade_label"] = "BEST CLOSED"
+        item["worst_trade_label"] = "WORST CLOSED"
+        item["open_position_label"] = "STRONGEST OPEN" if item["strongest_open_position"] and _to_float(item["strongest_open_position"].get("unrealized_pnl_jpy")) >= 0 else "LARGEST OPEN"
         item["closed_trade_list_count"] = len(closed_trades)
         item["open_position_list_count"] = len(open_positions)
         item["has_real_curve"] = len(curve_values) >= 2
