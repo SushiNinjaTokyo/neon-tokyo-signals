@@ -64,6 +64,7 @@ WEEKLY_JSON = Path(os.getenv("AI_ARENA_WEEKLY_JSON", str(OUT_DIR / "data/japan/w
 SIM_OUT = OUT_DIR / "data/japan/ai-arena/simulation/latest.json"
 POSITIONS_OUT = OUT_DIR / "data/japan/ai-arena/positions/latest.json"
 RANKING_OUT = OUT_DIR / "data/japan/ai-arena/ranking/latest.json"
+EVENTS_OUT = OUT_DIR / "data/japan/ai-arena/events/latest.json"
 
 JST = timezone(timedelta(hours=9))
 
@@ -769,6 +770,153 @@ def run_simulation(config: dict[str, Any], prices: dict[str, dict[str, Any]], da
     return {"simulation": payload, "positions": positions_payload, "ranking": ranking_payload}
 
 
+
+def build_discussion_events(sim_payload: dict[str, Any], positions_payload: dict[str, Any], ranking_payload: dict[str, Any]) -> dict[str, Any]:
+    """Extract structured LAB discussion events from deterministic simulation output.
+
+    GPT should debate *events*, not hallucinate what matters.  This event file
+    is the bridge between the trading engine and the discussion generator.
+    """
+    generated_at = sim_payload.get("generated_at")
+    season = sim_payload.get("season")
+    date_range = sim_payload.get("range") or {}
+    agents = positions_payload.get("agents") or []
+    ranking_agents = ranking_payload.get("agents") or []
+    events: list[dict[str, Any]] = []
+
+    def agent_name(agent_id: str) -> str:
+        for a in agents:
+            if a.get("agent_id") == agent_id:
+                return a.get("name") or agent_id
+        for r in ranking_agents:
+            if r.get("agent_id") == agent_id:
+                return r.get("name") or agent_id
+        return agent_id
+
+    # Leaderboard event.
+    if ranking_agents:
+        leader = ranking_agents[0]
+        laggard = ranking_agents[-1]
+        spread = round(as_float(leader.get("return_pct")) - as_float(laggard.get("return_pct")), 4)
+        events.append({
+            "event_id": f"leaderboard_{season}",
+            "event_type": "leaderboard",
+            "priority": 95,
+            "topic": f"{leader.get('name')} leads; {laggard.get('name')} lags",
+            "agents_involved": [leader.get("agent_id"), laggard.get("agent_id")],
+            "facts": [
+                f"{leader.get('name')} ranks #1 with return {leader.get('return_pct')}%.",
+                f"{laggard.get('name')} ranks #{laggard.get('rank')} with return {laggard.get('return_pct')}%.",
+                f"Leader-laggard spread is {spread} percentage points.",
+            ],
+            "leader": leader,
+            "laggard": laggard,
+            "spread_pct": spread,
+        })
+
+    # Trade action events from recent actions.
+    for a in agents:
+        aid = a.get("agent_id")
+        recent = a.get("recent_actions") or []
+        for action in recent[-8:]:
+            if action.get("action") not in {"entry", "exit", "skip_entry"}:
+                continue
+            sym = action.get("symbol")
+            priority = {"entry": 100, "exit": 100, "skip_entry": 72}.get(action.get("action"), 70)
+            events.append({
+                "event_id": f"{action.get('date')}_{aid}_{action.get('action')}_{sym}",
+                "event_type": "trade_event",
+                "priority": priority,
+                "topic": f"{agent_name(aid)} {action.get('action')} {sym}",
+                "agents_involved": [aid],
+                "symbol": sym,
+                "trade_date": action.get("date"),
+                "facts": [
+                    f"{agent_name(aid)} action={action.get('action')} symbol={sym}.",
+                    f"Reason: {action.get('reason') or 'simulation rule'}.",
+                    f"Price: {action.get('price')}. Shares: {action.get('shares')}.",
+                ],
+                "action": action,
+            })
+
+    # Shared position / overlapping ticker events.
+    symbol_to_positions: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for a in agents:
+        for p in a.get("open_positions") or []:
+            pp = dict(p)
+            pp["agent_name"] = a.get("name")
+            pp["agent_id"] = a.get("agent_id")
+            symbol_to_positions[p.get("symbol")].append(pp)
+    for sym, rows in symbol_to_positions.items():
+        if sym and len(rows) >= 2:
+            names = [r.get("agent_name") for r in rows]
+            events.append({
+                "event_id": f"shared_position_{sym}",
+                "event_type": "shared_position",
+                "priority": 92,
+                "topic": f"Multiple agents hold {sym}",
+                "agents_involved": [r.get("agent_id") for r in rows],
+                "symbol": sym,
+                "theme": rows[0].get("theme"),
+                "facts": [
+                    f"{', '.join(names)} hold {sym}.",
+                    *[
+                        f"{r.get('agent_name')} holds {sym} with unrealized return {r.get('unrealized_return_pct')}%, holding_days={r.get('holding_days')}."
+                        for r in rows
+                    ],
+                ],
+                "positions": rows,
+            })
+
+    # Why-no-trade / cash defense events.
+    for a in agents:
+        summary = a.get("summary") or {}
+        if int(summary.get("open_positions") or 0) == 0:
+            events.append({
+                "event_id": f"why_no_trade_{a.get('agent_id')}",
+                "event_type": "why_no_trade",
+                "priority": 75,
+                "topic": f"{a.get('name')} is flat",
+                "agents_involved": [a.get("agent_id")],
+                "facts": [
+                    f"{a.get('name')} has zero open positions.",
+                    f"Cash is {summary.get('cash_jpy')} JPY.",
+                    f"Return is {summary.get('return_pct')}%, max drawdown is {summary.get('max_drawdown_pct')}%.",
+                ],
+                "agent_summary": summary,
+            })
+
+    # Theme heat / concentration from open positions.
+    theme_map: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for a in agents:
+        for p in a.get("open_positions") or []:
+            if p.get("theme"):
+                theme_map[p["theme"]].append(p)
+    for theme, rows in sorted(theme_map.items(), key=lambda kv: len(kv[1]), reverse=True)[:3]:
+        events.append({
+            "event_id": f"theme_heat_{abs(hash(theme)) % 100000}",
+            "event_type": "theme_heat",
+            "priority": 80,
+            "topic": f"Theme exposure: {theme}",
+            "theme": theme,
+            "agents_involved": list({r.get("agent_id") for r in rows if r.get("agent_id")}),
+            "facts": [
+                f"{theme} has {len(rows)} open positions in the Arena.",
+                f"Aggregate unrealized P/L is {round(sum(as_float(r.get('unrealized_return_pct')) for r in rows), 4)} percentage points across listed positions.",
+            ],
+            "positions": rows,
+        })
+
+    events.sort(key=lambda e: int(e.get("priority") or 0), reverse=True)
+    return {
+        "schema_version": "ai_arena_discussion_events_v1",
+        "generated_at": generated_at,
+        "season": season,
+        "range": date_range,
+        "events": events[:40],
+    }
+
+
 def main() -> None:
     config = read_yaml(AGENTS_YAML, {})
     prices = load_prices()
@@ -780,6 +928,8 @@ def main() -> None:
     write_json(SIM_OUT, outputs["simulation"])
     write_json(POSITIONS_OUT, outputs["positions"])
     write_json(RANKING_OUT, outputs["ranking"])
+    events = build_discussion_events(outputs["simulation"], outputs["positions"], outputs["ranking"])
+    write_json(EVENTS_OUT, events)
 
 
 if __name__ == "__main__":
