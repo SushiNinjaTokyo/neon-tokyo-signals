@@ -27,6 +27,16 @@ on:
         description: "Used when start_date is blank"
         required: false
         default: "90"
+      reset_lab_timeline:
+        description: "Reset LAB feed timeline from current run time with backfilled initial messages"
+        required: false
+        default: "false"
+        type: choice
+        options: ["true", "false"]
+      lab_backfill_minutes:
+        description: "When reset_lab_timeline=true, start generated feed this many minutes before now"
+        required: false
+        default: "180"
   workflow_run:
     workflows: ["Daily JP auto pipeline"]
     types: [completed]
@@ -65,6 +75,8 @@ jobs:
       AI_ARENA_MAX_INTERVAL_MINUTES: ${{ vars.AI_ARENA_MAX_INTERVAL_MINUTES || '10' }}
       AI_ARENA_ALLOW_AMBIENT_LINES: ${{ vars.AI_ARENA_ALLOW_AMBIENT_LINES || 'true' }}
       AI_ARENA_ENABLE_MEMORY: ${{ vars.AI_ARENA_ENABLE_MEMORY || 'true' }}
+      AI_ARENA_RESET_TIMELINE: ${{ github.event_name == 'workflow_dispatch' && inputs.reset_lab_timeline || 'false' }}
+      AI_ARENA_BACKFILL_MINUTES: ${{ github.event_name == 'workflow_dispatch' && inputs.lab_backfill_minutes || vars.AI_ARENA_BACKFILL_MINUTES || '180' }}
 
     steps:
       - name: Checkout repository
