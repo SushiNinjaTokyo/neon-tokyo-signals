@@ -12,7 +12,7 @@
     <div class="ambient ambient-b"></div>
     <div class="ambient ambient-c"></div>
 
-    <nav class="arena-nav">
+    <nav class="arena-nav" aria-label="AI Arena navigation">
       <a href="/">TOP</a>
       <a href="/japan/ai-arena/">ARENA</a>
       <a href="/japan/ai-arena/positions/">POSITIONS</a>
@@ -23,36 +23,49 @@
       <div class="hero-copy">
         <p class="eyebrow">SEASON 2026-05</p>
         <h1>AI Agent<br />Grand Prix</h1>
-        <p class="hero-sub">Monthly simulation leaderboard. Five strategies compete across the Tokyo tape.</p>
-        <div class="hero-kpis">
+        <p class="hero-sub">A live Tokyo-equity leaderboard built from realised trades, open P/L, and the real simulation equity curve.</p>
+        <div class="hero-kpis" aria-label="Season summary">
           <div><span>Range</span><b>2026-02-25 → 2026-05-26</b></div>
           <div><span>Leader Spread</span><b>10.41 pts</b></div>
           <div><span>Agents</span><b>5</b></div>
         </div>
       </div>
+
       
-      <div class="champion-card tone-violet">
+      <aside class="champion-card tone-violet" aria-label="Current champion">
         <div class="champion-orbit"></div>
+        <div class="champion-ribbon">CROWN</div>
         <p class="eyebrow">CURRENT CHAMPION</p>
         <div class="champion-avatar-wrap">
           
-          <img src="/assets/ai-arena/agents/weekly_sage.png" alt="SATORI" class="rank-avatar-img champion-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+          <img src="/assets/ai-arena/agents/weekly_sage.png" alt="SATORI" class="champion-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
           <div class="champion-avatar pixel-avatar avatar-pixel_mage avatar-fallback"><span></span></div>
           
         </div>
         <div class="champion-copy">
-          <h2>#1 SATORI</h2>
-          <p>Weekly / weekly_stage2</p>
+          <h2>SATORI</h2>
+          <p>#1 / Weekly / weekly_stage2</p>
         </div>
         <div class="champion-return positive">8.58%</div>
-      </div>
+        <div class="why-box">
+          <div class="why-title">WHY LEADING?</div>
+          
+          <p>Leads the season return table at +8.58%.</p>
+          
+          <p>Strongest open contributor: 8035.T at +11.73% / ¥548,000.</p>
+          
+          <p>Best closed trade: 9984.T produced ¥393,600.</p>
+          
+        </div>
+      </aside>
       
     </header>
 
     
-    <section class="podium-grid" aria-label="Top 3 Agents">
+    <section class="podium-grid" aria-label="Top three agents">
       
       <article class="podium-card neon-panel podium-1 tone-violet">
+        <div class="podium-label">CROWN</div>
         <div class="podium-place">#1</div>
         <div class="podium-avatar-wrap">
           
@@ -67,11 +80,13 @@
         <div class="podium-return positive">8.58%</div>
         <div class="podium-mini">
           <span>Equity <b>¥10,857,600</b></span>
+          <span>Win Rate <b>50.0%</b></span>
           <span>Max DD <b>-4.56%</b></span>
         </div>
       </article>
       
       <article class="podium-card neon-panel podium-2 tone-blue">
+        <div class="podium-label">ACE</div>
         <div class="podium-place">#2</div>
         <div class="podium-avatar-wrap">
           
@@ -86,11 +101,13 @@
         <div class="podium-return positive">0.77%</div>
         <div class="podium-mini">
           <span>Equity <b>¥10,077,350</b></span>
+          <span>Win Rate <b>50.0%</b></span>
           <span>Max DD <b>-0.22%</b></span>
         </div>
       </article>
       
       <article class="podium-card neon-panel podium-3 tone-green">
+        <div class="podium-label">CORE</div>
         <div class="podium-place">#3</div>
         <div class="podium-avatar-wrap">
           
@@ -105,6 +122,7 @@
         <div class="podium-return positive">0.39%</div>
         <div class="podium-mini">
           <span>Equity <b>¥10,039,300</b></span>
+          <span>Win Rate <b>33.3%</b></span>
           <span>Max DD <b>-1.95%</b></span>
         </div>
       </article>
@@ -112,254 +130,567 @@
     </section>
     
 
+    <section class="race-panel neon-panel">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">REAL EQUITY CURVES</p>
+          <h2>Return Race</h2>
+        </div>
+        <span>2026-02-25 → 2026-05-26</span>
+      </div>
+
+      <div class="race-chart-wrap">
+        <svg class="race-chart" viewBox="0 0 1000 260" role="img" aria-label="Agent return race chart" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="raceGridFade" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0%" stop-color="rgba(125,249,255,.04)" />
+              <stop offset="50%" stop-color="rgba(125,249,255,.16)" />
+              <stop offset="100%" stop-color="rgba(255,79,216,.05)" />
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="1000" height="260" rx="26" class="race-bg" />
+          <line x1="24" y1="22" x2="976" y2="22" class="race-grid" />
+          <line x1="24" y1="87" x2="976" y2="87" class="race-grid" />
+          <line x1="24" y1="130" x2="976" y2="130" class="race-zero" />
+          <line x1="24" y1="173" x2="976" y2="173" class="race-grid" />
+          <line x1="24" y1="238" x2="976" y2="238" class="race-grid" />
+          
+          
+          <polyline class="race-line tone-stroke-violet rank-line-1" points="24.0,163.6 40.1,163.6 56.3,163.6 72.4,163.6 88.5,163.6 104.7,163.6 120.8,163.6 136.9,163.6 153.1,163.6 169.2,163.6 185.4,163.6 201.5,163.6 217.6,163.6 233.8,163.6 249.9,163.6 266.0,163.6 282.2,163.6 298.3,163.6 314.4,163.6 330.6,163.6 346.7,163.6 362.8,163.6 379.0,163.6 395.1,163.6 411.3,163.6 427.4,163.6 443.5,163.6 459.7,163.6 475.8,163.6 491.9,163.6 508.1,163.6 524.2,163.6 540.3,163.6 556.5,163.6 572.6,163.6 588.7,163.6 604.9,163.6 621.0,163.6 637.2,163.6 653.3,163.6 669.4,163.6 685.6,163.6 701.7,163.6 717.8,163.6 734.0,163.6 750.1,163.6 766.2,163.6 782.4,163.6 798.5,163.6 814.6,163.6 830.8,163.6 846.9,163.6 863.1,163.6 879.2,155.3 895.3,162.7 911.5,223.1 927.6,125.6 943.7,69.2 959.9,36.9 976.0,36.9" />
+          <circle class="race-dot tone-fill-violet" cx="976.0" cy="36.9" r="5" />
+          
+          
+          
+          <polyline class="race-line tone-stroke-blue rank-line-2" points="24.0,163.6 40.1,163.6 56.3,163.6 72.4,163.6 88.5,163.6 104.7,163.6 120.8,163.6 136.9,163.6 153.1,163.6 169.2,163.6 185.4,163.6 201.5,163.6 217.6,163.6 233.8,163.6 249.9,163.6 266.0,163.6 282.2,163.6 298.3,163.6 314.4,163.6 330.6,163.6 346.7,163.6 362.8,163.6 379.0,163.6 395.1,163.6 411.3,163.6 427.4,163.6 443.5,163.6 459.7,163.6 475.8,163.6 491.9,163.6 508.1,163.6 524.2,163.6 540.3,163.6 556.5,163.6 572.6,163.6 588.7,163.6 604.9,163.6 621.0,163.6 637.2,163.6 653.3,163.6 669.4,163.6 685.6,163.6 701.7,163.6 717.8,163.6 734.0,163.6 750.1,163.6 766.2,163.6 782.4,163.6 798.5,163.6 814.6,163.6 830.8,163.6 846.9,163.6 863.1,163.6 879.2,163.6 895.3,163.6 911.5,166.8 927.6,152.2 943.7,152.2 959.9,152.2 976.0,152.2" />
+          <circle class="race-dot tone-fill-blue" cx="976.0" cy="152.2" r="5" />
+          
+          
+          
+          <polyline class="race-line tone-stroke-green rank-line-3" points="24.0,163.6 40.1,163.6 56.3,163.6 72.4,163.6 88.5,163.6 104.7,163.6 120.8,163.6 136.9,163.6 153.1,163.6 169.2,163.6 185.4,163.6 201.5,163.6 217.6,163.6 233.8,163.6 249.9,163.6 266.0,163.6 282.2,163.6 298.3,163.6 314.4,163.6 330.6,163.6 346.7,163.6 362.8,163.6 379.0,163.6 395.1,163.6 411.3,163.6 427.4,163.6 443.5,163.6 459.7,163.6 475.8,163.6 491.9,163.6 508.1,163.6 524.2,163.6 540.3,163.6 556.5,163.6 572.6,163.6 588.7,163.6 604.9,163.6 621.0,163.6 637.2,163.6 653.3,163.6 669.4,163.6 685.6,163.6 701.7,163.6 717.8,163.6 734.0,163.6 750.1,163.6 766.2,163.6 782.4,163.6 798.5,163.6 814.6,163.6 830.8,163.6 846.9,163.6 863.1,163.6 879.2,169.0 895.3,142.0 911.5,171.3 927.6,162.4 943.7,156.2 959.9,157.8 976.0,157.8" />
+          <circle class="race-dot tone-fill-green" cx="976.0" cy="157.8" r="5" />
+          
+          
+          
+          <polyline class="race-line tone-stroke-amber rank-line-4" points="24.0,163.6 40.1,163.6 56.3,163.6 72.4,163.6 88.5,163.6 104.7,163.6 120.8,163.6 136.9,163.6 153.1,163.6 169.2,163.6 185.4,163.6 201.5,163.6 217.6,163.6 233.8,163.6 249.9,163.6 266.0,163.6 282.2,163.6 298.3,163.6 314.4,163.6 330.6,163.6 346.7,163.6 362.8,163.6 379.0,163.6 395.1,163.6 411.3,163.6 427.4,163.6 443.5,163.6 459.7,163.6 475.8,163.6 491.9,163.6 508.1,163.6 524.2,163.6 540.3,163.6 556.5,163.6 572.6,163.6 588.7,163.6 604.9,163.6 621.0,163.6 637.2,163.6 653.3,163.6 669.4,163.6 685.6,163.6 701.7,163.6 717.8,163.6 734.0,163.6 750.1,163.6 766.2,163.6 782.4,163.6 798.5,163.6 814.6,163.6 830.8,163.6 846.9,163.6 863.1,163.6 879.2,137.3 895.3,160.0 911.5,191.6 927.6,171.6 943.7,158.1 959.9,158.1 976.0,158.1" />
+          <circle class="race-dot tone-fill-amber" cx="976.0" cy="158.1" r="5" />
+          
+          
+          
+          <polyline class="race-line tone-stroke-cyan rank-line-5" points="24.0,163.6 40.1,163.6 56.3,163.6 72.4,163.6 88.5,163.6 104.7,163.6 120.8,163.6 136.9,163.6 153.1,163.6 169.2,163.6 185.4,163.6 201.5,163.6 217.6,163.6 233.8,163.6 249.9,163.6 266.0,163.6 282.2,163.6 298.3,163.6 314.4,163.6 330.6,163.6 346.7,163.6 362.8,163.6 379.0,163.6 395.1,163.6 411.3,163.6 427.4,163.6 443.5,163.6 459.7,163.6 475.8,163.6 491.9,163.6 508.1,163.6 524.2,163.6 540.3,163.6 556.5,163.6 572.6,163.6 588.7,163.6 604.9,163.6 621.0,163.6 637.2,163.6 653.3,163.6 669.4,163.6 685.6,163.6 701.7,163.6 717.8,163.6 734.0,163.6 750.1,163.6 766.2,163.6 782.4,163.6 798.5,163.6 814.6,163.6 830.8,163.6 846.9,163.6 863.1,163.6 879.2,163.6 895.3,163.6 911.5,190.1 927.6,193.9 943.7,196.1 959.9,190.7 976.0,190.7" />
+          <circle class="race-dot tone-fill-cyan" cx="976.0" cy="190.7" r="5" />
+          
+          
+        </svg>
+        <div class="race-scale">
+          <span>9.58%</span>
+          <span>-5.03%</span>
+        </div>
+      </div>
+
+      <div class="race-legend">
+        
+        <div class="legend-pill tone-violet">
+          <i></i><b>#1 SATORI</b><span>8.58%</span>
+        </div>
+        
+        <div class="legend-pill tone-blue">
+          <i></i><b>#2 MAMORU</b><span>0.77%</span>
+        </div>
+        
+        <div class="legend-pill tone-green">
+          <i></i><b>#3 SAGURI</b><span>0.39%</span>
+        </div>
+        
+        <div class="legend-pill tone-amber">
+          <i></i><b>#4 MATSU</b><span>0.38%</span>
+        </div>
+        
+        <div class="legend-pill tone-cyan">
+          <i></i><b>#5 KAKERU</b><span>-1.83%</span>
+        </div>
+        
+      </div>
+    </section>
+
     <section class="score-stream neon-panel">
       <div class="section-head">
         <div>
-          <p class="eyebrow">LIVE SEASON GRAPH</p>
-          <h2>Return race</h2>
+          <p class="eyebrow">FINAL SCOREBOARD</p>
+          <h2>Return bars</h2>
         </div>
-        <span>2026-02-25 → 2026-05-26</span>
+        <span>Portfolio equity based</span>
       </div>
       <div class="bar-stage">
         
         <div class="score-bar-row tone-violet positive">
           <div class="score-agent">
-            <b>#1</b>
+            <b>CROWN</b>
             
             <img src="/assets/ai-arena/agents/weekly_sage.png" alt="" class="score-avatar" loading="lazy" />
             
             <span>SATORI</span>
           </div>
-          <div class="score-track"><i style="width: 100.0%"></i></div>
+          <div class="score-track"><i style="--bar-w: 100.0%"></i></div>
           <div class="score-return">8.58%</div>
         </div>
         
         <div class="score-bar-row tone-blue positive">
           <div class="score-agent">
-            <b>#2</b>
+            <b>ACE</b>
             
             <img src="/assets/ai-arena/agents/risk_sentinel.png" alt="" class="score-avatar" loading="lazy" />
             
             <span>MAMORU</span>
           </div>
-          <div class="score-track"><i style="width: 32.5%"></i></div>
+          <div class="score-track"><i style="--bar-w: 32.5%"></i></div>
           <div class="score-return">0.77%</div>
         </div>
         
         <div class="score-bar-row tone-green positive">
           <div class="score-agent">
-            <b>#3</b>
+            <b>CORE</b>
             
             <img src="/assets/ai-arena/agents/discovery_scout.png" alt="" class="score-avatar" loading="lazy" />
             
             <span>SAGURI</span>
           </div>
-          <div class="score-track"><i style="width: 29.2%"></i></div>
+          <div class="score-track"><i style="--bar-w: 29.2%"></i></div>
           <div class="score-return">0.39%</div>
         </div>
         
         <div class="score-bar-row tone-amber positive">
           <div class="score-agent">
-            <b>#4</b>
+            <b>SHADOW</b>
             
             <img src="/assets/ai-arena/agents/contrarian_monk.png" alt="" class="score-avatar" loading="lazy" />
             
             <span>MATSU</span>
           </div>
-          <div class="score-track"><i style="width: 29.1%"></i></div>
+          <div class="score-track"><i style="--bar-w: 29.1%"></i></div>
           <div class="score-return">0.38%</div>
         </div>
         
         <div class="score-bar-row tone-cyan negative">
           <div class="score-agent">
-            <b>#5</b>
+            <b>LOW</b>
             
             <img src="/assets/ai-arena/agents/daily_striker.png" alt="" class="score-avatar" loading="lazy" />
             
             <span>KAKERU</span>
           </div>
-          <div class="score-track"><i style="width: 10.0%"></i></div>
+          <div class="score-track"><i style="--bar-w: 10.0%"></i></div>
           <div class="score-return">-1.83%</div>
         </div>
         
       </div>
     </section>
 
-    <section class="ranking-board">
+    <section class="ranking-board" aria-label="Agent detail cards">
       
-      <article class="rank-row neon-panel rank-1 tone-violet">
-        <div class="rank-left">
-          <div class="place">#1</div>
-          <div class="rank-avatar-wrap">
-            
-            <img src="/assets/ai-arena/agents/weekly_sage.png" alt="SATORI" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-            <div class="pixel-avatar avatar-pixel_mage avatar-fallback"><span></span></div>
-            
+      <article class="rank-card neon-panel rank-1 tone-violet">
+        <div class="rank-card-main">
+          <div class="rank-left">
+            <div class="place-block">
+              <div class="label-chip">CROWN</div>
+              <div class="place">#1</div>
+            </div>
+            <div class="rank-avatar-wrap">
+              
+              <img src="/assets/ai-arena/agents/weekly_sage.png" alt="SATORI" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+              <div class="pixel-avatar avatar-pixel_mage avatar-fallback"><span></span></div>
+              
+            </div>
+            <div class="agent-name">
+              <h2>SATORI</h2>
+              <p>Weekly / weekly_stage2</p>
+              <small>The best Japan leaders prove themselves on the weekly tape first.</small>
+            </div>
           </div>
-          <div class="agent-name">
-            <h2>SATORI</h2>
-            <p>Weekly / weekly_stage2</p>
+
+          <div class="rank-chart">
+            <svg class="spark" viewBox="0 0 320 92" role="img" aria-label="SATORI real equity sparkline" preserveAspectRatio="none">
+              <line x1="10" y1="46" x2="310" y2="46" class="spark-zero" />
+              <polyline class="spark-shadow" points="10.0,59.0 15.1,59.0 20.2,59.0 25.3,59.0 30.3,59.0 35.4,59.0 40.5,59.0 45.6,59.0 50.7,59.0 55.8,59.0 60.8,59.0 65.9,59.0 71.0,59.0 76.1,59.0 81.2,59.0 86.3,59.0 91.4,59.0 96.4,59.0 101.5,59.0 106.6,59.0 111.7,59.0 116.8,59.0 121.9,59.0 126.9,59.0 132.0,59.0 137.1,59.0 142.2,59.0 147.3,59.0 152.4,59.0 157.5,59.0 162.5,59.0 167.6,59.0 172.7,59.0 177.8,59.0 182.9,59.0 188.0,59.0 193.1,59.0 198.1,59.0 203.2,59.0 208.3,59.0 213.4,59.0 218.5,59.0 223.6,59.0 228.6,59.0 233.7,59.0 238.8,59.0 243.9,59.0 249.0,59.0 254.1,59.0 259.2,59.0 264.2,59.0 269.3,59.0 274.4,59.0 279.5,55.8 284.6,58.6 289.7,82.0 294.7,44.3 299.8,22.5 304.9,10.0 310.0,10.0" />
+              <polyline class="spark-line tone-stroke-violet" points="10.0,59.0 15.1,59.0 20.2,59.0 25.3,59.0 30.3,59.0 35.4,59.0 40.5,59.0 45.6,59.0 50.7,59.0 55.8,59.0 60.8,59.0 65.9,59.0 71.0,59.0 76.1,59.0 81.2,59.0 86.3,59.0 91.4,59.0 96.4,59.0 101.5,59.0 106.6,59.0 111.7,59.0 116.8,59.0 121.9,59.0 126.9,59.0 132.0,59.0 137.1,59.0 142.2,59.0 147.3,59.0 152.4,59.0 157.5,59.0 162.5,59.0 167.6,59.0 172.7,59.0 177.8,59.0 182.9,59.0 188.0,59.0 193.1,59.0 198.1,59.0 203.2,59.0 208.3,59.0 213.4,59.0 218.5,59.0 223.6,59.0 228.6,59.0 233.7,59.0 238.8,59.0 243.9,59.0 249.0,59.0 254.1,59.0 259.2,59.0 264.2,59.0 269.3,59.0 274.4,59.0 279.5,55.8 284.6,58.6 289.7,82.0 294.7,44.3 299.8,22.5 304.9,10.0 310.0,10.0" />
+            </svg>
+            <div class="spark-meta">
+              <span>60 points</span>
+              <b class="positive">10D +8.58 pts</b>
+            </div>
+          </div>
+
+          <div class="rank-stats">
+            <div><span>Return</span><b class="positive">8.58%</b></div>
+            <div><span>Equity</span><b>¥10,857,600</b></div>
+            <div><span>Win Rate</span><b>50.0%</b></div>
+            <div><span>Max DD</span><b>-4.56%</b></div>
+            <div><span>Open</span><b>2</b></div>
+            <div><span>Closed</span><b>2</b></div>
           </div>
         </div>
 
-        <svg class="spark" viewBox="0 0 260 70" aria-hidden="true">
-          <defs>
-            <linearGradient id="spark-1" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stop-color="#7DF9FF"/>
-              <stop offset="1" stop-color="#FF4FD8"/>
-            </linearGradient>
-          </defs>
-          <polyline points="12.0,25.0 59.2,28.5 106.4,39.0 153.6,25.8 200.8,22.1 248.0,19.0" fill="none" stroke="rgba(125,249,255,.18)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="12.0,25.0 59.2,28.5 106.4,39.0 153.6,25.8 200.8,22.1 248.0,19.0" fill="none" stroke="url(#spark-1)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <div class="trade-grid">
+          <div class="trade-tile open-tile">
+            <span>STRONGEST OPEN</span>
+            
+            <b>8035.T</b>
+            <em>Tokyo Electron</em>
+            <strong class="positive">
+              +11.73% / ¥548,000
+            </strong>
+            <p>SATORI weekly_stage2 score 0.61; no daily confirmation</p>
+            
+          </div>
 
-        <div class="rank-stats">
-          <div><span>Return</span><b class="positive">8.58%</b></div>
-          <div><span>Equity</span><b>¥10,857,600</b></div>
-          <div><span>Win Rate</span><b>50.0%</b></div>
-          <div><span>Max DD</span><b>-4.56%</b></div>
+          <div class="trade-tile best-tile">
+            <span>BEST TRADE</span>
+            
+            <b>9984.T</b>
+            <em>SoftBank Group</em>
+            <strong class="positive">
+              +24.10% / ¥393,600
+            </strong>
+            <p>take_profit / 5D</p>
+            
+          </div>
+
+          <div class="trade-tile worst-tile">
+            <span>WORST TRADE</span>
+            
+            <b>3652.T</b>
+            <em>Digital Media Professionals</em>
+            <strong class="negative">
+              -10.14% / ¥-144,000
+            </strong>
+            <p>stop_loss / 1D</p>
+            
+          </div>
         </div>
       </article>
       
-      <article class="rank-row neon-panel rank-2 tone-blue">
-        <div class="rank-left">
-          <div class="place">#2</div>
-          <div class="rank-avatar-wrap">
-            
-            <img src="/assets/ai-arena/agents/risk_sentinel.png" alt="MAMORU" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-            <div class="pixel-avatar avatar-pixel_shield avatar-fallback"><span></span></div>
-            
+      <article class="rank-card neon-panel rank-2 tone-blue">
+        <div class="rank-card-main">
+          <div class="rank-left">
+            <div class="place-block">
+              <div class="label-chip">ACE</div>
+              <div class="place">#2</div>
+            </div>
+            <div class="rank-avatar-wrap">
+              
+              <img src="/assets/ai-arena/agents/risk_sentinel.png" alt="MAMORU" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+              <div class="pixel-avatar avatar-pixel_shield avatar-fallback"><span></span></div>
+              
+            </div>
+            <div class="agent-name">
+              <h2>MAMORU</h2>
+              <p>Defender / risk_defender</p>
+              <small>A strong signal is worthless if it cannot survive volatility and liquidity gaps.</small>
+            </div>
           </div>
-          <div class="agent-name">
-            <h2>MAMORU</h2>
-            <p>Defender / risk_defender</p>
-          </div>
-        </div>
 
-        <svg class="spark" viewBox="0 0 260 70" aria-hidden="true">
-          <defs>
-            <linearGradient id="spark-2" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stop-color="#7DF9FF"/>
-              <stop offset="1" stop-color="#FF4FD8"/>
-            </linearGradient>
-          </defs>
-          <polyline points="12.0,26.8 59.2,29.4 106.4,36.1 153.6,31.4 200.8,29.3 248.0,27.2" fill="none" stroke="rgba(125,249,255,.18)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="12.0,26.8 59.2,29.4 106.4,36.1 153.6,31.4 200.8,29.3 248.0,27.2" fill="none" stroke="url(#spark-2)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-
-        <div class="rank-stats">
-          <div><span>Return</span><b class="positive">0.77%</b></div>
-          <div><span>Equity</span><b>¥10,077,350</b></div>
-          <div><span>Win Rate</span><b>50.0%</b></div>
-          <div><span>Max DD</span><b>-0.22%</b></div>
-        </div>
-      </article>
-      
-      <article class="rank-row neon-panel rank-3 tone-green">
-        <div class="rank-left">
-          <div class="place">#3</div>
-          <div class="rank-avatar-wrap">
-            
-            <img src="/assets/ai-arena/agents/discovery_scout.png" alt="SAGURI" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-            <div class="pixel-avatar avatar-pixel_archer avatar-fallback"><span></span></div>
-            
+          <div class="rank-chart">
+            <svg class="spark" viewBox="0 0 320 92" role="img" aria-label="MAMORU real equity sparkline" preserveAspectRatio="none">
+              <line x1="10" y1="46" x2="310" y2="46" class="spark-zero" />
+              <polyline class="spark-shadow" points="10.0,66.3 15.1,66.3 20.2,66.3 25.3,66.3 30.3,66.3 35.4,66.3 40.5,66.3 45.6,66.3 50.7,66.3 55.8,66.3 60.8,66.3 65.9,66.3 71.0,66.3 76.1,66.3 81.2,66.3 86.3,66.3 91.4,66.3 96.4,66.3 101.5,66.3 106.6,66.3 111.7,66.3 116.8,66.3 121.9,66.3 126.9,66.3 132.0,66.3 137.1,66.3 142.2,66.3 147.3,66.3 152.4,66.3 157.5,66.3 162.5,66.3 167.6,66.3 172.7,66.3 177.8,66.3 182.9,66.3 188.0,66.3 193.1,66.3 198.1,66.3 203.2,66.3 208.3,66.3 213.4,66.3 218.5,66.3 223.6,66.3 228.6,66.3 233.7,66.3 238.8,66.3 243.9,66.3 249.0,66.3 254.1,66.3 259.2,66.3 264.2,66.3 269.3,66.3 274.4,66.3 279.5,66.3 284.6,66.3 289.7,82.0 294.7,10.0 299.8,10.0 304.9,10.0 310.0,10.0" />
+              <polyline class="spark-line tone-stroke-blue" points="10.0,66.3 15.1,66.3 20.2,66.3 25.3,66.3 30.3,66.3 35.4,66.3 40.5,66.3 45.6,66.3 50.7,66.3 55.8,66.3 60.8,66.3 65.9,66.3 71.0,66.3 76.1,66.3 81.2,66.3 86.3,66.3 91.4,66.3 96.4,66.3 101.5,66.3 106.6,66.3 111.7,66.3 116.8,66.3 121.9,66.3 126.9,66.3 132.0,66.3 137.1,66.3 142.2,66.3 147.3,66.3 152.4,66.3 157.5,66.3 162.5,66.3 167.6,66.3 172.7,66.3 177.8,66.3 182.9,66.3 188.0,66.3 193.1,66.3 198.1,66.3 203.2,66.3 208.3,66.3 213.4,66.3 218.5,66.3 223.6,66.3 228.6,66.3 233.7,66.3 238.8,66.3 243.9,66.3 249.0,66.3 254.1,66.3 259.2,66.3 264.2,66.3 269.3,66.3 274.4,66.3 279.5,66.3 284.6,66.3 289.7,82.0 294.7,10.0 299.8,10.0 304.9,10.0 310.0,10.0" />
+            </svg>
+            <div class="spark-meta">
+              <span>60 points</span>
+              <b class="positive">10D +0.77 pts</b>
+            </div>
           </div>
-          <div class="agent-name">
-            <h2>SAGURI</h2>
-            <p>Scout / discovery_alpha</p>
+
+          <div class="rank-stats">
+            <div><span>Return</span><b class="positive">0.77%</b></div>
+            <div><span>Equity</span><b>¥10,077,350</b></div>
+            <div><span>Win Rate</span><b>50.0%</b></div>
+            <div><span>Max DD</span><b>-0.22%</b></div>
+            <div><span>Open</span><b>0</b></div>
+            <div><span>Closed</span><b>2</b></div>
           </div>
         </div>
 
-        <svg class="spark" viewBox="0 0 260 70" aria-hidden="true">
-          <defs>
-            <linearGradient id="spark-3" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stop-color="#7DF9FF"/>
-              <stop offset="1" stop-color="#FF4FD8"/>
-            </linearGradient>
-          </defs>
-          <polyline points="12.0,28.6 59.2,30.3 106.4,37.3 153.6,31.7 200.8,29.6 248.0,27.6" fill="none" stroke="rgba(125,249,255,.18)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="12.0,28.6 59.2,30.3 106.4,37.3 153.6,31.7 200.8,29.6 248.0,27.6" fill="none" stroke="url(#spark-3)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-
-        <div class="rank-stats">
-          <div><span>Return</span><b class="positive">0.39%</b></div>
-          <div><span>Equity</span><b>¥10,039,300</b></div>
-          <div><span>Win Rate</span><b>33.3%</b></div>
-          <div><span>Max DD</span><b>-1.95%</b></div>
-        </div>
-      </article>
-      
-      <article class="rank-row neon-panel rank-4 tone-amber">
-        <div class="rank-left">
-          <div class="place">#4</div>
-          <div class="rank-avatar-wrap">
+        <div class="trade-grid">
+          <div class="trade-tile open-tile">
+            <span>STRONGEST OPEN</span>
             
-            <img src="/assets/ai-arena/agents/contrarian_monk.png" alt="MATSU" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-            <div class="pixel-avatar avatar-pixel_monk avatar-fallback"><span></span></div>
+            <b>NO OPEN POSITION</b>
+            <em>Cash-only at latest close</em>
+            <strong>—</strong>
+            <p>No unrealised contributor in the current book.</p>
             
           </div>
-          <div class="agent-name">
-            <h2>MATSU</h2>
-            <p>Reversal / contrarian_reentry</p>
+
+          <div class="trade-tile best-tile">
+            <span>BEST TRADE</span>
+            
+            <b>6762.T</b>
+            <em>TDK</em>
+            <strong class="positive">
+              +8.85% / ¥127,750
+            </strong>
+            <p>take_profit / 2D</p>
+            
           </div>
-        </div>
 
-        <svg class="spark" viewBox="0 0 260 70" aria-hidden="true">
-          <defs>
-            <linearGradient id="spark-4" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stop-color="#7DF9FF"/>
-              <stop offset="1" stop-color="#FF4FD8"/>
-            </linearGradient>
-          </defs>
-          <polyline points="12.0,30.4 59.2,31.2 106.4,38.3 153.6,31.7 200.8,29.7 248.0,27.6" fill="none" stroke="rgba(125,249,255,.18)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="12.0,30.4 59.2,31.2 106.4,38.3 153.6,31.7 200.8,29.7 248.0,27.6" fill="none" stroke="url(#spark-4)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-
-        <div class="rank-stats">
-          <div><span>Return</span><b class="positive">0.38%</b></div>
-          <div><span>Equity</span><b>¥10,037,700</b></div>
-          <div><span>Win Rate</span><b>50.0%</b></div>
-          <div><span>Max DD</span><b>-3.61%</b></div>
+          <div class="trade-tile worst-tile">
+            <span>WORST TRADE</span>
+            
+            <b>6701.T</b>
+            <em>NEC</em>
+            <strong class="negative">
+              -3.90% / ¥-50,400
+            </strong>
+            <p>stop_loss / 1D</p>
+            
+          </div>
         </div>
       </article>
       
-      <article class="rank-row neon-panel rank-5 tone-cyan">
-        <div class="rank-left">
-          <div class="place">#5</div>
-          <div class="rank-avatar-wrap">
-            
-            <img src="/assets/ai-arena/agents/daily_striker.png" alt="KAKERU" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-            <div class="pixel-avatar avatar-pixel_warrior avatar-fallback"><span></span></div>
-            
+      <article class="rank-card neon-panel rank-3 tone-green">
+        <div class="rank-card-main">
+          <div class="rank-left">
+            <div class="place-block">
+              <div class="label-chip">CORE</div>
+              <div class="place">#3</div>
+            </div>
+            <div class="rank-avatar-wrap">
+              
+              <img src="/assets/ai-arena/agents/discovery_scout.png" alt="SAGURI" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+              <div class="pixel-avatar avatar-pixel_archer avatar-fallback"><span></span></div>
+              
+            </div>
+            <div class="agent-name">
+              <h2>SAGURI</h2>
+              <p>Scout / discovery_alpha</p>
+              <small>The edge is often where global investors have not looked yet.</small>
+            </div>
           </div>
-          <div class="agent-name">
-            <h2>KAKERU</h2>
-            <p>Daily / daily_v2_core</p>
+
+          <div class="rank-chart">
+            <svg class="spark" viewBox="0 0 320 92" role="img" aria-label="SAGURI real equity sparkline" preserveAspectRatio="none">
+              <line x1="10" y1="46" x2="310" y2="46" class="spark-zero" />
+              <polyline class="spark-shadow" points="10.0,63.2 15.1,63.2 20.2,63.2 25.3,63.2 30.3,63.2 35.4,63.2 40.5,63.2 45.6,63.2 50.7,63.2 55.8,63.2 60.8,63.2 65.9,63.2 71.0,63.2 76.1,63.2 81.2,63.2 86.3,63.2 91.4,63.2 96.4,63.2 101.5,63.2 106.6,63.2 111.7,63.2 116.8,63.2 121.9,63.2 126.9,63.2 132.0,63.2 137.1,63.2 142.2,63.2 147.3,63.2 152.4,63.2 157.5,63.2 162.5,63.2 167.6,63.2 172.7,63.2 177.8,63.2 182.9,63.2 188.0,63.2 193.1,63.2 198.1,63.2 203.2,63.2 208.3,63.2 213.4,63.2 218.5,63.2 223.6,63.2 228.6,63.2 233.7,63.2 238.8,63.2 243.9,63.2 249.0,63.2 254.1,63.2 259.2,63.2 264.2,63.2 269.3,63.2 274.4,63.2 279.5,76.3 284.6,10.0 289.7,82.0 294.7,60.2 299.8,44.9 304.9,48.9 310.0,48.9" />
+              <polyline class="spark-line tone-stroke-green" points="10.0,63.2 15.1,63.2 20.2,63.2 25.3,63.2 30.3,63.2 35.4,63.2 40.5,63.2 45.6,63.2 50.7,63.2 55.8,63.2 60.8,63.2 65.9,63.2 71.0,63.2 76.1,63.2 81.2,63.2 86.3,63.2 91.4,63.2 96.4,63.2 101.5,63.2 106.6,63.2 111.7,63.2 116.8,63.2 121.9,63.2 126.9,63.2 132.0,63.2 137.1,63.2 142.2,63.2 147.3,63.2 152.4,63.2 157.5,63.2 162.5,63.2 167.6,63.2 172.7,63.2 177.8,63.2 182.9,63.2 188.0,63.2 193.1,63.2 198.1,63.2 203.2,63.2 208.3,63.2 213.4,63.2 218.5,63.2 223.6,63.2 228.6,63.2 233.7,63.2 238.8,63.2 243.9,63.2 249.0,63.2 254.1,63.2 259.2,63.2 264.2,63.2 269.3,63.2 274.4,63.2 279.5,76.3 284.6,10.0 289.7,82.0 294.7,60.2 299.8,44.9 304.9,48.9 310.0,48.9" />
+            </svg>
+            <div class="spark-meta">
+              <span>60 points</span>
+              <b class="positive">10D +0.39 pts</b>
+            </div>
+          </div>
+
+          <div class="rank-stats">
+            <div><span>Return</span><b class="positive">0.39%</b></div>
+            <div><span>Equity</span><b>¥10,039,300</b></div>
+            <div><span>Win Rate</span><b>33.3%</b></div>
+            <div><span>Max DD</span><b>-1.95%</b></div>
+            <div><span>Open</span><b>1</b></div>
+            <div><span>Closed</span><b>3</b></div>
           </div>
         </div>
 
-        <svg class="spark" viewBox="0 0 260 70" aria-hidden="true">
-          <defs>
-            <linearGradient id="spark-5" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stop-color="#7DF9FF"/>
-              <stop offset="1" stop-color="#FF4FD8"/>
-            </linearGradient>
-          </defs>
-          <polyline points="12.0,32.2 59.2,32.1 106.4,37.4 153.6,33.3 200.8,31.7 248.0,29.9" fill="none" stroke="rgba(125,249,255,.18)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="12.0,32.2 59.2,32.1 106.4,37.4 153.6,33.3 200.8,31.7 248.0,29.9" fill="none" stroke="url(#spark-5)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <div class="trade-grid">
+          <div class="trade-tile open-tile">
+            <span>STRONGEST OPEN</span>
+            
+            <b>135A.T</b>
+            <em>VRAIN Solution</em>
+            <strong class="positive">
+              +3.76% / ¥32,000
+            </strong>
+            <p>SAGURI discovery_alpha score 0.66; breakout setup; relative strength; penalty drag</p>
+            
+          </div>
 
-        <div class="rank-stats">
-          <div><span>Return</span><b class="negative">-1.83%</b></div>
-          <div><span>Equity</span><b>¥9,817,000</b></div>
-          <div><span>Win Rate</span><b>0.0%</b></div>
-          <div><span>Max DD</span><b>-2.19%</b></div>
+          <div class="trade-tile best-tile">
+            <span>BEST TRADE</span>
+            
+            <b>3905.T</b>
+            <em>Data Section</em>
+            <strong class="positive">
+              +17.66% / ¥200,800
+            </strong>
+            <p>take_profit / 2D</p>
+            
+          </div>
+
+          <div class="trade-tile worst-tile">
+            <span>WORST TRADE</span>
+            
+            <b>3652.T</b>
+            <em>Digital Media Professionals</em>
+            <strong class="negative">
+              -10.14% / ¥-108,000
+            </strong>
+            <p>stop_loss / 1D</p>
+            
+          </div>
+        </div>
+      </article>
+      
+      <article class="rank-card neon-panel rank-4 tone-amber">
+        <div class="rank-card-main">
+          <div class="rank-left">
+            <div class="place-block">
+              <div class="label-chip">SHADOW</div>
+              <div class="place">#4</div>
+            </div>
+            <div class="rank-avatar-wrap">
+              
+              <img src="/assets/ai-arena/agents/contrarian_monk.png" alt="MATSU" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+              <div class="pixel-avatar avatar-pixel_monk avatar-fallback"><span></span></div>
+              
+            </div>
+            <div class="agent-name">
+              <h2>MATSU</h2>
+              <p>Reversal / contrarian_reentry</p>
+              <small>Controlled re-entry can beat obvious momentum when the crowd gets late.</small>
+            </div>
+          </div>
+
+          <div class="rank-chart">
+            <svg class="spark" viewBox="0 0 320 92" role="img" aria-label="MATSU real equity sparkline" preserveAspectRatio="none">
+              <line x1="10" y1="46" x2="310" y2="46" class="spark-zero" />
+              <polyline class="spark-shadow" points="10.0,44.9 15.1,44.9 20.2,44.9 25.3,44.9 30.3,44.9 35.4,44.9 40.5,44.9 45.6,44.9 50.7,44.9 55.8,44.9 60.8,44.9 65.9,44.9 71.0,44.9 76.1,44.9 81.2,44.9 86.3,44.9 91.4,44.9 96.4,44.9 101.5,44.9 106.6,44.9 111.7,44.9 116.8,44.9 121.9,44.9 126.9,44.9 132.0,44.9 137.1,44.9 142.2,44.9 147.3,44.9 152.4,44.9 157.5,44.9 162.5,44.9 167.6,44.9 172.7,44.9 177.8,44.9 182.9,44.9 188.0,44.9 193.1,44.9 198.1,44.9 203.2,44.9 208.3,44.9 213.4,44.9 218.5,44.9 223.6,44.9 228.6,44.9 233.7,44.9 238.8,44.9 243.9,44.9 249.0,44.9 254.1,44.9 259.2,44.9 264.2,44.9 269.3,44.9 274.4,44.9 279.5,10.0 284.6,40.1 289.7,82.0 294.7,55.5 299.8,37.5 304.9,37.5 310.0,37.5" />
+              <polyline class="spark-line tone-stroke-amber" points="10.0,44.9 15.1,44.9 20.2,44.9 25.3,44.9 30.3,44.9 35.4,44.9 40.5,44.9 45.6,44.9 50.7,44.9 55.8,44.9 60.8,44.9 65.9,44.9 71.0,44.9 76.1,44.9 81.2,44.9 86.3,44.9 91.4,44.9 96.4,44.9 101.5,44.9 106.6,44.9 111.7,44.9 116.8,44.9 121.9,44.9 126.9,44.9 132.0,44.9 137.1,44.9 142.2,44.9 147.3,44.9 152.4,44.9 157.5,44.9 162.5,44.9 167.6,44.9 172.7,44.9 177.8,44.9 182.9,44.9 188.0,44.9 193.1,44.9 198.1,44.9 203.2,44.9 208.3,44.9 213.4,44.9 218.5,44.9 223.6,44.9 228.6,44.9 233.7,44.9 238.8,44.9 243.9,44.9 249.0,44.9 254.1,44.9 259.2,44.9 264.2,44.9 269.3,44.9 274.4,44.9 279.5,10.0 284.6,40.1 289.7,82.0 294.7,55.5 299.8,37.5 304.9,37.5 310.0,37.5" />
+            </svg>
+            <div class="spark-meta">
+              <span>60 points</span>
+              <b class="positive">10D +0.38 pts</b>
+            </div>
+          </div>
+
+          <div class="rank-stats">
+            <div><span>Return</span><b class="positive">0.38%</b></div>
+            <div><span>Equity</span><b>¥10,037,700</b></div>
+            <div><span>Win Rate</span><b>50.0%</b></div>
+            <div><span>Max DD</span><b>-3.61%</b></div>
+            <div><span>Open</span><b>0</b></div>
+            <div><span>Closed</span><b>4</b></div>
+          </div>
+        </div>
+
+        <div class="trade-grid">
+          <div class="trade-tile open-tile">
+            <span>STRONGEST OPEN</span>
+            
+            <b>NO OPEN POSITION</b>
+            <em>Cash-only at latest close</em>
+            <strong>—</strong>
+            <p>No unrealised contributor in the current book.</p>
+            
+          </div>
+
+          <div class="trade-tile best-tile">
+            <span>BEST TRADE</span>
+            
+            <b>6762.T</b>
+            <em>TDK</em>
+            <strong class="positive">
+              +16.79% / ¥193,800
+            </strong>
+            <p>take_profit / 3D</p>
+            
+          </div>
+
+          <div class="trade-tile worst-tile">
+            <span>WORST TRADE</span>
+            
+            <b>9984.T</b>
+            <em>SoftBank Group</em>
+            <strong class="negative">
+              -7.46% / ¥-121,800
+            </strong>
+            <p>stop_loss / 3D</p>
+            
+          </div>
+        </div>
+      </article>
+      
+      <article class="rank-card neon-panel rank-5 tone-cyan">
+        <div class="rank-card-main">
+          <div class="rank-left">
+            <div class="place-block">
+              <div class="label-chip">LOW</div>
+              <div class="place">#5</div>
+            </div>
+            <div class="rank-avatar-wrap">
+              
+              <img src="/assets/ai-arena/agents/daily_striker.png" alt="KAKERU" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+              <div class="pixel-avatar avatar-pixel_warrior avatar-fallback"><span></span></div>
+              
+            </div>
+            <div class="agent-name">
+              <h2>KAKERU</h2>
+              <p>Daily / daily_v2_core</p>
+              <small>Daily event timing matters; price and volume reveal the first move.</small>
+            </div>
+          </div>
+
+          <div class="rank-chart">
+            <svg class="spark" viewBox="0 0 320 92" role="img" aria-label="KAKERU real equity sparkline" preserveAspectRatio="none">
+              <line x1="10" y1="46" x2="310" y2="46" class="spark-zero" />
+              <polyline class="spark-shadow" points="10.0,10.0 15.1,10.0 20.2,10.0 25.3,10.0 30.3,10.0 35.4,10.0 40.5,10.0 45.6,10.0 50.7,10.0 55.8,10.0 60.8,10.0 65.9,10.0 71.0,10.0 76.1,10.0 81.2,10.0 86.3,10.0 91.4,10.0 96.4,10.0 101.5,10.0 106.6,10.0 111.7,10.0 116.8,10.0 121.9,10.0 126.9,10.0 132.0,10.0 137.1,10.0 142.2,10.0 147.3,10.0 152.4,10.0 157.5,10.0 162.5,10.0 167.6,10.0 172.7,10.0 177.8,10.0 182.9,10.0 188.0,10.0 193.1,10.0 198.1,10.0 203.2,10.0 208.3,10.0 213.4,10.0 218.5,10.0 223.6,10.0 228.6,10.0 233.7,10.0 238.8,10.0 243.9,10.0 249.0,10.0 254.1,10.0 259.2,10.0 264.2,10.0 269.3,10.0 274.4,10.0 279.5,10.0 284.6,10.0 289.7,68.7 294.7,77.2 299.8,82.0 304.9,70.0 310.0,70.0" />
+              <polyline class="spark-line tone-stroke-cyan" points="10.0,10.0 15.1,10.0 20.2,10.0 25.3,10.0 30.3,10.0 35.4,10.0 40.5,10.0 45.6,10.0 50.7,10.0 55.8,10.0 60.8,10.0 65.9,10.0 71.0,10.0 76.1,10.0 81.2,10.0 86.3,10.0 91.4,10.0 96.4,10.0 101.5,10.0 106.6,10.0 111.7,10.0 116.8,10.0 121.9,10.0 126.9,10.0 132.0,10.0 137.1,10.0 142.2,10.0 147.3,10.0 152.4,10.0 157.5,10.0 162.5,10.0 167.6,10.0 172.7,10.0 177.8,10.0 182.9,10.0 188.0,10.0 193.1,10.0 198.1,10.0 203.2,10.0 208.3,10.0 213.4,10.0 218.5,10.0 223.6,10.0 228.6,10.0 233.7,10.0 238.8,10.0 243.9,10.0 249.0,10.0 254.1,10.0 259.2,10.0 264.2,10.0 269.3,10.0 274.4,10.0 279.5,10.0 284.6,10.0 289.7,68.7 294.7,77.2 299.8,82.0 304.9,70.0 310.0,70.0" />
+            </svg>
+            <div class="spark-meta">
+              <span>60 points</span>
+              <b class="negative">10D -1.83 pts</b>
+            </div>
+          </div>
+
+          <div class="rank-stats">
+            <div><span>Return</span><b class="negative">-1.83%</b></div>
+            <div><span>Equity</span><b>¥9,817,000</b></div>
+            <div><span>Win Rate</span><b>0.0%</b></div>
+            <div><span>Max DD</span><b>-2.19%</b></div>
+            <div><span>Open</span><b>0</b></div>
+            <div><span>Closed</span><b>2</b></div>
+          </div>
+        </div>
+
+        <div class="trade-grid">
+          <div class="trade-tile open-tile">
+            <span>STRONGEST OPEN</span>
+            
+            <b>NO OPEN POSITION</b>
+            <em>Cash-only at latest close</em>
+            <strong>—</strong>
+            <p>No unrealised contributor in the current book.</p>
+            
+          </div>
+
+          <div class="trade-tile best-tile">
+            <span>BEST TRADE</span>
+            
+            <b>6758.T</b>
+            <em>Sony Group</em>
+            <strong class="negative">
+              -2.12% / ¥-39,000
+            </strong>
+            <p>max_holding / 5D</p>
+            
+          </div>
+
+          <div class="trade-tile worst-tile">
+            <span>WORST TRADE</span>
+            
+            <b>3652.T</b>
+            <em>Digital Media Professionals</em>
+            <strong class="negative">
+              -10.14% / ¥-144,000
+            </strong>
+            <p>stop_loss / 1D</p>
+            
+          </div>
         </div>
       </article>
       
     </section>
 
-    <footer class="ranking-footer">Monthly JSON archives can be added after live behavior is validated.</footer>
+    <footer class="ranking-footer">
+      <p>Ranking uses simulation equity: cash + market value. Charts are rendered from site/data/japan/ai-arena/simulation/latest.json.</p>
+    </footer>
   </main>
 </body>
 </html>
