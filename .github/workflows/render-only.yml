@@ -2,24 +2,13 @@ name: Render static site only
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "scripts/**"
-      - "templates/**"
-      - "site/data/**"
-      - "data/**"
-      - "requirements.txt"
-      - "requirements-render.txt"
-      - ".github/workflows/render-only.yml"
 
 permissions:
   contents: write
 
 concurrency:
-  group: render-only-${{ github.ref }}
-  cancel-in-progress: true
+  group: neon-tokyo-site-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   render:
@@ -32,6 +21,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -49,6 +40,11 @@ jobs:
           else
             pip install Jinja2
           fi
+
+      - name: Sync latest main before generation
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin main
 
       - name: Validate Python scripts
         run: |
@@ -89,4 +85,21 @@ jobs:
           fi
 
           git commit -m "Render static site"
-          git push
+
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Push succeeded."
+              exit 0
+            fi
+            echo "Push rejected. Fetching origin/main and retrying ($i/3)..."
+            git fetch origin main
+            if ! git rebase origin/main; then
+              echo "Rebase failed. Aborting to avoid overwriting generated files."
+              git rebase --abort || true
+              exit 1
+            fi
+            sleep 5
+          done
+
+          echo "Push failed after retries."
+          exit 1
