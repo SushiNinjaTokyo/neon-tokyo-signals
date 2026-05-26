@@ -7,6 +7,12 @@
   <link rel="stylesheet" href="/assets/ai_arena_jp.css" />
 </head>
 <body>
+  {% set feed = arena.feed|default([], true) %}
+  {% set agents = arena.agents|default([], true) %}
+  {% set ranking = arena.ranking|default([], true) %}
+  {% set arena_range = arena.range|default({}, true) %}
+  {% set ai = arena.ai|default({}, true) %}
+  {% set daily_brief = arena.daily_brief|default({}, true) %}
   <main class="arena-shell">
     <header class="arena-hero pixel-frame">
       <nav class="arena-nav">
@@ -18,9 +24,9 @@
       <div class="eyebrow">NEON TOKYO AI ARENA</div>
       <h1>Five AI agents enter Tokyo.</h1>
       <div class="hero-meta">
-        <span>Season {{ arena.season or '—' }}</span>
-        <span>{{ arena.range.start_date if arena.range else '—' }} → {{ arena.range.end_date if arena.range else '—' }}</span>
-        <span>{{ arena.ai.model if arena.ai else 'model n/a' }}</span>
+        <span>Season {{ arena.season|default('—', true) }}</span>
+        <span>{{ arena_range.start_date|default('—', true) }} → {{ arena_range.end_date|default('—', true) }}</span>
+        <span>{{ ai.model|default('model n/a', true) }}</span>
       </div>
     </header>
 
@@ -30,9 +36,9 @@
           <p class="eyebrow">ARENA LOG</p>
           <h2>Live debate from simulated positions</h2>
         </div>
-        <div class="log-status">{{ 'AI' if arena.ai and arena.ai.enabled else 'FALLBACK' }} / {{ arena.ai.status if arena.ai else 'unknown' }}</div>
+        <div class="log-status">{{ 'AI' if ai.enabled else 'FALLBACK' }} / {{ ai.status|default('unknown', true) }}</div>
       </div>
-      <div id="arena-log" class="chat-list" data-feed='{{ arena.feed | tojson }}' data-agents='{{ arena.agents | tojson }}'></div>
+      <div id="arena-log" class="chat-list" data-feed='{{ feed | tojson }}' data-agents='{{ agents | tojson }}'></div>
     </section>
 
     <section class="agent-lab-showcase pixel-frame" aria-label="Agent profiles">
@@ -41,10 +47,10 @@
           <p class="eyebrow">AI PARTY PROFILES</p>
           <h2>Strategy operators</h2>
         </div>
-        <div class="lab-carousel-status"><span id="agent-showcase-index">01</span> / {{ '%02d'|format((arena.agents or [])|length) }}</div>
+        <div class="lab-carousel-status"><span id="agent-showcase-index">01</span> / {{ '%02d'|format(agents|length) }}</div>
       </div>
       <div id="agent-showcase" class="agent-showcase-track">
-        {% for agent in arena.agents or [] %}
+        {% for agent in agents %}
         <article class="agent-showcase-card tone-{{ agent.ui_tone or 'cyan' }}{% if loop.first %} is-active{% endif %}" data-agent-slide="{{ loop.index0 }}">
           <div class="showcase-avatar-shell">
             {% if agent.avatar_image %}
@@ -75,7 +81,7 @@
         {% endfor %}
       </div>
       <div class="agent-showcase-dots" aria-hidden="true">
-        {% for agent in arena.agents or [] %}
+        {% for agent in agents %}
         <span class="{% if loop.first %}is-active{% endif %}" data-agent-dot="{{ loop.index0 }}"></span>
         {% endfor %}
       </div>
@@ -83,15 +89,15 @@
 
     <section class="master-brief pixel-frame">
       <p class="eyebrow">MARKET MASTER</p>
-      <h2>{{ arena.daily_brief.title if arena.daily_brief else 'Arena simulation online' }}</h2>
-      <p>{{ arena.daily_brief.body if arena.daily_brief else '' }}</p>
-      {% if arena.daily_brief and arena.daily_brief.risk_note %}
-      <p class="risk-note">{{ arena.daily_brief.risk_note }}</p>
+      <h2>{{ daily_brief.title|default('Arena simulation online', true) }}</h2>
+      <p>{{ daily_brief.body|default('', true) }}</p>
+      {% if daily_brief.risk_note is defined and daily_brief.risk_note %}
+      <p class="risk-note">{{ daily_brief.risk_note }}</p>
       {% endif %}
     </section>
 
     <section class="agent-party">
-      {% for agent in arena.agents or [] %}
+      {% for agent in agents %}
       <article class="agent-card pixel-frame tone-{{ agent.ui_tone or 'cyan' }}">
         <div class="agent-top">
           <div class="avatar-shell">
@@ -132,13 +138,13 @@
         <a href="/japan/ai-arena/ranking/" class="command-link">OPEN RANKING</a>
       </div>
       <div class="rank-row-wrap">
-        {% for row in arena.ranking or [] %}
+        {% for row in ranking %}
         <div class="rank-pill"><b>#{{ row.rank }}</b><span>{{ row.name }}</span><em>{{ '%.2f'|format(row.return_pct or 0) }}%</em></div>
         {% endfor %}
       </div>
     </section>
 
-    <footer class="arena-footer">{{ arena.disclaimer }}</footer>
+    <footer class="arena-footer">{{ arena.disclaimer|default('AI Arena is a quantitative simulation and discussion game. Informational only. Not investment advice.', true) }}</footer>
   </main>
   <script src="/assets/ai_arena_jp.js"></script>
 </body>
