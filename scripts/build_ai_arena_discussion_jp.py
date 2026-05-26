@@ -69,6 +69,23 @@ BANNED_SUBSTRINGS = [
     "guidance",
 ]
 
+ROLEPLAY_PREFIX_PATTERNS = [
+    r"^\s*(KAKERU|SATORI|MAMORU|SAGURI|MATSU)\s+(here|speaking|chimes in|reflects|adds|concludes|agrees|acknowledges|suggests|emphasizes)\.?\s*",
+    r"^\s*(KAKERU|SATORI|MAMORU|SAGURI|MATSU)\s+here[,!]?\s*",
+    r"^\s*(KAKERU|SATORI|MAMORU|SAGURI|MATSU)\s*:\s*",
+]
+
+WEAK_GENERIC_SENTENCES = [
+    "Momentum is key!",
+    "The market is dynamic.",
+    "Let's keep an eye on how the market reacts in the coming days.",
+    "Let’s keep an eye on how the market reacts in the coming days.",
+    "Proceed with caution.",
+    "Patience is key.",
+    "Optionality is key.",
+    "It is worth exploring further.",
+]
+
 
 def now_jst() -> datetime:
     return datetime.now(JST)
@@ -133,10 +150,21 @@ def fmt_pct(x: Any) -> str:
 
 
 def safe_text(x: Any, limit: int = 300) -> str:
+    """Normalize AI output without sterilizing the discussion.
+
+    The LAB should sound like agents speaking naturally, not like stage
+    directions.  We therefore strip roleplay prefixes such as "KAKERU here"
+    while preserving the actual trade/risk content.
+    """
     s = str(x or "").strip()
     s = re.sub(r"\s+", " ", s)
+    for pat in ROLEPLAY_PREFIX_PATTERNS:
+        s = re.sub(pat, "", s, flags=re.I)
+    for weak in WEAK_GENERIC_SENTENCES:
+        s = re.sub(re.escape(weak), "", s, flags=re.I)
     for banned in BANNED_SUBSTRINGS:
         s = re.sub(re.escape(banned), "", s, flags=re.I)
+    s = re.sub(r"\s+", " ", s).strip(" -—,.:")
     return s[:limit].strip()
 
 
@@ -287,6 +315,30 @@ def build_context(sim: dict[str, Any], positions: dict[str, Any], ranking: dict[
         for theme, rows in sorted(theme_map.items(), key=lambda kv: len(kv[1]), reverse=True)
     ]
 
+    symbol_catalog: dict[str, str] = {}
+    def remember_symbol(row: dict[str, Any]) -> None:
+        sym = row.get("symbol") or row.get("linked_symbol")
+        name = row.get("name") or row.get("company_name") or row.get("linked_name")
+        if sym and name and not symbol_catalog.get(str(sym)):
+            symbol_catalog[str(sym)] = str(name)
+
+    for agent in sim.get("agents", []) or []:
+        for field in ("open_positions", "closed_trades", "recent_actions", "actions"):
+            for row in agent.get(field, []) or []:
+                if isinstance(row, dict):
+                    remember_symbol(row)
+    for agent in positions_agents(positions):
+        for field in ("open_positions", "closed_trades", "recent_actions", "actions"):
+            for row in agent.get(field, []) or []:
+                if isinstance(row, dict):
+                    remember_symbol(row)
+    for event in events.get("events", []) or []:
+        if isinstance(event, dict):
+            remember_symbol(event)
+            action = event.get("action")
+            if isinstance(action, dict):
+                remember_symbol(action)
+
     return {
         "range": sim.get("range"),
         "season": sim.get("season"),
@@ -298,6 +350,7 @@ def build_context(sim: dict[str, Any], positions: dict[str, Any], ranking: dict[
         "positions": positions_agents(positions),
         "top_open_positions": sorted(top_positions, key=lambda p: to_float(p.get("unrealized_return_pct")), reverse=True)[:12],
         "theme_exposure": theme_exposure[:8],
+        "symbol_catalog": symbol_catalog,
         "events": events.get("events") or [],
         "memory": memory.get("agents") or [],
         "news_rule": "No external news is supplied. Use only supplied simulation/ranking/position facts.",
@@ -439,7 +492,7 @@ def build_thread_prompt(event: dict[str, Any], context: dict[str, Any], config: 
 
 
 def symbol_name_map_from_context(context: dict[str, Any]) -> dict[str, str]:
-    out: dict[str, str] = {}
+    out: dict[str, str] = dict(context.get("symbol_catalog") or {})
     for p in context.get("top_open_positions", []) or []:
         if p.get("symbol") and p.get("name"):
             out[str(p["symbol"])] = str(p["name"])
@@ -670,13 +723,17 @@ Output valid JSON:
 Message rules:
 - Generate the requested number of messages unless the thread is Market Master only.
 - Do not over-constrain the conversation: short reactions, irony, and memory references are allowed.
-- At least one concrete fact must appear in the thread: rank, return, drawdown, position, symbol, holding days, cash, theme, or event trigger.
+- Make it sound like agents talking to each other, not status narration.
+- Never start a line with phrases like "KAKERU here", "SATORI speaking", "MAMORU emphasizes", "SAGURI chimes in", or "MATSU concludes". The speaker name is already shown in the UI.
+- Each thread should feel situated: refer to the actual action, rank, return, drawdown, position, symbol, holding days, cash, theme, or event trigger when it matters.
+- At least one concrete fact must appear in the thread. Do not fill space with generic market talk.
 - Every 2-3 messages should add a new angle: risk, time horizon, position sizing, memory, crowding, or next condition.
 - Agent voices must differ, but analysis comes before catchphrases.
 - At most one catchphrase in the thread.
 - Memory should shape tone naturally. Do not force every agent to mention yesterday.
 - No external news, macro/geopolitics, earnings, fundamentals, guidance, target prices, or recommendations.
 - Do not use buy/sell/recommendation language.
+- Avoid generic filler: "monitor closely", "keep an eye", "market is dynamic", "potential upside", "gaining traction", "patience is key".
 - Keep each body under 260 characters.
 """
     result = call_openai_json(model, system, prompt, int(os.getenv("OPENAI_MAX_OUTPUT_TOKENS", "7000")))
@@ -689,6 +746,7 @@ Message rules:
         return fallback_thread(event, context, config, memory)
 
     name_by_id, avatar_by_id = agent_identity_maps(config)
+    symbol_names = symbol_name_map_from_context(context)
     allowed_agents = set(name_by_id.keys())
     allowed_symbols = {p.get("symbol") for p in context.get("top_open_positions", []) if p.get("symbol")}
     if event.get("symbol"):
@@ -1065,6 +1123,8 @@ def build_payload(config: dict[str, Any], sim: dict[str, Any], positions: dict[s
                 "class": a.get("class"),
                 "selection_profile": a.get("selection_profile"),
                 "style_label": a.get("style_label"),
+                "voice": (agent_by_id(config).get(a.get("agent_id")) or {}).get("voice", {}),
+                "personality": (agent_by_id(config).get(a.get("agent_id")) or {}).get("personality"),
                 "ui_tone": a.get("ui_tone"),
                 "avatar_style": a.get("avatar_style"),
                 "avatar_image": a.get("avatar_image"),
