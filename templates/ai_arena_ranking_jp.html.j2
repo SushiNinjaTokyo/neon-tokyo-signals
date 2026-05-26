@@ -26,18 +26,20 @@
         <p class="hero-sub">A live Tokyo-equity leaderboard ranked by total portfolio return: realised P/L plus current unrealised P/L.</p>
         <div class="hero-kpis" aria-label="Season summary">
           <div><span>Range</span><b>{{ ranking.range.start_date if ranking.range else '—' }} → {{ ranking.range.end_date if ranking.range else '—' }}</b></div>
-          <div><span>Leader Spread</span><b>{{ '%.2f'|format(ranking.return_spread_pct or 0) }} pts</b></div>
+          <div><span>Leader Gap</span><b>{{ '%.2f'|format(ranking.return_spread_pct or 0) }}%</b></div>
           <div><span>Agents</span><b>{{ ranking.agents|length }}</b></div>
         </div>
       </div>
 
       {% if ranking.champion %}
       <aside class="champion-card tone-{{ ranking.champion.ui_tone }}" aria-label="Current champion">
-        <div class="champion-ribbon rank-crown rank-crown--{{ ranking.champion.podium_class }}">
-          {% if ranking.champion.podium_tier == 'crown' %}<span class="crown-shape" aria-hidden="true"></span>{% endif %}
-          <span>{{ ranking.champion.podium_label }}</span>
+        <div class="champion-topline">
+          <p class="eyebrow">CURRENT CHAMPION</p>
+          <div class="champion-ribbon rank-crown rank-crown--{{ ranking.champion.podium_class }}">
+            {% if ranking.champion.podium_tier == 'crown' %}<span class="crown-shape" aria-hidden="true"></span>{% endif %}
+            <span>{{ ranking.champion.podium_label }}</span>
+          </div>
         </div>
-        <p class="eyebrow">CURRENT CHAMPION</p>
         <div class="champion-avatar-wrap">
           {% if ranking.champion.avatar_image %}
           <img src="{{ ranking.champion.avatar_image }}" alt="{{ ranking.champion.name }}" class="champion-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
@@ -203,9 +205,15 @@
               <polyline class="spark-bolt tone-stroke-{{ a.ui_tone }}" points="{{ a.spark_points }}" />
             </svg>
             <div class="spark-meta">
-              <span>{{ a.equity_curve_count }} points</span>
-              <b class="{{ a.recent_momentum_class }}">10D {{ '%+.2f'|format(a.recent_momentum_pct or 0) }} pts</b>
+              <span>{{ a.curve_sessions_label }}</span>
+              <b class="{{ a.recent_momentum_class }}">10D {{ a.recent_momentum_display }}</b>
             </div>
+          </div>
+
+          <div class="perf-strip" aria-label="{{ a.name }} period gain versus initial capital">
+            {% for w in a.performance_windows or [] %}
+            <div class="perf-chip {{ w.class }}"><span>{{ w.label }}</span><b>{{ w.display }}</b></div>
+            {% endfor %}
           </div>
 
           <div class="rank-stats">
@@ -222,7 +230,7 @@
 
         <div class="trade-grid">
           <div class="trade-tile open-tile">
-            <span>STRONGEST OPEN</span>
+            <span>{{ a.open_position_label }}</span>
             {% if a.strongest_open_position %}
             <b>{{ a.strongest_open_position.symbol }}</b>
             <em>{{ a.strongest_open_position.name }}</em>
@@ -239,7 +247,7 @@
           </div>
 
           <div class="trade-tile best-tile">
-            <span>BEST TRADE</span>
+            <span>{{ a.best_trade_label }}</span>
             {% if a.best_trade %}
             <b>{{ a.best_trade.symbol }}</b>
             <em>{{ a.best_trade.name }}</em>
@@ -256,7 +264,7 @@
           </div>
 
           <div class="trade-tile worst-tile">
-            <span>WORST TRADE</span>
+            <span>{{ a.worst_trade_label }}</span>
             {% if a.worst_trade %}
             <b>{{ a.worst_trade.symbol }}</b>
             <em>{{ a.worst_trade.name }}</em>
@@ -277,7 +285,7 @@
     </section>
 
     <footer class="ranking-footer">
-      <p>Ranking uses total portfolio equity: cash + market value. Realized and unrealized P/L are shown separately for transparency.</p>
+      <p>Ranking uses total portfolio equity: cash + market value. Realized and unrealized P/L are shown separately for transparency. 1W / 1M / 3M / 6M show period gain or loss measured against initial capital.</p>
     </footer>
   </main>
 </body>
