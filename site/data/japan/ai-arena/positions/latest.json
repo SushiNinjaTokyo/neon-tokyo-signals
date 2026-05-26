@@ -1,10 +1,10 @@
 {
   "schema_version": "neon_tokyo_ai_arena_positions_v1",
-  "generated_at": "2026-05-26T17:42:10+09:00",
+  "generated_at": "2026-05-27T07:56:26+09:00",
   "range": {
-    "start_date": "2025-05-01",
-    "end_date": "2026-05-25",
-    "trading_days": 258
+    "start_date": "2026-02-25",
+    "end_date": "2026-05-26",
+    "trading_days": 60
   },
   "season": "2026-05",
   "agents": [
@@ -23,69 +23,34 @@
         "class": "Daily",
         "screening_profile": "daily_v2_core",
         "initial_capital_jpy": 10000000.0,
-        "cash_jpy": 10596446.0,
-        "market_value_jpy": 2518600.0,
-        "portfolio_equity_jpy": 13115046.0,
-        "return_pct": 31.1505,
-        "max_drawdown_pct": -15.2826,
-        "closed_trades": 255,
-        "win_rate_pct": 54.51,
-        "open_positions": 1,
+        "cash_jpy": 8623067.0,
+        "market_value_jpy": 0,
+        "portfolio_equity_jpy": 8623067.0,
+        "return_pct": -13.7693,
+        "max_drawdown_pct": -20.9448,
+        "closed_trades": 45,
+        "win_rate_pct": 37.78,
+        "open_positions": 0,
         "ui_tone": "cyan",
         "avatar_style": "pixel_warrior",
         "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
-        "rank": 3
+        "rank": 5
       },
-      "open_positions": [
-        {
-          "agent_id": "daily_striker",
-          "symbol": "6758.T",
-          "name": "Sony Group",
-          "theme": "Semiconductors Gaming and Entertainment",
-          "entry_date": "2026-05-20",
-          "entry_price": 3676.0,
-          "current_date": "2026-05-25",
-          "current_price": 3598.0,
-          "shares": 700,
-          "market_value_jpy": 2518600.0,
-          "unrealized_return_pct": -2.1219,
-          "unrealized_pnl_jpy": -54600.0,
-          "holding_days": 4,
-          "agent_score": 0.6093,
-          "entry_reason": "KAKERU daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation"
-        }
-      ],
+      "open_positions": [],
       "recent_actions": [
         {
-          "date": "2026-04-09",
-          "action": "entry",
-          "symbol": "8035.T",
-          "price": 42830.0,
-          "shares": 100,
-          "reason": "KAKERU daily_v2_core score 0.74; RVOL 1.38x; compression release; breakout setup; relative strength; abnormal accumulation; favored relative strength; favored compression breakout; favored volume compression"
-        },
-        {
-          "date": "2026-04-10",
-          "action": "exit",
-          "symbol": "6981.T",
-          "price": 4146.0,
-          "shares": 200,
-          "reason": "max_holding"
-        },
-        {
           "date": "2026-04-13",
-          "action": "entry",
-          "symbol": "6762.T",
-          "price": 2266.0,
-          "shares": 200,
-          "reason": "KAKERU daily_v2_core score 0.76; RVOL 1.32x; compression release; breakout setup; relative strength; favored relative strength; favored compression breakout; favored volume compression"
+          "action": "skip_entry",
+          "symbol": "8035.T",
+          "price": 43370.0,
+          "reason": "insufficient_cash_for_minimum_lot"
         },
         {
           "date": "2026-04-13",
           "action": "exit",
           "symbol": "4425.T",
           "price": 2309.0,
-          "shares": 600,
+          "shares": 300,
           "reason": "max_holding"
         },
         {
@@ -97,11 +62,27 @@
         },
         {
           "date": "2026-04-14",
+          "action": "entry",
+          "symbol": "6981.T",
+          "price": 4208.0,
+          "shares": 100,
+          "reason": "KAKERU daily_v2_core score 0.67; RVOL 0.96x; breakout setup; relative strength; abnormal accumulation; volume breakout risk; favored relative strength"
+        },
+        {
+          "date": "2026-04-14",
           "action": "exit",
           "symbol": "6503.T",
           "price": 5859.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "max_holding"
+        },
+        {
+          "date": "2026-04-14",
+          "action": "exit",
+          "symbol": "5803.T",
+          "price": 5935.0,
+          "shares": 100,
+          "reason": "take_profit"
         },
         {
           "date": "2026-04-15",
@@ -128,35 +109,27 @@
           "reason": "max_holding"
         },
         {
-          "date": "2026-04-15",
-          "action": "exit",
-          "symbol": "8035.T",
-          "price": 43500.0,
-          "shares": 100,
-          "reason": "max_holding"
-        },
-        {
-          "date": "2026-04-16",
-          "action": "entry",
-          "symbol": "6981.T",
-          "price": 4570.0,
-          "shares": 400,
-          "reason": "KAKERU daily_v2_core score 0.77; RVOL 1.66x; compression release; breakout setup; relative strength; favored relative strength; favored compression breakout; favored volume compression"
-        },
-        {
           "date": "2026-04-16",
           "action": "entry",
           "symbol": "6501.T",
           "price": 5210.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "KAKERU daily_v2_core score 0.75; RVOL 1.70x; compression release; breakout setup; relative strength; abnormal accumulation; favored relative strength; favored compression breakout; favored volume compression"
         },
         {
           "date": "2026-04-16",
-          "action": "exit",
-          "symbol": "6762.T",
-          "price": 2540.0,
+          "action": "entry",
+          "symbol": "6701.T",
+          "price": 4410.0,
           "shares": 200,
+          "reason": "KAKERU daily_v2_core score 0.71; RVOL 1.84x; compression release; breakout setup; relative strength; favored relative strength; favored compression breakout; favored volume compression"
+        },
+        {
+          "date": "2026-04-16",
+          "action": "exit",
+          "symbol": "6981.T",
+          "price": 4792.0,
+          "shares": 100,
           "reason": "take_profit"
         },
         {
@@ -164,7 +137,7 @@
           "action": "entry",
           "symbol": "6762.T",
           "price": 2527.5,
-          "shares": 500,
+          "shares": 300,
           "reason": "KAKERU daily_v2_core score 0.81; RVOL 2.07x; compression release; breakout setup; relative strength; favored relative strength; favored compression breakout; favored volume compression"
         },
         {
@@ -188,7 +161,7 @@
           "action": "entry",
           "symbol": "4425.T",
           "price": 2767.0,
-          "shares": 600,
+          "shares": 400,
           "reason": "KAKERU daily_v2_core score 0.75; RVOL 2.14x; compression release; breakout setup; relative strength; favored compression breakout; favored volume compression"
         },
         {
@@ -202,16 +175,16 @@
         {
           "date": "2026-04-22",
           "action": "exit",
-          "symbol": "6981.T",
-          "price": 4911.0,
-          "shares": 400,
+          "symbol": "6501.T",
+          "price": 5034.0,
+          "shares": 100,
           "reason": "max_holding"
         },
         {
           "date": "2026-04-22",
           "action": "exit",
-          "symbol": "6501.T",
-          "price": 5034.0,
+          "symbol": "6701.T",
+          "price": 4524.0,
           "shares": 200,
           "reason": "max_holding"
         },
@@ -220,7 +193,7 @@
           "action": "entry",
           "symbol": "6701.T",
           "price": 4416.0,
-          "shares": 400,
+          "shares": 200,
           "reason": "KAKERU daily_v2_core score 0.69; RVOL 1.00x; compression release; breakout setup; relative strength; abnormal accumulation; favored relative strength; favored compression breakout; favored volume compression"
         },
         {
@@ -236,7 +209,7 @@
           "action": "exit",
           "symbol": "6762.T",
           "price": 2662.0,
-          "shares": 500,
+          "shares": 300,
           "reason": "max_holding"
         },
         {
@@ -244,7 +217,7 @@
           "action": "exit",
           "symbol": "4425.T",
           "price": 2587.0,
-          "shares": 600,
+          "shares": 400,
           "reason": "stop_loss"
         },
         {
@@ -268,7 +241,7 @@
           "action": "exit",
           "symbol": "6701.T",
           "price": 4101.0,
-          "shares": 400,
+          "shares": 200,
           "reason": "stop_loss"
         },
         {
@@ -276,7 +249,7 @@
           "action": "entry",
           "symbol": "6758.T",
           "price": 3676.0,
-          "shares": 700,
+          "shares": 400,
           "reason": "KAKERU daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation"
         },
         {
@@ -284,7 +257,7 @@
           "action": "entry",
           "symbol": "3652.T",
           "price": 3550.0,
-          "shares": 600,
+          "shares": 400,
           "reason": "KAKERU daily_v2_core score 0.57; relative strength; no daily confirmation; penalty drag"
         },
         {
@@ -292,8 +265,16 @@
           "action": "exit",
           "symbol": "3652.T",
           "price": 3190.0,
-          "shares": 600,
+          "shares": 400,
           "reason": "stop_loss"
+        },
+        {
+          "date": "2026-05-26",
+          "action": "exit",
+          "symbol": "6758.T",
+          "price": 3598.0,
+          "shares": 400,
+          "reason": "max_holding"
         }
       ]
     },
@@ -312,13 +293,13 @@
         "class": "Weekly",
         "screening_profile": "weekly_stage2",
         "initial_capital_jpy": 10000000.0,
-        "cash_jpy": 10854050.0,
-        "market_value_jpy": 6982000.0,
-        "portfolio_equity_jpy": 17836050.0,
-        "return_pct": 78.3605,
-        "max_drawdown_pct": -18.104,
-        "closed_trades": 107,
-        "win_rate_pct": 61.68,
+        "cash_jpy": 6348600.0,
+        "market_value_jpy": 6100000.0,
+        "portfolio_equity_jpy": 12448600.0,
+        "return_pct": 24.486,
+        "max_drawdown_pct": -10.4367,
+        "closed_trades": 28,
+        "win_rate_pct": 53.57,
         "open_positions": 2,
         "ui_tone": "violet",
         "avatar_style": "pixel_mage",
@@ -333,13 +314,13 @@
           "theme": "Manufacturing AI and Visual Inspection",
           "entry_date": "2026-05-18",
           "entry_price": 4210.0,
-          "current_date": "2026-05-25",
+          "current_date": "2026-05-26",
           "current_price": 4410.0,
-          "shares": 400,
-          "market_value_jpy": 1764000.0,
+          "shares": 200,
+          "market_value_jpy": 882000.0,
           "unrealized_return_pct": 4.7506,
-          "unrealized_pnl_jpy": 80000.0,
-          "holding_days": 6,
+          "unrealized_pnl_jpy": 40000.0,
+          "holding_days": 7,
           "agent_score": 0.6331,
           "entry_reason": "SATORI weekly_stage2 score 0.63; relative strength"
         },
@@ -350,13 +331,13 @@
           "theme": "Semiconductor Equipment",
           "entry_date": "2026-05-20",
           "entry_price": 46700.0,
-          "current_date": "2026-05-25",
+          "current_date": "2026-05-26",
           "current_price": 52180.0,
           "shares": 100,
           "market_value_jpy": 5218000.0,
           "unrealized_return_pct": 11.7345,
           "unrealized_pnl_jpy": 548000.0,
-          "holding_days": 4,
+          "holding_days": 5,
           "agent_score": 0.611,
           "entry_reason": "SATORI weekly_stage2 score 0.61; no daily confirmation"
         }
@@ -365,17 +346,9 @@
         {
           "date": "2026-03-31",
           "action": "exit",
-          "symbol": "6920.T",
-          "price": 33350.0,
-          "shares": 100,
-          "reason": "max_holding"
-        },
-        {
-          "date": "2026-03-31",
-          "action": "exit",
           "symbol": "6501.T",
           "price": 4464.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "stop_loss"
         },
         {
@@ -383,7 +356,7 @@
           "action": "exit",
           "symbol": "6503.T",
           "price": 4988.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "stop_loss"
         },
         {
@@ -397,33 +370,25 @@
         {
           "date": "2026-04-01",
           "action": "entry",
-          "symbol": "9984.T",
-          "price": 3835.0,
-          "shares": 500,
-          "reason": "SATORI weekly_stage2 score 0.59; relative strength"
+          "symbol": "8035.T",
+          "price": 38630.0,
+          "shares": 100,
+          "reason": "SATORI weekly_stage2 score 0.55; relative strength"
         },
         {
           "date": "2026-04-02",
           "action": "entry",
           "symbol": "6503.T",
           "price": 5426.0,
-          "shares": 300,
+          "shares": 100,
           "reason": "SATORI weekly_stage2 score 0.60; RVOL 1.36x; relative strength; abnormal accumulation"
-        },
-        {
-          "date": "2026-04-02",
-          "action": "entry",
-          "symbol": "7012.T",
-          "price": 3238.0,
-          "shares": 400,
-          "reason": "SATORI weekly_stage2 score 0.60; RVOL 0.88x; relative strength; abnormal accumulation; favored relative strength"
         },
         {
           "date": "2026-04-08",
           "action": "exit",
           "symbol": "5803.T",
           "price": 4876.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "max_holding"
         },
         {
@@ -431,7 +396,7 @@
           "action": "entry",
           "symbol": "5803.T",
           "price": 4806.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "SATORI weekly_stage2 score 0.72; RVOL 1.00x; compression release; breakout setup; relative strength; abnormal accumulation; favored relative strength; favored compression breakout; favored volume compression"
         },
         {
@@ -455,7 +420,7 @@
           "action": "exit",
           "symbol": "5803.T",
           "price": 5698.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "take_profit"
         },
         {
@@ -463,39 +428,47 @@
           "action": "entry",
           "symbol": "5803.T",
           "price": 5947.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "SATORI weekly_stage2 score 0.76; compression release; breakout setup; relative strength"
+        },
+        {
+          "date": "2026-04-14",
+          "action": "exit",
+          "symbol": "9984.T",
+          "price": 4242.0,
+          "shares": 200,
+          "reason": "take_profit"
+        },
+        {
+          "date": "2026-04-15",
+          "action": "entry",
+          "symbol": "9984.T",
+          "price": 4405.0,
+          "shares": 100,
+          "reason": "SATORI weekly_stage2 score 0.79; RVOL 1.93x; compression release; breakout setup; relative strength; favored relative strength; favored compression breakout; favored volume compression"
         },
         {
           "date": "2026-04-16",
           "action": "exit",
-          "symbol": "9984.T",
-          "price": 4672.0,
-          "shares": 500,
+          "symbol": "8035.T",
+          "price": 45820.0,
+          "shares": 100,
           "reason": "take_profit"
         },
         {
           "date": "2026-04-17",
           "action": "entry",
-          "symbol": "9984.T",
-          "price": 4640.0,
+          "symbol": "135A.T",
+          "price": 3435.0,
           "shares": 300,
-          "reason": "SATORI weekly_stage2 score 0.81; RVOL 1.75x; compression release; breakout setup; relative strength; favored relative strength; favored compression breakout; favored volume compression"
+          "reason": "SATORI weekly_stage2 score 0.75; RVOL 6.05x; compression release; breakout setup; relative strength; volume noise; penalty drag"
         },
         {
           "date": "2026-04-22",
           "action": "exit",
           "symbol": "6503.T",
           "price": 5935.0,
-          "shares": 300,
-          "reason": "max_holding"
-        },
-        {
-          "date": "2026-04-22",
-          "action": "exit",
-          "symbol": "7012.T",
-          "price": 3101.0,
-          "shares": 400,
+          "shares": 100,
           "reason": "max_holding"
         },
         {
@@ -503,7 +476,7 @@
           "action": "exit",
           "symbol": "9984.T",
           "price": 5620.0,
-          "shares": 300,
+          "shares": 100,
           "reason": "take_profit"
         },
         {
@@ -511,7 +484,7 @@
           "action": "entry",
           "symbol": "9984.T",
           "price": 6097.0,
-          "shares": 300,
+          "shares": 100,
           "reason": "SATORI weekly_stage2 score 0.87; RVOL 2.42x; compression release; breakout setup; relative strength; favored relative strength; favored compression breakout; favored volume compression; penalty drag"
         },
         {
@@ -527,7 +500,7 @@
           "action": "exit",
           "symbol": "9984.T",
           "price": 5268.0,
-          "shares": 300,
+          "shares": 100,
           "reason": "stop_loss"
         },
         {
@@ -543,15 +516,23 @@
           "action": "exit",
           "symbol": "5803.T",
           "price": 6582.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "max_holding"
+        },
+        {
+          "date": "2026-05-11",
+          "action": "exit",
+          "symbol": "135A.T",
+          "price": 4190.0,
+          "shares": 300,
+          "reason": "take_profit"
         },
         {
           "date": "2026-05-18",
           "action": "entry",
           "symbol": "9984.T",
           "price": 5445.0,
-          "shares": 400,
+          "shares": 200,
           "reason": "SATORI weekly_stage2 score 0.68; relative strength"
         },
         {
@@ -559,7 +540,7 @@
           "action": "entry",
           "symbol": "135A.T",
           "price": 4210.0,
-          "shares": 400,
+          "shares": 200,
           "reason": "SATORI weekly_stage2 score 0.63; relative strength"
         },
         {
@@ -575,7 +556,7 @@
           "action": "entry",
           "symbol": "3652.T",
           "price": 3550.0,
-          "shares": 700,
+          "shares": 500,
           "reason": "SATORI weekly_stage2 score 0.71; relative strength; no daily confirmation; penalty drag"
         },
         {
@@ -591,7 +572,7 @@
           "action": "exit",
           "symbol": "3652.T",
           "price": 3190.0,
-          "shares": 700,
+          "shares": 500,
           "reason": "stop_loss"
         },
         {
@@ -599,7 +580,7 @@
           "action": "exit",
           "symbol": "9984.T",
           "price": 6757.0,
-          "shares": 400,
+          "shares": 200,
           "reason": "take_profit"
         }
       ]
@@ -619,13 +600,13 @@
         "class": "Defender",
         "screening_profile": "risk_defender",
         "initial_capital_jpy": 10000000.0,
-        "cash_jpy": 12458400.0,
+        "cash_jpy": 9963333.0,
         "market_value_jpy": 0,
-        "portfolio_equity_jpy": 12458400.0,
-        "return_pct": 24.584,
-        "max_drawdown_pct": -14.8336,
-        "closed_trades": 227,
-        "win_rate_pct": 49.78,
+        "portfolio_equity_jpy": 9963333.0,
+        "return_pct": -0.3667,
+        "max_drawdown_pct": -12.2374,
+        "closed_trades": 46,
+        "win_rate_pct": 30.43,
         "open_positions": 0,
         "ui_tone": "blue",
         "avatar_style": "pixel_shield",
@@ -635,19 +616,11 @@
       "open_positions": [],
       "recent_actions": [
         {
-          "date": "2026-04-08",
-          "action": "exit",
-          "symbol": "6758.T",
-          "price": 3388.0,
-          "shares": 300,
-          "reason": "max_holding"
-        },
-        {
           "date": "2026-04-09",
           "action": "entry",
           "symbol": "5803.T",
           "price": 4806.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "MAMORU risk_defender score 0.84; RVOL 1.00x; compression release; breakout setup; relative strength; abnormal accumulation; favored relative strength; favored compression breakout; favored volume compression"
         },
         {
@@ -655,7 +628,7 @@
           "action": "exit",
           "symbol": "7011.T",
           "price": 4745.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "max_holding"
         },
         {
@@ -671,7 +644,7 @@
           "action": "exit",
           "symbol": "6981.T",
           "price": 4146.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "take_profit"
         },
         {
@@ -679,7 +652,7 @@
           "action": "exit",
           "symbol": "5803.T",
           "price": 5630.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "take_profit"
         },
         {
@@ -687,7 +660,7 @@
           "action": "entry",
           "symbol": "5803.T",
           "price": 5914.0,
-          "shares": 300,
+          "shares": 200,
           "reason": "MAMORU risk_defender score 0.87; RVOL 1.34x; compression release; breakout setup; relative strength; favored relative strength; favored compression breakout; favored volume compression"
         },
         {
@@ -703,16 +676,15 @@
           "action": "exit",
           "symbol": "5803.T",
           "price": 5698.0,
-          "shares": 300,
+          "shares": 200,
           "reason": "stop_loss"
         },
         {
           "date": "2026-04-14",
-          "action": "entry",
+          "action": "skip_entry",
           "symbol": "6861.T",
           "price": 63650.0,
-          "shares": 100,
-          "reason": "MAMORU risk_defender score 0.83; RVOL 1.51x; compression release; breakout setup; relative strength; abnormal accumulation; favored relative strength; favored compression breakout; favored volume compression"
+          "reason": "insufficient_cash_for_minimum_lot"
         },
         {
           "date": "2026-04-14",
@@ -732,6 +704,14 @@
         },
         {
           "date": "2026-04-15",
+          "action": "entry",
+          "symbol": "6981.T",
+          "price": 4485.0,
+          "shares": 100,
+          "reason": "MAMORU risk_defender score 0.85; RVOL 1.16x; compression release; breakout setup; relative strength; favored relative strength; favored compression breakout; favored volume compression"
+        },
+        {
+          "date": "2026-04-15",
           "action": "exit",
           "symbol": "5803.T",
           "price": 5683.0,
@@ -741,10 +721,10 @@
         {
           "date": "2026-04-16",
           "action": "entry",
-          "symbol": "6981.T",
-          "price": 4570.0,
+          "symbol": "6501.T",
+          "price": 5210.0,
           "shares": 100,
-          "reason": "MAMORU risk_defender score 0.87; RVOL 1.66x; compression release; breakout setup; relative strength; favored relative strength; favored compression breakout; favored volume compression"
+          "reason": "MAMORU risk_defender score 0.84; RVOL 1.70x; compression release; breakout setup; relative strength; abnormal accumulation; favored relative strength; favored compression breakout; favored volume compression"
         },
         {
           "date": "2026-04-20",
@@ -767,7 +747,7 @@
           "action": "entry",
           "symbol": "9984.T",
           "price": 4945.0,
-          "shares": 100,
+          "shares": 200,
           "reason": "MAMORU risk_defender score 0.87; RVOL 1.08x; breakout setup; relative strength; favored relative strength"
         },
         {
@@ -775,31 +755,23 @@
           "action": "entry",
           "symbol": "6503.T",
           "price": 6100.0,
-          "shares": 100,
+          "shares": 200,
           "reason": "MAMORU risk_defender score 0.83; RVOL 1.07x; compression release; breakout setup; relative strength; abnormal accumulation; favored relative strength; favored compression breakout; favored volume compression"
         },
         {
-          "date": "2026-04-21",
-          "action": "exit",
-          "symbol": "6861.T",
-          "price": 63170.0,
-          "shares": 100,
-          "reason": "max_holding"
-        },
-        {
           "date": "2026-04-22",
-          "action": "entry",
-          "symbol": "6920.T",
-          "price": 44700.0,
+          "action": "exit",
+          "symbol": "6981.T",
+          "price": 4911.0,
           "shares": 100,
-          "reason": "MAMORU risk_defender score 0.83; RVOL 0.80x; breakout setup; relative strength; abnormal accumulation; volume breakout risk; favored relative strength"
+          "reason": "take_profit"
         },
         {
           "date": "2026-04-22",
           "action": "exit",
           "symbol": "9984.T",
           "price": 5620.0,
-          "shares": 100,
+          "shares": 200,
           "reason": "take_profit"
         },
         {
@@ -807,14 +779,22 @@
           "action": "entry",
           "symbol": "9984.T",
           "price": 6097.0,
-          "shares": 100,
+          "shares": 200,
           "reason": "MAMORU risk_defender score 0.90; RVOL 2.42x; compression release; breakout setup; relative strength; favored relative strength; favored compression breakout; favored volume compression; penalty drag"
         },
         {
           "date": "2026-04-23",
+          "action": "entry",
+          "symbol": "6762.T",
+          "price": 2750.0,
+          "shares": 400,
+          "reason": "MAMORU risk_defender score 0.87; RVOL 1.34x; breakout setup; relative strength; favored relative strength"
+        },
+        {
+          "date": "2026-04-23",
           "action": "exit",
-          "symbol": "6981.T",
-          "price": 4813.0,
+          "symbol": "6501.T",
+          "price": 5203.0,
           "shares": 100,
           "reason": "max_holding"
         },
@@ -823,7 +803,7 @@
           "action": "exit",
           "symbol": "6503.T",
           "price": 5881.0,
-          "shares": 100,
+          "shares": 200,
           "reason": "stop_loss"
         },
         {
@@ -831,23 +811,23 @@
           "action": "exit",
           "symbol": "9984.T",
           "price": 5837.0,
-          "shares": 100,
+          "shares": 200,
           "reason": "stop_loss"
         },
         {
-          "date": "2026-04-30",
+          "date": "2026-05-01",
           "action": "exit",
-          "symbol": "6920.T",
-          "price": 42690.0,
-          "shares": 100,
-          "reason": "stop_loss"
+          "symbol": "6762.T",
+          "price": 2775.5,
+          "shares": 400,
+          "reason": "max_holding"
         },
         {
           "date": "2026-05-20",
           "action": "entry",
           "symbol": "6762.T",
           "price": 2885.5,
-          "shares": 600,
+          "shares": 500,
           "reason": "MAMORU risk_defender score 0.74; relative strength; favored relative strength"
         },
         {
@@ -871,7 +851,7 @@
           "action": "exit",
           "symbol": "6762.T",
           "price": 3141.0,
-          "shares": 600,
+          "shares": 500,
           "reason": "take_profit"
         }
       ]
@@ -891,18 +871,18 @@
         "class": "Scout",
         "screening_profile": "discovery_alpha",
         "initial_capital_jpy": 10000000.0,
-        "cash_jpy": 9739900.0,
+        "cash_jpy": 9595600.0,
         "market_value_jpy": 882000.0,
-        "portfolio_equity_jpy": 10621900.0,
-        "return_pct": 6.219,
-        "max_drawdown_pct": -10.0138,
-        "closed_trades": 225,
-        "win_rate_pct": 46.22,
+        "portfolio_equity_jpy": 10477600.0,
+        "return_pct": 4.776,
+        "max_drawdown_pct": -5.3102,
+        "closed_trades": 39,
+        "win_rate_pct": 51.28,
         "open_positions": 1,
         "ui_tone": "green",
         "avatar_style": "pixel_archer",
         "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
-        "rank": 5
+        "rank": 2
       },
       "open_positions": [
         {
@@ -912,13 +892,13 @@
           "theme": "Manufacturing AI and Visual Inspection",
           "entry_date": "2026-05-20",
           "entry_price": 4250.0,
-          "current_date": "2026-05-25",
+          "current_date": "2026-05-26",
           "current_price": 4410.0,
           "shares": 200,
           "market_value_jpy": 882000.0,
           "unrealized_return_pct": 3.7647,
           "unrealized_pnl_jpy": 32000.0,
-          "holding_days": 4,
+          "holding_days": 5,
           "agent_score": 0.6555,
           "entry_reason": "SAGURI discovery_alpha score 0.66; breakout setup; relative strength; penalty drag"
         }
@@ -961,7 +941,7 @@
           "action": "exit",
           "symbol": "4382.T",
           "price": 857.0,
-          "shares": 900,
+          "shares": 800,
           "reason": "max_holding"
         },
         {
@@ -1041,7 +1021,7 @@
           "action": "entry",
           "symbol": "4425.T",
           "price": 2650.0,
-          "shares": 300,
+          "shares": 200,
           "reason": "SAGURI discovery_alpha score 0.82; RVOL 2.05x; breakout setup; relative strength; favored relative strength"
         },
         {
@@ -1105,7 +1085,7 @@
           "action": "exit",
           "symbol": "4425.T",
           "price": 2579.0,
-          "shares": 300,
+          "shares": 200,
           "reason": "max_holding"
         },
         {
@@ -1181,35 +1161,51 @@
         "class": "Reversal",
         "screening_profile": "contrarian_reentry",
         "initial_capital_jpy": 10000000.0,
-        "cash_jpy": 16078014.0,
+        "cash_jpy": 10322617.0,
         "market_value_jpy": 0,
-        "portfolio_equity_jpy": 16078014.0,
-        "return_pct": 60.7801,
-        "max_drawdown_pct": -11.663,
-        "closed_trades": 169,
-        "win_rate_pct": 54.44,
+        "portfolio_equity_jpy": 10322617.0,
+        "return_pct": 3.2262,
+        "max_drawdown_pct": -17.3204,
+        "closed_trades": 39,
+        "win_rate_pct": 35.9,
         "open_positions": 0,
         "ui_tone": "amber",
         "avatar_style": "pixel_monk",
         "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
-        "rank": 2
+        "rank": 3
       },
       "open_positions": [],
       "recent_actions": [
         {
-          "date": "2026-04-09",
+          "date": "2026-04-08",
           "action": "entry",
           "symbol": "9984.T",
-          "price": 3822.0,
+          "price": 3775.0,
+          "shares": 100,
+          "reason": "MATSU contrarian_reentry score 0.70; no daily confirmation"
+        },
+        {
+          "date": "2026-04-08",
+          "action": "exit",
+          "symbol": "8035.T",
+          "price": 42410.0,
+          "shares": 100,
+          "reason": "take_profit"
+        },
+        {
+          "date": "2026-04-09",
+          "action": "entry",
+          "symbol": "7012.T",
+          "price": 3300.0,
           "shares": 200,
-          "reason": "MATSU contrarian_reentry score 0.74; RVOL 1.12x; relative strength; favored relative strength"
+          "reason": "MATSU contrarian_reentry score 0.70; RVOL 0.99x; relative strength; abnormal accumulation; favored relative strength"
         },
         {
           "date": "2026-04-09",
           "action": "exit",
           "symbol": "6758.T",
           "price": 3375.0,
-          "shares": 400,
+          "shares": 200,
           "reason": "max_holding"
         },
         {
@@ -1217,7 +1213,7 @@
           "action": "entry",
           "symbol": "7011.T",
           "price": 4782.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "MATSU contrarian_reentry score 0.71; relative strength; favored relative strength; no daily confirmation"
         },
         {
@@ -1229,28 +1225,12 @@
           "reason": "stop_loss"
         },
         {
-          "date": "2026-04-10",
-          "action": "exit",
-          "symbol": "6920.T",
-          "price": 41580.0,
-          "shares": 100,
-          "reason": "take_profit"
-        },
-        {
           "date": "2026-04-13",
           "action": "entry",
           "symbol": "6501.T",
           "price": 4880.0,
-          "shares": 300,
-          "reason": "MATSU contrarian_reentry score 0.71; relative strength; favored relative strength; no daily confirmation"
-        },
-        {
-          "date": "2026-04-13",
-          "action": "entry",
-          "symbol": "6146.T",
-          "price": 66200.0,
           "shares": 100,
-          "reason": "MATSU contrarian_reentry score 0.71; RVOL 0.93x; relative strength; favored relative strength"
+          "reason": "MATSU contrarian_reentry score 0.71; relative strength; favored relative strength; no daily confirmation"
         },
         {
           "date": "2026-04-13",
@@ -1265,31 +1245,39 @@
           "action": "entry",
           "symbol": "4425.T",
           "price": 2398.0,
-          "shares": 300,
+          "shares": 500,
           "reason": "MATSU contrarian_reentry score 0.75; relative strength; favored relative strength"
         },
         {
-          "date": "2026-04-15",
+          "date": "2026-04-14",
           "action": "exit",
           "symbol": "9984.T",
-          "price": 4444.0,
-          "shares": 200,
+          "price": 4242.0,
+          "shares": 100,
           "reason": "take_profit"
         },
         {
-          "date": "2026-04-16",
+          "date": "2026-04-15",
           "action": "entry",
           "symbol": "6701.T",
-          "price": 4410.0,
+          "price": 4185.0,
           "shares": 200,
-          "reason": "MATSU contrarian_reentry score 0.75; RVOL 1.84x; compression release; breakout setup; relative strength; favored relative strength; favored compression breakout; favored volume compression"
+          "reason": "MATSU contrarian_reentry score 0.71; RVOL 1.52x; relative strength; favored relative strength"
+        },
+        {
+          "date": "2026-04-17",
+          "action": "exit",
+          "symbol": "7012.T",
+          "price": 3070.0,
+          "shares": 200,
+          "reason": "stop_loss"
         },
         {
           "date": "2026-04-17",
           "action": "exit",
           "symbol": "7011.T",
           "price": 4371.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "stop_loss"
         },
         {
@@ -1297,87 +1285,77 @@
           "action": "entry",
           "symbol": "5803.T",
           "price": 5692.0,
-          "shares": 100,
+          "shares": 200,
           "reason": "MATSU contrarian_reentry score 0.80; relative strength; no daily confirmation"
         },
         {
-          "date": "2026-04-21",
-          "action": "exit",
-          "symbol": "6146.T",
-          "price": 74240.0,
+          "date": "2026-04-20",
+          "action": "entry",
+          "symbol": "8035.T",
+          "price": 43870.0,
           "shares": 100,
-          "reason": "take_profit"
+          "reason": "MATSU contrarian_reentry score 0.77; relative strength; favored relative strength; no daily confirmation"
         },
         {
           "date": "2026-04-21",
           "action": "exit",
           "symbol": "4425.T",
           "price": 2817.0,
-          "shares": 300,
+          "shares": 500,
           "reason": "take_profit"
         },
         {
           "date": "2026-04-22",
-          "action": "entry",
+          "action": "skip_entry",
           "symbol": "6920.T",
           "price": 44700.0,
-          "shares": 100,
-          "reason": "MATSU contrarian_reentry score 0.83; RVOL 0.80x; breakout setup; relative strength; abnormal accumulation; volume breakout risk; favored relative strength"
+          "reason": "insufficient_cash_for_minimum_lot"
         },
         {
-          "date": "2026-04-22",
-          "action": "entry",
+          "date": "2026-04-23",
+          "action": "skip_entry",
           "symbol": "6857.T",
-          "price": 27255.0,
-          "shares": 100,
-          "reason": "MATSU contrarian_reentry score 0.80; relative strength; favored relative strength"
+          "price": 28500.0,
+          "reason": "insufficient_cash_for_minimum_lot"
         },
         {
           "date": "2026-04-24",
           "action": "exit",
           "symbol": "6501.T",
           "price": 5229.0,
-          "shares": 300,
+          "shares": 100,
           "reason": "max_holding"
         },
         {
-          "date": "2026-04-27",
-          "action": "exit",
-          "symbol": "6857.T",
-          "price": 31500.0,
-          "shares": 100,
-          "reason": "take_profit"
-        },
-        {
-          "date": "2026-04-30",
+          "date": "2026-04-28",
           "action": "exit",
           "symbol": "6701.T",
-          "price": 4101.0,
+          "price": 4444.0,
           "shares": 200,
-          "reason": "stop_loss"
+          "reason": "max_holding"
         },
         {
           "date": "2026-05-07",
           "action": "exit",
           "symbol": "5803.T",
           "price": 6498.0,
-          "shares": 100,
+          "shares": 200,
           "reason": "take_profit"
         },
         {
-          "date": "2026-05-11",
+          "date": "2026-05-07",
           "action": "exit",
-          "symbol": "6920.T",
-          "price": 44110.0,
+          "symbol": "8035.T",
+          "price": 51720.0,
           "shares": 100,
-          "reason": "max_holding"
+          "reason": "take_profit"
         },
         {
           "date": "2026-05-18",
           "action": "entry",
           "symbol": "9984.T",
           "price": 5445.0,
-          "shares": 500,
+          "shares": 300,
           "reason": "MATSU contrarian_reentry score 0.72; relative strength"
         },
         {
@@ -1385,7 +1363,7 @@
           "action": "entry",
           "symbol": "3652.T",
           "price": 3460.0,
-          "shares": 600,
+          "shares": 400,
           "reason": "MATSU contrarian_reentry score 0.72; relative strength; no daily confirmation; penalty drag"
         },
         {
@@ -1393,7 +1371,7 @@
           "action": "entry",
           "symbol": "6762.T",
           "price": 2885.5,
-          "shares": 600,
+          "shares": 400,
           "reason": "MATSU contrarian_reentry score 0.80; relative strength; favored relative strength"
         },
         {
@@ -1401,7 +1379,7 @@
           "action": "entry",
           "symbol": "6981.T",
           "price": 5990.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "MATSU contrarian_reentry score 0.73; relative strength"
         },
         {
@@ -1409,7 +1387,7 @@
           "action": "exit",
           "symbol": "9984.T",
           "price": 5039.0,
-          "shares": 500,
+          "shares": 300,
           "reason": "stop_loss"
         },
         {
@@ -1417,7 +1395,7 @@
           "action": "exit",
           "symbol": "3652.T",
           "price": 3190.0,
-          "shares": 600,
+          "shares": 400,
           "reason": "stop_loss"
         },
         {
@@ -1425,7 +1403,7 @@
           "action": "exit",
           "symbol": "6981.T",
           "price": 6727.0,
-          "shares": 200,
+          "shares": 100,
           "reason": "take_profit"
         },
         {
@@ -1433,7 +1411,7 @@
           "action": "exit",
           "symbol": "6762.T",
           "price": 3370.0,
-          "shares": 600,
+          "shares": 400,
           "reason": "take_profit"
         }
       ]
