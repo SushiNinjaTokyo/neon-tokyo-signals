@@ -56,6 +56,15 @@ jobs:
       AI_ARENA_LOOKBACK_DAYS: ${{ github.event_name == 'workflow_dispatch' && inputs.lookback_days || '90' }}
       AI_ARENA_START_DATE: ${{ github.event_name == 'workflow_dispatch' && inputs.start_date || '' }}
       AI_ARENA_END_DATE: ${{ github.event_name == 'workflow_dispatch' && inputs.end_date || '' }}
+      AI_ARENA_MAX_DEBATE_THREADS: ${{ vars.AI_ARENA_MAX_DEBATE_THREADS || '9' }}
+      AI_ARENA_IMPORTANT_THREAD_MESSAGES: ${{ vars.AI_ARENA_IMPORTANT_THREAD_MESSAGES || '16' }}
+      AI_ARENA_NORMAL_THREAD_MESSAGES: ${{ vars.AI_ARENA_NORMAL_THREAD_MESSAGES || '12' }}
+      AI_ARENA_TARGET_FEED_MIN: ${{ vars.AI_ARENA_TARGET_FEED_MIN || '160' }}
+      AI_ARENA_TARGET_FEED_MAX: ${{ vars.AI_ARENA_TARGET_FEED_MAX || '220' }}
+      AI_ARENA_MIN_INTERVAL_MINUTES: ${{ vars.AI_ARENA_MIN_INTERVAL_MINUTES || '5' }}
+      AI_ARENA_MAX_INTERVAL_MINUTES: ${{ vars.AI_ARENA_MAX_INTERVAL_MINUTES || '10' }}
+      AI_ARENA_ALLOW_AMBIENT_LINES: ${{ vars.AI_ARENA_ALLOW_AMBIENT_LINES || 'true' }}
+      AI_ARENA_ENABLE_MEMORY: ${{ vars.AI_ARENA_ENABLE_MEMORY || 'true' }}
 
     steps:
       - name: Checkout repository
@@ -74,11 +83,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-render.txt
 
+      - name: Sync latest main before generation
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin main
+
       - name: Validate AI Arena scripts
         run: |
           set -euo pipefail
           python -m py_compile \
             scripts/rebuild_ai_arena_simulation_jp.py \
+            scripts/build_ai_arena_memory_jp.py \
             scripts/build_ai_arena_discussion_jp.py \
             scripts/render_ai_arena_jp.py \
             scripts/render_ai_arena_positions_jp.py \
@@ -106,6 +121,12 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/rebuild_ai_arena_simulation_jp.py
+
+      - name: Build AI Arena memory
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_mode == 'full' }}
+        run: |
+          set -euo pipefail
+          python scripts/build_ai_arena_memory_jp.py
 
       - name: Build AI Arena discussion
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_mode == 'full' }}
@@ -135,6 +156,8 @@ jobs:
           required_files=(
             "site/data/japan/ai-arena/simulation/latest.json"
             "site/data/japan/ai-arena/discussion/latest.json"
+            "site/data/japan/ai-arena/events/latest.json"
+            "site/data/japan/ai-arena/memory/latest.json"
             "site/data/japan/ai-arena/positions/latest.json"
             "site/data/japan/ai-arena/ranking/latest.json"
             "site/japan/ai-arena/index.html"
@@ -184,8 +207,7 @@ jobs:
             echo "No AI Arena changes to commit."
             exit 0
           fi
-          git commit -m "Build AI Arena simulation pages"
-          git pull --rebase origin main
+          git commit -m "Build AI Arena LAB pages"
           git push origin main
 
       - name: Verify clean working tree
