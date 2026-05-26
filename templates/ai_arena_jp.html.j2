@@ -32,7 +32,53 @@
         </div>
         <div class="log-status">{{ 'AI' if arena.ai and arena.ai.enabled else 'FALLBACK' }} / {{ arena.ai.status if arena.ai else 'unknown' }}</div>
       </div>
-      <div id="arena-log" class="chat-list" data-feed='{{ arena.feed | tojson }}'></div>
+      <div id="arena-log" class="chat-list" data-feed='{{ arena.feed | tojson }}' data-agents='{{ arena.agents | tojson }}'></div>
+    </section>
+
+    <section class="agent-lab-showcase pixel-frame" aria-label="Agent profiles">
+      <div class="section-head lab-showcase-head">
+        <div>
+          <p class="eyebrow">AI PARTY PROFILES</p>
+          <h2>Strategy operators</h2>
+        </div>
+        <div class="lab-carousel-status"><span id="agent-showcase-index">01</span> / {{ '%02d'|format((arena.agents or [])|length) }}</div>
+      </div>
+      <div id="agent-showcase" class="agent-showcase-track">
+        {% for agent in arena.agents or [] %}
+        <article class="agent-showcase-card tone-{{ agent.ui_tone or 'cyan' }}{% if loop.first %} is-active{% endif %}" data-agent-slide="{{ loop.index0 }}">
+          <div class="showcase-avatar-shell">
+            {% if agent.avatar_image %}
+            <img src="{{ agent.avatar_image }}" alt="{{ agent.name }}" class="showcase-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+            <div class="pixel-avatar avatar-{{ agent.avatar_style or 'pixel_warrior' }} avatar-fallback"><span></span></div>
+            {% else %}
+            <div class="pixel-avatar avatar-{{ agent.avatar_style or 'pixel_warrior' }}"><span></span></div>
+            {% endif %}
+          </div>
+          <div class="showcase-copy">
+            <div class="showcase-label">AGENT {{ '%02d'|format(loop.index) }}</div>
+            <h3>{{ agent.name }}</h3>
+            <p>{{ agent.class }} / {{ agent.summary.screening_profile if agent.summary else agent.selection_profile }}</p>
+            <div class="showcase-line">
+              {% if agent.open_positions and agent.open_positions|length > 0 %}
+                Holding {{ agent.open_positions|length }} position{{ '' if agent.open_positions|length == 1 else 's' }}. Primary focus: {{ agent.open_positions[0].symbol }} / {{ agent.open_positions[0].name }}.
+              {% else %}
+                No open position. Cash and optionality remain part of the strategy.
+              {% endif %}
+            </div>
+          </div>
+          <div class="showcase-metrics">
+            <div><span>Return</span><b>{{ '%.2f'|format(agent.summary.return_pct or 0) }}%</b></div>
+            <div><span>Equity</span><b>¥{{ '{:,.0f}'.format(agent.summary.portfolio_equity_jpy or 0) }}</b></div>
+            <div><span>Open</span><b>{{ agent.summary.open_positions or 0 }}</b></div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      <div class="agent-showcase-dots" aria-hidden="true">
+        {% for agent in arena.agents or [] %}
+        <span class="{% if loop.first %}is-active{% endif %}" data-agent-dot="{{ loop.index0 }}"></span>
+        {% endfor %}
+      </div>
     </section>
 
     <section class="master-brief pixel-frame">
