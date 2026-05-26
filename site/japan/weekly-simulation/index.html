@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description" content="Japan weekly signal portfolio simulation with cash, open positions, closed trades, benchmark comparison and equity curve."/>
   <meta name="theme-color" content="#050711"/>
-  <link rel="stylesheet" href="/assets/weekly_simulation_jp.css?v=202605252347"/>
+  <link rel="stylesheet" href="/assets/weekly_simulation_jp.css?v=202605260917"/>
 </head>
 <body>
 <div class="page">
@@ -34,7 +34,7 @@
       </div>
       <aside class="verdict-card up">
         <span>Strategy Return</span>
-        <strong>+15.5%</strong>
+        <strong>+15.0%</strong>
         
           <em class="suspended">Alpha suspended · TOPIX data anomaly</em>
         
@@ -49,17 +49,17 @@
       </article>
       <article>
         <span>Cash</span>
-        <strong>¥9.2M</strong>
-        <em>Market value ¥2.4M</em>
+        <strong>¥7.5M</strong>
+        <em>Market value ¥4.0M</em>
       </article>
       <article>
         <span>Open Positions</span>
-        <strong>2</strong>
+        <strong>3</strong>
         <em>Closed trades 40</em>
       </article>
       <article class="down">
         <span>Max Drawdown</span>
-        <strong>-12.0%</strong>
+        <strong>-11.7%</strong>
         <em>Benchmark suspended</em>
       </article>
     </section>
@@ -67,7 +67,7 @@
     <section class="chart-panel">
       <div class="section-head">
         <div><div class="kicker"><span></span> EQUITY CURVE</div><h2>Strategy vs TOPIX, same initial capital.</h2></div>
-        <div class="chip">2025-10-17 → 2026-05-20</div>
+        <div class="chip">2025-10-23 → 2026-05-26</div>
       </div>
       <div class="legend">
         <span class="strategy"></span>Strategy
@@ -90,7 +90,7 @@
         <line x1="26" y1="36" x2="894" y2="36" class="gridline"/>
         <line x1="26" y1="130" x2="894" y2="130" class="gridline soft"/>
         
-        <polyline points="26.0,202.7 54.9,175.8 83.9,163.3 112.8,186.0 141.7,191.1 170.7,216.7 199.6,219.0 228.5,191.7 257.5,220.2 286.4,225.2 315.3,234.0 344.3,231.0 373.2,225.0 402.1,209.2 431.1,212.0 460.0,226.2 488.9,126.2 517.9,103.7 546.8,115.5 575.7,77.1 604.7,170.4 633.6,171.9 662.5,190.2 691.5,197.7 720.4,178.2 749.3,163.8 778.3,150.3 807.2,138.7 836.1,87.5 865.1,26.0 894.0,69.7" class="line strategy"/>
+        <polyline points="26.0,152.1 54.9,160.0 83.9,176.5 112.8,181.3 141.7,203.8 170.7,209.9 199.6,199.7 228.5,222.9 257.5,229.1 286.4,234.0 315.3,231.0 344.3,224.9 373.2,209.0 402.1,211.8 431.1,226.1 460.0,125.6 488.9,102.9 517.9,111.9 546.8,75.9 575.7,162.5 604.7,163.9 633.6,182.4 662.5,189.7 691.5,172.5 720.4,158.1 749.3,147.4 778.3,135.6 807.2,84.6 836.1,26.0 865.1,62.7 894.0,32.2" class="line strategy"/>
       </svg>
       <div class="curve-footer">
         <div><span>Strategy</span><strong>¥11.5M</strong></div>
@@ -115,34 +115,42 @@
       <article class="panel">
         <div class="section-head compact"><div><div class="kicker"><span></span> CLOSED TRADE QUALITY</div><h2>Realized trades</h2></div></div>
         <div class="trade-quality">
-          <div><span>Win rate</span><strong>42.5%</strong></div>
-          <div><span>Avg return</span><strong class="up">+4.1%</strong></div>
-          <div><span>Avg alpha</span><strong class="up">+2.1%</strong></div>
+          <div><span>Win rate</span><strong>40.0%</strong></div>
+          <div><span>Avg return</span><strong class="up">+2.8%</strong></div>
+          <div><span>Avg alpha</span><strong class="up">+0.9%</strong></div>
         </div>
         <div class="exit-pills">
-          <span>quality exit · 13</span><span>distribution / weak close exit · 9</span><span>close stop -8.0% · 9</span><span>score exit < 560 · 6</span><span>extreme profit / extension harvest · 3</span>
+          <span>quality exit · 13</span><span>close stop -8.0% · 10</span><span>distribution / weak close exit · 8</span><span>score exit < 560 · 6</span><span>extreme profit / extension harvest · 3</span>
         </div>
       </article>
     </section>
 
     <section class="panel">
-      <div class="section-head"><div><div class="kicker"><span></span> OPEN POSITIONS</div><h2>Current exposure.</h2></div><div class="chip">2 positions</div></div>
+      <div class="section-head"><div><div class="kicker"><span></span> OPEN POSITIONS</div><h2>Current exposure.</h2></div><div class="chip">3 positions</div></div>
       <div class="position-grid">
         
           <article class="position-card">
-            <div class="rank-row"><strong>6503.T</strong><span>11.0%</span></div>
+            <div class="rank-row"><strong>9984.T</strong><span>12.3%</span></div>
+            <em>SoftBank Group</em>
+            <div class="position-meta"><span>Monitor</span><span>C Early Watch</span><span>Core</span></div>
+            <div class="position-return up">+29.6%</div>
+            <div class="mini-line"><span>Entry 2026-05-18</span><span>¥1.4M</span></div>
+          </article>
+        
+          <article class="position-card">
+            <div class="rank-row"><strong>6503.T</strong><span>11.4%</span></div>
             <em>Mitsubishi Electric</em>
             <div class="position-meta"><span>Monitor</span><span>B Constructive Setup</span><span>Core</span></div>
-            <div class="position-return up">+10.4%</div>
+            <div class="position-return up">+14.1%</div>
             <div class="mini-line"><span>Entry 2026-04-13</span><span>¥1.3M</span></div>
           </article>
         
           <article class="position-card">
-            <div class="rank-row"><strong>9984.T</strong><span>9.7%</span></div>
-            <em>SoftBank Group</em>
+            <div class="rank-row"><strong>5802.T</strong><span>10.7%</span></div>
+            <em>Sumitomo Electric</em>
             <div class="position-meta"><span>Monitor</span><span>C Early Watch</span><span>Core</span></div>
-            <div class="position-return up">+2.6%</div>
-            <div class="mini-line"><span>Entry 2026-05-18</span><span>¥1.1M</span></div>
+            <div class="position-return up">+0.7%</div>
+            <div class="mini-line"><span>Entry 2026-05-25</span><span>¥1.2M</span></div>
           </article>
         
       </div>
@@ -153,9 +161,11 @@
         <div class="section-head compact"><div><div class="kicker"><span></span> OPEN THEME EXPOSURE</div><h2>Where capital is allocated.</h2></div></div>
         <div class="bars">
           
-          <div class="bar-row"><span>Factory Automation and Power Systems</span><i style="width:53.17%"></i><strong>53.2%</strong></div>
+          <div class="bar-row"><span>AI and Technology Investment</span><i style="width:35.77%"></i><strong>35.8%</strong></div>
           
-          <div class="bar-row"><span>AI and Technology Investment</span><i style="width:46.83%"></i><strong>46.8%</strong></div>
+          <div class="bar-row"><span>Factory Automation and Power Systems</span><i style="width:33.19%"></i><strong>33.2%</strong></div>
+          
+          <div class="bar-row"><span>Data Center and Power Infrastructure</span><i style="width:31.03%"></i><strong>31.0%</strong></div>
           
         </div>
       </article>
@@ -163,7 +173,7 @@
         <div class="section-head compact"><div><div class="kicker"><span></span> SIGNAL PERFORMANCE</div><h2>Realized return by entry signal.</h2></div></div>
         <div class="bars performance">
           
-          <div class="bar-row up"><span>Monitor</span><i style="width:100%"></i><strong>+4.1%</strong></div>
+          <div class="bar-row up"><span>Monitor</span><i style="width:100%"></i><strong>+2.8%</strong></div>
           
         </div>
       </article>
@@ -206,7 +216,7 @@
               <td class="down">-15.0%</td>
               <td class="down">-16.5%</td>
               <td>close stop -8.0%</td>
-              <td class="down">-¥198,674</td>
+              <td class="down">-¥158,939</td>
             </tr>
           
             <tr>
@@ -239,7 +249,7 @@
               <td class="up">+27.7%</td>
               <td class="up">+21.1%</td>
               <td>distribution / weak close exit</td>
-              <td class="up">¥340,794</td>
+              <td class="up">¥283,995</td>
             </tr>
           
             <tr>
