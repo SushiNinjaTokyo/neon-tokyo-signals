@@ -150,10 +150,7 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_mode == 'render_only' }}
         run: |
           set -euo pipefail
-          test -f site/data/japan/ai-arena/simulation/latest.json
           test -f site/data/japan/ai-arena/discussion/latest.json
-          test -f site/data/japan/ai-arena/events/latest.json
-          test -f site/data/japan/ai-arena/memory/latest.json
           test -f site/data/japan/ai-arena/positions/latest.json
           test -f site/data/japan/ai-arena/ranking/latest.json
 
@@ -223,24 +220,7 @@ jobs:
             exit 0
           fi
           git commit -m "Build AI Arena LAB pages"
-
-          for i in 1 2 3; do
-            if git push origin HEAD:main; then
-              echo "Push succeeded."
-              exit 0
-            fi
-            echo "Push rejected. Fetching origin/main and retrying ($i/3)..."
-            git fetch origin main
-            if ! git rebase origin/main; then
-              echo "Rebase failed. Aborting to avoid overwriting generated files."
-              git rebase --abort || true
-              exit 1
-            fi
-            sleep 5
-          done
-
-          echo "Push failed after retries."
-          exit 1
+          git push origin main
 
       - name: Verify clean working tree
         run: |
