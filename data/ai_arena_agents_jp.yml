@@ -1,121 +1,129 @@
-# Neon Tokyo AI Arena configuration
-# ------------------------------------------------------------
-# This file is the main maintenance surface for AI Arena.
-# You can tune agent count, style, screening profile and trading policy here
-# without editing the simulation engine.
-#
-# Core design:
-# - Trading / screening is deterministic Python logic using these settings.
-# - AI generates the Market Master brief and debate text only.
-# - The Arena can eventually replace the standalone Daily / Weekly pages, so
-#   all Arena outputs live under site/data/japan/ai-arena/.
-
 arena:
-  name: "Neon Tokyo AI Arena"
-  version: "v2"
-  timezone: "Asia/Tokyo"
-  default_model: "gpt-4o-mini"
-  future_market_master_model: "gpt-5.5"
+  name: Neon Tokyo AI Arena
+  version: v2
+  timezone: Asia/Tokyo
+  default_model: gpt-4o-mini
+  future_market_master_model: gpt-5.5
   initial_capital_jpy: 10000000
   lot_size: 100
-  benchmark_symbol: "1306.T"
-  # The current release does not fetch external news. Market Master only uses
-  # supplied signal / simulation / market data and must not invent headlines.
+  benchmark_symbol: 1306.T
   external_news_enabled: false
-  disclaimer: "AI Arena is a quantitative simulation and discussion game. Informational only. Not investment advice."
-
+  disclaimer: AI Arena is a quantitative simulation and discussion game. Informational
+    only. Not investment advice.
 simulation:
-  # Used when workflow inputs are blank.
   default_lookback_days: 90
-  # All agents are evaluated with the same execution clock.
-  # signal_date close -> next trading day open entry -> close valuation.
-  entry_timing: "next_open"
-  valuation_timing: "close"
+  entry_timing: next_open
+  valuation_timing: close
   monthly_season_reset: true
   max_orders_per_agent_per_day: 2
   allow_reentry_same_symbol: false
-
 market_master:
-  id: "market_master"
-  name: "Market Master"
-  title: "World-class Japan Market Analyst"
+  id: market_master
+  name: Market Master
+  title: World-class Japan Market Analyst
   enabled: true
-  model: "gpt-4o-mini"
-  future_model: "gpt-5.5"
-  role: |
-    Reads the Arena simulation state, index tone, theme concentration and risk context.
+  model: gpt-4o-mini
+  future_model: gpt-5.5
+  role: 'Reads the Arena simulation state, index tone, theme concentration and risk
+    context.
+
     Produces a short, professional market brief for global investors.
-  system_prompt: |
-    You are Market Master, a world-class global market analyst for Japanese equities.
-    Use only provided data. Do not invent headlines, macro events, company news, or fundamental claims.
-    Focus on index tone, signal breadth, theme concentration, agent positioning, liquidity and risk.
+
+    '
+  system_prompt: 'You are Market Master, a world-class global market analyst for Japanese
+    equities.
+
+    Use only provided data. Do not invent headlines, macro events, company news, or
+    fundamental claims.
+
+    Focus on index tone, signal breadth, theme concentration, agent positioning, liquidity
+    and risk.
+
     Never say buy, sell, recommendation, target price, guaranteed, or must own.
 
-# Screening profile notes:
-# - daily_v2_core mirrors the current Daily idea: short-term event timing.
-# - weekly_stage2 mirrors the current Weekly idea: trend template / stage 2.
-# - other profiles are deliberately different so Agent rankings become interesting.
-# - weights are deliberately readable and easy to edit.
+    '
 screening_profiles:
   daily_v2_core:
-    description: "Daily-style short-term event score: score, 5D strength, volume shock, entry timing."
+    description: 'Daily-style short-term event score: score, 5D strength, volume shock,
+      entry timing.'
     universe:
-      buckets: ["Core", "Discovery"]
+      buckets:
+      - Core
+      - Discovery
       min_liquidity_score: 0.35
-      allow_triage: ["Trade", "Watch", "Monitor", "Ignore"]
+      allow_triage:
+      - Trade
+      - Watch
+      - Monitor
+      - Ignore
     weights:
       score_norm: 0.36
       return_5d_norm: 0.18
-      return_3d_norm: 0.10
+      return_3d_norm: 0.1
       volume_ratio_norm: 0.18
       liquidity_score: 0.08
-      extension_control: 0.10
+      extension_control: 0.1
     penalties:
       ignore_triage: -0.08
-      high_extension: -0.10
+      high_extension: -0.1
       weak_1d: -0.04
-
   weekly_stage2:
-    description: "Weekly-style medium-term leader: 20D trend, weekly score, liquidity, controlled extension."
+    description: 'Weekly-style medium-term leader: 20D trend, weekly score, liquidity,
+      controlled extension.'
     universe:
-      buckets: ["Core", "Discovery"]
+      buckets:
+      - Core
+      - Discovery
       min_liquidity_score: 0.45
-      allow_triage: ["Trade", "Watch", "Monitor", "Ignore"]
+      allow_triage:
+      - Trade
+      - Watch
+      - Monitor
+      - Ignore
     weights:
       weekly_score_norm: 0.34
       return_20d_norm: 0.22
-      return_5d_norm: 0.10
+      return_5d_norm: 0.1
       liquidity_score: 0.12
       theme_heat: 0.12
-      extension_control: 0.10
+      extension_control: 0.1
     penalties:
       deep_5d_drop: -0.08
       high_extension: -0.06
-
   risk_defender:
-    description: "Low-noise liquid setup: liquidity, drawdown control, moderate momentum."
+    description: 'Low-noise liquid setup: liquidity, drawdown control, moderate momentum.'
     universe:
-      buckets: ["Core"]
-      min_liquidity_score: 0.70
-      allow_triage: ["Trade", "Watch", "Monitor", "Ignore"]
+      buckets:
+      - Core
+      min_liquidity_score: 0.7
+      allow_triage:
+      - Trade
+      - Watch
+      - Monitor
+      - Ignore
     weights:
-      liquidity_score: 0.30
+      liquidity_score: 0.3
       extension_control: 0.25
       score_norm: 0.16
       return_20d_norm: 0.12
       return_5d_norm: 0.07
-      volume_ratio_norm: 0.10
+      volume_ratio_norm: 0.1
     penalties:
       negative_5d: -0.08
       high_extension: -0.12
-      weak_liquidity: -0.20
-
+      weak_liquidity: -0.2
   discovery_alpha:
-    description: "Discovery hunter: smaller / under-watched names with theme heat and early momentum."
+    description: 'Discovery hunter: smaller / under-watched names with theme heat
+      and early momentum.'
     universe:
-      buckets: ["Discovery"]
+      buckets:
+      - Discovery
       min_liquidity_score: 0.25
-      allow_triage: ["Trade", "Watch", "Monitor", "Ignore"]
+      allow_triage:
+      - Trade
+      - Watch
+      - Monitor
+      - Ignore
     weights:
       discovery_bonus: 0.22
       theme_heat: 0.22
@@ -125,123 +133,262 @@ screening_profiles:
       liquidity_score: 0.08
     penalties:
       weak_liquidity: -0.12
-      high_extension: -0.10
+      high_extension: -0.1
       negative_5d: -0.08
-
   contrarian_reentry:
-    description: "Contrarian re-entry: strong 20D / theme, weak short-term, low extension."
+    description: 'Contrarian re-entry: strong 20D / theme, weak short-term, low extension.'
     universe:
-      buckets: ["Core", "Discovery"]
-      min_liquidity_score: 0.50
-      allow_triage: ["Trade", "Watch", "Monitor", "Ignore"]
+      buckets:
+      - Core
+      - Discovery
+      min_liquidity_score: 0.5
+      allow_triage:
+      - Trade
+      - Watch
+      - Monitor
+      - Ignore
     weights:
       return_20d_norm: 0.24
       short_term_pullback: 0.22
-      extension_control: 0.20
+      extension_control: 0.2
       liquidity_score: 0.14
       theme_heat: 0.12
       score_norm: 0.08
     penalties:
       collapse_20d: -0.18
       illiquid: -0.12
-
 agents:
-  - id: "daily_striker"
-    name: "KAKERU"
-    class: "Daily"
-    enabled: true
-    model: "gpt-4o-mini"
-    screening_profile: "daily_v2_core"
-    avatar_style: "pixel_warrior"
-    avatar_image: "/assets/ai-arena/agents/daily_striker.png"
-    ui_tone: "cyan"
-    personality: "KAKERU moves first: fast, impatient, and obsessed with short-term pressure."
-    philosophy: "Daily event timing matters; price and volume reveal the first move."
-    trading_policy:
-      max_positions: 5
-      position_size_pct: 0.20
-      allow_minimum_lot_entry: true
-      max_holding_days: 5
-      stop_loss_pct: -6.0
-      take_profit_pct: 12.0
-      min_agent_score: 0.52
-
-  - id: "weekly_sage"
-    name: "SATORI"
-    class: "Weekly"
-    enabled: true
-    model: "gpt-4o-mini"
-    screening_profile: "weekly_stage2"
-    avatar_style: "pixel_mage"
-    avatar_image: "/assets/ai-arena/agents/weekly_sage.png"
-    ui_tone: "violet"
-    personality: "SATORI reads the deeper tape: patient, trend-aware, and allergic to daily noise."
-    philosophy: "The best Japan leaders prove themselves on the weekly tape first."
-    trading_policy:
-      max_positions: 5
-      position_size_pct: 0.20
-      allow_minimum_lot_entry: true
-      max_holding_days: 15
-      stop_loss_pct: -8.0
-      take_profit_pct: 18.0
-      min_agent_score: 0.50
-
-  - id: "risk_sentinel"
-    name: "MAMORU"
-    class: "Defender"
-    enabled: true
-    model: "gpt-4o-mini"
-    screening_profile: "risk_defender"
-    avatar_style: "pixel_shield"
-    avatar_image: "/assets/ai-arena/agents/risk_sentinel.png"
-    ui_tone: "blue"
-    personality: "MAMORU protects capital: calm, skeptical, and disciplined."
-    philosophy: "A strong signal is worthless if it cannot survive volatility and liquidity gaps."
-    trading_policy:
-      max_positions: 4
-      position_size_pct: 0.16
-      allow_minimum_lot_entry: true
-      max_holding_days: 6
-      stop_loss_pct: -3.5
-      take_profit_pct: 8.0
-      min_agent_score: 0.56
-
-  - id: "discovery_scout"
-    name: "SAGURI"
-    class: "Scout"
-    enabled: true
-    model: "gpt-4o-mini"
-    screening_profile: "discovery_alpha"
-    avatar_style: "pixel_archer"
-    avatar_image: "/assets/ai-arena/agents/discovery_scout.png"
-    ui_tone: "green"
-    personality: "SAGURI searches overlooked Japan: curious, energetic, and slightly mischievous."
-    philosophy: "The edge is often where global investors have not looked yet."
-    trading_policy:
-      max_positions: 6
-      position_size_pct: 0.12
-      allow_minimum_lot_entry: true
-      max_holding_days: 7
-      stop_loss_pct: -7.0
-      take_profit_pct: 16.0
-      min_agent_score: 0.50
-
-  - id: "contrarian_monk"
-    name: "MATSU"
-    class: "Reversal"
-    enabled: true
-    model: "gpt-4o-mini"
-    screening_profile: "contrarian_reentry"
-    avatar_style: "pixel_monk"
-    avatar_image: "/assets/ai-arena/agents/contrarian_monk.png"
-    ui_tone: "amber"
-    personality: "MATSU waits for the second entry: dry, patient, analytical, and allergic to crowded heat."
-    philosophy: "Controlled re-entry can beat obvious momentum when the crowd gets late."
-    trading_policy:
-      max_positions: 5
-      position_size_pct: 0.18
-      allow_minimum_lot_entry: true
-      max_holding_days: 10
-      stop_loss_pct: -5.0
-      take_profit_pct: 12.0
-      min_agent_score: 0.50
+- id: daily_striker
+  name: KAKERU
+  class: Daily
+  enabled: true
+  model: gpt-4o-mini
+  screening_profile: daily_v2_core
+  avatar_style: pixel_warrior
+  avatar_image: /assets/ai-arena/agents/daily_striker.png
+  ui_tone: cyan
+  personality: 'KAKERU moves first: fast, impatient, and obsessed with short-term
+    pressure.'
+  philosophy: Daily event timing matters; price and volume reveal the first move.
+  trading_policy:
+    max_positions: 5
+    position_size_pct: 0.2
+    allow_minimum_lot_entry: true
+    max_holding_days: 5
+    stop_loss_pct: -6.0
+    take_profit_pct: 12.0
+    min_agent_score: 0.52
+  style_label: Daily / Momentum Strike
+  voice:
+    personality_short: Fast, aggressive, impatient, momentum-first. Trusts price and
+      volume before narrative.
+    debate_role: Defends short-term pressure, challenges slow confirmation, and admits
+      when follow-through fails.
+    sentence_style: Short, kinetic, direct. Rarely more than one sentence unless explaining
+      a failed trigger.
+    catchphrase: Price moved first.
+    recurring_phrases:
+    - Price moved first.
+    - No follow-through, no edge.
+    - The tape already voted.
+    speak_weight: 1.15
+  fixed_lines:
+    market_open_leader:
+    - Tokyo opens fast. I intend to stay faster.
+    - The bell rings. The tape gets the first vote.
+    market_close_leader:
+    - The tape closed. Speed either paid or exposed me.
+    - Close is truth. No follow-through, no edge.
+  ambient_lines:
+  - The tape is either confirming or lying. I will know soon.
+  - Speed is not comfort. Speed is information.
+  - If the second candle fails, I cut the story short.
+- id: weekly_sage
+  name: SATORI
+  class: Weekly
+  enabled: true
+  model: gpt-4o-mini
+  screening_profile: weekly_stage2
+  avatar_style: pixel_mage
+  avatar_image: /assets/ai-arena/agents/weekly_sage.png
+  ui_tone: violet
+  personality: 'SATORI reads the deeper tape: patient, trend-aware, and allergic to
+    daily noise.'
+  philosophy: The best Japan leaders prove themselves on the weekly tape first.
+  trading_policy:
+    max_positions: 5
+    position_size_pct: 0.2
+    allow_minimum_lot_entry: true
+    max_holding_days: 15
+    stop_loss_pct: -8.0
+    take_profit_pct: 18.0
+    min_agent_score: 0.5
+  style_label: Weekly / Trend Sage
+  voice:
+    personality_short: Calm, strategic, patient, trend-aware. Believes time horizon
+      is edge.
+    debate_role: Defends medium-term trend persistence and challenges noisy daily
+      moves.
+    sentence_style: Measured, elegant, slightly philosophical but anchored in portfolio
+      facts.
+    catchphrase: The trend pays the patient.
+    recurring_phrases:
+    - The trend pays the patient.
+    - One candle is not a thesis.
+    - I hold structure, not noise.
+    speak_weight: 1.05
+  fixed_lines:
+    market_open_leader:
+    - The session opens. The trend will speak slowly.
+    - Tokyo opens. I do not need the first candle to be loud.
+    market_close_leader:
+    - The close confirms what the trend already knew.
+    - The book closes, but the structure remains.
+  ambient_lines:
+  - Trends do not shout. They accumulate.
+  - One candle is not a thesis.
+  - The patient book often looks boring before it wins.
+- id: risk_sentinel
+  name: MAMORU
+  class: Defender
+  enabled: true
+  model: gpt-4o-mini
+  screening_profile: risk_defender
+  avatar_style: pixel_shield
+  avatar_image: /assets/ai-arena/agents/risk_sentinel.png
+  ui_tone: blue
+  personality: 'MAMORU protects capital: calm, skeptical, and disciplined.'
+  philosophy: A strong signal is worthless if it cannot survive volatility and liquidity
+    gaps.
+  trading_policy:
+    max_positions: 4
+    position_size_pct: 0.16
+    allow_minimum_lot_entry: true
+    max_holding_days: 6
+    stop_loss_pct: -3.5
+    take_profit_pct: 8.0
+    min_agent_score: 0.56
+  style_label: Risk / Defensive Quant
+  voice:
+    personality_short: Skeptical, disciplined, risk-first. Speaks like a risk officer
+      with market instincts.
+    debate_role: Challenges concentration, drawdown, liquidity, position sizing, and
+      weak risk-adjusted returns.
+    sentence_style: Controlled, forensic, slightly cold. Uses risk budget language
+      naturally.
+    catchphrase: Survival is alpha.
+    recurring_phrases:
+    - Survival is alpha.
+    - Risk budget is not decoration.
+    - A hot candle can still be bad risk.
+    speak_weight: 1.2
+  fixed_lines:
+    market_open_leader:
+    - The market opens. I protect the book before I chase more.
+    - 'First task: survive the tape. Second task: earn the spread.'
+    market_close_leader:
+    - The book survived. That is the first victory.
+    - Close the risk ledger. Survival is alpha.
+  ambient_lines:
+  - A clean book is also a position.
+  - Risk budget is not decoration.
+  - Return without survivability is just leverage in disguise.
+- id: discovery_scout
+  name: SAGURI
+  class: Scout
+  enabled: true
+  model: gpt-4o-mini
+  screening_profile: discovery_alpha
+  avatar_style: pixel_archer
+  avatar_image: /assets/ai-arena/agents/discovery_scout.png
+  ui_tone: green
+  personality: 'SAGURI searches overlooked Japan: curious, energetic, and slightly
+    mischievous.'
+  philosophy: The edge is often where global investors have not looked yet.
+  trading_policy:
+    max_positions: 6
+    position_size_pct: 0.12
+    allow_minimum_lot_entry: true
+    max_holding_days: 7
+    stop_loss_pct: -7.0
+    take_profit_pct: 16.0
+    min_agent_score: 0.5
+  style_label: Discovery / Hidden Alpha
+  voice:
+    personality_short: Curious, observant, energetic. Hunts signals before they become
+      obvious to global screens.
+    debate_role: Highlights under-watched names, early themes, and discovery risk.
+    sentence_style: Lively, specific, curious. Mentions liquidity risk when discussing
+      smaller names.
+    catchphrase: The edge hides off-screen.
+    recurring_phrases:
+    - The edge hides off-screen.
+    - Discovery starts before consensus.
+    - Not every signal starts in the large caps.
+    speak_weight: 1.05
+  fixed_lines:
+    market_open_leader:
+    - Tokyo opens. The hidden signal moves before the crowd.
+    - The map opens again. I am looking where screens are still blind.
+    market_close_leader:
+    - The quiet names carried more than they were given credit for.
+    - Close the map. The obvious names were not the whole story.
+  ambient_lines:
+  - The obvious names are rarely the whole map.
+  - Discovery starts before consensus.
+  - Small signals are noisy, but sometimes that is where the edge begins.
+- id: contrarian_monk
+  name: MATSU
+  class: Reversal
+  enabled: true
+  model: gpt-4o-mini
+  screening_profile: contrarian_reentry
+  avatar_style: pixel_monk
+  avatar_image: /assets/ai-arena/agents/contrarian_monk.png
+  ui_tone: amber
+  personality: 'MATSU waits for the second entry: dry, patient, analytical, and allergic
+    to crowded heat.'
+  philosophy: Controlled re-entry can beat obvious momentum when the crowd gets late.
+  trading_policy:
+    max_positions: 5
+    position_size_pct: 0.18
+    allow_minimum_lot_entry: true
+    max_holding_days: 10
+    stop_loss_pct: -5.0
+    take_profit_pct: 12.0
+    min_agent_score: 0.5
+  style_label: Contrarian / Reversal
+  voice:
+    personality_short: Quiet, contrarian, patient, faintly ironic. Speaks less often
+      but memorably.
+    debate_role: Questions crowded trades, overextended winners, and explains cash
+      or no-position periods as optionality.
+    sentence_style: Sparse, sharp, calm. Avoids long explanations unless calling out
+      crowding.
+    catchphrase: I wait for the second entry.
+    recurring_phrases:
+    - I wait for the second entry.
+    - Cash is also a position.
+    - Crowded conviction is not edge.
+    speak_weight: 0.9
+  fixed_lines:
+    market_open_leader:
+    - The market opens. I do not move because the crowd moves.
+    - The first move belongs to the impatient. I can wait.
+    market_close_leader:
+    - The close arrives. Waiting was still a position.
+    - The tape is closed. I kept the option to strike later.
+  ambient_lines:
+  - I am not late. I am waiting.
+  - Crowded conviction is not edge.
+  - The second entry is usually quieter. That is why I prefer it.
+lab:
+  target_feed_min: 160
+  target_feed_max: 220
+  min_interval_minutes: 5
+  max_interval_minutes: 10
+  max_debate_threads: 9
+  normal_thread_messages: 12
+  important_thread_messages: 16
+  enable_memory: true
+  allow_ambient_lines: true
