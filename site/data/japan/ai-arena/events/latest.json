@@ -1,10 +1,10 @@
 {
   "schema_version": "ai_arena_discussion_events_v1",
-  "generated_at": "2026-05-27T07:56:26+09:00",
+  "generated_at": "2026-05-27T21:57:54+09:00",
   "season": "2026-05",
   "range": {
-    "start_date": "2026-02-25",
-    "end_date": "2026-05-26",
+    "start_date": "2026-02-26",
+    "end_date": "2026-05-27",
     "trading_days": 60
   },
   "events": [
@@ -21,14 +21,14 @@
       "facts": [
         "KAKERU action=exit symbol=4425.T.",
         "Reason: stop_loss.",
-        "Price: 2587.0. Shares: 400."
+        "Price: 2587.0. Shares: 500."
       ],
       "action": {
         "date": "2026-04-23",
         "action": "exit",
         "symbol": "4425.T",
         "price": 2587.0,
-        "shares": 400,
+        "shares": 500,
         "reason": "stop_loss"
       }
     },
@@ -93,14 +93,14 @@
       "facts": [
         "KAKERU action=exit symbol=6701.T.",
         "Reason: stop_loss.",
-        "Price: 4101.0. Shares: 200."
+        "Price: 4101.0. Shares: 300."
       ],
       "action": {
         "date": "2026-04-30",
         "action": "exit",
         "symbol": "6701.T",
         "price": 4101.0,
-        "shares": 200,
+        "shares": 300,
         "reason": "stop_loss"
       }
     },
@@ -117,14 +117,14 @@
       "facts": [
         "KAKERU action=entry symbol=6758.T.",
         "Reason: KAKERU daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation.",
-        "Price: 3676.0. Shares: 400."
+        "Price: 3676.0. Shares: 500."
       ],
       "action": {
         "date": "2026-05-20",
         "action": "entry",
         "symbol": "6758.T",
         "price": 3676.0,
-        "shares": 400,
+        "shares": 500,
         "reason": "KAKERU daily_v2_core score 0.61; RVOL 0.92x; relative strength; abnormal accumulation"
       }
     },
@@ -189,38 +189,62 @@
       "facts": [
         "KAKERU action=exit symbol=6758.T.",
         "Reason: max_holding.",
-        "Price: 3598.0. Shares: 400."
+        "Price: 3548.0. Shares: 500."
       ],
       "action": {
         "date": "2026-05-26",
         "action": "exit",
         "symbol": "6758.T",
-        "price": 3598.0,
-        "shares": 400,
+        "price": 3548.0,
+        "shares": 500,
         "reason": "max_holding"
       }
     },
     {
-      "event_id": "2026-05-11_weekly_sage_exit_135A.T",
+      "event_id": "2026-04-30_weekly_sage_exit_6920.T",
       "event_type": "trade_event",
       "priority": 100,
-      "topic": "SATORI exit 135A.T",
+      "topic": "SATORI exit 6920.T",
       "agents_involved": [
         "weekly_sage"
       ],
-      "symbol": "135A.T",
-      "trade_date": "2026-05-11",
+      "symbol": "6920.T",
+      "trade_date": "2026-04-30",
       "facts": [
-        "SATORI action=exit symbol=135A.T.",
-        "Reason: take_profit.",
-        "Price: 4190.0. Shares: 300."
+        "SATORI action=exit symbol=6920.T.",
+        "Reason: max_holding.",
+        "Price: 42690.0. Shares: 100."
       ],
       "action": {
-        "date": "2026-05-11",
+        "date": "2026-04-30",
         "action": "exit",
-        "symbol": "135A.T",
-        "price": 4190.0,
-        "shares": 300,
+        "symbol": "6920.T",
+        "price": 42690.0,
+        "shares": 100,
+        "reason": "max_holding"
+      }
+    },
+    {
+      "event_id": "2026-05-12_weekly_sage_exit_5803.T",
+      "event_type": "trade_event",
+      "priority": 100,
+      "topic": "SATORI exit 5803.T",
+      "agents_involved": [
+        "weekly_sage"
+      ],
+      "symbol": "5803.T",
+      "trade_date": "2026-05-12",
+      "facts": [
+        "SATORI action=exit symbol=5803.T.",
+        "Reason: take_profit.",
+        "Price: 7624.0. Shares: 100."
+      ],
+      "action": {
+        "date": "2026-05-12",
+        "action": "exit",
+        "symbol": "5803.T",
+        "price": 7624.0,
+        "shares": 100,
         "reason": "take_profit"
       }
     },
@@ -237,14 +261,14 @@
       "facts": [
         "SATORI action=entry symbol=9984.T.",
         "Reason: SATORI weekly_stage2 score 0.68; relative strength.",
-        "Price: 5445.0. Shares: 200."
+        "Price: 5445.0. Shares: 300."
       ],
       "action": {
         "date": "2026-05-18",
         "action": "entry",
         "symbol": "9984.T",
         "price": 5445.0,
-        "shares": 200,
+        "shares": 300,
         "reason": "SATORI weekly_stage2 score 0.68; relative strength"
       }
     },
@@ -261,39 +285,15 @@
       "facts": [
         "SATORI action=entry symbol=135A.T.",
         "Reason: SATORI weekly_stage2 score 0.63; relative strength.",
-        "Price: 4210.0. Shares: 200."
+        "Price: 4210.0. Shares: 400."
       ],
       "action": {
         "date": "2026-05-18",
         "action": "entry",
         "symbol": "135A.T",
         "price": 4210.0,
-        "shares": 200,
+        "shares": 400,
         "reason": "SATORI weekly_stage2 score 0.63; relative strength"
-      }
-    },
-    {
-      "event_id": "2026-05-19_weekly_sage_exit_8035.T",
-      "event_type": "trade_event",
-      "priority": 100,
-      "topic": "SATORI exit 8035.T",
-      "agents_involved": [
-        "weekly_sage"
-      ],
-      "symbol": "8035.T",
-      "trade_date": "2026-05-19",
-      "facts": [
-        "SATORI action=exit symbol=8035.T.",
-        "Reason: max_holding.",
-        "Price: 47160.0. Shares: 100."
-      ],
-      "action": {
-        "date": "2026-05-19",
-        "action": "exit",
-        "symbol": "8035.T",
-        "price": 47160.0,
-        "shares": 100,
-        "reason": "max_holding"
       }
     },
     {
@@ -309,14 +309,14 @@
       "facts": [
         "SATORI action=entry symbol=3652.T.",
         "Reason: SATORI weekly_stage2 score 0.71; relative strength; no daily confirmation; penalty drag.",
-        "Price: 3550.0. Shares: 500."
+        "Price: 3550.0. Shares: 400."
       ],
       "action": {
         "date": "2026-05-20",
         "action": "entry",
         "symbol": "3652.T",
         "price": 3550.0,
-        "shares": 500,
+        "shares": 400,
         "reason": "SATORI weekly_stage2 score 0.71; relative strength; no daily confirmation; penalty drag"
       }
     },
@@ -357,14 +357,14 @@
       "facts": [
         "SATORI action=exit symbol=3652.T.",
         "Reason: stop_loss.",
-        "Price: 3190.0. Shares: 500."
+        "Price: 3190.0. Shares: 400."
       ],
       "action": {
         "date": "2026-05-20",
         "action": "exit",
         "symbol": "3652.T",
         "price": 3190.0,
-        "shares": 500,
+        "shares": 400,
         "reason": "stop_loss"
       }
     },
@@ -381,14 +381,14 @@
       "facts": [
         "SATORI action=exit symbol=9984.T.",
         "Reason: take_profit.",
-        "Price: 6757.0. Shares: 200."
+        "Price: 6757.0. Shares: 300."
       ],
       "action": {
         "date": "2026-05-22",
         "action": "exit",
         "symbol": "9984.T",
         "price": 6757.0,
-        "shares": 200,
+        "shares": 300,
         "reason": "take_profit"
       }
     },
