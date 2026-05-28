@@ -18,6 +18,14 @@ on:
         required: false
         default: "0.20"
         type: string
+      allow_legacy_fallback:
+        description: "Allow fallback to data/universe_jp.csv when data/universe/jp_index_universe.csv is missing. This is only for a small smoke test, not a real 300-ticker run."
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
       commit_outputs:
         description: "Commit generated CSV / JSON outputs"
         required: false
@@ -90,6 +98,7 @@ jobs:
         env:
           UNIVERSE_LIMIT: ${{ github.event.inputs.universe_limit || '300' }}
           OUT_UNIVERSE_CSV: data/universe/jp_duckdb_trial_300.csv
+          STRICT_INDEX_UNIVERSE: ${{ (github.event.inputs.allow_legacy_fallback || 'false') != 'true' }}
         run: |
           set -euo pipefail
           python scripts/build_universe_300_from_index_csv.py
@@ -124,10 +133,13 @@ jobs:
           from pathlib import Path
           import duckdb
 
+          import csv
           prices = json.loads(Path('site/data/prices-jp/latest.json').read_text(encoding='utf-8'))
           scores = json.loads(Path('site/data/japan/agent-scores/latest.json').read_text(encoding='utf-8'))
           diag = json.loads(Path('site/data/japan/agent-scores/diagnostics.json').read_text(encoding='utf-8'))
+          universe_rows = list(csv.DictReader(Path('data/universe/jp_duckdb_trial_300.csv').open(encoding='utf-8-sig')))
 
+          assert len(universe_rows) > 0
           assert prices['schema_version'] == 'prices-jp-v1'
           assert prices['symbols_success'] > 0
           assert scores['schema_version'] == 'neon_tokyo_agent_scores_v1'
@@ -144,6 +156,7 @@ jobs:
           assert feature_rows > 0
           assert agent_rows > 0
 
+          print('universe_rows=', len(universe_rows))
           print('symbols_success=', prices['symbols_success'])
           print('symbols_failed=', prices['symbols_failed'])
           print('agents=', [a['name'] for a in scores['agents']])
