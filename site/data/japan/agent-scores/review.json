@@ -1,0 +1,1564 @@
+{
+  "schema_version": "neon_tokyo_agent_score_review_v1",
+  "generated_at": "2026-05-28T15:48:48+00:00",
+  "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
+  "summary": {
+    "prices_daily_rows": 102139,
+    "features_daily_rows": 102139,
+    "agent_scores_daily_rows": 1399,
+    "distinct_price_tickers": 301,
+    "distinct_agent_tickers": 241,
+    "score_date": "2026-05-27",
+    "agent_count": 7,
+    "price_symbols_success": 301,
+    "price_symbols_failed": 2,
+    "public_price_json_mode": "summary",
+    "bars_omitted_in_public_json": true
+  },
+  "agents": [
+    {
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "candidates_scored": 219,
+      "trade_count": 3,
+      "watch_count": 40,
+      "ignore_count": 176,
+      "trade_pct": 1.37,
+      "watch_pct": 18.26,
+      "score_min": 0.178,
+      "score_avg": 0.4148,
+      "score_max": 0.719,
+      "top_reason_codes": [
+        [
+          "patient_pullback",
+          10
+        ],
+        [
+          "trend_still_alive",
+          10
+        ],
+        [
+          "cooled_entry",
+          10
+        ]
+      ],
+      "top10": [
+        {
+          "rank": 1,
+          "ticker": "4385.T",
+          "name": "メルカリ",
+          "score": 0.719,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "patient_pullback",
+            "trend_still_alive",
+            "cooled_entry"
+          ]
+        },
+        {
+          "rank": 2,
+          "ticker": "3563.T",
+          "name": "ＦＯＯＤ ＆ ＬＩＦＥ ＣＯＭＰＡＮＩＥＳ",
+          "score": 0.7063,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "patient_pullback",
+            "trend_still_alive",
+            "cooled_entry"
+          ]
+        },
+        {
+          "rank": 3,
+          "ticker": "2371.T",
+          "name": "カカクコム",
+          "score": 0.7028,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "patient_pullback",
+            "trend_still_alive",
+            "cooled_entry"
+          ]
+        },
+        {
+          "rank": 4,
+          "ticker": "3774.T",
+          "name": "インターネットイニシアティブ",
+          "score": 0.6472,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "patient_pullback",
+            "trend_still_alive",
+            "cooled_entry"
+          ]
+        },
+        {
+          "rank": 5,
+          "ticker": "3105.T",
+          "name": "日清紡ホールディングス",
+          "score": 0.6356,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "patient_pullback",
+            "trend_still_alive",
+            "cooled_entry"
+          ]
+        },
+        {
+          "rank": 6,
+          "ticker": "5844.T",
+          "name": "京都フィナンシャルグループ",
+          "score": 0.6338,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "patient_pullback",
+            "trend_still_alive",
+            "cooled_entry"
+          ]
+        },
+        {
+          "rank": 7,
+          "ticker": "3436.T",
+          "name": "ＳＵＭＣＯ",
+          "score": 0.6204,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "patient_pullback",
+            "trend_still_alive",
+            "cooled_entry"
+          ]
+        },
+        {
+          "rank": 8,
+          "ticker": "5344.T",
+          "name": "ＭＡＲＵＷＡ",
+          "score": 0.6158,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "patient_pullback",
+            "trend_still_alive",
+            "cooled_entry"
+          ]
+        },
+        {
+          "rank": 9,
+          "ticker": "3107.T",
+          "name": "ダイワボウホールディングス",
+          "score": 0.6137,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "patient_pullback",
+            "trend_still_alive",
+            "cooled_entry"
+          ]
+        },
+        {
+          "rank": 10,
+          "ticker": "4061.T",
+          "name": "デンカ",
+          "score": 0.612,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "patient_pullback",
+            "trend_still_alive",
+            "cooled_entry"
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "daily_striker",
+      "agent_name": "KYOU",
+      "candidates_scored": 240,
+      "trade_count": 4,
+      "watch_count": 26,
+      "ignore_count": 210,
+      "trade_pct": 1.67,
+      "watch_pct": 10.83,
+      "score_min": 0.101,
+      "score_avg": 0.3473,
+      "score_max": 0.8067,
+      "top_reason_codes": [
+        [
+          "short_momentum",
+          10
+        ],
+        [
+          "volume_pressure",
+          10
+        ],
+        [
+          "liquid_tape",
+          10
+        ]
+      ],
+      "top10": [
+        {
+          "rank": 1,
+          "ticker": "2586.T",
+          "name": "FRUTA FRUTA INC.",
+          "score": 0.8067,
+          "action": "Trade",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "short_momentum",
+            "volume_pressure",
+            "liquid_tape"
+          ]
+        },
+        {
+          "rank": 2,
+          "ticker": "280A.T",
+          "name": "TMH Inc.",
+          "score": 0.7384,
+          "action": "Trade",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "short_momentum",
+            "volume_pressure",
+            "liquid_tape"
+          ]
+        },
+        {
+          "rank": 3,
+          "ticker": "186A.T",
+          "name": "Astroscale Holdings Inc.",
+          "score": 0.7251,
+          "action": "Trade",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "short_momentum",
+            "volume_pressure",
+            "liquid_tape"
+          ]
+        },
+        {
+          "rank": 4,
+          "ticker": "5332.T",
+          "name": "ＴＯＴＯ",
+          "score": 0.6848,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "short_momentum",
+            "volume_pressure",
+            "liquid_tape"
+          ]
+        },
+        {
+          "rank": 5,
+          "ticker": "285A.T",
+          "name": "キオクシアホールディングス",
+          "score": 0.6761,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "short_momentum",
+            "volume_pressure",
+            "liquid_tape"
+          ]
+        },
+        {
+          "rank": 6,
+          "ticker": "4043.T",
+          "name": "トクヤマ",
+          "score": 0.6657,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "short_momentum",
+            "volume_pressure",
+            "liquid_tape"
+          ]
+        },
+        {
+          "rank": 7,
+          "ticker": "4004.T",
+          "name": "レゾナック・ホールディングス",
+          "score": 0.6514,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "short_momentum",
+            "volume_pressure",
+            "liquid_tape"
+          ]
+        },
+        {
+          "rank": 8,
+          "ticker": "4062.T",
+          "name": "イビデン",
+          "score": 0.6401,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "short_momentum",
+            "volume_pressure",
+            "liquid_tape"
+          ]
+        },
+        {
+          "rank": 9,
+          "ticker": "4182.T",
+          "name": "三菱瓦斯化学",
+          "score": 0.6308,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "short_momentum",
+            "volume_pressure",
+            "liquid_tape"
+          ]
+        },
+        {
+          "rank": 10,
+          "ticker": "5201.T",
+          "name": "ＡＧＣ",
+          "score": 0.621,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "short_momentum",
+            "volume_pressure",
+            "liquid_tape"
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "discovery_scout",
+      "agent_name": "SAGURI",
+      "candidates_scored": 22,
+      "trade_count": 3,
+      "watch_count": 4,
+      "ignore_count": 15,
+      "trade_pct": 13.64,
+      "watch_pct": 18.18,
+      "score_min": 0.1543,
+      "score_avg": 0.4005,
+      "score_max": 0.9042,
+      "top_reason_codes": [
+        [
+          "small_cap_discovery",
+          10
+        ],
+        [
+          "early_volume_shift",
+          10
+        ],
+        [
+          "hidden_alpha",
+          10
+        ]
+      ],
+      "top10": [
+        {
+          "rank": 1,
+          "ticker": "280A.T",
+          "name": "TMH Inc.",
+          "score": 0.9042,
+          "action": "Trade",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "small_cap_discovery",
+            "early_volume_shift",
+            "hidden_alpha"
+          ]
+        },
+        {
+          "rank": 2,
+          "ticker": "186A.T",
+          "name": "Astroscale Holdings Inc.",
+          "score": 0.8001,
+          "action": "Trade",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "small_cap_discovery",
+            "early_volume_shift",
+            "hidden_alpha"
+          ]
+        },
+        {
+          "rank": 3,
+          "ticker": "2586.T",
+          "name": "FRUTA FRUTA INC.",
+          "score": 0.7183,
+          "action": "Trade",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "small_cap_discovery",
+            "early_volume_shift",
+            "hidden_alpha"
+          ]
+        },
+        {
+          "rank": 4,
+          "ticker": "153A.T",
+          "name": "Caulis Inc.",
+          "score": 0.6249,
+          "action": "Watch",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "small_cap_discovery",
+            "early_volume_shift",
+            "hidden_alpha"
+          ]
+        },
+        {
+          "rank": 5,
+          "ticker": "1436.T",
+          "name": "GreenEnergy & Company Inc.",
+          "score": 0.5759,
+          "action": "Watch",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "small_cap_discovery",
+            "early_volume_shift",
+            "hidden_alpha"
+          ]
+        },
+        {
+          "rank": 6,
+          "ticker": "350A.T",
+          "name": "DIGITAL GRID Corporation",
+          "score": 0.5697,
+          "action": "Watch",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "small_cap_discovery",
+            "early_volume_shift",
+            "hidden_alpha"
+          ]
+        },
+        {
+          "rank": 7,
+          "ticker": "319A.T",
+          "name": "Next Generation Technology Group Inc.",
+          "score": 0.5449,
+          "action": "Watch",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "small_cap_discovery",
+            "early_volume_shift",
+            "hidden_alpha"
+          ]
+        },
+        {
+          "rank": 8,
+          "ticker": "2334.T",
+          "name": "eole Inc.",
+          "score": 0.488,
+          "action": "Ignore",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "small_cap_discovery",
+            "early_volume_shift",
+            "hidden_alpha"
+          ]
+        },
+        {
+          "rank": 9,
+          "ticker": "3558.T",
+          "name": "JADE GROUP,Inc.",
+          "score": 0.4765,
+          "action": "Ignore",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "small_cap_discovery",
+            "early_volume_shift",
+            "hidden_alpha"
+          ]
+        },
+        {
+          "rank": 10,
+          "ticker": "277A.T",
+          "name": "Globe-ing Inc.",
+          "score": 0.432,
+          "action": "Ignore",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "small_cap_discovery",
+            "early_volume_shift",
+            "hidden_alpha"
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "reversal_snapback",
+      "agent_name": "KAESHI",
+      "candidates_scored": 240,
+      "trade_count": 1,
+      "watch_count": 10,
+      "ignore_count": 229,
+      "trade_pct": 0.42,
+      "watch_pct": 4.17,
+      "score_min": 0.1073,
+      "score_avg": 0.2756,
+      "score_max": 0.6979,
+      "top_reason_codes": [
+        [
+          "oversold_exhaustion",
+          10
+        ],
+        [
+          "snapback_pressure",
+          10
+        ],
+        [
+          "reaccumulation",
+          10
+        ]
+      ],
+      "top10": [
+        {
+          "rank": 1,
+          "ticker": "5838.T",
+          "name": "楽天銀行",
+          "score": 0.6979,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "oversold_exhaustion",
+            "snapback_pressure",
+            "reaccumulation"
+          ]
+        },
+        {
+          "rank": 2,
+          "ticker": "141A.T",
+          "name": "TRIAL Holdings,Inc.",
+          "score": 0.6224,
+          "action": "Watch",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "oversold_exhaustion",
+            "snapback_pressure",
+            "reaccumulation"
+          ]
+        },
+        {
+          "rank": 3,
+          "ticker": "4911.T",
+          "name": "資生堂",
+          "score": 0.5686,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "oversold_exhaustion",
+            "snapback_pressure",
+            "reaccumulation"
+          ]
+        },
+        {
+          "rank": 4,
+          "ticker": "4503.T",
+          "name": "アステラス製薬",
+          "score": 0.5646,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "oversold_exhaustion",
+            "snapback_pressure",
+            "reaccumulation"
+          ]
+        },
+        {
+          "rank": 5,
+          "ticker": "2195.T",
+          "name": "AMITA HOLDINGS CO.,LTD.",
+          "score": 0.5605,
+          "action": "Watch",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "oversold_exhaustion",
+            "snapback_pressure",
+            "reaccumulation"
+          ]
+        },
+        {
+          "rank": 6,
+          "ticker": "2334.T",
+          "name": "eole Inc.",
+          "score": 0.5576,
+          "action": "Watch",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "oversold_exhaustion",
+            "snapback_pressure",
+            "reaccumulation"
+          ]
+        },
+        {
+          "rank": 7,
+          "ticker": "1878.T",
+          "name": "大東建託",
+          "score": 0.5551,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "oversold_exhaustion",
+            "snapback_pressure",
+            "reaccumulation"
+          ]
+        },
+        {
+          "rank": 8,
+          "ticker": "3391.T",
+          "name": "ツルハホールディングス",
+          "score": 0.5455,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "oversold_exhaustion",
+            "snapback_pressure",
+            "reaccumulation"
+          ]
+        },
+        {
+          "rank": 9,
+          "ticker": "3231.T",
+          "name": "野村不動産ホールディングス",
+          "score": 0.5429,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "oversold_exhaustion",
+            "snapback_pressure",
+            "reaccumulation"
+          ]
+        },
+        {
+          "rank": 10,
+          "ticker": "3549.T",
+          "name": "クスリのアオキホールディングス",
+          "score": 0.5407,
+          "action": "Watch",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "oversold_exhaustion",
+            "snapback_pressure",
+            "reaccumulation"
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "candidates_scored": 219,
+      "trade_count": 184,
+      "watch_count": 32,
+      "ignore_count": 3,
+      "trade_pct": 84.02,
+      "watch_pct": 14.61,
+      "score_min": 0.4758,
+      "score_avg": 0.7635,
+      "score_max": 0.9397,
+      "top_reason_codes": [
+        [
+          "liquidity_guard",
+          10
+        ],
+        [
+          "drawdown_control",
+          10
+        ],
+        [
+          "survivable_setup",
+          10
+        ]
+      ],
+      "top10": [
+        {
+          "rank": 1,
+          "ticker": "4578.T",
+          "name": "大塚ホールディングス",
+          "score": 0.9397,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "liquidity_guard",
+            "drawdown_control",
+            "survivable_setup"
+          ]
+        },
+        {
+          "rank": 2,
+          "ticker": "2914.T",
+          "name": "日本たばこ産業",
+          "score": 0.9359,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "liquidity_guard",
+            "drawdown_control",
+            "survivable_setup"
+          ]
+        },
+        {
+          "rank": 3,
+          "ticker": "2503.T",
+          "name": "キリンホールディングス",
+          "score": 0.9268,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "liquidity_guard",
+            "drawdown_control",
+            "survivable_setup"
+          ]
+        },
+        {
+          "rank": 4,
+          "ticker": "4021.T",
+          "name": "日産化学",
+          "score": 0.9263,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "liquidity_guard",
+            "drawdown_control",
+            "survivable_setup"
+          ]
+        },
+        {
+          "rank": 5,
+          "ticker": "4063.T",
+          "name": "信越化学工業",
+          "score": 0.9247,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "liquidity_guard",
+            "drawdown_control",
+            "survivable_setup"
+          ]
+        },
+        {
+          "rank": 6,
+          "ticker": "3099.T",
+          "name": "三越伊勢丹ホールディングス",
+          "score": 0.922,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "liquidity_guard",
+            "drawdown_control",
+            "survivable_setup"
+          ]
+        },
+        {
+          "rank": 7,
+          "ticker": "5844.T",
+          "name": "京都フィナンシャルグループ",
+          "score": 0.9199,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "liquidity_guard",
+            "drawdown_control",
+            "survivable_setup"
+          ]
+        },
+        {
+          "rank": 8,
+          "ticker": "4385.T",
+          "name": "メルカリ",
+          "score": 0.9146,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "liquidity_guard",
+            "drawdown_control",
+            "survivable_setup"
+          ]
+        },
+        {
+          "rank": 9,
+          "ticker": "3774.T",
+          "name": "インターネットイニシアティブ",
+          "score": 0.914,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "liquidity_guard",
+            "drawdown_control",
+            "survivable_setup"
+          ]
+        },
+        {
+          "rank": 10,
+          "ticker": "2432.T",
+          "name": "ディー・エヌ・エー",
+          "score": 0.9056,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "liquidity_guard",
+            "drawdown_control",
+            "survivable_setup"
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "value_mispricing",
+      "agent_name": "HIZUMI",
+      "candidates_scored": 240,
+      "trade_count": 18,
+      "watch_count": 114,
+      "ignore_count": 108,
+      "trade_pct": 7.5,
+      "watch_pct": 47.5,
+      "score_min": 0.2861,
+      "score_avg": 0.5366,
+      "score_max": 0.7913,
+      "top_reason_codes": [
+        [
+          "mispricing_proxy",
+          10
+        ],
+        [
+          "value_rerating",
+          10
+        ],
+        [
+          "trap_guard",
+          10
+        ]
+      ],
+      "top10": [
+        {
+          "rank": 1,
+          "ticker": "2334.T",
+          "name": "eole Inc.",
+          "score": 0.7913,
+          "action": "Trade",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "mispricing_proxy",
+            "value_rerating",
+            "trap_guard"
+          ]
+        },
+        {
+          "rank": 2,
+          "ticker": "4704.T",
+          "name": "トレンドマイクロ",
+          "score": 0.7521,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "mispricing_proxy",
+            "value_rerating",
+            "trap_guard"
+          ]
+        },
+        {
+          "rank": 3,
+          "ticker": "5334.T",
+          "name": "日本特殊陶業",
+          "score": 0.7388,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "mispricing_proxy",
+            "value_rerating",
+            "trap_guard"
+          ]
+        },
+        {
+          "rank": 4,
+          "ticker": "4063.T",
+          "name": "信越化学工業",
+          "score": 0.7227,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "mispricing_proxy",
+            "value_rerating",
+            "trap_guard"
+          ]
+        },
+        {
+          "rank": 5,
+          "ticker": "5333.T",
+          "name": "日本碍子",
+          "score": 0.7195,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "mispricing_proxy",
+            "value_rerating",
+            "trap_guard"
+          ]
+        },
+        {
+          "rank": 6,
+          "ticker": "5844.T",
+          "name": "京都フィナンシャルグループ",
+          "score": 0.7092,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "mispricing_proxy",
+            "value_rerating",
+            "trap_guard"
+          ]
+        },
+        {
+          "rank": 7,
+          "ticker": "1963.T",
+          "name": "日揮ホールディングス",
+          "score": 0.7069,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "mispricing_proxy",
+            "value_rerating",
+            "trap_guard"
+          ]
+        },
+        {
+          "rank": 8,
+          "ticker": "4088.T",
+          "name": "エア・ウォーター",
+          "score": 0.7048,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "mispricing_proxy",
+            "value_rerating",
+            "trap_guard"
+          ]
+        },
+        {
+          "rank": 9,
+          "ticker": "4182.T",
+          "name": "三菱瓦斯化学",
+          "score": 0.702,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "mispricing_proxy",
+            "value_rerating",
+            "trap_guard"
+          ]
+        },
+        {
+          "rank": 10,
+          "ticker": "5301.T",
+          "name": "東海カーボン",
+          "score": 0.7016,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "mispricing_proxy",
+            "value_rerating",
+            "trap_guard"
+          ]
+        }
+      ]
+    },
+    {
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "candidates_scored": 219,
+      "trade_count": 33,
+      "watch_count": 19,
+      "ignore_count": 167,
+      "trade_pct": 15.07,
+      "watch_pct": 8.68,
+      "score_min": 0.1316,
+      "score_avg": 0.3686,
+      "score_max": 0.9623,
+      "top_reason_codes": [
+        [
+          "weekly_flow",
+          10
+        ],
+        [
+          "trend_structure",
+          10
+        ],
+        [
+          "relative_strength",
+          10
+        ]
+      ],
+      "top10": [
+        {
+          "rank": 1,
+          "ticker": "5301.T",
+          "name": "東海カーボン",
+          "score": 0.9623,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "weekly_flow",
+            "trend_structure",
+            "relative_strength"
+          ]
+        },
+        {
+          "rank": 2,
+          "ticker": "2531.T",
+          "name": "宝ホールディングス",
+          "score": 0.9565,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "weekly_flow",
+            "trend_structure",
+            "relative_strength"
+          ]
+        },
+        {
+          "rank": 3,
+          "ticker": "5333.T",
+          "name": "日本碍子",
+          "score": 0.9565,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "weekly_flow",
+            "trend_structure",
+            "relative_strength"
+          ]
+        },
+        {
+          "rank": 4,
+          "ticker": "3774.T",
+          "name": "インターネットイニシアティブ",
+          "score": 0.9455,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "weekly_flow",
+            "trend_structure",
+            "relative_strength"
+          ]
+        },
+        {
+          "rank": 5,
+          "ticker": "4004.T",
+          "name": "レゾナック・ホールディングス",
+          "score": 0.9205,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "weekly_flow",
+            "trend_structure",
+            "relative_strength"
+          ]
+        },
+        {
+          "rank": 6,
+          "ticker": "2371.T",
+          "name": "カカクコム",
+          "score": 0.9153,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "weekly_flow",
+            "trend_structure",
+            "relative_strength"
+          ]
+        },
+        {
+          "rank": 7,
+          "ticker": "3105.T",
+          "name": "日清紡ホールディングス",
+          "score": 0.9101,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "weekly_flow",
+            "trend_structure",
+            "relative_strength"
+          ]
+        },
+        {
+          "rank": 8,
+          "ticker": "5706.T",
+          "name": "三井金属",
+          "score": 0.9003,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "weekly_flow",
+            "trend_structure",
+            "relative_strength"
+          ]
+        },
+        {
+          "rank": 9,
+          "ticker": "4062.T",
+          "name": "イビデン",
+          "score": 0.8926,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "weekly_flow",
+            "trend_structure",
+            "relative_strength"
+          ]
+        },
+        {
+          "rank": 10,
+          "ticker": "4980.T",
+          "name": "デクセリアルズ",
+          "score": 0.8883,
+          "action": "Trade",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "weekly_flow",
+            "trend_structure",
+            "relative_strength"
+          ]
+        }
+      ]
+    }
+  ],
+  "overlaps": [
+    {
+      "ticker": "2334.T",
+      "agent_count": 3,
+      "agents": [
+        {
+          "agent_id": "value_mispricing",
+          "agent_name": "HIZUMI",
+          "rank": 1,
+          "score": 0.7913
+        },
+        {
+          "agent_id": "reversal_snapback",
+          "agent_name": "KAESHI",
+          "rank": 6,
+          "score": 0.5576
+        },
+        {
+          "agent_id": "discovery_scout",
+          "agent_name": "SAGURI",
+          "rank": 8,
+          "score": 0.488
+        }
+      ]
+    },
+    {
+      "ticker": "3774.T",
+      "agent_count": 3,
+      "agents": [
+        {
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "rank": 4,
+          "score": 0.6472
+        },
+        {
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "rank": 4,
+          "score": 0.9455
+        },
+        {
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "rank": 9,
+          "score": 0.914
+        }
+      ]
+    },
+    {
+      "ticker": "5844.T",
+      "agent_count": 3,
+      "agents": [
+        {
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "rank": 6,
+          "score": 0.6338
+        },
+        {
+          "agent_id": "value_mispricing",
+          "agent_name": "HIZUMI",
+          "rank": 6,
+          "score": 0.7092
+        },
+        {
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "rank": 7,
+          "score": 0.9199
+        }
+      ]
+    },
+    {
+      "ticker": "186A.T",
+      "agent_count": 2,
+      "agents": [
+        {
+          "agent_id": "discovery_scout",
+          "agent_name": "SAGURI",
+          "rank": 2,
+          "score": 0.8001
+        },
+        {
+          "agent_id": "daily_striker",
+          "agent_name": "KYOU",
+          "rank": 3,
+          "score": 0.7251
+        }
+      ]
+    },
+    {
+      "ticker": "2371.T",
+      "agent_count": 2,
+      "agents": [
+        {
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "rank": 3,
+          "score": 0.7028
+        },
+        {
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "rank": 6,
+          "score": 0.9153
+        }
+      ]
+    },
+    {
+      "ticker": "2586.T",
+      "agent_count": 2,
+      "agents": [
+        {
+          "agent_id": "daily_striker",
+          "agent_name": "KYOU",
+          "rank": 1,
+          "score": 0.8067
+        },
+        {
+          "agent_id": "discovery_scout",
+          "agent_name": "SAGURI",
+          "rank": 3,
+          "score": 0.7183
+        }
+      ]
+    },
+    {
+      "ticker": "280A.T",
+      "agent_count": 2,
+      "agents": [
+        {
+          "agent_id": "discovery_scout",
+          "agent_name": "SAGURI",
+          "rank": 1,
+          "score": 0.9042
+        },
+        {
+          "agent_id": "daily_striker",
+          "agent_name": "KYOU",
+          "rank": 2,
+          "score": 0.7384
+        }
+      ]
+    },
+    {
+      "ticker": "3105.T",
+      "agent_count": 2,
+      "agents": [
+        {
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "rank": 5,
+          "score": 0.6356
+        },
+        {
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "rank": 7,
+          "score": 0.9101
+        }
+      ]
+    },
+    {
+      "ticker": "4004.T",
+      "agent_count": 2,
+      "agents": [
+        {
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "rank": 5,
+          "score": 0.9205
+        },
+        {
+          "agent_id": "daily_striker",
+          "agent_name": "KYOU",
+          "rank": 7,
+          "score": 0.6514
+        }
+      ]
+    },
+    {
+      "ticker": "4062.T",
+      "agent_count": 2,
+      "agents": [
+        {
+          "agent_id": "daily_striker",
+          "agent_name": "KYOU",
+          "rank": 8,
+          "score": 0.6401
+        },
+        {
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "rank": 9,
+          "score": 0.8926
+        }
+      ]
+    },
+    {
+      "ticker": "4063.T",
+      "agent_count": 2,
+      "agents": [
+        {
+          "agent_id": "value_mispricing",
+          "agent_name": "HIZUMI",
+          "rank": 4,
+          "score": 0.7227
+        },
+        {
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "rank": 5,
+          "score": 0.9247
+        }
+      ]
+    },
+    {
+      "ticker": "4182.T",
+      "agent_count": 2,
+      "agents": [
+        {
+          "agent_id": "daily_striker",
+          "agent_name": "KYOU",
+          "rank": 9,
+          "score": 0.6308
+        },
+        {
+          "agent_id": "value_mispricing",
+          "agent_name": "HIZUMI",
+          "rank": 9,
+          "score": 0.702
+        }
+      ]
+    },
+    {
+      "ticker": "4385.T",
+      "agent_count": 2,
+      "agents": [
+        {
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "rank": 1,
+          "score": 0.719
+        },
+        {
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "rank": 8,
+          "score": 0.9146
+        }
+      ]
+    },
+    {
+      "ticker": "5301.T",
+      "agent_count": 2,
+      "agents": [
+        {
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "rank": 1,
+          "score": 0.9623
+        },
+        {
+          "agent_id": "value_mispricing",
+          "agent_name": "HIZUMI",
+          "rank": 10,
+          "score": 0.7016
+        }
+      ]
+    },
+    {
+      "ticker": "5333.T",
+      "agent_count": 2,
+      "agents": [
+        {
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "rank": 3,
+          "score": 0.9565
+        },
+        {
+          "agent_id": "value_mispricing",
+          "agent_name": "HIZUMI",
+          "rank": 5,
+          "score": 0.7195
+        }
+      ]
+    }
+  ],
+  "universe_review": {
+    "trial_universe_rows": 300,
+    "index_universe_rows": 852,
+    "failed_price_symbols": [
+      {
+        "symbol": "165A.T",
+        "name": "SBI RHEOS HIFUMI Inc.",
+        "reason": "insufficient_data",
+        "source_errors": [
+          "yfinance_empty",
+          "stooq_error: ParserError: Error tokenizing data. C error: Expected 1 fields in line 6, saw 2\n"
+        ]
+      },
+      {
+        "symbol": "176A.T",
+        "name": "Rezil Inc.",
+        "reason": "insufficient_data",
+        "source_errors": [
+          "yfinance_empty",
+          "stooq_error: ParserError: Error tokenizing data. C error: Expected 1 fields in line 6, saw 2\n"
+        ]
+      }
+    ],
+    "failed_price_symbol_count": 2,
+    "weird_trial_universe_rows": [
+      {
+        "ticker": "1911.T",
+        "name": "住友林業",
+        "bucket": "Core"
+      },
+      {
+        "ticker": "1925.T",
+        "name": "大和ハウス工業",
+        "bucket": "Core"
+      },
+      {
+        "ticker": "1928.T",
+        "name": "積水ハウス",
+        "bucket": "Core"
+      },
+      {
+        "ticker": "1942.T",
+        "name": "関電工",
+        "bucket": "Core"
+      },
+      {
+        "ticker": "1944.T",
+        "name": "きんでん",
+        "bucket": "Core"
+      },
+      {
+        "ticker": "1951.T",
+        "name": "エクシオグループ",
+        "bucket": "Core"
+      },
+      {
+        "ticker": "1959.T",
+        "name": "クラフティア",
+        "bucket": "Core"
+      },
+      {
+        "ticker": "1963.T",
+        "name": "日揮ホールディングス",
+        "bucket": "Core"
+      },
+      {
+        "ticker": "1969.T",
+        "name": "高砂熱学工業",
+        "bucket": "Core"
+      },
+      {
+        "ticker": "2002.T",
+        "name": "日清製粉グループ本社",
+        "bucket": "Core"
+      }
+    ],
+    "weird_index_universe_rows": [
+      {
+        "ticker": "1911.T",
+        "name": "住友林業",
+        "source": "topix500"
+      },
+      {
+        "ticker": "1925.T",
+        "name": "大和ハウス工業",
+        "source": "topix500|jpx_prime150"
+      },
+      {
+        "ticker": "1928.T",
+        "name": "積水ハウス",
+        "source": "topix500|jpx_prime150"
+      },
+      {
+        "ticker": "1942.T",
+        "name": "関電工",
+        "source": "topix500"
+      },
+      {
+        "ticker": "1944.T",
+        "name": "きんでん",
+        "source": "topix500"
+      },
+      {
+        "ticker": "1951.T",
+        "name": "エクシオグループ",
+        "source": "topix500"
+      },
+      {
+        "ticker": "1959.T",
+        "name": "クラフティア",
+        "source": "topix500"
+      },
+      {
+        "ticker": "1963.T",
+        "name": "日揮ホールディングス",
+        "source": "topix500"
+      },
+      {
+        "ticker": "1969.T",
+        "name": "高砂熱学工業",
+        "source": "topix500"
+      },
+      {
+        "ticker": "2002.T",
+        "name": "日清製粉グループ本社",
+        "source": "topix500"
+      }
+    ],
+    "weird_trial_universe_count": 10,
+    "weird_index_universe_count": 10
+  },
+  "price_json_review": {
+    "latest_json_path": "site/data/prices-jp/latest.json",
+    "latest_json_size_bytes": 981787,
+    "latest_json_size_mb": 0.936,
+    "dated_price_json_files": []
+  },
+  "warnings": [
+    "trial universe has 10 suspicious rows",
+    "price fetch failed for 2 symbols"
+  ]
+}

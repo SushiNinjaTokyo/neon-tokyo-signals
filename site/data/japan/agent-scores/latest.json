@@ -1,6 +1,6 @@
 {
   "schema_version": "neon_tokyo_agent_scores_v1",
-  "generated_at": "2026-05-28T15:33:29+00:00",
+  "generated_at": "2026-05-28T15:48:35+00:00",
   "market": "Japan",
   "timezone": "Asia/Tokyo",
   "latest_date": "2026-05-27",
@@ -11,7 +11,7 @@
       "name": "KYOU",
       "style_label": "Today’s Momentum Signal",
       "universe_rule": "core_growth_liquid",
-      "candidates_scored": 239,
+      "candidates_scored": 240,
       "items": [
         {
           "rank": 1,
@@ -1478,7 +1478,7 @@
       "name": "SAGURI",
       "style_label": "Small Cap / Hidden Discovery",
       "universe_rule": "small_discovery",
-      "candidates_scored": 21,
+      "candidates_scored": 22,
       "items": [
         {
           "rank": 1,
@@ -1610,6 +1610,22 @@
         },
         {
           "rank": 9,
+          "ticker": "3558.T",
+          "name": "JADE GROUP,Inc.",
+          "score": 0.4765,
+          "score_pts": 47.7,
+          "action": "Ignore",
+          "signal_strength": "low",
+          "universe_bucket": "Discovery",
+          "reason_codes": [
+            "small_cap_discovery",
+            "early_volume_shift",
+            "hidden_alpha"
+          ],
+          "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha"
+        },
+        {
+          "rank": 10,
           "ticker": "277A.T",
           "name": "Globe-ing Inc.",
           "score": 0.432,
@@ -1625,7 +1641,7 @@
           "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha"
         },
         {
-          "rank": 10,
+          "rank": 11,
           "ticker": "281A.T",
           "name": "Informetis Co.,Ltd.",
           "score": 0.3767,
@@ -1641,7 +1657,7 @@
           "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha"
         },
         {
-          "rank": 11,
+          "rank": 12,
           "ticker": "141A.T",
           "name": "TRIAL Holdings,Inc.",
           "score": 0.3293,
@@ -1657,7 +1673,7 @@
           "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha"
         },
         {
-          "rank": 12,
+          "rank": 13,
           "ticker": "2160.T",
           "name": "GNI Group Ltd.",
           "score": 0.248,
@@ -1673,7 +1689,7 @@
           "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha"
         },
         {
-          "rank": 13,
+          "rank": 14,
           "ticker": "3070.T",
           "name": "JELLY BEANS GROUP Co.,Ltd.",
           "score": 0.2206,
@@ -1689,7 +1705,7 @@
           "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha"
         },
         {
-          "rank": 14,
+          "rank": 15,
           "ticker": "332A.T",
           "name": "MEEQ Inc.",
           "score": 0.2187,
@@ -1705,7 +1721,7 @@
           "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha"
         },
         {
-          "rank": 15,
+          "rank": 16,
           "ticker": "338A.T",
           "name": "ZenmuTech,Inc.",
           "score": 0.2122,
@@ -1721,7 +1737,7 @@
           "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha"
         },
         {
-          "rank": 16,
+          "rank": 17,
           "ticker": "325A.T",
           "name": "TENTIAL Inc.",
           "score": 0.1956,
@@ -1737,7 +1753,7 @@
           "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha"
         },
         {
-          "rank": 17,
+          "rank": 18,
           "ticker": "2158.T",
           "name": "FRONTEO,Inc.",
           "score": 0.1937,
@@ -1753,7 +1769,7 @@
           "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha"
         },
         {
-          "rank": 18,
+          "rank": 19,
           "ticker": "276A.T",
           "name": "CCReB Advisors Inc.",
           "score": 0.182,
@@ -1769,7 +1785,7 @@
           "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha"
         },
         {
-          "rank": 19,
+          "rank": 20,
           "ticker": "190A.T",
           "name": "Chordia Therapeutics Inc.",
           "score": 0.1733,
@@ -1785,7 +1801,7 @@
           "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha"
         },
         {
-          "rank": 20,
+          "rank": 21,
           "ticker": "2195.T",
           "name": "AMITA HOLDINGS CO.,LTD.",
           "score": 0.1726,
@@ -1801,7 +1817,7 @@
           "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha"
         },
         {
-          "rank": 21,
+          "rank": 22,
           "ticker": "3556.T",
           "name": "RenetJapanGroup,Inc.",
           "score": 0.1543,
@@ -2312,7 +2328,7 @@
       "name": "KAESHI",
       "style_label": "Reversal / Snapback Signal",
       "universe_rule": "core_growth_liquid",
-      "candidates_scored": 239,
+      "candidates_scored": 240,
       "items": [
         {
           "rank": 1,
@@ -2801,7 +2817,7 @@
       "name": "HIZUMI",
       "style_label": "Value / Mispricing Signal",
       "universe_rule": "value_candidate",
-      "candidates_scored": 239,
+      "candidates_scored": 240,
       "items": [
         {
           "rank": 1,

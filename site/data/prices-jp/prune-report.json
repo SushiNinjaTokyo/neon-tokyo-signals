@@ -1,0 +1,35 @@
+{
+  "schema_version": "prices_jp_prune_report_v1",
+  "generated_at": "2026-05-28T15:48:35+00:00",
+  "dry_run": false,
+  "price_dir": "site/data/prices-jp",
+  "delete_dated": true,
+  "max_latest_mb": 25.0,
+  "latest_json": {
+    "path": "site/data/prices-jp/latest.json",
+    "exists": true,
+    "size_bytes": 981787,
+    "size_mb": 0.936,
+    "mode": "summary",
+    "has_bars_sample": false
+  },
+  "removed": [
+    {
+      "path": "site/data/prices-jp/2026-05-27.json",
+      "size_bytes": 5083601,
+      "reason": "dated_price_snapshot"
+    },
+    {
+      "path": "site/data/prices-jp/2026-05-28.json",
+      "size_bytes": 5083627,
+      "reason": "dated_price_snapshot"
+    },
+    {
+      "path": "site/data/prices-jp/2026-05-29.json",
+      "size_bytes": 38256612,
+      "reason": "dated_price_snapshot"
+    }
+  ],
+  "kept": [],
+  "warnings": []
+}
