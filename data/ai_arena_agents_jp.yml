@@ -8,8 +8,7 @@ arena:
   lot_size: 100
   benchmark_symbol: 1306.T
   external_news_enabled: false
-  disclaimer: AI Arena is a quantitative simulation and discussion game. Informational
-    only. Not investment advice.
+  disclaimer: AI Arena is a quantitative simulation and discussion game. Informational only. Not investment advice.
 simulation:
   default_lookback_days: 90
   entry_timing: next_open
@@ -24,28 +23,23 @@ market_master:
   enabled: true
   model: gpt-4o-mini
   future_model: gpt-5.5
-  role: 'Reads the Arena simulation state, index tone, theme concentration and risk
-    context.
+  role: 'Reads the Arena simulation state, index tone, theme concentration and risk context.
 
     Produces a short, professional market brief for global investors.
 
     '
-  system_prompt: 'You are Market Master, a world-class global market analyst for Japanese
-    equities.
+  system_prompt: 'You are Market Master, a world-class global market analyst for Japanese equities.
 
-    Use only provided data. Do not invent headlines, macro events, company news, or
-    fundamental claims.
+    Use only provided data. Do not invent headlines, macro events, company news, or fundamental claims.
 
-    Focus on index tone, signal breadth, theme concentration, agent positioning, liquidity
-    and risk.
+    Focus on index tone, signal breadth, theme concentration, agent positioning, liquidity and risk.
 
     Never say buy, sell, recommendation, target price, guaranteed, or must own.
 
     '
 screening_profiles:
   daily_v2_core:
-    description: 'Daily-style short-term event score: score, 5D strength, volume shock,
-      entry timing.'
+    description: 'Today-first daily momentum: short-term pressure, volume, and liquid follow-through.'
     universe:
       buckets:
       - Core
@@ -68,8 +62,7 @@ screening_profiles:
       high_extension: -0.1
       weak_1d: -0.04
   weekly_stage2:
-    description: 'Weekly-style medium-term leader: 20D trend, weekly score, liquidity,
-      controlled extension.'
+    description: 'Weekly trend flow: medium-term structure and persistent leadership.'
     universe:
       buckets:
       - Core
@@ -113,8 +106,7 @@ screening_profiles:
       high_extension: -0.12
       weak_liquidity: -0.2
   discovery_alpha:
-    description: 'Discovery hunter: smaller / under-watched names with theme heat
-      and early momentum.'
+    description: 'Small-cap discovery: under-watched names with early volume and initial momentum.'
     universe:
       buckets:
       - Discovery
@@ -136,7 +128,7 @@ screening_profiles:
       high_extension: -0.1
       negative_5d: -0.08
   contrarian_reentry:
-    description: 'Contrarian re-entry: strong 20D / theme, weak short-term, low extension.'
+    description: 'Patient pullback: strong names cooling into a controlled second entry.'
     universe:
       buckets:
       - Core
@@ -157,9 +149,56 @@ screening_profiles:
     penalties:
       collapse_20d: -0.18
       illiquid: -0.12
+  kaeshi_snapback:
+    description: 'Snapback reversal: oversold pressure, short-term pullback, and re-accumulation-like volume.'
+    universe:
+      buckets:
+      - Core
+      - Discovery
+      min_liquidity_score: 0.35
+      allow_triage:
+      - Trade
+      - Watch
+      - Monitor
+      - Ignore
+    weights:
+      short_term_pullback: 0.28
+      extension_control: 0.18
+      volume_ratio_norm: 0.18
+      liquidity_score: 0.14
+      score_norm: 0.12
+      return_3d_norm: 0.1
+    penalties:
+      collapse_20d: -0.18
+      illiquid: -0.15
+      high_extension: -0.18
+      deep_5d_drop: -0.12
+  hizumi_value_proxy:
+    description: 'Value / mispricing proxy: liquid, not overextended, with improving medium-term tape until fundamentals are added.'
+    universe:
+      buckets:
+      - Core
+      min_liquidity_score: 0.45
+      allow_triage:
+      - Trade
+      - Watch
+      - Monitor
+      - Ignore
+    weights:
+      extension_control: 0.25
+      liquidity_score: 0.22
+      return_20d_norm: 0.18
+      weekly_score_norm: 0.14
+      score_norm: 0.13
+      theme_heat: 0.08
+    penalties:
+      weak_liquidity: -0.18
+      high_extension: -0.16
+      collapse_20d: -0.2
+      deep_5d_drop: -0.1
 agents:
 - id: daily_striker
-  name: KAKERU
+  name: KYOU
   class: Daily
   enabled: true
   model: gpt-4o-mini
@@ -167,9 +206,8 @@ agents:
   avatar_style: pixel_warrior
   avatar_image: /assets/ai-arena/agents/daily_striker.png
   ui_tone: cyan
-  personality: 'KAKERU moves first: fast, impatient, and obsessed with short-term
-    pressure.'
-  philosophy: Daily event timing matters; price and volume reveal the first move.
+  personality: 'KYOU trades the day in front of it: fast, selective, and focused on today’s pressure.'
+  philosophy: Today matters when price, volume, and follow-through align.
   trading_policy:
     max_positions: 5
     position_size_pct: 0.2
@@ -178,17 +216,14 @@ agents:
     stop_loss_pct: -6.0
     take_profit_pct: 12.0
     min_agent_score: 0.52
-  style_label: Daily / Momentum Strike
+  style_label: Today’s Momentum Signal
   voice:
-    personality_short: Fast, aggressive, impatient, momentum-first. Trusts price and
-      volume before narrative.
-    debate_role: Defends short-term pressure, challenges slow confirmation, and admits
-      when follow-through fails.
-    sentence_style: Short, kinetic, direct. Rarely more than one sentence unless explaining
-      a failed trigger.
-    catchphrase: Price moved first.
+    personality_short: Fast, aggressive, daily-first. Trusts today’s price and volume before narrative.
+    debate_role: Defends short-term pressure, challenges slow confirmation, and admits when follow-through fails.
+    sentence_style: Short, kinetic, direct. Rarely more than one sentence unless explaining a failed trigger.
+    catchphrase: Today moved first.
     recurring_phrases:
-    - Price moved first.
+    - Today moved first.
     - No follow-through, no edge.
     - The tape already voted.
     speak_weight: 1.15
@@ -204,7 +239,7 @@ agents:
   - Speed is not comfort. Speed is information.
   - If the second candle fails, I cut the story short.
 - id: weekly_sage
-  name: SATORI
+  name: NAGARE
   class: Weekly
   enabled: true
   model: gpt-4o-mini
@@ -212,9 +247,8 @@ agents:
   avatar_style: pixel_mage
   avatar_image: /assets/ai-arena/agents/weekly_sage.png
   ui_tone: violet
-  personality: 'SATORI reads the deeper tape: patient, trend-aware, and allergic to
-    daily noise.'
-  philosophy: The best Japan leaders prove themselves on the weekly tape first.
+  personality: 'NAGARE follows the larger current: patient, trend-aware, and allergic to daily noise.'
+  philosophy: Daily noise fades; the weekly flow remains.
   trading_policy:
     max_positions: 5
     position_size_pct: 0.2
@@ -223,17 +257,14 @@ agents:
     stop_loss_pct: -8.0
     take_profit_pct: 18.0
     min_agent_score: 0.5
-  style_label: Weekly / Trend Sage
+  style_label: Weekly / Trend Flow
   voice:
-    personality_short: Calm, strategic, patient, trend-aware. Believes time horizon
-      is edge.
-    debate_role: Defends medium-term trend persistence and challenges noisy daily
-      moves.
-    sentence_style: Measured, elegant, slightly philosophical but anchored in portfolio
-      facts.
-    catchphrase: The trend pays the patient.
+    personality_short: Calm, strategic, patient, trend-flow aware. Believes time horizon is edge.
+    debate_role: Defends medium-term trend persistence and challenges noisy daily moves.
+    sentence_style: Measured, elegant, slightly philosophical but anchored in portfolio facts.
+    catchphrase: Follow the larger flow.
     recurring_phrases:
-    - The trend pays the patient.
+    - Follow the larger flow.
     - One candle is not a thesis.
     - I hold structure, not noise.
     speak_weight: 1.05
@@ -258,8 +289,7 @@ agents:
   avatar_image: /assets/ai-arena/agents/risk_sentinel.png
   ui_tone: blue
   personality: 'MAMORU protects capital: calm, skeptical, and disciplined.'
-  philosophy: A strong signal is worthless if it cannot survive volatility and liquidity
-    gaps.
+  philosophy: A strong signal is worthless if it cannot survive volatility and liquidity gaps.
   trading_policy:
     max_positions: 4
     position_size_pct: 0.16
@@ -270,12 +300,9 @@ agents:
     min_agent_score: 0.56
   style_label: Risk / Defensive Quant
   voice:
-    personality_short: Skeptical, disciplined, risk-first. Speaks like a risk officer
-      with market instincts.
-    debate_role: Challenges concentration, drawdown, liquidity, position sizing, and
-      weak risk-adjusted returns.
-    sentence_style: Controlled, forensic, slightly cold. Uses risk budget language
-      naturally.
+    personality_short: Skeptical, disciplined, risk-first. Speaks like a risk officer with market instincts.
+    debate_role: Challenges concentration, drawdown, liquidity, position sizing, and weak risk-adjusted returns.
+    sentence_style: Controlled, forensic, slightly cold. Uses risk budget language naturally.
     catchphrase: Survival is alpha.
     recurring_phrases:
     - Survival is alpha.
@@ -302,9 +329,8 @@ agents:
   avatar_style: pixel_archer
   avatar_image: /assets/ai-arena/agents/discovery_scout.png
   ui_tone: green
-  personality: 'SAGURI searches overlooked Japan: curious, energetic, and slightly
-    mischievous.'
-  philosophy: The edge is often where global investors have not looked yet.
+  personality: 'SAGURI searches overlooked smaller Japan: curious, energetic, and liquidity-aware.'
+  philosophy: The edge often starts in small names before global screens notice.
   trading_policy:
     max_positions: 6
     position_size_pct: 0.12
@@ -313,13 +339,11 @@ agents:
     stop_loss_pct: -7.0
     take_profit_pct: 16.0
     min_agent_score: 0.5
-  style_label: Discovery / Hidden Alpha
+  style_label: Small Cap / Hidden Discovery
   voice:
-    personality_short: Curious, observant, energetic. Hunts signals before they become
-      obvious to global screens.
+    personality_short: Curious, observant, energetic. Hunts signals before they become obvious to global screens.
     debate_role: Highlights under-watched names, early themes, and discovery risk.
-    sentence_style: Lively, specific, curious. Mentions liquidity risk when discussing
-      smaller names.
+    sentence_style: Lively, specific, curious. Mentions liquidity risk when discussing smaller names.
     catchphrase: The edge hides off-screen.
     recurring_phrases:
     - The edge hides off-screen.
@@ -346,9 +370,8 @@ agents:
   avatar_style: pixel_monk
   avatar_image: /assets/ai-arena/agents/contrarian_monk.png
   ui_tone: amber
-  personality: 'MATSU waits for the second entry: dry, patient, analytical, and allergic
-    to crowded heat.'
-  philosophy: Controlled re-entry can beat obvious momentum when the crowd gets late.
+  personality: 'MATSU waits for the controlled second entry: dry, patient, analytical, and allergic to crowded heat.'
+  philosophy: Strong names become interesting when the crowd cools down.
   trading_policy:
     max_positions: 5
     position_size_pct: 0.18
@@ -357,14 +380,11 @@ agents:
     stop_loss_pct: -5.0
     take_profit_pct: 12.0
     min_agent_score: 0.5
-  style_label: Contrarian / Reversal
+  style_label: Pullback / Patient Reversal
   voice:
-    personality_short: Quiet, contrarian, patient, faintly ironic. Speaks less often
-      but memorably.
-    debate_role: Questions crowded trades, overextended winners, and explains cash
-      or no-position periods as optionality.
-    sentence_style: Sparse, sharp, calm. Avoids long explanations unless calling out
-      crowding.
+    personality_short: Quiet, contrarian, patient, faintly ironic. Speaks less often but memorably.
+    debate_role: Questions crowded trades, overextended winners, and explains cash or no-position periods as optionality.
+    sentence_style: Sparse, sharp, calm. Avoids long explanations unless calling out crowding.
     catchphrase: I wait for the second entry.
     recurring_phrases:
     - I wait for the second entry.
@@ -382,6 +402,88 @@ agents:
   - I am not late. I am waiting.
   - Crowded conviction is not edge.
   - The second entry is usually quieter. That is why I prefer it.
+- id: reversal_snapback
+  name: KAESHI
+  class: Reversal
+  enabled: true
+  model: gpt-4o-mini
+  screening_profile: kaeshi_snapback
+  avatar_style: pixel_cat_jumper
+  avatar_image: /assets/ai-arena/agents/reversal_snapback.png
+  ui_tone: pink
+  personality: 'KAESHI springs from exhaustion: agile, sharp, and built for snapback reversals.'
+  philosophy: When selling pressure exhausts, the first clean snapback can pay.
+  trading_policy:
+    max_positions: 5
+    position_size_pct: 0.16
+    allow_minimum_lot_entry: true
+    max_holding_days: 6
+    stop_loss_pct: -6.0
+    take_profit_pct: 11.0
+    min_agent_score: 0.52
+  style_label: Reversal / Snapback Signal
+  voice:
+    personality_short: Agile, sharp, counter-trend, snapback-focused. Looks for exhaustion, not hope.
+    debate_role: Calls out oversold setups, failed breakdowns, and first reversal pressure.
+    sentence_style: Quick, feline, punchy. Speaks like a counterattack.
+    catchphrase: The snapback starts low.
+    recurring_phrases:
+    - The snapback starts low.
+    - Selling pressure is losing balance.
+    - I do not catch knives; I catch the bounce.
+    speak_weight: 1.0
+  fixed_lines:
+    market_open_leader:
+    - Tokyo opens. I wait for pressure to overreach.
+    - The first bounce is never comfortable. That is why I measure it.
+    market_close_leader:
+    - The tape closed. The weak bounce either became signal or noise.
+    - Close confirms whether exhaustion had teeth.
+  ambient_lines:
+  - Oversold is not enough. I need the first return of force.
+  - The bounce must prove it is not only relief.
+  - Pressure bends before it breaks back.
+- id: value_mispricing
+  name: HIZUMI
+  class: Value
+  enabled: true
+  model: gpt-4o-mini
+  screening_profile: hizumi_value_proxy
+  avatar_style: pixel_scholar
+  avatar_image: /assets/ai-arena/agents/value_mispricing.png
+  ui_tone: gold
+  personality: 'HIZUMI measures distortion: calm, analytical, and interested in price-value gaps rather than noise.'
+  philosophy: Mispricing is the distance between what the market sees and what the business is worth.
+  trading_policy:
+    max_positions: 5
+    position_size_pct: 0.16
+    allow_minimum_lot_entry: true
+    max_holding_days: 12
+    stop_loss_pct: -7.0
+    take_profit_pct: 14.0
+    min_agent_score: 0.5
+  style_label: Value / Mispricing Signal
+  voice:
+    personality_short: Calm, intellectual, valuation-aware. Looks for distortion, not excitement.
+    debate_role: Questions whether price has moved too far away from value and whether a trap is present.
+    sentence_style: Precise, cool, slightly strange. Uses distortion and re-rating language.
+    catchphrase: Price is not value.
+    recurring_phrases:
+    - Price is not value.
+    - Distortion is measurable.
+    - Cheap is not enough; the trap must be avoided.
+    speak_weight: 0.95
+  fixed_lines:
+    market_open_leader:
+    - Tokyo opens. I measure what the tape misprices.
+    - The market looks straight. I prefer the angle.
+    market_close_leader:
+    - Close reveals which distortions remained.
+    - The price changed. The value question remains.
+  ambient_lines:
+  - Cheap is a claim, not a conclusion.
+  - Distortion without quality is only a trap.
+  - I measure the gap before the crowd names it.
 lab:
   target_feed_min: 160
   target_feed_max: 220
