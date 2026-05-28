@@ -1,0 +1,190 @@
+name: Agent Scores JP DuckDB trial
+
+on:
+  workflow_dispatch:
+    inputs:
+      universe_limit:
+        description: "Equity universe size for this trial run"
+        required: false
+        default: "300"
+        type: string
+      lookback_days:
+        description: "Price lookback days"
+        required: false
+        default: "520"
+        type: string
+      request_sleep_seconds:
+        description: "Sleep seconds between ticker requests"
+        required: false
+        default: "0.20"
+        type: string
+      commit_outputs:
+        description: "Commit generated CSV / JSON outputs"
+        required: false
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  OUT_DIR: site
+  PRICE_DUCKDB_PATH: data/cache/neon_tokyo_jp.duckdb
+  PRICE_STORE_MODE: json_and_duckdb
+  MIN_BARS_REQUIRED: "60"
+  MIN_ACCEPTABLE_BARS: "20"
+  AGENT_SCORE_TOP_N: "30"
+
+concurrency:
+  group: neon-tokyo-site-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-agent-scores:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Restore DuckDB cache
+        uses: actions/cache@v4
+        with:
+          path: data/cache/neon_tokyo_jp.duckdb
+          key: neon-tokyo-jp-duckdb-v1
+          restore-keys: |
+            neon-tokyo-jp-duckdb-
+
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install -r requirements-render.txt
+
+      - name: Sync latest main before generation
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin main
+
+      - name: Validate Python scripts
+        run: |
+          set -euo pipefail
+          python -m compileall \
+            scripts/fetch_prices_jp.py \
+            scripts/build_universe_300_from_index_csv.py \
+            scripts/build_agent_scores_jp.py \
+            scripts/lib
+
+      - name: Build 300 ticker trial universe
+        env:
+          UNIVERSE_LIMIT: ${{ github.event.inputs.universe_limit || '300' }}
+          OUT_UNIVERSE_CSV: data/universe/jp_duckdb_trial_300.csv
+        run: |
+          set -euo pipefail
+          python scripts/build_universe_300_from_index_csv.py
+
+      - name: Fetch prices into JSON and DuckDB
+        env:
+          UNIVERSE_CSV: data/universe/jp_duckdb_trial_300.csv
+          UNIVERSE_LIMIT: ${{ github.event.inputs.universe_limit || '300' }}
+          LOOKBACK_DAYS: ${{ github.event.inputs.lookback_days || '520' }}
+          REQUEST_SLEEP_SECONDS: ${{ github.event.inputs.request_sleep_seconds || '0.20' }}
+        run: |
+          set -euo pipefail
+          python scripts/fetch_prices_jp.py
+
+      - name: Build 7-agent scores from DuckDB features
+        run: |
+          set -euo pipefail
+          python scripts/build_agent_scores_jp.py
+
+      - name: Verify generated outputs
+        run: |
+          set -euo pipefail
+          test -f data/universe/jp_duckdb_trial_300.csv
+          test -f site/data/prices-jp/latest.json
+          test -f site/data/prices-jp/manifest.json
+          test -f site/data/japan/agent-scores/latest.json
+          test -f site/data/japan/agent-scores/diagnostics.json
+          test -f data/cache/neon_tokyo_jp.duckdb
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import duckdb
+
+          prices = json.loads(Path('site/data/prices-jp/latest.json').read_text(encoding='utf-8'))
+          scores = json.loads(Path('site/data/japan/agent-scores/latest.json').read_text(encoding='utf-8'))
+          diag = json.loads(Path('site/data/japan/agent-scores/diagnostics.json').read_text(encoding='utf-8'))
+
+          assert prices['schema_version'] == 'prices-jp-v1'
+          assert prices['symbols_success'] > 0
+          assert scores['schema_version'] == 'neon_tokyo_agent_scores_v1'
+          assert len(scores['agents']) == 7, len(scores['agents'])
+          assert diag['price_rows'] > 0
+          assert diag['feature_diagnostics']['feature_rows'] > 0
+          assert diag['agent_score_rows'] > 0
+
+          con = duckdb.connect('data/cache/neon_tokyo_jp.duckdb', read_only=True)
+          price_rows = con.execute('select count(*) from prices_daily').fetchone()[0]
+          feature_rows = con.execute('select count(*) from features_daily').fetchone()[0]
+          agent_rows = con.execute('select count(*) from agent_scores_daily').fetchone()[0]
+          assert price_rows > 0
+          assert feature_rows > 0
+          assert agent_rows > 0
+
+          print('symbols_success=', prices['symbols_success'])
+          print('symbols_failed=', prices['symbols_failed'])
+          print('agents=', [a['name'] for a in scores['agents']])
+          print('price_rows=', price_rows)
+          print('feature_rows=', feature_rows)
+          print('agent_rows=', agent_rows)
+          PY
+
+      - name: Commit generated trial outputs
+        if: ${{ github.event.inputs.commit_outputs != 'false' }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add -A \
+            data/universe/jp_duckdb_trial_300.csv \
+            site/data/prices-jp \
+            site/data/japan/agent-scores
+
+          if git diff --cached --quiet; then
+            echo "No generated trial outputs to commit."
+            exit 0
+          fi
+
+          git commit -m "Build JP DuckDB agent score trial outputs"
+
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Push succeeded."
+              exit 0
+            fi
+            echo "Push rejected. Fetching origin/main and retrying ($i/3)..."
+            git fetch origin main
+            if ! git rebase origin/main; then
+              echo "Rebase failed. Aborting to avoid overwriting generated files."
+              git rebase --abort || true
+              exit 1
+            fi
+            sleep 5
+          done
+
+          echo "Push failed after retries."
+          exit 1
