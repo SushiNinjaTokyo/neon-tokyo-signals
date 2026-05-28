@@ -14,7 +14,11 @@ Input:
 Output:
 - site/data/prices-jp/latest.json
 - site/data/prices-jp/manifest.json
-- site/data/prices-jp/YYYY-MM-DD.json
+
+Public JSON can be controlled with PRICE_PUBLIC_JSON_MODE:
+- full: legacy full OHLCV JSON, including bars and dated snapshot
+- summary: lightweight latest.json without historical bars and no dated snapshot
+- none: no public prices JSON; DuckDB only if enabled
 
 This script intentionally does not calculate final Daily/Weekly scores.
 It only creates a reliable price-data layer for later scoring scripts.
@@ -63,6 +67,8 @@ MIN_ACCEPTABLE_BARS = int(os.getenv("MIN_ACCEPTABLE_BARS", "20"))
 REQUEST_SLEEP_SECONDS = float(os.getenv("REQUEST_SLEEP_SECONDS", "0.25"))
 UNIVERSE_LIMIT = int(os.getenv("UNIVERSE_LIMIT", "0") or "0")
 PRICE_STORE_MODE = os.getenv("PRICE_STORE_MODE", "json").strip().lower()
+PRICE_PUBLIC_JSON_MODE = os.getenv("PRICE_PUBLIC_JSON_MODE", "full").strip().lower()
+WRITE_DATED_PRICE_JSON = os.getenv("WRITE_DATED_PRICE_JSON", "true").strip().lower() in {"1", "true", "yes", "on"}
 PRICE_DUCKDB_PATH = os.getenv("PRICE_DUCKDB_PATH", str(ROOT / "data" / "cache" / "neon_tokyo_jp.duckdb"))
 
 
@@ -484,6 +490,59 @@ def df_to_bars(df: pd.DataFrame) -> list[dict[str, Any]]:
     return bars
 
 
+def summarize_price_item(item: dict[str, Any]) -> dict[str, Any]:
+    """Return a public lightweight version of one price item.
+
+    The full OHLCV history is intentionally omitted. Historical bars are stored
+    in DuckDB. This keeps site/data/prices-jp/latest.json small enough for Git
+    and Vercel while preserving ticker-level diagnostics and latest metrics.
+    """
+    bars = item.get("bars") or []
+    latest_bar = bars[-1] if bars else None
+    return {
+        "symbol": item.get("symbol"),
+        "name": item.get("name"),
+        "theme": item.get("theme"),
+        "bucket": item.get("bucket"),
+        "priority": item.get("priority"),
+        "asset_type": item.get("asset_type"),
+        "pulse_label": item.get("pulse_label"),
+        "market": item.get("market"),
+        "currency": item.get("currency"),
+        "source": item.get("source"),
+        "source_symbol": item.get("source_symbol"),
+        "bars_count": item.get("bars_count"),
+        "date_start": item.get("date_start"),
+        "date_end": item.get("date_end"),
+        "is_partial": item.get("is_partial"),
+        "warnings": item.get("warnings") or [],
+        "source_errors": item.get("source_errors") or [],
+        "metrics": item.get("metrics") or {},
+        "latest_bar": latest_bar,
+        "bars_omitted": True,
+    }
+
+
+def build_public_payload(payload: dict[str, Any], mode: str) -> dict[str, Any]:
+    mode = (mode or "full").strip().lower()
+    if mode == "full":
+        return payload
+    if mode == "summary":
+        items = [summarize_price_item(x) for x in payload.get("items", [])]
+        market_pulse = [x for x in items if x.get("asset_type") == "market_pulse"]
+        equities = [x for x in items if x.get("asset_type") == "equity"]
+        summary = dict(payload)
+        summary["public_json_mode"] = "summary"
+        summary["bars_omitted"] = True
+        summary["items"] = items
+        summary["market_pulse"] = market_pulse
+        summary["equities"] = equities
+        return summary
+    if mode in {"none", "off", "false", "0"}:
+        return {}
+    raise ValueError(f"Unsupported PRICE_PUBLIC_JSON_MODE={mode!r}. Use full, summary, or none.")
+
+
 def fetch_symbol(row: UniverseRow, start: datetime, end: datetime) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
     source_errors: list[str] = []
 
@@ -573,6 +632,8 @@ def main() -> int:
     print(f"MIN_BARS_REQUIRED={MIN_BARS_REQUIRED}")
     print(f"UNIVERSE_LIMIT={UNIVERSE_LIMIT}")
     print(f"PRICE_STORE_MODE={PRICE_STORE_MODE}")
+    print(f"PRICE_PUBLIC_JSON_MODE={PRICE_PUBLIC_JSON_MODE}")
+    print(f"WRITE_DATED_PRICE_JSON={WRITE_DATED_PRICE_JSON}")
     print(f"PRICE_DUCKDB_PATH={PRICE_DUCKDB_PATH}")
 
     universe = read_universe(UNIVERSE_CSV)
@@ -635,6 +696,8 @@ def main() -> int:
         "timezone": "Asia/Tokyo",
         "source_priority": ["yfinance", "stooq"],
         "price_store_mode": PRICE_STORE_MODE,
+        "public_json_mode": PRICE_PUBLIC_JSON_MODE,
+        "write_dated_price_json": WRITE_DATED_PRICE_JSON,
         "universe_csv": safe_relative(UNIVERSE_CSV),
         "lookback_days": LOOKBACK_DAYS,
         "min_bars_required": MIN_BARS_REQUIRED,
@@ -676,33 +739,49 @@ def main() -> int:
     latest_path = PRICE_OUT_DIR / "latest.json"
     dated_path = PRICE_OUT_DIR / f"{today}.json"
 
-    if PRICE_STORE_MODE != "duckdb_only":
-        write_json(latest_path, payload)
-        write_json(dated_path, payload)
+    should_write_public_json = (
+        PRICE_STORE_MODE != "duckdb_only"
+        and PRICE_PUBLIC_JSON_MODE not in {"none", "off", "false", "0"}
+    )
+
+    if should_write_public_json:
+        public_payload = build_public_payload(payload, PRICE_PUBLIC_JSON_MODE)
+        write_json(latest_path, public_payload)
+
+        history: list[dict[str, Any]] = []
+        if WRITE_DATED_PRICE_JSON and PRICE_PUBLIC_JSON_MODE == "full":
+            write_json(dated_path, public_payload)
+            history.append({
+                "date": today,
+                "path": safe_relative(dated_path),
+                "symbols_success": len(items_sorted),
+                "symbols_failed": len(failures),
+                "public_json_mode": PRICE_PUBLIC_JSON_MODE,
+            })
+            print(f"Wrote {safe_relative(dated_path)}")
+        else:
+            print("Skipped dated prices JSON output")
 
         manifest = {
             "schema_version": "prices-jp-manifest-v1",
             "generated_at": generated_at,
             "latest": safe_relative(latest_path),
             "latest_date": today,
-            "history": [
-                {
-                    "date": today,
-                    "path": safe_relative(dated_path),
-                    "symbols_success": len(items_sorted),
-                    "symbols_failed": len(failures),
-                }
-            ],
+            "public_json_mode": PRICE_PUBLIC_JSON_MODE,
+            "write_dated_price_json": WRITE_DATED_PRICE_JSON,
+            "history": history,
+            "duckdb_path": safe_relative(Path(PRICE_DUCKDB_PATH)),
+            "symbols_success": len(items_sorted),
+            "symbols_failed": len(failures),
         }
 
         manifest_path = PRICE_OUT_DIR / "manifest.json"
         write_json(manifest_path, manifest)
 
         print(f"Wrote {safe_relative(latest_path)}")
-        print(f"Wrote {safe_relative(dated_path)}")
         print(f"Wrote {safe_relative(manifest_path)}")
     else:
-        print("PRICE_STORE_MODE=duckdb_only: skipped site/data/prices-jp JSON output")
+        print("Skipped site/data/prices-jp JSON output")
     print(f"Success={len(items_sorted)} Failed={len(failures)}")
 
     if len(items_sorted) == 0:

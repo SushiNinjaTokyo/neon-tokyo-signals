@@ -57,6 +57,8 @@ SOURCE_LABELS = {
 
 TOPIX500_CLASSES = {"TOPIX Core30", "TOPIX Large70", "TOPIX Mid400"}
 CODE_RE = re.compile(r"^(?:\d{4}|\d{3}A)$")
+YEAR_LIKE_CODE_RE = re.compile(r"^(?:19|20)\d{2}$")
+PDF_CODE_BLOCKLIST = {"2023", "2024", "2025", "2026", "2027", "2028", "2029"}
 
 
 @dataclass
@@ -148,6 +150,26 @@ def normalize_code(code: str) -> str:
 
 def make_ticker(code: str) -> str:
     return f"{normalize_code(code)}.T"
+
+
+def is_valid_code_token(code: str, *, source: str = "", name: str = "") -> bool:
+    """Validate a security-code token extracted from official files.
+
+    JPX PDF tables sometimes contain dates/years near the table body. A simple
+    `four-digit` regex can accidentally treat `2025` as a ticker. CSV sources are
+    stricter and usually have explicit code columns, but PDF sources need extra
+    guards.
+    """
+    c = normalize_code(code)
+    if not c or not CODE_RE.match(c):
+        return False
+    if source in {"growth250", "jpx_startup100", "pdf"}:
+        if c in PDF_CODE_BLOCKLIST or YEAR_LIKE_CODE_RE.match(c):
+            return False
+        n = normalize_text(name).upper()
+        if not n or n in {c, f"{c}.T", f"{c}.JP"}:
+            return False
+    return True
 
 
 def normalize_text(s: object) -> str:
@@ -330,6 +352,9 @@ def parse_pdf_constituents(pdf_url: str, source_key: str, default_market: str = 
                 if marker in name:
                     name = name.split(marker)[0].strip()
 
+            if not is_valid_code_token(code, source=source_key, name=name):
+                continue
+
             sec = Security(
                 code=code,
                 ticker=make_ticker(code),
@@ -360,7 +385,7 @@ def combine_security_lists(lists: Sequence[Sequence[Security]]) -> List[Security
     merged: Dict[str, Security] = {}
     for securities in lists:
         for sec in securities:
-            if not sec.code or not CODE_RE.match(sec.code):
+            if not is_valid_code_token(sec.code, source="csv", name=sec.name):
                 continue
             if sec.code in merged:
                 merged[sec.code].merge(sec)
