@@ -1,0 +1,116 @@
+name: Prune safe generated artifacts
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Preview deletion targets without committing changes"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+  schedule:
+    # GitHub cron is UTC. 19:30 UTC = 04:30 JST.
+    # Runs daily after Japan/US data generation windows and away from existing scheduled jobs.
+    - cron: "30 19 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: neon-tokyo-site-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  prune:
+    runs-on: ubuntu-latest
+
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      PRUNE_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Sync latest main before prune
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin main
+
+      - name: Validate prune script
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/prune_safe_generated_artifacts.py
+
+      - name: Preview prune targets
+        run: |
+          set -euo pipefail
+          python scripts/prune_safe_generated_artifacts.py --dry-run
+
+      - name: Prune safe generated artifacts
+        if: env.PRUNE_DRY_RUN != 'true'
+        run: |
+          set -euo pipefail
+          python scripts/prune_safe_generated_artifacts.py
+
+      - name: Verify required files still exist
+        run: |
+          set -euo pipefail
+          test -f site/index.html
+          test -f site/data/prices-jp/latest.json
+          test -f site/data/prices-jp/manifest.json
+          test -f site/data/backtest-daily-jp/latest.json
+          test -f site/data/backtest-daily-jp/manifest.json
+          test -f site/data/daily-jp/latest.json
+          test -f site/data/daily-jp/manifest.json
+          test -f site/data/japan/ai-arena/simulation/latest.json
+          test -f site/data/japan/ai-arena/positions/latest.json
+          test -f site/data/japan/ai-arena/ranking/latest.json
+
+      - name: Commit pruned generated artifacts
+        if: env.PRUNE_DRY_RUN != 'true'
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add -A \
+            site/data/backtest-daily-jp \
+            site/data/prices-jp \
+            scripts
+
+          if git diff --cached --quiet; then
+            echo "No prune changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Prune safe generated artifacts"
+
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Push succeeded."
+              exit 0
+            fi
+            echo "Push rejected. Fetching origin/main and retrying ($i/3)..."
+            git fetch origin main
+            if ! git rebase origin/main; then
+              echo "Rebase failed. Aborting to avoid overwriting generated files."
+              git rebase --abort || true
+              exit 1
+            fi
+            sleep 5
+          done
+
+          echo "Push failed after retries."
+          exit 1
