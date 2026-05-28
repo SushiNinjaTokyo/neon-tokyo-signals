@@ -1,61 +1,13 @@
 {
   "schema_version": "ai_arena_discussion_events_v1",
-  "generated_at": "2026-05-27T21:57:54+09:00",
+  "generated_at": "2026-05-28T22:10:59+09:00",
   "season": "2026-05",
   "range": {
-    "start_date": "2026-02-26",
-    "end_date": "2026-05-27",
+    "start_date": "2026-02-27",
+    "end_date": "2026-05-28",
     "trading_days": 60
   },
   "events": [
-    {
-      "event_id": "2026-04-23_daily_striker_exit_4425.T",
-      "event_type": "trade_event",
-      "priority": 100,
-      "topic": "KAKERU exit 4425.T",
-      "agents_involved": [
-        "daily_striker"
-      ],
-      "symbol": "4425.T",
-      "trade_date": "2026-04-23",
-      "facts": [
-        "KAKERU action=exit symbol=4425.T.",
-        "Reason: stop_loss.",
-        "Price: 2587.0. Shares: 500."
-      ],
-      "action": {
-        "date": "2026-04-23",
-        "action": "exit",
-        "symbol": "4425.T",
-        "price": 2587.0,
-        "shares": 500,
-        "reason": "stop_loss"
-      }
-    },
-    {
-      "event_id": "2026-04-23_daily_striker_exit_9984.T",
-      "event_type": "trade_event",
-      "priority": 100,
-      "topic": "KAKERU exit 9984.T",
-      "agents_involved": [
-        "daily_striker"
-      ],
-      "symbol": "9984.T",
-      "trade_date": "2026-04-23",
-      "facts": [
-        "KAKERU action=exit symbol=9984.T.",
-        "Reason: take_profit.",
-        "Price: 5837.0. Shares: 200."
-      ],
-      "action": {
-        "date": "2026-04-23",
-        "action": "exit",
-        "symbol": "9984.T",
-        "price": 5837.0,
-        "shares": 200,
-        "reason": "take_profit"
-      }
-    },
     {
       "event_id": "2026-04-24_daily_striker_exit_5802.T",
       "event_type": "trade_event",
@@ -93,14 +45,14 @@
       "facts": [
         "KAKERU action=exit symbol=6701.T.",
         "Reason: stop_loss.",
-        "Price: 4101.0. Shares: 300."
+        "Price: 4101.0. Shares: 200."
       ],
       "action": {
         "date": "2026-04-30",
         "action": "exit",
         "symbol": "6701.T",
         "price": 4101.0,
-        "shares": 300,
+        "shares": 200,
         "reason": "stop_loss"
       }
     },
@@ -201,51 +153,51 @@
       }
     },
     {
-      "event_id": "2026-04-30_weekly_sage_exit_6920.T",
+      "event_id": "2026-05-28_daily_striker_entry_8035.T",
       "event_type": "trade_event",
       "priority": 100,
-      "topic": "SATORI exit 6920.T",
+      "topic": "KAKERU entry 8035.T",
       "agents_involved": [
-        "weekly_sage"
+        "daily_striker"
       ],
-      "symbol": "6920.T",
-      "trade_date": "2026-04-30",
+      "symbol": "8035.T",
+      "trade_date": "2026-05-28",
       "facts": [
-        "SATORI action=exit symbol=6920.T.",
-        "Reason: max_holding.",
-        "Price: 42690.0. Shares: 100."
+        "KAKERU action=entry symbol=8035.T.",
+        "Reason: KAKERU daily_v2_core score 0.59; relative strength; favored relative strength.",
+        "Price: 52000.0. Shares: 100."
       ],
       "action": {
-        "date": "2026-04-30",
-        "action": "exit",
-        "symbol": "6920.T",
-        "price": 42690.0,
+        "date": "2026-05-28",
+        "action": "entry",
+        "symbol": "8035.T",
+        "price": 52000.0,
         "shares": 100,
-        "reason": "max_holding"
+        "reason": "KAKERU daily_v2_core score 0.59; relative strength; favored relative strength"
       }
     },
     {
-      "event_id": "2026-05-12_weekly_sage_exit_5803.T",
+      "event_id": "2026-05-28_daily_striker_entry_9984.T",
       "event_type": "trade_event",
       "priority": 100,
-      "topic": "SATORI exit 5803.T",
+      "topic": "KAKERU entry 9984.T",
       "agents_involved": [
-        "weekly_sage"
+        "daily_striker"
       ],
-      "symbol": "5803.T",
-      "trade_date": "2026-05-12",
+      "symbol": "9984.T",
+      "trade_date": "2026-05-28",
       "facts": [
-        "SATORI action=exit symbol=5803.T.",
-        "Reason: take_profit.",
-        "Price: 7624.0. Shares: 100."
+        "KAKERU action=entry symbol=9984.T.",
+        "Reason: KAKERU daily_v2_core score 0.57; relative strength; penalty drag.",
+        "Price: 7100.0. Shares: 100."
       ],
       "action": {
-        "date": "2026-05-12",
-        "action": "exit",
-        "symbol": "5803.T",
-        "price": 7624.0,
+        "date": "2026-05-28",
+        "action": "entry",
+        "symbol": "9984.T",
+        "price": 7100.0,
         "shares": 100,
-        "reason": "take_profit"
+        "reason": "KAKERU daily_v2_core score 0.57; relative strength; penalty drag"
       }
     },
     {
@@ -285,14 +237,14 @@
       "facts": [
         "SATORI action=entry symbol=135A.T.",
         "Reason: SATORI weekly_stage2 score 0.63; relative strength.",
-        "Price: 4210.0. Shares: 400."
+        "Price: 4210.0. Shares: 300."
       ],
       "action": {
         "date": "2026-05-18",
         "action": "entry",
         "symbol": "135A.T",
         "price": 4210.0,
-        "shares": 400,
+        "shares": 300,
         "reason": "SATORI weekly_stage2 score 0.63; relative strength"
       }
     },
@@ -393,51 +345,51 @@
       }
     },
     {
-      "event_id": "2026-04-23_risk_sentinel_exit_6501.T",
+      "event_id": "2026-05-28_weekly_sage_entry_3652.T",
       "event_type": "trade_event",
       "priority": 100,
-      "topic": "MAMORU exit 6501.T",
+      "topic": "SATORI entry 3652.T",
       "agents_involved": [
-        "risk_sentinel"
+        "weekly_sage"
       ],
-      "symbol": "6501.T",
-      "trade_date": "2026-04-23",
+      "symbol": "3652.T",
+      "trade_date": "2026-05-28",
       "facts": [
-        "MAMORU action=exit symbol=6501.T.",
-        "Reason: max_holding.",
-        "Price: 5203.0. Shares: 100."
+        "SATORI action=entry symbol=3652.T.",
+        "Reason: SATORI weekly_stage2 score 0.74; relative strength.",
+        "Price: 3615.0. Shares: 200."
       ],
       "action": {
-        "date": "2026-04-23",
-        "action": "exit",
-        "symbol": "6501.T",
-        "price": 5203.0,
-        "shares": 100,
-        "reason": "max_holding"
+        "date": "2026-05-28",
+        "action": "entry",
+        "symbol": "3652.T",
+        "price": 3615.0,
+        "shares": 200,
+        "reason": "SATORI weekly_stage2 score 0.74; relative strength"
       }
     },
     {
-      "event_id": "2026-04-23_risk_sentinel_exit_6503.T",
+      "event_id": "2026-05-28_weekly_sage_entry_9984.T",
       "event_type": "trade_event",
       "priority": 100,
-      "topic": "MAMORU exit 6503.T",
+      "topic": "SATORI entry 9984.T",
       "agents_involved": [
-        "risk_sentinel"
+        "weekly_sage"
       ],
-      "symbol": "6503.T",
-      "trade_date": "2026-04-23",
+      "symbol": "9984.T",
+      "trade_date": "2026-05-28",
       "facts": [
-        "MAMORU action=exit symbol=6503.T.",
-        "Reason: stop_loss.",
-        "Price: 5881.0. Shares: 200."
+        "SATORI action=entry symbol=9984.T.",
+        "Reason: SATORI weekly_stage2 score 0.73; relative strength; penalty drag.",
+        "Price: 7100.0. Shares: 100."
       ],
       "action": {
-        "date": "2026-04-23",
-        "action": "exit",
-        "symbol": "6503.T",
-        "price": 5881.0,
-        "shares": 200,
-        "reason": "stop_loss"
+        "date": "2026-05-28",
+        "action": "entry",
+        "symbol": "9984.T",
+        "price": 7100.0,
+        "shares": 100,
+        "reason": "SATORI weekly_stage2 score 0.73; relative strength; penalty drag"
       }
     },
     {
@@ -585,75 +537,51 @@
       }
     },
     {
-      "event_id": "2026-04-30_discovery_scout_exit_4425.T",
+      "event_id": "2026-05-28_risk_sentinel_entry_8035.T",
       "event_type": "trade_event",
       "priority": 100,
-      "topic": "SAGURI exit 4425.T",
+      "topic": "MAMORU entry 8035.T",
       "agents_involved": [
-        "discovery_scout"
+        "risk_sentinel"
       ],
-      "symbol": "4425.T",
-      "trade_date": "2026-04-30",
+      "symbol": "8035.T",
+      "trade_date": "2026-05-28",
       "facts": [
-        "SAGURI action=exit symbol=4425.T.",
-        "Reason: max_holding.",
-        "Price: 2579.0. Shares: 200."
+        "MAMORU action=entry symbol=8035.T.",
+        "Reason: MAMORU risk_defender score 0.76; relative strength; favored relative strength.",
+        "Price: 52000.0. Shares: 100."
       ],
       "action": {
-        "date": "2026-04-30",
-        "action": "exit",
-        "symbol": "4425.T",
-        "price": 2579.0,
-        "shares": 200,
-        "reason": "max_holding"
+        "date": "2026-05-28",
+        "action": "entry",
+        "symbol": "8035.T",
+        "price": 52000.0,
+        "shares": 100,
+        "reason": "MAMORU risk_defender score 0.76; relative strength; favored relative strength"
       }
     },
     {
-      "event_id": "2026-05-18_discovery_scout_entry_3905.T",
+      "event_id": "2026-05-28_risk_sentinel_entry_5802.T",
       "event_type": "trade_event",
       "priority": 100,
-      "topic": "SAGURI entry 3905.T",
+      "topic": "MAMORU entry 5802.T",
       "agents_involved": [
-        "discovery_scout"
+        "risk_sentinel"
       ],
-      "symbol": "3905.T",
-      "trade_date": "2026-05-18",
+      "symbol": "5802.T",
+      "trade_date": "2026-05-28",
       "facts": [
-        "SAGURI action=entry symbol=3905.T.",
-        "Reason: SAGURI discovery_alpha score 0.65; relative strength; penalty drag.",
-        "Price: 2843.0. Shares: 400."
+        "MAMORU action=entry symbol=5802.T.",
+        "Reason: MAMORU risk_defender score 0.73; relative strength; favored relative strength.",
+        "Price: 11720.0. Shares: 100."
       ],
       "action": {
-        "date": "2026-05-18",
+        "date": "2026-05-28",
         "action": "entry",
-        "symbol": "3905.T",
-        "price": 2843.0,
-        "shares": 400,
-        "reason": "SAGURI discovery_alpha score 0.65; relative strength; penalty drag"
-      }
-    },
-    {
-      "event_id": "2026-05-18_discovery_scout_entry_3993.T",
-      "event_type": "trade_event",
-      "priority": 100,
-      "topic": "SAGURI entry 3993.T",
-      "agents_involved": [
-        "discovery_scout"
-      ],
-      "symbol": "3993.T",
-      "trade_date": "2026-05-18",
-      "facts": [
-        "SAGURI action=entry symbol=3993.T.",
-        "Reason: SAGURI discovery_alpha score 0.56; penalty drag.",
-        "Price: 3000.0. Shares: 300."
-      ],
-      "action": {
-        "date": "2026-05-18",
-        "action": "entry",
-        "symbol": "3993.T",
-        "price": 3000.0,
-        "shares": 300,
-        "reason": "SAGURI discovery_alpha score 0.56; penalty drag"
+        "symbol": "5802.T",
+        "price": 11720.0,
+        "shares": 100,
+        "reason": "MAMORU risk_defender score 0.73; relative strength; favored relative strength"
       }
     },
     {
@@ -777,51 +705,75 @@
       }
     },
     {
-      "event_id": "2026-05-18_contrarian_monk_entry_9984.T",
+      "event_id": "2026-05-28_discovery_scout_entry_3652.T",
       "event_type": "trade_event",
       "priority": 100,
-      "topic": "MATSU entry 9984.T",
+      "topic": "SAGURI entry 3652.T",
       "agents_involved": [
-        "contrarian_monk"
+        "discovery_scout"
       ],
-      "symbol": "9984.T",
-      "trade_date": "2026-05-18",
+      "symbol": "3652.T",
+      "trade_date": "2026-05-28",
       "facts": [
-        "MATSU action=entry symbol=9984.T.",
-        "Reason: MATSU contrarian_reentry score 0.72; relative strength.",
-        "Price: 5445.0. Shares: 300."
+        "SAGURI action=entry symbol=3652.T.",
+        "Reason: SAGURI discovery_alpha score 0.66; relative strength.",
+        "Price: 3615.0. Shares: 300."
       ],
       "action": {
-        "date": "2026-05-18",
+        "date": "2026-05-28",
         "action": "entry",
-        "symbol": "9984.T",
-        "price": 5445.0,
+        "symbol": "3652.T",
+        "price": 3615.0,
         "shares": 300,
-        "reason": "MATSU contrarian_reentry score 0.72; relative strength"
+        "reason": "SAGURI discovery_alpha score 0.66; relative strength"
       }
     },
     {
-      "event_id": "2026-05-18_contrarian_monk_entry_3652.T",
+      "event_id": "2026-05-28_discovery_scout_entry_3993.T",
       "event_type": "trade_event",
       "priority": 100,
-      "topic": "MATSU entry 3652.T",
+      "topic": "SAGURI entry 3993.T",
       "agents_involved": [
-        "contrarian_monk"
+        "discovery_scout"
       ],
-      "symbol": "3652.T",
-      "trade_date": "2026-05-18",
+      "symbol": "3993.T",
+      "trade_date": "2026-05-28",
       "facts": [
-        "MATSU action=entry symbol=3652.T.",
-        "Reason: MATSU contrarian_reentry score 0.72; relative strength; no daily confirmation; penalty drag.",
-        "Price: 3460.0. Shares: 400."
+        "SAGURI action=entry symbol=3993.T.",
+        "Reason: SAGURI discovery_alpha score 0.66; RVOL 1.49x.",
+        "Price: 2880.0. Shares: 300."
       ],
       "action": {
-        "date": "2026-05-18",
+        "date": "2026-05-28",
         "action": "entry",
-        "symbol": "3652.T",
-        "price": 3460.0,
-        "shares": 400,
-        "reason": "MATSU contrarian_reentry score 0.72; relative strength; no daily confirmation; penalty drag"
+        "symbol": "3993.T",
+        "price": 2880.0,
+        "shares": 300,
+        "reason": "SAGURI discovery_alpha score 0.66; RVOL 1.49x"
+      }
+    },
+    {
+      "event_id": "2026-05-28_discovery_scout_exit_135A.T",
+      "event_type": "trade_event",
+      "priority": 100,
+      "topic": "SAGURI exit 135A.T",
+      "agents_involved": [
+        "discovery_scout"
+      ],
+      "symbol": "135A.T",
+      "trade_date": "2026-05-28",
+      "facts": [
+        "SAGURI action=exit symbol=135A.T.",
+        "Reason: max_holding.",
+        "Price: 4215.0. Shares: 200."
+      ],
+      "action": {
+        "date": "2026-05-28",
+        "action": "exit",
+        "symbol": "135A.T",
+        "price": 4215.0,
+        "shares": 200,
+        "reason": "max_holding"
       }
     },
     {
@@ -837,14 +789,14 @@
       "facts": [
         "MATSU action=entry symbol=6762.T.",
         "Reason: MATSU contrarian_reentry score 0.80; relative strength; favored relative strength.",
-        "Price: 2885.5. Shares: 400."
+        "Price: 2885.5. Shares: 500."
       ],
       "action": {
         "date": "2026-05-20",
         "action": "entry",
         "symbol": "6762.T",
         "price": 2885.5,
-        "shares": 400,
+        "shares": 500,
         "reason": "MATSU contrarian_reentry score 0.80; relative strength; favored relative strength"
       }
     },
@@ -861,14 +813,14 @@
       "facts": [
         "MATSU action=entry symbol=6981.T.",
         "Reason: MATSU contrarian_reentry score 0.73; relative strength.",
-        "Price: 5990.0. Shares: 100."
+        "Price: 5990.0. Shares: 200."
       ],
       "action": {
         "date": "2026-05-20",
         "action": "entry",
         "symbol": "6981.T",
         "price": 5990.0,
-        "shares": 100,
+        "shares": 200,
         "reason": "MATSU contrarian_reentry score 0.73; relative strength"
       }
     },
@@ -933,14 +885,14 @@
       "facts": [
         "MATSU action=exit symbol=6981.T.",
         "Reason: take_profit.",
-        "Price: 6727.0. Shares: 100."
+        "Price: 6727.0. Shares: 200."
       ],
       "action": {
         "date": "2026-05-21",
         "action": "exit",
         "symbol": "6981.T",
         "price": 6727.0,
-        "shares": 100,
+        "shares": 200,
         "reason": "take_profit"
       }
     },
@@ -957,15 +909,63 @@
       "facts": [
         "MATSU action=exit symbol=6762.T.",
         "Reason: take_profit.",
-        "Price: 3370.0. Shares: 400."
+        "Price: 3370.0. Shares: 500."
       ],
       "action": {
         "date": "2026-05-22",
         "action": "exit",
         "symbol": "6762.T",
         "price": 3370.0,
-        "shares": 400,
+        "shares": 500,
         "reason": "take_profit"
+      }
+    },
+    {
+      "event_id": "2026-05-28_contrarian_monk_entry_6701.T",
+      "event_type": "trade_event",
+      "priority": 100,
+      "topic": "MATSU entry 6701.T",
+      "agents_involved": [
+        "contrarian_monk"
+      ],
+      "symbol": "6701.T",
+      "trade_date": "2026-05-28",
+      "facts": [
+        "MATSU action=entry symbol=6701.T.",
+        "Reason: MATSU contrarian_reentry score 0.72; RVOL 0.87x; abnormal accumulation.",
+        "Price: 4148.0. Shares: 400."
+      ],
+      "action": {
+        "date": "2026-05-28",
+        "action": "entry",
+        "symbol": "6701.T",
+        "price": 4148.0,
+        "shares": 400,
+        "reason": "MATSU contrarian_reentry score 0.72; RVOL 0.87x; abnormal accumulation"
+      }
+    },
+    {
+      "event_id": "2026-05-28_contrarian_monk_entry_6861.T",
+      "event_type": "trade_event",
+      "priority": 100,
+      "topic": "MATSU entry 6861.T",
+      "agents_involved": [
+        "contrarian_monk"
+      ],
+      "symbol": "6861.T",
+      "trade_date": "2026-05-28",
+      "facts": [
+        "MATSU action=entry symbol=6861.T.",
+        "Reason: MATSU contrarian_reentry score 0.71; no daily confirmation.",
+        "Price: 76600.0. Shares: 100."
+      ],
+      "action": {
+        "date": "2026-05-28",
+        "action": "entry",
+        "symbol": "6861.T",
+        "price": 76600.0,
+        "shares": 100,
+        "reason": "MATSU contrarian_reentry score 0.71; no daily confirmation"
       }
     }
   ]
