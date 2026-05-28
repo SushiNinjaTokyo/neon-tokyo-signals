@@ -23,7 +23,7 @@
       </div>
       <div class="hero-meta" aria-label="Simulation range">
         <span>Season <b>2026-05</b></span>
-        <span>2026-02-26 → 2026-05-27</span>
+        <span class="season-range" aria-label="Simulation window"><i>RUN WINDOW</i><b>2026.02.26</b><em></em><b>2026.05.27</b></span>
       </div>
     </header>
 
@@ -103,114 +103,119 @@
         </article>
       </div>
 
-      <div class="section-head history-title">
-        <h3>Recent Closed Trades</h3>
-        <p>Latest 10 of 44</p>
-      </div>
+      <details class="closed-trades-panel">
+        <summary class="section-head history-title">
+          <span class="summary-copy">
+            <h3>Recent Closed Trades</h3>
+            <p>Latest 10 of 44</p>
+          </span>
+          <span class="summary-toggle">Open Tape</span>
+        </summary>
 
-      <div class="trade-history">
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>6758.T</b>
-            <span>Sony Group</span>
-          </div>
-          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-26</span></div>
-          <div class="trade-result"><b>-3.48%</b><span>¥-64,000</span></div>
-          <div class="trade-meta"><span>5d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>3652.T</b>
-            <span>Digital Media Professionals</span>
-          </div>
-          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-20</span></div>
-          <div class="trade-result"><b>-10.14%</b><span>¥-144,000</span></div>
-          <div class="trade-meta"><span>1d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>6701.T</b>
-            <span>NEC</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-23</span><i>→</i><span>2026-04-30</span></div>
-          <div class="trade-result"><b>-7.13%</b><span>¥-94,500</span></div>
-          <div class="trade-meta"><span>5d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>5802.T</b>
-            <span>Sumitomo Electric</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-23</span><i>→</i><span>2026-04-24</span></div>
-          <div class="trade-result"><b>-7.31%</b><span>¥-79,000</span></div>
-          <div class="trade-meta"><span>2d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>6762.T</b>
-            <span>TDK</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-17</span><i>→</i><span>2026-04-23</span></div>
-          <div class="trade-result"><b>+5.32%</b><span>+¥40,350</span></div>
-          <div class="trade-meta"><span>5d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>4425.T</b>
-            <span>Kudan</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-22</span><i>→</i><span>2026-04-23</span></div>
-          <div class="trade-result"><b>-6.51%</b><span>¥-90,000</span></div>
-          <div class="trade-meta"><span>2d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>9984.T</b>
-            <span>SoftBank Group</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-22</span><i>→</i><span>2026-04-23</span></div>
-          <div class="trade-result"><b>+13.78%</b><span>+¥141,400</span></div>
-          <div class="trade-meta"><span>2d</span><span>Profit take</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>6501.T</b>
-            <span>Hitachi</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-16</span><i>→</i><span>2026-04-22</span></div>
-          <div class="trade-result"><b>-3.38%</b><span>¥-35,200</span></div>
-          <div class="trade-meta"><span>5d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>6701.T</b>
-            <span>NEC</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-16</span><i>→</i><span>2026-04-22</span></div>
-          <div class="trade-result"><b>+2.58%</b><span>+¥22,800</span></div>
-          <div class="trade-meta"><span>5d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>9984.T</b>
-            <span>SoftBank Group</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-15</span><i>→</i><span>2026-04-21</span></div>
-          <div class="trade-result"><b>+17.62%</b><span>+¥155,200</span></div>
-          <div class="trade-meta"><span>5d</span><span>Profit take</span></div>
-        </article>
-        
-      </div>
+        <div class="trade-history">
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>6758.T</b>
+              <span>Sony Group</span>
+            </div>
+            <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-26</span></div>
+            <div class="trade-result"><b>-3.48%</b><span>¥-64,000</span></div>
+            <div class="trade-meta"><span>5d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>3652.T</b>
+              <span>Digital Media Professionals</span>
+            </div>
+            <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-20</span></div>
+            <div class="trade-result"><b>-10.14%</b><span>¥-144,000</span></div>
+            <div class="trade-meta"><span>1d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>6701.T</b>
+              <span>NEC</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-23</span><i>→</i><span>2026-04-30</span></div>
+            <div class="trade-result"><b>-7.13%</b><span>¥-94,500</span></div>
+            <div class="trade-meta"><span>5d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>5802.T</b>
+              <span>Sumitomo Electric</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-23</span><i>→</i><span>2026-04-24</span></div>
+            <div class="trade-result"><b>-7.31%</b><span>¥-79,000</span></div>
+            <div class="trade-meta"><span>2d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>6762.T</b>
+              <span>TDK</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-17</span><i>→</i><span>2026-04-23</span></div>
+            <div class="trade-result"><b>+5.32%</b><span>+¥40,350</span></div>
+            <div class="trade-meta"><span>5d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>4425.T</b>
+              <span>Kudan</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-22</span><i>→</i><span>2026-04-23</span></div>
+            <div class="trade-result"><b>-6.51%</b><span>¥-90,000</span></div>
+            <div class="trade-meta"><span>2d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>9984.T</b>
+              <span>SoftBank Group</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-22</span><i>→</i><span>2026-04-23</span></div>
+            <div class="trade-result"><b>+13.78%</b><span>+¥141,400</span></div>
+            <div class="trade-meta"><span>2d</span><span>Profit take</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>6501.T</b>
+              <span>Hitachi</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-16</span><i>→</i><span>2026-04-22</span></div>
+            <div class="trade-result"><b>-3.38%</b><span>¥-35,200</span></div>
+            <div class="trade-meta"><span>5d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>6701.T</b>
+              <span>NEC</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-16</span><i>→</i><span>2026-04-22</span></div>
+            <div class="trade-result"><b>+2.58%</b><span>+¥22,800</span></div>
+            <div class="trade-meta"><span>5d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>9984.T</b>
+              <span>SoftBank Group</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-15</span><i>→</i><span>2026-04-21</span></div>
+            <div class="trade-result"><b>+17.62%</b><span>+¥155,200</span></div>
+            <div class="trade-meta"><span>5d</span><span>Profit take</span></div>
+          </article>
+          
+        </div>
+      </details>
     </section>
     
     <section class="agent panel tone-violet">
@@ -319,114 +324,119 @@
         </article>
       </div>
 
-      <div class="section-head history-title">
-        <h3>Recent Closed Trades</h3>
-        <p>Latest 10 of 22</p>
-      </div>
+      <details class="closed-trades-panel">
+        <summary class="section-head history-title">
+          <span class="summary-copy">
+            <h3>Recent Closed Trades</h3>
+            <p>Latest 10 of 22</p>
+          </span>
+          <span class="summary-toggle">Open Tape</span>
+        </summary>
 
-      <div class="trade-history">
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>9984.T</b>
-            <span>SoftBank Group</span>
-          </div>
-          <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-22</span></div>
-          <div class="trade-result"><b>+24.10%</b><span>+¥393,600</span></div>
-          <div class="trade-meta"><span>5d</span><span>Profit take</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>3652.T</b>
-            <span>Digital Media Professionals</span>
-          </div>
-          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-20</span></div>
-          <div class="trade-result"><b>-10.14%</b><span>¥-144,000</span></div>
-          <div class="trade-meta"><span>1d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>5803.T</b>
-            <span>Fujikura</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-17</span><i>→</i><span>2026-05-12</span></div>
-          <div class="trade-result"><b>+29.15%</b><span>+¥172,100</span></div>
-          <div class="trade-meta"><span>14d</span><span>Profit take</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>6920.T</b>
-            <span>Lasertec</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-09</span><i>→</i><span>2026-04-30</span></div>
-          <div class="trade-result"><b>+9.46%</b><span>+¥369,000</span></div>
-          <div class="trade-meta"><span>15d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>9984.T</b>
-            <span>SoftBank Group</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-23</span><i>→</i><span>2026-04-28</span></div>
-          <div class="trade-result"><b>-13.60%</b><span>¥-82,900</span></div>
-          <div class="trade-meta"><span>4d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>135A.T</b>
-            <span>VRAIN Solution</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-22</span><i>→</i><span>2026-04-23</span></div>
-          <div class="trade-result"><b>-8.61%</b><span>¥-62,000</span></div>
-          <div class="trade-meta"><span>2d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>7012.T</b>
-            <span>Kawasaki Heavy Industries</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-02</span><i>→</i><span>2026-04-22</span></div>
-          <div class="trade-result"><b>-4.23%</b><span>¥-13,700</span></div>
-          <div class="trade-meta"><span>15d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>9984.T</b>
-            <span>SoftBank Group</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-16</span><i>→</i><span>2026-04-22</span></div>
-          <div class="trade-result"><b>+23.73%</b><span>+¥107,800</span></div>
-          <div class="trade-meta"><span>5d</span><span>Profit take</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>6503.T</b>
-            <span>Mitsubishi Electric</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-01</span><i>→</i><span>2026-04-21</span></div>
-          <div class="trade-result"><b>+15.10%</b><span>+¥79,100</span></div>
-          <div class="trade-meta"><span>15d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>8035.T</b>
-            <span>Tokyo Electron</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-01</span><i>→</i><span>2026-04-16</span></div>
-          <div class="trade-result"><b>+18.61%</b><span>+¥719,000</span></div>
-          <div class="trade-meta"><span>12d</span><span>Profit take</span></div>
-        </article>
-        
-      </div>
+        <div class="trade-history">
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>9984.T</b>
+              <span>SoftBank Group</span>
+            </div>
+            <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-22</span></div>
+            <div class="trade-result"><b>+24.10%</b><span>+¥393,600</span></div>
+            <div class="trade-meta"><span>5d</span><span>Profit take</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>3652.T</b>
+              <span>Digital Media Professionals</span>
+            </div>
+            <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-20</span></div>
+            <div class="trade-result"><b>-10.14%</b><span>¥-144,000</span></div>
+            <div class="trade-meta"><span>1d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>5803.T</b>
+              <span>Fujikura</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-17</span><i>→</i><span>2026-05-12</span></div>
+            <div class="trade-result"><b>+29.15%</b><span>+¥172,100</span></div>
+            <div class="trade-meta"><span>14d</span><span>Profit take</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>6920.T</b>
+              <span>Lasertec</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-09</span><i>→</i><span>2026-04-30</span></div>
+            <div class="trade-result"><b>+9.46%</b><span>+¥369,000</span></div>
+            <div class="trade-meta"><span>15d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>9984.T</b>
+              <span>SoftBank Group</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-23</span><i>→</i><span>2026-04-28</span></div>
+            <div class="trade-result"><b>-13.60%</b><span>¥-82,900</span></div>
+            <div class="trade-meta"><span>4d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>135A.T</b>
+              <span>VRAIN Solution</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-22</span><i>→</i><span>2026-04-23</span></div>
+            <div class="trade-result"><b>-8.61%</b><span>¥-62,000</span></div>
+            <div class="trade-meta"><span>2d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>7012.T</b>
+              <span>Kawasaki Heavy Industries</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-02</span><i>→</i><span>2026-04-22</span></div>
+            <div class="trade-result"><b>-4.23%</b><span>¥-13,700</span></div>
+            <div class="trade-meta"><span>15d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>9984.T</b>
+              <span>SoftBank Group</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-16</span><i>→</i><span>2026-04-22</span></div>
+            <div class="trade-result"><b>+23.73%</b><span>+¥107,800</span></div>
+            <div class="trade-meta"><span>5d</span><span>Profit take</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>6503.T</b>
+              <span>Mitsubishi Electric</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-01</span><i>→</i><span>2026-04-21</span></div>
+            <div class="trade-result"><b>+15.10%</b><span>+¥79,100</span></div>
+            <div class="trade-meta"><span>15d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>8035.T</b>
+              <span>Tokyo Electron</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-01</span><i>→</i><span>2026-04-16</span></div>
+            <div class="trade-result"><b>+18.61%</b><span>+¥719,000</span></div>
+            <div class="trade-meta"><span>12d</span><span>Profit take</span></div>
+          </article>
+          
+        </div>
+      </details>
     </section>
     
     <section class="agent panel tone-blue">
@@ -495,114 +505,119 @@
         </article>
       </div>
 
-      <div class="section-head history-title">
-        <h3>Recent Closed Trades</h3>
-        <p>Latest 10 of 45</p>
-      </div>
+      <details class="closed-trades-panel">
+        <summary class="section-head history-title">
+          <span class="summary-copy">
+            <h3>Recent Closed Trades</h3>
+            <p>Latest 10 of 45</p>
+          </span>
+          <span class="summary-toggle">Open Tape</span>
+        </summary>
 
-      <div class="trade-history">
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>6762.T</b>
-            <span>TDK</span>
-          </div>
-          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-21</span></div>
-          <div class="trade-result"><b>+8.85%</b><span>+¥127,750</span></div>
-          <div class="trade-meta"><span>2d</span><span>Profit take</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>6701.T</b>
-            <span>NEC</span>
-          </div>
-          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-20</span></div>
-          <div class="trade-result"><b>-3.90%</b><span>¥-50,400</span></div>
-          <div class="trade-meta"><span>1d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>6762.T</b>
-            <span>TDK</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-23</span><i>→</i><span>2026-05-01</span></div>
-          <div class="trade-result"><b>+0.93%</b><span>+¥10,200</span></div>
-          <div class="trade-meta"><span>6d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>6501.T</b>
-            <span>Hitachi</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-16</span><i>→</i><span>2026-04-23</span></div>
-          <div class="trade-result"><b>-0.13%</b><span>¥-700</span></div>
-          <div class="trade-meta"><span>6d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>6503.T</b>
-            <span>Mitsubishi Electric</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-21</span><i>→</i><span>2026-04-23</span></div>
-          <div class="trade-result"><b>-3.59%</b><span>¥-43,800</span></div>
-          <div class="trade-meta"><span>3d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>9984.T</b>
-            <span>SoftBank Group</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-23</span><i>→</i><span>2026-04-23</span></div>
-          <div class="trade-result"><b>-4.26%</b><span>¥-52,000</span></div>
-          <div class="trade-meta"><span>1d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>6981.T</b>
-            <span>Murata Manufacturing</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-15</span><i>→</i><span>2026-04-22</span></div>
-          <div class="trade-result"><b>+9.50%</b><span>+¥42,600</span></div>
-          <div class="trade-meta"><span>6d</span><span>Profit take</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>9984.T</b>
-            <span>SoftBank Group</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-21</span><i>→</i><span>2026-04-22</span></div>
-          <div class="trade-result"><b>+13.65%</b><span>+¥135,000</span></div>
-          <div class="trade-meta"><span>2d</span><span>Profit take</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>6920.T</b>
-            <span>Lasertec</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-13</span><i>→</i><span>2026-04-20</span></div>
-          <div class="trade-result"><b>+2.48%</b><span>+¥102,000</span></div>
-          <div class="trade-meta"><span>6d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>9984.T</b>
-            <span>SoftBank Group</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-15</span><i>→</i><span>2026-04-20</span></div>
-          <div class="trade-result"><b>+8.38%</b><span>+¥36,900</span></div>
-          <div class="trade-meta"><span>4d</span><span>Profit take</span></div>
-        </article>
-        
-      </div>
+        <div class="trade-history">
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>6762.T</b>
+              <span>TDK</span>
+            </div>
+            <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-21</span></div>
+            <div class="trade-result"><b>+8.85%</b><span>+¥127,750</span></div>
+            <div class="trade-meta"><span>2d</span><span>Profit take</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>6701.T</b>
+              <span>NEC</span>
+            </div>
+            <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-20</span></div>
+            <div class="trade-result"><b>-3.90%</b><span>¥-50,400</span></div>
+            <div class="trade-meta"><span>1d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>6762.T</b>
+              <span>TDK</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-23</span><i>→</i><span>2026-05-01</span></div>
+            <div class="trade-result"><b>+0.93%</b><span>+¥10,200</span></div>
+            <div class="trade-meta"><span>6d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>6501.T</b>
+              <span>Hitachi</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-16</span><i>→</i><span>2026-04-23</span></div>
+            <div class="trade-result"><b>-0.13%</b><span>¥-700</span></div>
+            <div class="trade-meta"><span>6d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>6503.T</b>
+              <span>Mitsubishi Electric</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-21</span><i>→</i><span>2026-04-23</span></div>
+            <div class="trade-result"><b>-3.59%</b><span>¥-43,800</span></div>
+            <div class="trade-meta"><span>3d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>9984.T</b>
+              <span>SoftBank Group</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-23</span><i>→</i><span>2026-04-23</span></div>
+            <div class="trade-result"><b>-4.26%</b><span>¥-52,000</span></div>
+            <div class="trade-meta"><span>1d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>6981.T</b>
+              <span>Murata Manufacturing</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-15</span><i>→</i><span>2026-04-22</span></div>
+            <div class="trade-result"><b>+9.50%</b><span>+¥42,600</span></div>
+            <div class="trade-meta"><span>6d</span><span>Profit take</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>9984.T</b>
+              <span>SoftBank Group</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-21</span><i>→</i><span>2026-04-22</span></div>
+            <div class="trade-result"><b>+13.65%</b><span>+¥135,000</span></div>
+            <div class="trade-meta"><span>2d</span><span>Profit take</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>6920.T</b>
+              <span>Lasertec</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-13</span><i>→</i><span>2026-04-20</span></div>
+            <div class="trade-result"><b>+2.48%</b><span>+¥102,000</span></div>
+            <div class="trade-meta"><span>6d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>9984.T</b>
+              <span>SoftBank Group</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-15</span><i>→</i><span>2026-04-20</span></div>
+            <div class="trade-result"><b>+8.38%</b><span>+¥36,900</span></div>
+            <div class="trade-meta"><span>4d</span><span>Profit take</span></div>
+          </article>
+          
+        </div>
+      </details>
     </section>
     
     <section class="agent panel tone-green">
@@ -690,114 +705,119 @@
         </article>
       </div>
 
-      <div class="section-head history-title">
-        <h3>Recent Closed Trades</h3>
-        <p>Latest 10 of 39</p>
-      </div>
+      <details class="closed-trades-panel">
+        <summary class="section-head history-title">
+          <span class="summary-copy">
+            <h3>Recent Closed Trades</h3>
+            <p>Latest 10 of 39</p>
+          </span>
+          <span class="summary-toggle">Open Tape</span>
+        </summary>
 
-      <div class="trade-history">
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>3993.T</b>
-            <span>PKSHA Technology</span>
-          </div>
-          <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-20</span></div>
-          <div class="trade-result"><b>-9.50%</b><span>¥-85,500</span></div>
-          <div class="trade-meta"><span>3d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>3652.T</b>
-            <span>Digital Media Professionals</span>
-          </div>
-          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-20</span></div>
-          <div class="trade-result"><b>-10.14%</b><span>¥-108,000</span></div>
-          <div class="trade-meta"><span>1d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>3905.T</b>
-            <span>Data Section</span>
-          </div>
-          <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-19</span></div>
-          <div class="trade-result"><b>+17.66%</b><span>+¥200,800</span></div>
-          <div class="trade-meta"><span>2d</span><span>Profit take</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>4425.T</b>
-            <span>Kudan</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-21</span><i>→</i><span>2026-04-30</span></div>
-          <div class="trade-result"><b>-2.68%</b><span>¥-14,200</span></div>
-          <div class="trade-meta"><span>7d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>3652.T</b>
-            <span>Digital Media Professionals</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-22</span><i>→</i><span>2026-04-28</span></div>
-          <div class="trade-result"><b>+27.48%</b><span>+¥195,000</span></div>
-          <div class="trade-meta"><span>5d</span><span>Profit take</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>3905.T</b>
-            <span>Data Section</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-17</span><i>→</i><span>2026-04-27</span></div>
-          <div class="trade-result"><b>-7.39%</b><span>¥-58,500</span></div>
-          <div class="trade-meta"><span>7d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>5572.T</b>
-            <span>Ridge-i</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-17</span><i>→</i><span>2026-04-27</span></div>
-          <div class="trade-result"><b>+3.10%</b><span>+¥20,400</span></div>
-          <div class="trade-meta"><span>7d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>269A.T</b>
-            <span>Sapeet</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-16</span><i>→</i><span>2026-04-24</span></div>
-          <div class="trade-result"><b>-0.21%</b><span>¥-1,500</span></div>
-          <div class="trade-meta"><span>7d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>135A.T</b>
-            <span>VRAIN Solution</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-16</span><i>→</i><span>2026-04-24</span></div>
-          <div class="trade-result"><b>-6.15%</b><span>¥-43,000</span></div>
-          <div class="trade-meta"><span>7d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>3993.T</b>
-            <span>PKSHA Technology</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-13</span><i>→</i><span>2026-04-21</span></div>
-          <div class="trade-result"><b>+9.81%</b><span>+¥55,200</span></div>
-          <div class="trade-meta"><span>7d</span><span>Time exit</span></div>
-        </article>
-        
-      </div>
+        <div class="trade-history">
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>3993.T</b>
+              <span>PKSHA Technology</span>
+            </div>
+            <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-20</span></div>
+            <div class="trade-result"><b>-9.50%</b><span>¥-85,500</span></div>
+            <div class="trade-meta"><span>3d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>3652.T</b>
+              <span>Digital Media Professionals</span>
+            </div>
+            <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-20</span></div>
+            <div class="trade-result"><b>-10.14%</b><span>¥-108,000</span></div>
+            <div class="trade-meta"><span>1d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>3905.T</b>
+              <span>Data Section</span>
+            </div>
+            <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-19</span></div>
+            <div class="trade-result"><b>+17.66%</b><span>+¥200,800</span></div>
+            <div class="trade-meta"><span>2d</span><span>Profit take</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>4425.T</b>
+              <span>Kudan</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-21</span><i>→</i><span>2026-04-30</span></div>
+            <div class="trade-result"><b>-2.68%</b><span>¥-14,200</span></div>
+            <div class="trade-meta"><span>7d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>3652.T</b>
+              <span>Digital Media Professionals</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-22</span><i>→</i><span>2026-04-28</span></div>
+            <div class="trade-result"><b>+27.48%</b><span>+¥195,000</span></div>
+            <div class="trade-meta"><span>5d</span><span>Profit take</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>3905.T</b>
+              <span>Data Section</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-17</span><i>→</i><span>2026-04-27</span></div>
+            <div class="trade-result"><b>-7.39%</b><span>¥-58,500</span></div>
+            <div class="trade-meta"><span>7d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>5572.T</b>
+              <span>Ridge-i</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-17</span><i>→</i><span>2026-04-27</span></div>
+            <div class="trade-result"><b>+3.10%</b><span>+¥20,400</span></div>
+            <div class="trade-meta"><span>7d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>269A.T</b>
+              <span>Sapeet</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-16</span><i>→</i><span>2026-04-24</span></div>
+            <div class="trade-result"><b>-0.21%</b><span>¥-1,500</span></div>
+            <div class="trade-meta"><span>7d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>135A.T</b>
+              <span>VRAIN Solution</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-16</span><i>→</i><span>2026-04-24</span></div>
+            <div class="trade-result"><b>-6.15%</b><span>¥-43,000</span></div>
+            <div class="trade-meta"><span>7d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>3993.T</b>
+              <span>PKSHA Technology</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-13</span><i>→</i><span>2026-04-21</span></div>
+            <div class="trade-result"><b>+9.81%</b><span>+¥55,200</span></div>
+            <div class="trade-meta"><span>7d</span><span>Time exit</span></div>
+          </article>
+          
+        </div>
+      </details>
     </section>
     
     <section class="agent panel tone-amber">
@@ -866,114 +886,119 @@
         </article>
       </div>
 
-      <div class="section-head history-title">
-        <h3>Recent Closed Trades</h3>
-        <p>Latest 10 of 39</p>
-      </div>
+      <details class="closed-trades-panel">
+        <summary class="section-head history-title">
+          <span class="summary-copy">
+            <h3>Recent Closed Trades</h3>
+            <p>Latest 10 of 39</p>
+          </span>
+          <span class="summary-toggle">Open Tape</span>
+        </summary>
 
-      <div class="trade-history">
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>6762.T</b>
-            <span>TDK</span>
-          </div>
-          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-22</span></div>
-          <div class="trade-result"><b>+16.79%</b><span>+¥193,800</span></div>
-          <div class="trade-meta"><span>3d</span><span>Profit take</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>6981.T</b>
-            <span>Murata Manufacturing</span>
-          </div>
-          <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-21</span></div>
-          <div class="trade-result"><b>+12.30%</b><span>+¥73,700</span></div>
-          <div class="trade-meta"><span>2d</span><span>Profit take</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>9984.T</b>
-            <span>SoftBank Group</span>
-          </div>
-          <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-20</span></div>
-          <div class="trade-result"><b>-7.46%</b><span>¥-121,800</span></div>
-          <div class="trade-meta"><span>3d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>3652.T</b>
-            <span>Digital Media Professionals</span>
-          </div>
-          <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-20</span></div>
-          <div class="trade-result"><b>-7.80%</b><span>¥-108,000</span></div>
-          <div class="trade-meta"><span>3d</span><span>Risk exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>5803.T</b>
-            <span>Fujikura</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-20</span><i>→</i><span>2026-05-07</span></div>
-          <div class="trade-result"><b>+14.16%</b><span>+¥161,200</span></div>
-          <div class="trade-meta"><span>10d</span><span>Profit take</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>8035.T</b>
-            <span>Tokyo Electron</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-20</span><i>→</i><span>2026-05-07</span></div>
-          <div class="trade-result"><b>+17.89%</b><span>+¥785,000</span></div>
-          <div class="trade-meta"><span>10d</span><span>Profit take</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>6701.T</b>
-            <span>NEC</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-15</span><i>→</i><span>2026-04-28</span></div>
-          <div class="trade-result"><b>+6.19%</b><span>+¥51,800</span></div>
-          <div class="trade-meta"><span>10d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>6501.T</b>
-            <span>Hitachi</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-13</span><i>→</i><span>2026-04-24</span></div>
-          <div class="trade-result"><b>+7.15%</b><span>+¥34,900</span></div>
-          <div class="trade-meta"><span>10d</span><span>Time exit</span></div>
-        </article>
-        
-        <article class="trade-row pos">
-          <div class="trade-main">
-            <b>4425.T</b>
-            <span>Kudan</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-14</span><i>→</i><span>2026-04-21</span></div>
-          <div class="trade-result"><b>+17.47%</b><span>+¥209,500</span></div>
-          <div class="trade-meta"><span>6d</span><span>Profit take</span></div>
-        </article>
-        
-        <article class="trade-row neg">
-          <div class="trade-main">
-            <b>7012.T</b>
-            <span>Kawasaki Heavy Industries</span>
-          </div>
-          <div class="trade-dates"><span>2026-04-09</span><i>→</i><span>2026-04-17</span></div>
-          <div class="trade-result"><b>-6.97%</b><span>¥-46,000</span></div>
-          <div class="trade-meta"><span>7d</span><span>Risk exit</span></div>
-        </article>
-        
-      </div>
+        <div class="trade-history">
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>6762.T</b>
+              <span>TDK</span>
+            </div>
+            <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-22</span></div>
+            <div class="trade-result"><b>+16.79%</b><span>+¥193,800</span></div>
+            <div class="trade-meta"><span>3d</span><span>Profit take</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>6981.T</b>
+              <span>Murata Manufacturing</span>
+            </div>
+            <div class="trade-dates"><span>2026-05-20</span><i>→</i><span>2026-05-21</span></div>
+            <div class="trade-result"><b>+12.30%</b><span>+¥73,700</span></div>
+            <div class="trade-meta"><span>2d</span><span>Profit take</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>9984.T</b>
+              <span>SoftBank Group</span>
+            </div>
+            <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-20</span></div>
+            <div class="trade-result"><b>-7.46%</b><span>¥-121,800</span></div>
+            <div class="trade-meta"><span>3d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>3652.T</b>
+              <span>Digital Media Professionals</span>
+            </div>
+            <div class="trade-dates"><span>2026-05-18</span><i>→</i><span>2026-05-20</span></div>
+            <div class="trade-result"><b>-7.80%</b><span>¥-108,000</span></div>
+            <div class="trade-meta"><span>3d</span><span>Risk exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>5803.T</b>
+              <span>Fujikura</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-20</span><i>→</i><span>2026-05-07</span></div>
+            <div class="trade-result"><b>+14.16%</b><span>+¥161,200</span></div>
+            <div class="trade-meta"><span>10d</span><span>Profit take</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>8035.T</b>
+              <span>Tokyo Electron</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-20</span><i>→</i><span>2026-05-07</span></div>
+            <div class="trade-result"><b>+17.89%</b><span>+¥785,000</span></div>
+            <div class="trade-meta"><span>10d</span><span>Profit take</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>6701.T</b>
+              <span>NEC</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-15</span><i>→</i><span>2026-04-28</span></div>
+            <div class="trade-result"><b>+6.19%</b><span>+¥51,800</span></div>
+            <div class="trade-meta"><span>10d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>6501.T</b>
+              <span>Hitachi</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-13</span><i>→</i><span>2026-04-24</span></div>
+            <div class="trade-result"><b>+7.15%</b><span>+¥34,900</span></div>
+            <div class="trade-meta"><span>10d</span><span>Time exit</span></div>
+          </article>
+          
+          <article class="trade-row pos">
+            <div class="trade-main">
+              <b>4425.T</b>
+              <span>Kudan</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-14</span><i>→</i><span>2026-04-21</span></div>
+            <div class="trade-result"><b>+17.47%</b><span>+¥209,500</span></div>
+            <div class="trade-meta"><span>6d</span><span>Profit take</span></div>
+          </article>
+          
+          <article class="trade-row neg">
+            <div class="trade-main">
+              <b>7012.T</b>
+              <span>Kawasaki Heavy Industries</span>
+            </div>
+            <div class="trade-dates"><span>2026-04-09</span><i>→</i><span>2026-04-17</span></div>
+            <div class="trade-result"><b>-6.97%</b><span>¥-46,000</span></div>
+            <div class="trade-meta"><span>7d</span><span>Risk exit</span></div>
+          </article>
+          
+        </div>
+      </details>
     </section>
     
 
