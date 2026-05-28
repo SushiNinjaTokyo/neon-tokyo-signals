@@ -1,0 +1,127 @@
+name: Build JP index universe
+
+on:
+  workflow_dispatch:
+    inputs:
+      allow_partial:
+        description: "Write output even if one source fails"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+  schedule:
+    # Monthly after JPX month-end constituent files are normally available.
+    # 20:20 UTC = 05:20 JST.
+    - cron: "20 20 1 * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: neon-tokyo-site-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-universe:
+    runs-on: ubuntu-latest
+
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      ALLOW_PARTIAL: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_partial || 'false' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Sync latest main
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin main
+
+      - name: Install parser dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install pymupdf
+
+      - name: Validate script
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/build_jp_index_universe_csv.py
+
+      - name: Build de-duplicated JP index universe
+        run: |
+          set -euo pipefail
+          if [ "${ALLOW_PARTIAL}" = "true" ]; then
+            python scripts/build_jp_index_universe_csv.py --allow-partial
+          else
+            python scripts/build_jp_index_universe_csv.py
+          fi
+
+      - name: Verify output files
+        run: |
+          set -euo pipefail
+          test -f data/universe/jp_index_universe.csv
+          test -f site/data/japan/universe/jp_index_universe.csv
+          test -f site/data/japan/universe/jp_index_universe.json
+          test -f site/data/japan/universe/diagnostics.json
+          python - <<'PY'
+          import csv, json
+          from pathlib import Path
+          p = Path('data/universe/jp_index_universe.csv')
+          rows = list(csv.DictReader(p.open(encoding='utf-8')))
+          tickers = [r['ticker'] for r in rows]
+          assert rows, 'universe csv is empty'
+          assert len(tickers) == len(set(tickers)), 'duplicate tickers found'
+          diag = json.loads(Path('site/data/japan/universe/diagnostics.json').read_text(encoding='utf-8'))
+          print('unique_count=', len(rows))
+          print('source_counts=', diag.get('input_source_counts'))
+          print('errors=', diag.get('errors'))
+          PY
+
+      - name: Commit JP index universe
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add -A \
+            data/universe/jp_index_universe.csv \
+            site/data/japan/universe/jp_index_universe.csv \
+            site/data/japan/universe/jp_index_universe.json \
+            site/data/japan/universe/diagnostics.json
+
+          if git diff --cached --quiet; then
+            echo "No universe changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Build JP index universe"
+
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Push succeeded."
+              exit 0
+            fi
+            echo "Push rejected. Fetching origin/main and retrying ($i/3)..."
+            git fetch origin main
+            if ! git rebase origin/main; then
+              echo "Rebase failed. Aborting to avoid overwriting generated files."
+              git rebase --abort || true
+              exit 1
+            fi
+            sleep 5
+          done
+
+          echo "Push failed after retries."
+          exit 1
