@@ -23,7 +23,7 @@
       </div>
       <div class="hero-meta" aria-label="Simulation range">
         <span>Season <b>{{ positions.season or '—' }}</b></span>
-        <span>{{ positions.range.start_date if positions.range else '—' }} → {{ positions.range.end_date if positions.range else '—' }}</span>
+        <span class="season-range" aria-label="Simulation window"><i>RUN WINDOW</i><b>{{ (positions.range.start_date if positions.range else '—')|replace('-', '.') }}</b><em></em><b>{{ (positions.range.end_date if positions.range else '—')|replace('-', '.') }}</b></span>
       </div>
     </header>
 
@@ -129,26 +129,31 @@
         </article>
       </div>
 
-      <div class="section-head history-title">
-        <h3>Recent Closed Trades</h3>
-        <p>Latest {{ agent.recent_closed_trades|length }} of {{ agent.position_summary.closed_count }}</p>
-      </div>
+      <details class="closed-trades-panel">
+        <summary class="section-head history-title">
+          <span class="summary-copy">
+            <h3>Recent Closed Trades</h3>
+            <p>Latest {{ agent.recent_closed_trades|length }} of {{ agent.position_summary.closed_count }}</p>
+          </span>
+          <span class="summary-toggle">Open Tape</span>
+        </summary>
 
-      <div class="trade-history">
-        {% for t in agent.recent_closed_trades %}
-        <article class="trade-row {{ t.pnl_class }}">
-          <div class="trade-main">
-            <b>{{ t.symbol }}</b>
-            <span>{{ t.name }}</span>
-          </div>
-          <div class="trade-dates"><span>{{ t.entry_date_fmt }}</span><i>→</i><span>{{ t.exit_date_fmt }}</span></div>
-          <div class="trade-result"><b>{{ t.return_fmt }}</b><span>{{ t.pnl_fmt }}</span></div>
-          <div class="trade-meta"><span>{{ t.holding_days }}d</span><span>{{ t.exit_reason_clean }}</span></div>
-        </article>
-        {% else %}
-        <article class="empty-history">No closed trades yet.</article>
-        {% endfor %}
-      </div>
+        <div class="trade-history">
+          {% for t in agent.recent_closed_trades %}
+          <article class="trade-row {{ t.pnl_class }}">
+            <div class="trade-main">
+              <b>{{ t.symbol }}</b>
+              <span>{{ t.name }}</span>
+            </div>
+            <div class="trade-dates"><span>{{ t.entry_date_fmt }}</span><i>→</i><span>{{ t.exit_date_fmt }}</span></div>
+            <div class="trade-result"><b>{{ t.return_fmt }}</b><span>{{ t.pnl_fmt }}</span></div>
+            <div class="trade-meta"><span>{{ t.holding_days }}d</span><span>{{ t.exit_reason_clean }}</span></div>
+          </article>
+          {% else %}
+          <article class="empty-history">No closed trades yet.</article>
+          {% endfor %}
+        </div>
+      </details>
     </section>
     {% endfor %}
 

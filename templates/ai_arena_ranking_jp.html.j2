@@ -25,46 +25,40 @@
         <h1>AI Agent<br />Grand Prix</h1>
         <p class="hero-sub">A live Tokyo-equity leaderboard ranked by total portfolio return: realised P/L plus current unrealised P/L.</p>
         <div class="hero-kpis" aria-label="Season summary">
-          <div><span>Range</span><b>{{ ranking.range.start_date if ranking.range else '—' }} → {{ ranking.range.end_date if ranking.range else '—' }}</b></div>
+          <div class="range-kpi"><span>Run Window</span><b class="season-range" aria-label="Simulation window"><i>SEASON</i><strong>{{ (ranking.range.start_date if ranking.range else '—')|replace('-', '.') }}</strong><em></em><strong>{{ (ranking.range.end_date if ranking.range else '—')|replace('-', '.') }}</strong></b></div>
           <div><span>Leader Gap</span><b>{{ '%.2f'|format(ranking.return_spread_pct or 0) }}%</b></div>
           <div><span>Agents</span><b>{{ ranking.agents|length }}</b></div>
         </div>
       </div>
 
-      {% if ranking.champion %}
-      <aside class="champion-card tone-{{ ranking.champion.ui_tone }}" aria-label="Current champion">
-        <div class="champion-topline">
-          <p class="eyebrow">CURRENT CHAMPION</p>
-          <div class="champion-ribbon rank-crown rank-crown--{{ ranking.champion.podium_class }}">
-            {% if ranking.champion.podium_tier == 'crown' %}<span class="crown-shape" aria-hidden="true"></span>{% endif %}
-            <span>{{ ranking.champion.podium_label }}</span>
-          </div>
+      <aside class="ranking-party-profiles" aria-label="AI Party Profiles">
+        <div class="party-profile-head">
+          <p class="eyebrow">AI PARTY PROFILES</p>
+          <span>Five agents / one Tokyo book</span>
         </div>
-        <div class="champion-avatar-wrap">
-          {% if ranking.champion.avatar_image %}
-          <img src="{{ ranking.champion.avatar_image }}" alt="{{ ranking.champion.name }}" class="champion-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-          <div class="champion-avatar pixel-avatar avatar-{{ ranking.champion.avatar_style or 'pixel_mage' }} avatar-fallback"><span></span></div>
-          {% else %}
-          <div class="champion-avatar pixel-avatar avatar-{{ ranking.champion.avatar_style or 'pixel_mage' }}"><span></span></div>
-          {% endif %}
-        </div>
-        <div class="champion-copy">
-          <h2>{{ ranking.champion.name }}</h2>
-          <p>{{ ranking.champion.rank_title }} / {{ ranking.champion.display_profile }}</p>
-        </div>
-        <div class="champion-return {{ ranking.champion.return_class }}">{{ '%.2f'|format(ranking.champion.total_return_pct or ranking.champion.return_pct or 0) }}%</div>
-        <div class="champion-split">
-          <span>Realized <b class="{{ 'positive' if ranking.champion.realized_pnl_jpy >= 0 else 'negative' }}">{{ '%+.2f'|format(ranking.champion.realized_return_pct or 0) }}%</b></span>
-          <span>Unrealized <b class="{{ 'positive' if ranking.champion.unrealized_pnl_jpy >= 0 else 'negative' }}">{{ '%+.2f'|format(ranking.champion.unrealized_return_pct or 0) }}%</b></span>
-        </div>
-        <div class="why-box">
-          <div class="why-title">WHY LEADING?</div>
-          {% for reason in ranking.champion.why_leading or [] %}
-          <p>{{ reason }}</p>
+        <div class="party-profile-grid">
+          {% for a in ranking.agents or [] %}
+          <article class="party-profile-card tone-{{ a.ui_tone }}{% if loop.first %} is-leading{% endif %}">
+            <div class="party-avatar-wrap">
+              {% if a.avatar_image %}
+              <img src="{{ a.avatar_image }}" alt="{{ a.name }}" class="party-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
+              <div class="pixel-avatar avatar-{{ a.avatar_style or 'pixel_warrior' }} avatar-fallback"><span></span></div>
+              {% else %}
+              <div class="pixel-avatar avatar-{{ a.avatar_style or 'pixel_warrior' }}"><span></span></div>
+              {% endif %}
+            </div>
+            <div class="party-profile-copy">
+              <div class="party-profile-top">
+                <b>{{ a.name }}</b>
+                <span class="rank-crown rank-crown--{{ a.podium_class }}">{{ a.podium_label }}</span>
+              </div>
+              <p>{{ a.rank_title }} / {{ a.display_profile }}</p>
+              <em class="{{ a.return_class }}">{{ '%.2f'|format(a.total_return_pct or a.return_pct or 0) }}%</em>
+            </div>
+          </article>
           {% endfor %}
         </div>
       </aside>
-      {% endif %}
     </header>
 
     {% if ranking.podium %}
@@ -104,7 +98,7 @@
           <p class="eyebrow">REAL EQUITY CURVES</p>
           <h2>Return Race</h2>
         </div>
-        <span>{{ ranking.race.start_date }} → {{ ranking.race.end_date }}</span>
+        <span class="season-range section-range" aria-label="Race window"><i>RACE WINDOW</i><b>{{ ranking.race.start_date|replace('-', '.') }}</b><em></em><b>{{ ranking.race.end_date|replace('-', '.') }}</b></span>
       </div>
 
       <div class="race-chart-wrap">

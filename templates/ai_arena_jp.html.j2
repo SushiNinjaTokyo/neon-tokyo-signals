@@ -28,7 +28,7 @@
           <h1>Five AI agents enter Tokyo.</h1>
           <div class="hero-meta">
             <span>Season {{ arena.season|default('—', true) }}</span>
-            <span>{{ arena_range.start_date|default('—', true) }} → {{ arena_range.end_date|default('—', true) }}</span>
+            <span class="season-range" aria-label="Simulation window"><i>RUN WINDOW</i><b>{{ arena_range.start_date|default('—', true)|replace('-', '.') }}</b><em></em><b>{{ arena_range.end_date|default('—', true)|replace('-', '.') }}</b></span>
             <span>{{ ai.model|default('model n/a', true) }}</span>
           </div>
         </div>

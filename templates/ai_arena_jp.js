@@ -62,6 +62,7 @@
     const agentName = item.agent_name || item.agent_id || 'Agent';
     const linkedSymbol = item.linked_symbol || '';
     const linkedName = item.linked_name || item.company_name || item.linked_company || symbolNameMap[linkedSymbol] || item.linked_theme || '';
+    const tradeSide = inferTradeSide(item);
 
     const avatarHtml = avatarImage
       ? `<div class="chat-icon avatar-shell avatar-chat-shell"><img src="${escapeAttr(avatarImage)}" alt="${escapeAttr(agentName)}" class="agent-avatar-img chat-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" /><div class="pixel-avatar avatar-small avatar-${safeClass(avatarStyle)} avatar-fallback"><span></span></div></div>`
@@ -72,7 +73,7 @@
       <div class="chat-name"><span>${escapeHtml(agentName)}</span></div>
       <div class="chat-message">${escapeHtml(item.body || '')}</div>
       <div class="chat-time"><b>${escapeHtml(dateText)}</b><span>${escapeHtml(timeText)}</span></div>
-      <div class="chat-symbol ${linkedSymbol ? '' : 'is-empty'}">${linkedSymbol ? `<b>${escapeHtml(linkedSymbol)}</b><span>${escapeHtml(linkedName)}</span>` : ''}</div>
+      <div class="chat-symbol ${linkedSymbol ? '' : 'is-empty'}">${linkedSymbol ? `<div class="symbol-head"><b>${escapeHtml(linkedSymbol)}</b>${tradeSide ? `<i class="trade-badge trade-badge-${tradeSide.toLowerCase()}">${tradeSide}</i>` : ''}</div><span>${escapeHtml(linkedName)}</span>` : ''}</div>
     `;
     return row;
   }
@@ -97,6 +98,20 @@
     };
     dots.forEach((dot, i) => dot.addEventListener('click', () => setSlide(i)));
     setInterval(() => setSlide(idx + 1), 3000);
+  }
+
+  function inferTradeSide(item){
+    const text = String((item && item.body) || '').toLowerCase();
+    const type = String((item && item.type) || '').toLowerCase();
+    if (!item || !item.linked_symbol) return '';
+
+    const isActionLike = /action|trade|entry|exit|order|execution|message/.test(type);
+    const outHit = /(exited|exit|sold|sell|closed|close|stop-loss|stop loss|take profit|max holding|cleared|gone)/.test(text);
+    const inHit = /(entered|enter|bought|buy|opened|open|initiated|added|accumulation|scale in)/.test(text);
+
+    if (outHit) return 'OUT';
+    if (inHit && isActionLike) return 'IN';
+    return '';
   }
 
   function buildSymbolNameMap(feedRows, agentRows){
