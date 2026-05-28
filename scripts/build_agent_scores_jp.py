@@ -80,10 +80,14 @@ def main() -> int:
     if not scores.empty:
         latest_date = str(pd.to_datetime(scores["date"]).max().date())
 
+    required_score_columns = {"agent_id", "rank"}
     agents_out = []
     for profile in AGENT_PROFILES:
-        adf = scores[scores["agent_id"] == profile.id].copy() if not scores.empty else pd.DataFrame()
-        adf = adf.sort_values("rank").head(TOP_N_PER_AGENT)
+        if not scores.empty and required_score_columns.issubset(scores.columns):
+            adf = scores[scores["agent_id"] == profile.id].copy()
+            adf = adf.sort_values("rank").head(TOP_N_PER_AGENT)
+        else:
+            adf = pd.DataFrame()
         items = []
         for _, r in adf.iterrows():
             items.append({
@@ -114,6 +118,7 @@ def main() -> int:
         "price_rows": price_rows,
         "feature_diagnostics": feature_diag,
         "agent_score_rows": int(len(scores)),
+        "score_columns": list(scores.columns),
         "latest_date": latest_date,
         "agents": [
             {
@@ -146,6 +151,7 @@ def main() -> int:
     print(f"feature_rows={feature_diag.get('feature_rows')}")
     print(f"agent_score_rows={len(scores)}")
     if len(scores) == 0:
+        print("No agent scores were generated. Check diagnostics.json for feature dates, equity universe flags, and liquidity filters.")
         return 2
     return 0
 

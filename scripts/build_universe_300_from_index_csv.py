@@ -15,6 +15,7 @@ UNIVERSE_LIMIT = int(os.getenv("UNIVERSE_LIMIT", "300"))
 CORE_TARGET = int(os.getenv("UNIVERSE_CORE_TARGET", "220"))
 GROWTH_TARGET = int(os.getenv("UNIVERSE_GROWTH_TARGET", "60"))
 STARTUP_TARGET = int(os.getenv("UNIVERSE_STARTUP_TARGET", "20"))
+STRICT_INDEX_UNIVERSE = os.getenv("STRICT_INDEX_UNIVERSE", "true").strip().lower() in {"1", "true", "yes", "y", "on"}
 
 
 def clean(v: Any) -> str:
@@ -150,6 +151,12 @@ def main() -> int:
     if source_rows:
         rows = [normalize_index_row(r) for r in source_rows]
     else:
+        if STRICT_INDEX_UNIVERSE:
+            raise FileNotFoundError(
+                "Index universe CSV is required for a 300-ticker trial but was not found: "
+                f"{SOURCE_CSV}. Run the 'Build JP index universe' workflow first, or rerun this "
+                "workflow with allow_legacy_fallback=true for a small legacy-universe smoke test."
+            )
         legacy_rows = read_csv(FALLBACK_CSV)
         if not legacy_rows:
             raise FileNotFoundError(f"No source universe CSV found: {SOURCE_CSV} or {FALLBACK_CSV}")
@@ -170,6 +177,7 @@ def main() -> int:
     print(f"generated_at={datetime.utcnow().isoformat(timespec='seconds')}Z")
     print(f"source_used={source_used.relative_to(ROOT) if source_used.is_relative_to(ROOT) else source_used}")
     print(f"out_csv={OUT_CSV.relative_to(ROOT) if OUT_CSV.is_relative_to(ROOT) else OUT_CSV}")
+    print(f"strict_index_universe={STRICT_INDEX_UNIVERSE}")
     print(f"rows={len(selected)}")
     print(f"core={sum(1 for r in selected if r.get('bucket') == 'Core')}")
     print(f"discovery={sum(1 for r in selected if r.get('bucket') == 'Discovery')}")
