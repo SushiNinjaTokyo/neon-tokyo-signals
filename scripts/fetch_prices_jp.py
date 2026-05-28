@@ -61,6 +61,10 @@ LOOKBACK_DAYS = int(os.getenv("LOOKBACK_DAYS", "520"))
 MIN_BARS_REQUIRED = int(os.getenv("MIN_BARS_REQUIRED", "60"))
 MIN_ACCEPTABLE_BARS = int(os.getenv("MIN_ACCEPTABLE_BARS", "20"))
 REQUEST_SLEEP_SECONDS = float(os.getenv("REQUEST_SLEEP_SECONDS", "0.25"))
+UNIVERSE_LIMIT = int(os.getenv("UNIVERSE_LIMIT", "0") or "0")
+PRICE_STORE_MODE = os.getenv("PRICE_STORE_MODE", "json").strip().lower()
+PRICE_DUCKDB_PATH = os.getenv("PRICE_DUCKDB_PATH", str(ROOT / "data" / "cache" / "neon_tokyo_jp.duckdb"))
+
 
 TZ = ZoneInfo("Asia/Tokyo")
 
@@ -567,8 +571,16 @@ def main() -> int:
     print(f"PRICE_OUT_DIR={safe_relative(PRICE_OUT_DIR)}")
     print(f"LOOKBACK_DAYS={LOOKBACK_DAYS}")
     print(f"MIN_BARS_REQUIRED={MIN_BARS_REQUIRED}")
+    print(f"UNIVERSE_LIMIT={UNIVERSE_LIMIT}")
+    print(f"PRICE_STORE_MODE={PRICE_STORE_MODE}")
+    print(f"PRICE_DUCKDB_PATH={PRICE_DUCKDB_PATH}")
 
     universe = read_universe(UNIVERSE_CSV)
+    if UNIVERSE_LIMIT > 0:
+        market_pulse_rows = [r for r in universe if r.asset_type == "market_pulse"]
+        equity_rows = [r for r in universe if r.asset_type != "market_pulse"]
+        universe = equity_rows[:UNIVERSE_LIMIT] + market_pulse_rows
+        print(f"Universe limited to equities={min(len(equity_rows), UNIVERSE_LIMIT)} + market_pulse={len(market_pulse_rows)}")
 
     items: list[dict[str, Any]] = []
     failures: list[dict[str, Any]] = []
@@ -622,6 +634,7 @@ def main() -> int:
         "market": "JP",
         "timezone": "Asia/Tokyo",
         "source_priority": ["yfinance", "stooq"],
+        "price_store_mode": PRICE_STORE_MODE,
         "universe_csv": safe_relative(UNIVERSE_CSV),
         "lookback_days": LOOKBACK_DAYS,
         "min_bars_required": MIN_BARS_REQUIRED,
@@ -637,33 +650,59 @@ def main() -> int:
         "failures": failures,
     }
 
+    if PRICE_STORE_MODE in {"json_and_duckdb", "duckdb", "duckdb_only"}:
+        try:
+            from lib.db import connect_db, safe_rel
+            from lib.price_store_duckdb import store_price_payload
+
+            conn = connect_db(PRICE_DUCKDB_PATH)
+            store_diag = store_price_payload(conn, payload=payload, run_id=generated_at)
+            payload["duckdb"] = {
+                "path": safe_rel(PRICE_DUCKDB_PATH),
+                **store_diag,
+            }
+            print(
+                "DuckDB stored",
+                f"items={store_diag.get('items_stored')}",
+                f"bars={store_diag.get('bars_stored')}",
+                f"failures={store_diag.get('failures_stored')}",
+                f"path={safe_rel(PRICE_DUCKDB_PATH)}",
+            )
+        except Exception as exc:
+            print(f"DuckDB store failed: {type(exc).__name__}: {exc}")
+            if PRICE_STORE_MODE in {"duckdb", "duckdb_only", "json_and_duckdb"}:
+                raise
+
     latest_path = PRICE_OUT_DIR / "latest.json"
     dated_path = PRICE_OUT_DIR / f"{today}.json"
 
-    write_json(latest_path, payload)
-    write_json(dated_path, payload)
+    if PRICE_STORE_MODE != "duckdb_only":
+        write_json(latest_path, payload)
+        write_json(dated_path, payload)
 
-    manifest = {
-        "schema_version": "prices-jp-manifest-v1",
-        "generated_at": generated_at,
-        "latest": safe_relative(latest_path),
-        "latest_date": today,
-        "history": [
-            {
-                "date": today,
-                "path": safe_relative(dated_path),
-                "symbols_success": len(items_sorted),
-                "symbols_failed": len(failures),
-            }
-        ],
-    }
+        manifest = {
+            "schema_version": "prices-jp-manifest-v1",
+            "generated_at": generated_at,
+            "latest": safe_relative(latest_path),
+            "latest_date": today,
+            "history": [
+                {
+                    "date": today,
+                    "path": safe_relative(dated_path),
+                    "symbols_success": len(items_sorted),
+                    "symbols_failed": len(failures),
+                }
+            ],
+        }
 
-    manifest_path = PRICE_OUT_DIR / "manifest.json"
-    write_json(manifest_path, manifest)
+        manifest_path = PRICE_OUT_DIR / "manifest.json"
+        write_json(manifest_path, manifest)
 
-    print(f"Wrote {safe_relative(latest_path)}")
-    print(f"Wrote {safe_relative(dated_path)}")
-    print(f"Wrote {safe_relative(manifest_path)}")
+        print(f"Wrote {safe_relative(latest_path)}")
+        print(f"Wrote {safe_relative(dated_path)}")
+        print(f"Wrote {safe_relative(manifest_path)}")
+    else:
+        print("PRICE_STORE_MODE=duckdb_only: skipped site/data/prices-jp JSON output")
     print(f"Success={len(items_sorted)} Failed={len(failures)}")
 
     if len(items_sorted) == 0:
