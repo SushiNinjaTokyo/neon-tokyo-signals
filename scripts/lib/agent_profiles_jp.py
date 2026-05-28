@@ -137,14 +137,96 @@ def action_from_score(score: float) -> tuple[str, str, bool, bool, bool]:
     return "Ignore", "low", False, False, True
 
 
+def _empty_agent_scores_frame() -> pd.DataFrame:
+    """Return an empty frame with the exact columns expected by agent_scores_daily.
+
+    This prevents downstream KeyError failures when the selected as-of date has
+    no tradable equity candidates, for example when market-pulse ETFs have a
+    newer date than equities.
+    """
+    return pd.DataFrame(columns=[
+        "date",
+        "agent_id",
+        "agent_name",
+        "ticker",
+        "name",
+        "universe_bucket",
+        "raw_score",
+        "normalized_score",
+        "rank",
+        "action",
+        "signal_strength",
+        "entry_score",
+        "exit_score",
+        "risk_penalty",
+        "liquidity_penalty",
+        "reason_code_1",
+        "reason_code_2",
+        "reason_code_3",
+        "reason_text",
+        "is_trade_candidate",
+        "is_watch_candidate",
+        "is_ignored",
+        "created_at",
+    ])
+
+
+def _select_scoring_date(df: pd.DataFrame, as_of_date: str | None = None) -> pd.Timestamp | None:
+    """Select the scoring date safely.
+
+    The price store also contains market pulse ETFs such as 1306.T/1321.T/2516.T.
+    Those can have a newer latest date than ordinary equities. If we simply use
+    max(date) across all tickers, the latest slice may contain only ETFs, and all
+    seven equity agents correctly reject them. Therefore the default date must be
+    the latest date that has at least one eligible equity universe row.
+    """
+    if df.empty or "date" not in df.columns:
+        return None
+    work = df.copy()
+    work["_date_ts"] = pd.to_datetime(work["date"], errors="coerce")
+    work = work[work["_date_ts"].notna()]
+    if as_of_date:
+        cutoff = pd.to_datetime(as_of_date, errors="coerce")
+        if pd.notna(cutoff):
+            work = work[work["_date_ts"] <= cutoff]
+    if work.empty:
+        return None
+
+    asset = work.get("asset_type")
+    if asset is not None:
+        equity = work[asset.fillna("equity").astype(str).str.lower().eq("equity")]
+    else:
+        equity = work
+    if "is_excluded" in equity.columns:
+        equity = equity[~equity["is_excluded"].fillna(False).astype(bool)]
+
+    # Prefer dates with actual equity candidates belonging to at least one agent universe.
+    flags = ["is_core", "is_growth", "is_small_discovery", "is_value_candidate"]
+    available_flags = [c for c in flags if c in equity.columns]
+    if available_flags:
+        mask = pd.Series(False, index=equity.index)
+        for c in available_flags:
+            mask = mask | equity[c].fillna(False).astype(bool)
+        equity = equity[mask]
+
+    if not equity.empty:
+        return pd.to_datetime(equity["_date_ts"]).max()
+    return pd.to_datetime(work["_date_ts"]).max()
+
+
 def build_agent_scores(features_with_universe: pd.DataFrame, as_of_date: str | None = None) -> pd.DataFrame:
     if features_with_universe.empty:
-        return pd.DataFrame()
+        return _empty_agent_scores_frame()
     df = features_with_universe.copy()
-    if as_of_date:
-        df = df[pd.to_datetime(df["date"]).dt.date.astype(str) <= as_of_date]
-    latest_date = pd.to_datetime(df["date"]).max()
-    latest = df[pd.to_datetime(df["date"]) == latest_date].copy()
+    latest_date = _select_scoring_date(df, as_of_date=as_of_date)
+    if latest_date is None or pd.isna(latest_date):
+        return _empty_agent_scores_frame()
+
+    date_series = pd.to_datetime(df["date"], errors="coerce")
+    latest = df[date_series == latest_date].copy()
+    if latest.empty:
+        return _empty_agent_scores_frame()
+
     rows = []
     created_at = pd.Timestamp.utcnow().to_pydatetime()
     for profile in AGENT_PROFILES:
@@ -182,4 +264,6 @@ def build_agent_scores(features_with_universe: pd.DataFrame, as_of_date: str | N
                 "is_ignored": is_ignored,
                 "created_at": created_at,
             })
-    return pd.DataFrame(rows)
+    if not rows:
+        return _empty_agent_scores_frame()
+    return pd.DataFrame(rows, columns=_empty_agent_scores_frame().columns)
