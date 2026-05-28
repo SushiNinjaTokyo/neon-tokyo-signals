@@ -43,6 +43,8 @@ env:
   OUT_DIR: site
   PRICE_DUCKDB_PATH: data/cache/neon_tokyo_jp.duckdb
   PRICE_STORE_MODE: json_and_duckdb
+  PRICE_PUBLIC_JSON_MODE: summary
+  WRITE_DATED_PRICE_JSON: "false"
   MIN_BARS_REQUIRED: "60"
   MIN_ACCEPTABLE_BARS: "20"
   AGENT_SCORE_TOP_N: "30"
@@ -94,17 +96,14 @@ jobs:
             scripts/build_jp_index_universe_csv.py \
             scripts/build_universe_300_from_index_csv.py \
             scripts/build_agent_scores_jp.py \
+            scripts/review_agent_scores_jp.py \
+            scripts/prune_prices_jp_heavy_json.py \
             scripts/lib
 
-      - name: Build JP index universe if missing
+      - name: Build JP index universe
         run: |
           set -euo pipefail
-          if [ -f data/universe/jp_index_universe.csv ]; then
-            echo "data/universe/jp_index_universe.csv already exists."
-          else
-            echo "data/universe/jp_index_universe.csv is missing. Building it now."
-            python scripts/build_jp_index_universe_csv.py
-          fi
+          python scripts/build_jp_index_universe_csv.py
 
       - name: Build 300 ticker trial universe
         env:
@@ -121,14 +120,29 @@ jobs:
           UNIVERSE_LIMIT: ${{ github.event.inputs.universe_limit || '300' }}
           LOOKBACK_DAYS: ${{ github.event.inputs.lookback_days || '520' }}
           REQUEST_SLEEP_SECONDS: ${{ github.event.inputs.request_sleep_seconds || '0.20' }}
+          PRICE_PUBLIC_JSON_MODE: summary
+          WRITE_DATED_PRICE_JSON: "false"
         run: |
           set -euo pipefail
           python scripts/fetch_prices_jp.py
+
+      - name: Prune heavy prices-jp JSON snapshots
+        env:
+          DELETE_DATED_PRICES_JSON: "true"
+          MAX_PRICES_LATEST_MB: "25"
+        run: |
+          set -euo pipefail
+          python scripts/prune_prices_jp_heavy_json.py
 
       - name: Build 7-agent scores from DuckDB features
         run: |
           set -euo pipefail
           python scripts/build_agent_scores_jp.py
+
+      - name: Review agent score contents
+        run: |
+          set -euo pipefail
+          python scripts/review_agent_scores_jp.py
 
       - name: Verify generated outputs
         run: |
@@ -142,7 +156,15 @@ jobs:
           test -f site/data/prices-jp/manifest.json
           test -f site/data/japan/agent-scores/latest.json
           test -f site/data/japan/agent-scores/diagnostics.json
+          test -f site/data/japan/agent-scores/review.json
+          test -f site/data/japan/agent-scores/review.md
+          test -f site/data/prices-jp/prune-report.json
           test -f data/cache/neon_tokyo_jp.duckdb
+          if find site/data/prices-jp -maxdepth 1 -type f -name '20??-??-??.json' | grep -q .; then
+            echo "Dated prices-jp JSON still exists"
+            find site/data/prices-jp -maxdepth 1 -type f -name '20??-??-??.json' -print
+            exit 1
+          fi
 
           python - <<'PY'
           import json
@@ -153,16 +175,21 @@ jobs:
           prices = json.loads(Path('site/data/prices-jp/latest.json').read_text(encoding='utf-8'))
           scores = json.loads(Path('site/data/japan/agent-scores/latest.json').read_text(encoding='utf-8'))
           diag = json.loads(Path('site/data/japan/agent-scores/diagnostics.json').read_text(encoding='utf-8'))
+          review = json.loads(Path('site/data/japan/agent-scores/review.json').read_text(encoding='utf-8'))
           universe_rows = list(csv.DictReader(Path('data/universe/jp_duckdb_trial_300.csv').open(encoding='utf-8-sig')))
 
           assert len(universe_rows) > 0
           assert prices['schema_version'] == 'prices-jp-v1'
           assert prices['symbols_success'] > 0
+          assert prices.get('public_json_mode') == 'summary', prices.get('public_json_mode')
+          assert prices.get('bars_omitted') is True
+          assert all(not x.get('bars') for x in prices.get('items', [])[:20])
           assert scores['schema_version'] == 'neon_tokyo_agent_scores_v1'
           assert len(scores['agents']) == 7, len(scores['agents'])
           assert diag['price_rows'] > 0
           assert diag['feature_diagnostics']['feature_rows'] > 0
           assert diag['agent_score_rows'] > 0
+          assert review['schema_version'] == 'neon_tokyo_agent_score_review_v1'
 
           con = duckdb.connect('data/cache/neon_tokyo_jp.duckdb', read_only=True)
           price_rows = con.execute('select count(*) from prices_daily').fetchone()[0]
