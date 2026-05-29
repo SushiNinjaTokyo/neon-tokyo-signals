@@ -1,11 +1,13 @@
 {
   "schema_version": "neon_tokyo_agent_scores_diagnostics_v1",
-  "generated_at": "2026-05-29T04:24:01+00:00",
+  "generated_at": "2026-05-29T04:59:34+00:00",
   "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
-  "mode": "latest",
+  "mode": "range",
   "range": {
-    "start_date": "",
-    "end_date": ""
+    "year": 2026,
+    "start_date": "2026-01-01",
+    "end_date": "2026-05-29",
+    "latest_equity_feature_date": "2026-05-29"
   },
   "price_rows": 102729,
   "feature_diagnostics": {
@@ -98,49 +100,51 @@
     ],
     "latest_recent_eligible_date": "2026-05-29"
   },
-  "agent_score_rows": 1399,
+  "agent_score_rows": 137361,
+  "agent_score_date_count": 97,
+  "trade_candidate_rows": 28764,
   "latest_date": "2026-05-29",
   "agents": [
     {
       "agent_id": "daily_striker",
       "name": "KYOU",
-      "candidates_scored": 240,
+      "candidates_scored": 23561,
       "top_items": 30
     },
     {
       "agent_id": "weekly_sage",
       "name": "NAGARE",
-      "candidates_scored": 219,
+      "candidates_scored": 21326,
       "top_items": 30
     },
     {
       "agent_id": "risk_sentinel",
       "name": "MAMORU",
-      "candidates_scored": 219,
+      "candidates_scored": 21323,
       "top_items": 30
     },
     {
       "agent_id": "discovery_scout",
       "name": "SAGURI",
-      "candidates_scored": 22,
+      "candidates_scored": 2703,
       "top_items": 22
     },
     {
       "agent_id": "contrarian_monk",
       "name": "MATSU",
-      "candidates_scored": 219,
+      "candidates_scored": 21326,
       "top_items": 30
     },
     {
       "agent_id": "reversal_snapback",
       "name": "KAESHI",
-      "candidates_scored": 240,
+      "candidates_scored": 23561,
       "top_items": 30
     },
     {
       "agent_id": "value_mispricing",
       "name": "HIZUMI",
-      "candidates_scored": 240,
+      "candidates_scored": 23561,
       "top_items": 30
     }
   ],

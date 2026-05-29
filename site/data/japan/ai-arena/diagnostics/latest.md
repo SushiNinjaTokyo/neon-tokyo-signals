@@ -1,35 +1,33 @@
 # AI Arena Diagnostics
 
-Generated: 2026-05-29T04:24:21Z
-Run: `arena_jp_rebuild_2026_v001`
+Generated: 2026-05-29T05:00:47Z
+Run: `arena_jp_rebuild_2026_v002`
 Year: 2026
 
 ## Totals
-- orders: 0
-- filled_orders: 0
-- cancelled_orders: 0
-- buy_orders: 0
-- sell_orders: 0
-- trades: 0
-- open_positions: 0
+- orders: 601
+- filled_orders: 589
+- cancelled_orders: 12
+- buy_orders: 310
+- sell_orders: 291
+- trades: 291
+- open_positions: 7
 - equity_rows: 679
-- agents_with_executed_buys: 0
-- agents_with_closed_trades: 0
-- flat_agents_without_buys: daily_striker, weekly_sage, risk_sentinel, discovery_scout, contrarian_monk, reversal_snapback, value_mispricing
+- agents_with_executed_buys: 5
+- agents_with_closed_trades: 5
+- flat_agents_without_buys: discovery_scout, value_mispricing
 
 ## Agent Activity
 | Agent | Trade signals | Executed buys | Executed sells | Closed trades | Open positions | Return | Warnings |
 |---|---:|---:|---:|---:|---:|---:|---|
-| KYOU | 5 | 0 | 0 | 0 | 0 | 0.00% | SIGNALS_BUT_NO_BUYS, FLAT_NO_EXECUTED_BUYS |
-| NAGARE | 31 | 0 | 0 | 0 | 0 | 0.00% | SIGNALS_BUT_NO_BUYS, FLAT_NO_EXECUTED_BUYS |
-| MAMORU | 195 | 0 | 0 | 0 | 0 | 0.00% | SIGNALS_BUT_NO_BUYS, FLAT_NO_EXECUTED_BUYS |
-| SAGURI | 0 | 0 | 0 | 0 | 0 | 0.00% | NO_TRADE_SIGNALS, FLAT_NO_EXECUTED_BUYS |
-| MATSU | 3 | 0 | 0 | 0 | 0 | 0.00% | SIGNALS_BUT_NO_BUYS, FLAT_NO_EXECUTED_BUYS |
-| KAESHI | 0 | 0 | 0 | 0 | 0 | 0.00% | NO_TRADE_SIGNALS, FLAT_NO_EXECUTED_BUYS |
-| HIZUMI | 23 | 0 | 0 | 0 | 0 | 0.00% | SIGNALS_BUT_NO_BUYS, FLAT_NO_EXECUTED_BUYS |
+| KYOU | 621 | 79 | 79 | 79 | 0 | -3.06% | - |
+| NAGARE | 5704 | 50 | 47 | 47 | 3 | 10.00% | - |
+| MAMORU | 18814 | 95 | 93 | 93 | 2 | 6.92% | - |
+| SAGURI | 167 | 0 | 0 | 0 | 0 | 0.00% | SIGNALS_BUT_NO_BUYS, FLAT_NO_EXECUTED_BUYS |
+| MATSU | 716 | 43 | 41 | 41 | 2 | 13.83% | - |
+| KAESHI | 103 | 31 | 31 | 31 | 0 | 3.86% | - |
+| HIZUMI | 2639 | 0 | 0 | 0 | 0 | 0.00% | SIGNALS_BUT_NO_BUYS, FLAT_NO_EXECUTED_BUYS |
 
 ## Warnings
 - Some agents have no executed buy orders. Check thresholds, feature availability, and skipped orders.
-- No arena orders were generated for this run.
-- No closed trades were generated for this run.
 

@@ -1,9 +1,9 @@
 {
   "schema_version": "neon_tokyo_agent_scores_v1",
-  "generated_at": "2026-05-29T04:24:01+00:00",
+  "generated_at": "2026-05-29T04:59:34+00:00",
   "market": "Japan",
   "timezone": "Asia/Tokyo",
-  "mode": "latest",
+  "mode": "range",
   "latest_date": "2026-05-29",
   "top_n_per_agent": 30,
   "agents": [
@@ -12,7 +12,7 @@
       "name": "KYOU",
       "style_label": "Today’s Momentum Signal",
       "universe_rule": "core_growth_liquid",
-      "candidates_scored": 240,
+      "candidates_scored": 23561,
       "items": [
         {
           "rank": 1,
@@ -501,7 +501,7 @@
       "name": "NAGARE",
       "style_label": "Weekly / Trend Flow",
       "universe_rule": "core_growth",
-      "candidates_scored": 219,
+      "candidates_scored": 21326,
       "items": [
         {
           "rank": 1,
@@ -990,7 +990,7 @@
       "name": "MAMORU",
       "style_label": "Risk / Quality Defense",
       "universe_rule": "core_liquid",
-      "candidates_scored": 219,
+      "candidates_scored": 21323,
       "items": [
         {
           "rank": 1,
@@ -1479,7 +1479,7 @@
       "name": "SAGURI",
       "style_label": "Small Cap / Hidden Discovery",
       "universe_rule": "small_discovery",
-      "candidates_scored": 22,
+      "candidates_scored": 2703,
       "items": [
         {
           "rank": 1,
@@ -1840,7 +1840,7 @@
       "name": "MATSU",
       "style_label": "Pullback / Patient Reversal",
       "universe_rule": "core_growth",
-      "candidates_scored": 219,
+      "candidates_scored": 21326,
       "items": [
         {
           "rank": 1,
@@ -2329,7 +2329,7 @@
       "name": "KAESHI",
       "style_label": "Reversal / Snapback Signal",
       "universe_rule": "core_growth_liquid",
-      "candidates_scored": 240,
+      "candidates_scored": 23561,
       "items": [
         {
           "rank": 1,
@@ -2818,487 +2818,487 @@
       "name": "HIZUMI",
       "style_label": "Value / Mispricing Signal",
       "universe_rule": "value_candidate",
-      "candidates_scored": 240,
+      "candidates_scored": 23561,
       "items": [
         {
           "rank": 1,
-          "ticker": "2334.T",
-          "name": "eole Inc.",
-          "score": 0.7911,
-          "score_pts": 79.1,
+          "ticker": "5334.T",
+          "name": "日本特殊陶業",
+          "score": 0.7575,
+          "score_pts": 75.7,
           "action": "Trade",
           "signal_strength": "high",
-          "universe_bucket": "Discovery",
+          "universe_bucket": "Core",
           "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
           ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
         },
         {
           "rank": 2,
-          "ticker": "4704.T",
-          "name": "トレンドマイクロ",
-          "score": 0.7673,
-          "score_pts": 76.7,
+          "ticker": "4578.T",
+          "name": "大塚ホールディングス",
+          "score": 0.7457,
+          "score_pts": 74.6,
           "action": "Trade",
           "signal_strength": "high",
           "universe_bucket": "Core",
           "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
           ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
         },
         {
           "rank": 3,
-          "ticker": "5334.T",
-          "name": "日本特殊陶業",
-          "score": 0.7369,
-          "score_pts": 73.7,
+          "ticker": "1605.T",
+          "name": "ＩＮＰＥＸ",
+          "score": 0.7269,
+          "score_pts": 72.7,
           "action": "Trade",
           "signal_strength": "high",
           "universe_bucket": "Core",
           "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
           ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
         },
         {
           "rank": 4,
-          "ticker": "4063.T",
-          "name": "信越化学工業",
-          "score": 0.7283,
-          "score_pts": 72.8,
-          "action": "Trade",
-          "signal_strength": "high",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 5,
-          "ticker": "5333.T",
-          "name": "日本碍子",
+          "ticker": "4503.T",
+          "name": "アステラス製薬",
           "score": 0.7122,
           "score_pts": 71.2,
           "action": "Trade",
           "signal_strength": "high",
           "universe_bucket": "Core",
           "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
           ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
         },
         {
-          "rank": 6,
-          "ticker": "5332.T",
-          "name": "ＴＯＴＯ",
-          "score": 0.7066,
+          "rank": 5,
+          "ticker": "5844.T",
+          "name": "京都フィナンシャルグループ",
+          "score": 0.7074,
           "score_pts": 70.7,
           "action": "Trade",
           "signal_strength": "high",
           "universe_bucket": "Core",
           "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
           ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 6,
+          "ticker": "5101.T",
+          "name": "横浜ゴム",
+          "score": 0.6959,
+          "score_pts": 69.6,
+          "action": "Trade",
+          "signal_strength": "high",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
         },
         {
           "rank": 7,
-          "ticker": "4182.T",
-          "name": "三菱瓦斯化学",
-          "score": 0.7064,
-          "score_pts": 70.6,
+          "ticker": "1925.T",
+          "name": "大和ハウス工業",
+          "score": 0.6936,
+          "score_pts": 69.4,
           "action": "Trade",
           "signal_strength": "high",
           "universe_bucket": "Core",
           "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
           ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
         },
         {
           "rank": 8,
-          "ticker": "4186.T",
-          "name": "東京応化工業",
-          "score": 0.7057,
-          "score_pts": 70.6,
-          "action": "Trade",
-          "signal_strength": "high",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 9,
-          "ticker": "4307.T",
-          "name": "野村総合研究所",
-          "score": 0.7053,
-          "score_pts": 70.5,
-          "action": "Trade",
-          "signal_strength": "high",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 10,
-          "ticker": "4061.T",
-          "name": "デンカ",
-          "score": 0.705,
-          "score_pts": 70.5,
-          "action": "Trade",
-          "signal_strength": "high",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 11,
-          "ticker": "5301.T",
-          "name": "東海カーボン",
-          "score": 0.7012,
-          "score_pts": 70.1,
-          "action": "Trade",
-          "signal_strength": "high",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 12,
-          "ticker": "5801.T",
-          "name": "古河電気工業",
-          "score": 0.6971,
-          "score_pts": 69.7,
-          "action": "Trade",
-          "signal_strength": "high",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 13,
-          "ticker": "3105.T",
-          "name": "日清紡ホールディングス",
-          "score": 0.6949,
-          "score_pts": 69.5,
-          "action": "Trade",
-          "signal_strength": "high",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 14,
-          "ticker": "3563.T",
-          "name": "ＦＯＯＤ ＆ ＬＩＦＥ ＣＯＭＰＡＮＩＥＳ",
-          "score": 0.6917,
-          "score_pts": 69.2,
-          "action": "Trade",
-          "signal_strength": "high",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 15,
-          "ticker": "2371.T",
-          "name": "カカクコム",
-          "score": 0.691,
+          "ticker": "5076.T",
+          "name": "インフロニア・ホールディングス",
+          "score": 0.6906,
           "score_pts": 69.1,
           "action": "Trade",
           "signal_strength": "high",
           "universe_bucket": "Core",
           "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
           ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
         },
         {
-          "rank": 16,
-          "ticker": "4088.T",
-          "name": "エア・ウォーター",
-          "score": 0.6896,
-          "score_pts": 69.0,
-          "action": "Trade",
-          "signal_strength": "high",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 17,
-          "ticker": "4203.T",
-          "name": "住友ベークライト",
-          "score": 0.6887,
+          "rank": 9,
+          "ticker": "2914.T",
+          "name": "日本たばこ産業",
+          "score": 0.6894,
           "score_pts": 68.9,
           "action": "Trade",
           "signal_strength": "high",
           "universe_bucket": "Core",
           "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
           ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
         },
         {
-          "rank": 18,
-          "ticker": "4004.T",
-          "name": "レゾナック・ホールディングス",
-          "score": 0.687,
-          "score_pts": 68.7,
+          "rank": 10,
+          "ticker": "4536.T",
+          "name": "参天製薬",
+          "score": 0.6889,
+          "score_pts": 68.9,
           "action": "Trade",
           "signal_strength": "high",
           "universe_bucket": "Core",
           "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
           ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
         },
         {
-          "rank": 19,
-          "ticker": "1963.T",
-          "name": "日揮ホールディングス",
-          "score": 0.6846,
+          "rank": 11,
+          "ticker": "3288.T",
+          "name": "オープンハウスグループ",
+          "score": 0.6875,
+          "score_pts": 68.8,
+          "action": "Trade",
+          "signal_strength": "high",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 12,
+          "ticker": "4021.T",
+          "name": "日産化学",
+          "score": 0.6858,
+          "score_pts": 68.6,
+          "action": "Trade",
+          "signal_strength": "high",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 13,
+          "ticker": "5105.T",
+          "name": "ＴＯＹＯ ＴＩＲＥ",
+          "score": 0.6845,
           "score_pts": 68.5,
           "action": "Trade",
           "signal_strength": "high",
           "universe_bucket": "Core",
           "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
           ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
         },
         {
-          "rank": 20,
-          "ticker": "4385.T",
-          "name": "メルカリ",
-          "score": 0.6829,
-          "score_pts": 68.3,
-          "action": "Trade",
-          "signal_strength": "high",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 21,
-          "ticker": "3774.T",
-          "name": "インターネットイニシアティブ",
-          "score": 0.6818,
-          "score_pts": 68.2,
-          "action": "Trade",
-          "signal_strength": "high",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 22,
-          "ticker": "5802.T",
-          "name": "住友電気工業",
-          "score": 0.6815,
-          "score_pts": 68.1,
-          "action": "Trade",
-          "signal_strength": "high",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 23,
-          "ticker": "4021.T",
-          "name": "日産化学",
-          "score": 0.68,
-          "score_pts": 68.0,
-          "action": "Trade",
-          "signal_strength": "high",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 24,
-          "ticker": "3132.T",
-          "name": "マクニカホールディングス",
-          "score": 0.6787,
-          "score_pts": 67.9,
-          "action": "Watch",
-          "signal_strength": "medium",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 25,
-          "ticker": "4043.T",
-          "name": "トクヤマ",
-          "score": 0.6787,
-          "score_pts": 67.9,
-          "action": "Watch",
-          "signal_strength": "medium",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 26,
+          "rank": 14,
           "ticker": "5706.T",
           "name": "三井金属",
-          "score": 0.6787,
-          "score_pts": 67.9,
-          "action": "Watch",
-          "signal_strength": "medium",
-          "universe_bucket": "Core",
-          "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
-          ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
-        },
-        {
-          "rank": 27,
-          "ticker": "3099.T",
-          "name": "三越伊勢丹ホールディングス",
-          "score": 0.677,
+          "score": 0.6767,
           "score_pts": 67.7,
           "action": "Watch",
           "signal_strength": "medium",
           "universe_bucket": "Core",
           "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
           ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 15,
+          "ticker": "1928.T",
+          "name": "積水ハウス",
+          "score": 0.676,
+          "score_pts": 67.6,
+          "action": "Watch",
+          "signal_strength": "medium",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 16,
+          "ticker": "2503.T",
+          "name": "キリンホールディングス",
+          "score": 0.6708,
+          "score_pts": 67.1,
+          "action": "Watch",
+          "signal_strength": "medium",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 17,
+          "ticker": "4631.T",
+          "name": "ＤＩＣ",
+          "score": 0.6695,
+          "score_pts": 66.9,
+          "action": "Watch",
+          "signal_strength": "medium",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 18,
+          "ticker": "2875.T",
+          "name": "東洋水産",
+          "score": 0.6684,
+          "score_pts": 66.8,
+          "action": "Watch",
+          "signal_strength": "medium",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 19,
+          "ticker": "4901.T",
+          "name": "富士フイルムホールディングス",
+          "score": 0.6663,
+          "score_pts": 66.6,
+          "action": "Watch",
+          "signal_strength": "medium",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 20,
+          "ticker": "3407.T",
+          "name": "旭化成",
+          "score": 0.6657,
+          "score_pts": 66.6,
+          "action": "Watch",
+          "signal_strength": "medium",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 21,
+          "ticker": "3099.T",
+          "name": "三越伊勢丹ホールディングス",
+          "score": 0.6639,
+          "score_pts": 66.4,
+          "action": "Watch",
+          "signal_strength": "medium",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 22,
+          "ticker": "5929.T",
+          "name": "三和ホールディングス",
+          "score": 0.6622,
+          "score_pts": 66.2,
+          "action": "Watch",
+          "signal_strength": "medium",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 23,
+          "ticker": "4980.T",
+          "name": "デクセリアルズ",
+          "score": 0.6621,
+          "score_pts": 66.2,
+          "action": "Watch",
+          "signal_strength": "medium",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 24,
+          "ticker": "5830.T",
+          "name": "いよぎんホールディングス",
+          "score": 0.6613,
+          "score_pts": 66.1,
+          "action": "Watch",
+          "signal_strength": "medium",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 25,
+          "ticker": "4205.T",
+          "name": "日本ゼオン",
+          "score": 0.6597,
+          "score_pts": 66.0,
+          "action": "Watch",
+          "signal_strength": "medium",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 26,
+          "ticker": "3289.T",
+          "name": "東急不動産ホールディングス",
+          "score": 0.6593,
+          "score_pts": 65.9,
+          "action": "Watch",
+          "signal_strength": "medium",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
+        },
+        {
+          "rank": 27,
+          "ticker": "3003.T",
+          "name": "ヒューリック",
+          "score": 0.6579,
+          "score_pts": 65.8,
+          "action": "Watch",
+          "signal_strength": "medium",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
+          ],
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
         },
         {
           "rank": 28,
-          "ticker": "4980.T",
-          "name": "デクセリアルズ",
-          "score": 0.6758,
-          "score_pts": 67.6,
+          "ticker": "4704.T",
+          "name": "トレンドマイクロ",
+          "score": 0.6542,
+          "score_pts": 65.4,
           "action": "Watch",
           "signal_strength": "medium",
           "universe_bucket": "Core",
           "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
           ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
         },
         {
           "rank": 29,
-          "ticker": "4005.T",
-          "name": "住友化学",
-          "score": 0.6756,
-          "score_pts": 67.6,
+          "ticker": "5831.T",
+          "name": "しずおかフィナンシャルグループ",
+          "score": 0.6535,
+          "score_pts": 65.3,
           "action": "Watch",
           "signal_strength": "medium",
           "universe_bucket": "Core",
           "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
           ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
         },
         {
           "rank": 30,
-          "ticker": "281A.T",
-          "name": "Informetis Co.,Ltd.",
-          "score": 0.6737,
-          "score_pts": 67.4,
+          "ticker": "3107.T",
+          "name": "ダイワボウホールディングス",
+          "score": 0.6533,
+          "score_pts": 65.3,
           "action": "Watch",
           "signal_strength": "medium",
-          "universe_bucket": "Discovery",
+          "universe_bucket": "Core",
           "reason_codes": [
-            "mispricing_proxy",
-            "value_rerating",
-            "trap_guard"
+            "valuation_mispricing",
+            "quality_guard",
+            "rerating_signal"
           ],
-          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard"
+          "reason": "HIZUMI: valuation_mispricing / quality_guard / rerating_signal"
         }
       ]
     }
