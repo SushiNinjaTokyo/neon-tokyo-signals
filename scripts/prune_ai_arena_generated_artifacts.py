@@ -3,9 +3,19 @@ from __future__ import annotations
 
 """Prune heavy generated artifacts while preserving public AI Arena outputs.
 
-This script is safe-by-default: it removes only known heavy generated files and
-cache artifacts. It does not delete source scripts, templates, universe CSVs, or
-agent images.
+Important operational note
+--------------------------
+DuckDB is an Actions cache artifact, not a public site artifact.  Earlier
+versions of this script removed ``data/cache/*.duckdb`` unconditionally.  That
+was unsafe when the prune step ran before validation/cache-save, because it
+removed the database needed by the rest of the same workflow.
+
+Default behavior is now:
+- keep DuckDB cache files during normal site generation workflows;
+- remove DuckDB files only when PRUNE_DUCKDB_CACHE=true is explicitly set.
+
+This lets GitHub Actions save/reuse the DuckDB cache while still preventing the
+DB from being committed, because workflows never ``git add data/cache``.
 """
 
 import json
@@ -19,7 +29,9 @@ OUT_DIR = Path(os.getenv("OUT_DIR", str(ROOT / "site")))
 if not OUT_DIR.is_absolute():
     OUT_DIR = ROOT / OUT_DIR
 OUT_DIR = OUT_DIR.resolve()
+
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() == "true"
+PRUNE_DUCKDB_CACHE = os.getenv("PRUNE_DUCKDB_CACHE", "false").lower() == "true"
 MAX_PRICE_LATEST_MB = float(os.getenv("MAX_PRICE_LATEST_JSON_MB", "5"))
 MAX_AI_ARENA_JSON_MB = float(os.getenv("MAX_AI_ARENA_JSON_MB", "20"))
 
@@ -36,14 +48,13 @@ def remove_file(path: Path, removed: list[dict]) -> None:
         path.unlink()
 
 
-
 def compact_prices_latest(path: Path, removed: list[dict], warnings: list[str]) -> None:
     """Rewrite legacy full prices latest.json into summary mode in place.
 
-    This handles the case where an earlier workflow committed a 40-50MB full
-    OHLCV payload.  The file is not deleted because downstream code expects the
-    path to exist; instead we remove per-symbol historical bars and keep latest
-    metrics only.
+    The path is preserved because downstream code expects
+    ``site/data/prices-jp/latest.json`` to exist.  Only historical per-symbol
+    bars are removed from the public JSON.  Full time series must live in
+    DuckDB/cache, not in Git-tracked public JSON.
     """
     if not path.exists() or not path.is_file():
         return
@@ -55,6 +66,7 @@ def compact_prices_latest(path: Path, removed: list[dict], warnings: list[str]) 
     except Exception as exc:
         warnings.append(f"{safe_rel(path)} is too large and could not be parsed for compaction: {exc}")
         return
+
     items = payload.get("items") or []
     if not isinstance(items, list) or not items:
         warnings.append(f"{safe_rel(path)} is too large but has no compactable items[]")
@@ -88,24 +100,42 @@ def compact_prices_latest(path: Path, removed: list[dict], warnings: list[str]) 
             "latest_bar": latest_bar,
             "bars_omitted": True,
         })
+
     payload["items"] = compact_items
     payload["equities"] = [x for x in compact_items if x.get("asset_type") == "equity"]
     payload["market_pulse"] = [x for x in compact_items if x.get("asset_type") == "market_pulse"]
     payload["public_json_mode"] = "summary"
     payload["bars_omitted"] = True
+
     if not DRY_RUN:
         path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
     after = before if DRY_RUN else size_mb(path)
-    removed.append({"path": safe_rel(path), "action": "compact_prices_latest", "before_mb": round(before, 4), "after_mb": round(after, 4)})
+    removed.append({
+        "path": safe_rel(path),
+        "action": "compact_prices_latest",
+        "before_mb": round(before, 4),
+        "after_mb": round(after, 4),
+    })
+
 
 def main() -> int:
     removed: list[dict] = []
     warnings: list[str] = []
 
-    # DuckDB and binary cache files must never be committed.
-    for pattern in ["data/cache/*.duckdb", "data/cache/*.duckdb.wal", "data/cache/*.duckdb.tmp", "data/cache/*.parquet", "data/cache/*.tmp"]:
-        for p in ROOT.glob(pattern):
-            remove_file(p, removed)
+    # DuckDB is intentionally preserved by default so Actions can validate and
+    # save the cache after generation.  Use PRUNE_DUCKDB_CACHE=true only for a
+    # dedicated local/manual cleanup where no later workflow step needs the DB.
+    if PRUNE_DUCKDB_CACHE:
+        for pattern in [
+            "data/cache/*.duckdb",
+            "data/cache/*.duckdb.wal",
+            "data/cache/*.duckdb.tmp",
+            "data/cache/*.parquet",
+            "data/cache/*.tmp",
+        ]:
+            for p in ROOT.glob(pattern):
+                remove_file(p, removed)
 
     # Dated price JSONs are heavy and not required for the static site.
     prices_dir = OUT_DIR / "data" / "prices-jp"
@@ -116,9 +146,12 @@ def main() -> int:
     latest_prices = prices_dir / "latest.json"
     compact_prices_latest(latest_prices, removed, warnings)
     if latest_prices.exists() and size_mb(latest_prices) > MAX_PRICE_LATEST_MB:
-        warnings.append(f"{safe_rel(latest_prices)} is {size_mb(latest_prices):.2f} MB; expected <= {MAX_PRICE_LATEST_MB} MB")
+        warnings.append(
+            f"{safe_rel(latest_prices)} is {size_mb(latest_prices):.2f} MB; expected <= {MAX_PRICE_LATEST_MB} MB"
+        )
 
-    # Keep only latest diagnostics/review for agent scores. Dated snapshots are not public contract.
+    # Keep only latest diagnostics/review for agent scores.  Dated snapshots are
+    # not a public contract and make Git diffs noisy.
     agent_dir = OUT_DIR / "data" / "japan" / "agent-scores"
     if agent_dir.exists():
         keep = {"latest.json", "diagnostics.json", "review.md", "review.json"}
@@ -135,21 +168,26 @@ def main() -> int:
     if arena_dir.exists():
         for p in arena_dir.rglob("*.json"):
             if size_mb(p) > MAX_AI_ARENA_JSON_MB:
-                warnings.append(f"{safe_rel(p)} is {size_mb(p):.2f} MB; expected <= {MAX_AI_ARENA_JSON_MB} MB")
+                warnings.append(
+                    f"{safe_rel(p)} is {size_mb(p):.2f} MB; expected <= {MAX_AI_ARENA_JSON_MB} MB"
+                )
 
     report = {
         "schema_version": "ai_arena_prune_report_v1",
         "generated_at": datetime.utcnow().isoformat(timespec="seconds") + "Z",
         "dry_run": DRY_RUN,
+        "prune_duckdb_cache": PRUNE_DUCKDB_CACHE,
         "removed": removed,
         "warnings": warnings,
     }
     out = OUT_DIR / "data" / "japan" / "ai-arena" / "prune-report.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"removed={len(removed)} dry_run={DRY_RUN}")
+
+    print(f"removed={len(removed)} dry_run={DRY_RUN} prune_duckdb_cache={PRUNE_DUCKDB_CACHE}")
     for w in warnings:
         print("WARNING:", w)
+
     return 1 if warnings and os.getenv("FAIL_ON_SIZE_WARNING", "false").lower() == "true" else 0
 
 
