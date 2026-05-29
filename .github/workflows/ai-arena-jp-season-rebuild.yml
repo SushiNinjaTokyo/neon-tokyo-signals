@@ -109,6 +109,21 @@ jobs:
       AI_ARENA_PROMOTE_DISPLAY_RUN: ${{ github.event.inputs.promote_display_run || 'true' }}
       AI_ARENA_ENABLE_GPT_SIGNAL_NOTES: ${{ github.event.inputs.enable_gpt_signal_notes || 'false' }}
       FORCE_FINALIZE_SEASON: ${{ github.event.inputs.force_finalize_season || 'false' }}
+      ARENA_YEAR: ${{ github.event.inputs.year || '2026' }}
+      START_DATE: ${{ github.event.inputs.start_date || '2026-01-01' }}
+      END_DATE: ${{ github.event.inputs.end_date || '' }}
+      RUN_MODE: ${{ github.event.inputs.run_mode || 'rebuild' }}
+      RESET_RUN: ${{ github.event.inputs.reset_run || 'true' }}
+      PROMOTE_DISPLAY_RUN: ${{ github.event.inputs.promote_display_run || 'true' }}
+      VALUE_FEATURE_YEAR: ${{ github.event.inputs.year || '2026' }}
+      VALUE_FEATURE_START_DATE: ${{ github.event.inputs.start_date || '2026-01-01' }}
+      VALUE_FEATURE_END_DATE: ${{ github.event.inputs.end_date || '' }}
+      AGENT_SCORE_MODE: range
+      AGENT_SCORE_YEAR: ${{ github.event.inputs.year || '2026' }}
+      AGENT_SCORE_START_DATE: ${{ github.event.inputs.start_date || '2026-01-01' }}
+      AGENT_SCORE_END_DATE: ${{ github.event.inputs.end_date || '' }}
+      AGENT_SCORE_FAIL_IF_RANGE_TOO_SMALL: "true"
+      AI_ARENA_FAIL_IF_NO_ORDERS: "true"
       CANONICAL_DUCKDB_RELEASE_TAG: ai-arena-duckdb-latest
       CANONICAL_DUCKDB_ASSET: neon_tokyo_jp_latest.duckdb.zst
       CANONICAL_DUCKDB_MANIFEST_ASSET: neon_tokyo_jp_latest_manifest.json
@@ -187,6 +202,7 @@ jobs:
           python -m compileall \
             scripts/fetch_prices_jp.py \
             scripts/fetch_fundamentals_jp.py \
+            scripts/build_value_features_jp.py \
             scripts/build_jp_index_universe_csv.py \
             scripts/build_universe_300_from_index_csv.py \
             scripts/build_agent_scores_jp.py \
@@ -226,6 +242,12 @@ jobs:
           set -euo pipefail
           test -f "${PRICE_DUCKDB_PATH}"
           python scripts/fetch_fundamentals_jp.py
+
+      - name: Build value features
+        run: |
+          set -euo pipefail
+          test -f "${PRICE_DUCKDB_PATH}"
+          python scripts/build_value_features_jp.py
 
       - name: Build agent scores
         run: |
@@ -288,13 +310,23 @@ jobs:
           tables = {r[0] for r in con.execute("SHOW TABLES").fetchall()}
           assert "duckdb_build_metadata" in tables, "duckdb_build_metadata missing"
 
+          counts = {}
           for table in ["arena_orders", "arena_trades", "arena_open_positions", "arena_equity_curve"]:
               assert table in tables, f"{table} missing"
               n = con.execute(f"SELECT COUNT(*) FROM {table} WHERE run_id = ?", [rid]).fetchone()[0]
+              counts[table] = n
               print(table, n)
 
-          equity_rows = con.execute("SELECT COUNT(*) FROM arena_equity_curve WHERE run_id = ?", [rid]).fetchone()[0]
-          assert equity_rows > 0, "arena_equity_curve has no rows for run_id=" + str(rid)
+          assert counts["arena_equity_curve"] > 0, "arena_equity_curve has no rows for run_id=" + str(rid)
+          assert counts["arena_orders"] > 0, "arena_orders has no rows for run_id=" + str(rid)
+          assert counts["arena_open_positions"] + counts["arena_trades"] > 0, "No open positions or trades for run_id=" + str(rid)
+          import os
+          start_date = os.environ.get("START_DATE") or os.environ.get("AI_ARENA_START_DATE") or "2026-01-01"
+          score_dates = con.execute("SELECT COUNT(DISTINCT date) FROM agent_scores_daily WHERE date >= ?", [start_date]).fetchone()[0]
+          value_rows = con.execute("SELECT COUNT(*) FROM value_features_daily WHERE date >= ?", [start_date]).fetchone()[0]
+          print("agent_score_dates", score_dates, "value_feature_rows", value_rows)
+          assert score_dates >= 2, "agent_scores_daily was not built as a season range"
+          assert value_rows > 0, "value_features_daily is empty"
 
           prices = json.loads(Path("site/data/prices-jp/latest.json").read_text(encoding="utf-8"))
           assert prices.get("public_json_mode") == "summary", prices.get("public_json_mode")

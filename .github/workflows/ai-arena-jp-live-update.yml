@@ -64,6 +64,15 @@ jobs:
       AI_ARENA_PROMOTE_DISPLAY_RUN: "true"
       AI_ARENA_ENABLE_GPT_SIGNAL_NOTES: "false"
       FORCE_FINALIZE_SEASON: "false"
+      VALUE_FEATURE_YEAR: auto
+      VALUE_FEATURE_START_DATE: auto
+      VALUE_FEATURE_END_DATE: auto
+      AGENT_SCORE_MODE: range
+      AGENT_SCORE_YEAR: auto
+      AGENT_SCORE_START_DATE: auto
+      AGENT_SCORE_END_DATE: auto
+      AGENT_SCORE_FAIL_IF_RANGE_TOO_SMALL: "true"
+      AI_ARENA_FAIL_IF_NO_ORDERS: "true"
       CANONICAL_DUCKDB_RELEASE_TAG: ai-arena-duckdb-latest
       CANONICAL_DUCKDB_ASSET: neon_tokyo_jp_latest.duckdb.zst
       CANONICAL_DUCKDB_MANIFEST_ASSET: neon_tokyo_jp_latest_manifest.json
@@ -121,6 +130,7 @@ jobs:
           python -m compileall \
             scripts/fetch_prices_jp.py \
             scripts/fetch_fundamentals_jp.py \
+            scripts/build_value_features_jp.py \
             scripts/build_agent_scores_jp.py \
             scripts/rebuild_ai_arena_season_from_duckdb_jp.py \
             scripts/stamp_duckdb_build_metadata.py \
@@ -136,7 +146,7 @@ jobs:
           python scripts/build_universe_300_from_index_csv.py
 
       - name: Fetch JP prices
-        if: ${{ github.event.inputs.skip_price_fetch != 'true' }}
+        if: ${{ github.event_name == 'schedule' || github.event.inputs.skip_price_fetch != 'true' }}
         env:
           UNIVERSE_CSV: data/universe/jp_duckdb_trial_300.csv
         run: |
@@ -150,6 +160,11 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/fetch_fundamentals_jp.py
+
+      - name: Build value features
+        run: |
+          set -euo pipefail
+          python scripts/build_value_features_jp.py
 
       - name: Build agent scores
         run: |
@@ -204,6 +219,18 @@ jobs:
           con = duckdb.connect(str(db_path), read_only=True)
           tables = {r[0] for r in con.execute("SHOW TABLES").fetchall()}
           assert "duckdb_build_metadata" in tables
+          rid = live.get("run_id")
+          assert rid, "live latest has no run_id"
+          counts = {}
+          for table in ["arena_orders", "arena_trades", "arena_open_positions", "arena_equity_curve"]:
+              assert table in tables, f"{table} missing"
+              counts[table] = con.execute(f"SELECT COUNT(*) FROM {table} WHERE run_id = ?", [rid]).fetchone()[0]
+              print(table, counts[table])
+          assert counts["arena_equity_curve"] > 0
+          assert counts["arena_orders"] > 0
+          assert counts["arena_open_positions"] + counts["arena_trades"] > 0
+          assert con.execute("SELECT COUNT(*) FROM value_features_daily").fetchone()[0] > 0
+          assert con.execute("SELECT COUNT(DISTINCT date) FROM agent_scores_daily").fetchone()[0] >= 2
           print("live_update_validation_ok")
           PY
 
@@ -227,7 +254,7 @@ jobs:
           fi
 
       - name: Commit live outputs
-        if: ${{ github.event.inputs.commit_outputs != 'false' }}
+        if: ${{ github.event_name == 'schedule' || github.event.inputs.commit_outputs != 'false' }}
         run: |
           set -euo pipefail
           git config user.name "github-actions"
