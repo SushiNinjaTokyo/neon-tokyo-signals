@@ -20,8 +20,10 @@ Design notes:
   without overwriting prior results.
 """
 
+import json
 import os
 import uuid
+from collections import Counter
 from dataclasses import dataclass, field
 from datetime import date, datetime
 from pathlib import Path
@@ -164,6 +166,160 @@ def score_for_ticker(score_map: dict[tuple[str, str], dict[str, Any]], agent_id:
     return score_map.get((agent_id, ticker))
 
 
+def agent_label(agent: dict[str, Any]) -> str:
+    return str(agent.get("name") or agent.get("agent_id") or "UNKNOWN")
+
+
+def portfolio_rule_for_agent(portfolio_rules: dict[str, Any], agent: dict[str, Any]) -> dict[str, Any]:
+    # jp_agent_portfolio_rules.yml is keyed by strategy agent_id such as
+    # daily_striker / value_mispricing.  Keep fallbacks so older configs that
+    # used display names like KYOU still work.
+    candidates = [
+        str(agent.get("agent_id") or ""),
+        str(agent.get("name") or ""),
+        str(agent.get("role") or ""),
+    ]
+    for key in candidates:
+        if key and isinstance(portfolio_rules.get(key), dict):
+            return portfolio_rules.get(key) or {}
+    return {}
+
+
+def strategy_rule_for_agent(agent_rules: dict[str, Any], agent: dict[str, Any]) -> dict[str, Any]:
+    candidates = [
+        str(agent.get("agent_id") or ""),
+        str(agent.get("name") or ""),
+        str(agent.get("role") or ""),
+    ]
+    for key in candidates:
+        if key and isinstance(agent_rules.get(key), dict):
+            return agent_rules.get(key) or {}
+    return {}
+
+
+def new_agent_diag(agent: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "agent_id": str(agent.get("agent_id") or ""),
+        "agent_name": agent_label(agent),
+        "candidate_rows": 0,
+        "evaluated_rows": 0,
+        "entry_rule_pass": 0,
+        "orders_created": 0,
+        "buy_orders_filled": 0,
+        "buy_orders_cancelled": 0,
+        "sell_orders_created": 0,
+        "sell_orders_filled": 0,
+        "sell_orders_cancelled": 0,
+        "final_open_positions": 0,
+        "closed_trades": 0,
+        "rejected_total": 0,
+        "rejected_reasons": Counter(),
+        "entry_rule_reject_reasons": Counter(),
+    }
+
+
+def diag_reject(diag: dict[str, Any], reason: str, entry_rule_reason: str | None = None, count: int = 1) -> None:
+    if count <= 0:
+        return
+    diag["rejected_total"] += int(count)
+    diag["rejected_reasons"][reason] += int(count)
+    if entry_rule_reason:
+        key = str(entry_rule_reason).strip()[:180] or "ENTRY_RULE_REJECTED"
+        diag["entry_rule_reject_reasons"][key] += int(count)
+
+
+def serialize_agent_diagnostics(agent_diagnostics: dict[str, dict[str, Any]], *, run_id: str, year: int, season: Any, generated_at: datetime) -> dict[str, Any]:
+    agents_payload = []
+    totals = Counter()
+    for aid, d in agent_diagnostics.items():
+        rejected_reasons = dict(sorted(d["rejected_reasons"].items(), key=lambda kv: (-kv[1], kv[0])))
+        entry_reasons = dict(sorted(d["entry_rule_reject_reasons"].items(), key=lambda kv: (-kv[1], kv[0]))[:20])
+        row = {
+            "agent_id": aid,
+            "agent_name": d.get("agent_name") or aid,
+            "candidate_rows": int(d.get("candidate_rows", 0)),
+            "evaluated_rows": int(d.get("evaluated_rows", 0)),
+            "entry_rule_pass": int(d.get("entry_rule_pass", 0)),
+            "orders_created": int(d.get("orders_created", 0)),
+            "buy_orders_filled": int(d.get("buy_orders_filled", 0)),
+            "buy_orders_cancelled": int(d.get("buy_orders_cancelled", 0)),
+            "sell_orders_created": int(d.get("sell_orders_created", 0)),
+            "sell_orders_filled": int(d.get("sell_orders_filled", 0)),
+            "sell_orders_cancelled": int(d.get("sell_orders_cancelled", 0)),
+            "closed_trades": int(d.get("closed_trades", 0)),
+            "final_open_positions": int(d.get("final_open_positions", 0)),
+            "rejected_total": int(d.get("rejected_total", 0)),
+            "rejected_reasons": rejected_reasons,
+            "entry_rule_reject_reasons_top20": entry_reasons,
+        }
+        for k, v in row.items():
+            if isinstance(v, int):
+                totals[k] += v
+        agents_payload.append(row)
+    agents_payload.sort(key=lambda x: x["agent_name"])
+    return {
+        "schema_version": "neon_tokyo_ai_arena_agent_rejection_diagnostics_v1",
+        "generated_at": generated_at.replace(microsecond=0).isoformat() + "Z",
+        "run_id": run_id,
+        "year": year,
+        "season": {
+            "start_date": str(season.season_start),
+            "end_date": str(season.last_trading_date or season.season_end),
+            "trading_days": len(season.trading_dates),
+        },
+        "totals": dict(totals),
+        "agents": agents_payload,
+    }
+
+
+def write_agent_diagnostics(out_dir: Path, payload: dict[str, Any]) -> dict[str, Path]:
+    diag_dir = out_dir / "data" / "japan" / "ai-arena" / "diagnostics"
+    diag_dir.mkdir(parents=True, exist_ok=True)
+    json_path = diag_dir / "agent-rejections-latest.json"
+    md_path = diag_dir / "agent-rejections-latest.md"
+    json_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+
+    lines = [
+        "# AI Arena Agent Rejection Diagnostics",
+        "",
+        f"Generated: {payload.get('generated_at')}",
+        f"Run: `{payload.get('run_id')}`",
+        f"Season: {payload.get('season', {}).get('start_date')} → {payload.get('season', {}).get('end_date')}",
+        "",
+        "| Agent | Candidates | Evaluated | Entry Pass | Orders | Buy Fills | Buy Cancels | Sells | Trades | Open | Rejected | Top Reject Reason |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|",
+    ]
+    for a in payload.get("agents", []):
+        reasons = a.get("rejected_reasons") or {}
+        top_reason = "-"
+        if reasons:
+            k, v = next(iter(reasons.items()))
+            top_reason = f"{k} ({v})"
+        lines.append(
+            "| {agent_name} / `{agent_id}` | {candidate_rows} | {evaluated_rows} | {entry_rule_pass} | {orders_created} | {buy_orders_filled} | {buy_orders_cancelled} | {sell_orders_filled} | {closed_trades} | {final_open_positions} | {rejected_total} | {top_reason} |".format(
+                top_reason=top_reason,
+                **a,
+            )
+        )
+    lines.extend(["", "## Reject reasons by agent", ""])
+    for a in payload.get("agents", []):
+        lines.append(f"### {a.get('agent_name')} / `{a.get('agent_id')}`")
+        reasons = a.get("rejected_reasons") or {}
+        if not reasons:
+            lines.append("- None")
+        else:
+            for k, v in reasons.items():
+                lines.append(f"- `{k}`: {v}")
+        entry_reasons = a.get("entry_rule_reject_reasons_top20") or {}
+        if entry_reasons:
+            lines.append("- Entry rule details:")
+            for k, v in entry_reasons.items():
+                lines.append(f"  - {k}: {v}")
+        lines.append("")
+    md_path.write_text("\n".join(lines), encoding="utf-8")
+    return {"agent_rejection_diagnostics_json": json_path, "agent_rejection_diagnostics_md": md_path}
+
+
 def _single_value(conn, sql: str, params: list[Any] | None = None) -> Any:
     row = conn.execute(sql, params or []).fetchone()
     return row[0] if row else None
@@ -267,6 +423,8 @@ def main() -> int:
     equity_rows: list[dict[str, Any]] = []
     pending_orders: list[dict[str, Any]] = []
     now = datetime.utcnow()
+    agent_diagnostics = {a["agent_id"]: new_agent_diag(a) for a in agents}
+    default_max_new_entries_per_day = int(global_pf.get("default_max_new_entries_per_day", 3) or 3)
 
     def close_position(*, state: AgentState, pos: Position, signal_date: date, exit_date: date, exit_price_raw: float, code: str, text: str) -> None:
         exit_price = apply_bps(exit_price_raw, slippage_bps, "SELL")
@@ -276,6 +434,8 @@ def main() -> int:
         state.cash_jpy += value
         state.realized_pnl_jpy += pnl
         state.positions.pop(pos.ticker, None)
+        agent_diagnostics[state.agent_id]["closed_trades"] += 1
+        agent_diagnostics[state.agent_id]["sell_orders_filled"] += 1
         trades.append({
             "run_id": run_id,
             "trade_id": f"TRD-{uuid.uuid4().hex[:16]}",
@@ -335,6 +495,11 @@ def main() -> int:
             px = choose_execution_price(fetch_price_row(conn, order["ticker"], d), "open")
             if px is None:
                 order.update({"order_status": "CANCELLED", "execution_price": None, "order_value_jpy": 0.0, "commission_jpy": 0.0, "slippage_jpy": 0.0})
+                if order["side"] == "BUY":
+                    agent_diagnostics[order["agent_id"]]["buy_orders_cancelled"] += 1
+                    diag_reject(agent_diagnostics[order["agent_id"]], "CANCELLED_NO_EXECUTION_PRICE")
+                elif order["side"] == "SELL":
+                    agent_diagnostics[order["agent_id"]]["sell_orders_cancelled"] += 1
                 orders.append(order)
                 continue
             if order["side"] == "BUY":
@@ -342,6 +507,8 @@ def main() -> int:
                 cost = exec_px * int(order["shares"])
                 if cost > state.cash_jpy or order["ticker"] in state.positions:
                     order.update({"order_status": "CANCELLED", "execution_price": exec_px, "order_value_jpy": 0.0, "commission_jpy": 0.0, "slippage_jpy": (exec_px - px) * int(order["shares"])})
+                    agent_diagnostics[order["agent_id"]]["buy_orders_cancelled"] += 1
+                    diag_reject(agent_diagnostics[order["agent_id"]], "CANCELLED_NO_CASH_OR_DUPLICATE_AT_EXECUTION")
                     orders.append(order)
                     continue
                 state.cash_jpy -= cost
@@ -359,11 +526,13 @@ def main() -> int:
                     entry_reason_text=order["reason_text"],
                 )
                 order.update({"order_status": "FILLED", "execution_price": exec_px, "order_value_jpy": cost, "commission_jpy": 0.0, "slippage_jpy": (exec_px - px) * int(order["shares"])})
+                agent_diagnostics[order["agent_id"]]["buy_orders_filled"] += 1
                 orders.append(order)
             elif order["side"] == "SELL":
                 pos = state.positions.get(order["ticker"])
                 if not pos:
                     order.update({"order_status": "CANCELLED", "execution_price": px, "order_value_jpy": 0.0, "commission_jpy": 0.0, "slippage_jpy": 0.0})
+                    agent_diagnostics[order["agent_id"]]["sell_orders_cancelled"] += 1
                     orders.append(order)
                     continue
                 close_position(
@@ -381,7 +550,7 @@ def main() -> int:
         for agent in agents:
             aid = agent["agent_id"]
             state = states[aid]
-            rule = agent_rules.get(aid, {}) or {}
+            rule = strategy_rule_for_agent(agent_rules, agent)
             for ticker, pos in list(state.positions.items()):
                 price_row = fetch_price_row(conn, ticker, d)
                 close_px = choose_execution_price(price_row, "close")
@@ -401,6 +570,7 @@ def main() -> int:
                 )
                 if should_exit and next_d:
                     # Signal at current close, execute next session open.
+                    agent_diagnostics[aid]["sell_orders_created"] += 1
                     pending_orders.append({
                         "run_id": run_id,
                         "order_id": f"ORD-{uuid.uuid4().hex[:16]}",
@@ -433,29 +603,46 @@ def main() -> int:
             for agent in agents:
                 aid = agent["agent_id"]
                 state = states[aid]
-                arule = agent_rules.get(aid, {}) or {}
-                prule = portfolio_rules.get(aid, {}) or {}
+                arule = strategy_rule_for_agent(agent_rules, agent)
+                prule = portfolio_rule_for_agent(portfolio_rules, agent)
                 max_positions = int(prule.get("max_positions", 8) or 8)
-                max_new = int(prule.get("max_new_entries_per_day", 1) or 1)
+                max_new = int(prule.get("max_new_entries_per_day", default_max_new_entries_per_day) or default_max_new_entries_per_day)
+                diag = agent_diagnostics[aid]
+                adf = scores_df[scores_df["agent_id"] == aid] if not scores_df.empty else pd.DataFrame()
+                candidate_count = int(len(adf))
+                diag["candidate_rows"] += candidate_count
+                if candidate_count <= 0:
+                    continue
                 if len(state.positions) >= max_positions:
+                    diag_reject(diag, "MAX_POSITIONS_FULL", count=candidate_count)
                     continue
                 new_count = 0
-                adf = scores_df[scores_df["agent_id"] == aid] if not scores_df.empty else pd.DataFrame()
-                for _, sr in adf.iterrows():
-                    if new_count >= max_new or len(state.positions) >= max_positions:
+                for idx, sr in enumerate(adf.itertuples(index=False)):
+                    remaining = candidate_count - idx
+                    if new_count >= max_new:
+                        diag_reject(diag, "MAX_NEW_ENTRIES_PER_DAY", count=remaining)
                         break
-                    row = sr.to_dict()
+                    if len(state.positions) >= max_positions:
+                        diag_reject(diag, "MAX_POSITIONS_FULL", count=remaining)
+                        break
+                    row = sr._asdict() if hasattr(sr, "_asdict") else dict(sr)
+                    diag["evaluated_rows"] += 1
                     ticker = str(row["ticker"])
                     if ticker in state.positions:
+                        diag_reject(diag, "ALREADY_OPEN_POSITION")
                         continue
                     if any(o["agent_id"] == aid and o["ticker"] == ticker and o["side"] == "BUY" for o in pending_orders):
+                        diag_reject(diag, "PENDING_BUY_EXISTS")
                         continue
                     feat = feature_for_ticker(feature_map, ticker)
                     ok, reason = passes_entry_rule(score_row=row, feature_row=feat, agent_rule=arule, trading_dates=season.trading_dates, signal_date=d)
                     if not ok:
+                        diag_reject(diag, "ENTRY_RULE_REJECTED", entry_rule_reason=reason)
                         continue
+                    diag["entry_rule_pass"] += 1
                     next_price = choose_execution_price(fetch_price_row(conn, ticker, next_d), "open")
                     if next_price is None:
+                        diag_reject(diag, "NO_NEXT_OPEN_PRICE")
                         continue
                     current_mv = 0.0
                     for p in state.positions.values():
@@ -476,6 +663,7 @@ def main() -> int:
                         share_lot_size=share_lot_size,
                     )
                     if shares <= 0:
+                        diag_reject(diag, "ZERO_SHARES_AFTER_SIZING")
                         continue
                     pending_orders.append({
                         "run_id": run_id,
@@ -495,10 +683,23 @@ def main() -> int:
                         "slippage_jpy": None,
                         "order_status": "PENDING",
                         "reason_code": "ENTRY_RULE_PASS",
-                        "reason_text": f"{agent.get('name', aid)} entry: {reason}",
+                        "reason_text": f"{agent_label(agent)} entry: {reason}",
                         "created_at": now,
                     })
+                    diag["orders_created"] += 1
                     new_count += 1
+        else:
+            # Last trading day has no next-open execution. Count Trade rows as rejected for diagnostics.
+            scores_df = conn.execute(
+                "SELECT agent_id, COUNT(*) AS c FROM agent_scores_daily WHERE date = ? AND action = 'Trade' GROUP BY agent_id",
+                [d],
+            ).df()
+            for row in scores_df.to_dict("records") if not scores_df.empty else []:
+                aid = str(row.get("agent_id"))
+                if aid in agent_diagnostics:
+                    count = int(row.get("c") or 0)
+                    agent_diagnostics[aid]["candidate_rows"] += count
+                    diag_reject(agent_diagnostics[aid], "NO_NEXT_TRADING_DATE", count=count)
 
         # 4) Record end-of-day equity.
         for agent in agents:
@@ -605,6 +806,18 @@ def main() -> int:
             })
     rows_to_insert(conn, "arena_open_positions", open_rows)
 
+    for aid, state in states.items():
+        agent_diagnostics[aid]["final_open_positions"] = len(state.positions)
+
+    diagnostics_payload = serialize_agent_diagnostics(
+        agent_diagnostics,
+        run_id=run_id,
+        year=year,
+        season=season,
+        generated_at=now,
+    )
+    diagnostics_outputs = write_agent_diagnostics(OUT_DIR, diagnostics_payload)
+
     persisted_counts = {
         "arena_orders": conn.execute("SELECT COUNT(*) FROM arena_orders WHERE run_id = ?", [run_id]).fetchone()[0],
         "arena_trades": conn.execute("SELECT COUNT(*) FROM arena_trades WHERE run_id = ?", [run_id]).fetchone()[0],
@@ -628,6 +841,7 @@ def main() -> int:
         promote_display_run(conn, year=year, run_id=run_id, note=rule_note or "Promoted by season rebuild workflow")
 
     outputs = export_arena_payloads(conn, out_dir=OUT_DIR, run_id=run_id, year=year, agents=load_agents_for_public())
+    outputs.update(diagnostics_outputs)
     print(f"runtime_config={cfg}")
     print(f"run_id={run_id}")
     print(f"agent_score_dates={score_dates} trade_score_rows={trade_score_rows}")
