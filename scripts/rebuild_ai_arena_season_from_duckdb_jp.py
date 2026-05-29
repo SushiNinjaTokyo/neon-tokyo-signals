@@ -142,6 +142,9 @@ class AgentState:
     positions: dict[str, Position] = field(default_factory=dict)
     realized_pnl_jpy: float = 0.0
     previous_equity_jpy: float | None = None
+    symbol_closed_trade_count: dict[str, int] = field(default_factory=dict)
+    symbol_realized_pnl_jpy: dict[str, float] = field(default_factory=dict)
+    symbol_last_loss_exit_date: dict[str, date] = field(default_factory=dict)
 
 
 def rows_to_insert(conn, table: str, rows: list[dict[str, Any]]) -> None:
@@ -480,6 +483,27 @@ def main() -> int:
             "created_at": now,
         })
 
+
+    def reentry_block_reason(*, state: AgentState, ticker: str, entry_rule: dict[str, Any], signal_date: date) -> str | None:
+        cooldown = int(entry_rule.get("cooldown_after_loss_days", 0) or 0)
+        last_loss = state.symbol_last_loss_exit_date.get(ticker)
+        if cooldown > 0 and last_loss is not None and (signal_date - last_loss).days < cooldown:
+            return "COOLDOWN_AFTER_LOSS"
+
+        max_closed = int(entry_rule.get("max_closed_trades_per_symbol_per_season", 0) or 0)
+        if max_closed > 0 and state.symbol_closed_trade_count.get(ticker, 0) >= max_closed:
+            return "MAX_SYMBOL_CLOSED_TRADES"
+
+        loss_trade_limit = int(entry_rule.get("reject_if_symbol_realized_pnl_negative_after_trades", 0) or 0)
+        if (
+            loss_trade_limit > 0
+            and state.symbol_closed_trade_count.get(ticker, 0) >= loss_trade_limit
+            and state.symbol_realized_pnl_jpy.get(ticker, 0.0) < 0
+        ):
+            return "SYMBOL_REALIZED_PNL_NEGATIVE"
+
+        return None
+
     for d in season.trading_dates:
         feature_map = fetch_feature_map(conn, d)
         score_map = fetch_score_map(conn, d)
@@ -633,6 +657,11 @@ def main() -> int:
                         continue
                     if any(o["agent_id"] == aid and o["ticker"] == ticker and o["side"] == "BUY" for o in pending_orders):
                         diag_reject(diag, "PENDING_BUY_EXISTS")
+                        continue
+                    entry_rule = (arule.get("entry") or {})
+                    block_reason = reentry_block_reason(state=state, ticker=ticker, entry_rule=entry_rule, signal_date=d)
+                    if block_reason:
+                        diag_reject(diag, block_reason)
                         continue
                     feat = feature_for_ticker(feature_map, ticker)
                     ok, reason = passes_entry_rule(score_row=row, feature_row=feat, agent_rule=arule, trading_dates=season.trading_dates, signal_date=d)
