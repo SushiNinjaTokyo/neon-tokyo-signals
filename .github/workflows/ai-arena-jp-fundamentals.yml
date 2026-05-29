@@ -115,8 +115,12 @@ jobs:
       - name: Build value features from refreshed fundamentals
         env:
           VALUE_FEATURE_YEAR: auto
-          VALUE_FEATURE_START_DATE: auto
-          VALUE_FEATURE_END_DATE: auto
+          VALUE_FEATURE_START_DATE: ""
+          VALUE_FEATURE_END_DATE: ""
+          AGENT_SCORE_START_DATE: ""
+          AGENT_SCORE_END_DATE: ""
+          AI_ARENA_START_DATE: ""
+          AI_ARENA_END_DATE: ""
         run: |
           set -euo pipefail
           test -f "${PRICE_DUCKDB_PATH}"
@@ -204,7 +208,7 @@ jobs:
 
           git add -A \
             site/data/japan/ai-arena/diagnostics/fundamentals-latest.json \
-            site/data/japan/ai-arena/diagnostics/value-features-latest.json
+            site/data/japan/ai-arena/diagnostics/value-features.json
 
           if git diff --cached --quiet; then
             echo "No fundamentals diagnostics to commit."

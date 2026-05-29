@@ -65,8 +65,8 @@ jobs:
       AI_ARENA_ENABLE_GPT_SIGNAL_NOTES: "false"
       FORCE_FINALIZE_SEASON: "false"
       VALUE_FEATURE_YEAR: auto
-      VALUE_FEATURE_START_DATE: auto
-      VALUE_FEATURE_END_DATE: auto
+      VALUE_FEATURE_START_DATE: ""
+      VALUE_FEATURE_END_DATE: ""
       AGENT_SCORE_MODE: range
       AGENT_SCORE_YEAR: auto
       AGENT_SCORE_START_DATE: auto
@@ -163,6 +163,14 @@ jobs:
           python scripts/fetch_fundamentals_jp.py
 
       - name: Build value features
+        env:
+          VALUE_FEATURE_YEAR: auto
+          VALUE_FEATURE_START_DATE: ""
+          VALUE_FEATURE_END_DATE: ""
+          AGENT_SCORE_START_DATE: ""
+          AGENT_SCORE_END_DATE: ""
+          AI_ARENA_START_DATE: ""
+          AI_ARENA_END_DATE: ""
         run: |
           set -euo pipefail
           python scripts/build_value_features_jp.py
