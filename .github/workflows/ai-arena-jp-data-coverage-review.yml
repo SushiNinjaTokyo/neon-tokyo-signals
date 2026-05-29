@@ -69,8 +69,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: data/cache/neon_tokyo_jp.duckdb
-          key: neon-tokyo-jp-duckdb-v1
+          key: neon-tokyo-jp-duckdb-v2-coverage-${{ github.run_id }}
           restore-keys: |
+            neon-tokyo-jp-duckdb-v2-
+            neon-tokyo-jp-duckdb-v1
             neon-tokyo-jp-duckdb-
 
       - name: Install dependencies

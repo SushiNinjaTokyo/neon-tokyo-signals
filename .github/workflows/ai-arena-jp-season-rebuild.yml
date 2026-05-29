@@ -35,6 +35,14 @@ on:
         description: "Generate GPT notes for Signals page"
         required: true
         default: "false"
+      fetch_fundamentals:
+        description: "Fetch yfinance fundamentals and build value features"
+        required: true
+        default: "true"
+      force_finalize_season:
+        description: "Force close open positions at final available date; use only after year-end"
+        required: true
+        default: "false"
       commit_outputs:
         description: "Commit generated site outputs"
         required: true
@@ -52,6 +60,9 @@ env:
   OUT_DIR: site
   PRICE_DUCKDB_PATH: data/cache/neon_tokyo_jp.duckdb
   PRICE_STORE_MODE: json_and_duckdb
+  PRICE_PUBLIC_JSON_MODE: summary
+  WRITE_DATED_PRICE_JSON: "false"
+  AGENT_SCORE_MIN_DATE_COVERAGE_PCT: 70
   MIN_BARS_REQUIRED: 60
   MIN_ACCEPTABLE_BARS: 20
   AGENT_SCORE_TOP_N: 30
@@ -112,6 +123,15 @@ jobs:
           set -euo pipefail
           python scripts/fetch_prices_jp.py
 
+      - name: Fetch fundamentals and value features
+        if: ${{ inputs.fetch_fundamentals == 'true' }}
+        env:
+          FUNDAMENTALS_LIMIT: ${{ inputs.universe_limit }}
+          FUNDAMENTALS_REQUEST_SLEEP_SECONDS: "0.10"
+        run: |
+          set -euo pipefail
+          python scripts/fetch_fundamentals_jp.py
+
       - name: Build agent scores for range
         env:
           AGENT_SCORE_MODE: range
@@ -130,6 +150,7 @@ jobs:
           RESET_RUN: ${{ inputs.reset_run }}
           PROMOTE_DISPLAY_RUN: ${{ inputs.promote_display_run }}
           ENABLE_GPT_SIGNAL_NOTES: ${{ inputs.enable_gpt_signal_notes }}
+          FORCE_FINALIZE_SEASON: ${{ inputs.force_finalize_season }}
         run: |
           set -euo pipefail
           python scripts/rebuild_ai_arena_season_from_duckdb_jp.py
@@ -160,10 +181,21 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
+          import duckdb
           live=json.loads(Path('site/data/japan/ai-arena/live/latest.json').read_text())
           assert len(live.get('agents', [])) == 7
           assert live.get('ranking') is not None
-          print('Validated run_id=', live.get('run_id'))
+          rid = live.get('run_id')
+          con = duckdb.connect('data/cache/neon_tokyo_jp.duckdb', read_only=True)
+          for table in ['arena_orders','arena_trades','arena_open_positions','arena_equity_curve']:
+            n = con.execute(f"select count(*) from {table} where run_id = ?", [rid]).fetchone()[0]
+            print(table, n)
+          assert con.execute('select count(*) from arena_equity_curve where run_id = ?', [rid]).fetchone()[0] > 0
+          prices=json.loads(Path('site/data/prices-jp/latest.json').read_text())
+          assert prices.get('public_json_mode') == 'summary'
+          assert prices.get('bars_omitted') is True
+          assert Path('site/data/prices-jp/latest.json').stat().st_size < 5 * 1024 * 1024
+          print('Validated run_id=', rid)
           PY
 
       - name: Commit outputs

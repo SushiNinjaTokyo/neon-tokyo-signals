@@ -1,0 +1,102 @@
+name: AI Arena JP fundamentals refresh
+
+on:
+  workflow_dispatch:
+    inputs:
+      universe_limit:
+        description: "Number of equity tickers to refresh"
+        required: true
+        default: "300"
+      commit_outputs:
+        description: "Commit diagnostics and generated reports"
+        required: true
+        default: "true"
+  # Enable after manual verification:
+  # schedule:
+  #   - cron: "45 9 * * 1-5"  # 18:45 JST on weekdays
+
+permissions:
+  contents: write
+
+concurrency:
+  group: neon-tokyo-site-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  OUT_DIR: site
+  PRICE_DUCKDB_PATH: data/cache/neon_tokyo_jp.duckdb
+
+jobs:
+  refresh-fundamentals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - uses: actions/cache@v4
+        with:
+          path: data/cache/neon_tokyo_jp.duckdb
+          key: neon-tokyo-jp-duckdb-v2-fundamentals-${{ github.run_id }}
+          restore-keys: |
+            neon-tokyo-jp-duckdb-v2-
+            neon-tokyo-jp-duckdb-v1
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install -r requirements-render.txt
+      - name: Pull latest main
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin main
+      - name: Compile scripts
+        run: |
+          set -euo pipefail
+          python -m compileall scripts/fetch_fundamentals_jp.py scripts/lib
+      - name: Refresh fundamentals
+        env:
+          FUNDAMENTALS_LIMIT: ${{ inputs.universe_limit }}
+          FUNDAMENTALS_REQUEST_SLEEP_SECONDS: "0.10"
+        run: |
+          set -euo pipefail
+          python scripts/fetch_fundamentals_jp.py
+      - name: Validate fundamentals
+        run: |
+          set -euo pipefail
+          test -s site/data/japan/ai-arena/diagnostics/fundamentals-latest.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import duckdb
+          diag=json.loads(Path('site/data/japan/ai-arena/diagnostics/fundamentals-latest.json').read_text())
+          print(diag['metric_coverage'])
+          con=duckdb.connect('data/cache/neon_tokyo_jp.duckdb', read_only=True)
+          n=con.execute('select count(*) from fundamentals_latest_jp').fetchone()[0]
+          v=con.execute('select count(*) from value_features_daily').fetchone()[0]
+          print('fundamentals_latest_jp=', n)
+          print('value_features_daily=', v)
+          assert n > 0
+          PY
+      - name: Commit diagnostics
+        if: ${{ inputs.commit_outputs == 'true' }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A site/data/japan/ai-arena/diagnostics/fundamentals-latest.json
+          if git diff --cached --quiet; then
+            echo "No fundamentals diagnostics to commit."
+            exit 0
+          fi
+          git commit -m "Update AI Arena JP fundamentals diagnostics"
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort || true; exit 1; }
+            sleep 5
+          done
+          exit 1
