@@ -1,10 +1,10 @@
 {
   "schema_version": "ai_arena_live_v1",
-  "generated_at": "2026-05-29T08:21:20Z",
+  "generated_at": "2026-05-29T08:40:42Z",
   "year": 2026,
-  "run_id": "arena_jp_rebuild_2026_v012",
+  "run_id": "arena_jp_rebuild_2026_v013",
   "run": {
-    "run_id": "arena_jp_rebuild_2026_v012",
+    "run_id": "arena_jp_rebuild_2026_v013",
     "year": 2026,
     "run_type": "rebuild",
     "status": "active",
@@ -14,9 +14,9 @@
     "share_lot_size": 1,
     "reset_positions_at_year_start": true,
     "force_close_positions_at_year_end": false,
-    "strategy_rules_version": "jp_agent_strategy_2026_dev_v012",
+    "strategy_rules_version": "jp_agent_strategy_2026_dev_v013",
     "portfolio_rules_version": "jp_agent_portfolio_2026_dev_v003",
-    "rules_hash": "e216b6d4c020e506",
+    "rules_hash": "283561d222205897",
     "source_data_start_date": "2026-01-01T00:00:00.000",
     "source_data_end_date": "2026-05-29T00:00:00.000",
     "parent_run_id": null,
@@ -24,8 +24,8 @@
     "is_display_run": true,
     "is_official": false,
     "rules_locked": false,
-    "created_at": "2026-05-29T08:21:00.398",
-    "updated_at": "2026-05-29T08:21:20.519",
+    "created_at": "2026-05-29T08:40:31.373",
+    "updated_at": "2026-05-29T08:40:42.830",
     "frozen_at": null,
     "note": "",
     "finalized_season": false
@@ -188,7 +188,7 @@
   ],
   "ranking": [
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
+      "run_id": "arena_jp_rebuild_2026_v013",
       "year": 2026,
       "agent_id": "weekly_sage",
       "start_equity_jpy": 10000000.0,
@@ -200,7 +200,7 @@
       "win_rate_pct": 52.7777777778,
       "trade_count": 36,
       "rank": 1,
-      "updated_at": "2026-05-29T08:21:20.458",
+      "updated_at": "2026-05-29T08:40:42.775",
       "agent": {
         "agent_id": "weekly_sage",
         "name": "NAGARE",
@@ -738,7 +738,7 @@
       }
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
+      "run_id": "arena_jp_rebuild_2026_v013",
       "year": 2026,
       "agent_id": "contrarian_monk",
       "start_equity_jpy": 10000000.0,
@@ -750,7 +750,7 @@
       "win_rate_pct": 53.7037037037,
       "trade_count": 54,
       "rank": 2,
-      "updated_at": "2026-05-29T08:21:20.458",
+      "updated_at": "2026-05-29T08:40:42.775",
       "agent": {
         "agent_id": "contrarian_monk",
         "name": "MATSU",
@@ -1288,7 +1288,7 @@
       }
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
+      "run_id": "arena_jp_rebuild_2026_v013",
       "year": 2026,
       "agent_id": "risk_sentinel",
       "start_equity_jpy": 10000000.0,
@@ -1300,7 +1300,7 @@
       "win_rate_pct": 44.4444444444,
       "trade_count": 90,
       "rank": 3,
-      "updated_at": "2026-05-29T08:21:20.458",
+      "updated_at": "2026-05-29T08:40:42.775",
       "agent": {
         "agent_id": "risk_sentinel",
         "name": "MAMORU",
@@ -1838,7 +1838,7 @@
       }
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
+      "run_id": "arena_jp_rebuild_2026_v013",
       "year": 2026,
       "agent_id": "reversal_snapback",
       "start_equity_jpy": 10000000.0,
@@ -1850,7 +1850,7 @@
       "win_rate_pct": 64.7058823529,
       "trade_count": 34,
       "rank": 4,
-      "updated_at": "2026-05-29T08:21:20.458",
+      "updated_at": "2026-05-29T08:40:42.775",
       "agent": {
         "agent_id": "reversal_snapback",
         "name": "KAESHI",
@@ -2388,7 +2388,557 @@
       }
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "year": 2026,
+      "agent_id": "discovery_scout",
+      "start_equity_jpy": 10000000.0,
+      "end_equity_jpy": 10028402.165000003,
+      "total_return_pct": 0.28402165,
+      "realized_pnl_jpy": 28402.1650000012,
+      "unrealized_pnl_jpy": 0.0,
+      "max_drawdown_pct": -2.2821348978,
+      "win_rate_pct": 50.0,
+      "trade_count": 10,
+      "rank": 5,
+      "updated_at": "2026-05-29T08:40:42.775",
+      "agent": {
+        "agent_id": "discovery_scout",
+        "name": "SAGURI",
+        "japanese_name": "探り",
+        "role": "Hidden Alpha Discovery",
+        "style_label": "Small Cap / Early Discovery",
+        "theme_color": "amber",
+        "image": "/assets/ai-arena/agents/discovery_scout.png",
+        "short_description": "Searches smaller and less-discovered names for early volume shifts and hidden alpha signals.",
+        "strengths": [
+          "Finds names before they become obvious",
+          "Strong discovery identity",
+          "Captures early volume anomalies"
+        ],
+        "weaknesses": [
+          "Liquidity risk is structurally higher",
+          "Requires fast exits when small-cap interest disappears"
+        ],
+        "color": "#FFD166",
+        "style": "Small Cap / Early Discovery",
+        "description": "Searches smaller and less-discovered names for early volume shifts and hidden alpha signals."
+      },
+      "sparkline": [
+        {
+          "date": "2026-01-05 00:00:00",
+          "equity": 10000000.0,
+          "return_pct": 0.0
+        },
+        {
+          "date": "2026-01-06 00:00:00",
+          "equity": 10000000.0,
+          "return_pct": 0.0
+        },
+        {
+          "date": "2026-01-07 00:00:00",
+          "equity": 10000000.0,
+          "return_pct": 0.0
+        },
+        {
+          "date": "2026-01-08 00:00:00",
+          "equity": 10000000.0,
+          "return_pct": 0.0
+        },
+        {
+          "date": "2026-01-09 00:00:00",
+          "equity": 10000000.0,
+          "return_pct": 0.0
+        },
+        {
+          "date": "2026-01-13 00:00:00",
+          "equity": 10000000.0,
+          "return_pct": 0.0
+        },
+        {
+          "date": "2026-01-14 00:00:00",
+          "equity": 10017170.71,
+          "return_pct": 0.1717
+        },
+        {
+          "date": "2026-01-15 00:00:00",
+          "equity": 10048330.85,
+          "return_pct": 0.4833
+        },
+        {
+          "date": "2026-01-16 00:00:00",
+          "equity": 9991160.68,
+          "return_pct": -0.0884
+        },
+        {
+          "date": "2026-01-19 00:00:00",
+          "equity": 10004898.68,
+          "return_pct": 0.049
+        },
+        {
+          "date": "2026-01-20 00:00:00",
+          "equity": 9996081.68,
+          "return_pct": -0.0392
+        },
+        {
+          "date": "2026-01-21 00:00:00",
+          "equity": 9932060.68,
+          "return_pct": -0.6794
+        },
+        {
+          "date": "2026-01-22 00:00:00",
+          "equity": 9912774.34,
+          "return_pct": -0.8723
+        },
+        {
+          "date": "2026-01-23 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-01-26 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-01-27 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-01-28 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-01-29 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-01-30 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-02-02 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-02-03 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-02-04 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-02-05 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-02-06 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-02-09 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-02-10 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-02-12 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-02-13 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-02-16 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-02-17 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-02-18 00:00:00",
+          "equity": 9904264.5,
+          "return_pct": -0.9574
+        },
+        {
+          "date": "2026-02-19 00:00:00",
+          "equity": 9969747.22,
+          "return_pct": -0.3025
+        },
+        {
+          "date": "2026-02-20 00:00:00",
+          "equity": 9908115.22,
+          "return_pct": -0.9188
+        },
+        {
+          "date": "2026-02-24 00:00:00",
+          "equity": 9919671.22,
+          "return_pct": -0.8033
+        },
+        {
+          "date": "2026-02-25 00:00:00",
+          "equity": 9929301.22,
+          "return_pct": -0.707
+        },
+        {
+          "date": "2026-02-26 00:00:00",
+          "equity": 9977451.22,
+          "return_pct": -0.2255
+        },
+        {
+          "date": "2026-02-27 00:00:00",
+          "equity": 10054491.22,
+          "return_pct": 0.5449
+        },
+        {
+          "date": "2026-03-02 00:00:00",
+          "equity": 9973599.22,
+          "return_pct": -0.264
+        },
+        {
+          "date": "2026-03-03 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-04 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-05 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-06 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-09 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-10 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-11 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-12 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-13 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-16 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-17 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-18 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-19 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-23 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-24 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-25 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-26 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-27 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-30 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-03-31 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-04-01 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-04-02 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-04-03 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-04-06 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-04-07 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-04-08 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-04-09 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-04-10 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-04-13 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-04-14 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-04-15 00:00:00",
+          "equity": 9992125.41,
+          "return_pct": -0.0787
+        },
+        {
+          "date": "2026-04-16 00:00:00",
+          "equity": 10039801.04,
+          "return_pct": 0.398
+        },
+        {
+          "date": "2026-04-17 00:00:00",
+          "equity": 10099555.77,
+          "return_pct": 0.9956
+        },
+        {
+          "date": "2026-04-20 00:00:00",
+          "equity": 10129149.16,
+          "return_pct": 1.2915
+        },
+        {
+          "date": "2026-04-21 00:00:00",
+          "equity": 10145737.72,
+          "return_pct": 1.4574
+        },
+        {
+          "date": "2026-04-22 00:00:00",
+          "equity": 10163689.72,
+          "return_pct": 1.6369
+        },
+        {
+          "date": "2026-04-23 00:00:00",
+          "equity": 10085280.72,
+          "return_pct": 0.8528
+        },
+        {
+          "date": "2026-04-24 00:00:00",
+          "equity": 9974393.72,
+          "return_pct": -0.2561
+        },
+        {
+          "date": "2026-04-27 00:00:00",
+          "equity": 9931740.61,
+          "return_pct": -0.6826
+        },
+        {
+          "date": "2026-04-28 00:00:00",
+          "equity": 9981147.49,
+          "return_pct": -0.1885
+        },
+        {
+          "date": "2026-04-30 00:00:00",
+          "equity": 9981147.49,
+          "return_pct": -0.1885
+        },
+        {
+          "date": "2026-05-01 00:00:00",
+          "equity": 9941043.77,
+          "return_pct": -0.5896
+        },
+        {
+          "date": "2026-05-07 00:00:00",
+          "equity": 9946587.77,
+          "return_pct": -0.5341
+        },
+        {
+          "date": "2026-05-08 00:00:00",
+          "equity": 9972723.77,
+          "return_pct": -0.2728
+        },
+        {
+          "date": "2026-05-11 00:00:00",
+          "equity": 10029747.77,
+          "return_pct": 0.2975
+        },
+        {
+          "date": "2026-05-12 00:00:00",
+          "equity": 10028402.17,
+          "return_pct": 0.284
+        },
+        {
+          "date": "2026-05-13 00:00:00",
+          "equity": 10028402.17,
+          "return_pct": 0.284
+        },
+        {
+          "date": "2026-05-14 00:00:00",
+          "equity": 10028402.17,
+          "return_pct": 0.284
+        },
+        {
+          "date": "2026-05-15 00:00:00",
+          "equity": 10028402.17,
+          "return_pct": 0.284
+        },
+        {
+          "date": "2026-05-18 00:00:00",
+          "equity": 10028402.17,
+          "return_pct": 0.284
+        },
+        {
+          "date": "2026-05-19 00:00:00",
+          "equity": 10028402.17,
+          "return_pct": 0.284
+        },
+        {
+          "date": "2026-05-20 00:00:00",
+          "equity": 10028402.17,
+          "return_pct": 0.284
+        },
+        {
+          "date": "2026-05-21 00:00:00",
+          "equity": 10028402.17,
+          "return_pct": 0.284
+        },
+        {
+          "date": "2026-05-22 00:00:00",
+          "equity": 10028402.17,
+          "return_pct": 0.284
+        },
+        {
+          "date": "2026-05-25 00:00:00",
+          "equity": 10028402.17,
+          "return_pct": 0.284
+        },
+        {
+          "date": "2026-05-26 00:00:00",
+          "equity": 10028402.17,
+          "return_pct": 0.284
+        },
+        {
+          "date": "2026-05-27 00:00:00",
+          "equity": 10028402.17,
+          "return_pct": 0.284
+        },
+        {
+          "date": "2026-05-28 00:00:00",
+          "equity": 10028402.17,
+          "return_pct": 0.284
+        },
+        {
+          "date": "2026-05-29 00:00:00",
+          "equity": 10028402.17,
+          "return_pct": 0.284
+        }
+      ],
+      "sparkline_points": "4.0,33.0 6.2,33.0 8.4,33.0 10.6,33.0 12.8,33.0 15.0,33.0 17.2,30.0 19.5,24.5 21.7,34.6 23.9,32.2 26.1,33.7 28.3,45.1 30.5,48.5 32.7,50.0 34.9,50.0 37.1,50.0 39.3,50.0 41.5,50.0 43.8,50.0 46.0,50.0 48.2,50.0 50.4,50.0 52.6,50.0 54.8,50.0 57.0,50.0 59.2,50.0 61.4,50.0 63.6,50.0 65.8,50.0 68.0,50.0 70.2,50.0 72.5,38.4 74.7,49.3 76.9,47.3 79.1,45.6 81.3,37.0 83.5,23.4 85.7,37.7 87.9,34.4 90.1,34.4 92.3,34.4 94.5,34.4 96.8,34.4 99.0,34.4 101.2,34.4 103.4,34.4 105.6,34.4 107.8,34.4 110.0,34.4 112.2,34.4 114.4,34.4 116.6,34.4 118.8,34.4 121.0,34.4 123.2,34.4 125.5,34.4 127.7,34.4 129.9,34.4 132.1,34.4 134.3,34.4 136.5,34.4 138.7,34.4 140.9,34.4 143.1,34.4 145.3,34.4 147.5,34.4 149.8,34.4 152.0,34.4 154.2,34.4 156.4,26.0 158.6,15.4 160.8,10.1 163.0,7.2 165.2,4.0 167.4,17.9 169.6,37.6 171.8,45.1 174.0,36.4 176.2,36.4 178.5,43.5 180.7,42.5 182.9,37.9 185.1,27.7 187.3,28.0 189.5,28.0 191.7,28.0 193.9,28.0 196.1,28.0 198.3,28.0 200.5,28.0 202.8,28.0 205.0,28.0 207.2,28.0 209.4,28.0 211.6,28.0 213.8,28.0 216.0,28.0",
+      "color": "#FFD166",
+      "activity": {
+        "agent_id": "discovery_scout",
+        "name": "SAGURI",
+        "role": "Hidden Alpha Discovery",
+        "color": "#FFD166",
+        "score_rows": 2703,
+        "trade_signals": 139,
+        "watch_signals": 511,
+        "ignore_signals": 2053,
+        "latest_score_date": "2026-05-29 00:00:00",
+        "buy_orders": 10,
+        "executed_buys": 10,
+        "cancelled_buys": 0,
+        "sell_orders": 10,
+        "executed_sells": 10,
+        "pending_orders": 0,
+        "closed_trades": 10,
+        "open_positions": 0,
+        "latest_equity_jpy": 10028402.165000003,
+        "total_return_pct": 0.284,
+        "first_equity_date": "2026-01-05 00:00:00",
+        "last_equity_date": "2026-05-29 00:00:00",
+        "warnings": []
+      }
+    },
+    {
+      "run_id": "arena_jp_rebuild_2026_v013",
       "year": 2026,
       "agent_id": "daily_striker",
       "start_equity_jpy": 10000000.0,
@@ -2399,8 +2949,8 @@
       "max_drawdown_pct": -5.688306795,
       "win_rate_pct": 48.9795918367,
       "trade_count": 49,
-      "rank": 5,
-      "updated_at": "2026-05-29T08:21:20.458",
+      "rank": 6,
+      "updated_at": "2026-05-29T08:40:42.775",
       "agent": {
         "agent_id": "daily_striker",
         "name": "KYOU",
@@ -2938,569 +3488,19 @@
       }
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "year": 2026,
-      "agent_id": "discovery_scout",
-      "start_equity_jpy": 10000000.0,
-      "end_equity_jpy": 9354982.6555332,
-      "total_return_pct": -6.4501734447,
-      "realized_pnl_jpy": -687119.6344667969,
-      "unrealized_pnl_jpy": 42102.2900000001,
-      "max_drawdown_pct": -9.2446408247,
-      "win_rate_pct": 36.0,
-      "trade_count": 25,
-      "rank": 6,
-      "updated_at": "2026-05-29T08:21:20.458",
-      "agent": {
-        "agent_id": "discovery_scout",
-        "name": "SAGURI",
-        "japanese_name": "探り",
-        "role": "Hidden Alpha Discovery",
-        "style_label": "Small Cap / Early Discovery",
-        "theme_color": "amber",
-        "image": "/assets/ai-arena/agents/discovery_scout.png",
-        "short_description": "Searches smaller and less-discovered names for early volume shifts and hidden alpha signals.",
-        "strengths": [
-          "Finds names before they become obvious",
-          "Strong discovery identity",
-          "Captures early volume anomalies"
-        ],
-        "weaknesses": [
-          "Liquidity risk is structurally higher",
-          "Requires fast exits when small-cap interest disappears"
-        ],
-        "color": "#FFD166",
-        "style": "Small Cap / Early Discovery",
-        "description": "Searches smaller and less-discovered names for early volume shifts and hidden alpha signals."
-      },
-      "sparkline": [
-        {
-          "date": "2026-01-05 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-06 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-07 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-08 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-09 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-13 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-14 00:00:00",
-          "equity": 9971624.19,
-          "return_pct": -0.2838
-        },
-        {
-          "date": "2026-01-15 00:00:00",
-          "equity": 9982376.22,
-          "return_pct": -0.1762
-        },
-        {
-          "date": "2026-01-16 00:00:00",
-          "equity": 9925590.43,
-          "return_pct": -0.7441
-        },
-        {
-          "date": "2026-01-19 00:00:00",
-          "equity": 9939236.43,
-          "return_pct": -0.6076
-        },
-        {
-          "date": "2026-01-20 00:00:00",
-          "equity": 9930476.43,
-          "return_pct": -0.6952
-        },
-        {
-          "date": "2026-01-21 00:00:00",
-          "equity": 9866880.43,
-          "return_pct": -1.3312
-        },
-        {
-          "date": "2026-01-22 00:00:00",
-          "equity": 9849596.53,
-          "return_pct": -1.504
-        },
-        {
-          "date": "2026-01-23 00:00:00",
-          "equity": 9811054.53,
-          "return_pct": -1.8895
-        },
-        {
-          "date": "2026-01-26 00:00:00",
-          "equity": 9656104.49,
-          "return_pct": -3.439
-        },
-        {
-          "date": "2026-01-27 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-01-28 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-01-29 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-01-30 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-02-02 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-02-03 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-02-04 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-02-05 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-02-06 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-02-09 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-02-10 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-02-12 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-02-13 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-02-16 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-02-17 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-02-18 00:00:00",
-          "equity": 9654987.82,
-          "return_pct": -3.4501
-        },
-        {
-          "date": "2026-02-19 00:00:00",
-          "equity": 9826355.48,
-          "return_pct": -1.7364
-        },
-        {
-          "date": "2026-02-20 00:00:00",
-          "equity": 9727519.48,
-          "return_pct": -2.7248
-        },
-        {
-          "date": "2026-02-24 00:00:00",
-          "equity": 9592767.48,
-          "return_pct": -4.0723
-        },
-        {
-          "date": "2026-02-25 00:00:00",
-          "equity": 9621819.52,
-          "return_pct": -3.7818
-        },
-        {
-          "date": "2026-02-26 00:00:00",
-          "equity": 9668769.52,
-          "return_pct": -3.3123
-        },
-        {
-          "date": "2026-02-27 00:00:00",
-          "equity": 9743889.52,
-          "return_pct": -2.5611
-        },
-        {
-          "date": "2026-03-02 00:00:00",
-          "equity": 9665013.52,
-          "return_pct": -3.3499
-        },
-        {
-          "date": "2026-03-03 00:00:00",
-          "equity": 9623241.8,
-          "return_pct": -3.7676
-        },
-        {
-          "date": "2026-03-04 00:00:00",
-          "equity": 9579531.8,
-          "return_pct": -4.2047
-        },
-        {
-          "date": "2026-03-05 00:00:00",
-          "equity": 9605330.93,
-          "return_pct": -3.9467
-        },
-        {
-          "date": "2026-03-06 00:00:00",
-          "equity": 9605330.93,
-          "return_pct": -3.9467
-        },
-        {
-          "date": "2026-03-09 00:00:00",
-          "equity": 9602171.57,
-          "return_pct": -3.9783
-        },
-        {
-          "date": "2026-03-10 00:00:00",
-          "equity": 9695291.57,
-          "return_pct": -3.0471
-        },
-        {
-          "date": "2026-03-11 00:00:00",
-          "equity": 9649211.57,
-          "return_pct": -3.5079
-        },
-        {
-          "date": "2026-03-12 00:00:00",
-          "equity": 9780089.14,
-          "return_pct": -2.1991
-        },
-        {
-          "date": "2026-03-13 00:00:00",
-          "equity": 9696188.25,
-          "return_pct": -3.0381
-        },
-        {
-          "date": "2026-03-16 00:00:00",
-          "equity": 9675654.85,
-          "return_pct": -3.2435
-        },
-        {
-          "date": "2026-03-17 00:00:00",
-          "equity": 9611898.24,
-          "return_pct": -3.881
-        },
-        {
-          "date": "2026-03-18 00:00:00",
-          "equity": 9619921.64,
-          "return_pct": -3.8008
-        },
-        {
-          "date": "2026-03-19 00:00:00",
-          "equity": 9476409.85,
-          "return_pct": -5.2359
-        },
-        {
-          "date": "2026-03-23 00:00:00",
-          "equity": 9383272.04,
-          "return_pct": -6.1673
-        },
-        {
-          "date": "2026-03-24 00:00:00",
-          "equity": 9383272.04,
-          "return_pct": -6.1673
-        },
-        {
-          "date": "2026-03-25 00:00:00",
-          "equity": 9383272.04,
-          "return_pct": -6.1673
-        },
-        {
-          "date": "2026-03-26 00:00:00",
-          "equity": 9383272.04,
-          "return_pct": -6.1673
-        },
-        {
-          "date": "2026-03-27 00:00:00",
-          "equity": 9253803.67,
-          "return_pct": -7.462
-        },
-        {
-          "date": "2026-03-30 00:00:00",
-          "equity": 9437208.86,
-          "return_pct": -5.6279
-        },
-        {
-          "date": "2026-03-31 00:00:00",
-          "equity": 9437208.86,
-          "return_pct": -5.6279
-        },
-        {
-          "date": "2026-04-01 00:00:00",
-          "equity": 9437208.86,
-          "return_pct": -5.6279
-        },
-        {
-          "date": "2026-04-02 00:00:00",
-          "equity": 9437208.86,
-          "return_pct": -5.6279
-        },
-        {
-          "date": "2026-04-03 00:00:00",
-          "equity": 9437208.86,
-          "return_pct": -5.6279
-        },
-        {
-          "date": "2026-04-06 00:00:00",
-          "equity": 9460491.46,
-          "return_pct": -5.3951
-        },
-        {
-          "date": "2026-04-07 00:00:00",
-          "equity": 9219894.94,
-          "return_pct": -7.8011
-        },
-        {
-          "date": "2026-04-08 00:00:00",
-          "equity": 9224826.7,
-          "return_pct": -7.7517
-        },
-        {
-          "date": "2026-04-09 00:00:00",
-          "equity": 9224826.7,
-          "return_pct": -7.7517
-        },
-        {
-          "date": "2026-04-10 00:00:00",
-          "equity": 9224826.7,
-          "return_pct": -7.7517
-        },
-        {
-          "date": "2026-04-13 00:00:00",
-          "equity": 9224826.7,
-          "return_pct": -7.7517
-        },
-        {
-          "date": "2026-04-14 00:00:00",
-          "equity": 9224826.7,
-          "return_pct": -7.7517
-        },
-        {
-          "date": "2026-04-15 00:00:00",
-          "equity": 9224826.7,
-          "return_pct": -7.7517
-        },
-        {
-          "date": "2026-04-16 00:00:00",
-          "equity": 9256241.94,
-          "return_pct": -7.4376
-        },
-        {
-          "date": "2026-04-17 00:00:00",
-          "equity": 9376876.56,
-          "return_pct": -6.2312
-        },
-        {
-          "date": "2026-04-20 00:00:00",
-          "equity": 9386898.28,
-          "return_pct": -6.131
-        },
-        {
-          "date": "2026-04-21 00:00:00",
-          "equity": 9381870.28,
-          "return_pct": -6.1813
-        },
-        {
-          "date": "2026-04-22 00:00:00",
-          "equity": 9374631.62,
-          "return_pct": -6.2537
-        },
-        {
-          "date": "2026-04-23 00:00:00",
-          "equity": 9274620.62,
-          "return_pct": -7.2538
-        },
-        {
-          "date": "2026-04-24 00:00:00",
-          "equity": 9131030.62,
-          "return_pct": -8.6897
-        },
-        {
-          "date": "2026-04-27 00:00:00",
-          "equity": 9084735.31,
-          "return_pct": -9.1526
-        },
-        {
-          "date": "2026-04-28 00:00:00",
-          "equity": 9126280.32,
-          "return_pct": -8.7372
-        },
-        {
-          "date": "2026-04-30 00:00:00",
-          "equity": 9126280.32,
-          "return_pct": -8.7372
-        },
-        {
-          "date": "2026-05-01 00:00:00",
-          "equity": 9089619.86,
-          "return_pct": -9.1038
-        },
-        {
-          "date": "2026-05-07 00:00:00",
-          "equity": 9094687.86,
-          "return_pct": -9.0531
-        },
-        {
-          "date": "2026-05-08 00:00:00",
-          "equity": 9075535.92,
-          "return_pct": -9.2446
-        },
-        {
-          "date": "2026-05-11 00:00:00",
-          "equity": 9267516.2,
-          "return_pct": -7.3248
-        },
-        {
-          "date": "2026-05-12 00:00:00",
-          "equity": 9397289.91,
-          "return_pct": -6.0271
-        },
-        {
-          "date": "2026-05-13 00:00:00",
-          "equity": 9417171.91,
-          "return_pct": -5.8283
-        },
-        {
-          "date": "2026-05-14 00:00:00",
-          "equity": 9437270.14,
-          "return_pct": -5.6273
-        },
-        {
-          "date": "2026-05-15 00:00:00",
-          "equity": 9408731.14,
-          "return_pct": -5.9127
-        },
-        {
-          "date": "2026-05-18 00:00:00",
-          "equity": 9381551.14,
-          "return_pct": -6.1845
-        },
-        {
-          "date": "2026-05-19 00:00:00",
-          "equity": 9446995.05,
-          "return_pct": -5.53
-        },
-        {
-          "date": "2026-05-20 00:00:00",
-          "equity": 9251910.28,
-          "return_pct": -7.4809
-        },
-        {
-          "date": "2026-05-21 00:00:00",
-          "equity": 9290372.66,
-          "return_pct": -7.0963
-        },
-        {
-          "date": "2026-05-22 00:00:00",
-          "equity": 9322322.66,
-          "return_pct": -6.7768
-        },
-        {
-          "date": "2026-05-25 00:00:00",
-          "equity": 9321612.66,
-          "return_pct": -6.7839
-        },
-        {
-          "date": "2026-05-26 00:00:00",
-          "equity": 9295342.66,
-          "return_pct": -7.0466
-        },
-        {
-          "date": "2026-05-27 00:00:00",
-          "equity": 9286112.66,
-          "return_pct": -7.1389
-        },
-        {
-          "date": "2026-05-28 00:00:00",
-          "equity": 9242092.66,
-          "return_pct": -7.5791
-        },
-        {
-          "date": "2026-05-29 00:00:00",
-          "equity": 9354982.66,
-          "return_pct": -6.4502
-        }
-      ],
-      "sparkline_points": "4.0,4.0 6.2,4.0 8.4,4.0 10.6,4.0 12.8,4.0 15.0,4.0 17.2,5.4 19.5,4.9 21.7,7.7 23.9,7.0 26.1,7.5 28.3,10.6 30.5,11.5 32.7,13.4 34.9,21.1 37.1,21.2 39.3,21.2 41.5,21.2 43.8,21.2 46.0,21.2 48.2,21.2 50.4,21.2 52.6,21.2 54.8,21.2 57.0,21.2 59.2,21.2 61.4,21.2 63.6,21.2 65.8,21.2 68.0,21.2 70.2,21.2 72.5,12.6 74.7,17.6 76.9,24.3 79.1,22.8 81.3,20.5 83.5,16.7 85.7,20.7 87.9,22.7 90.1,24.9 92.3,23.6 94.5,23.6 96.8,23.8 99.0,19.2 101.2,21.5 103.4,14.9 105.6,19.1 107.8,20.1 110.0,23.3 112.2,22.9 114.4,30.1 116.6,34.7 118.8,34.7 121.0,34.7 123.2,34.7 125.5,41.1 127.7,32.0 129.9,32.0 132.1,32.0 134.3,32.0 136.5,32.0 138.7,30.8 140.9,42.8 143.1,42.6 145.3,42.6 147.5,42.6 149.8,42.6 152.0,42.6 154.2,42.6 156.4,41.0 158.6,35.0 160.8,34.5 163.0,34.8 165.2,35.1 167.4,40.1 169.6,47.2 171.8,49.5 174.0,47.5 176.2,47.5 178.5,49.3 180.7,49.0 182.9,50.0 185.1,40.4 187.3,34.0 189.5,33.0 191.7,32.0 193.9,33.4 196.1,34.8 198.3,31.5 200.5,41.2 202.8,39.3 205.0,37.7 207.2,37.8 209.4,39.1 211.6,39.5 213.8,41.7 216.0,36.1",
-      "color": "#FFD166",
-      "activity": {
-        "agent_id": "discovery_scout",
-        "name": "SAGURI",
-        "role": "Hidden Alpha Discovery",
-        "color": "#FFD166",
-        "score_rows": 2703,
-        "trade_signals": 139,
-        "watch_signals": 511,
-        "ignore_signals": 2053,
-        "latest_score_date": "2026-05-29 00:00:00",
-        "buy_orders": 26,
-        "executed_buys": 26,
-        "cancelled_buys": 0,
-        "sell_orders": 25,
-        "executed_sells": 25,
-        "pending_orders": 0,
-        "closed_trades": 25,
-        "open_positions": 1,
-        "latest_equity_jpy": 9354982.6555332,
-        "total_return_pct": -6.4502,
-        "first_equity_date": "2026-01-05 00:00:00",
-        "last_equity_date": "2026-05-29 00:00:00",
-        "warnings": []
-      }
-    },
-    {
-      "run_id": "arena_jp_rebuild_2026_v012",
+      "run_id": "arena_jp_rebuild_2026_v013",
       "year": 2026,
       "agent_id": "value_mispricing",
       "start_equity_jpy": 10000000.0,
-      "end_equity_jpy": 8547869.238000013,
-      "total_return_pct": -14.52130762,
-      "realized_pnl_jpy": -1286510.241999991,
-      "unrealized_pnl_jpy": -165620.5199999995,
-      "max_drawdown_pct": -16.8660278487,
-      "win_rate_pct": 51.9230769231,
-      "trade_count": 52,
+      "end_equity_jpy": 9917127.884500008,
+      "total_return_pct": -0.828721155,
+      "realized_pnl_jpy": -77486.7554999925,
+      "unrealized_pnl_jpy": -5385.36,
+      "max_drawdown_pct": -9.5719643,
+      "win_rate_pct": 60.4651162791,
+      "trade_count": 43,
       "rank": 7,
-      "updated_at": "2026-05-29T08:21:20.458",
+      "updated_at": "2026-05-29T08:40:42.775",
       "agent": {
         "agent_id": "value_mispricing",
         "name": "HIZUMI",
@@ -3531,486 +3531,486 @@
         },
         {
           "date": "2026-01-06 00:00:00",
-          "equity": 10011959.29,
-          "return_pct": 0.1196
+          "equity": 10024132.46,
+          "return_pct": 0.2413
         },
         {
           "date": "2026-01-07 00:00:00",
-          "equity": 10014518.17,
-          "return_pct": 0.1452
+          "equity": 10008189.09,
+          "return_pct": 0.0819
         },
         {
           "date": "2026-01-08 00:00:00",
-          "equity": 10037691.14,
-          "return_pct": 0.3769
+          "equity": 10087436.06,
+          "return_pct": 0.8744
         },
         {
           "date": "2026-01-09 00:00:00",
-          "equity": 10086174.78,
-          "return_pct": 0.8617
+          "equity": 10115519.18,
+          "return_pct": 1.1552
         },
         {
           "date": "2026-01-13 00:00:00",
-          "equity": 10163853.74,
-          "return_pct": 1.6385
+          "equity": 10187072.18,
+          "return_pct": 1.8707
         },
         {
           "date": "2026-01-14 00:00:00",
-          "equity": 10180402.19,
-          "return_pct": 1.804
+          "equity": 10251912.74,
+          "return_pct": 2.5191
         },
         {
           "date": "2026-01-15 00:00:00",
-          "equity": 10225872.46,
-          "return_pct": 2.2587
+          "equity": 10296560.74,
+          "return_pct": 2.9656
         },
         {
           "date": "2026-01-16 00:00:00",
-          "equity": 10198098.64,
-          "return_pct": 1.981
+          "equity": 10304682.74,
+          "return_pct": 3.0468
         },
         {
           "date": "2026-01-19 00:00:00",
-          "equity": 10154120.69,
-          "return_pct": 1.5412
+          "equity": 10266481.64,
+          "return_pct": 2.6648
         },
         {
           "date": "2026-01-20 00:00:00",
-          "equity": 10149618.1,
-          "return_pct": 1.4962
+          "equity": 10264009.64,
+          "return_pct": 2.6401
         },
         {
           "date": "2026-01-21 00:00:00",
-          "equity": 10147226.26,
-          "return_pct": 1.4723
+          "equity": 10231511.64,
+          "return_pct": 2.3151
         },
         {
           "date": "2026-01-22 00:00:00",
-          "equity": 10203271.7,
-          "return_pct": 2.0327
+          "equity": 10304727.56,
+          "return_pct": 3.0473
         },
         {
           "date": "2026-01-23 00:00:00",
-          "equity": 10163449.12,
-          "return_pct": 1.6345
+          "equity": 10319266.04,
+          "return_pct": 3.1927
         },
         {
           "date": "2026-01-26 00:00:00",
-          "equity": 10134994.76,
-          "return_pct": 1.3499
+          "equity": 10309410.58,
+          "return_pct": 3.0941
         },
         {
           "date": "2026-01-27 00:00:00",
-          "equity": 10133029.95,
-          "return_pct": 1.3303
+          "equity": 10291817.51,
+          "return_pct": 2.9182
         },
         {
           "date": "2026-01-28 00:00:00",
-          "equity": 10107189.05,
-          "return_pct": 1.0719
+          "equity": 10218360.51,
+          "return_pct": 2.1836
         },
         {
           "date": "2026-01-29 00:00:00",
-          "equity": 10103639.5,
-          "return_pct": 1.0364
+          "equity": 10245932.78,
+          "return_pct": 2.4593
         },
         {
           "date": "2026-01-30 00:00:00",
-          "equity": 9984211.04,
-          "return_pct": -0.1579
+          "equity": 10356137.84,
+          "return_pct": 3.5614
         },
         {
           "date": "2026-02-02 00:00:00",
-          "equity": 9992082.16,
-          "return_pct": -0.0792
+          "equity": 10390459.14,
+          "return_pct": 3.9046
         },
         {
           "date": "2026-02-03 00:00:00",
-          "equity": 10078821.33,
-          "return_pct": 0.7882
+          "equity": 10468020.4,
+          "return_pct": 4.6802
         },
         {
           "date": "2026-02-04 00:00:00",
-          "equity": 10115590.52,
-          "return_pct": 1.1559
+          "equity": 10460110.38,
+          "return_pct": 4.6011
         },
         {
           "date": "2026-02-05 00:00:00",
-          "equity": 10102005.52,
-          "return_pct": 1.0201
+          "equity": 10547050.38,
+          "return_pct": 5.4705
         },
         {
           "date": "2026-02-06 00:00:00",
-          "equity": 10111025.84,
-          "return_pct": 1.1103
+          "equity": 10664806.92,
+          "return_pct": 6.6481
         },
         {
           "date": "2026-02-09 00:00:00",
-          "equity": 10095337.16,
-          "return_pct": 0.9534
+          "equity": 10745038.77,
+          "return_pct": 7.4504
         },
         {
           "date": "2026-02-10 00:00:00",
-          "equity": 10212856.11,
-          "return_pct": 2.1286
+          "equity": 10939950.77,
+          "return_pct": 9.3995
         },
         {
           "date": "2026-02-12 00:00:00",
-          "equity": 10234489.0,
-          "return_pct": 2.3449
+          "equity": 10963658.35,
+          "return_pct": 9.6366
         },
         {
           "date": "2026-02-13 00:00:00",
-          "equity": 9906835.13,
-          "return_pct": -0.9316
+          "equity": 10654794.35,
+          "return_pct": 6.5479
         },
         {
           "date": "2026-02-16 00:00:00",
-          "equity": 9962320.34,
-          "return_pct": -0.3768
+          "equity": 10705299.5,
+          "return_pct": 7.053
         },
         {
           "date": "2026-02-17 00:00:00",
-          "equity": 9968718.29,
-          "return_pct": -0.3128
+          "equity": 10712189.81,
+          "return_pct": 7.1219
         },
         {
           "date": "2026-02-18 00:00:00",
-          "equity": 10053576.56,
-          "return_pct": 0.5358
+          "equity": 10794962.73,
+          "return_pct": 7.9496
         },
         {
           "date": "2026-02-19 00:00:00",
-          "equity": 9977060.4,
-          "return_pct": -0.2294
+          "equity": 10847836.26,
+          "return_pct": 8.4784
         },
         {
           "date": "2026-02-20 00:00:00",
-          "equity": 9869053.57,
-          "return_pct": -1.3095
+          "equity": 10830695.05,
+          "return_pct": 8.307
         },
         {
           "date": "2026-02-24 00:00:00",
-          "equity": 9936641.43,
-          "return_pct": -0.6336
+          "equity": 10869138.2,
+          "return_pct": 8.6914
         },
         {
           "date": "2026-02-25 00:00:00",
-          "equity": 9904517.29,
-          "return_pct": -0.9548
+          "equity": 10794377.81,
+          "return_pct": 7.9438
         },
         {
           "date": "2026-02-26 00:00:00",
-          "equity": 9790016.9,
-          "return_pct": -2.0998
+          "equity": 10540175.42,
+          "return_pct": 5.4018
         },
         {
           "date": "2026-02-27 00:00:00",
-          "equity": 9723929.31,
-          "return_pct": -2.7607
+          "equity": 10572783.98,
+          "return_pct": 5.7278
         },
         {
           "date": "2026-03-02 00:00:00",
-          "equity": 9841006.38,
-          "return_pct": -1.5899
+          "equity": 10430758.45,
+          "return_pct": 4.3076
         },
         {
           "date": "2026-03-03 00:00:00",
-          "equity": 9669572.28,
-          "return_pct": -3.3043
+          "equity": 10413682.33,
+          "return_pct": 4.1368
         },
         {
           "date": "2026-03-04 00:00:00",
-          "equity": 9440996.68,
-          "return_pct": -5.59
+          "equity": 10388132.07,
+          "return_pct": 3.8813
         },
         {
           "date": "2026-03-05 00:00:00",
-          "equity": 9641024.0,
-          "return_pct": -3.5898
+          "equity": 10367307.1,
+          "return_pct": 3.6731
         },
         {
           "date": "2026-03-06 00:00:00",
-          "equity": 9598832.31,
-          "return_pct": -4.0117
+          "equity": 10408455.96,
+          "return_pct": 4.0846
         },
         {
           "date": "2026-03-09 00:00:00",
-          "equity": 9432437.52,
-          "return_pct": -5.6756
+          "equity": 10282543.96,
+          "return_pct": 2.8254
         },
         {
           "date": "2026-03-10 00:00:00",
-          "equity": 9479937.43,
-          "return_pct": -5.2006
+          "equity": 10387555.69,
+          "return_pct": 3.8756
         },
         {
           "date": "2026-03-11 00:00:00",
-          "equity": 9566972.4,
-          "return_pct": -4.3303
+          "equity": 10562127.69,
+          "return_pct": 5.6213
         },
         {
           "date": "2026-03-12 00:00:00",
-          "equity": 9437430.55,
-          "return_pct": -5.6257
+          "equity": 10392257.7,
+          "return_pct": 3.9226
         },
         {
           "date": "2026-03-13 00:00:00",
-          "equity": 9509452.9,
-          "return_pct": -4.9055
+          "equity": 10396822.55,
+          "return_pct": 3.9682
         },
         {
           "date": "2026-03-16 00:00:00",
-          "equity": 9519286.52,
-          "return_pct": -4.8071
+          "equity": 10363945.71,
+          "return_pct": 3.6395
         },
         {
           "date": "2026-03-17 00:00:00",
-          "equity": 9537412.52,
-          "return_pct": -4.6259
+          "equity": 10435675.05,
+          "return_pct": 4.3568
         },
         {
           "date": "2026-03-18 00:00:00",
-          "equity": 9559625.72,
-          "return_pct": -4.4037
+          "equity": 10493406.64,
+          "return_pct": 4.9341
         },
         {
           "date": "2026-03-19 00:00:00",
-          "equity": 9432536.73,
-          "return_pct": -5.6746
+          "equity": 10347659.18,
+          "return_pct": 3.4766
         },
         {
           "date": "2026-03-23 00:00:00",
-          "equity": 9268789.36,
-          "return_pct": -7.3121
+          "equity": 10271974.18,
+          "return_pct": 2.7197
         },
         {
           "date": "2026-03-24 00:00:00",
-          "equity": 9326911.19,
-          "return_pct": -6.7309
+          "equity": 10364831.4,
+          "return_pct": 3.6483
         },
         {
           "date": "2026-03-25 00:00:00",
-          "equity": 9394500.13,
-          "return_pct": -6.055
+          "equity": 10434318.8,
+          "return_pct": 4.3432
         },
         {
           "date": "2026-03-26 00:00:00",
-          "equity": 9369657.73,
-          "return_pct": -6.3034
+          "equity": 10447525.54,
+          "return_pct": 4.4753
         },
         {
           "date": "2026-03-27 00:00:00",
-          "equity": 9378073.01,
-          "return_pct": -6.2193
+          "equity": 10487495.54,
+          "return_pct": 4.875
         },
         {
           "date": "2026-03-30 00:00:00",
-          "equity": 9141594.37,
-          "return_pct": -8.5841
+          "equity": 10422915.79,
+          "return_pct": 4.2292
         },
         {
           "date": "2026-03-31 00:00:00",
-          "equity": 9139112.4,
-          "return_pct": -8.6089
+          "equity": 10419610.93,
+          "return_pct": 4.1961
         },
         {
           "date": "2026-04-01 00:00:00",
-          "equity": 9254238.4,
-          "return_pct": -7.4576
+          "equity": 10584242.0,
+          "return_pct": 5.8424
         },
         {
           "date": "2026-04-02 00:00:00",
-          "equity": 9192153.07,
-          "return_pct": -8.0785
+          "equity": 10620555.37,
+          "return_pct": 6.2056
         },
         {
           "date": "2026-04-03 00:00:00",
-          "equity": 9233704.31,
-          "return_pct": -7.663
+          "equity": 10612420.01,
+          "return_pct": 6.1242
         },
         {
           "date": "2026-04-06 00:00:00",
-          "equity": 9222471.71,
-          "return_pct": -7.7753
+          "equity": 10615861.74,
+          "return_pct": 6.1586
         },
         {
           "date": "2026-04-07 00:00:00",
-          "equity": 9236198.4,
-          "return_pct": -7.638
+          "equity": 10652665.14,
+          "return_pct": 6.5267
         },
         {
           "date": "2026-04-08 00:00:00",
-          "equity": 9454374.93,
-          "return_pct": -5.4563
+          "equity": 10884075.14,
+          "return_pct": 8.8408
         },
         {
           "date": "2026-04-09 00:00:00",
-          "equity": 9388615.93,
-          "return_pct": -6.1138
+          "equity": 10790725.14,
+          "return_pct": 7.9073
         },
         {
           "date": "2026-04-10 00:00:00",
-          "equity": 9347073.93,
-          "return_pct": -6.5293
+          "equity": 10766532.14,
+          "return_pct": 7.6653
         },
         {
           "date": "2026-04-13 00:00:00",
-          "equity": 9239292.93,
-          "return_pct": -7.6071
+          "equity": 10594326.14,
+          "return_pct": 5.9433
         },
         {
           "date": "2026-04-14 00:00:00",
-          "equity": 9211328.93,
-          "return_pct": -7.8867
+          "equity": 10563043.14,
+          "return_pct": 5.6304
         },
         {
           "date": "2026-04-15 00:00:00",
-          "equity": 9202054.93,
-          "return_pct": -7.9795
+          "equity": 10636916.14,
+          "return_pct": 6.3692
         },
         {
           "date": "2026-04-16 00:00:00",
-          "equity": 9158590.93,
-          "return_pct": -8.4141
+          "equity": 10616167.14,
+          "return_pct": 6.1617
         },
         {
           "date": "2026-04-17 00:00:00",
-          "equity": 9122188.93,
-          "return_pct": -8.7781
+          "equity": 10561800.59,
+          "return_pct": 5.618
         },
         {
           "date": "2026-04-20 00:00:00",
-          "equity": 9102809.93,
-          "return_pct": -8.9719
+          "equity": 10609619.76,
+          "return_pct": 6.0962
         },
         {
           "date": "2026-04-21 00:00:00",
-          "equity": 9106290.93,
-          "return_pct": -8.9371
+          "equity": 10549745.76,
+          "return_pct": 5.4975
         },
         {
           "date": "2026-04-22 00:00:00",
-          "equity": 9001696.93,
-          "return_pct": -9.983
+          "equity": 10481904.76,
+          "return_pct": 4.819
         },
         {
           "date": "2026-04-23 00:00:00",
-          "equity": 9005511.93,
-          "return_pct": -9.9449
+          "equity": 10438970.76,
+          "return_pct": 4.3897
         },
         {
           "date": "2026-04-24 00:00:00",
-          "equity": 9012712.04,
-          "return_pct": -9.8729
+          "equity": 10387565.76,
+          "return_pct": 3.8757
         },
         {
           "date": "2026-04-27 00:00:00",
-          "equity": 8939984.87,
-          "return_pct": -10.6002
+          "equity": 10270338.33,
+          "return_pct": 2.7034
         },
         {
           "date": "2026-04-28 00:00:00",
-          "equity": 9015232.87,
-          "return_pct": -9.8477
+          "equity": 10364673.3,
+          "return_pct": 3.6467
         },
         {
           "date": "2026-04-30 00:00:00",
-          "equity": 8929294.87,
-          "return_pct": -10.7071
+          "equity": 10312413.13,
+          "return_pct": 3.1241
         },
         {
           "date": "2026-05-01 00:00:00",
-          "equity": 8879538.87,
-          "return_pct": -11.2046
+          "equity": 10242501.64,
+          "return_pct": 2.425
         },
         {
           "date": "2026-05-07 00:00:00",
-          "equity": 8896648.87,
-          "return_pct": -11.0335
+          "equity": 10303834.99,
+          "return_pct": 3.0383
         },
         {
           "date": "2026-05-08 00:00:00",
-          "equity": 8865108.87,
-          "return_pct": -11.3489
+          "equity": 10417574.45,
+          "return_pct": 4.1757
         },
         {
           "date": "2026-05-11 00:00:00",
-          "equity": 8875824.87,
-          "return_pct": -11.2418
+          "equity": 10417239.76,
+          "return_pct": 4.1724
         },
         {
           "date": "2026-05-12 00:00:00",
-          "equity": 8894376.87,
-          "return_pct": -11.0562
+          "equity": 10389849.76,
+          "return_pct": 3.8985
         },
         {
           "date": "2026-05-13 00:00:00",
-          "equity": 8937371.87,
-          "return_pct": -10.6263
+          "equity": 10396651.1,
+          "return_pct": 3.9665
         },
         {
           "date": "2026-05-14 00:00:00",
-          "equity": 8867019.87,
-          "return_pct": -11.3298
+          "equity": 10351973.74,
+          "return_pct": 3.5197
         },
         {
           "date": "2026-05-15 00:00:00",
-          "equity": 8822477.87,
-          "return_pct": -11.7752
+          "equity": 10311885.74,
+          "return_pct": 3.1189
         },
         {
           "date": "2026-05-18 00:00:00",
-          "equity": 8743216.87,
-          "return_pct": -12.5678
+          "equity": 10240675.74,
+          "return_pct": 2.4068
         },
         {
           "date": "2026-05-19 00:00:00",
-          "equity": 8770961.87,
-          "return_pct": -12.2904
+          "equity": 10257065.74,
+          "return_pct": 2.5707
         },
         {
           "date": "2026-05-20 00:00:00",
-          "equity": 8695505.87,
-          "return_pct": -13.0449
+          "equity": 10155198.74,
+          "return_pct": 1.552
         },
         {
           "date": "2026-05-21 00:00:00",
-          "equity": 8656274.87,
-          "return_pct": -13.4373
+          "equity": 10119121.74,
+          "return_pct": 1.1912
         },
         {
           "date": "2026-05-22 00:00:00",
-          "equity": 8591955.87,
-          "return_pct": -14.0804
+          "equity": 9945821.74,
+          "return_pct": -0.5418
         },
         {
           "date": "2026-05-25 00:00:00",
-          "equity": 8622579.69,
-          "return_pct": -13.7742
+          "equity": 9927214.51,
+          "return_pct": -0.7279
         },
         {
           "date": "2026-05-26 00:00:00",
-          "equity": 8595164.69,
-          "return_pct": -14.0484
+          "equity": 9914619.88,
+          "return_pct": -0.8538
         },
         {
           "date": "2026-05-27 00:00:00",
-          "equity": 8517242.69,
-          "return_pct": -14.8276
+          "equity": 9914220.88,
+          "return_pct": -0.8578
         },
         {
           "date": "2026-05-28 00:00:00",
-          "equity": 8508337.24,
-          "return_pct": -14.9166
+          "equity": 9915588.88,
+          "return_pct": -0.8441
         },
         {
           "date": "2026-05-29 00:00:00",
-          "equity": 8547869.24,
-          "return_pct": -14.5213
+          "equity": 9917127.88,
+          "return_pct": -0.8287
         }
       ],
-      "sparkline_points": "4.0,10.2 6.2,9.9 8.4,9.9 10.6,9.2 12.8,8.0 15.0,5.9 17.2,5.4 19.5,4.2 21.7,5.0 23.9,6.1 26.1,6.3 28.3,6.3 30.5,4.8 32.7,5.9 34.9,6.7 37.1,6.7 39.3,7.4 41.5,7.5 43.8,10.7 46.0,10.5 48.2,8.1 50.4,7.2 52.6,7.5 54.8,7.3 57.0,7.7 59.2,4.6 61.4,4.0 63.6,12.7 65.8,11.3 68.0,11.1 70.2,8.8 72.5,10.9 74.7,13.7 76.9,11.9 79.1,12.8 81.3,15.8 83.5,17.6 85.7,14.5 87.9,19.1 90.1,25.1 92.3,19.8 94.5,20.9 96.8,25.4 99.0,24.1 101.2,21.8 103.4,25.2 105.6,23.3 107.8,23.1 110.0,22.6 112.2,22.0 114.4,25.4 116.6,29.7 118.8,28.2 121.0,26.4 123.2,27.0 125.5,26.8 127.7,33.1 129.9,33.2 132.1,30.1 134.3,31.8 136.5,30.7 138.7,31.0 140.9,30.6 143.1,24.8 145.3,26.5 147.5,27.6 149.8,30.5 152.0,31.3 154.2,31.5 156.4,32.7 158.6,33.6 160.8,34.2 163.0,34.1 165.2,36.9 167.4,36.8 169.6,36.6 171.8,38.5 174.0,36.5 176.2,38.8 178.5,40.1 180.7,39.7 182.9,40.5 185.1,40.2 187.3,39.7 189.5,38.6 191.7,40.4 193.9,41.6 196.1,43.7 198.3,43.0 200.5,45.0 202.8,46.1 205.0,47.8 207.2,47.0 209.4,47.7 211.6,49.8 213.8,50.0 216.0,48.9",
+      "sparkline_points": "4.0,46.2 6.2,45.2 8.4,45.9 10.6,42.4 12.8,41.2 15.0,38.0 17.2,35.2 19.5,33.2 21.7,32.9 23.9,34.6 26.1,34.7 28.3,36.1 30.5,32.9 32.7,32.2 34.9,32.7 37.1,33.4 39.3,36.7 41.5,35.5 43.8,30.6 46.0,29.1 48.2,25.7 50.4,26.1 52.6,22.3 54.8,17.1 57.0,13.6 59.2,5.0 61.4,4.0 63.6,17.5 65.8,15.3 68.0,15.0 70.2,11.4 72.5,9.1 74.7,9.8 76.9,8.1 79.1,11.4 81.3,22.6 83.5,21.1 85.7,27.4 87.9,28.1 90.1,29.2 92.3,30.1 94.5,28.3 96.8,33.9 99.0,29.3 101.2,21.6 103.4,29.0 105.6,28.8 107.8,30.3 110.0,27.1 112.2,24.6 114.4,31.0 116.6,34.3 118.8,30.2 121.0,27.2 123.2,26.6 125.5,24.9 127.7,27.7 129.9,27.8 132.1,20.6 134.3,19.0 136.5,19.4 138.7,19.2 140.9,17.6 143.1,7.5 145.3,11.6 147.5,12.6 149.8,20.2 152.0,21.6 154.2,18.3 156.4,19.2 158.6,21.6 160.8,19.5 163.0,22.1 165.2,25.1 167.4,27.0 169.6,29.3 171.8,34.4 174.0,30.3 176.2,32.5 178.5,35.6 180.7,32.9 182.9,27.9 185.1,28.0 187.3,29.2 189.5,28.9 191.7,30.8 193.9,32.6 196.1,35.7 198.3,35.0 200.5,39.4 202.8,41.0 205.0,48.6 207.2,49.4 209.4,50.0 211.6,50.0 213.8,49.9 216.0,49.9",
       "color": "#4F46E5",
       "activity": {
         "agent_id": "value_mispricing",
@@ -4022,16 +4022,16 @@
         "watch_signals": 12891,
         "ignore_signals": 8580,
         "latest_score_date": "2026-05-29 00:00:00",
-        "buy_orders": 55,
-        "executed_buys": 55,
+        "buy_orders": 44,
+        "executed_buys": 44,
         "cancelled_buys": 0,
-        "sell_orders": 52,
-        "executed_sells": 52,
+        "sell_orders": 43,
+        "executed_sells": 43,
         "pending_orders": 0,
-        "closed_trades": 52,
-        "open_positions": 3,
-        "latest_equity_jpy": 8547869.238000013,
-        "total_return_pct": -14.5213,
+        "closed_trades": 43,
+        "open_positions": 1,
+        "latest_equity_jpy": 9917127.884500008,
+        "total_return_pct": -0.8287,
         "first_equity_date": "2026-01-05 00:00:00",
         "last_equity_date": "2026-05-29 00:00:00",
         "warnings": []
@@ -4040,8 +4040,8 @@
   ],
   "open_positions": [
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-066329a990b047ee",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-b7d381929fcb4f69",
       "agent_id": "contrarian_monk",
       "ticker": "4061.T",
       "name": "デンカ",
@@ -4058,11 +4058,11 @@
       "holding_days": 9,
       "high_water_return_pct": 18.5174856864,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-10052e7dc3dd4c4a",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-1f358248d8c34cf4",
       "agent_id": "contrarian_monk",
       "ticker": "4063.T",
       "name": "信越化学工業",
@@ -4079,11 +4079,11 @@
       "holding_days": 10,
       "high_water_return_pct": 10.7905579162,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-05436983213b4382",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-5fed9d81e2f84cee",
       "agent_id": "contrarian_monk",
       "ticker": "5393.T",
       "name": "ニチアス",
@@ -4100,32 +4100,11 @@
       "holding_days": 8,
       "high_water_return_pct": 8.0471147667,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-52d92e86d04940bc",
-      "agent_id": "discovery_scout",
-      "ticker": "319A.T",
-      "name": "Next Generation Technology Group Inc.",
-      "entry_signal_date": "2026-05-18T00:00:00.000",
-      "entry_date": "2026-05-19T00:00:00.000",
-      "entry_price": 17027.01,
-      "shares": 71,
-      "cost_basis_jpy": 1208917.71,
-      "last_date": "2026-05-29T00:00:00.000",
-      "last_price": 17620.0,
-      "market_value_jpy": 1251020.0,
-      "unrealized_pnl_jpy": 42102.2900000001,
-      "unrealized_return_pct": 3.4826431652,
-      "holding_days": 10,
-      "high_water_return_pct": 3.4826431652,
-      "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
-    },
-    {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-3b9c9218988b4c00",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-16952f8c02464079",
       "agent_id": "risk_sentinel",
       "ticker": "2503.T",
       "name": "キリンホールディングス",
@@ -4142,11 +4121,11 @@
       "holding_days": 11,
       "high_water_return_pct": 6.4704526243,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-ba7ed3a6b4684bf4",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-49b46f0491204af5",
       "agent_id": "risk_sentinel",
       "ticker": "2914.T",
       "name": "日本たばこ産業",
@@ -4163,11 +4142,11 @@
       "holding_days": 17,
       "high_water_return_pct": 5.33584063,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-67ae330ce41846ca",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-c01f38be0d3a4807",
       "agent_id": "risk_sentinel",
       "ticker": "4021.T",
       "name": "日産化学",
@@ -4184,11 +4163,11 @@
       "holding_days": 11,
       "high_water_return_pct": 2.701164359,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-e23fa3c5cb534dac",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-2880ab258b074199",
       "agent_id": "risk_sentinel",
       "ticker": "4578.T",
       "name": "大塚ホールディングス",
@@ -4205,11 +4184,11 @@
       "holding_days": 9,
       "high_water_return_pct": 2.5763871614,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-fffccab807d64949",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-6e4c8156f6264f8b",
       "agent_id": "risk_sentinel",
       "ticker": "3099.T",
       "name": "三越伊勢丹ホールディングス",
@@ -4226,11 +4205,11 @@
       "holding_days": 7,
       "high_water_return_pct": 3.1891185737,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-917b6065d0d24d2f",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-06a248dcfbe04319",
       "agent_id": "risk_sentinel",
       "ticker": "3774.T",
       "name": "インターネットイニシアティブ",
@@ -4247,74 +4226,32 @@
       "holding_days": 10,
       "high_water_return_pct": 0.0,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-1679381796c04e10",
-      "agent_id": "value_mispricing",
-      "ticker": "5105.T",
-      "name": "ＴＯＹＯ ＴＩＲＥ",
-      "entry_signal_date": "2026-03-25T00:00:00.000",
-      "entry_date": "2026-03-26T00:00:00.000",
-      "entry_price": 3795.792,
-      "shares": 450,
-      "cost_basis_jpy": 1708106.3999999997,
-      "last_date": "2026-05-29T00:00:00.000",
-      "last_price": 3788.0,
-      "market_value_jpy": 1704600.0,
-      "unrealized_pnl_jpy": -3506.3999999998,
-      "unrealized_return_pct": -0.2052799521,
-      "holding_days": 64,
-      "high_water_return_pct": 7.5664841488,
-      "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
-    },
-    {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-73e69159c76848d4",
-      "agent_id": "value_mispricing",
-      "ticker": "1605.T",
-      "name": "ＩＮＰＥＸ",
-      "entry_signal_date": "2026-04-07T00:00:00.000",
-      "entry_date": "2026-04-08T00:00:00.000",
-      "entry_price": 4079.075,
-      "shares": 353,
-      "cost_basis_jpy": 1439913.4749999999,
-      "last_date": "2026-05-29T00:00:00.000",
-      "last_price": 3632.0,
-      "market_value_jpy": 1282096.0,
-      "unrealized_pnl_jpy": -157817.4749999998,
-      "unrealized_return_pct": -10.9602054387,
-      "holding_days": 51,
-      "high_water_return_pct": 4.8522030117,
-      "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
-    },
-    {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-8d9780bd491f4793",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-f976aa4b921b48d5",
       "agent_id": "value_mispricing",
       "ticker": "1928.T",
       "name": "積水ハウス",
-      "entry_signal_date": "2026-03-27T00:00:00.000",
-      "entry_date": "2026-03-30T00:00:00.000",
-      "entry_price": 3484.481,
-      "shares": 45,
-      "cost_basis_jpy": 156801.645,
+      "entry_signal_date": "2026-05-13T00:00:00.000",
+      "entry_date": "2026-05-14T00:00:00.000",
+      "entry_price": 3483.48,
+      "shares": 57,
+      "cost_basis_jpy": 198558.36,
       "last_date": "2026-05-29T00:00:00.000",
       "last_price": 3389.0,
-      "market_value_jpy": 152505.0,
-      "unrealized_pnl_jpy": -4296.645,
-      "unrealized_return_pct": -2.740178523,
-      "holding_days": 60,
-      "high_water_return_pct": 4.7214778901,
+      "market_value_jpy": 193173.0,
+      "unrealized_pnl_jpy": -5385.36,
+      "unrealized_return_pct": -2.7122302984,
+      "holding_days": 15,
+      "high_water_return_pct": 0.0,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-e3be3d27daac48a7",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-733e85ef386d4e42",
       "agent_id": "weekly_sage",
       "ticker": "4061.T",
       "name": "デンカ",
@@ -4331,11 +4268,11 @@
       "holding_days": 32,
       "high_water_return_pct": 10.6221683572,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-6f2dd30c7c834d34",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-58e4be18b6034251",
       "agent_id": "weekly_sage",
       "ticker": "4063.T",
       "name": "信越化学工業",
@@ -4352,11 +4289,11 @@
       "holding_days": 29,
       "high_water_return_pct": 7.64301207,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-540c18fbd28c4680",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-011a4e8561ee43a7",
       "agent_id": "weekly_sage",
       "ticker": "5333.T",
       "name": "日本碍子",
@@ -4373,11 +4310,11 @@
       "holding_days": 17,
       "high_water_return_pct": 13.8147566719,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-d72e53c711944479",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-90709beb2a554b97",
       "agent_id": "weekly_sage",
       "ticker": "5334.T",
       "name": "日本特殊陶業",
@@ -4394,11 +4331,11 @@
       "holding_days": 15,
       "high_water_return_pct": 3.4968723962,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-7f1f3c9776ef45dd",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-a5699fa0a7b14c94",
       "agent_id": "weekly_sage",
       "ticker": "3105.T",
       "name": "日清紡ホールディングス",
@@ -4415,11 +4352,11 @@
       "holding_days": 38,
       "high_water_return_pct": 26.9864156462,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "position_id": "POS-d62a17f715f14443",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "position_id": "POS-234a3abcb9fe4320",
       "agent_id": "weekly_sage",
       "ticker": "4385.T",
       "name": "メルカリ",
@@ -4436,13 +4373,13 @@
       "holding_days": 38,
       "high_water_return_pct": 4.8988352947,
       "status": "OPEN",
-      "updated_at": "2026-05-29T08:21:00.403"
+      "updated_at": "2026-05-29T08:40:31.379"
     }
   ],
   "recent_trades": [
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-351768e1edd24eeb",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-9190fb93e2034f17",
       "agent_id": "daily_striker",
       "ticker": "4631.T",
       "name": "ＤＩＣ",
@@ -4460,33 +4397,11 @@
       "entry_reason_text": "KYOU entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-bf59058739a74c55",
-      "agent_id": "value_mispricing",
-      "ticker": "4503.T",
-      "name": "アステラス製薬",
-      "entry_signal_date": "2026-04-24T00:00:00.000",
-      "entry_date": "2026-04-27T00:00:00.000",
-      "entry_price": 2426.9245,
-      "exit_signal_date": "2026-05-27T00:00:00.000",
-      "exit_date": "2026-05-28T00:00:00.000",
-      "exit_price": 2130.3675,
-      "shares": 660,
-      "realized_pnl_jpy": -195727.6199999998,
-      "realized_return_pct": -12.2194571772,
-      "holding_days": 31,
-      "entry_reason_code": "ENTRY_RULE_PASS",
-      "entry_reason_text": "HIZUMI entry: entry_rule_passed",
-      "exit_reason_code": "HARD_STOP",
-      "exit_reason_text": "Hard stop triggered at -12.1%.",
-      "created_at": "2026-05-29T08:21:00.403"
-    },
-    {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-c2a22c045c744115",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-3f4202c150f74466",
       "agent_id": "reversal_snapback",
       "ticker": "5838.T",
       "name": "楽天銀行",
@@ -4504,11 +4419,11 @@
       "entry_reason_text": "KAESHI entry: entry_rule_passed",
       "exit_reason_code": "TRAILING_STOP",
       "exit_reason_text": "Trailing stop protected prior gains.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-2a9b826d2b5046a2",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-9660159bad8b4c62",
       "agent_id": "contrarian_monk",
       "ticker": "5802.T",
       "name": "住友電気工業",
@@ -4526,11 +4441,33 @@
       "entry_reason_text": "MATSU entry: entry_rule_passed",
       "exit_reason_code": "PULLBACK_RESOLVED",
       "exit_reason_text": "Short-term rebound resolved the pullback.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-0ef991ddb79747b9",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-f3440bab49814cee",
+      "agent_id": "value_mispricing",
+      "ticker": "1605.T",
+      "name": "ＩＮＰＥＸ",
+      "entry_signal_date": "2026-05-12T00:00:00.000",
+      "entry_date": "2026-05-13T00:00:00.000",
+      "entry_price": 3976.973,
+      "exit_signal_date": "2026-05-25T00:00:00.000",
+      "exit_date": "2026-05-26T00:00:00.000",
+      "exit_price": 3631.365,
+      "shares": 475,
+      "realized_pnl_jpy": -164163.7999999999,
+      "realized_return_pct": -8.690227467,
+      "holding_days": 13,
+      "entry_reason_code": "ENTRY_RULE_PASS",
+      "entry_reason_text": "HIZUMI entry: entry_rule_passed",
+      "exit_reason_code": "HARD_STOP",
+      "exit_reason_text": "Hard stop triggered at -8.0%.",
+      "created_at": "2026-05-29T08:40:31.379"
+    },
+    {
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-14d2f64cac6c49b9",
       "agent_id": "reversal_snapback",
       "ticker": "5803.T",
       "name": "フジクラ",
@@ -4548,11 +4485,11 @@
       "entry_reason_text": "KAESHI entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-d460e815e888434c",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-8943a44000204164",
       "agent_id": "reversal_snapback",
       "ticker": "5631.T",
       "name": "日本製鋼所",
@@ -4570,11 +4507,11 @@
       "entry_reason_text": "KAESHI entry: entry_rule_passed",
       "exit_reason_code": "MAX_HOLDING_DAYS",
       "exit_reason_text": "Maximum holding period reached.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-8cd6ad8bc000462c",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-f4ff4f881cde484e",
       "agent_id": "reversal_snapback",
       "ticker": "3659.T",
       "name": "ネクソン",
@@ -4592,11 +4529,11 @@
       "entry_reason_text": "KAESHI entry: entry_rule_passed",
       "exit_reason_code": "MAX_HOLDING_DAYS",
       "exit_reason_text": "Maximum holding period reached.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-d0503e288e264c8e",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-335f4407e1c74c79",
       "agent_id": "contrarian_monk",
       "ticker": "5344.T",
       "name": "ＭＡＲＵＷＡ",
@@ -4614,33 +4551,77 @@
       "entry_reason_text": "MATSU entry: entry_rule_passed",
       "exit_reason_code": "PULLBACK_RESOLVED",
       "exit_reason_text": "Short-term rebound resolved the pullback.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-67a19753c7a3427e",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-48d3669a8e7a4b7d",
       "agent_id": "value_mispricing",
-      "ticker": "1925.T",
-      "name": "大和ハウス工業",
-      "entry_signal_date": "2026-03-31T00:00:00.000",
-      "entry_date": "2026-04-01T00:00:00.000",
-      "entry_price": 4992.988,
+      "ticker": "3003.T",
+      "name": "ヒューリック",
+      "entry_signal_date": "2026-05-07T00:00:00.000",
+      "entry_date": "2026-05-08T00:00:00.000",
+      "entry_price": 1813.3115,
       "exit_signal_date": "2026-05-22T00:00:00.000",
       "exit_date": "2026-05-25T00:00:00.000",
-      "exit_price": 4440.555,
-      "shares": 333,
-      "realized_pnl_jpy": -183960.1889999997,
-      "realized_return_pct": -11.064176401,
-      "holding_days": 54,
+      "exit_price": 1667.8305,
+      "shares": 952,
+      "realized_pnl_jpy": -138497.9119999998,
+      "realized_return_pct": -8.0229458645,
+      "holding_days": 17,
       "entry_reason_code": "ENTRY_RULE_PASS",
       "entry_reason_text": "HIZUMI entry: entry_rule_passed",
       "exit_reason_code": "HARD_STOP",
-      "exit_reason_text": "Hard stop triggered at -11.6%.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "exit_reason_text": "Hard stop triggered at -9.0%.",
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-859885bad29e4e37",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-5825b0b6a7d54c92",
+      "agent_id": "value_mispricing",
+      "ticker": "1878.T",
+      "name": "大東建託",
+      "entry_signal_date": "2026-04-30T00:00:00.000",
+      "entry_date": "2026-05-01T00:00:00.000",
+      "entry_price": 3553.55,
+      "exit_signal_date": "2026-05-22T00:00:00.000",
+      "exit_date": "2026-05-25T00:00:00.000",
+      "exit_price": 3293.703,
+      "shares": 516,
+      "realized_pnl_jpy": -134081.0519999999,
+      "realized_return_pct": -7.3123214813,
+      "holding_days": 24,
+      "entry_reason_code": "ENTRY_RULE_PASS",
+      "entry_reason_text": "HIZUMI entry: entry_rule_passed",
+      "exit_reason_code": "HARD_STOP",
+      "exit_reason_text": "Hard stop triggered at -7.3%.",
+      "created_at": "2026-05-29T08:40:31.379"
+    },
+    {
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-9100d193fd864d47",
+      "agent_id": "value_mispricing",
+      "ticker": "5105.T",
+      "name": "ＴＯＹＯ ＴＩＲＥ",
+      "entry_signal_date": "2026-04-28T00:00:00.000",
+      "entry_date": "2026-04-30T00:00:00.000",
+      "entry_price": 3812.809,
+      "exit_signal_date": "2026-05-22T00:00:00.000",
+      "exit_date": "2026-05-25T00:00:00.000",
+      "exit_price": 3643.353,
+      "shares": 494,
+      "realized_pnl_jpy": -83711.2639999998,
+      "realized_return_pct": -4.444387327,
+      "holding_days": 25,
+      "entry_reason_code": "ENTRY_RULE_PASS",
+      "entry_reason_text": "HIZUMI entry: entry_rule_passed",
+      "exit_reason_code": "HARD_STOP",
+      "exit_reason_text": "Hard stop triggered at -7.1%.",
+      "created_at": "2026-05-29T08:40:31.379"
+    },
+    {
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-b31d22626146454a",
       "agent_id": "reversal_snapback",
       "ticker": "141A.T",
       "name": "TRIAL Holdings,Inc.",
@@ -4658,33 +4639,11 @@
       "entry_reason_text": "KAESHI entry: entry_rule_passed",
       "exit_reason_code": "TRAILING_STOP",
       "exit_reason_text": "Trailing stop protected prior gains.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-f8fc730de4404246",
-      "agent_id": "discovery_scout",
-      "ticker": "350A.T",
-      "name": "DIGITAL GRID Corporation",
-      "entry_signal_date": "2026-05-19T00:00:00.000",
-      "entry_date": "2026-05-20T00:00:00.000",
-      "entry_price": 999.999,
-      "exit_signal_date": "2026-05-20T00:00:00.000",
-      "exit_date": "2026-05-21T00:00:00.000",
-      "exit_price": 914.085,
-      "shares": 1228,
-      "realized_pnl_jpy": -105502.3919999998,
-      "realized_return_pct": -8.5914085914,
-      "holding_days": 1,
-      "entry_reason_code": "ENTRY_RULE_PASS",
-      "entry_reason_text": "SAGURI entry: entry_rule_passed",
-      "exit_reason_code": "HARD_STOP",
-      "exit_reason_text": "Hard stop triggered at -9.7%.",
-      "created_at": "2026-05-29T08:21:00.403"
-    },
-    {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-6602a606ede94564",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-0931c9e991e84cd5",
       "agent_id": "risk_sentinel",
       "ticker": "1721.T",
       "name": "コムシスホールディングス",
@@ -4702,11 +4661,11 @@
       "entry_reason_text": "MAMORU entry: entry_rule_passed",
       "exit_reason_code": "HARD_STOP",
       "exit_reason_text": "Hard stop triggered at -4.2%.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-9c118ae53a314213",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-bc57b91cf13c4e96",
       "agent_id": "risk_sentinel",
       "ticker": "3099.T",
       "name": "三越伊勢丹ホールディングス",
@@ -4724,11 +4683,11 @@
       "entry_reason_text": "MAMORU entry: entry_rule_passed",
       "exit_reason_code": "TRAILING_STOP",
       "exit_reason_text": "Trailing stop protected prior gains.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-0c11b5bc33274aa2",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-f7c946f1e7be4a15",
       "agent_id": "daily_striker",
       "ticker": "319A.T",
       "name": "Next Generation Technology Group Inc.",
@@ -4746,11 +4705,11 @@
       "entry_reason_text": "KYOU entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-6c2fc0c0ef6248af",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-31dd1a4b5c874562",
       "agent_id": "reversal_snapback",
       "ticker": "2501.T",
       "name": "サッポロホールディングス",
@@ -4768,11 +4727,11 @@
       "entry_reason_text": "KAESHI entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-08cac4d7f3b74e5e",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-56a0c6bce1594a4f",
       "agent_id": "contrarian_monk",
       "ticker": "4385.T",
       "name": "メルカリ",
@@ -4790,11 +4749,11 @@
       "entry_reason_text": "MATSU entry: entry_rule_passed",
       "exit_reason_code": "PULLBACK_RESOLVED",
       "exit_reason_text": "Short-term rebound resolved the pullback.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-1d093fae4b684651",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-7296b4ddd4ed4dd1",
       "agent_id": "reversal_snapback",
       "ticker": "4516.T",
       "name": "日本新薬",
@@ -4812,33 +4771,11 @@
       "entry_reason_text": "KAESHI entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-3ed684acd3f34417",
-      "agent_id": "discovery_scout",
-      "ticker": "350A.T",
-      "name": "DIGITAL GRID Corporation",
-      "entry_signal_date": "2026-05-11T00:00:00.000",
-      "entry_date": "2026-05-12T00:00:00.000",
-      "entry_price": 885.885,
-      "exit_signal_date": "2026-05-18T00:00:00.000",
-      "exit_date": "2026-05-19T00:00:00.000",
-      "exit_price": 897.102,
-      "shares": 1359,
-      "realized_pnl_jpy": 15243.9030000001,
-      "realized_return_pct": 1.2661914357,
-      "holding_days": 7,
-      "entry_reason_code": "ENTRY_RULE_PASS",
-      "entry_reason_text": "SAGURI entry: entry_rule_passed",
-      "exit_reason_code": "SCORE_COLLAPSE",
-      "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
-    },
-    {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-eb6f256c4e53461f",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-4430ac0fe52f4b9c",
       "agent_id": "risk_sentinel",
       "ticker": "1951.T",
       "name": "エクシオグループ",
@@ -4856,11 +4793,11 @@
       "entry_reason_text": "MAMORU entry: entry_rule_passed",
       "exit_reason_code": "HARD_STOP",
       "exit_reason_text": "Hard stop triggered at -4.6%.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-ee1ecfb4dcaf41e0",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-789cf3807fcc47e9",
       "agent_id": "risk_sentinel",
       "ticker": "4528.T",
       "name": "小野薬品工業",
@@ -4878,11 +4815,11 @@
       "entry_reason_text": "MAMORU entry: entry_rule_passed",
       "exit_reason_code": "TREND_BREAK",
       "exit_reason_text": "Price broke below MA50.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-0505d688b1344248",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-c7b03a72db0c4bb7",
       "agent_id": "risk_sentinel",
       "ticker": "4578.T",
       "name": "大塚ホールディングス",
@@ -4900,11 +4837,11 @@
       "entry_reason_text": "MAMORU entry: entry_rule_passed",
       "exit_reason_code": "MAX_HOLDING_DAYS",
       "exit_reason_text": "Maximum holding period reached.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-2c08294897ef4860",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-610bed55197e426e",
       "agent_id": "weekly_sage",
       "ticker": "5344.T",
       "name": "ＭＡＲＵＷＡ",
@@ -4922,11 +4859,11 @@
       "entry_reason_text": "NAGARE entry: entry_rule_passed",
       "exit_reason_code": "TRAILING_STOP",
       "exit_reason_text": "Trailing stop protected prior gains.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-3dee1cca39c34a4f",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-d04263434fc143c5",
       "agent_id": "daily_striker",
       "ticker": "4183.T",
       "name": "三井化学",
@@ -4944,11 +4881,11 @@
       "entry_reason_text": "KYOU entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-aecf985ea0044842",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-d00789baf4584fec",
       "agent_id": "contrarian_monk",
       "ticker": "5016.T",
       "name": "ＪＸ金属",
@@ -4966,11 +4903,11 @@
       "entry_reason_text": "MATSU entry: entry_rule_passed",
       "exit_reason_code": "HARD_STOP",
       "exit_reason_text": "Hard stop triggered at -7.7%.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-083125aab28d4ed2",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-743254ce91cf4bac",
       "agent_id": "risk_sentinel",
       "ticker": "4063.T",
       "name": "信越化学工業",
@@ -4988,11 +4925,11 @@
       "entry_reason_text": "MAMORU entry: entry_rule_passed",
       "exit_reason_code": "TRAILING_STOP",
       "exit_reason_text": "Trailing stop protected prior gains.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-7f762eaf5b354d12",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-013950889c1d48dd",
       "agent_id": "weekly_sage",
       "ticker": "5802.T",
       "name": "住友電気工業",
@@ -5010,11 +4947,11 @@
       "entry_reason_text": "NAGARE entry: entry_rule_passed",
       "exit_reason_code": "HARD_STOP",
       "exit_reason_text": "Hard stop triggered at -14.9%.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-d858d565b62b4c91",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-bfde4941ccf34296",
       "agent_id": "daily_striker",
       "ticker": "5232.T",
       "name": "住友大阪セメント",
@@ -5032,11 +4969,11 @@
       "entry_reason_text": "KYOU entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-89bfae4d2a164f57",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-f6e1b9a0d0e5414c",
       "agent_id": "daily_striker",
       "ticker": "4385.T",
       "name": "メルカリ",
@@ -5054,11 +4991,11 @@
       "entry_reason_text": "KYOU entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-362d7297845a4af9",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-14df91374ca14335",
       "agent_id": "reversal_snapback",
       "ticker": "4506.T",
       "name": "住友ファーマ",
@@ -5076,11 +5013,11 @@
       "entry_reason_text": "KAESHI entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-299dacd5873141c0",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-865d4e29030b47fc",
       "agent_id": "weekly_sage",
       "ticker": "4004.T",
       "name": "レゾナック・ホールディングス",
@@ -5098,11 +5035,11 @@
       "entry_reason_text": "NAGARE entry: entry_rule_passed",
       "exit_reason_code": "TAKE_PROFIT",
       "exit_reason_text": "Take-profit target reached at 34.6%.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-ea6473d6942a48d9",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-cf25ee980b3a4da3",
       "agent_id": "daily_striker",
       "ticker": "5233.T",
       "name": "太平洋セメント",
@@ -5120,11 +5057,11 @@
       "entry_reason_text": "KYOU entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-d6d97de414c9433f",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-69e6ae46a6954f33",
       "agent_id": "daily_striker",
       "ticker": "2810.T",
       "name": "ハウス食品グループ本社",
@@ -5142,11 +5079,11 @@
       "entry_reason_text": "KYOU entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-0daf9ceebd0d40ad",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-63c69a65f9f34a9c",
       "agent_id": "daily_striker",
       "ticker": "4203.T",
       "name": "住友ベークライト",
@@ -5164,11 +5101,11 @@
       "entry_reason_text": "KYOU entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-3a1b5e69d17e4d6a",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-80a8c4cd4dca4a9f",
       "agent_id": "contrarian_monk",
       "ticker": "5344.T",
       "name": "ＭＡＲＵＷＡ",
@@ -5186,33 +5123,11 @@
       "entry_reason_text": "MATSU entry: entry_rule_passed",
       "exit_reason_code": "TAKE_PROFIT",
       "exit_reason_text": "Take-profit target reached at 18.0%.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-de90f2132a6947e3",
-      "agent_id": "discovery_scout",
-      "ticker": "319A.T",
-      "name": "Next Generation Technology Group Inc.",
-      "entry_signal_date": "2026-05-07T00:00:00.000",
-      "entry_date": "2026-05-08T00:00:00.000",
-      "entry_price": 14874.86,
-      "exit_signal_date": "2026-05-13T00:00:00.000",
-      "exit_date": "2026-05-14T00:00:00.000",
-      "exit_price": 13616.37,
-      "shares": 79,
-      "realized_pnl_jpy": -99420.7099999998,
-      "realized_return_pct": -8.4605166032,
-      "holding_days": 6,
-      "entry_reason_code": "ENTRY_RULE_PASS",
-      "entry_reason_text": "SAGURI entry: entry_rule_passed",
-      "exit_reason_code": "HARD_STOP",
-      "exit_reason_text": "Hard stop triggered at -8.4%.",
-      "created_at": "2026-05-29T08:21:00.403"
-    },
-    {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-52ffb1cbb4054713",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-0f483f776a1e4d69",
       "agent_id": "daily_striker",
       "ticker": "1803.T",
       "name": "清水建設",
@@ -5230,11 +5145,11 @@
       "entry_reason_text": "KYOU entry: entry_rule_passed",
       "exit_reason_code": "HARD_STOP",
       "exit_reason_text": "Hard stop triggered at -8.0%.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-7beebf487b9f4c03",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-ea63cde9b7ad4095",
       "agent_id": "daily_striker",
       "ticker": "1893.T",
       "name": "五洋建設",
@@ -5252,11 +5167,33 @@
       "entry_reason_text": "KYOU entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-c95fa7316fc4420c",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-342267586bc84a0d",
+      "agent_id": "value_mispricing",
+      "ticker": "2875.T",
+      "name": "東洋水産",
+      "entry_signal_date": "2026-04-06T00:00:00.000",
+      "entry_date": "2026-04-07T00:00:00.000",
+      "entry_price": 11086.075,
+      "exit_signal_date": "2026-05-12T00:00:00.000",
+      "exit_date": "2026-05-13T00:00:00.000",
+      "exit_price": 10549.44,
+      "shares": 8,
+      "realized_pnl_jpy": -4293.08,
+      "realized_return_pct": -4.8406221318,
+      "holding_days": 36,
+      "entry_reason_code": "ENTRY_RULE_PASS",
+      "entry_reason_text": "HIZUMI entry: entry_rule_passed",
+      "exit_reason_code": "MAX_HOLDING_DAYS",
+      "exit_reason_text": "Maximum holding period reached.",
+      "created_at": "2026-05-29T08:40:31.379"
+    },
+    {
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-7b7d795c4ab640b1",
       "agent_id": "reversal_snapback",
       "ticker": "4088.T",
       "name": "エア・ウォーター",
@@ -5274,11 +5211,11 @@
       "entry_reason_text": "KAESHI entry: entry_rule_passed",
       "exit_reason_code": "SNAPBACK_COMPLETE",
       "exit_reason_text": "Three-day rebound reached the snapback target.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-43af1b4246fc4a9d",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-e23e116b0b4a47cc",
       "agent_id": "contrarian_monk",
       "ticker": "5711.T",
       "name": "三菱マテリアル",
@@ -5296,11 +5233,11 @@
       "entry_reason_text": "MATSU entry: entry_rule_passed",
       "exit_reason_code": "PULLBACK_RESOLVED",
       "exit_reason_text": "Short-term rebound resolved the pullback.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-3c96d9822af84699",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-868a0b87ce414366",
       "agent_id": "risk_sentinel",
       "ticker": "1721.T",
       "name": "コムシスホールディングス",
@@ -5318,11 +5255,11 @@
       "entry_reason_text": "MAMORU entry: entry_rule_passed",
       "exit_reason_code": "TRAILING_STOP",
       "exit_reason_text": "Trailing stop protected prior gains.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-66a6f68d71e14f5e",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-212209a19cbf4531",
       "agent_id": "weekly_sage",
       "ticker": "5803.T",
       "name": "フジクラ",
@@ -5340,11 +5277,11 @@
       "entry_reason_text": "NAGARE entry: entry_rule_passed",
       "exit_reason_code": "TAKE_PROFIT",
       "exit_reason_text": "Take-profit target reached at 36.6%.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-53e2110643f84dcc",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-b1a3c9d4aaac4c3b",
       "agent_id": "daily_striker",
       "ticker": "4980.T",
       "name": "デクセリアルズ",
@@ -5362,33 +5299,11 @@
       "entry_reason_text": "KYOU entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-cc42b16541f84689",
-      "agent_id": "discovery_scout",
-      "ticker": "1436.T",
-      "name": "GreenEnergy & Company Inc.",
-      "entry_signal_date": "2026-05-08T00:00:00.000",
-      "entry_date": "2026-05-11T00:00:00.000",
-      "entry_price": 1639.638,
-      "exit_signal_date": "2026-05-11T00:00:00.000",
-      "exit_date": "2026-05-12T00:00:00.000",
-      "exit_price": 2102.895,
-      "shares": 719,
-      "realized_pnl_jpy": 333081.7830000001,
-      "realized_return_pct": 28.2536145174,
-      "holding_days": 1,
-      "entry_reason_code": "ENTRY_RULE_PASS",
-      "entry_reason_text": "SAGURI entry: entry_rule_passed",
-      "exit_reason_code": "LIQUIDITY_DRYUP",
-      "exit_reason_text": "Liquidity score fell below the agent threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
-    },
-    {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-c28c7c356baa4288",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-c5d1535e2d694efb",
       "agent_id": "discovery_scout",
       "ticker": "153A.T",
       "name": "Caulis Inc.",
@@ -5398,19 +5313,19 @@
       "exit_signal_date": "2026-05-11T00:00:00.000",
       "exit_date": "2026-05-12T00:00:00.000",
       "exit_price": 1697.301,
-      "shares": 724,
-      "realized_pnl_jpy": 43197.4600000001,
+      "shares": 792,
+      "realized_pnl_jpy": 47254.6800000002,
       "realized_return_pct": 3.6433615284,
       "holding_days": 11,
       "entry_reason_code": "ENTRY_RULE_PASS",
       "entry_reason_text": "SAGURI entry: entry_rule_passed",
       "exit_reason_code": "MAX_HOLDING_DAYS",
       "exit_reason_text": "Maximum holding period reached.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-1729f8b65e4e4bff",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-3d508e7ac57c4164",
       "agent_id": "risk_sentinel",
       "ticker": "5334.T",
       "name": "日本特殊陶業",
@@ -5428,11 +5343,11 @@
       "entry_reason_text": "MAMORU entry: entry_rule_passed",
       "exit_reason_code": "TAKE_PROFIT",
       "exit_reason_text": "Take-profit target reached at 14.9%.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-6a7103cae45e40b8",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-750e56457bbb4572",
       "agent_id": "daily_striker",
       "ticker": "5333.T",
       "name": "日本碍子",
@@ -5450,11 +5365,33 @@
       "entry_reason_text": "KYOU entry: entry_rule_passed",
       "exit_reason_code": "MAX_HOLDING_DAYS",
       "exit_reason_text": "Maximum holding period reached.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-6fa98cc2b5a94a80",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-e895856b112d47bd",
+      "agent_id": "value_mispricing",
+      "ticker": "5334.T",
+      "name": "日本特殊陶業",
+      "entry_signal_date": "2026-05-01T00:00:00.000",
+      "entry_date": "2026-05-07T00:00:00.000",
+      "entry_price": 8120.112,
+      "exit_signal_date": "2026-05-08T00:00:00.000",
+      "exit_date": "2026-05-11T00:00:00.000",
+      "exit_price": 8863.128,
+      "shares": 229,
+      "realized_pnl_jpy": 170150.6640000003,
+      "realized_return_pct": 9.1503171385,
+      "holding_days": 4,
+      "entry_reason_code": "ENTRY_RULE_PASS",
+      "entry_reason_text": "HIZUMI entry: entry_rule_passed",
+      "exit_reason_code": "MISPRICING_RESOLVED",
+      "exit_reason_text": "Price moved high enough in its yearly range to reduce the distortion.",
+      "created_at": "2026-05-29T08:40:31.379"
+    },
+    {
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-ea65cb66fe684d6e",
       "agent_id": "risk_sentinel",
       "ticker": "2267.T",
       "name": "ヤクルト本社",
@@ -5472,11 +5409,11 @@
       "entry_reason_text": "MAMORU entry: entry_rule_passed",
       "exit_reason_code": "VOLATILITY_SPIKE",
       "exit_reason_text": "Volatility spiked beyond the risk budget.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-48806fc20f6349f8",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-251c6c240a144f18",
       "agent_id": "risk_sentinel",
       "ticker": "2914.T",
       "name": "日本たばこ産業",
@@ -5494,11 +5431,11 @@
       "entry_reason_text": "MAMORU entry: entry_rule_passed",
       "exit_reason_code": "TREND_BREAK",
       "exit_reason_text": "Price broke below MA50.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-22258e454eb04db2",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-2964ec536de64782",
       "agent_id": "weekly_sage",
       "ticker": "5844.T",
       "name": "京都フィナンシャルグループ",
@@ -5516,11 +5453,11 @@
       "entry_reason_text": "NAGARE entry: entry_rule_passed",
       "exit_reason_code": "MAX_HOLDING_DAYS",
       "exit_reason_text": "Maximum holding period reached.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v012",
-      "trade_id": "TRD-45d2ac4cf4c945e2",
+      "run_id": "arena_jp_rebuild_2026_v013",
+      "trade_id": "TRD-507f7b10bef945b0",
       "agent_id": "daily_striker",
       "ticker": "2334.T",
       "name": "eole Inc.",
@@ -5538,27 +5475,27 @@
       "entry_reason_text": "KYOU entry: entry_rule_passed",
       "exit_reason_code": "SCORE_COLLAPSE",
       "exit_reason_text": "Agent score collapsed below the exit threshold.",
-      "created_at": "2026-05-29T08:21:00.403"
+      "created_at": "2026-05-29T08:40:31.379"
     }
   ],
   "diagnostics": {
     "schema_version": "ai_arena_diagnostics_v1",
-    "generated_at": "2026-05-29T08:21:20Z",
+    "generated_at": "2026-05-29T08:40:42Z",
     "year": 2026,
-    "run_id": "arena_jp_rebuild_2026_v012",
+    "run_id": "arena_jp_rebuild_2026_v013",
     "period": {
       "start_date": "2026-01-01 00:00:00",
       "end_date": "2026-05-29 00:00:00"
     },
     "totals": {
-      "orders": 719,
-      "filled_orders": 699,
+      "orders": 668,
+      "filled_orders": 648,
       "cancelled_orders": 20,
       "pending_orders": 0,
-      "buy_orders": 379,
-      "sell_orders": 340,
-      "trades": 340,
-      "open_positions": 19,
+      "buy_orders": 352,
+      "sell_orders": 316,
+      "trades": 316,
+      "open_positions": 16,
       "equity_rows": 679,
       "agents": 7,
       "agents_with_executed_buys": 7,
@@ -5648,16 +5585,16 @@
         "watch_signals": 511,
         "ignore_signals": 2053,
         "latest_score_date": "2026-05-29 00:00:00",
-        "buy_orders": 26,
-        "executed_buys": 26,
+        "buy_orders": 10,
+        "executed_buys": 10,
         "cancelled_buys": 0,
-        "sell_orders": 25,
-        "executed_sells": 25,
+        "sell_orders": 10,
+        "executed_sells": 10,
         "pending_orders": 0,
-        "closed_trades": 25,
-        "open_positions": 1,
-        "latest_equity_jpy": 9354982.6555332,
-        "total_return_pct": -6.4502,
+        "closed_trades": 10,
+        "open_positions": 0,
+        "latest_equity_jpy": 10028402.165000003,
+        "total_return_pct": 0.284,
         "first_equity_date": "2026-01-05 00:00:00",
         "last_equity_date": "2026-05-29 00:00:00",
         "warnings": []
@@ -5720,16 +5657,16 @@
         "watch_signals": 12891,
         "ignore_signals": 8580,
         "latest_score_date": "2026-05-29 00:00:00",
-        "buy_orders": 55,
-        "executed_buys": 55,
+        "buy_orders": 44,
+        "executed_buys": 44,
         "cancelled_buys": 0,
-        "sell_orders": 52,
-        "executed_sells": 52,
+        "sell_orders": 43,
+        "executed_sells": 43,
         "pending_orders": 0,
-        "closed_trades": 52,
-        "open_positions": 3,
-        "latest_equity_jpy": 8547869.238000013,
-        "total_return_pct": -14.5213,
+        "closed_trades": 43,
+        "open_positions": 1,
+        "latest_equity_jpy": 9917127.884500008,
+        "total_return_pct": -0.8287,
         "first_equity_date": "2026-01-05 00:00:00",
         "last_equity_date": "2026-05-29 00:00:00",
         "warnings": []
@@ -5744,12 +5681,12 @@
       {
         "side": "BUY",
         "order_status": "FILLED",
-        "count": 359
+        "count": 332
       },
       {
         "side": "SELL",
         "order_status": "FILLED",
-        "count": 340
+        "count": 316
       }
     ],
     "cancel_reason_counts": [
@@ -5762,12 +5699,12 @@
     "warnings": []
   },
   "portfolio": {
-    "total_market_value_jpy": 21516206.5,
-    "open_position_count": 19,
+    "total_market_value_jpy": 17319158.5,
+    "open_position_count": 16,
     "top_positions": [
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-e3be3d27daac48a7",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-733e85ef386d4e42",
         "agent_id": "weekly_sage",
         "ticker": "4061.T",
         "name": "デンカ",
@@ -5784,17 +5721,17 @@
         "holding_days": 32,
         "high_water_return_pct": 10.6221683572,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 10.701,
+        "weight_pct": 13.294,
         "agent_name": "NAGARE"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-6f2dd30c7c834d34",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-58e4be18b6034251",
         "agent_id": "weekly_sage",
         "ticker": "4063.T",
         "name": "信越化学工業",
@@ -5811,44 +5748,17 @@
         "holding_days": 29,
         "high_water_return_pct": 7.64301207,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 10.567,
+        "weight_pct": 13.128,
         "agent_name": "NAGARE"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-1679381796c04e10",
-        "agent_id": "value_mispricing",
-        "ticker": "5105.T",
-        "name": "ＴＯＹＯ ＴＩＲＥ",
-        "entry_signal_date": "2026-03-25T00:00:00.000",
-        "entry_date": "2026-03-26T00:00:00.000",
-        "entry_price": 3795.792,
-        "shares": 450,
-        "cost_basis_jpy": 1708106.3999999997,
-        "last_date": "2026-05-29T00:00:00.000",
-        "last_price": 3788.0,
-        "market_value_jpy": 1704600.0,
-        "unrealized_pnl_jpy": -3506.3999999998,
-        "unrealized_return_pct": -0.2052799521,
-        "holding_days": 64,
-        "high_water_return_pct": 7.5664841488,
-        "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
-        "sector": "",
-        "industry": "",
-        "bucket": "Core",
-        "market": "JP",
-        "weight_pct": 7.922,
-        "agent_name": "HIZUMI"
-      },
-      {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-066329a990b047ee",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-b7d381929fcb4f69",
         "agent_id": "contrarian_monk",
         "ticker": "4061.T",
         "name": "デンカ",
@@ -5865,17 +5775,17 @@
         "holding_days": 9,
         "high_water_return_pct": 18.5174856864,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 7.029,
+        "weight_pct": 8.733,
         "agent_name": "MATSU"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-10052e7dc3dd4c4a",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-1f358248d8c34cf4",
         "agent_id": "contrarian_monk",
         "ticker": "4063.T",
         "name": "信越化学工業",
@@ -5892,17 +5802,17 @@
         "holding_days": 10,
         "high_water_return_pct": 10.7905579162,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 7.008,
+        "weight_pct": 8.707,
         "agent_name": "MATSU"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-05436983213b4382",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-5fed9d81e2f84cee",
         "agent_id": "contrarian_monk",
         "ticker": "5393.T",
         "name": "ニチアス",
@@ -5919,17 +5829,17 @@
         "holding_days": 8,
         "high_water_return_pct": 8.0471147667,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 6.55,
+        "weight_pct": 8.137,
         "agent_name": "MATSU"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-540c18fbd28c4680",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-011a4e8561ee43a7",
         "agent_id": "weekly_sage",
         "ticker": "5333.T",
         "name": "日本碍子",
@@ -5946,71 +5856,17 @@
         "holding_days": 17,
         "high_water_return_pct": 13.8147566719,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 6.346,
+        "weight_pct": 7.883,
         "agent_name": "NAGARE"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-73e69159c76848d4",
-        "agent_id": "value_mispricing",
-        "ticker": "1605.T",
-        "name": "ＩＮＰＥＸ",
-        "entry_signal_date": "2026-04-07T00:00:00.000",
-        "entry_date": "2026-04-08T00:00:00.000",
-        "entry_price": 4079.075,
-        "shares": 353,
-        "cost_basis_jpy": 1439913.4749999999,
-        "last_date": "2026-05-29T00:00:00.000",
-        "last_price": 3632.0,
-        "market_value_jpy": 1282096.0,
-        "unrealized_pnl_jpy": -157817.4749999998,
-        "unrealized_return_pct": -10.9602054387,
-        "holding_days": 51,
-        "high_water_return_pct": 4.8522030117,
-        "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
-        "sector": "",
-        "industry": "",
-        "bucket": "Core",
-        "market": "JP",
-        "weight_pct": 5.959,
-        "agent_name": "HIZUMI"
-      },
-      {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-52d92e86d04940bc",
-        "agent_id": "discovery_scout",
-        "ticker": "319A.T",
-        "name": "Next Generation Technology Group Inc.",
-        "entry_signal_date": "2026-05-18T00:00:00.000",
-        "entry_date": "2026-05-19T00:00:00.000",
-        "entry_price": 17027.01,
-        "shares": 71,
-        "cost_basis_jpy": 1208917.71,
-        "last_date": "2026-05-29T00:00:00.000",
-        "last_price": 17620.0,
-        "market_value_jpy": 1251020.0,
-        "unrealized_pnl_jpy": 42102.2900000001,
-        "unrealized_return_pct": 3.4826431652,
-        "holding_days": 10,
-        "high_water_return_pct": 3.4826431652,
-        "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
-        "sector": "",
-        "industry": "",
-        "bucket": "Discovery",
-        "market": "JP",
-        "weight_pct": 5.814,
-        "agent_name": "SAGURI"
-      },
-      {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-3b9c9218988b4c00",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-16952f8c02464079",
         "agent_id": "risk_sentinel",
         "ticker": "2503.T",
         "name": "キリンホールディングス",
@@ -6027,17 +5883,17 @@
         "holding_days": 11,
         "high_water_return_pct": 6.4704526243,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 4.195,
+        "weight_pct": 5.212,
         "agent_name": "MAMORU"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-ba7ed3a6b4684bf4",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-49b46f0491204af5",
         "agent_id": "risk_sentinel",
         "ticker": "2914.T",
         "name": "日本たばこ産業",
@@ -6054,17 +5910,17 @@
         "holding_days": 17,
         "high_water_return_pct": 5.33584063,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 4.135,
+        "weight_pct": 5.137,
         "agent_name": "MAMORU"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-67ae330ce41846ca",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-c01f38be0d3a4807",
         "agent_id": "risk_sentinel",
         "ticker": "4021.T",
         "name": "日産化学",
@@ -6081,17 +5937,17 @@
         "holding_days": 11,
         "high_water_return_pct": 2.701164359,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 4.002,
+        "weight_pct": 4.972,
         "agent_name": "MAMORU"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-e23fa3c5cb534dac",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-2880ab258b074199",
         "agent_id": "risk_sentinel",
         "ticker": "4578.T",
         "name": "大塚ホールディングス",
@@ -6108,17 +5964,17 @@
         "holding_days": 9,
         "high_water_return_pct": 2.5763871614,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 3.983,
+        "weight_pct": 4.948,
         "agent_name": "MAMORU"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-fffccab807d64949",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-6e4c8156f6264f8b",
         "agent_id": "risk_sentinel",
         "ticker": "3099.T",
         "name": "三越伊勢丹ホールディングス",
@@ -6135,17 +5991,17 @@
         "holding_days": 7,
         "high_water_return_pct": 3.1891185737,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 3.979,
+        "weight_pct": 4.943,
         "agent_name": "MAMORU"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-917b6065d0d24d2f",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-06a248dcfbe04319",
         "agent_id": "risk_sentinel",
         "ticker": "3774.T",
         "name": "インターネットイニシアティブ",
@@ -6162,17 +6018,17 @@
         "holding_days": 10,
         "high_water_return_pct": 0.0,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 3.794,
+        "weight_pct": 4.714,
         "agent_name": "MAMORU"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-d72e53c711944479",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-90709beb2a554b97",
         "agent_id": "weekly_sage",
         "ticker": "5334.T",
         "name": "日本特殊陶業",
@@ -6189,17 +6045,17 @@
         "holding_days": 15,
         "high_water_return_pct": 3.4968723962,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 2.629,
+        "weight_pct": 3.266,
         "agent_name": "NAGARE"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-7f1f3c9776ef45dd",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-a5699fa0a7b14c94",
         "agent_id": "weekly_sage",
         "ticker": "3105.T",
         "name": "日清紡ホールディングス",
@@ -6216,17 +6072,17 @@
         "holding_days": 38,
         "high_water_return_pct": 26.9864156462,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 2.556,
+        "weight_pct": 3.175,
         "agent_name": "NAGARE"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-d62a17f715f14443",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-234a3abcb9fe4320",
         "agent_id": "weekly_sage",
         "ticker": "4385.T",
         "name": "メルカリ",
@@ -6243,39 +6099,39 @@
         "holding_days": 38,
         "high_water_return_pct": 4.8988352947,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 2.123,
+        "weight_pct": 2.638,
         "agent_name": "NAGARE"
       },
       {
-        "run_id": "arena_jp_rebuild_2026_v012",
-        "position_id": "POS-8d9780bd491f4793",
+        "run_id": "arena_jp_rebuild_2026_v013",
+        "position_id": "POS-f976aa4b921b48d5",
         "agent_id": "value_mispricing",
         "ticker": "1928.T",
         "name": "積水ハウス",
-        "entry_signal_date": "2026-03-27T00:00:00.000",
-        "entry_date": "2026-03-30T00:00:00.000",
-        "entry_price": 3484.481,
-        "shares": 45,
-        "cost_basis_jpy": 156801.645,
+        "entry_signal_date": "2026-05-13T00:00:00.000",
+        "entry_date": "2026-05-14T00:00:00.000",
+        "entry_price": 3483.48,
+        "shares": 57,
+        "cost_basis_jpy": 198558.36,
         "last_date": "2026-05-29T00:00:00.000",
         "last_price": 3389.0,
-        "market_value_jpy": 152505.0,
-        "unrealized_pnl_jpy": -4296.645,
-        "unrealized_return_pct": -2.740178523,
-        "holding_days": 60,
-        "high_water_return_pct": 4.7214778901,
+        "market_value_jpy": 193173.0,
+        "unrealized_pnl_jpy": -5385.36,
+        "unrealized_return_pct": -2.7122302984,
+        "holding_days": 15,
+        "high_water_return_pct": 0.0,
         "status": "OPEN",
-        "updated_at": "2026-05-29T08:21:00.403",
+        "updated_at": "2026-05-29T08:40:31.379",
         "sector": "",
         "industry": "",
         "bucket": "Core",
         "market": "JP",
-        "weight_pct": 0.709,
+        "weight_pct": 1.115,
         "agent_name": "HIZUMI"
       }
     ],
@@ -6285,7 +6141,7 @@
         "market_value_jpy": 7513573.5,
         "unrealized_pnl_jpy": 694954.6930000008,
         "position_count": 6,
-        "weight_pct": 34.921,
+        "weight_pct": 43.383,
         "agent_name": "NAGARE",
         "color": "#70A7FF"
       },
@@ -6294,7 +6150,7 @@
         "market_value_jpy": 5182729.0,
         "unrealized_pnl_jpy": 100383.7320000007,
         "position_count": 6,
-        "weight_pct": 24.088,
+        "weight_pct": 29.925,
         "agent_name": "MAMORU",
         "color": "#5DFFB1"
       },
@@ -6303,34 +6159,25 @@
         "market_value_jpy": 4429683.0,
         "unrealized_pnl_jpy": 488137.3920000006,
         "position_count": 3,
-        "weight_pct": 20.588,
+        "weight_pct": 25.577,
         "agent_name": "MATSU",
         "color": "#B779FF"
       },
       {
         "agent_id": "value_mispricing",
-        "market_value_jpy": 3139201.0,
-        "unrealized_pnl_jpy": -165620.5199999995,
-        "position_count": 3,
-        "weight_pct": 14.59,
+        "market_value_jpy": 193173.0,
+        "unrealized_pnl_jpy": -5385.36,
+        "position_count": 1,
+        "weight_pct": 1.115,
         "agent_name": "HIZUMI",
         "color": "#4F46E5"
-      },
-      {
-        "agent_id": "discovery_scout",
-        "market_value_jpy": 1251020.0,
-        "unrealized_pnl_jpy": 42102.2900000001,
-        "position_count": 1,
-        "weight_pct": 5.814,
-        "agent_name": "SAGURI",
-        "color": "#FFD166"
       }
     ],
     "allocation_by_sector": [
       {
         "sector": "",
-        "market_value_jpy": 21516206.5,
-        "position_count": 19,
+        "market_value_jpy": 17319158.5,
+        "position_count": 16,
         "weight_pct": 100.0
       }
     ],
@@ -6366,6 +6213,16 @@
         "total_pnl_jpy": 690798.4410000002
       },
       {
+        "ticker": "5713.T",
+        "name": "住友金属鉱山",
+        "realized_pnl_jpy": 653617.2610000002,
+        "closed_trades": 3.0,
+        "unrealized_pnl_jpy": 0.0,
+        "market_value_jpy": 0.0,
+        "open_positions": 0.0,
+        "total_pnl_jpy": 653617.2610000002
+      },
+      {
         "ticker": "5706.T",
         "name": "三井金属",
         "realized_pnl_jpy": 613746.5850000004,
@@ -6374,16 +6231,6 @@
         "market_value_jpy": 0.0,
         "open_positions": 0.0,
         "total_pnl_jpy": 613746.5850000004
-      },
-      {
-        "ticker": "5713.T",
-        "name": "住友金属鉱山",
-        "realized_pnl_jpy": 610593.0630000003,
-        "closed_trades": 4.0,
-        "unrealized_pnl_jpy": 0.0,
-        "market_value_jpy": 0.0,
-        "open_positions": 0.0,
-        "total_pnl_jpy": 610593.0630000003
       },
       {
         "ticker": "5803.T",
@@ -6436,6 +6283,26 @@
         "total_pnl_jpy": 388304.5880000006
       },
       {
+        "ticker": "4578.T",
+        "name": "大塚ホールディングス",
+        "realized_pnl_jpy": 359552.6560000011,
+        "closed_trades": 10.0,
+        "unrealized_pnl_jpy": 13587.5100000001,
+        "market_value_jpy": 856920.0,
+        "open_positions": 1.0,
+        "total_pnl_jpy": 373140.1660000012
+      },
+      {
+        "ticker": "5334.T",
+        "name": "日本特殊陶業",
+        "realized_pnl_jpy": 342161.3330000009,
+        "closed_trades": 7.0,
+        "unrealized_pnl_jpy": 19110.056,
+        "market_value_jpy": 565600.0,
+        "open_positions": 1.0,
+        "total_pnl_jpy": 361271.3890000009
+      },
+      {
         "ticker": "1893.T",
         "name": "五洋建設",
         "realized_pnl_jpy": 352396.8515000003,
@@ -6444,6 +6311,16 @@
         "market_value_jpy": 0.0,
         "open_positions": 0.0,
         "total_pnl_jpy": 352396.8515000003
+      },
+      {
+        "ticker": "4503.T",
+        "name": "アステラス製薬",
+        "realized_pnl_jpy": 349813.2650000009,
+        "closed_trades": 8.0,
+        "unrealized_pnl_jpy": 0.0,
+        "market_value_jpy": 0.0,
+        "open_positions": 0.0,
+        "total_pnl_jpy": 349813.2650000009
       },
       {
         "ticker": "2334.T",
@@ -6496,36 +6373,6 @@
         "total_pnl_jpy": 225293.8190000004
       },
       {
-        "ticker": "1605.T",
-        "name": "ＩＮＰＥＸ",
-        "realized_pnl_jpy": 382054.8210000021,
-        "closed_trades": 11.0,
-        "unrealized_pnl_jpy": -157817.4749999998,
-        "market_value_jpy": 1282096.0,
-        "open_positions": 1.0,
-        "total_pnl_jpy": 224237.3460000023
-      },
-      {
-        "ticker": "1436.T",
-        "name": "GreenEnergy & Company Inc.",
-        "realized_pnl_jpy": 209405.6165332003,
-        "closed_trades": 3.0,
-        "unrealized_pnl_jpy": 0.0,
-        "market_value_jpy": 0.0,
-        "open_positions": 0.0,
-        "total_pnl_jpy": 209405.6165332003
-      },
-      {
-        "ticker": "4503.T",
-        "name": "アステラス製薬",
-        "realized_pnl_jpy": 149524.7685000018,
-        "closed_trades": 11.0,
-        "unrealized_pnl_jpy": 0.0,
-        "market_value_jpy": 0.0,
-        "open_positions": 0.0,
-        "total_pnl_jpy": 149524.7685000018
-      },
-      {
         "ticker": "4631.T",
         "name": "ＤＩＣ",
         "realized_pnl_jpy": 135529.3500000002,
@@ -6538,16 +6385,6 @@
     ],
     "worst_ticker_contribution": [
       {
-        "ticker": "3659.T",
-        "name": "ネクソン",
-        "realized_pnl_jpy": -398463.4824999995,
-        "closed_trades": 5.0,
-        "unrealized_pnl_jpy": 0.0,
-        "market_value_jpy": 0.0,
-        "open_positions": 0.0,
-        "total_pnl_jpy": -398463.4824999995
-      },
-      {
         "ticker": "2579.T",
         "name": "コカ・コーラ ボトラーズジャパンホールディングス",
         "realized_pnl_jpy": -306394.6629999995,
@@ -6558,44 +6395,24 @@
         "total_pnl_jpy": -306394.6629999995
       },
       {
-        "ticker": "4612.T",
-        "name": "日本ペイントホールディングス",
-        "realized_pnl_jpy": -283371.8639999998,
-        "closed_trades": 1.0,
+        "ticker": "3288.T",
+        "name": "オープンハウスグループ",
+        "realized_pnl_jpy": -280744.0539999995,
+        "closed_trades": 2.0,
         "unrealized_pnl_jpy": 0.0,
         "market_value_jpy": 0.0,
         "open_positions": 0.0,
-        "total_pnl_jpy": -283371.8639999998
+        "total_pnl_jpy": -280744.0539999995
       },
       {
-        "ticker": "1925.T",
-        "name": "大和ハウス工業",
-        "realized_pnl_jpy": -262996.5769999987,
-        "closed_trades": 6.0,
-        "unrealized_pnl_jpy": 0.0,
-        "market_value_jpy": 0.0,
-        "open_positions": 0.0,
-        "total_pnl_jpy": -262996.5769999987
-      },
-      {
-        "ticker": "319A.T",
-        "name": "Next Generation Technology Group Inc.",
-        "realized_pnl_jpy": -267094.9099999993,
+        "ticker": "3659.T",
+        "name": "ネクソン",
+        "realized_pnl_jpy": -189493.8714999997,
         "closed_trades": 4.0,
-        "unrealized_pnl_jpy": 42102.2900000001,
-        "market_value_jpy": 1251020.0,
-        "open_positions": 1.0,
-        "total_pnl_jpy": -224992.6199999992
-      },
-      {
-        "ticker": "3635.T",
-        "name": "コーエーテクモホールディングス",
-        "realized_pnl_jpy": -207217.863,
-        "closed_trades": 1.0,
         "unrealized_pnl_jpy": 0.0,
         "market_value_jpy": 0.0,
         "open_positions": 0.0,
-        "total_pnl_jpy": -207217.863
+        "total_pnl_jpy": -189493.8714999997
       },
       {
         "ticker": "5471.T",
@@ -6618,54 +6435,14 @@
         "total_pnl_jpy": -183402.3636999996
       },
       {
-        "ticker": "5830.T",
-        "name": "いよぎんホールディングス",
-        "realized_pnl_jpy": -167611.996,
-        "closed_trades": 1.0,
+        "ticker": "1878.T",
+        "name": "大東建託",
+        "realized_pnl_jpy": -171408.5139999985,
+        "closed_trades": 7.0,
         "unrealized_pnl_jpy": 0.0,
         "market_value_jpy": 0.0,
         "open_positions": 0.0,
-        "total_pnl_jpy": -167611.996
-      },
-      {
-        "ticker": "202A.T",
-        "name": "MAMEZO CO.,LTD.",
-        "realized_pnl_jpy": -164620.5749999999,
-        "closed_trades": 1.0,
-        "unrealized_pnl_jpy": 0.0,
-        "market_value_jpy": 0.0,
-        "open_positions": 0.0,
-        "total_pnl_jpy": -164620.5749999999
-      },
-      {
-        "ticker": "5838.T",
-        "name": "楽天銀行",
-        "realized_pnl_jpy": -162648.1199999991,
-        "closed_trades": 5.0,
-        "unrealized_pnl_jpy": 0.0,
-        "market_value_jpy": 0.0,
-        "open_positions": 0.0,
-        "total_pnl_jpy": -162648.1199999991
-      },
-      {
-        "ticker": "325A.T",
-        "name": "TENTIAL Inc.",
-        "realized_pnl_jpy": -154819.1199999997,
-        "closed_trades": 3.0,
-        "unrealized_pnl_jpy": 0.0,
-        "market_value_jpy": 0.0,
-        "open_positions": 0.0,
-        "total_pnl_jpy": -154819.1199999997
-      },
-      {
-        "ticker": "2195.T",
-        "name": "AMITA HOLDINGS CO.,LTD.",
-        "realized_pnl_jpy": -153285.0039999999,
-        "closed_trades": 2.0,
-        "unrealized_pnl_jpy": 0.0,
-        "market_value_jpy": 0.0,
-        "open_positions": 0.0,
-        "total_pnl_jpy": -153285.0039999999
+        "total_pnl_jpy": -171408.5139999985
       },
       {
         "ticker": "1721.T",
@@ -6678,14 +6455,24 @@
         "total_pnl_jpy": -152973.8439999996
       },
       {
-        "ticker": "350A.T",
-        "name": "DIGITAL GRID Corporation",
-        "realized_pnl_jpy": -147839.5389999995,
-        "closed_trades": 3.0,
+        "ticker": "3003.T",
+        "name": "ヒューリック",
+        "realized_pnl_jpy": -149069.7694999992,
+        "closed_trades": 6.0,
         "unrealized_pnl_jpy": 0.0,
         "market_value_jpy": 0.0,
         "open_positions": 0.0,
-        "total_pnl_jpy": -147839.5389999995
+        "total_pnl_jpy": -149069.7694999992
+      },
+      {
+        "ticker": "3635.T",
+        "name": "コーエーテクモホールディングス",
+        "realized_pnl_jpy": -145597.2569999997,
+        "closed_trades": 2.0,
+        "unrealized_pnl_jpy": 0.0,
+        "market_value_jpy": 0.0,
+        "open_positions": 0.0,
+        "total_pnl_jpy": -145597.2569999997
       },
       {
         "ticker": "5019.T",
@@ -6696,6 +6483,16 @@
         "market_value_jpy": 0.0,
         "open_positions": 0.0,
         "total_pnl_jpy": -134237.3944999994
+      },
+      {
+        "ticker": "5105.T",
+        "name": "ＴＯＹＯ ＴＩＲＥ",
+        "realized_pnl_jpy": -133594.3309999996,
+        "closed_trades": 4.0,
+        "unrealized_pnl_jpy": 0.0,
+        "market_value_jpy": 0.0,
+        "open_positions": 0.0,
+        "total_pnl_jpy": -133594.3309999996
       },
       {
         "ticker": "4307.T",
@@ -6736,6 +6533,56 @@
         "market_value_jpy": 0.0,
         "open_positions": 0.0,
         "total_pnl_jpy": -107185.534
+      },
+      {
+        "ticker": "4401.T",
+        "name": "ＡＤＥＫＡ",
+        "realized_pnl_jpy": -96395.787,
+        "closed_trades": 1.0,
+        "unrealized_pnl_jpy": 0.0,
+        "market_value_jpy": 0.0,
+        "open_positions": 0.0,
+        "total_pnl_jpy": -96395.787
+      },
+      {
+        "ticker": "5101.T",
+        "name": "横浜ゴム",
+        "realized_pnl_jpy": -91018.9439999998,
+        "closed_trades": 1.0,
+        "unrealized_pnl_jpy": 0.0,
+        "market_value_jpy": 0.0,
+        "open_positions": 0.0,
+        "total_pnl_jpy": -91018.9439999998
+      },
+      {
+        "ticker": "5838.T",
+        "name": "楽天銀行",
+        "realized_pnl_jpy": -80832.3949999993,
+        "closed_trades": 5.0,
+        "unrealized_pnl_jpy": 0.0,
+        "market_value_jpy": 0.0,
+        "open_positions": 0.0,
+        "total_pnl_jpy": -80832.3949999993
+      },
+      {
+        "ticker": "3407.T",
+        "name": "旭化成",
+        "realized_pnl_jpy": -75207.4389999994,
+        "closed_trades": 3.0,
+        "unrealized_pnl_jpy": 0.0,
+        "market_value_jpy": 0.0,
+        "open_positions": 0.0,
+        "total_pnl_jpy": -75207.4389999994
+      },
+      {
+        "ticker": "3391.T",
+        "name": "ツルハホールディングス",
+        "realized_pnl_jpy": -74739.6709999999,
+        "closed_trades": 2.0,
+        "unrealized_pnl_jpy": 0.0,
+        "market_value_jpy": 0.0,
+        "open_positions": 0.0,
+        "total_pnl_jpy": -74739.6709999999
       }
     ]
   },
@@ -6789,16 +6636,16 @@
       "agent_id": "discovery_scout",
       "name": "SAGURI",
       "color": "#FFD166",
-      "closed_trades": 25,
-      "wins": 9,
-      "losses": 16,
-      "win_rate_pct": 36.0,
-      "avg_return_pct": -2.1348,
-      "median_return_pct": -3.4975,
-      "best_return_pct": 28.2536,
-      "worst_return_pct": -16.8937,
-      "realized_pnl_jpy": -687119.63,
-      "avg_holding_days": 5.24
+      "closed_trades": 10,
+      "wins": 5,
+      "losses": 5,
+      "win_rate_pct": 50.0,
+      "avg_return_pct": 0.239,
+      "median_return_pct": 0.984,
+      "best_return_pct": 6.8291,
+      "worst_return_pct": -7.5392,
+      "realized_pnl_jpy": 28402.17,
+      "avg_holding_days": 5.8
     },
     {
       "agent_id": "contrarian_monk",
@@ -6834,16 +6681,16 @@
       "agent_id": "value_mispricing",
       "name": "HIZUMI",
       "color": "#4F46E5",
-      "closed_trades": 52,
-      "wins": 27,
-      "losses": 25,
-      "win_rate_pct": 51.92,
-      "avg_return_pct": -1.4189,
-      "median_return_pct": 0.0765,
-      "best_return_pct": 12.9814,
-      "worst_return_pct": -18.0782,
-      "realized_pnl_jpy": -1286510.24,
-      "avg_holding_days": 6.52
+      "closed_trades": 43,
+      "wins": 26,
+      "losses": 17,
+      "win_rate_pct": 60.47,
+      "avg_return_pct": -0.2947,
+      "median_return_pct": 0.9473,
+      "best_return_pct": 13.5912,
+      "worst_return_pct": -20.4117,
+      "realized_pnl_jpy": -77486.76,
+      "avg_holding_days": 10.6
     }
   ],
   "equity_overview": {
