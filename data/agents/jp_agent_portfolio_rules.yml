@@ -1,10 +1,14 @@
 schema_version: jp_agent_portfolio_rules_v1
-rules_version: jp_agent_portfolio_2026_dev_v001
+rules_version: jp_agent_portfolio_2026_dev_v002
 updated_at: 2026-05-29
 
 # Portfolio rules are intentionally separated from signal rules.
 # Signal rules answer "what should the agent buy/sell?".
 # Portfolio rules answer "how much should the agent buy/sell?".
+#
+# v002:
+# - max_new_entries_per_day is standardized to 3 for all seven agents.
+# - Share lot remains 1 share for the AI Arena JP simulation.
 global:
   initial_capital_jpy: 10000000
   share_lot_size: 1
@@ -23,6 +27,7 @@ global:
   fallback_exit_timing: same_day_close
   allow_same_ticker_across_agents: true
   allow_duplicate_ticker_within_agent: false
+  default_max_new_entries_per_day: 3
 
 agents:
   daily_striker:
@@ -30,46 +35,46 @@ agents:
     target_position_pct: 0.12
     max_position_pct: 0.18
     max_total_exposure_pct: 0.95
-    max_new_entries_per_day: 2
+    max_new_entries_per_day: 3
 
   weekly_sage:
     max_positions: 8
     target_position_pct: 0.14
     max_position_pct: 0.20
     max_total_exposure_pct: 0.95
-    max_new_entries_per_day: 2
+    max_new_entries_per_day: 3
 
   risk_sentinel:
     max_positions: 12
     target_position_pct: 0.07
     max_position_pct: 0.10
     max_total_exposure_pct: 0.75
-    max_new_entries_per_day: 2
+    max_new_entries_per_day: 3
 
   discovery_scout:
     max_positions: 8
     target_position_pct: 0.10
     max_position_pct: 0.14
     max_total_exposure_pct: 0.80
-    max_new_entries_per_day: 2
+    max_new_entries_per_day: 3
 
   contrarian_monk:
     max_positions: 8
     target_position_pct: 0.11
     max_position_pct: 0.16
     max_total_exposure_pct: 0.85
-    max_new_entries_per_day: 2
+    max_new_entries_per_day: 3
 
   reversal_snapback:
     max_positions: 7
     target_position_pct: 0.10
     max_position_pct: 0.14
     max_total_exposure_pct: 0.75
-    max_new_entries_per_day: 2
+    max_new_entries_per_day: 3
 
   value_mispricing:
     max_positions: 7
     target_position_pct: 0.12
     max_position_pct: 0.17
     max_total_exposure_pct: 0.85
-    max_new_entries_per_day: 1
+    max_new_entries_per_day: 3
