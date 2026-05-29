@@ -4,50 +4,51 @@ on:
   workflow_dispatch:
     inputs:
       fail_on_critical:
-        description: "Fail the workflow when critical coverage issues are detected"
+        description: "Fail workflow when critical warnings are detected"
         required: false
         default: "false"
         type: choice
         options:
           - "false"
           - "true"
+
       commit_outputs:
-        description: "Commit data coverage review reports"
+        description: "Commit generated data coverage reports"
         required: false
         default: "true"
         type: choice
         options:
           - "true"
           - "false"
+
       min_bars_required:
         description: "Minimum acceptable price bars per symbol"
         required: false
         default: "60"
+
       stale_price_days:
-        description: "Flag symbols whose latest price is this many days older than the global latest"
+        description: "Warn when symbol latest price is older than this many days versus latest price date"
         required: false
         default: "5"
+
       min_fundamental_coverage_pct:
-        description: "Warning threshold for fundamental coverage"
+        description: "Minimum acceptable fundamental coverage percentage"
         required: false
         default: "50"
-
-  # Keep disabled until the first manual run is verified.
-  # schedule:
-  #   - cron: "15 11 * * 1-5"  # 20:15 JST, after live update and prune
 
 permissions:
   contents: write
 
 concurrency:
-  group: neon-tokyo-site-${{ github.ref }}
+  group: ai-arena-jp-data-coverage-review
   cancel-in-progress: false
 
 jobs:
   data-coverage-review:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
       PRICE_DUCKDB_PATH: data/cache/neon_tokyo_jp.duckdb
       MIN_BARS_REQUIRED: ${{ github.event.inputs.min_bars_required || '60' }}
       STALE_PRICE_DAYS: ${{ github.event.inputs.stale_price_days || '5' }}
@@ -66,11 +67,13 @@ jobs:
           python-version: "3.11"
 
       - name: Restore DuckDB cache
+        id: duckdb-cache
         uses: actions/cache@v4
         with:
           path: data/cache/neon_tokyo_jp.duckdb
-          key: neon-tokyo-jp-duckdb-v2-coverage-${{ github.run_id }}
+          key: neon-tokyo-jp-duckdb-v3-coverage-${{ github.run_id }}
           restore-keys: |
+            neon-tokyo-jp-duckdb-v3-
             neon-tokyo-jp-duckdb-v2-
             neon-tokyo-jp-duckdb-v1
             neon-tokyo-jp-duckdb-
@@ -86,7 +89,21 @@ jobs:
           set -euo pipefail
           git pull --ff-only origin main
 
-      - name: Compile review script
+      - name: Show restored DuckDB status
+        run: |
+          set -euo pipefail
+
+          echo "DuckDB cache hit: ${{ steps.duckdb-cache.outputs.cache-hit }}"
+          echo "DuckDB path: ${PRICE_DUCKDB_PATH}"
+
+          if [ -f "${PRICE_DUCKDB_PATH}" ]; then
+            ls -lh "${PRICE_DUCKDB_PATH}"
+          else
+            echo "::warning::DuckDB file was not restored: ${PRICE_DUCKDB_PATH}"
+            echo "::warning::Run AI Arena JP season rebuild first, or check cache restore keys."
+          fi
+
+      - name: Compile data coverage script
         run: |
           set -euo pipefail
           python -m compileall scripts/review_data_coverage_jp.py
@@ -96,26 +113,46 @@ jobs:
           set -euo pipefail
           python scripts/review_data_coverage_jp.py
 
-      - name: Validate report files
+      - name: Validate data coverage outputs
         run: |
           set -euo pipefail
+
           test -s site/data/japan/ai-arena/diagnostics/data-coverage-latest.json
           test -s site/data/japan/ai-arena/diagnostics/data-coverage-latest.md
+
           python - <<'PY'
           import json
           from pathlib import Path
+
           p = Path("site/data/japan/ai-arena/diagnostics/data-coverage-latest.json")
           data = json.loads(p.read_text(encoding="utf-8"))
+
           assert data["schema_version"] == "neon_tokyo_data_coverage_review_v1"
           assert "warnings" in data
+
           print("data_coverage_schema_ok")
           print("warnings=", len(data["warnings"]))
+
+          # Fail only when explicitly requested.
+          fail_on_critical = "${{ github.event.inputs.fail_on_critical || 'false' }}".lower() == "true"
+          criticals = [
+              w for w in data.get("warnings", [])
+              if str(w.get("severity", "")).lower() == "critical"
+          ]
+
+          print("criticals=", len(criticals))
+
+          if fail_on_critical and criticals:
+              for w in criticals:
+                  print("critical:", w.get("code"), w.get("message"))
+              raise SystemExit(1)
           PY
 
-      - name: Commit reports
+      - name: Commit data coverage reports
         if: ${{ github.event.inputs.commit_outputs != 'false' }}
         run: |
           set -euo pipefail
+
           git config user.name "github-actions"
           git config user.email "actions@users.noreply.github.com"
 
@@ -137,13 +174,16 @@ jobs:
               echo "Push succeeded."
               exit 0
             fi
+
             echo "Push rejected. Fetching origin/main and retrying ($i/3)..."
             git fetch origin main
+
             if ! git rebase origin/main; then
               echo "Rebase failed. Aborting to avoid overwriting generated reports."
               git rebase --abort || true
               exit 1
             fi
+
             sleep 5
           done
 
