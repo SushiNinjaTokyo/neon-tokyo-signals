@@ -1,6 +1,6 @@
 {
   "schema_version": "ai_arena_agent_profiles_v1",
-  "generated_at": "2026-05-29T08:10:14Z",
+  "generated_at": "2026-05-29T08:21:21Z",
   "agents": [
     {
       "agent_id": "daily_striker",
@@ -209,28 +209,40 @@
             "core_growth",
             "momentum",
             "breakout",
-            "watch_growth"
+            "watch_growth",
+            "value_growth",
+            "unknown"
           ],
           "bucket_optional_if_financial_setup": true,
-          "min_liquidity_score": 0.25,
-          "min_avg_traded_value_20d_jpy": 20000000,
+          "bucket_optional_if_score_setup": true,
+          "allow_bucket_bypass_for_discovery_setup": true,
+          "min_liquidity_score": 0.2,
+          "min_avg_traded_value_20d_jpy": 15000000,
           "require_volume_ratio_20d_min": 1.2,
           "reject_if_return_5d_pct_gt": 35,
-          "require_market_cap_jpy_min": 10000000000,
-          "require_market_cap_jpy_max": 800000000000,
+          "require_market_cap_jpy_min": 5000000000,
+          "require_market_cap_jpy_max": 1000000000000,
           "require_operating_margin_pct_min": -5,
           "require_roe_pct_min": -10,
           "reject_if_psr_gt": 20,
-          "reject_if_pbr_gt": 15,
-          "require_quality_guard_score_min": 0.25,
-          "reject_if_value_trap_penalty_gt": 0.8,
+          "reject_if_pbr_gt": 20,
+          "require_quality_guard_score_min": 0.18,
+          "reject_if_value_trap_penalty_gt": 0.9,
           "discovery_financial_setup": {
-            "require_market_cap_jpy_min": 10000000000,
-            "require_market_cap_jpy_max": 800000000000,
-            "require_quality_guard_score_min": 0.25,
-            "reject_if_value_trap_penalty_gt": 0.8,
-            "require_volume_ratio_20d_min": 1.2,
-            "require_range_position_60d_0_1_min": 0.35
+            "require_market_cap_jpy_min": 5000000000,
+            "require_market_cap_jpy_max": 1000000000000,
+            "require_quality_guard_score_min": 0.18,
+            "reject_if_value_trap_penalty_gt": 0.9,
+            "require_volume_ratio_20d_min": 1.15,
+            "require_range_position_60d_0_1_min": 0.3,
+            "require_liquidity_score_min": 0.18
+          },
+          "discovery_score_setup": {
+            "min_score": 0.5,
+            "require_volume_ratio_20d_min": 1.15,
+            "require_range_position_60d_0_1_min": 0.3,
+            "require_market_cap_jpy_max": 1000000000000,
+            "require_liquidity_score_min": 0.18
           }
         },
         "exit": {
@@ -392,25 +404,27 @@
         "exit_style": "mispricing_resolution",
         "year_end_entry_block_trading_days": 10,
         "entry": {
-          "min_score": 0.5,
-          "max_rank_per_day": 8,
+          "min_score": 0.46,
+          "max_rank_per_day": 25,
           "allowed_actions": [
             "Trade"
           ],
-          "min_liquidity_score": 0.35,
-          "min_avg_traded_value_20d_jpy": 50000000,
-          "require_price_above_ma20": true,
-          "require_range_position_252d_0_1_max": 0.72,
+          "min_liquidity_score": 0.32,
+          "min_avg_traded_value_20d_jpy": 40000000,
+          "require_price_above_ma20": false,
+          "require_range_position_252d_0_1_max": 0.88,
           "reject_if_return_60d_pct_lt": -35,
-          "require_value_mispricing_score_min": 0.62,
-          "require_valuation_discount_score_min": 0.58,
-          "require_quality_guard_score_min": 0.48,
-          "reject_if_value_trap_penalty_gt": 0.55,
-          "reject_if_psr_gt": 5,
-          "reject_if_pbr_gt": 3,
+          "require_value_mispricing_score_min": 0.55,
+          "require_valuation_discount_score_min": 0.5,
+          "require_quality_guard_score_min": 0.38,
+          "reject_if_value_trap_penalty_gt": 0.68,
+          "reject_if_psr_gt": 8,
+          "reject_if_pbr_gt": 4.5,
           "allowed_valuation_buckets": [
             "deep_value",
-            "quality_value"
+            "quality_value",
+            "watch_value",
+            "neutral_value"
           ]
         },
         "exit": {
@@ -433,6 +447,6 @@
       }
     }
   ],
-  "strategy_rules_version": "jp_agent_strategy_2026_dev_v010",
+  "strategy_rules_version": "jp_agent_strategy_2026_dev_v012",
   "portfolio_rules_version": "jp_agent_portfolio_2026_dev_v003"
 }
