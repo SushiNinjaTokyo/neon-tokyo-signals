@@ -126,8 +126,21 @@ def resolve_range(conn) -> tuple[date | None, date | None, dict[str, Any]]:
     year = resolve_year(conn)
     raw_start = first_env("VALUE_FEATURE_START_DATE", "AGENT_SCORE_START_DATE", "AI_ARENA_START_DATE", "START_DATE", default=f"{year}-01-01")
     raw_end = first_env("VALUE_FEATURE_END_DATE", "AGENT_SCORE_END_DATE", "AI_ARENA_END_DATE", "END_DATE", default="")
-    start = parse_date(raw_start) if raw_start else date(year, 1, 1)
-    end = parse_date(raw_end) if raw_end else latest_equity_feature_date(conn)
+
+    # Keep this script tolerant of the same `auto` convention used by
+    # build_agent_scores_jp.py and the AI Arena workflows.
+    # - start=auto means the calendar-year season start.
+    # - end=auto means the latest sufficiently covered feature date.
+    if not raw_start or raw_start.lower() == "auto":
+        start = date(year, 1, 1)
+    else:
+        start = parse_date(raw_start)
+
+    if not raw_end or raw_end.lower() == "auto":
+        end = latest_equity_feature_date(conn)
+    else:
+        end = parse_date(raw_end)
+
     return start, end, {"year": year, "start_date": str(start) if start else None, "end_date": str(end) if end else None}
 
 
