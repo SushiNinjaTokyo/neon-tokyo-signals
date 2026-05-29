@@ -1,0 +1,199 @@
+name: AI Arena JP season rebuild
+
+on:
+  workflow_dispatch:
+    inputs:
+      year:
+        description: "Season year"
+        required: true
+        default: "2026"
+      start_date:
+        description: "Season start date"
+        required: true
+        default: "2026-01-01"
+      end_date:
+        description: "End date, blank = latest available"
+        required: false
+        default: ""
+      universe_limit:
+        description: "Universe size"
+        required: true
+        default: "300"
+      run_mode:
+        description: "Run mode: rebuild or live"
+        required: true
+        default: "rebuild"
+      reset_run:
+        description: "Reset selected/new run before rebuilding"
+        required: true
+        default: "true"
+      promote_display_run:
+        description: "Promote rebuilt run to display run"
+        required: true
+        default: "true"
+      enable_gpt_signal_notes:
+        description: "Generate GPT notes for Signals page"
+        required: true
+        default: "false"
+      commit_outputs:
+        description: "Commit generated site outputs"
+        required: true
+        default: "true"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: neon-tokyo-site-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  OUT_DIR: site
+  PRICE_DUCKDB_PATH: data/cache/neon_tokyo_jp.duckdb
+  PRICE_STORE_MODE: json_and_duckdb
+  MIN_BARS_REQUIRED: 60
+  MIN_ACCEPTABLE_BARS: 20
+  AGENT_SCORE_TOP_N: 30
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - uses: actions/cache@v4
+        with:
+          path: data/cache/neon_tokyo_jp.duckdb
+          key: neon-tokyo-jp-duckdb-v2-${{ github.run_id }}
+          restore-keys: |
+            neon-tokyo-jp-duckdb-v2-
+            neon-tokyo-jp-duckdb-v1
+
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install -r requirements-render.txt
+
+      - name: Rebase before generation
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin main
+
+      - name: Compile changed scripts
+        run: |
+          set -euo pipefail
+          python -m compileall scripts
+
+      - name: Ensure index universe exists
+        env:
+          UNIVERSE_LIMIT: ${{ inputs.universe_limit }}
+        run: |
+          set -euo pipefail
+          if [ ! -f data/universe/jp_index_universe.csv ]; then
+            python scripts/build_jp_index_universe_csv.py
+          fi
+          OUT_UNIVERSE_CSV=data/universe/jp_duckdb_trial_300.csv STRICT_INDEX_UNIVERSE=true python scripts/build_universe_300_from_index_csv.py
+
+      - name: Fetch prices into DuckDB
+        env:
+          UNIVERSE_CSV: data/universe/jp_duckdb_trial_300.csv
+          UNIVERSE_LIMIT: ${{ inputs.universe_limit }}
+          LOOKBACK_DAYS: 720
+          REQUEST_SLEEP_SECONDS: "0.20"
+        run: |
+          set -euo pipefail
+          python scripts/fetch_prices_jp.py
+
+      - name: Build agent scores for range
+        env:
+          AGENT_SCORE_MODE: range
+          AGENT_SCORE_START_DATE: ${{ inputs.start_date }}
+          AGENT_SCORE_END_DATE: ${{ inputs.end_date }}
+        run: |
+          set -euo pipefail
+          python scripts/build_agent_scores_jp.py
+
+      - name: Rebuild AI Arena season
+        env:
+          ARENA_YEAR: ${{ inputs.year }}
+          START_DATE: ${{ inputs.start_date }}
+          END_DATE: ${{ inputs.end_date }}
+          RUN_MODE: ${{ inputs.run_mode }}
+          RESET_RUN: ${{ inputs.reset_run }}
+          PROMOTE_DISPLAY_RUN: ${{ inputs.promote_display_run }}
+          ENABLE_GPT_SIGNAL_NOTES: ${{ inputs.enable_gpt_signal_notes }}
+        run: |
+          set -euo pipefail
+          python scripts/rebuild_ai_arena_season_from_duckdb_jp.py
+          python scripts/build_ai_arena_signals_jp.py
+          python scripts/render_ai_agent_profiles_jp.py
+          python scripts/render_ai_arena_summary_jp.py
+          python scripts/render_ai_arena_signals_jp.py
+          python scripts/build_ai_arena_log_from_duckdb_jp.py
+          python scripts/list_legacy_ai_arena_cleanup_candidates.py
+
+      - name: Prune generated artifacts
+        env:
+          DRY_RUN: "false"
+        run: |
+          set -euo pipefail
+          python scripts/prune_ai_arena_generated_artifacts.py
+
+      - name: Validate outputs
+        run: |
+          set -euo pipefail
+          test -f site/data/japan/ai-arena/live/latest.json
+          test -f site/data/japan/ai-arena/ranking/latest.json
+          test -f site/data/japan/ai-arena/summary/latest.json
+          test -f site/data/japan/ai-arena/signals/latest.json
+          test -f site/japan/ai-arena/summary/index.html
+          test -f site/japan/ai-arena/signals/index.html
+          test -f site/japan/ai-arena/agents/index.html
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          live=json.loads(Path('site/data/japan/ai-arena/live/latest.json').read_text())
+          assert len(live.get('agents', [])) == 7
+          assert live.get('ranking') is not None
+          print('Validated run_id=', live.get('run_id'))
+          PY
+
+      - name: Commit outputs
+        if: ${{ inputs.commit_outputs == 'true' }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A \
+            data/universe/jp_index_universe.csv \
+            data/universe/jp_duckdb_trial_300.csv \
+            site/data/japan/universe \
+            site/data/prices-jp \
+            site/data/japan/agent-scores \
+            site/data/japan/ai-arena \
+            site/japan/ai-arena \
+            site/assets/ai_agent_profiles_jp.css \
+            site/assets/ai_arena_summary_jp.css \
+            site/assets/ai_arena_signals_jp.css
+          if git diff --cached --quiet; then
+            echo "No generated outputs to commit."
+            exit 0
+          fi
+          git commit -m "Build AI Arena JP season outputs"
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort || true; exit 1; }
+            sleep 5
+          done
+          exit 1
