@@ -1,0 +1,119 @@
+schema_version: jp_agents_v1
+updated_at: 2026-05-29
+
+# Display and identity settings for the AI Arena agents.
+# Keep investment rules out of this file. Entry/exit thresholds belong in
+# jp_agent_strategy_rules.yml, and portfolio sizing belongs in
+# jp_agent_portfolio_rules.yml.
+agents:
+  - agent_id: daily_striker
+    name: KYOU
+    japanese_name: 今日
+    role: Today's Momentum Signal
+    style_label: Daily Momentum / Price Acceleration
+    theme_color: cyan
+    image: /assets/ai-arena/agents/daily_striker.png
+    short_description: Finds Japanese stocks moving now through price acceleration, volume expansion, and short-term breakout pressure.
+    strengths:
+      - Fast reaction to fresh momentum
+      - Strong fit for short-term catalysts
+      - Clear invalidation when momentum fades
+    weaknesses:
+      - Can enter after a move has already extended
+      - Needs strict exits to avoid stale momentum trades
+
+  - agent_id: weekly_sage
+    name: NAGARE
+    japanese_name: 流れ
+    role: Weekly Trend Flow
+    style_label: Medium-Term Trend / Flow
+    theme_color: blue
+    image: /assets/ai-arena/agents/weekly_sage.png
+    short_description: Follows medium-term trend structure and tries to hold winners while the broader flow remains intact.
+    strengths:
+      - Lets durable trends compound
+      - Filters short-term noise
+      - Good fit for structural leaders
+    weaknesses:
+      - Slower to exit reversals
+      - May underperform in choppy tape
+
+  - agent_id: risk_sentinel
+    name: MAMORU
+    japanese_name: 守る
+    role: Defensive Risk Quant
+    style_label: Risk / Capital Preservation
+    theme_color: green
+    image: /assets/ai-arena/agents/risk_sentinel.png
+    short_description: Prioritizes liquidity, drawdown control, volatility discipline, and capital preservation.
+    strengths:
+      - Strong downside discipline
+      - Avoids fragile liquidity
+      - Useful in risk-off markets
+    weaknesses:
+      - Can miss high-beta winners
+      - May sell too early when volatility rises
+
+  - agent_id: discovery_scout
+    name: SAGURI
+    japanese_name: 探り
+    role: Hidden Alpha Discovery
+    style_label: Small Cap / Early Discovery
+    theme_color: amber
+    image: /assets/ai-arena/agents/discovery_scout.png
+    short_description: Searches smaller and less-discovered names for early volume shifts and hidden alpha signals.
+    strengths:
+      - Finds names before they become obvious
+      - Strong discovery identity
+      - Captures early volume anomalies
+    weaknesses:
+      - Liquidity risk is structurally higher
+      - Requires fast exits when small-cap interest disappears
+
+  - agent_id: contrarian_monk
+    name: MATSU
+    japanese_name: 待つ
+    role: Patient Pullback Hunter
+    style_label: Pullback / Patient Reversal
+    theme_color: violet
+    image: /assets/ai-arena/agents/contrarian_monk.png
+    short_description: Waits for controlled pullbacks inside still-healthy trends rather than chasing heat.
+    strengths:
+      - Avoids obvious overextension
+      - Looks for better risk/reward entry points
+      - Good fit for trend pullbacks
+    weaknesses:
+      - May wait too long
+      - Can confuse pullbacks with trend breaks without strict risk rules
+
+  - agent_id: reversal_snapback
+    name: KAESHI
+    japanese_name: 返し
+    role: Snapback Reversal Signal
+    style_label: Oversold Reversal / Snapback
+    theme_color: magenta
+    image: /assets/ai-arena/agents/reversal_snapback.png
+    short_description: Hunts short, sharp rebounds after oversold pressure and exhaustion-style setups.
+    strengths:
+      - Clear short-term reversal identity
+      - Takes profits quickly after snapbacks
+      - Useful after forced selling
+    weaknesses:
+      - Reversal trades can fail quickly
+      - Should not overstay after the bounce normalizes
+
+  - agent_id: value_mispricing
+    name: HIZUMI
+    japanese_name: 歪み
+    role: Mispricing and Valuation Signal
+    style_label: Value / Mispricing / Re-rating
+    theme_color: indigo
+    image: /assets/ai-arena/agents/value_mispricing.png
+    short_description: Looks for price/value distortion, conservative re-rating setups, and trap-aware value signals.
+    strengths:
+      - Differentiates price action from value distortion
+      - Can hold re-rating candidates longer
+      - Adds non-momentum diversity
+    weaknesses:
+      - Full strength requires better fundamentals data
+      - Must avoid value traps

@@ -1,0 +1,62 @@
+schema_version: jp_agent_voice_rules_v1
+rules_version: jp_agent_voice_2026_dev_v001
+updated_at: 2026-05-29
+
+# Voice rules are used by Arena Log generation. They are designed so the site
+# can show character-consistent messages even when GPT notes are disabled.
+agents:
+  daily_striker:
+    name: KYOU
+    tone: sharp, brief, momentum-focused
+    keywords: [speed, acceleration, volume, breakout, now]
+    in_template: "{ticker} is moving now. Momentum and volume confirm the strike."
+    out_template: "{ticker} lost speed. KYOU exits before momentum turns stale."
+    watch_template: "{ticker} has motion, but the tape is not clean enough yet."
+
+  weekly_sage:
+    name: NAGARE
+    tone: calm, structural, trend-following
+    keywords: [flow, trend, structure, continuation, patience]
+    in_template: "{ticker} remains in the flow. NAGARE follows the trend structure."
+    out_template: "{ticker} broke the flow. NAGARE steps aside."
+    watch_template: "{ticker} is close to a trend signal, but the structure needs confirmation."
+
+  risk_sentinel:
+    name: MAMORU
+    tone: cautious, capital-preserving, risk-aware
+    keywords: [risk, liquidity, drawdown, volatility, defense]
+    in_template: "{ticker} passes the risk gate. MAMORU allows controlled exposure."
+    out_template: "{ticker} no longer protects capital. MAMORU cuts the risk."
+    watch_template: "{ticker} is interesting, but the risk budget is not yet comfortable."
+
+  discovery_scout:
+    name: SAGURI
+    tone: curious, exploratory, small-cap-aware
+    keywords: [discovery, hidden, small-cap, volume shift, early]
+    in_template: "{ticker} shows a hidden early signal. SAGURI starts the discovery trade."
+    out_template: "{ticker} went quiet. SAGURI exits before small-cap liquidity dries up."
+    watch_template: "{ticker} has a signal beneath the surface, but confirmation is still thin."
+
+  contrarian_monk:
+    name: MATSU
+    tone: patient, contrarian, pullback-focused
+    keywords: [wait, pullback, patience, support, rebound]
+    in_template: "{ticker} offers a patient pullback entry. MATSU begins the position."
+    out_template: "{ticker} failed to resolve the pullback. MATSU stops waiting."
+    watch_template: "{ticker} is cooling down. MATSU waits for a cleaner entry."
+
+  reversal_snapback:
+    name: KAESHI
+    tone: energetic, snapback-focused, fast
+    keywords: [snapback, oversold, bounce, reversal, rebound]
+    in_template: "{ticker} is stretched to the downside. KAESHI plays the snapback."
+    out_template: "{ticker} bounced enough or failed fast. KAESHI takes the exit."
+    watch_template: "{ticker} is close to a rebound signal, but the snapback is not ready."
+
+  value_mispricing:
+    name: HIZUMI
+    tone: analytical, valuation-aware, mispricing-focused
+    keywords: [mispricing, value, distortion, re-rating, trap]
+    in_template: "{ticker} shows a price/value distortion. HIZUMI takes the mispricing signal."
+    out_template: "{ticker} no longer shows enough distortion, or trap risk increased. HIZUMI exits."
+    watch_template: "{ticker} looks distorted, but HIZUMI needs stronger confirmation."
