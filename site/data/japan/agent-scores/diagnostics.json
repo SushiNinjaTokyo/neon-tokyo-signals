@@ -1,19 +1,102 @@
 {
   "schema_version": "neon_tokyo_agent_scores_diagnostics_v1",
-  "generated_at": "2026-05-29T01:05:48+00:00",
+  "generated_at": "2026-05-29T02:38:45+00:00",
   "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
   "mode": "range",
   "range": {
     "start_date": "2026-01-01",
     "end_date": ""
   },
-  "price_rows": 139313,
+  "price_rows": 139316,
   "feature_diagnostics": {
-    "prices_rows": 139313,
-    "feature_rows": 139313,
+    "prices_rows": 139316,
+    "feature_rows": 139316,
     "tickers": 301,
     "min_date": "2024-06-10",
     "max_date": "2026-05-29"
+  },
+  "score_date_coverage": {
+    "date_count": 480,
+    "equity_symbol_denominator": 298,
+    "min_date_coverage_pct": 70.0,
+    "recent_dates": [
+      {
+        "date": "2026-05-11",
+        "symbols": 296,
+        "coverage_pct": 99.33
+      },
+      {
+        "date": "2026-05-12",
+        "symbols": 295,
+        "coverage_pct": 98.99
+      },
+      {
+        "date": "2026-05-13",
+        "symbols": 295,
+        "coverage_pct": 98.99
+      },
+      {
+        "date": "2026-05-14",
+        "symbols": 295,
+        "coverage_pct": 98.99
+      },
+      {
+        "date": "2026-05-15",
+        "symbols": 295,
+        "coverage_pct": 98.99
+      },
+      {
+        "date": "2026-05-18",
+        "symbols": 295,
+        "coverage_pct": 98.99
+      },
+      {
+        "date": "2026-05-19",
+        "symbols": 295,
+        "coverage_pct": 98.99
+      },
+      {
+        "date": "2026-05-20",
+        "symbols": 295,
+        "coverage_pct": 98.99
+      },
+      {
+        "date": "2026-05-21",
+        "symbols": 295,
+        "coverage_pct": 98.99
+      },
+      {
+        "date": "2026-05-22",
+        "symbols": 295,
+        "coverage_pct": 98.99
+      },
+      {
+        "date": "2026-05-25",
+        "symbols": 295,
+        "coverage_pct": 98.99
+      },
+      {
+        "date": "2026-05-26",
+        "symbols": 295,
+        "coverage_pct": 98.99
+      },
+      {
+        "date": "2026-05-27",
+        "symbols": 295,
+        "coverage_pct": 98.99
+      },
+      {
+        "date": "2026-05-28",
+        "symbols": 295,
+        "coverage_pct": 98.99
+      },
+      {
+        "date": "2026-05-29",
+        "symbols": 291,
+        "coverage_pct": 97.65
+      }
+    ],
+    "latest_recent_eligible_date": "2026-05-29"
   },
   "agent_score_rows": 137361,
   "latest_date": "2026-05-29",
