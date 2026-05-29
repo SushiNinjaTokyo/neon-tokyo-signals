@@ -76,15 +76,23 @@ def score_agent_row(row: pd.Series, profile: AgentProfile) -> tuple[float, dict[
     mom = nz(row.get("momentum_score_short"), 0.0)
     rev = nz(row.get("reversal_exhaustion_score"), 0.0)
     vol_re = nz(row.get("volume_reaccumulation_score"), 0.0)
+    r1 = nz(row.get("return_1d_pct"), 0.0)
+    r3 = nz(row.get("return_3d_pct"), 0.0)
     r5 = nz(row.get("return_5d_pct"), 0.0)
     r20 = nz(row.get("return_20d_pct"), 0.0)
     r60 = nz(row.get("return_60d_pct"), 0.0)
     vs20 = nz(row.get("price_vs_ma20_pct"), 0.0)
     vs50 = nz(row.get("price_vs_ma50_pct"), 0.0)
     dd60 = nz(row.get("max_drawdown_60d_pct"), -50.0)
+    dist20 = nz(row.get("distance_from_20d_high_pct"), -100.0)
     dist52 = nz(row.get("distance_from_52w_high_pct"), -100.0)
+    range20 = nz(row.get("range_position_20d_0_1"), 0.0)
     range60 = nz(row.get("range_position_60d_0_1"), 0.0)
+    range252 = nz(row.get("range_position_252d_0_1"), 0.0)
+    vol20 = nz(row.get("volatility_20d_annualized_pct"), 80.0)
     vol60 = nz(row.get("volatility_60d_annualized_pct"), 80.0)
+    rsi14 = nz(row.get("rsi_14"), 50.0)
+    volratio20 = nz(row.get("volume_ratio_20d"), 1.0)
     dryup = nz(row.get("volume_dryup_10d"), 1.0)
     value_rerate = scale(r60, -10, 25) * 0.35 + scale(row.get("distance_from_52w_low_pct"), 5, 80) * 0.25 + scale(liq, 0.2, 0.9) * 0.20 + scale(-dist52, 10, 65) * 0.20
     value_mispricing = row.get("value_mispricing_score")
@@ -93,23 +101,84 @@ def score_agent_row(row: pd.Series, profile: AgentProfile) -> tuple[float, dict[
     has_value_features = any(pd.notna(x) for x in [value_mispricing, value_quality, value_discount])
 
     if profile.id == "daily_striker":
-        raw = mom * 0.46 + trend_d * 0.22 + liq * 0.18 + scale(-dist52, 0, 22) * 0.06 + scale(r5, 0, 15) * 0.08
-        reasons = ["short_momentum", "volume_pressure", "liquid_tape"]
+        # KYOU v2: short-term breakout quality, not merely recent momentum.
+        # This rewards high-volume initial strength and penalizes overheated / noisy moves.
+        breakout_quality = (
+            scale(r1, 0.4, 6.0) * 0.18
+            + scale(volratio20, 1.2, 4.0) * 0.22
+            + scale(range20, 0.65, 1.0) * 0.16
+            + scale(dist20, -3.0, 0.5) * 0.10
+            + trend_d * 0.16
+            + liq * 0.10
+        )
+        risk_control = clamp01(
+            1.0
+            - scale(rsi14, 70, 86) * 0.45
+            - scale(r5, 18, 35) * 0.35
+            - scale(vol60, 80, 140) * 0.20
+        )
+        raw = breakout_quality + risk_control * 0.08
+        reasons = ["fresh_breakout", "volume_quality", "overheat_guard"]
     elif profile.id == "weekly_sage":
-        raw = trend_w * 0.52 + scale(r60, 0, 35) * 0.18 + scale(vs50, -3, 14) * 0.12 + liq * 0.10 + (1 - scale(vol60, 35, 100)) * 0.08
-        reasons = ["weekly_flow", "trend_structure", "relative_strength"]
+        # NAGARE v2: closer to the old weekly screen spirit using the daily
+        # feature proxy: sustained trend, 60d strength, MA structure and lower extension risk.
+        extension_guard = clamp01(1.0 - scale(r20, 35, 60) * 0.55 - scale(vol60, 75, 120) * 0.45)
+        raw = (
+            trend_w * 0.50
+            + scale(r60, 5, 45) * 0.18
+            + scale(vs50, -2, 16) * 0.10
+            + scale(range252, 0.50, 0.98) * 0.08
+            + liq * 0.08
+            + extension_guard * 0.06
+        )
+        reasons = ["weekly_stage2_proxy", "trend_structure", "extension_guard"]
     elif profile.id == "risk_sentinel":
-        raw = risk * 0.55 + liq * 0.20 + trend_w * 0.10 + (1 - scale(abs(vs20), 0, 18)) * 0.08 + scale(dd60, -30, -4) * 0.07
-        reasons = ["liquidity_guard", "drawdown_control", "survivable_setup"]
+        # MAMORU v2: defensive compounder. Low volatility and drawdown resilience
+        # still dominate, but a mild positive trend is required to avoid dead money.
+        low_vol_score = clamp01(1.0 - scale(vol60, 25, 75))
+        drawdown_resilience = scale(dd60, -24, -3)
+        ma_stability = clamp01(1.0 - scale(abs(vs20), 0, 14))
+        raw = (
+            risk * 0.38
+            + liq * 0.20
+            + low_vol_score * 0.16
+            + drawdown_resilience * 0.12
+            + trend_w * 0.08
+            + ma_stability * 0.06
+        )
+        reasons = ["capital_preservation", "liquidity_guard", "low_vol_trend"]
     elif profile.id == "discovery_scout":
+        # SAGURI v2: small / emerging discovery, guarded by basic quality signals
+        # from value_features_daily when available.
         small_bonus = 1.0 if bool(row.get("is_small_discovery")) else 0.35
-        early = scale(r20, -5, 20) * 0.24 + scale(row.get("volume_ratio_20d"), 0.9, 4.0) * 0.26 + scale(range60, 0.25, 0.85) * 0.14
-        raw = early + small_bonus * 0.16 + vol_re * 0.12 + liq * 0.08
-        reasons = ["small_cap_discovery", "early_volume_shift", "hidden_alpha"]
+        q_guard = nz(row.get("quality_guard_score"), 0.35 if not has_value_features else 0.0)
+        trap = nz(row.get("value_trap_penalty"), 0.35 if not has_value_features else 0.0)
+        financial_guard = clamp01(q_guard * 0.75 + (1.0 - trap) * 0.25)
+        early = (
+            scale(r20, -5, 24) * 0.20
+            + scale(volratio20, 0.9, 4.0) * 0.24
+            + scale(range60, 0.25, 0.90) * 0.12
+            + vol_re * 0.12
+        )
+        raw = early + small_bonus * 0.12 + financial_guard * 0.12 + liq * 0.08
+        reasons = ["small_cap_discovery", "quality_guarded_growth", "early_volume_shift"]
     elif profile.id == "contrarian_monk":
-        pullback = scale(-r5, 0.5, 9.0) * 0.24 + (1 - scale(abs(vs20), 0, 14)) * 0.14 + (1 - scale(dryup, 0.45, 1.4)) * 0.12
-        raw = trend_w * 0.32 + pullback + liq * 0.12 + scale(range60, 0.35, 0.85) * 0.06
-        reasons = ["patient_pullback", "trend_still_alive", "cooled_entry"]
+        # MATSU v2: quality pullback inside an intact medium-term trend.
+        pullback_depth = scale(-r5, 1.0, 9.0)
+        calm_volume = clamp01(1.0 - scale(dryup, 0.55, 1.35))
+        ma_reversion_zone = clamp01(1.0 - scale(abs(vs50), 0, 12))
+        rsi_neutral = clamp01(1.0 - abs(rsi14 - 50.0) / 28.0)
+        range_health = scale(range252, 0.35, 0.80)
+        raw = (
+            trend_w * 0.34
+            + pullback_depth * 0.18
+            + calm_volume * 0.14
+            + ma_reversion_zone * 0.12
+            + rsi_neutral * 0.10
+            + liq * 0.08
+            + range_health * 0.04
+        )
+        reasons = ["quality_pullback", "trend_still_alive", "calm_entry"]
     elif profile.id == "reversal_snapback":
         raw = rev * 0.54 + scale(-r5, 2, 16) * 0.16 + vol_re * 0.12 + scale(row.get("distance_from_20d_low_pct"), 0, 14) * 0.08 + liq * 0.10
         reasons = ["oversold_exhaustion", "snapback_pressure", "reaccumulation"]

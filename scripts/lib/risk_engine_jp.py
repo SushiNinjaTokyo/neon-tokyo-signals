@@ -2,7 +2,7 @@ from __future__ import annotations
 
 """Agent-specific exit rule evaluation.
 
-The engine returns the first matching reason in a fixed priority order. This is
+The engine returns the first matching reason in a fixed priority order.  This is
 important for clean UI: each sale should have one primary reason rather than a
 random list of simultaneous conditions.
 """
@@ -15,13 +15,11 @@ def f(row: dict[str, Any] | None, key: str, default: float = 0.0) -> float:
         return default
     try:
         v = float(row.get(key))
-        return v
+        if v == v:
+            return v
     except Exception:
-        return default
-
-
-def b(row: dict[str, Any] | None, key: str) -> bool:
-    return bool(row and row.get(key))
+        pass
+    return default
 
 
 def should_exit_position(
@@ -53,6 +51,8 @@ def should_exit_position(
         return True, "CAPITAL_PROTECTION", "Risk score deteriorated below the agent threshold."
     if "volatility_20d_annualized_pct_above" in exit_rule and f(feature_row, "volatility_20d_annualized_pct", 0.0) > float(exit_rule["volatility_20d_annualized_pct_above"]):
         return True, "VOLATILITY_SPIKE", "Volatility spiked beyond the risk budget."
+    if "value_trap_penalty_above" in exit_rule and f(feature_row, "value_trap_penalty", 0.0) > float(exit_rule["value_trap_penalty_above"]):
+        return True, "VALUE_TRAP_RISK", "Value-trap penalty rose beyond the agent threshold."
 
     score = f(score_row, "normalized_score", 1.0)
     if "score_below" in exit_rule and score < float(exit_rule["score_below"]):
@@ -69,14 +69,24 @@ def should_exit_position(
         return True, "PULLBACK_FAILED", "Pullback turned into a deeper trend break."
     if "trend_score_weekly_proxy_below" in exit_rule and f(feature_row, "trend_score_weekly_proxy", 1.0) < float(exit_rule["trend_score_weekly_proxy_below"]):
         return True, "TREND_BREAK", "Weekly trend proxy weakened."
+
     if "rsi_14_above" in exit_rule and f(feature_row, "rsi_14", 0.0) > float(exit_rule["rsi_14_above"]):
         return True, "SNAPBACK_COMPLETE", "RSI normalized after the snapback."
+    if "rsi_14_below" in exit_rule and f(feature_row, "rsi_14", 100.0) < float(exit_rule["rsi_14_below"]):
+        return True, "PULLBACK_FAILED", "RSI weakened below the agent threshold."
     if "bollinger_b_20_above" in exit_rule and f(feature_row, "bollinger_b_20", 0.0) > float(exit_rule["bollinger_b_20_above"]):
         return True, "SNAPBACK_COMPLETE", "Bollinger position normalized after rebound."
+
     if "range_position_252d_0_1_above" in exit_rule and f(feature_row, "range_position_252d_0_1", 0.0) > float(exit_rule["range_position_252d_0_1_above"]):
         return True, "MISPRICING_RESOLVED", "Price moved high enough in its yearly range to reduce the distortion."
     if "return_20d_pct_above" in exit_rule and f(feature_row, "return_20d_pct", 0.0) > float(exit_rule["return_20d_pct_above"]):
         return True, "MISPRICING_RESOLVED", "Recent re-rating progressed enough to harvest gains."
+    if "return_5d_pct_above" in exit_rule and f(feature_row, "return_5d_pct", 0.0) > float(exit_rule["return_5d_pct_above"]):
+        return True, "PULLBACK_RESOLVED", "Short-term rebound resolved the pullback setup."
+    if "return_3d_pct_above" in exit_rule and f(feature_row, "return_3d_pct", 0.0) > float(exit_rule["return_3d_pct_above"]):
+        return True, "SNAPBACK_COMPLETE", "Three-day rebound target was reached."
+    if "return_3d_pct_below" in exit_rule and f(feature_row, "return_3d_pct", 0.0) < float(exit_rule["return_3d_pct_below"]):
+        return True, "MOMENTUM_DECAY", "Three-day return deteriorated below the agent threshold."
 
     take_profit = exit_rule.get("take_profit_pct")
     if take_profit is not None and ret_pct >= float(take_profit):
