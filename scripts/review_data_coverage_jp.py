@@ -73,8 +73,12 @@ REPORT_MD_ALIAS = REPORT_DIR / "latest-data-coverage.md"
 MIN_BARS_REQUIRED = int(os.getenv("MIN_BARS_REQUIRED", "60"))
 STALE_PRICE_DAYS = int(os.getenv("STALE_PRICE_DAYS", "5"))
 MIN_FUNDAMENTAL_COVERAGE_PCT = float(os.getenv("MIN_FUNDAMENTAL_COVERAGE_PCT", "50"))
+EXPECTED_AGENT_COUNT = int(os.getenv("AI_ARENA_EXPECTED_AGENT_COUNT", "7"))
+MIN_AGENT_SCORE_DATE_COUNT = int(os.getenv("MIN_AGENT_SCORE_DATE_COUNT", "2"))
+MIN_ARENA_ORDERS_FOR_LIVE_RUN = int(os.getenv("MIN_ARENA_ORDERS_FOR_LIVE_RUN", "1"))
+MIN_VALUE_FEATURE_DATE_COUNT = int(os.getenv("MIN_VALUE_FEATURE_DATE_COUNT", "2"))
 
-SCHEMA_VERSION = "neon_tokyo_data_coverage_review_v1"
+SCHEMA_VERSION = "neon_tokyo_data_coverage_review_v2"
 
 CORE_AGENTS = {
     "daily_striker": "KYOU",
@@ -642,26 +646,77 @@ def normalize_agent_id(value: Any) -> str:
     return lower
 
 
+def review_season_window(db: Db) -> Tuple[Optional[str], Optional[str], Optional[int]]:
+    """Resolve the current AI Arena season window for diagnostics.
+
+    Prefer explicit workflow variables.  If they are absent, infer the display
+    run period from public JSON or arena_display_runs.  This prevents false
+    positives during local reviews while still catching the production failure
+    where only one latest agent-score date exists.
+    """
+    start = os.getenv("AI_ARENA_START_DATE") or os.getenv("START_DATE") or ""
+    end = os.getenv("AI_ARENA_END_DATE") or os.getenv("END_DATE") or ""
+    year_raw = os.getenv("AI_ARENA_YEAR") or os.getenv("ARENA_YEAR") or os.getenv("YEAR") or ""
+
+    live_run_id = read_live_run_id()
+    if live_run_id and db.table_exists("arena_simulation_runs"):
+        try:
+            row = db.qall(
+                "SELECT year, start_date, end_date FROM arena_simulation_runs WHERE run_id = ? LIMIT 1",
+                [live_run_id],
+            )
+            if row:
+                y, st, ed = row[0]
+                if not year_raw and y is not None:
+                    year_raw = str(y)
+                if not start and st is not None:
+                    start = str(st)
+                if not end and ed is not None:
+                    end = str(ed)
+        except Exception:
+            pass
+
+    year: Optional[int] = None
+    try:
+        if str(year_raw).strip().lower() not in {"", "auto"}:
+            year = int(str(year_raw).strip())
+    except Exception:
+        year = None
+
+    if not start and year:
+        start = f"{year}-01-01"
+    if not end and year:
+        end = f"{year}-12-31"
+    return (start or None), (end or None), year
+
+
 def review_agent_scores(db: Db, warnings: List[Dict[str, Any]]) -> Dict[str, Any]:
     table = "agent_scores_daily"
+    season_start, season_end, season_year = review_season_window(db)
     result: Dict[str, Any] = {
         "table_exists": db.table_exists(table),
         "rows": None,
         "unique_agents": None,
         "latest_date": None,
+        "date_count": None,
+        "trade_candidate_rows": None,
+        "season_window": {"start_date": season_start, "end_date": season_end, "year": season_year},
+        "season_rows": None,
+        "season_date_count": None,
+        "season_trade_candidate_rows": None,
         "agents": [],
         "missing_core_agent_ids": [],
     }
 
     if not db.table_exists(table):
-        add_warning(warnings, "warning", "MISSING_AGENT_SCORES_TABLE", "agent_scores_daily table does not exist.")
+        add_warning(warnings, "critical", "MISSING_AGENT_SCORES_TABLE", "agent_scores_daily table does not exist.")
         return result
 
     cols = db.columns(table)
     agent_col = choose_col(cols, ["agent_id", "agent", "agent_name", "strategy_id"])
     ticker_col = choose_col(cols, ["ticker", "symbol"])
     date_col = choose_col(cols, ["date", "score_date", "trading_date"])
-    score_col = choose_col(cols, ["score", "final_score", "final_score_0_1", "score_0_1"])
+    score_col = choose_col(cols, ["normalized_score", "raw_score", "score", "final_score", "final_score_0_1", "score_0_1"])
     action_col = choose_col(cols, ["action", "signal_action", "decision"])
 
     result["rows"] = table_count(db, table)
@@ -674,7 +729,7 @@ def review_agent_scores(db: Db, warnings: List[Dict[str, Any]]) -> Dict[str, Any
         if missing:
             add_warning(
                 warnings,
-                "warning",
+                "critical",
                 "MISSING_CORE_AGENTS_IN_SCORES",
                 "Some core agents are missing from agent_scores_daily.",
                 {"missing_core_agent_ids": missing},
@@ -682,6 +737,56 @@ def review_agent_scores(db: Db, warnings: List[Dict[str, Any]]) -> Dict[str, Any
 
     if date_col:
         result["latest_date"] = db.q1(f"SELECT MAX({date_col}) FROM {table}")
+        result["date_count"] = int(db.q1(f"SELECT COUNT(DISTINCT {date_col}) FROM {table}", default=0) or 0)
+        if result["date_count"] is not None and result["date_count"] < MIN_AGENT_SCORE_DATE_COUNT and (result.get("rows") or 0) > 0:
+            add_warning(
+                warnings,
+                "critical",
+                "AGENT_SCORE_DATE_RANGE_TOO_SMALL",
+                "agent_scores_daily has too few score dates. Season rebuild may produce no orders.",
+                {"date_count": result["date_count"], "minimum": MIN_AGENT_SCORE_DATE_COUNT},
+            )
+
+    if action_col:
+        result["trade_candidate_rows"] = int(
+            db.q1(f"SELECT COUNT(*) FROM {table} WHERE {action_col} = 'Trade'", default=0) or 0
+        )
+        if (result["trade_candidate_rows"] or 0) == 0 and (result.get("rows") or 0) > 0:
+            add_warning(warnings, "critical", "NO_AGENT_TRADE_CANDIDATES", "agent_scores_daily has no Trade candidates.")
+
+    if date_col and season_start:
+        where = f"{date_col} >= ?"
+        params: List[Any] = [season_start]
+        if season_end:
+            where += f" AND {date_col} <= ?"
+            params.append(season_end)
+        result["season_rows"] = int(db.q1(f"SELECT COUNT(*) FROM {table} WHERE {where}", params, 0) or 0)
+        result["season_date_count"] = int(db.q1(f"SELECT COUNT(DISTINCT {date_col}) FROM {table} WHERE {where}", params, 0) or 0)
+        if action_col:
+            result["season_trade_candidate_rows"] = int(
+                db.q1(f"SELECT COUNT(*) FROM {table} WHERE {where} AND {action_col} = 'Trade'", params, 0) or 0
+            )
+        if result["season_date_count"] < MIN_AGENT_SCORE_DATE_COUNT:
+            add_warning(
+                warnings,
+                "critical",
+                "SEASON_AGENT_SCORE_RANGE_TOO_SMALL",
+                "Season range has too few agent score dates. This usually means AGENT_SCORE_MODE=latest was used by mistake.",
+                {
+                    "start_date": season_start,
+                    "end_date": season_end,
+                    "season_date_count": result["season_date_count"],
+                    "minimum": MIN_AGENT_SCORE_DATE_COUNT,
+                },
+            )
+        if action_col and (result["season_trade_candidate_rows"] or 0) == 0:
+            add_warning(
+                warnings,
+                "critical",
+                "SEASON_NO_TRADE_CANDIDATES",
+                "Season range has no Trade candidates in agent_scores_daily.",
+                {"start_date": season_start, "end_date": season_end},
+            )
 
     if agent_col:
         rows = db.qall(f"SELECT DISTINCT {agent_col} FROM {table} ORDER BY {agent_col}")
@@ -696,16 +801,18 @@ def review_agent_scores(db: Db, warnings: List[Dict[str, Any]]) -> Dict[str, Any
                 if ticker_col
                 else None
             )
-            max_score = (
-                db.q1(f"SELECT MAX({score_col}) FROM {table} WHERE {where}", params, None)
-                if score_col
+            dates = (
+                int(db.q1(f"SELECT COUNT(DISTINCT {date_col}) FROM {table} WHERE {where}", params, 0) or 0)
+                if date_col
                 else None
             )
-            avg_score = (
-                db.q1(f"SELECT AVG({score_col}) FROM {table} WHERE {where}", params, None)
-                if score_col
+            trade_rows = (
+                int(db.q1(f"SELECT COUNT(*) FROM {table} WHERE {where} AND {action_col} = 'Trade'", params, 0) or 0)
+                if action_col
                 else None
             )
+            max_score = db.q1(f"SELECT MAX({score_col}) FROM {table} WHERE {where}", params, None) if score_col else None
+            avg_score = db.q1(f"SELECT AVG({score_col}) FROM {table} WHERE {where}", params, None) if score_col else None
             actions: Dict[str, int] = {}
             if action_col:
                 actions = {
@@ -722,21 +829,20 @@ def review_agent_scores(db: Db, warnings: List[Dict[str, Any]]) -> Dict[str, Any
                     )
                 }
 
-            result["agents"].append(
-                {
-                    "agent_id": agent_id,
-                    "display_name": display,
-                    "raw_agent_value": raw_agent,
-                    "rows": count,
-                    "tickers": tickers,
-                    "max_score": max_score,
-                    "avg_score": avg_score,
-                    "actions": actions,
-                }
-            )
+            result["agents"].append({
+                "agent_id": agent_id,
+                "display_name": display,
+                "raw_agent_value": raw_agent,
+                "rows": count,
+                "date_count": dates,
+                "tickers": tickers,
+                "trade_candidate_rows": trade_rows,
+                "max_score": max_score,
+                "avg_score": avg_score,
+                "actions": actions,
+            })
 
     return result
-
 
 def review_cached_universe_count(db: Db) -> Optional[int]:
     if db.table_exists("universe_master"):
@@ -799,10 +905,18 @@ def review_fundamentals(db: Db, warnings: List[Dict[str, Any]]) -> Dict[str, Any
     if (value_features.get("rows") or 0) == 0:
         add_warning(
             warnings,
-            "warning",
+            "critical",
             "LOW_VALUE_FEATURE_ROW_COVERAGE",
-            "value_features_daily row coverage is low.",
+            "value_features_daily row coverage is low. HIZUMI will fall back to proxy scoring.",
             {"rows": value_features.get("rows"), "coverage_pct": value_features.get("coverage_vs_universe_pct")},
+        )
+    elif (value_features.get("season_date_count") or value_features.get("date_count") or 0) < MIN_VALUE_FEATURE_DATE_COUNT:
+        add_warning(
+            warnings,
+            "critical",
+            "VALUE_FEATURE_RANGE_TOO_SMALL",
+            "value_features_daily has too few dates for a Season rebuild.",
+            {"date_count": value_features.get("date_count"), "season_date_count": value_features.get("season_date_count")},
         )
 
     return result
@@ -849,19 +963,51 @@ def review_fundamental_table(db: Db, table: str, universe_count: Optional[int]) 
 def review_value_features(db: Db, universe_count: Optional[int]) -> Dict[str, Any]:
     table = "value_features_daily"
     result = review_generic_ticker_table(db, table, universe_count)
+    result.update({
+        "latest_date": None,
+        "date_count": None,
+        "latest_date_tickers": None,
+        "season_rows": None,
+        "season_date_count": None,
+        "field_coverage": {},
+    })
     if not db.table_exists(table):
-        result["latest_date"] = None
         return result
 
     cols = db.columns(table)
+    ticker_col = choose_col(cols, ["ticker", "symbol"])
     date_col = choose_col(cols, ["date", "trading_date", "feature_date"])
     if date_col:
-        result["latest_date"] = db.q1(f"SELECT MAX({date_col}) FROM {table}")
-    else:
-        result["latest_date"] = None
+        latest = db.q1(f"SELECT MAX({date_col}) FROM {table}")
+        result["latest_date"] = latest
+        result["date_count"] = int(db.q1(f"SELECT COUNT(DISTINCT {date_col}) FROM {table}", default=0) or 0)
+        if latest and ticker_col:
+            result["latest_date_tickers"] = int(
+                db.q1(f"SELECT COUNT(DISTINCT {ticker_col}) FROM {table} WHERE {date_col} = ?", [latest], 0) or 0
+            )
+        season_start, season_end, _ = review_season_window(db)
+        if season_start:
+            where = f"{date_col} >= ?"
+            params: List[Any] = [season_start]
+            if season_end:
+                where += f" AND {date_col} <= ?"
+                params.append(season_end)
+            result["season_rows"] = int(db.q1(f"SELECT COUNT(*) FROM {table} WHERE {where}", params, 0) or 0)
+            result["season_date_count"] = int(db.q1(f"SELECT COUNT(DISTINCT {date_col}) FROM {table} WHERE {where}", params, 0) or 0)
+
+    denom = result.get("rows") or 0
+    for field in [
+        "valuation_discount_score", "quality_guard_score", "earnings_stability_score",
+        "shareholder_return_score", "re_rating_signal_score", "value_trap_penalty",
+        "value_mispricing_score", "fundamental_coverage_score",
+    ]:
+        if field in cols:
+            nn = count_non_null(db, table, field)
+            result["field_coverage"][field] = {"count": nn, "pct": pct(nn, denom)}
+        else:
+            result["field_coverage"][field] = {"count": 0, "pct": None, "missing_column": True}
 
     return result
-
 
 def read_site_fundamentals_diagnostics() -> Dict[str, Any]:
     path = OUT_DIR / "data" / "japan" / "ai-arena" / "diagnostics" / "fundamentals-latest.json"
@@ -881,24 +1027,129 @@ def review_arena_tables(db: Db, warnings: List[Dict[str, Any]]) -> Dict[str, Any
         rows = table_count(db, table) if exists else None
         result[table] = {"exists": exists, "rows": rows}
 
-        if table in {"arena_orders", "arena_trades", "arena_open_positions", "arena_equity_curve"}:
+        if table in {"arena_orders", "arena_open_positions", "arena_equity_curve", "arena_yearly_rankings"}:
+            if not exists:
+                add_warning(warnings, "critical", "MISSING_ARENA_TABLE", f"{table} table does not exist.", {"table": table})
+            elif rows == 0:
+                add_warning(warnings, "critical", "EMPTY_ARENA_TABLE", f"{table} table is empty.", {"table": table})
+        elif table in {"arena_trades", "arena_trade_rankings"}:
             if not exists:
                 add_warning(warnings, "warning", "MISSING_ARENA_TABLE", f"{table} table does not exist.", {"table": table})
-            elif rows == 0 and table != "arena_trades":
-                add_warning(warnings, "warning", "EMPTY_ARENA_TABLE", f"{table} table is empty.", {"table": table})
 
     live_run_id = read_live_run_id()
+    result["live_run_id"] = live_run_id
     if live_run_id:
-        result["live_run_id"] = live_run_id
-        for table in ["arena_orders", "arena_trades", "arena_open_positions", "arena_equity_curve"]:
+        for table in [
+            "arena_orders", "arena_trades", "arena_open_positions", "arena_equity_curve",
+            "arena_yearly_rankings", "arena_monthly_rankings", "arena_trade_rankings",
+        ]:
             if db.table_exists(table):
                 cols = db.columns(table)
                 if "run_id" in cols:
                     n = int(db.q1(f"SELECT COUNT(*) FROM {table} WHERE run_id = ?", [live_run_id], 0) or 0)
                     result[table]["rows_for_live_run_id"] = n
 
-    return result
+        orders = (result.get("arena_orders") or {}).get("rows_for_live_run_id") or 0
+        trades = (result.get("arena_trades") or {}).get("rows_for_live_run_id") or 0
+        open_positions = (result.get("arena_open_positions") or {}).get("rows_for_live_run_id") or 0
+        equity_rows = (result.get("arena_equity_curve") or {}).get("rows_for_live_run_id") or 0
+        yearly_rows = (result.get("arena_yearly_rankings") or {}).get("rows_for_live_run_id") or 0
+        monthly_rows = (result.get("arena_monthly_rankings") or {}).get("rows_for_live_run_id") or 0
+        trade_ranking_rows = (result.get("arena_trade_rankings") or {}).get("rows_for_live_run_id") or 0
 
+        result["live_run_health"] = {
+            "orders": orders,
+            "trades": trades,
+            "open_positions": open_positions,
+            "equity_rows": equity_rows,
+            "yearly_ranking_rows": yearly_rows,
+            "monthly_ranking_rows": monthly_rows,
+            "trade_ranking_rows": trade_ranking_rows,
+            "has_visible_positions_or_trades": bool(open_positions or trades),
+        }
+
+        if orders < MIN_ARENA_ORDERS_FOR_LIVE_RUN:
+            add_warning(
+                warnings,
+                "critical",
+                "LIVE_RUN_HAS_NO_ORDERS",
+                "The current display run has no arena_orders. AI Arena is not actually trading.",
+                {"live_run_id": live_run_id, "orders": orders},
+            )
+        if (open_positions + trades) == 0:
+            add_warning(
+                warnings,
+                "critical",
+                "LIVE_RUN_HAS_NO_POSITIONS_OR_TRADES",
+                "The current display run has neither open positions nor closed trades.",
+                {"live_run_id": live_run_id, "open_positions": open_positions, "trades": trades},
+            )
+        if equity_rows == 0:
+            add_warning(
+                warnings,
+                "critical",
+                "LIVE_RUN_HAS_NO_EQUITY_CURVE",
+                "The current display run has no equity curve rows.",
+                {"live_run_id": live_run_id},
+            )
+        if yearly_rows not in {EXPECTED_AGENT_COUNT}:
+            add_warning(
+                warnings,
+                "critical",
+                "LIVE_RUN_YEARLY_RANKING_INCOMPLETE",
+                "The current display run does not have exactly one yearly ranking row per Agent.",
+                {"live_run_id": live_run_id, "yearly_rows": yearly_rows, "expected": EXPECTED_AGENT_COUNT},
+            )
+        if monthly_rows == 0:
+            add_warning(
+                warnings,
+                "warning",
+                "LIVE_RUN_MONTHLY_RANKING_EMPTY",
+                "The current display run has no monthly ranking rows.",
+                {"live_run_id": live_run_id},
+            )
+        if trade_ranking_rows == 0 and trades > 0:
+            add_warning(
+                warnings,
+                "warning",
+                "LIVE_RUN_TRADE_RANKING_EMPTY",
+                "Closed trades exist, but arena_trade_rankings is empty.",
+                {"live_run_id": live_run_id, "trades": trades},
+            )
+
+        # Per-agent execution check for the visible run.
+        if db.table_exists("arena_orders"):
+            try:
+                agent_orders = db.qall(
+                    """
+                    SELECT agent_id,
+                           COUNT(*) AS orders,
+                           SUM(CASE WHEN order_status = 'FILLED' AND side = 'BUY' THEN 1 ELSE 0 END) AS filled_buys,
+                           SUM(CASE WHEN order_status = 'FILLED' AND side = 'SELL' THEN 1 ELSE 0 END) AS filled_sells
+                    FROM arena_orders
+                    WHERE run_id = ?
+                    GROUP BY agent_id
+                    ORDER BY agent_id
+                    """,
+                    [live_run_id],
+                )
+                result["agent_execution"] = [
+                    {"agent_id": a, "orders": int(o or 0), "filled_buys": int(b or 0), "filled_sells": int(se or 0)}
+                    for a, o, b, se in agent_orders
+                ]
+                no_buy_agents = [r["agent_id"] for r in result["agent_execution"] if r["filled_buys"] == 0]
+                if no_buy_agents:
+                    add_warning(
+                        warnings,
+                        "warning",
+                        "LIVE_RUN_AGENTS_WITHOUT_FILLED_BUYS",
+                        "Some Agents have no filled buy orders in the current display run.",
+                        {"live_run_id": live_run_id, "agents": no_buy_agents},
+                    )
+            except Exception as exc:
+                result["agent_execution_error"] = str(exc)
+
+    return result
 
 def read_live_run_id() -> Optional[str]:
     path = OUT_DIR / "data" / "japan" / "ai-arena" / "live" / "latest.json"
@@ -1092,15 +1343,21 @@ def render_md(report: Dict[str, Any]) -> str:
     lines.append(f"- Rows: {md_value(agent_scores.get('rows'))}")
     lines.append(f"- Unique agents: {md_value(agent_scores.get('unique_agents'))}")
     lines.append(f"- Latest date: {md_value(agent_scores.get('latest_date'))}")
+    lines.append(f"- Date count: {md_value(agent_scores.get('date_count'))}")
+    lines.append(f"- Trade candidates: {md_value(agent_scores.get('trade_candidate_rows'))}")
+    sw = agent_scores.get('season_window') or {}
+    lines.append(f"- Season window: {md_value(sw.get('start_date'))} → {md_value(sw.get('end_date'))}")
+    lines.append(f"- Season date count: {md_value(agent_scores.get('season_date_count'))}")
+    lines.append(f"- Season trade candidates: {md_value(agent_scores.get('season_trade_candidate_rows'))}")
     lines.append("")
-    lines.append("| Agent | Rows | Tickers | Max Score | Avg Score | Actions |")
-    lines.append("|---|---:|---:|---:|---:|---|")
+    lines.append("| Agent | Rows | Dates | Trade candidates | Tickers | Max Score | Avg Score | Actions |")
+    lines.append("|---|---:|---:|---:|---:|---:|---:|---|")
     for a in agent_scores.get("agents") or []:
         actions = a.get("actions") or {}
         action_text = ", ".join(f"{k}:{v}" for k, v in actions.items()) if actions else "N/A"
         label = f"{a.get('display_name')} / `{a.get('agent_id')}`"
         lines.append(
-            f"| {label} | {md_value(a.get('rows'))} | {md_value(a.get('tickers'))} | {md_value(a.get('max_score'))} | {md_value(a.get('avg_score'))} | {action_text} |"
+            f"| {label} | {md_value(a.get('rows'))} | {md_value(a.get('date_count'))} | {md_value(a.get('trade_candidate_rows'))} | {md_value(a.get('tickers'))} | {md_value(a.get('max_score'))} | {md_value(a.get('avg_score'))} | {action_text} |"
         )
     lines.append("")
 
@@ -1130,10 +1387,21 @@ def render_md(report: Dict[str, Any]) -> str:
     lines.append(f"- Unique tickers: {md_value(vf.get('unique_tickers'))}")
     lines.append(f"- Coverage vs universe: {md_value(vf.get('coverage_vs_universe_pct'))}%")
     lines.append(f"- Latest date: {md_value(vf.get('latest_date'))}")
+    lines.append(f"- Date count: {md_value(vf.get('date_count'))}")
+    lines.append(f"- Latest date tickers: {md_value(vf.get('latest_date_tickers'))}")
+    lines.append(f"- Season date count: {md_value(vf.get('season_date_count'))}")
     lines.append("")
 
     lines.append("## Arena Simulation Tables")
     lines.append("")
+    health = arena.get("live_run_health") or {}
+    if health:
+        lines.append(f"- Live run: `{md_value(arena.get('live_run_id'))}`")
+        lines.append(f"- Live orders: {md_value(health.get('orders'))}")
+        lines.append(f"- Live trades: {md_value(health.get('trades'))}")
+        lines.append(f"- Live open positions: {md_value(health.get('open_positions'))}")
+        lines.append(f"- Live yearly ranking rows: {md_value(health.get('yearly_ranking_rows'))}")
+        lines.append("")
     lines.append("| Table | Exists | Rows | Rows for live run |")
     lines.append("|---|---:|---:|---:|")
     for table in ARENA_TABLES:

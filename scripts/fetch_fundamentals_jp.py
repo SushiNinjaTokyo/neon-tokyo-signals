@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-"""Fetch lightweight JP company fundamentals and build value features.
+"""Fetch lightweight JP company fundamentals.
 
-This script is intentionally pragmatic.  yfinance fundamentals for Japanese
+This script is intentionally pragmatic. yfinance fundamentals for Japanese
 small caps can be incomplete, so all fields are optional and coverage is
-reported.  The script fills:
+reported.
 
-- fundamentals_latest_jp
-- value_features_daily
+Primary responsibility:
+- Update fundamentals_latest_jp
 
-It never writes public full datasets.  Public pages consume only summaries from
-other exporters.
+Compatibility responsibility:
+- Optionally upsert same-day value_features_daily for fetched tickers only.
+  The canonical Season-range builder is scripts/build_value_features_jp.py.
+  This script must never wipe an entire value_features_daily date when only a
+  partial fundamentals fetch is requested.
+
+Public pages consume only summaries from other exporters.
 """
 
 import json
@@ -32,6 +37,7 @@ PRICE_DUCKDB_PATH = os.getenv("PRICE_DUCKDB_PATH") or "data/cache/neon_tokyo_jp.
 FUNDAMENTALS_LIMIT = int(os.getenv("FUNDAMENTALS_LIMIT", "0") or "0")
 REQUEST_SLEEP_SECONDS = float(os.getenv("FUNDAMENTALS_REQUEST_SLEEP_SECONDS", "0.10") or "0.10")
 MIN_MARKET_CAP_JPY = float(os.getenv("MIN_MARKET_CAP_JPY", "0") or "0")
+BUILD_COMPAT_VALUE_FEATURE_LATEST = os.getenv("BUILD_COMPAT_VALUE_FEATURE_LATEST", "true").lower() == "true"
 
 FUNDAMENTAL_COLS = [
     "ticker", "fiscal_period", "market_cap_jpy", "revenue_jpy",
@@ -290,7 +296,10 @@ def main() -> int:
 
     feature_date = latest_covered_feature_date(conn)
     value_rows: list[dict[str, Any]] = []
-    if feature_date:
+    if feature_date and BUILD_COMPAT_VALUE_FEATURE_LATEST:
+        # Compatibility upsert only.  Do not delete the whole feature_date: a
+        # FUNDAMENTALS_LIMIT run or an interrupted retry must not erase existing
+        # value features for tickers that were not fetched in this invocation.
         fdf = conn.execute("SELECT * FROM features_daily WHERE date = ?", [feature_date]).df()
         fmap = {str(r["ticker"]): r.to_dict() for _, r in fdf.iterrows()}
         for row in rows:
@@ -301,13 +310,23 @@ def main() -> int:
                 **score,
                 "updated_at": datetime.utcnow(),
             })
-        conn.execute("DELETE FROM value_features_daily WHERE date = ?", [feature_date])
         if value_rows:
             vdf = pd.DataFrame(value_rows)
             for col in VALUE_FEATURE_COLS:
                 if col not in vdf.columns:
                     vdf[col] = None
             vdf = vdf[VALUE_FEATURE_COLS]
+            conn.register("_value_features_tickers", pd.DataFrame({"ticker": [r["ticker"] for r in value_rows]}))
+            conn.execute(
+                """
+                DELETE FROM value_features_daily
+                USING _value_features_tickers t
+                WHERE value_features_daily.date = ?
+                  AND value_features_daily.ticker = t.ticker
+                """,
+                [feature_date],
+            )
+            conn.unregister("_value_features_tickers")
             conn.register("_value_features_daily", vdf)
             cols_sql = ", ".join(VALUE_FEATURE_COLS)
             conn.execute(f"INSERT INTO value_features_daily ({cols_sql}) SELECT {cols_sql} FROM _value_features_daily")
@@ -325,14 +344,16 @@ def main() -> int:
         "failures": failures[:100],
         "failure_count": len(failures),
         "feature_date_for_value_features": str(feature_date) if feature_date else None,
-        "value_feature_rows": len(value_rows),
+        "compat_value_feature_latest_enabled": BUILD_COMPAT_VALUE_FEATURE_LATEST,
+        "value_feature_rows_upserted_for_latest_date": len(value_rows),
+        "canonical_value_feature_builder": "scripts/build_value_features_jp.py",
         "metric_coverage": {m: {"count": c, "coverage_pct": round(c / total * 100.0, 2) if total else 0} for m, c in metric_counts.items()},
     }
     out = ROOT / "site" / "data" / "japan" / "ai-arena" / "diagnostics" / "fundamentals-latest.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(diag, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Wrote {safe_rel(out)}")
-    print(f"fundamentals_rows={total} value_feature_rows={len(value_rows)} failures={len(failures)}")
+    print(f"fundamentals_rows={total} compat_value_feature_rows_upserted={len(value_rows)} failures={len(failures)}")
     return 0 if total > 0 else 2
 
 
