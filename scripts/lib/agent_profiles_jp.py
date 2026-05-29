@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import os
 from dataclasses import dataclass
 from typing import Any
 
@@ -86,6 +87,10 @@ def score_agent_row(row: pd.Series, profile: AgentProfile) -> tuple[float, dict[
     vol60 = nz(row.get("volatility_60d_annualized_pct"), 80.0)
     dryup = nz(row.get("volume_dryup_10d"), 1.0)
     value_rerate = scale(r60, -10, 25) * 0.35 + scale(row.get("distance_from_52w_low_pct"), 5, 80) * 0.25 + scale(liq, 0.2, 0.9) * 0.20 + scale(-dist52, 10, 65) * 0.20
+    value_mispricing = row.get("value_mispricing_score")
+    value_quality = row.get("quality_guard_score")
+    value_discount = row.get("valuation_discount_score")
+    has_value_features = any(pd.notna(x) for x in [value_mispricing, value_quality, value_discount])
 
     if profile.id == "daily_striker":
         raw = mom * 0.46 + trend_d * 0.22 + liq * 0.18 + scale(-dist52, 0, 22) * 0.06 + scale(r5, 0, 15) * 0.08
@@ -109,10 +114,21 @@ def score_agent_row(row: pd.Series, profile: AgentProfile) -> tuple[float, dict[
         raw = rev * 0.54 + scale(-r5, 2, 16) * 0.16 + vol_re * 0.12 + scale(row.get("distance_from_20d_low_pct"), 0, 14) * 0.08 + liq * 0.10
         reasons = ["oversold_exhaustion", "snapback_pressure", "reaccumulation"]
     elif profile.id == "value_mispricing":
-        # Fundamentals are optional in Step 1.  Until fundamentals_latest is populated,
-        # HIZUMI uses a conservative price-based re-rating proxy rather than low-PBR/PER claims.
-        raw = value_rerate * 0.36 + risk * 0.18 + liq * 0.16 + scale(-dist52, 12, 70) * 0.14 + scale(r20, -3, 16) * 0.10 + (1 - scale(abs(vs50), 0, 35)) * 0.06
-        reasons = ["mispricing_proxy", "value_rerating", "trap_guard"]
+        if has_value_features:
+            # True HIZUMI mode: valuation + quality + re-rating, with a price proxy fallback.
+            raw = (
+                nz(value_mispricing, 0.0) * 0.42
+                + nz(value_quality, 0.0) * 0.18
+                + nz(value_discount, 0.0) * 0.16
+                + value_rerate * 0.12
+                + risk * 0.07
+                + liq * 0.05
+            )
+            reasons = ["valuation_mispricing", "quality_guard", "rerating_signal"]
+        else:
+            # Fallback mode while fundamentals are not populated.
+            raw = value_rerate * 0.36 + risk * 0.18 + liq * 0.16 + scale(-dist52, 12, 70) * 0.14 + scale(r20, -3, 16) * 0.10 + (1 - scale(abs(vs50), 0, 35)) * 0.06
+            reasons = ["mispricing_proxy", "value_rerating", "trap_guard"]
     else:
         raw = 0.0
         reasons = ["unknown", "", ""]
@@ -171,17 +187,45 @@ def _empty_agent_scores_frame() -> pd.DataFrame:
     ])
 
 
-def _select_scoring_date(df: pd.DataFrame, as_of_date: str | None = None) -> pd.Timestamp | None:
-    """Select the scoring date safely.
+def _equity_candidate_frame(df: pd.DataFrame) -> pd.DataFrame:
+    """Return rows that can reasonably contribute to agent score coverage.
 
-    The price store also contains market pulse ETFs such as 1306.T/1321.T/2516.T.
-    Those can have a newer latest date than ordinary equities. If we simply use
-    max(date) across all tickers, the latest slice may contain only ETFs, and all
-    seven equity agents correctly reject them. Therefore the default date must be
-    the latest date that has at least one eligible equity universe row.
+    Market pulse ETFs may have a newer date than individual equities.  Using
+    raw MAX(date) can therefore select a day with only 1306/1321/2516, causing
+    zero agent candidates.  Coverage must be measured on equity candidates.
+    """
+    if df.empty:
+        return df
+    work = df.copy()
+    asset = work.get("asset_type")
+    if asset is not None:
+        work = work[asset.fillna("equity").astype(str).str.lower().eq("equity")]
+    if "is_excluded" in work.columns:
+        work = work[~work["is_excluded"].fillna(False).astype(bool)]
+
+    flags = ["is_core", "is_growth", "is_small_discovery", "is_value_candidate"]
+    available = [c for c in flags if c in work.columns]
+    if available:
+        mask = pd.Series(False, index=work.index)
+        for c in available:
+            mask = mask | work[c].fillna(False).astype(bool)
+        work = work[mask]
+    return work
+
+
+def _select_scoring_date(df: pd.DataFrame, as_of_date: str | None = None) -> pd.Timestamp | None:
+    """Select a coverage-safe scoring date.
+
+    The selected date is the latest date not later than `as_of_date` whose
+    equity-candidate coverage is at least AGENT_SCORE_MIN_DATE_COVERAGE_PCT of
+    the maximum observed equity-candidate universe.  Default is 70%.
+
+    This avoids the common JP data issue where market ETFs update one session
+    later than single stocks and accidentally become the global MAX(date).
     """
     if df.empty or "date" not in df.columns:
         return None
+
     work = df.copy()
     work["_date_ts"] = pd.to_datetime(work["date"], errors="coerce")
     work = work[work["_date_ts"].notna()]
@@ -192,27 +236,29 @@ def _select_scoring_date(df: pd.DataFrame, as_of_date: str | None = None) -> pd.
     if work.empty:
         return None
 
-    asset = work.get("asset_type")
-    if asset is not None:
-        equity = work[asset.fillna("equity").astype(str).str.lower().eq("equity")]
-    else:
-        equity = work
-    if "is_excluded" in equity.columns:
-        equity = equity[~equity["is_excluded"].fillna(False).astype(bool)]
+    equity = _equity_candidate_frame(work)
+    if equity.empty:
+        return pd.to_datetime(work["_date_ts"]).max()
 
-    # Prefer dates with actual equity candidates belonging to at least one agent universe.
-    flags = ["is_core", "is_growth", "is_small_discovery", "is_value_candidate"]
-    available_flags = [c for c in flags if c in equity.columns]
-    if available_flags:
-        mask = pd.Series(False, index=equity.index)
-        for c in available_flags:
-            mask = mask | equity[c].fillna(False).astype(bool)
-        equity = equity[mask]
+    denom = int(equity["ticker"].nunique()) if "ticker" in equity.columns else int(len(equity))
+    min_pct = float(os.getenv("AGENT_SCORE_MIN_DATE_COVERAGE_PCT", "70") or 70)
+    min_symbols_env = int(os.getenv("AGENT_SCORE_MIN_DATE_SYMBOLS", "0") or 0)
+    min_symbols = max(min_symbols_env, int(math.ceil(denom * min_pct / 100.0)))
+    min_symbols = max(1, min_symbols)
 
-    if not equity.empty:
-        return pd.to_datetime(equity["_date_ts"]).max()
-    return pd.to_datetime(work["_date_ts"]).max()
+    grouped = (
+        equity.groupby(equity["_date_ts"].dt.date)["ticker"].nunique()
+        if "ticker" in equity.columns
+        else equity.groupby(equity["_date_ts"].dt.date).size()
+    )
+    eligible = grouped[grouped >= min_symbols]
+    if not eligible.empty:
+        return pd.Timestamp(max(eligible.index))
 
+    # Fallback: if coverage never reaches threshold, use the date with the most
+    # equity candidates rather than a later ETF-only date.
+    best_date = grouped.sort_values(ascending=False).index[0]
+    return pd.Timestamp(best_date)
 
 def build_agent_scores(features_with_universe: pd.DataFrame, as_of_date: str | None = None) -> pd.DataFrame:
     if features_with_universe.empty:

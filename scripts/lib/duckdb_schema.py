@@ -3,6 +3,21 @@ from __future__ import annotations
 import duckdb
 
 
+def ensure_columns(conn: duckdb.DuckDBPyConnection, table: str, columns: dict[str, str]) -> None:
+    """Add newly introduced columns to existing DuckDB tables.
+
+    CREATE TABLE IF NOT EXISTS does not evolve existing tables.  This helper is
+    intentionally conservative and only performs ADD COLUMN for known fields.
+    """
+    try:
+        existing = {r[1] for r in conn.execute(f"PRAGMA table_info('{table}')").fetchall()}
+    except Exception:
+        return
+    for name, dtype in columns.items():
+        if name not in existing:
+            conn.execute(f"ALTER TABLE {table} ADD COLUMN {name} {dtype}")
+
+
 def initialize_schema(conn: duckdb.DuckDBPyConnection) -> None:
     conn.execute(
         """
@@ -470,6 +485,28 @@ def initialize_schema(conn: duckdb.DuckDBPyConnection) -> None:
         )
         """
     )
+
+    ensure_columns(conn, "fundamentals_latest_jp", {
+        "enterprise_value_jpy": "DOUBLE",
+        "ev_ebitda": "DOUBLE",
+        "operating_margin_pct": "DOUBLE",
+        "net_margin_pct": "DOUBLE",
+        "equity_ratio_pct": "DOUBLE",
+        "revenue_growth_yoy_pct": "DOUBLE",
+        "operating_profit_growth_yoy_pct": "DOUBLE",
+        "eps_growth_yoy_pct": "DOUBLE",
+        "source": "TEXT",
+        "source_quality": "TEXT",
+        "error": "TEXT",
+    })
+    ensure_columns(conn, "value_features_daily", {
+        "fundamental_coverage_score": "DOUBLE",
+        "source": "TEXT",
+    })
+    ensure_columns(conn, "arena_simulation_runs", {
+        "finalized_season": "BOOLEAN",
+    })
+
     conn.execute("CREATE INDEX IF NOT EXISTS idx_arena_equity_run_agent_date ON arena_equity_curve(run_id, agent_id, date)")
     conn.execute("CREATE INDEX IF NOT EXISTS idx_arena_trades_run_agent ON arena_trades(run_id, agent_id)")
     conn.execute("CREATE INDEX IF NOT EXISTS idx_arena_orders_run_date ON arena_orders(run_id, execution_date)")
