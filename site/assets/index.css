@@ -2373,3 +2373,91 @@ button{
     animation-duration: 96s;
   }
 }
+
+
+/* === 2026-05-29 TOP Hero agent timing/color refinement v3 ===
+   - Agent icon is 3x larger and fades in only; no fade-out/down animation.
+   - Agent icon bloom starts at the exact same JS tick as the background name switch.
+   - Electric trace color follows the active Agent theme color.
+   - Agent switch interval is controlled in templates/index.html.j2: 4100ms.
+*/
+.pulse-trace{
+  stroke: var(--agent-color);
+  filter:
+    drop-shadow(0 0 8px color-mix(in srgb, var(--agent-color) 88%, transparent))
+    drop-shadow(0 0 28px color-mix(in srgb, var(--agent-color) 46%, transparent));
+}
+
+.pulse-stage[data-tone="topix"] .pulse-trace,
+.pulse-stage[data-tone="growth"] .pulse-trace{
+  stroke: var(--agent-color);
+  filter:
+    drop-shadow(0 0 8px color-mix(in srgb, var(--agent-color) 88%, transparent))
+    drop-shadow(0 0 28px color-mix(in srgb, var(--agent-color) 46%, transparent));
+}
+
+.pulse-bg-icon{
+  width: clamp(288px, 54vw, 780px);
+  height: clamp(288px, 54vw, 780px);
+  transform: translate(calc(-50% + 18vw), calc(-50% - 5vw)) rotate(-6deg) scale(1);
+  opacity: 0;
+  transition: none;
+  filter:
+    drop-shadow(0 0 22px color-mix(in srgb, var(--agent-color) 74%, transparent))
+    drop-shadow(0 0 72px color-mix(in srgb, var(--agent-color) 38%, transparent));
+}
+
+.pulse-bg-icon.is-visible{
+  opacity: .56;
+}
+
+.pulse-bg-icon.is-visible.is-peaking{
+  animation: agentIconFadeInOnly 980ms cubic-bezier(.16,.84,.24,1) both;
+}
+
+.pulse-stage[data-tone="topix"] .pulse-bg-icon,
+.pulse-stage[data-tone="growth"] .pulse-bg-icon{
+  filter:
+    drop-shadow(0 0 22px color-mix(in srgb, var(--agent-color) 74%, transparent))
+    drop-shadow(0 0 72px color-mix(in srgb, var(--agent-color) 38%, transparent));
+}
+
+@keyframes agentIconFadeInOnly{
+  0%{
+    opacity: 0;
+    transform: translate(calc(-50% + 18vw), calc(-50% - 5vw)) rotate(-6deg) scale(.985);
+    filter:
+      drop-shadow(0 0 6px color-mix(in srgb, var(--agent-color) 36%, transparent))
+      drop-shadow(0 0 18px color-mix(in srgb, var(--agent-color) 14%, transparent));
+  }
+  100%{
+    opacity: .56;
+    transform: translate(calc(-50% + 18vw), calc(-50% - 5vw)) rotate(-6deg) scale(1);
+    filter:
+      drop-shadow(0 0 22px color-mix(in srgb, var(--agent-color) 74%, transparent))
+      drop-shadow(0 0 72px color-mix(in srgb, var(--agent-color) 38%, transparent));
+  }
+}
+
+@media (max-width: 760px){
+  .pulse-bg-icon{
+    width: clamp(246px, 84vw, 450px);
+    height: clamp(246px, 84vw, 450px);
+    transform: translate(calc(-50% + 28vw), calc(-50% - 9vw)) rotate(-6deg) scale(1);
+  }
+
+  .pulse-bg-icon.is-visible.is-peaking{
+    animation-name: agentIconFadeInOnlyMobile;
+  }
+
+  @keyframes agentIconFadeInOnlyMobile{
+    0%{
+      opacity: 0;
+      transform: translate(calc(-50% + 28vw), calc(-50% - 9vw)) rotate(-6deg) scale(.985);
+    }
+    100%{
+      opacity: .50;
+      transform: translate(calc(-50% + 28vw), calc(-50% - 9vw)) rotate(-6deg) scale(1);
+    }
+  }
+}
