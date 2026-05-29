@@ -62,7 +62,24 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DB_PATH = ROOT / "data" / "cache" / "neon_tokyo_jp.duckdb"
 DEFAULT_OUT_DIR = ROOT / "site" / "data" / "japan" / "ai-arena" / "diagnostics"
 
-CORE_AGENTS = ["KYOU", "NAGARE", "MAMORU", "SAGURI", "MATSU", "KAESHI", "HIZUMI"]
+CORE_AGENTS = [
+    "daily_striker",
+    "weekly_sage",
+    "risk_sentinel",
+    "discovery_scout",
+    "contrarian_monk",
+    "reversal_snapback",
+    "value_mispricing",
+]
+AGENT_DISPLAY_NAMES = {
+    "daily_striker": "KYOU",
+    "weekly_sage": "NAGARE",
+    "risk_sentinel": "MAMORU",
+    "discovery_scout": "SAGURI",
+    "contrarian_monk": "MATSU",
+    "reversal_snapback": "KAESHI",
+    "value_mispricing": "HIZUMI",
+}
 
 # JP equity ticker forms commonly seen in the project:
 # - 5803.T
@@ -465,7 +482,7 @@ def review_agent_scores(db: Duck) -> dict:
     """):
         agent, nrows, tickers, max_score, avg_score = row
         item = {
-            "agent": str(agent).upper(),
+            "agent": str(agent).lower(),
             "rows": int(nrows or 0),
             "unique_tickers": int(tickers or 0),
             "max_score": safe_round(max_score, 4),
@@ -475,10 +492,10 @@ def review_agent_scores(db: Duck) -> dict:
             actions = dict(db.rows(f"""
                 SELECT COALESCE({action_expr}, '(blank)') AS action, COUNT(*)
                 FROM {table}
-                WHERE UPPER({agent_col}) = ?
+                WHERE LOWER({agent_col}) = ?
                 GROUP BY 1
                 ORDER BY 2 DESC
-            """, [str(agent).upper()]))
+            """, [str(agent).lower()]))
             item["action_counts"] = actions
         agent_rows.append(item)
 
@@ -600,7 +617,7 @@ def review_arena(db: Duck) -> dict:
                 item["run_ids"] = [r[0] for r in db.rows(f"SELECT DISTINCT run_id FROM {table} ORDER BY 1 LIMIT 20")]
             if "agent_id" in cols:
                 agent_rows = db.rows(f"""
-                    SELECT UPPER(agent_id), COUNT(*)
+                    SELECT LOWER(agent_id), COUNT(*)
                     FROM {table}
                     GROUP BY 1
                     ORDER BY 1
@@ -618,7 +635,7 @@ def review_arena(db: Duck) -> dict:
             if table == "arena_trades" and "realized_return_pct" in cols:
                 item["return_summary"] = {}
                 for agent, n, avg_ret, max_ret, min_ret in db.rows("""
-                    SELECT UPPER(agent_id), COUNT(*), AVG(realized_return_pct), MAX(realized_return_pct), MIN(realized_return_pct)
+                    SELECT LOWER(agent_id), COUNT(*), AVG(realized_return_pct), MAX(realized_return_pct), MIN(realized_return_pct)
                     FROM arena_trades
                     GROUP BY 1
                     ORDER BY 1
@@ -760,12 +777,12 @@ def build_warnings(report: dict, args: argparse.Namespace) -> list[dict]:
     orders = arena.get("arena_orders", {})
     equity = arena.get("arena_equity_curve", {})
     if trades.get("table_exists") and "by_agent_rows" in trades:
-        rows_by_agent = {str(k).upper(): int(v) for k, v in trades.get("by_agent_rows", {}).items()}
+        rows_by_agent = {str(k).lower(): int(v) for k, v in trades.get("by_agent_rows", {}).items()}
         for agent in CORE_AGENTS:
             if rows_by_agent.get(agent, 0) == 0:
                 warn("AGENT_ZERO_CLOSED_TRADES", "info", f"{agent} has zero closed trades.", {"agent": agent})
     if orders.get("table_exists") and "by_agent_rows" in orders:
-        rows_by_agent = {str(k).upper(): int(v) for k, v in orders.get("by_agent_rows", {}).items()}
+        rows_by_agent = {str(k).lower(): int(v) for k, v in orders.get("by_agent_rows", {}).items()}
         for agent in CORE_AGENTS:
             if rows_by_agent.get(agent, 0) == 0:
                 warn("AGENT_ZERO_ORDERS", "warning", f"{agent} has zero orders.", {"agent": agent})
@@ -870,7 +887,7 @@ def markdown_report(report: dict) -> str:
         for a in scores["by_agent"]:
             actions = ", ".join(f"{k}:{v}" for k, v in (a.get("action_counts") or {}).items())
             lines.append(
-                f"| {a.get('agent')} | {a.get('rows')} | {a.get('unique_tickers')} | "
+                f"| {AGENT_DISPLAY_NAMES.get(a.get('agent'), a.get('agent'))} / `{a.get('agent')}` | {a.get('rows')} | {a.get('unique_tickers')} | "
                 f"{format_metric(a.get('max_score'))} | {format_metric(a.get('avg_score'))} | {actions} |"
             )
     lines.append("")

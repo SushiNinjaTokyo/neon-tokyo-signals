@@ -36,6 +36,68 @@ def remove_file(path: Path, removed: list[dict]) -> None:
         path.unlink()
 
 
+
+def compact_prices_latest(path: Path, removed: list[dict], warnings: list[str]) -> None:
+    """Rewrite legacy full prices latest.json into summary mode in place.
+
+    This handles the case where an earlier workflow committed a 40-50MB full
+    OHLCV payload.  The file is not deleted because downstream code expects the
+    path to exist; instead we remove per-symbol historical bars and keep latest
+    metrics only.
+    """
+    if not path.exists() or not path.is_file():
+        return
+    before = size_mb(path)
+    if before <= MAX_PRICE_LATEST_MB:
+        return
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        warnings.append(f"{safe_rel(path)} is too large and could not be parsed for compaction: {exc}")
+        return
+    items = payload.get("items") or []
+    if not isinstance(items, list) or not items:
+        warnings.append(f"{safe_rel(path)} is too large but has no compactable items[]")
+        return
+
+    compact_items = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        bars = item.get("bars") or []
+        latest_bar = bars[-1] if isinstance(bars, list) and bars else item.get("latest_bar")
+        compact_items.append({
+            "symbol": item.get("symbol"),
+            "name": item.get("name"),
+            "theme": item.get("theme"),
+            "bucket": item.get("bucket"),
+            "priority": item.get("priority"),
+            "asset_type": item.get("asset_type"),
+            "pulse_label": item.get("pulse_label"),
+            "market": item.get("market"),
+            "currency": item.get("currency"),
+            "source": item.get("source"),
+            "source_symbol": item.get("source_symbol"),
+            "bars_count": item.get("bars_count"),
+            "date_start": item.get("date_start"),
+            "date_end": item.get("date_end"),
+            "is_partial": item.get("is_partial"),
+            "warnings": item.get("warnings") or [],
+            "source_errors": item.get("source_errors") or [],
+            "metrics": item.get("metrics") or {},
+            "latest_bar": latest_bar,
+            "bars_omitted": True,
+        })
+    payload["items"] = compact_items
+    payload["equities"] = [x for x in compact_items if x.get("asset_type") == "equity"]
+    payload["market_pulse"] = [x for x in compact_items if x.get("asset_type") == "market_pulse"]
+    payload["public_json_mode"] = "summary"
+    payload["bars_omitted"] = True
+    if not DRY_RUN:
+        path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    after = before if DRY_RUN else size_mb(path)
+    removed.append({"path": safe_rel(path), "action": "compact_prices_latest", "before_mb": round(before, 4), "after_mb": round(after, 4)})
+
 def main() -> int:
     removed: list[dict] = []
     warnings: list[str] = []
@@ -52,6 +114,7 @@ def main() -> int:
             remove_file(p, removed)
 
     latest_prices = prices_dir / "latest.json"
+    compact_prices_latest(latest_prices, removed, warnings)
     if latest_prices.exists() and size_mb(latest_prices) > MAX_PRICE_LATEST_MB:
         warnings.append(f"{safe_rel(latest_prices)} is {size_mb(latest_prices):.2f} MB; expected <= {MAX_PRICE_LATEST_MB} MB")
 

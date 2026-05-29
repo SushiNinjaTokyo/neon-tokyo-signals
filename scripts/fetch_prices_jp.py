@@ -67,9 +67,19 @@ MIN_ACCEPTABLE_BARS = int(os.getenv("MIN_ACCEPTABLE_BARS", "20"))
 REQUEST_SLEEP_SECONDS = float(os.getenv("REQUEST_SLEEP_SECONDS", "0.25"))
 UNIVERSE_LIMIT = int(os.getenv("UNIVERSE_LIMIT", "0") or "0")
 PRICE_STORE_MODE = os.getenv("PRICE_STORE_MODE", "json").strip().lower()
-PRICE_PUBLIC_JSON_MODE = os.getenv("PRICE_PUBLIC_JSON_MODE", "full").strip().lower()
-WRITE_DATED_PRICE_JSON = os.getenv("WRITE_DATED_PRICE_JSON", "true").strip().lower() in {"1", "true", "yes", "on"}
+PRICE_PUBLIC_JSON_MODE = os.getenv("PRICE_PUBLIC_JSON_MODE", "summary").strip().lower()
+WRITE_DATED_PRICE_JSON = os.getenv("WRITE_DATED_PRICE_JSON", "false").strip().lower() in {"1", "true", "yes", "on"}
 PRICE_DUCKDB_PATH = os.getenv("PRICE_DUCKDB_PATH", str(ROOT / "data" / "cache" / "neon_tokyo_jp.duckdb"))
+
+# Safety guard: when prices are persisted to DuckDB, the public latest.json must
+# stay lightweight.  Full OHLCV bars belong in DuckDB/cache, not in Git/Vercel.
+# To intentionally emit a full public JSON, set ALLOW_FULL_PUBLIC_PRICE_JSON=true.
+ALLOW_FULL_PUBLIC_PRICE_JSON = os.getenv("ALLOW_FULL_PUBLIC_PRICE_JSON", "false").strip().lower() in {"1", "true", "yes", "on"}
+if PRICE_STORE_MODE in {"json_and_duckdb", "duckdb", "duckdb_only"} and not ALLOW_FULL_PUBLIC_PRICE_JSON:
+    if PRICE_PUBLIC_JSON_MODE == "full":
+        print("WARNING: PRICE_PUBLIC_JSON_MODE=full was requested with DuckDB storage; forcing summary mode.")
+    PRICE_PUBLIC_JSON_MODE = "summary"
+    WRITE_DATED_PRICE_JSON = False
 
 
 TZ = ZoneInfo("Asia/Tokyo")
@@ -747,6 +757,12 @@ def main() -> int:
     if should_write_public_json:
         public_payload = build_public_payload(payload, PRICE_PUBLIC_JSON_MODE)
         write_json(latest_path, public_payload)
+        latest_mb = latest_path.stat().st_size / 1024 / 1024 if latest_path.exists() else 0.0
+        if PRICE_PUBLIC_JSON_MODE == "summary" and latest_mb > float(os.getenv("MAX_PRICE_LATEST_JSON_MB", "5")):
+            raise RuntimeError(
+                f"{safe_relative(latest_path)} is {latest_mb:.2f} MB in summary mode. "
+                "Public price JSON must remain lightweight; inspect summarize_price_item()."
+            )
 
         history: list[dict[str, Any]] = []
         if WRITE_DATED_PRICE_JSON and PRICE_PUBLIC_JSON_MODE == "full":

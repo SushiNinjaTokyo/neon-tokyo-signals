@@ -61,6 +61,7 @@ RUN_MODE = os.getenv("RUN_MODE", "rebuild").lower().strip()  # rebuild|live
 RUN_ID_ENV = os.getenv("RUN_ID", "").strip()
 RESET_RUN = os.getenv("RESET_RUN", "true").lower() == "true"
 PROMOTE_DISPLAY_RUN = os.getenv("PROMOTE_DISPLAY_RUN", "true").lower() == "true"
+FORCE_FINALIZE_SEASON = os.getenv("FORCE_FINALIZE_SEASON", "false").lower() in {"1", "true", "yes", "on"}
 RULE_NOTE = os.getenv("RULES_VERSION_NOTE", "")
 
 AGENTS_YML = ROOT / "data" / "agents" / "jp_agents.yml"
@@ -154,6 +155,14 @@ def main() -> int:
         rules_hash=rules_hash,
     )
     create_or_replace_run(conn, run_cfg, reset_run=RESET_RUN, note=RULE_NOTE)
+    try:
+        conn.execute(
+            "UPDATE arena_simulation_runs SET force_close_positions_at_year_end = ?, finalized_season = ? WHERE run_id = ?",
+            [FORCE_FINALIZE_SEASON, FORCE_FINALIZE_SEASON, run_id],
+        )
+    except Exception:
+        # Older DB caches may not have finalized_season until schema migration.
+        pass
 
     states = {a["agent_id"]: AgentState(agent_id=a["agent_id"], cash_jpy=initial_capital) for a in agents}
     agent_rules = strategy_cfg.get("agents", {}) or {}
@@ -427,11 +436,14 @@ def main() -> int:
                 "created_at": now,
             })
 
-    # 5) Force-close all remaining positions at the final trading day's close.
-    # Replace the final date's equity rows after force close so yearly rankings
-    # reflect the finalized season, including year-end slippage.
+    # 5) Optionally force-close all remaining positions.
+    # During an in-progress calendar year, open positions must remain open.
+    # Otherwise the public Positions page becomes empty and the simulation no
+    # longer represents the live season.  Force-close only when explicitly
+    # finalizing the season, typically after year-end.
     last_d = season.last_trading_date
-    if last_d:
+    should_finalize = bool(FORCE_FINALIZE_SEASON)
+    if should_finalize and last_d:
         equity_rows = [r for r in equity_rows if r["date"] != last_d]
         for aid, state in states.items():
             for ticker, pos in list(state.positions.items()):
@@ -444,7 +456,7 @@ def main() -> int:
                     exit_date=last_d,
                     exit_price_raw=cp,
                     code="YEAR_END_CLOSE",
-                    text="Closed automatically at season end to finalize annual ranking.",
+                    text="Closed automatically at season finalization to lock annual ranking.",
                 )
         for agent in agents:
             aid = agent["agent_id"]
@@ -499,6 +511,15 @@ def main() -> int:
             })
     rows_to_insert(conn, "arena_open_positions", open_rows)
 
+    persisted_counts = {
+        "arena_orders": conn.execute("SELECT COUNT(*) FROM arena_orders WHERE run_id = ?", [run_id]).fetchone()[0],
+        "arena_trades": conn.execute("SELECT COUNT(*) FROM arena_trades WHERE run_id = ?", [run_id]).fetchone()[0],
+        "arena_open_positions": conn.execute("SELECT COUNT(*) FROM arena_open_positions WHERE run_id = ?", [run_id]).fetchone()[0],
+        "arena_equity_curve": conn.execute("SELECT COUNT(*) FROM arena_equity_curve WHERE run_id = ?", [run_id]).fetchone()[0],
+    }
+    if persisted_counts["arena_equity_curve"] <= 0:
+        raise RuntimeError(f"Arena run {run_id} did not persist equity curve rows to DuckDB: {persisted_counts}")
+
     ranking_diag = rebuild_rankings(conn, run_id=run_id, year=YEAR, initial_capital_jpy=initial_capital)
     if PROMOTE_DISPLAY_RUN:
         promote_display_run(conn, year=YEAR, run_id=run_id, note=RULE_NOTE or "Promoted by season rebuild workflow")
@@ -506,7 +527,8 @@ def main() -> int:
     outputs = export_arena_payloads(conn, out_dir=OUT_DIR, run_id=run_id, year=YEAR, agents=load_agents_for_public())
     print(f"run_id={run_id}")
     print(f"trading_dates={len(season.trading_dates)}")
-    print(f"orders={len(orders)} trades={len(trades)} equity_rows={len(equity_rows)}")
+    print(f"orders={len(orders)} trades={len(trades)} equity_rows={len(equity_rows)} open_positions={len(open_rows)} finalized={FORCE_FINALIZE_SEASON}")
+    print(f"persisted_counts={persisted_counts}")
     print(f"ranking_diag={ranking_diag}")
     for key, path in outputs.items():
         print(f"Wrote {key}: {safe_rel(path)}")

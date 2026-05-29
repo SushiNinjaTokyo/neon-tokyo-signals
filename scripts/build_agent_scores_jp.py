@@ -51,10 +51,32 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
     tmp.replace(path)
 
 
+def _table_exists(conn, table: str) -> bool:
+    try:
+        return conn.execute("SELECT COUNT(*) FROM information_schema.tables WHERE table_name = ?", [table]).fetchone()[0] > 0
+    except Exception:
+        return False
+
+
 def load_feature_universe_frame(conn) -> pd.DataFrame:
-    """Load all features joined with universe metadata."""
-    return conn.execute(
+    """Load all features joined with universe metadata and optional value features."""
+    value_join = ""
+    value_cols = ""
+    if _table_exists(conn, "value_features_daily"):
+        value_join = "LEFT JOIN value_features_daily vf ON f.ticker = vf.ticker AND f.date = vf.date"
+        value_cols = """,
+          vf.valuation_discount_score,
+          vf.quality_guard_score,
+          vf.earnings_stability_score,
+          vf.shareholder_return_score,
+          vf.re_rating_signal_score,
+          vf.value_trap_penalty,
+          vf.value_mispricing_score,
+          vf.valuation_bucket,
+          vf.value_status
         """
+    return conn.execute(
+        f"""
         SELECT
           f.*,
           u.name,
@@ -74,8 +96,10 @@ def load_feature_universe_frame(conn) -> pd.DataFrame:
           u.is_value_candidate,
           u.is_excluded,
           u.exclude_reason
+          {value_cols}
         FROM features_daily f
         LEFT JOIN universe_master u USING (ticker)
+        {value_join}
         """
     ).df()
 
@@ -109,6 +133,34 @@ def score_range(df: pd.DataFrame, start_date: str, end_date: str) -> pd.DataFram
         return build_agent_scores(pd.DataFrame())
     return pd.concat(frames, ignore_index=True)
 
+
+
+def date_coverage_diagnostics(df: pd.DataFrame) -> dict[str, Any]:
+    if df.empty or "date" not in df.columns:
+        return {"date_count": 0}
+    work = df.copy()
+    work["_date"] = pd.to_datetime(work["date"], errors="coerce").dt.date
+    if "asset_type" in work.columns:
+        work = work[work["asset_type"].fillna("equity").astype(str).str.lower().eq("equity")]
+    if "is_excluded" in work.columns:
+        work = work[~work["is_excluded"].fillna(False).astype(bool)]
+    denom = int(work["ticker"].nunique()) if "ticker" in work.columns else int(len(work))
+    rows = []
+    if "ticker" in work.columns:
+        g = work.groupby("_date")["ticker"].nunique().sort_index()
+    else:
+        g = work.groupby("_date").size().sort_index()
+    for d, n in g.tail(15).items():
+        rows.append({"date": str(d), "symbols": int(n), "coverage_pct": round((n / denom * 100.0), 2) if denom else None})
+    eligible_threshold_pct = float(os.getenv("AGENT_SCORE_MIN_DATE_COVERAGE_PCT", "70") or 70)
+    eligible = [r for r in rows if (r.get("coverage_pct") or 0) >= eligible_threshold_pct]
+    return {
+        "date_count": int(len(g)),
+        "equity_symbol_denominator": denom,
+        "min_date_coverage_pct": eligible_threshold_pct,
+        "recent_dates": rows,
+        "latest_recent_eligible_date": eligible[-1]["date"] if eligible else None,
+    }
 
 def write_agent_score_outputs(scores: pd.DataFrame, generated_at: str, diagnostics: dict[str, Any]) -> None:
     latest_date = None
@@ -209,6 +261,7 @@ def main() -> int:
         "range": {"start_date": START_DATE, "end_date": END_DATE},
         "price_rows": price_rows,
         "feature_diagnostics": feature_diag,
+        "score_date_coverage": date_coverage_diagnostics(df),
         "agent_score_rows": int(len(scores)),
     }
     write_agent_score_outputs(scores, generated_at, diagnostics)
