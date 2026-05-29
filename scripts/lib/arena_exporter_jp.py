@@ -403,6 +403,193 @@ def _diagnostics_markdown(diag: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+
+def _safe_div(num: float, den: float, default: float = 0.0) -> float:
+    try:
+        if den == 0:
+            return default
+        return float(num) / float(den)
+    except Exception:
+        return default
+
+
+def _agent_trade_stats(trades: pd.DataFrame, agents: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Build per-Agent trade statistics for Summary JSON."""
+    rows: list[dict[str, Any]] = []
+    for agent in agents:
+        aid = str(agent.get("agent_id"))
+        tdf = trades[trades["agent_id"] == aid] if not trades.empty and "agent_id" in trades.columns else pd.DataFrame()
+        if tdf.empty:
+            rows.append({
+                "agent_id": aid,
+                "name": agent.get("name") or aid.upper(),
+                "color": agent.get("color") or "#7DF9FF",
+                "closed_trades": 0,
+                "wins": 0,
+                "losses": 0,
+                "win_rate_pct": 0.0,
+                "avg_return_pct": 0.0,
+                "median_return_pct": 0.0,
+                "best_return_pct": None,
+                "worst_return_pct": None,
+                "realized_pnl_jpy": 0.0,
+                "avg_holding_days": 0.0,
+            })
+            continue
+        ret = pd.to_numeric(tdf.get("realized_return_pct"), errors="coerce").dropna()
+        pnl = pd.to_numeric(tdf.get("realized_pnl_jpy"), errors="coerce").fillna(0.0)
+        hold = pd.to_numeric(tdf.get("holding_days"), errors="coerce").dropna()
+        wins = int((ret > 0).sum()) if not ret.empty else 0
+        losses = int((ret <= 0).sum()) if not ret.empty else 0
+        rows.append({
+            "agent_id": aid,
+            "name": agent.get("name") or aid.upper(),
+            "color": agent.get("color") or "#7DF9FF",
+            "closed_trades": int(len(tdf)),
+            "wins": wins,
+            "losses": losses,
+            "win_rate_pct": round(_safe_div(wins * 100.0, max(1, len(tdf))), 2),
+            "avg_return_pct": round(float(ret.mean()), 4) if not ret.empty else 0.0,
+            "median_return_pct": round(float(ret.median()), 4) if not ret.empty else 0.0,
+            "best_return_pct": round(float(ret.max()), 4) if not ret.empty else None,
+            "worst_return_pct": round(float(ret.min()), 4) if not ret.empty else None,
+            "realized_pnl_jpy": round(float(pnl.sum()), 2),
+            "avg_holding_days": round(float(hold.mean()), 2) if not hold.empty else 0.0,
+        })
+    return rows
+
+
+def _build_portfolio_snapshot(
+    conn: duckdb.DuckDBPyConnection,
+    *,
+    run_id: str,
+    positions: pd.DataFrame,
+    trades: pd.DataFrame,
+    agents: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Build current portfolio and ticker contribution summary.
+
+    Contribution combines closed realized P/L and current open unrealized P/L.
+    This makes the Summary page useful even mid-season when some positions are
+    still open and would not appear in closed-trade rankings.
+    """
+    agent_by_id = {str(a.get("agent_id")): a for a in agents}
+
+    enriched_positions = positions.copy() if not positions.empty else pd.DataFrame()
+    if not enriched_positions.empty:
+        try:
+            universe = conn.execute(
+                """
+                SELECT ticker, sector, industry, bucket, market
+                FROM universe_master
+                """
+            ).df()
+            if not universe.empty:
+                enriched_positions = enriched_positions.merge(universe, on="ticker", how="left")
+        except Exception:
+            pass
+
+    total_mv = float(pd.to_numeric(enriched_positions.get("market_value_jpy"), errors="coerce").fillna(0).sum()) if not enriched_positions.empty else 0.0
+
+    top_positions: list[dict[str, Any]] = []
+    if not enriched_positions.empty:
+        work = enriched_positions.copy()
+        work["market_value_jpy"] = pd.to_numeric(work.get("market_value_jpy"), errors="coerce").fillna(0.0)
+        work["unrealized_pnl_jpy"] = pd.to_numeric(work.get("unrealized_pnl_jpy"), errors="coerce").fillna(0.0)
+        work["weight_pct"] = work["market_value_jpy"].apply(lambda x: round(_safe_div(x * 100.0, total_mv), 3) if total_mv else 0.0)
+        work["agent_name"] = work["agent_id"].map(lambda x: agent_by_id.get(str(x), {}).get("name") or str(x))
+        top_positions = _records(work.sort_values("market_value_jpy", ascending=False).head(30))
+
+    allocation_by_agent: list[dict[str, Any]] = []
+    if not enriched_positions.empty:
+        g = enriched_positions.groupby("agent_id", dropna=False).agg(
+            market_value_jpy=("market_value_jpy", "sum"),
+            unrealized_pnl_jpy=("unrealized_pnl_jpy", "sum"),
+            position_count=("ticker", "count"),
+        ).reset_index()
+        g["weight_pct"] = g["market_value_jpy"].apply(lambda x: round(_safe_div(float(x) * 100.0, total_mv), 3) if total_mv else 0.0)
+        g["agent_name"] = g["agent_id"].map(lambda x: agent_by_id.get(str(x), {}).get("name") or str(x))
+        g["color"] = g["agent_id"].map(lambda x: agent_by_id.get(str(x), {}).get("color") or "#7DF9FF")
+        allocation_by_agent = _records(g.sort_values("market_value_jpy", ascending=False))
+
+    allocation_by_sector: list[dict[str, Any]] = []
+    if not enriched_positions.empty and "sector" in enriched_positions.columns:
+        s = enriched_positions.copy()
+        s["sector"] = s["sector"].fillna("Unknown")
+        sg = s.groupby("sector", dropna=False).agg(
+            market_value_jpy=("market_value_jpy", "sum"),
+            position_count=("ticker", "count"),
+        ).reset_index()
+        sg["weight_pct"] = sg["market_value_jpy"].apply(lambda x: round(_safe_div(float(x) * 100.0, total_mv), 3) if total_mv else 0.0)
+        allocation_by_sector = _records(sg.sort_values("market_value_jpy", ascending=False).head(15))
+
+    realized = pd.DataFrame()
+    if not trades.empty:
+        realized = trades.groupby(["ticker", "name"], dropna=False).agg(
+            realized_pnl_jpy=("realized_pnl_jpy", "sum"),
+            closed_trades=("ticker", "count"),
+        ).reset_index()
+    unrealized = pd.DataFrame()
+    if not enriched_positions.empty:
+        unrealized = enriched_positions.groupby(["ticker", "name"], dropna=False).agg(
+            unrealized_pnl_jpy=("unrealized_pnl_jpy", "sum"),
+            market_value_jpy=("market_value_jpy", "sum"),
+            open_positions=("ticker", "count"),
+        ).reset_index()
+    if realized.empty and unrealized.empty:
+        contribution_records: list[dict[str, Any]] = []
+    elif realized.empty:
+        contribution = unrealized.copy()
+        contribution["realized_pnl_jpy"] = 0.0
+        contribution["closed_trades"] = 0
+    elif unrealized.empty:
+        contribution = realized.copy()
+        contribution["unrealized_pnl_jpy"] = 0.0
+        contribution["market_value_jpy"] = 0.0
+        contribution["open_positions"] = 0
+    else:
+        contribution = realized.merge(unrealized, on=["ticker", "name"], how="outer").fillna(0)
+    if not (realized.empty and unrealized.empty):
+        contribution["total_pnl_jpy"] = pd.to_numeric(contribution.get("realized_pnl_jpy"), errors="coerce").fillna(0.0) + pd.to_numeric(contribution.get("unrealized_pnl_jpy"), errors="coerce").fillna(0.0)
+        contribution_records = _records(contribution.sort_values("total_pnl_jpy", ascending=False).head(20))
+        worst_contribution_records = _records(contribution.sort_values("total_pnl_jpy", ascending=True).head(20))
+    else:
+        worst_contribution_records = []
+
+    return {
+        "total_market_value_jpy": round(total_mv, 2),
+        "open_position_count": int(len(enriched_positions)) if not enriched_positions.empty else 0,
+        "top_positions": top_positions,
+        "allocation_by_agent": allocation_by_agent,
+        "allocation_by_sector": allocation_by_sector,
+        "best_ticker_contribution": contribution_records,
+        "worst_ticker_contribution": worst_contribution_records,
+    }
+
+
+def _build_equity_overview(equity: pd.DataFrame, agents: list[dict[str, Any]]) -> dict[str, Any]:
+    """Build equity timeline metadata for the Summary page."""
+    if equity.empty:
+        return {"latest_date": None, "agent_latest": [], "daily_leaders": []}
+    agent_by_id = {str(a.get("agent_id")): a for a in agents}
+    latest_date = str(equity["date"].max())
+    latest = equity[equity["date"].astype(str) == latest_date].copy()
+    latest["agent_name"] = latest["agent_id"].map(lambda x: agent_by_id.get(str(x), {}).get("name") or str(x))
+    latest["color"] = latest["agent_id"].map(lambda x: agent_by_id.get(str(x), {}).get("color") or "#7DF9FF")
+    latest_records = _records(latest.sort_values("portfolio_equity_jpy", ascending=False))
+
+    daily_leaders: list[dict[str, Any]] = []
+    try:
+        work = equity.copy()
+        work["rank"] = work.groupby("date")["portfolio_equity_jpy"].rank(method="first", ascending=False)
+        leaders = work[work["rank"] == 1].groupby("agent_id").size().reset_index(name="leader_days")
+        leaders["agent_name"] = leaders["agent_id"].map(lambda x: agent_by_id.get(str(x), {}).get("name") or str(x))
+        leaders["color"] = leaders["agent_id"].map(lambda x: agent_by_id.get(str(x), {}).get("color") or "#7DF9FF")
+        daily_leaders = _records(leaders.sort_values("leader_days", ascending=False))
+    except Exception:
+        daily_leaders = []
+    return {"latest_date": latest_date, "agent_latest": latest_records, "daily_leaders": daily_leaders}
+
 def export_arena_payloads(
     conn: duckdb.DuckDBPyConnection,
     *,
@@ -456,8 +643,15 @@ def export_arena_payloads(
     for r in ranking_records:
         r["activity"] = activity_by_agent.get(r.get("agent_id"), {})
 
+    trade_stats = _agent_trade_stats(trades, agents)
+    portfolio_snapshot = _build_portfolio_snapshot(conn, run_id=run_id, positions=positions, trades=trades, agents=agents)
+    equity_overview = _build_equity_overview(equity, agents)
+
     visuals = {
         "monthly_heatmap": _build_monthly_heatmap(monthly_records=monthly_records, agents=agents),
+        "portfolio_allocation_by_agent": portfolio_snapshot.get("allocation_by_agent", []),
+        "portfolio_allocation_by_sector": portfolio_snapshot.get("allocation_by_sector", []),
+        "daily_leaders": equity_overview.get("daily_leaders", []),
     }
 
     live_payload = {
@@ -471,6 +665,9 @@ def export_arena_payloads(
         "open_positions": _records(positions),
         "recent_trades": _records(trades.head(50)),
         "diagnostics": diag,
+        "portfolio": portfolio_snapshot,
+        "trade_stats": trade_stats,
+        "equity_overview": equity_overview,
     }
     ranking_payload = {
         "schema_version": "ai_arena_ranking_v2",
@@ -481,6 +678,7 @@ def export_arena_payloads(
         "ranking": ranking_records,
         "equity_sparklines": spark,
         "diagnostics": diag,
+        "trade_stats": trade_stats,
     }
     positions_payload = {
         "schema_version": "ai_arena_positions_v2",
@@ -490,6 +688,7 @@ def export_arena_payloads(
         "open_positions": _records(positions),
         "closed_trades": _records(trades.tail(200)),
         "diagnostics": diag,
+        "portfolio": portfolio_snapshot,
     }
     summary_payload = {
         "schema_version": "ai_arena_annual_summary_v1",
@@ -506,6 +705,9 @@ def export_arena_payloads(
         },
         "visuals": visuals,
         "diagnostics": diag,
+        "portfolio": portfolio_snapshot,
+        "trade_stats": trade_stats,
+        "equity_overview": equity_overview,
     }
 
     outputs = {
