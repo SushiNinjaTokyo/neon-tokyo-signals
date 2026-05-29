@@ -590,6 +590,264 @@ def _build_equity_overview(equity: pd.DataFrame, agents: list[dict[str, Any]]) -
         daily_leaders = []
     return {"latest_date": latest_date, "agent_latest": latest_records, "daily_leaders": daily_leaders}
 
+
+
+AGENT_REASON_COPY = {
+    "daily_striker": {
+        "IN": "after a high-volume short-term breakout",
+        "OUT": "after short-term momentum cooled",
+    },
+    "weekly_sage": {
+        "IN": "after the weekly trend stayed intact",
+        "OUT": "after the weekly trend weakened",
+    },
+    "risk_sentinel": {
+        "IN": "as a defensive liquidity pick",
+        "OUT": "after the defensive setup faded",
+    },
+    "discovery_scout": {
+        "IN": "after an emerging momentum signal",
+        "OUT": "after the discovery signal lost strength",
+    },
+    "contrarian_monk": {
+        "IN": "after a contrarian mean-reversion setup",
+        "OUT": "after the reversion thesis played out",
+    },
+    "reversal_snapback": {
+        "IN": "after a snapback reversal signal",
+        "OUT": "after a snapback target was reached",
+    },
+    "value_mispricing": {
+        "IN": "after a valuation mispricing signal",
+        "OUT": "after valuation normalized",
+    },
+}
+
+
+def _theme_tone(agent: dict[str, Any]) -> str:
+    """Map Agent theme names to the limited tone vocabulary used by TOP Hero CSS."""
+    raw = str(agent.get("theme_color") or agent.get("theme") or agent.get("color") or "cyan").lower()
+    if raw in {"blue", "violet", "purple", "indigo"}:
+        return "topix"
+    if raw in {"green", "amber", "yellow"}:
+        return "growth"
+    if raw in {"magenta", "pink", "red"}:
+        return "growth"
+    return "nikkei"
+
+
+def _company_name_display(symbol: Any, name: Any) -> str:
+    """Return a compact company label for ticker tape text."""
+    s = str(symbol or "").strip()
+    n = str(name or "").strip()
+    if not n or n == s:
+        return s
+    return f"{s} {n}".strip()
+
+
+def _ticker_reason(agent_id: str, side: str) -> str:
+    side_key = "OUT" if str(side).upper() in {"OUT", "SELL"} else "IN"
+    return AGENT_REASON_COPY.get(agent_id, {}).get(side_key) or "based on its latest signal"
+
+
+def _build_hero_ticker_tape(
+    *,
+    positions: pd.DataFrame,
+    trades: pd.DataFrame,
+    agents: list[dict[str, Any]],
+    limit: int = 18,
+) -> list[dict[str, Any]]:
+    """Build the TOP page electric ticker text from current IN and recent OUT events.
+
+    The TOP page should not fetch GPT notes.  We generate deterministic English
+    copy from orders/trades/positions so the site remains fully static and
+    reproducible in GitHub Actions.
+    """
+    agent_by_id = {str(a.get("agent_id")): a for a in agents}
+    rows: list[dict[str, Any]] = []
+
+    def add_item(agent_id: str, event_type: str, symbol: Any, name: Any, event_date: Any = None) -> None:
+        agent = agent_by_id.get(str(agent_id), {})
+        agent_name = str(agent.get("name") or agent_id).upper()
+        side = "OUT" if event_type == "OUT" else "IN"
+        display = _company_name_display(symbol, name)
+        reason = _ticker_reason(str(agent_id), side)
+        text = f"{agent_name} is {side} {display} {reason}."
+        rows.append({
+            "agent_id": str(agent_id),
+            "agent_name": agent_name,
+            "type": side,
+            "symbol": str(symbol or ""),
+            "company_name": str(name or symbol or ""),
+            "display_symbol_name": display,
+            "event_date": str(event_date)[:10] if event_date is not None else None,
+            "text": text,
+            "color": agent.get("color") or "#7DF9FF",
+        })
+
+    if not positions.empty:
+        work = positions.copy()
+        if "market_value_jpy" in work.columns:
+            work["_sort_value"] = pd.to_numeric(work["market_value_jpy"], errors="coerce").fillna(0.0)
+            work = work.sort_values("_sort_value", ascending=False)
+        for _, r in work.head(max(1, limit // 2)).iterrows():
+            add_item(
+                str(r.get("agent_id") or ""),
+                "IN",
+                r.get("ticker"),
+                r.get("name") or r.get("ticker"),
+                r.get("last_date") or r.get("entry_date"),
+            )
+
+    if not trades.empty:
+        work = trades.copy()
+        sort_cols = [c for c in ["exit_date", "created_at"] if c in work.columns]
+        if sort_cols:
+            work = work.sort_values(sort_cols, ascending=False)
+        for _, r in work.head(limit).iterrows():
+            add_item(
+                str(r.get("agent_id") or ""),
+                "OUT",
+                r.get("ticker"),
+                r.get("name") or r.get("ticker"),
+                r.get("exit_date"),
+            )
+
+    # De-duplicate identical event text while preserving order.
+    seen: set[str] = set()
+    deduped: list[dict[str, Any]] = []
+    for item in rows:
+        key = str(item.get("text") or "")
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        deduped.append(item)
+        if len(deduped) >= limit:
+            break
+
+    if deduped:
+        return deduped
+
+    # Safe empty-state copy.  This should rarely appear, but it is better than
+    # keeping old market ticker content if the Arena has no visible positions.
+    for agent in agents[:7]:
+        aid = str(agent.get("agent_id"))
+        name = str(agent.get("name") or aid).upper()
+        reason = _ticker_reason(aid, "IN")
+        deduped.append({
+            "agent_id": aid,
+            "agent_name": name,
+            "type": "IN",
+            "symbol": "AI-ARENA",
+            "company_name": "Tokyo Market",
+            "display_symbol_name": "AI-ARENA Tokyo Market",
+            "event_date": None,
+            "text": f"{name} is scanning AI-ARENA Tokyo Market {reason}.",
+            "color": agent.get("color") or "#7DF9FF",
+        })
+    return deduped
+
+
+def _build_top_hero_payload(
+    *,
+    generated_at: str,
+    year: int,
+    run_id: str,
+    run: pd.DataFrame,
+    agents: list[dict[str, Any]],
+    ranking_records: list[dict[str, Any]],
+    spark: dict[str, list[dict[str, Any]]],
+    positions: pd.DataFrame,
+    trades: pd.DataFrame,
+    equity_overview: dict[str, Any],
+) -> dict[str, Any]:
+    """Build the lightweight JSON used by the Neon Tokyo TOP Hero.
+
+    This payload is intentionally smaller and more stable than summary/latest.
+    The TOP page only needs Agent name, icon, return %, sparkline, and ticker
+    tape copy.  Detailed trading stats stay on the Summary page.
+    """
+    agent_by_id = {str(a.get("agent_id")): a for a in agents}
+    ranked: list[dict[str, Any]] = []
+    for r in ranking_records:
+        aid = str(r.get("agent_id") or "")
+        agent = agent_by_id.get(aid, {})
+        points = spark.get(aid, [])
+        return_pct = r.get("total_return_pct")
+        ranked.append({
+            "agent_id": aid,
+            "display_name": agent.get("name") or aid.upper(),
+            "role": aid,
+            "role_label": agent.get("role") or agent.get("style") or "AI Agent",
+            "theme": str(agent.get("theme_color") or "cyan").lower(),
+            "tone": _theme_tone(agent),
+            "color": agent.get("color") or "#7DF9FF",
+            "icon_src": agent.get("image") or f"/assets/ai-arena/agents/{aid}.png",
+            "rank": _safe_int(r.get("rank"), 0),
+            "return_pct": None if return_pct is None else round(_safe_float(return_pct), 4),
+            "sparkline": points,
+            "background_label": agent.get("name") or aid.upper(),
+        })
+
+    # Keep the same seven-agent order as ranking.  If ranking is missing, fall
+    # back to YAML order so the TOP page still renders deterministically.
+    if not ranked:
+        for i, agent in enumerate(agents, start=1):
+            aid = str(agent.get("agent_id") or "")
+            ranked.append({
+                "agent_id": aid,
+                "display_name": agent.get("name") or aid.upper(),
+                "role": aid,
+                "role_label": agent.get("role") or agent.get("style") or "AI Agent",
+                "theme": str(agent.get("theme_color") or "cyan").lower(),
+                "tone": _theme_tone(agent),
+                "color": agent.get("color") or "#7DF9FF",
+                "icon_src": agent.get("image") or f"/assets/ai-arena/agents/{aid}.png",
+                "rank": i,
+                "return_pct": 0.0,
+                "sparkline": spark.get(aid, []),
+                "background_label": agent.get("name") or aid.upper(),
+            })
+
+    start_date = None
+    end_date = None
+    status = "unknown"
+    if not run.empty:
+        start_date = str(run.iloc[0].get("start_date") or "")[:10] or None
+        end_date = str(run.iloc[0].get("end_date") or "")[:10] or None
+        status = str(run.iloc[0].get("status") or "unknown")
+
+    ticker_tape = _build_hero_ticker_tape(positions=positions, trades=trades, agents=agents)
+    return {
+        "schema_version": "neon_tokyo_ai_arena_hero_v1",
+        "generated_at": generated_at,
+        "source_summary_path": "/data/japan/ai-arena/summary/latest.json",
+        "display_run_id": run_id,
+        "run_id": run_id,
+        "status": status,
+        "season": {
+            "year": year,
+            "start_date": start_date or f"{year}-01-01",
+            "latest_date": equity_overview.get("latest_date") or end_date,
+            "end_date": end_date,
+        },
+        "hero": {
+            "title": "AI Arena JP",
+            "subtitle": "Seven agents are trading the Tokyo market.",
+            "primary_cta_label": "Enter AI Arena",
+            "primary_cta_href": "/japan/ai-arena/summary/",
+        },
+        "agents": ranked,
+        "ticker_tape": ticker_tape,
+        "market_context": {
+            "leader": ranked[0].get("display_name") if ranked else None,
+            "leader_return_pct": ranked[0].get("return_pct") if ranked else None,
+            "open_positions": int(len(positions)) if not positions.empty else 0,
+            "closed_trades": int(len(trades)) if not trades.empty else 0,
+        },
+    }
+
+
 def export_arena_payloads(
     conn: duckdb.DuckDBPyConnection,
     *,
@@ -654,6 +912,19 @@ def export_arena_payloads(
         "daily_leaders": equity_overview.get("daily_leaders", []),
     }
 
+    hero_payload = _build_top_hero_payload(
+        generated_at=generated_at,
+        year=year,
+        run_id=run_id,
+        run=run,
+        agents=agents,
+        ranking_records=ranking_records,
+        spark=spark,
+        positions=positions,
+        trades=trades,
+        equity_overview=equity_overview,
+    )
+
     live_payload = {
         "schema_version": "ai_arena_live_v1",
         "generated_at": generated_at,
@@ -716,6 +987,7 @@ def export_arena_payloads(
         "positions": base / "positions" / "latest.json",
         "summary": base / "summary" / "latest.json",
         "summary_year": base / "summary" / str(year) / "latest.json",
+        "hero": base / "hero" / "latest.json",
         "diagnostics": base / "diagnostics" / "latest.json",
         "diagnostics_md": base / "diagnostics" / "latest.md",
         # Legacy compatibility while existing AI Arena pages are migrated.
@@ -726,6 +998,7 @@ def export_arena_payloads(
     write_json(outputs["positions"], positions_payload)
     write_json(outputs["summary"], summary_payload)
     write_json(outputs["summary_year"], summary_payload)
+    write_json(outputs["hero"], hero_payload)
     write_json(outputs["diagnostics"], diag)
     write_text(outputs["diagnostics_md"], _diagnostics_markdown(diag))
     write_json(outputs["legacy_simulation"], live_payload)
