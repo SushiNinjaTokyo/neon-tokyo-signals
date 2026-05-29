@@ -16,6 +16,15 @@
 {% set totals = diagnostics.totals or {} %}
 {% set activity = diagnostics.agent_activity or [] %}
 {% set heatmap = (payload.visuals or {}).monthly_heatmap or [] %}
+{% set portfolio = payload.portfolio or {} %}
+{% set trade_stats = payload.trade_stats or [] %}
+{% set equity_overview = payload.equity_overview or {} %}
+{% set latest_equity = equity_overview.agent_latest or [] %}
+{% set top_positions = portfolio.top_positions or [] %}
+{% set best_contrib = portfolio.best_ticker_contribution or [] %}
+{% set worst_contrib = portfolio.worst_ticker_contribution or [] %}
+{% set alloc_agents = portfolio.allocation_by_agent or [] %}
+{% set alloc_sectors = portfolio.allocation_by_sector or [] %}
 
 <main class="nt-shell">
   <nav class="nt-topbar" aria-label="AI Arena navigation">
@@ -31,18 +40,18 @@
   </nav>
 
   <header class="summary-hero">
-    <div class="hero-copy">
+    <section class="hero-copy">
       <p class="eyebrow">AI ARENA // CALENDAR-YEAR SEASON</p>
       <h1>{{ payload.year or 'Season' }} Performance Terminal</h1>
       <p class="hero-sub">
-        Annual league table, monthly equity heatmap, trade extremes, and execution diagnostics for the current display run.
+        Annual equity, live portfolio, trade quality, ticker contribution, and execution health for the current display run.
       </p>
       <div class="hero-meta" aria-label="run metadata">
         <span>RUN <b>{{ payload.run_id or 'N/A' }}</b></span>
         <span>STATUS <b>{{ payload.status or 'N/A' }}</b></span>
         <span>UPDATED <b>{{ payload.generated_at or 'N/A' }}</b></span>
       </div>
-    </div>
+    </section>
     <aside class="hero-diagnostics" aria-label="execution overview">
       <div class="diag-kicker">Execution Health</div>
       <div class="diag-main">
@@ -52,7 +61,7 @@
       <div class="diag-grid">
         <div><b>{{ totals.orders or 0 }}</b><span>Orders</span></div>
         <div><b>{{ totals.filled_orders or 0 }}</b><span>Filled</span></div>
-        <div><b>{{ totals.trades or 0 }}</b><span>Trades</span></div>
+        <div><b>{{ totals.trades or 0 }}</b><span>Closed</span></div>
         <div><b>{{ totals.open_positions or 0 }}</b><span>Open</span></div>
       </div>
     </aside>
@@ -61,18 +70,21 @@
   {% if diagnostics.warnings %}
   <section class="warning-strip" aria-label="diagnostic warnings">
     <strong>Diagnostics</strong>
-    <div>
-      {% for warning in diagnostics.warnings %}
-        <span>{{ warning }}</span>
-      {% endfor %}
-    </div>
+    <div>{% for warning in diagnostics.warnings %}<span>{{ warning }}</span>{% endfor %}</div>
   </section>
   {% endif %}
+
+  <section class="kpi-grid" aria-label="season key performance indicators">
+    <article class="kpi-card"><span>Portfolio MV</span><b>¥{{ '{:,.0f}'.format(portfolio.total_market_value_jpy or 0) }}</b></article>
+    <article class="kpi-card"><span>Open Positions</span><b>{{ portfolio.open_position_count or 0 }}</b></article>
+    <article class="kpi-card"><span>Closed Trades</span><b>{{ totals.trades or 0 }}</b></article>
+    <article class="kpi-card"><span>Latest Equity Date</span><b>{{ equity_overview.latest_date or 'N/A' }}</b></article>
+  </section>
 
   <section class="section-head">
     <p class="eyebrow">SEASON RANKING</p>
     <h2>Annual Performance</h2>
-    <p>Performance is based on portfolio equity, not only closed P/L. Trade counts expose whether each Agent is actually active.</p>
+    <p>Performance is based on portfolio equity, including open positions. Execution counts reveal whether each Agent is genuinely active.</p>
   </section>
 
   {% if annual %}
@@ -82,26 +94,13 @@
       {% set act = row.activity or {} %}
       {% set ret = row.total_return_pct or 0 %}
       <article class="agent-card rank-{{ row.rank }}" style="--agent-color: {{ row.color or agent.color or '#7DF9FF' }}">
-        <div class="agent-card-top">
-          <span class="rank-badge">#{{ row.rank }}</span>
-          <span class="agent-role">{{ agent.role or row.agent_id }}</span>
-        </div>
+        <div class="agent-card-top"><span class="rank-badge">#{{ row.rank }}</span><span class="agent-role">{{ agent.role or row.agent_id }}</span></div>
         <div class="agent-name-row">
-          {% if agent.image %}
-          <img src="{{ agent.image }}" alt="{{ agent.name or row.agent_id }} avatar" loading="lazy" />
-          {% endif %}
-          <div>
-            <h3>{{ agent.name or row.agent_id }}</h3>
-            <p>{{ agent.style or agent.description or 'AI Arena Agent' }}</p>
-          </div>
+          {% if agent.image %}<img src="{{ agent.image }}" alt="{{ agent.name or row.agent_id }} avatar" loading="lazy" />{% endif %}
+          <div><h3>{{ agent.name or row.agent_id }}</h3><p>{{ agent.style or agent.description or 'AI Arena Agent' }}</p></div>
         </div>
-        <div class="return-row">
-          <strong class="return-value {{ 'is-pos' if ret >= 0 else 'is-neg' }}">{{ '%.2f'|format(ret) }}%</strong>
-          <span>¥{{ '{:,.0f}'.format(row.end_equity_jpy or 0) }}</span>
-        </div>
-        <svg class="sparkline" viewBox="0 0 220 54" preserveAspectRatio="none" aria-hidden="true">
-          <polyline points="{{ row.sparkline_points or '' }}" />
-        </svg>
+        <div class="return-row"><strong class="return-value {{ 'is-pos' if ret >= 0 else 'is-neg' }}">{{ '%.2f'|format(ret) }}%</strong><span>¥{{ '{:,.0f}'.format(row.end_equity_jpy or 0) }}</span></div>
+        <svg class="sparkline" viewBox="0 0 220 54" preserveAspectRatio="none" aria-hidden="true"><polyline points="{{ row.sparkline_points or '' }}" /></svg>
         <div class="metric-grid">
           <div><b>{{ row.trade_count or 0 }}</b><span>Closed</span></div>
           <div><b>{{ act.executed_buys or 0 }}</b><span>Buys</span></div>
@@ -110,11 +109,7 @@
           <div><b>{{ '%.1f'|format(row.win_rate_pct or 0) }}%</b><span>Win</span></div>
           <div><b>{{ '%.1f'|format(row.max_drawdown_pct or 0) }}%</b><span>MDD</span></div>
         </div>
-        {% if act.warnings %}
-        <div class="agent-warnings">
-          {% for w in act.warnings %}<span>{{ w }}</span>{% endfor %}
-        </div>
-        {% endif %}
+        {% if act.warnings %}<div class="agent-warnings">{% for w in act.warnings %}<span>{{ w }}</span>{% endfor %}</div>{% endif %}
       </article>
     {% endfor %}
   </section>
@@ -122,119 +117,109 @@
   <section class="empty-panel">No annual ranking data was generated for this run.</section>
   {% endif %}
 
-  <section class="dashboard-grid">
+  <section class="dashboard-grid primary-grid">
     <article class="panel panel-wide">
-      <div class="panel-head">
-        <div>
-          <p class="eyebrow">MONTHLY EQUITY</p>
-          <h2>Performance Heatmap</h2>
-        </div>
-        <span class="panel-note">Monthly return from first equity point to last equity point in each month.</span>
-      </div>
+      <div class="panel-head"><div><p class="eyebrow">MONTHLY EQUITY</p><h2>Performance Heatmap</h2></div><span class="panel-note">Monthly return by Agent. Missing cells mean no equity points for that month.</span></div>
       {% if heatmap %}
       <div class="heatmap-table" role="table" aria-label="monthly performance heatmap">
-        <div class="heatmap-header" role="row">
-          <span>Agent</span>
-          {% for m in range(1, 13) %}
-            <span>{{ ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m-1] }}</span>
-          {% endfor %}
-        </div>
+        <div class="heatmap-header" role="row"><span>Agent</span>{% for m in range(1, 13) %}<span>{{ ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m-1] }}</span>{% endfor %}</div>
         {% for row in heatmap %}
-          <div class="heatmap-row" role="row" style="--agent-color: {{ row.color or '#7DF9FF' }}">
-            <span class="heat-agent">{{ row.name or row.agent_id }}</span>
-            {% for cell in row.cells %}
-              {% set v = cell.return_pct %}
-              <span class="heat-cell {{ 'no-data' if not cell.has_data else ('pos' if v is not none and v >= 0 else 'neg') }}" title="{{ row.name }} {{ cell.label }} {{ v if v is not none else 'N/A' }}%">
-                {% if cell.has_data and v is not none %}{{ '%.1f'|format(v) }}{% else %}—{% endif %}
-              </span>
-            {% endfor %}
-          </div>
+        <div class="heatmap-row" role="row" style="--agent-color: {{ row.color or '#7DF9FF' }}">
+          <span class="heat-agent">{{ row.name or row.agent_id }}</span>
+          {% for cell in row.cells %}{% set v = cell.return_pct %}<span class="heat-cell {{ 'no-data' if not cell.has_data else ('pos' if v is not none and v >= 0 else 'neg') }}" title="{{ row.name }} {{ cell.label }} {{ v if v is not none else 'N/A' }}%">{% if cell.has_data and v is not none %}{{ '%.1f'|format(v) }}{% else %}—{% endif %}</span>{% endfor %}
+        </div>
         {% endfor %}
       </div>
-      {% else %}
-      <div class="empty-panel compact">No monthly equity data yet.</div>
-      {% endif %}
+      {% else %}<div class="empty-panel compact">No monthly equity data yet.</div>{% endif %}
     </article>
 
     <article class="panel">
-      <div class="panel-head compact-head">
-        <div>
-          <p class="eyebrow">BEST STRIKES</p>
-          <h2>Best Closed Trades</h2>
-        </div>
-      </div>
-      <div class="trade-list">
-        {% for t in best_trades[:10] %}
-        <div class="trade-card best">
-          <span class="trade-rank">#{{ t.rank }}</span>
-          <div>
-            <b>{{ t.ticker }}</b>
-            <small>{{ t.name or t.agent_id }} · {{ t.agent_id }}</small>
-          </div>
-          <strong>{{ '%.1f'|format(t.realized_return_pct or 0) }}%</strong>
-        </div>
-        {% else %}
-        <div class="empty-panel compact">No closed winning trades yet.</div>
-        {% endfor %}
+      <div class="panel-head compact-head"><div><p class="eyebrow">LATEST EQUITY</p><h2>Live League</h2></div></div>
+      <div class="mini-list">
+        {% for e in latest_equity %}
+        <div class="mini-row" style="--agent-color: {{ e.color or '#7DF9FF' }}"><b>{{ e.agent_name or e.agent_id }}</b><span>{{ '%.2f'|format(e.total_return_pct or 0) }}%</span><small>¥{{ '{:,.0f}'.format(e.portfolio_equity_jpy or 0) }}</small></div>
+        {% else %}<div class="empty-panel compact">No latest equity data.</div>{% endfor %}
       </div>
     </article>
 
     <article class="panel">
-      <div class="panel-head compact-head">
-        <div>
-          <p class="eyebrow">WORST HITS</p>
-          <h2>Worst Closed Trades</h2>
-        </div>
-      </div>
-      <div class="trade-list">
-        {% for t in worst_trades[:10] %}
-        <div class="trade-card worst">
-          <span class="trade-rank">#{{ t.rank }}</span>
-          <div>
-            <b>{{ t.ticker }}</b>
-            <small>{{ t.name or t.agent_id }} · {{ t.agent_id }}</small>
-          </div>
-          <strong>{{ '%.1f'|format(t.realized_return_pct or 0) }}%</strong>
-        </div>
-        {% else %}
-        <div class="empty-panel compact">No closed losing trades yet.</div>
-        {% endfor %}
+      <div class="panel-head compact-head"><div><p class="eyebrow">LEADER DAYS</p><h2>Control</h2></div></div>
+      <div class="mini-list">
+        {% for d in (equity_overview.daily_leaders or []) %}
+        <div class="mini-row" style="--agent-color: {{ d.color or '#7DF9FF' }}"><b>{{ d.agent_name or d.agent_id }}</b><span>{{ d.leader_days }}</span><small>days at #1</small></div>
+        {% else %}<div class="empty-panel compact">No leader data.</div>{% endfor %}
       </div>
     </article>
   </section>
 
-  <section class="panel diagnostics-panel">
-    <div class="panel-head">
-      <div>
-        <p class="eyebrow">EXECUTION DIAGNOSTICS</p>
-        <h2>Agent Activity Check</h2>
+  <section class="dashboard-grid secondary-grid">
+    <article class="panel panel-wide">
+      <div class="panel-head"><div><p class="eyebrow">LIVE PORTFOLIO</p><h2>Open Positions</h2></div><span class="panel-note">Top current positions by market value.</span></div>
+      <div class="position-table">
+        <div class="table-head"><span>Agent</span><span>Ticker</span><span>Name</span><span>MV</span><span>Unrealized</span><span>Weight</span></div>
+        {% for p in top_positions[:12] %}
+        <div class="table-row"><span>{{ p.agent_name or p.agent_id }}</span><b>{{ p.ticker }}</b><span>{{ p.name or '-' }}</span><span>¥{{ '{:,.0f}'.format(p.market_value_jpy or 0) }}</span><span class="{{ 'is-pos-text' if (p.unrealized_pnl_jpy or 0) >= 0 else 'is-neg-text' }}">¥{{ '{:,.0f}'.format(p.unrealized_pnl_jpy or 0) }}</span><span>{{ '%.1f'|format(p.weight_pct or 0) }}%</span></div>
+        {% else %}<div class="empty-panel compact">No open positions.</div>{% endfor %}
       </div>
-      <span class="panel-note">Use this section to confirm whether weak performance is real or caused by no executions.</span>
-    </div>
+    </article>
+
+    <article class="panel">
+      <div class="panel-head compact-head"><div><p class="eyebrow">AGENT ALLOCATION</p><h2>Exposure</h2></div></div>
+      <div class="allocation-bars">
+        {% for a in alloc_agents %}
+        <div class="bar-row" style="--agent-color: {{ a.color or '#7DF9FF' }}"><div><b>{{ a.agent_name or a.agent_id }}</b><span>{{ a.position_count or 0 }} pos</span></div><div class="bar"><i style="width: {{ [a.weight_pct or 0, 100]|min }}%"></i></div><strong>{{ '%.1f'|format(a.weight_pct or 0) }}%</strong></div>
+        {% else %}<div class="empty-panel compact">No allocation.</div>{% endfor %}
+      </div>
+    </article>
+
+    <article class="panel">
+      <div class="panel-head compact-head"><div><p class="eyebrow">SECTOR ALLOCATION</p><h2>Risk Map</h2></div></div>
+      <div class="allocation-bars sector-bars">
+        {% for s in alloc_sectors[:8] %}
+        <div class="bar-row"><div><b>{{ s.sector or 'Unknown' }}</b><span>{{ s.position_count or 0 }} pos</span></div><div class="bar"><i style="width: {{ [s.weight_pct or 0, 100]|min }}%"></i></div><strong>{{ '%.1f'|format(s.weight_pct or 0) }}%</strong></div>
+        {% else %}<div class="empty-panel compact">No sector data.</div>{% endfor %}
+      </div>
+    </article>
+  </section>
+
+  <section class="dashboard-grid trade-grid">
+    <article class="panel">
+      <div class="panel-head compact-head"><div><p class="eyebrow">BEST STRIKES</p><h2>Best Closed Trades</h2></div></div>
+      <div class="trade-list">{% for t in best_trades[:10] %}<div class="trade-card best"><span class="trade-rank">#{{ t.rank }}</span><div><b>{{ t.ticker }}</b><small>{{ t.name or t.agent_id }} · {{ t.agent_id }}</small></div><strong>{{ '%.1f'|format(t.realized_return_pct or 0) }}%</strong></div>{% else %}<div class="empty-panel compact">No closed winning trades yet.</div>{% endfor %}</div>
+    </article>
+    <article class="panel">
+      <div class="panel-head compact-head"><div><p class="eyebrow">WORST HITS</p><h2>Worst Closed Trades</h2></div></div>
+      <div class="trade-list">{% for t in worst_trades[:10] %}<div class="trade-card worst"><span class="trade-rank">#{{ t.rank }}</span><div><b>{{ t.ticker }}</b><small>{{ t.name or t.agent_id }} · {{ t.agent_id }}</small></div><strong>{{ '%.1f'|format(t.realized_return_pct or 0) }}%</strong></div>{% else %}<div class="empty-panel compact">No closed losing trades yet.</div>{% endfor %}</div>
+    </article>
+    <article class="panel">
+      <div class="panel-head compact-head"><div><p class="eyebrow">TRADE QUALITY</p><h2>Agent Stats</h2></div></div>
+      <div class="quality-list">
+        {% for s in trade_stats %}<div class="quality-row" style="--agent-color: {{ s.color or '#7DF9FF' }}"><b>{{ s.name }}</b><span>{{ s.closed_trades }} trades</span><span>{{ '%.1f'|format(s.win_rate_pct or 0) }}% win</span><strong class="{{ 'is-pos-text' if (s.avg_return_pct or 0) >= 0 else 'is-neg-text' }}">{{ '%.2f'|format(s.avg_return_pct or 0) }}%</strong></div>{% else %}<div class="empty-panel compact">No trade stats.</div>{% endfor %}
+      </div>
+    </article>
+  </section>
+
+  <section class="dashboard-grid contribution-grid">
+    <article class="panel">
+      <div class="panel-head compact-head"><div><p class="eyebrow">BEST TICKERS</p><h2>Contribution</h2></div></div>
+      <div class="trade-list">{% for c in best_contrib[:10] %}<div class="trade-card best"><span class="trade-rank">#{{ loop.index }}</span><div><b>{{ c.ticker }}</b><small>{{ c.name or '-' }} · open {{ c.open_positions or 0 }} / closed {{ c.closed_trades or 0 }}</small></div><strong>¥{{ '{:,.0f}'.format(c.total_pnl_jpy or 0) }}</strong></div>{% else %}<div class="empty-panel compact">No contribution data.</div>{% endfor %}</div>
+    </article>
+    <article class="panel">
+      <div class="panel-head compact-head"><div><p class="eyebrow">WORST TICKERS</p><h2>Contribution</h2></div></div>
+      <div class="trade-list">{% for c in worst_contrib[:10] %}<div class="trade-card worst"><span class="trade-rank">#{{ loop.index }}</span><div><b>{{ c.ticker }}</b><small>{{ c.name or '-' }} · open {{ c.open_positions or 0 }} / closed {{ c.closed_trades or 0 }}</small></div><strong>¥{{ '{:,.0f}'.format(c.total_pnl_jpy or 0) }}</strong></div>{% else %}<div class="empty-panel compact">No contribution data.</div>{% endfor %}</div>
+    </article>
+  </section>
+
+  <section class="panel diagnostics-panel">
+    <div class="panel-head"><div><p class="eyebrow">EXECUTION DIAGNOSTICS</p><h2>Agent Activity Check</h2></div><span class="panel-note">Confirms whether weak performance is real or caused by no executions.</span></div>
     <div class="activity-grid">
       {% for a in activity %}
       <article class="activity-card" style="--agent-color: {{ a.color or '#7DF9FF' }}">
-        <div class="activity-title">
-          <b>{{ a.name or a.agent_id }}</b>
-          <span class="{{ 'ok' if (a.executed_buys or 0) > 0 else 'alert' }}">{{ (a.executed_buys or 0) }} buys</span>
-        </div>
-        <div class="activity-metrics">
-          <span><b>{{ a.trade_signals or 0 }}</b> trade signals</span>
-          <span><b>{{ a.watch_signals or 0 }}</b> watch</span>
-          <span><b>{{ a.executed_sells or 0 }}</b> sells</span>
-          <span><b>{{ a.closed_trades or 0 }}</b> closed</span>
-          <span><b>{{ a.open_positions or 0 }}</b> open</span>
-          <span><b>{{ '%.2f'|format(a.total_return_pct or 0) }}%</b> return</span>
-        </div>
-        {% if a.warnings %}
-        <div class="agent-warnings compact-warnings">
-          {% for w in a.warnings %}<span>{{ w }}</span>{% endfor %}
-        </div>
-        {% endif %}
+        <div class="activity-title"><b>{{ a.name or a.agent_id }}</b><span class="{{ 'ok' if (a.executed_buys or 0) > 0 else 'alert' }}">{{ a.executed_buys or 0 }} buys</span></div>
+        <div class="activity-metrics"><span><b>{{ a.trade_signals or 0 }}</b> trade signals</span><span><b>{{ a.watch_signals or 0 }}</b> watch</span><span><b>{{ a.executed_sells or 0 }}</b> sells</span><span><b>{{ a.closed_trades or 0 }}</b> closed</span><span><b>{{ a.open_positions or 0 }}</b> open</span><span><b>{{ '%.2f'|format(a.total_return_pct or 0) }}%</b> return</span></div>
+        {% if a.warnings %}<div class="agent-warnings compact-warnings">{% for w in a.warnings %}<span>{{ w }}</span>{% endfor %}</div>{% endif %}
       </article>
-      {% else %}
-      <div class="empty-panel compact">No diagnostics activity was generated.</div>
-      {% endfor %}
+      {% else %}<div class="empty-panel compact">No diagnostics activity was generated.</div>{% endfor %}
     </div>
   </section>
 </main>
