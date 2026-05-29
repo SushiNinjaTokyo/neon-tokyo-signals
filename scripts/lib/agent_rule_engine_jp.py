@@ -127,12 +127,14 @@ def fetch_score_map(conn: duckdb.DuckDBPyConnection, d: date) -> dict[tuple[str,
 
 
 def _bucket_allowed(score_row: dict[str, Any], feature_row: dict[str, Any], entry: dict[str, Any]) -> tuple[bool, str]:
-    bucket = text(score_row.get("universe_bucket") or feature_row.get("bucket"), "")
+    bucket = text(score_row.get("universe_bucket") or feature_row.get("bucket"), "").strip()
+    if not bucket:
+        bucket = "unknown"
     if "require_bucket" in entry and bucket != text(entry.get("require_bucket")):
         return False, "bucket_not_allowed"
     allowed = entry.get("allowed_buckets")
     if allowed:
-        allowed_set = {text(x) for x in allowed}
+        allowed_set = {text(x).strip() for x in allowed}
         if bucket not in allowed_set:
             return False, "bucket_not_allowed"
     return True, "bucket_allowed"
@@ -179,6 +181,10 @@ def _passes_discovery_financial_setup(feature_row: dict[str, Any], setup: dict[s
     ok, reason = _passes_numeric_financial_gates(feature_row, setup)
     if not ok:
         return False, reason
+    if "require_liquidity_score_min" in setup and num(feature_row.get("liquidity_score")) < num(setup["require_liquidity_score_min"]):
+        return False, "liquidity_below_threshold"
+    if "require_avg_traded_value_20d_jpy_min" in setup and num(feature_row.get("avg_traded_value_20d_jpy")) < num(setup["require_avg_traded_value_20d_jpy_min"]):
+        return False, "traded_value_below_threshold"
     if "require_volume_ratio_20d_min" in setup and num(feature_row.get("volume_ratio_20d")) < num(setup["require_volume_ratio_20d_min"]):
         return False, "volume_ratio_below_threshold"
     if "require_range_position_60d_0_1_min" in setup and num(feature_row.get("range_position_60d_0_1")) < num(setup["require_range_position_60d_0_1_min"]):
@@ -186,6 +192,35 @@ def _passes_discovery_financial_setup(feature_row: dict[str, Any], setup: dict[s
     if "require_range_position_20d_0_1_min" in setup and num(feature_row.get("range_position_20d_0_1")) < num(setup["require_range_position_20d_0_1_min"]):
         return False, "range_position_20d_too_low"
     return True, "discovery_financial_setup_passed"
+
+
+
+
+def _passes_discovery_score_setup(score_row: dict[str, Any], feature_row: dict[str, Any], setup: dict[str, Any]) -> tuple[bool, str]:
+    """Alternative bucket bypass for SAGURI-style discovery candidates.
+
+    This allows a stock to pass the bucket gate when the source bucket taxonomy is
+    too coarse, while still requiring a credible small-cap/liquidity/momentum
+    setup.  It only bypasses bucket validation; the normal entry gates below
+    still run afterward.
+    """
+    if not setup:
+        return False, "discovery_score_setup_missing"
+    if "min_score" in setup and num(score_row.get("normalized_score")) < num(setup["min_score"]):
+        return False, "score_below_discovery_setup_threshold"
+    if "require_market_cap_jpy_min" in setup and num(feature_row.get("market_cap_jpy")) < num(setup["require_market_cap_jpy_min"]):
+        return False, "market_cap_too_small"
+    if "require_market_cap_jpy_max" in setup and num(feature_row.get("market_cap_jpy")) > num(setup["require_market_cap_jpy_max"]):
+        return False, "market_cap_too_large"
+    if "require_liquidity_score_min" in setup and num(feature_row.get("liquidity_score")) < num(setup["require_liquidity_score_min"]):
+        return False, "liquidity_below_threshold"
+    if "require_volume_ratio_20d_min" in setup and num(feature_row.get("volume_ratio_20d")) < num(setup["require_volume_ratio_20d_min"]):
+        return False, "volume_ratio_below_threshold"
+    if "require_range_position_60d_0_1_min" in setup and num(feature_row.get("range_position_60d_0_1")) < num(setup["require_range_position_60d_0_1_min"]):
+        return False, "range_position_60d_too_low"
+    if "require_range_position_20d_0_1_min" in setup and num(feature_row.get("range_position_20d_0_1")) < num(setup["require_range_position_20d_0_1_min"]):
+        return False, "range_position_20d_too_low"
+    return True, "discovery_score_setup_passed"
 
 
 def passes_entry_rule(
@@ -219,12 +254,30 @@ def passes_entry_rule(
 
     bucket_ok, bucket_reason = _bucket_allowed(score_row, feature_row, entry)
     if not bucket_ok:
-        if entry.get("bucket_optional_if_financial_setup"):
+        bypass_ok = False
+        bypass_reasons: list[str] = []
+
+        # SAGURI/discovery rules can bypass imperfect bucket taxonomy if the
+        # stock independently satisfies a financial discovery setup.
+        if entry.get("bucket_optional_if_financial_setup") or entry.get("allow_bucket_bypass_for_discovery_setup"):
             setup_ok, setup_reason = _passes_discovery_financial_setup(feature_row, entry.get("discovery_financial_setup") or {})
+            bypass_ok = bypass_ok or setup_ok
             if not setup_ok:
-                return False, bucket_reason
-        else:
-            return False, bucket_reason
+                bypass_reasons.append(setup_reason)
+
+        # A second, lighter bypass allows high-quality early discovery setups
+        # based on score + volume + market-cap range, while all normal gates
+        # still run below.
+        if entry.get("bucket_optional_if_score_setup") or entry.get("allow_bucket_bypass_for_discovery_setup"):
+            score_setup_ok, score_setup_reason = _passes_discovery_score_setup(score_row, feature_row, entry.get("discovery_score_setup") or {})
+            bypass_ok = bypass_ok or score_setup_ok
+            if not score_setup_ok:
+                bypass_reasons.append(score_setup_reason)
+
+        if not bypass_ok:
+            # Prefer the most informative setup failure over the generic bucket
+            # failure so diagnostics explain what would have allowed bypass.
+            return False, bypass_reasons[0] if bypass_reasons else bucket_reason
 
     if num(feature_row.get("liquidity_score")) < num(entry.get("min_liquidity_score"), 0.0):
         return False, "liquidity_below_threshold"
