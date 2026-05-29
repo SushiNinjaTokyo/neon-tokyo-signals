@@ -26,17 +26,33 @@ import pandas as pd
 from .arena_calendar_jp import downsample_points
 
 THEME_COLOR_HEX = {
+    "red": "#FF4B5C",
+    "purple": "#B779FF",
+    "violet": "#B779FF",
     "cyan": "#7DF9FF",
+    "light_blue": "#7DF9FF",
     "blue": "#70A7FF",
     "green": "#5DFFB1",
-    "amber": "#FFD166",
     "yellow": "#FFD166",
-    "violet": "#B779FF",
-    "purple": "#B779FF",
-    "magenta": "#FF4FD8",
+    "amber": "#FFD166",
     "pink": "#FF4FD8",
-    "indigo": "#6F7DFF",
-    "red": "#FF6B8A",
+    "magenta": "#FF4FD8",
+    "indigo": "#4F46E5",
+    "indigo_blue": "#4F46E5",
+}
+
+# Canonical AI Arena JP character colors.
+# Keep this id-based override here because older YAML/profile data may still
+# contain the pre-Arena semantic colors.  TOP Hero and Summary UI must follow
+# the character art direction, not stale profile aliases.
+AGENT_COLOR_BY_ID = {
+    "KYOU": "#FF4B5C",     # red
+    "NAGARE": "#B779FF",   # purple
+    "MAMORU": "#7DF9FF",   # light blue / cyan
+    "SAGURI": "#5DFFB1",   # green
+    "MATSU": "#FFD166",    # yellow
+    "KAESHI": "#FF4FD8",   # pink
+    "HIZUMI": "#4F46E5",   # indigo blue
 }
 
 
@@ -48,8 +64,9 @@ def _normalise_agent(agent: dict[str, Any]) -> dict[str, Any]:
     every historical alias, so the exporter normalises common UI fields here.
     """
     out = dict(agent)
-    theme = str(out.get("theme_color") or "cyan").lower()
-    out.setdefault("color", THEME_COLOR_HEX.get(theme, out.get("theme_color") or "#7DF9FF"))
+    aid = str(out.get("agent_id") or out.get("id") or "").upper()
+    theme = str(out.get("theme_color") or "cyan").lower().replace(" ", "_").replace("-", "_")
+    out["color"] = AGENT_COLOR_BY_ID.get(aid) or THEME_COLOR_HEX.get(theme, out.get("theme_color") or "#7DF9FF")
     out.setdefault("style", out.get("style_label") or "")
     out.setdefault("description", out.get("short_description") or "")
     return out
