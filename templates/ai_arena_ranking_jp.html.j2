@@ -3,284 +3,93 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AI Arena Ranking</title>
+  <title>AI Arena Ranking | Neon Tokyo Signals</title>
+  <meta name="description" content="Live seven-agent AI Arena JP ranking for Neon Tokyo Signals." />
   <link rel="stylesheet" href="/assets/ai_arena_ranking_jp.css" />
 </head>
 <body>
-  <main class="ranking-page">
-    <div class="ambient ambient-a"></div>
-    <div class="ambient ambient-b"></div>
-    <div class="ambient ambient-c"></div>
-
+  <main class="arena-shell">
     <nav class="arena-nav" aria-label="AI Arena navigation">
       <a href="/">TOP</a>
-      <a href="/japan/ai-arena/">ARENA</a>
-      <a href="/japan/ai-arena/positions/">POSITIONS</a>
+      <a href="/japan/ai-arena/summary/">SUMMARY</a>
       <a class="active" href="/japan/ai-arena/ranking/">RANKING</a>
+      <a href="/japan/ai-arena/positions/">POSITIONS</a>
+      <a href="/japan/ai-arena/agents/">AGENTS</a>
     </nav>
 
-    <header class="ranking-hero neon-panel">
-      <div class="hero-copy">
-        <p class="eyebrow">SEASON {{ ranking.season or '—' }}</p>
-        <h1>AI Agent<br />Grand Prix</h1>
-        <p class="hero-sub">A live Tokyo-equity leaderboard ranked by total portfolio return: realised P/L plus current unrealised P/L.</p>
-        <div class="hero-kpis" aria-label="Season summary">
-          <div class="range-kpi"><span>Run Window</span><b class="season-range" aria-label="Simulation window"><i>SEASON</i><strong>{{ (ranking.range.start_date if ranking.range else '—')|replace('-', '.') }}</strong><em></em><strong>{{ (ranking.range.end_date if ranking.range else '—')|replace('-', '.') }}</strong></b></div>
-          <div><span>Leader Gap</span><b>{{ '%.2f'|format(ranking.return_spread_pct or 0) }}%</b></div>
-          <div><span>Agents</span><b>{{ ranking.agents|length }}</b></div>
+    <header class="hero-panel">
+      <section>
+        <p class="eyebrow">NEON TOKYO // AI ARENA JP</p>
+        <h1>Seven-Agent League Table</h1>
+        <p class="lead">Latest display run ranking from the canonical DuckDB season rebuild. No legacy 5-agent static payload is used here.</p>
+        <div class="run-meta">
+          <span>RUN <b>{{ payload.run_id or 'N/A' }}</b></span>
+          <span>YEAR <b>{{ payload.year or 'N/A' }}</b></span>
+          <span>UPDATED <b>{{ payload.generated_at or 'N/A' }}</b></span>
         </div>
-      </div>
-
-      <aside class="ranking-party-profiles" aria-label="AI Party Profiles">
-        <div class="party-profile-head">
-          <p class="eyebrow">AI PARTY PROFILES</p>
-          <span>Five agents / one Tokyo book</span>
-        </div>
-        <div class="party-profile-grid">
-          {% for a in ranking.agents or [] %}
-          <article class="party-profile-card tone-{{ a.ui_tone }}{% if loop.first %} is-leading{% endif %}">
-            <div class="party-avatar-wrap">
-              {% if a.avatar_image %}
-              <img src="{{ a.avatar_image }}" alt="{{ a.name }}" class="party-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-              <div class="pixel-avatar avatar-{{ a.avatar_style or 'pixel_warrior' }} avatar-fallback"><span></span></div>
-              {% else %}
-              <div class="pixel-avatar avatar-{{ a.avatar_style or 'pixel_warrior' }}"><span></span></div>
-              {% endif %}
-            </div>
-            <div class="party-profile-copy">
-              <div class="party-profile-top">
-                <b>{{ a.name }}</b>
-                <span class="rank-crown rank-crown--{{ a.podium_class }}">{{ a.podium_label }}</span>
-              </div>
-              <p>{{ a.rank_title }} / {{ a.display_profile }}</p>
-              <em class="{{ a.return_class }}">{{ '%.2f'|format(a.total_return_pct or a.return_pct or 0) }}%</em>
-            </div>
-          </article>
-          {% endfor %}
-        </div>
+      </section>
+      <aside class="league-kpis">
+        <article><span>Agents</span><b>{{ payload.summary.agent_count }}</b></article>
+        <article><span>Open</span><b>{{ payload.summary.total_open_positions }}</b></article>
+        <article><span>Closed</span><b>{{ payload.summary.total_closed_trades }}</b></article>
+        <article><span>Avg Return</span><b>{{ '%+.2f'|format(payload.summary.avg_return_pct or 0) }}%</b></article>
       </aside>
     </header>
 
-    {% if ranking.podium %}
-    <section class="podium-grid" aria-label="Top three agents">
-      {% for a in ranking.podium %}
-      <article class="podium-card neon-panel podium-{{ a.rank }} tone-{{ a.ui_tone }}">
-        <div class="podium-label rank-crown rank-crown--{{ a.podium_class }}">
-          {% if a.podium_tier == 'crown' %}<span class="crown-shape" aria-hidden="true"></span>{% endif %}
-          <span>{{ a.podium_label }}</span>
-        </div>
-        <div class="podium-avatar-wrap">
-          {% if a.avatar_image %}
-          <img src="{{ a.avatar_image }}" alt="{{ a.name }}" class="podium-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-          <div class="pixel-avatar avatar-{{ a.avatar_style }} avatar-fallback"><span></span></div>
-          {% else %}
-          <div class="pixel-avatar avatar-{{ a.avatar_style }}"><span></span></div>
-          {% endif %}
-        </div>
-        <div class="podium-copy">
-          <h2>{{ a.name }}</h2>
-          <p>{{ a.rank_title }} / {{ a.display_profile }}</p>
-        </div>
-        <div class="podium-return {{ a.return_class }}">{{ '%.2f'|format(a.total_return_pct or a.return_pct or 0) }}%</div>
-        <div class="podium-mini">
-          <span>Equity <b>¥{{ '{:,.0f}'.format(a.portfolio_equity_jpy or 0) }}</b></span>
-          <span>Win Rate <b>{{ '%.1f'|format(a.win_rate_pct or 0) }}%</b></span>
-          <span>Max DD <b>{{ '%.2f'|format(a.max_drawdown_pct or 0) }}%</b></span>
-        </div>
-      </article>
-      {% endfor %}
+    {% if payload.summary.leader %}
+    {% set leader = payload.summary.leader %}
+    <section class="leader-panel" style="--agent-color: {{ leader.color }}">
+      <div class="leader-avatar">
+        {% if leader.agent.image %}<img src="{{ leader.agent.image }}" alt="{{ leader.name }} avatar" loading="lazy" />{% endif %}
+      </div>
+      <div>
+        <p class="eyebrow">CURRENT LEADER</p>
+        <h2>{{ leader.name }}</h2>
+        <p>{{ leader.agent.role }}</p>
+      </div>
+      <strong class="leader-return {{ leader.return_class }}">{{ leader.return_fmt }}</strong>
     </section>
     {% endif %}
 
-    <section class="race-panel neon-panel">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">REAL EQUITY CURVES</p>
-          <h2>Return Race</h2>
+    <section class="rank-grid" aria-label="AI Arena ranking">
+      {% for row in payload.rows %}
+      <article class="rank-card rank-{{ row.rank }}" style="--agent-color: {{ row.color }}">
+        <div class="rank-card-head">
+          <span class="rank-badge">#{{ row.rank }}</span>
+          <span class="agent-chip">{{ row.agent.role }}</span>
         </div>
-        <span class="season-range section-range" aria-label="Race window"><i>RACE WINDOW</i><b>{{ ranking.race.start_date|replace('-', '.') }}</b><em></em><b>{{ ranking.race.end_date|replace('-', '.') }}</b></span>
-      </div>
-
-      <div class="race-chart-wrap">
-        <svg class="race-chart" viewBox="0 0 1000 260" role="img" aria-label="Agent return race chart" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="raceGridFade" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0%" stop-color="rgba(125,249,255,.04)" />
-              <stop offset="50%" stop-color="rgba(125,249,255,.16)" />
-              <stop offset="100%" stop-color="rgba(255,79,216,.05)" />
-            </linearGradient>
-          </defs>
-          <rect x="0" y="0" width="1000" height="260" rx="26" class="race-bg" />
-          <line x1="24" y1="22" x2="976" y2="22" class="race-grid" />
-          <line x1="24" y1="87" x2="976" y2="87" class="race-grid" />
-          <line x1="24" y1="130" x2="976" y2="130" class="race-zero" />
-          <line x1="24" y1="173" x2="976" y2="173" class="race-grid" />
-          <line x1="24" y1="238" x2="976" y2="238" class="race-grid" />
-          {% for a in ranking.agents or [] %}
-          {% if a.race_points %}
-          <polyline class="race-line race-line-base tone-stroke-{{ a.ui_tone }} rank-line-{{ a.rank }}" points="{{ a.race_points }}" />
-          <polyline class="race-line-bolt tone-stroke-{{ a.ui_tone }} rank-line-{{ a.rank }}" points="{{ a.race_points }}" />
-          <circle class="race-dot tone-fill-{{ a.ui_tone }}" cx="{{ '%.1f'|format(a.race_last_xy.x) }}" cy="{{ '%.1f'|format(a.race_last_xy.y) }}" r="4" />
-          {% endif %}
-          {% endfor %}
+        <div class="agent-line">
+          {% if row.agent.image %}<img src="{{ row.agent.image }}" alt="{{ row.name }} avatar" loading="lazy" />{% endif %}
+          <div>
+            <h2>{{ row.name }}</h2>
+            <p>{{ row.agent.style }}</p>
+          </div>
+        </div>
+        <div class="return-block">
+          <strong class="{{ row.return_class }}">{{ row.return_fmt }}</strong>
+          <span>{{ row.end_equity_fmt }}</span>
+        </div>
+        <svg class="spark" viewBox="0 0 260 64" preserveAspectRatio="none" aria-hidden="true">
+          <polyline points="{{ row.sparkline_points }}" />
         </svg>
-        <div class="race-scale">
-          <span>{{ '%.2f'|format(ranking.race.max_return_pct or 0) }}%</span>
-          <span>{{ '%.2f'|format(ranking.race.min_return_pct or 0) }}%</span>
+        <div class="stat-grid">
+          <div><b>{{ row.open_count }}</b><span>Open</span></div>
+          <div><b>{{ row.closed_count }}</b><span>Closed</span></div>
+          <div><b>{{ row.executed_buys }}</b><span>Buys</span></div>
+          <div><b>{{ row.executed_sells }}</b><span>Sells</span></div>
+          <div><b>{{ row.win_rate_fmt }}</b><span>Win</span></div>
+          <div><b>{{ row.max_drawdown_fmt }}</b><span>MDD</span></div>
         </div>
-      </div>
-
-      <div class="race-legend">
-        {% for a in ranking.agents or [] %}
-        <div class="legend-pill tone-{{ a.ui_tone }}">
-          <i></i><b>{{ a.podium_label }} {{ a.name }}</b><span>{{ '%.2f'|format(a.total_return_pct or a.return_pct or 0) }}%</span>
-        </div>
-        {% endfor %}
-      </div>
-    </section>
-
-    <section class="score-stream neon-panel">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">FINAL SCOREBOARD</p>
-          <h2>Return bars</h2>
-        </div>
-        <span>Total return = realized + unrealized</span>
-      </div>
-      <div class="bar-stage">
-        {% for a in ranking.agents or [] %}
-        <div class="score-bar-row tone-{{ a.ui_tone }} {{ a.return_class }}">
-          <div class="score-agent">
-            <b>{{ a.podium_label }}</b>
-            {% if a.avatar_image %}
-            <img src="{{ a.avatar_image }}" alt="" class="score-avatar" loading="lazy" />
-            {% endif %}
-            <span>{{ a.name }}</span>
-          </div>
-          <div class="score-track"><i style="--bar-w: {{ '%.1f'|format(a.bar_width_pct or 10) }}%"></i></div>
-          <div class="score-return">{{ '%.2f'|format(a.total_return_pct or a.return_pct or 0) }}%</div>
-        </div>
-        {% endfor %}
-      </div>
-    </section>
-
-    <section class="ranking-board" aria-label="Agent detail cards">
-      {% for a in ranking.agents or [] %}
-      <article class="rank-card neon-panel rank-{{ a.rank }} tone-{{ a.ui_tone }}">
-        <div class="rank-card-main">
-          <div class="rank-left">
-            <div class="place-block">
-              <div class="label-chip rank-crown rank-crown--{{ a.podium_class }}">
-                {% if a.podium_tier == 'crown' %}<span class="crown-shape" aria-hidden="true"></span>{% endif %}
-                <span>{{ a.podium_label }}</span>
-              </div>
-              <div class="place-title">{{ a.rank_title }}</div>
-            </div>
-            <div class="rank-avatar-wrap">
-              {% if a.avatar_image %}
-              <img src="{{ a.avatar_image }}" alt="{{ a.name }}" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-              <div class="pixel-avatar avatar-{{ a.avatar_style }} avatar-fallback"><span></span></div>
-              {% else %}
-              <div class="pixel-avatar avatar-{{ a.avatar_style }}"><span></span></div>
-              {% endif %}
-            </div>
-            <div class="agent-name">
-              <h2>{{ a.name }}</h2>
-              <p>{{ a.rank_title }} / {{ a.display_profile }}</p>
-              {% if a.philosophy %}<small>{{ a.philosophy }}</small>{% endif %}
-            </div>
-          </div>
-
-          <div class="rank-chart">
-            <svg class="spark" viewBox="0 0 320 92" role="img" aria-label="{{ a.name }} real equity sparkline" preserveAspectRatio="none">
-              <line x1="10" y1="46" x2="310" y2="46" class="spark-zero" />
-              <polyline class="spark-shadow" points="{{ a.spark_points }}" />
-              <polyline class="spark-line tone-stroke-{{ a.ui_tone }}" points="{{ a.spark_points }}" />
-              <polyline class="spark-bolt tone-stroke-{{ a.ui_tone }}" points="{{ a.spark_points }}" />
-            </svg>
-            <div class="spark-meta">
-              <span>{{ a.curve_sessions_label }}</span>
-              <b class="{{ a.recent_momentum_class }}">10D {{ a.recent_momentum_display }}</b>
-            </div>
-          </div>
-
-          <div class="perf-strip" aria-label="{{ a.name }} period gain versus initial capital">
-            {% for w in a.performance_windows or [] %}
-            <div class="perf-chip {{ w.class }}"><span>{{ w.label }}</span><b>{{ w.display }}</b></div>
-            {% endfor %}
-          </div>
-
-          <div class="rank-stats">
-            <div><span>Total Return</span><b class="{{ a.return_class }}">{{ '%.2f'|format(a.total_return_pct or a.return_pct or 0) }}%</b></div>
-            <div><span>Realized</span><b class="{{ 'positive' if a.realized_pnl_jpy >= 0 else 'negative' }}">{{ '%+.2f'|format(a.realized_return_pct or 0) }}%</b></div>
-            <div><span>Unrealized</span><b class="{{ 'positive' if a.unrealized_pnl_jpy >= 0 else 'negative' }}">{{ '%+.2f'|format(a.unrealized_return_pct or 0) }}%</b></div>
-            <div><span>Equity</span><b>¥{{ '{:,.0f}'.format(a.portfolio_equity_jpy or 0) }}</b></div>
-            <div><span>Win Rate</span><b>{{ '%.1f'|format(a.win_rate_pct or 0) }}%</b></div>
-            <div><span>Max DD</span><b>{{ '%.2f'|format(a.max_drawdown_pct or 0) }}%</b></div>
-            <div><span>Open</span><b>{{ a.open_positions or 0 }}</b></div>
-            <div><span>Closed</span><b>{{ a.closed_trades or 0 }}</b></div>
-          </div>
-        </div>
-
-        <div class="trade-grid">
-          <div class="trade-tile open-tile">
-            <span>{{ a.open_position_label }}</span>
-            {% if a.strongest_open_position %}
-            <b>{{ a.strongest_open_position.symbol }}</b>
-            <em>{{ a.strongest_open_position.name }}</em>
-            <strong class="{{ 'positive' if a.strongest_open_position.unrealized_pnl_jpy >= 0 else 'negative' }}">
-              {{ '%+.2f'|format(a.strongest_open_position.unrealized_return_pct or 0) }}% / ¥{{ '{:,.0f}'.format(a.strongest_open_position.unrealized_pnl_jpy or 0) }}
-            </strong>
-            <p>{{ a.strongest_open_position.entry_reason_short }}</p>
-            {% else %}
-            <b>NO OPEN POSITION</b>
-            <em>Cash-only at latest close</em>
-            <strong>—</strong>
-            <p>No unrealised contributor in the current book.</p>
-            {% endif %}
-          </div>
-
-          <div class="trade-tile best-tile">
-            <span>{{ a.best_trade_label }}</span>
-            {% if a.best_trade %}
-            <b>{{ a.best_trade.symbol }}</b>
-            <em>{{ a.best_trade.name }}</em>
-            <strong class="{{ 'positive' if a.best_trade.pnl_jpy >= 0 else 'negative' }}">
-              {{ '%+.2f'|format(a.best_trade.return_pct or 0) }}% / ¥{{ '{:,.0f}'.format(a.best_trade.pnl_jpy or 0) }}
-            </strong>
-            <p>{{ a.best_trade.exit_reason }} / {{ a.best_trade.holding_days }}D</p>
-            {% else %}
-            <b>NO CLOSED TRADE</b>
-            <em>Waiting for realised P/L</em>
-            <strong>—</strong>
-            <p>No completed trade in this season window.</p>
-            {% endif %}
-          </div>
-
-          <div class="trade-tile worst-tile">
-            <span>{{ a.worst_trade_label }}</span>
-            {% if a.worst_trade %}
-            <b>{{ a.worst_trade.symbol }}</b>
-            <em>{{ a.worst_trade.name }}</em>
-            <strong class="{{ 'positive' if a.worst_trade.pnl_jpy >= 0 else 'negative' }}">
-              {{ '%+.2f'|format(a.worst_trade.return_pct or 0) }}% / ¥{{ '{:,.0f}'.format(a.worst_trade.pnl_jpy or 0) }}
-            </strong>
-            <p>{{ a.worst_trade.exit_reason }} / {{ a.worst_trade.holding_days }}D</p>
-            {% else %}
-            <b>NO CLOSED TRADE</b>
-            <em>Waiting for realised P/L</em>
-            <strong>—</strong>
-            <p>No completed trade in this season window.</p>
-            {% endif %}
-          </div>
+        <div class="mini-tape">
+          {% for p in row.top_open %}<span>IN <b>{{ p.ticker or p.symbol }}</b> {{ p.name or '' }}</span>{% endfor %}
+          {% for t in row.recent_closed %}<span>OUT <b>{{ t.ticker or t.symbol }}</b> {{ t.name or '' }}</span>{% endfor %}
+          {% if not row.top_open and not row.recent_closed %}<span>No visible trade tape yet</span>{% endif %}
         </div>
       </article>
+      {% else %}
+      <article class="empty-state">No ranking rows were exported. Run AI Arena JP season rebuild.</article>
       {% endfor %}
     </section>
-
-    <footer class="ranking-footer">
-      <p>Ranking uses total portfolio equity: cash + market value. Realized and unrealized P/L are shown separately for transparency. 1W / 1M / 3M / 6M show period gain or loss measured against initial capital.</p>
-    </footer>
   </main>
 </body>
 </html>

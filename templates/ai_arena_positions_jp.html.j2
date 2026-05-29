@@ -3,184 +3,116 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AI Agent Portfolios | Neon Tokyo Signals</title>
+  <title>AI Arena Positions | Neon Tokyo Signals</title>
+  <meta name="description" content="Current holdings and closed trades for the seven Neon Tokyo AI Arena agents." />
   <link rel="stylesheet" href="/assets/ai_arena_positions_jp.css" />
 </head>
 <body>
-  <main class="page">
-    <nav class="top-nav" aria-label="Primary navigation">
+  <main class="arena-shell">
+    <nav class="arena-nav" aria-label="AI Arena navigation">
       <a href="/">TOP</a>
-      <a href="/japan/ai-arena/">ARENA</a>
-      <a class="active" href="/japan/ai-arena/positions/">POSITIONS</a>
+      <a href="/japan/ai-arena/summary/">SUMMARY</a>
       <a href="/japan/ai-arena/ranking/">RANKING</a>
+      <a class="active" href="/japan/ai-arena/positions/">POSITIONS</a>
+      <a href="/japan/ai-arena/agents/">AGENTS</a>
     </nav>
 
-    <header class="hero panel">
-      <div class="hero-copy">
-        <p class="eyebrow">NEON TOKYO AI ARENA</p>
-        <h1>AI Agent Portfolios</h1>
-        <p class="lead">Current holdings and closed trade history. See what each agent owns now, what it has already closed, and where realised / unrealised P&amp;L is coming from.</p>
-      </div>
-      <div class="hero-meta" aria-label="Simulation range">
-        <span>Season <b>{{ positions.season or '—' }}</b></span>
-        <span class="season-range" aria-label="Simulation window"><i>RUN WINDOW</i><b>{{ (positions.range.start_date if positions.range else '—')|replace('-', '.') }}</b><em></em><b>{{ (positions.range.end_date if positions.range else '—')|replace('-', '.') }}</b></span>
-      </div>
+    <header class="hero-panel">
+      <section>
+        <p class="eyebrow">NEON TOKYO // AI ARENA JP</p>
+        <h1>Seven-Agent Position Book</h1>
+        <p class="lead">Current holdings and recent closed trades generated from the latest display run.</p>
+        <div class="run-meta">
+          <span>RUN <b>{{ payload.run_id or 'N/A' }}</b></span>
+          <span>YEAR <b>{{ payload.year or 'N/A' }}</b></span>
+          <span>UPDATED <b>{{ payload.generated_at or 'N/A' }}</b></span>
+        </div>
+      </section>
+      <aside class="league-kpis">
+        <article><span>Agents</span><b>{{ payload.agent_count }}</b></article>
+        <article><span>Open</span><b>{{ payload.history.open_count }}</b></article>
+        <article><span>Open MV</span><b>{{ payload.history.total_open_value_fmt }}</b></article>
+        <article><span>Closed</span><b>{{ payload.history.closed_count }}</b></article>
+      </aside>
     </header>
 
-    <section class="kpi-strip" aria-label="Portfolio summary">
-      <article class="kpi"><span>Open Positions</span><b>{{ positions.history.open_count }}</b></article>
-      <article class="kpi"><span>Open Value</span><b>{{ positions.history.total_open_value_fmt }}</b></article>
-      <article class="kpi"><span>Unrealized P/L</span><b class="{{ positions.history.total_unrealized_class }}">{{ positions.history.total_unrealized_fmt }}</b></article>
-      <article class="kpi"><span>Realized P/L</span><b class="{{ positions.history.total_realized_class }}">{{ positions.history.total_realized_fmt }}</b></article>
-      <article class="kpi"><span>Closed Trades</span><b>{{ positions.history.closed_count }}</b></article>
-      <article class="kpi"><span>Closed Win Rate</span><b>{{ positions.history.win_rate_fmt }}</b></article>
+    <section class="book-summary">
+      <article><span>Unrealized P/L</span><b class="{{ payload.history.total_unrealized_class }}">{{ payload.history.total_unrealized_fmt }}</b></article>
+      <article><span>Realized P/L</span><b class="{{ payload.history.total_realized_class }}">{{ payload.history.total_realized_fmt }}</b></article>
+      <article><span>Closed Win Rate</span><b>{{ payload.history.win_rate_fmt }}</b></article>
     </section>
 
-    {% for agent in positions.agents or [] %}
-    <section class="agent panel tone-{{ agent.ui_tone or 'cyan' }}">
-      <div class="agent-head">
-        <div class="agent-id-block">
-          <div class="avatar-shell">
-            {% if agent.avatar_image %}
-            <img src="{{ agent.avatar_image }}" alt="{{ agent.name }}" class="agent-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
-            <div class="pixel-avatar avatar-{{ agent.avatar_style or 'pixel_warrior' }} avatar-fallback"><span></span></div>
-            {% else %}
-            <div class="pixel-avatar avatar-{{ agent.avatar_style or 'pixel_warrior' }}"><span></span></div>
-            {% endif %}
-          </div>
-          <div class="agent-title">
-            <p class="eyebrow">{{ agent.class }} / {{ agent.style_label }}</p>
+    {% for agent in payload.agents %}
+    <section class="agent-book" style="--agent-color: {{ agent.color }}">
+      <header class="agent-head">
+        <div class="agent-id">
+          {% if agent.image %}<img src="{{ agent.image }}" alt="{{ agent.name }} avatar" loading="lazy" />{% endif %}
+          <div>
+            <p class="eyebrow">#{{ agent.rank }} // {{ agent.role }}</p>
             <h2>{{ agent.name }}</h2>
-            <p>{{ agent.philosophy or agent.personality or 'Signal-driven AI portfolio agent.' }}</p>
+            <p>{{ agent.description }}</p>
           </div>
         </div>
-        <div class="agent-scoreboard">
-          <span>Total Return <b class="{{ agent.return_class }}">{{ agent.return_fmt }}</b></span>
-          <span>Equity <b>{{ agent.equity_fmt }}</b></span>
-          <span>Cash <b>{{ agent.cash_fmt }}</b></span>
+        <div class="agent-score">
+          <span>Total Return</span>
+          <b>{{ agent.return_fmt }}</b>
+          <small>{{ agent.equity_fmt }}</small>
         </div>
+      </header>
+
+      <div class="agent-kpis">
+        <article><span>Open</span><b>{{ agent.open_count }}</b></article>
+        <article><span>Closed</span><b>{{ agent.closed_count }}</b></article>
+        <article><span>Unrealized</span><b class="{{ agent.unrealized_class }}">{{ agent.unrealized_pnl_fmt }}</b></article>
+        <article><span>Realized</span><b class="{{ agent.realized_class }}">{{ agent.realized_pnl_fmt }}</b></article>
+        <article><span>Win Rate</span><b>{{ agent.win_rate_fmt }}</b></article>
+        <article><span>Signals</span><b>{{ agent.trade_signals }}</b></article>
       </div>
 
-      <div class="agent-summary-grid">
-        <article><span>Open Value</span><b>{{ agent.position_summary.open_market_value_fmt }}</b></article>
-        <article><span>Unrealized</span><b class="{{ agent.position_summary.unrealized_class }}">{{ agent.position_summary.unrealized_pnl_fmt }}</b></article>
-        <article><span>Realized</span><b class="{{ agent.position_summary.realized_class }}">{{ agent.position_summary.realized_pnl_fmt }}</b></article>
-        <article><span>Closed</span><b>{{ agent.position_summary.closed_count }}</b></article>
-        <article><span>Win Rate</span><b>{{ agent.position_summary.win_rate_fmt }}</b></article>
-        <article><span>Avg Hold</span><b>{{ agent.position_summary.avg_holding_fmt }}</b></article>
-      </div>
-
-      <div class="section-head">
-        <h3>Current Holdings</h3>
-        <p>{{ agent.position_summary.open_count }} active position{{ '' if agent.position_summary.open_count == 1 else 's' }}</p>
-      </div>
-
-      <div class="positions-grid">
-        {% for p in agent.open_positions %}
-        <article class="position-card {{ p.pnl_class }}">
-          <div class="position-top">
-            <div>
-              <b>{{ p.symbol }}</b>
-              <span>{{ p.theme or 'Tokyo equity signal' }}</span>
+      <div class="split-grid">
+        <article class="panel">
+          <div class="panel-head"><h3>Current Holdings</h3><span>{{ agent.open_count }} position{{ '' if agent.open_count == 1 else 's' }}</span></div>
+          <div class="position-list">
+            {% for p in agent.open_positions %}
+            <div class="position-row {{ p.pnl_class }}">
+              <div><b>{{ p.ticker }}</b><span>{{ p.name }}</span></div>
+              <strong>{{ p.unrealized_return_fmt }}</strong>
+              <small>{{ p.market_value_fmt }}</small>
+              <em>{{ p.unrealized_pnl_fmt }}</em>
             </div>
-            <em>{{ p.unrealized_return_fmt }}</em>
+            {% else %}<div class="empty-state">No active position. This agent is holding cash.</div>{% endfor %}
           </div>
-          <h4>{{ p.name }}</h4>
-          <div class="pnl-meter" aria-hidden="true"><i style="width: {{ p.return_bar_width }}%"></i></div>
-          <div class="position-stats">
-            <span>Unrealized</span><b class="{{ p.pnl_class }}">{{ p.unrealized_pnl_fmt }}</b>
-            <span>Value</span><b>{{ p.market_value_fmt }}</b>
-            <span>Entry</span><b>{{ p.entry_date_fmt }}</b>
-            <span>Holding</span><b>{{ p.holding_days }}d</b>
-            <span>Shares</span><b>{{ p.shares_fmt }}</b>
-            <span>Price</span><b>{{ p.entry_price_fmt }} → {{ p.current_price_fmt }}</b>
-          </div>
-          <p class="reason">{{ p.entry_reason_clean }}</p>
         </article>
-        {% else %}
-        <article class="empty-state">
-          <b>NO ACTIVE POSITION</b>
-          <span>Holding cash and waiting for the next qualified signal.</span>
-        </article>
-        {% endfor %}
-      </div>
 
-      <div class="history-overview">
-        <article>
-          <span>Best Closed</span>
-          {% if agent.best_closed %}
-          <b class="{{ agent.best_closed.pnl_class }}">{{ agent.best_closed.symbol }} {{ agent.best_closed.return_fmt }}</b>
-          <small>{{ agent.best_closed.pnl_fmt }} / {{ agent.best_closed.holding_days }}d</small>
-          {% else %}<b>—</b><small>No closed trade yet</small>{% endif %}
-        </article>
-        <article>
-          <span>Worst Closed</span>
-          {% if agent.worst_closed %}
-          <b class="{{ agent.worst_closed.pnl_class }}">{{ agent.worst_closed.symbol }} {{ agent.worst_closed.return_fmt }}</b>
-          <small>{{ agent.worst_closed.pnl_fmt }} / {{ agent.worst_closed.holding_days }}d</small>
-          {% else %}<b>—</b><small>No closed trade yet</small>{% endif %}
-        </article>
-        <article>
-          <span>Largest Open</span>
-          {% if agent.largest_open %}
-          <b>{{ agent.largest_open.symbol }}</b>
-          <small>{{ agent.largest_open.market_value_fmt }} / {{ agent.largest_open.unrealized_return_fmt }}</small>
-          {% else %}<b>Cash</b><small>No active exposure</small>{% endif %}
-        </article>
-      </div>
-
-      <details class="closed-trades-panel">
-        <summary class="section-head history-title">
-          <span class="summary-copy">
-            <h3>Recent Closed Trades</h3>
-            <p>Latest {{ agent.recent_closed_trades|length }} of {{ agent.position_summary.closed_count }}</p>
-          </span>
-          <span class="summary-toggle">Open Tape</span>
-        </summary>
-
-        <div class="trade-history">
-          {% for t in agent.recent_closed_trades %}
-          <article class="trade-row {{ t.pnl_class }}">
-            <div class="trade-main">
-              <b>{{ t.symbol }}</b>
-              <span>{{ t.name }}</span>
+        <article class="panel">
+          <div class="panel-head"><h3>Recent Closed Trades</h3><span>{{ agent.recent_closed_trades|length }} shown</span></div>
+          <div class="trade-list">
+            {% for t in agent.recent_closed_trades %}
+            <div class="trade-row {{ t.pnl_class }}">
+              <div><b>{{ t.ticker }}</b><span>{{ t.name }}</span></div>
+              <strong>{{ t.return_fmt }}</strong>
+              <small>{{ t.entry_date_fmt }} → {{ t.exit_date_fmt }}</small>
+              <em>{{ t.pnl_fmt }}</em>
             </div>
-            <div class="trade-dates"><span>{{ t.entry_date_fmt }}</span><i>→</i><span>{{ t.exit_date_fmt }}</span></div>
-            <div class="trade-result"><b>{{ t.return_fmt }}</b><span>{{ t.pnl_fmt }}</span></div>
-            <div class="trade-meta"><span>{{ t.holding_days }}d</span><span>{{ t.exit_reason_clean }}</span></div>
-          </article>
-          {% else %}
-          <article class="empty-history">No closed trades yet.</article>
-          {% endfor %}
-        </div>
-      </details>
+            {% else %}<div class="empty-state">No closed trade yet.</div>{% endfor %}
+          </div>
+        </article>
+      </div>
     </section>
+    {% else %}
+    <section class="empty-state big">No seven-agent position book was exported. Run AI Arena JP season rebuild.</section>
     {% endfor %}
 
-    <section class="panel global-history">
-      <div class="section-head">
-        <h3>Global Closed Trade Tape</h3>
-        <p>Most recent {{ positions.history.recent_closed_trades|length }} closed trades across all agents</p>
-      </div>
-      <div class="global-tape">
-        {% for t in positions.history.recent_closed_trades %}
-        <article class="tape-row {{ t.pnl_class }}">
-          <span class="agent-chip">{{ t.agent_name }}</span>
-          <b>{{ t.symbol }}</b>
-          <span>{{ t.exit_date_fmt }}</span>
-          <em>{{ t.return_fmt }}</em>
-          <strong>{{ t.pnl_fmt }}</strong>
-          <small>{{ t.exit_reason_clean }}</small>
-        </article>
-        {% else %}
-        <article class="empty-history">No closed trades found in simulation history.</article>
-        {% endfor %}
+    <section class="global-tape">
+      <header><p class="eyebrow">GLOBAL TAPE</p><h2>Recent Closed Trades</h2></header>
+      <div class="global-list">
+        {% for t in payload.history.recent_closed_trades %}
+        <div class="global-row {{ t.pnl_class }}" style="--agent-color: {{ t.color or '#7DF9FF' }}">
+          <span>{{ t.agent_name }}</span><b>{{ t.ticker }}</b><small>{{ t.name }}</small><em>{{ t.return_fmt }}</em><strong>{{ t.pnl_fmt }}</strong>
+        </div>
+        {% else %}<div class="empty-state">No closed trades found.</div>{% endfor %}
       </div>
     </section>
-
-    <footer class="footnote">
-      Current holdings use unrealized P/L from simulation output. Closed trade history is read from <code>simulation/latest.json</code>; no execution, cash, or ranking logic is changed by this page render.
-    </footer>
   </main>
 </body>
 </html>
