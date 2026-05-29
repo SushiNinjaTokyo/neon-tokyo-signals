@@ -1,28 +1,26 @@
 {
   "schema_version": "ai_arena_diagnostics_v1",
-  "generated_at": "2026-05-29T07:37:31Z",
+  "generated_at": "2026-05-29T07:54:24Z",
   "year": 2026,
-  "run_id": "arena_jp_rebuild_2026_v009",
+  "run_id": "arena_jp_rebuild_2026_v010",
   "period": {
     "start_date": "2026-01-01 00:00:00",
     "end_date": "2026-05-29 00:00:00"
   },
   "totals": {
-    "orders": 1113,
-    "filled_orders": 1080,
-    "cancelled_orders": 33,
+    "orders": 587,
+    "filled_orders": 567,
+    "cancelled_orders": 20,
     "pending_orders": 0,
-    "buy_orders": 582,
-    "sell_orders": 531,
-    "trades": 531,
-    "open_positions": 18,
+    "buy_orders": 311,
+    "sell_orders": 276,
+    "trades": 276,
+    "open_positions": 15,
     "equity_rows": 679,
     "agents": 7,
-    "agents_with_executed_buys": 6,
-    "agents_with_closed_trades": 6,
-    "flat_agents_without_buys": [
-      "discovery_scout"
-    ]
+    "agents_with_executed_buys": 7,
+    "agents_with_closed_trades": 7,
+    "flat_agents_without_buys": []
   },
   "agent_activity": [
     {
@@ -35,16 +33,16 @@
       "watch_signals": 1733,
       "ignore_signals": 21362,
       "latest_score_date": "2026-05-29 00:00:00",
-      "buy_orders": 110,
-      "executed_buys": 110,
+      "buy_orders": 49,
+      "executed_buys": 49,
       "cancelled_buys": 0,
-      "sell_orders": 110,
-      "executed_sells": 110,
+      "sell_orders": 49,
+      "executed_sells": 49,
       "pending_orders": 0,
-      "closed_trades": 110,
+      "closed_trades": 49,
       "open_positions": 0,
-      "latest_equity_jpy": 9938145.984026007,
-      "total_return_pct": -0.6185,
+      "latest_equity_jpy": 10027903.828500008,
+      "total_return_pct": 0.279,
       "first_equity_date": "2026-01-05 00:00:00",
       "last_equity_date": "2026-05-29 00:00:00",
       "warnings": []
@@ -55,20 +53,20 @@
       "role": "Weekly Trend Flow",
       "color": "#70A7FF",
       "score_rows": 21326,
-      "trade_signals": 5114,
-      "watch_signals": 2890,
-      "ignore_signals": 13322,
+      "trade_signals": 5704,
+      "watch_signals": 2910,
+      "ignore_signals": 12712,
       "latest_score_date": "2026-05-29 00:00:00",
-      "buy_orders": 78,
-      "executed_buys": 48,
-      "cancelled_buys": 30,
-      "sell_orders": 41,
-      "executed_sells": 41,
+      "buy_orders": 62,
+      "executed_buys": 42,
+      "cancelled_buys": 20,
+      "sell_orders": 36,
+      "executed_sells": 36,
       "pending_orders": 0,
-      "closed_trades": 41,
-      "open_positions": 7,
-      "latest_equity_jpy": 12371495.595432507,
-      "total_return_pct": 23.715,
+      "closed_trades": 36,
+      "open_positions": 6,
+      "latest_equity_jpy": 12946447.239902705,
+      "total_return_pct": 29.4645,
       "first_equity_date": "2026-01-05 00:00:00",
       "last_equity_date": "2026-05-29 00:00:00",
       "warnings": []
@@ -103,26 +101,23 @@
       "role": "Hidden Alpha Discovery",
       "color": "#FFD166",
       "score_rows": 2703,
-      "trade_signals": 112,
-      "watch_signals": 307,
-      "ignore_signals": 2284,
+      "trade_signals": 139,
+      "watch_signals": 511,
+      "ignore_signals": 2053,
       "latest_score_date": "2026-05-29 00:00:00",
-      "buy_orders": 0,
-      "executed_buys": 0,
+      "buy_orders": 10,
+      "executed_buys": 10,
       "cancelled_buys": 0,
-      "sell_orders": 0,
-      "executed_sells": 0,
+      "sell_orders": 10,
+      "executed_sells": 10,
       "pending_orders": 0,
-      "closed_trades": 0,
+      "closed_trades": 10,
       "open_positions": 0,
-      "latest_equity_jpy": 10000000.0,
-      "total_return_pct": 0.0,
+      "latest_equity_jpy": 9957655.443000002,
+      "total_return_pct": -0.4234,
       "first_equity_date": "2026-01-05 00:00:00",
       "last_equity_date": "2026-05-29 00:00:00",
-      "warnings": [
-        "SIGNALS_BUT_NO_BUYS",
-        "FLAT_NO_EXECUTED_BUYS"
-      ]
+      "warnings": []
     },
     {
       "agent_id": "contrarian_monk",
@@ -178,20 +173,20 @@
       "role": "Mispricing and Valuation Signal",
       "color": "#4F46E5",
       "score_rows": 23561,
-      "trade_signals": 2639,
-      "watch_signals": 13577,
-      "ignore_signals": 7345,
+      "trade_signals": 2090,
+      "watch_signals": 12891,
+      "ignore_signals": 8580,
       "latest_score_date": "2026-05-29 00:00:00",
-      "buy_orders": 207,
-      "executed_buys": 204,
-      "cancelled_buys": 3,
-      "sell_orders": 202,
-      "executed_sells": 202,
+      "buy_orders": 3,
+      "executed_buys": 3,
+      "cancelled_buys": 0,
+      "sell_orders": 3,
+      "executed_sells": 3,
       "pending_orders": 0,
-      "closed_trades": 202,
-      "open_positions": 2,
-      "latest_equity_jpy": 9004905.938000035,
-      "total_return_pct": -9.9509,
+      "closed_trades": 3,
+      "open_positions": 0,
+      "latest_equity_jpy": 9890488.755,
+      "total_return_pct": -1.0951,
       "first_equity_date": "2026-01-05 00:00:00",
       "last_equity_date": "2026-05-29 00:00:00",
       "warnings": []
@@ -201,27 +196,25 @@
     {
       "side": "BUY",
       "order_status": "CANCELLED",
-      "count": 33
+      "count": 20
     },
     {
       "side": "BUY",
       "order_status": "FILLED",
-      "count": 549
+      "count": 291
     },
     {
       "side": "SELL",
       "order_status": "FILLED",
-      "count": 531
+      "count": 276
     }
   ],
   "cancel_reason_counts": [
     {
       "side": "BUY",
       "reason_code": "ENTRY_RULE_PASS",
-      "count": 33
+      "count": 20
     }
   ],
-  "warnings": [
-    "Some agents have no executed buy orders. Check thresholds, feature availability, and skipped orders."
-  ]
+  "warnings": []
 }
