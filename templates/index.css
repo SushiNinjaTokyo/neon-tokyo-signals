@@ -1935,3 +1935,286 @@ button{
   border-color: rgba(255,79,216,.28);
   box-shadow: 0 0 14px rgba(255,79,216,.12);
 }
+
+/* === 2026-05-29 AI Arena TOP Hero migration === */
+.pulse-bg-icon{
+  position:absolute;
+  left:50%;
+  top:50%;
+  z-index:2;
+  width:clamp(96px, 18vw, 260px);
+  height:clamp(96px, 18vw, 260px);
+  object-fit:contain;
+  transform:translate(calc(-50% + 18vw), calc(-50% - 5vw)) rotate(-6deg);
+  opacity:0;
+  filter:
+    drop-shadow(0 0 16px rgba(125,249,255,.44))
+    drop-shadow(0 0 48px rgba(255,79,216,.18));
+  mix-blend-mode:screen;
+  pointer-events:none;
+  transition:opacity 180ms ease, filter 180ms ease, transform 180ms ease;
+}
+
+.pulse-bg-icon.is-visible{
+  opacity:.28;
+}
+
+.pulse-stage[data-tone="topix"] .pulse-bg-icon{
+  filter:
+    drop-shadow(0 0 16px rgba(183,121,255,.42))
+    drop-shadow(0 0 48px rgba(125,249,255,.14));
+}
+
+.pulse-stage[data-tone="growth"] .pulse-bg-icon{
+  filter:
+    drop-shadow(0 0 16px rgba(93,255,177,.38))
+    drop-shadow(0 0 48px rgba(255,79,216,.14));
+}
+
+.hero-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:20px;
+}
+
+.hero-primary,
+.hero-secondary{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:40px;
+  padding:10px 14px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  transition:transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.hero-primary{
+  color:#031018;
+  border:1px solid rgba(125,249,255,.70);
+  background:linear-gradient(90deg, var(--cyan), #A7FFF1);
+  box-shadow:
+    0 0 14px rgba(125,249,255,.32),
+    0 0 30px rgba(125,249,255,.12);
+}
+
+.hero-secondary{
+  color:rgba(234,242,255,.86);
+  border:1px solid rgba(148,163,184,.18);
+  background:rgba(7,10,18,.46);
+  backdrop-filter:blur(8px);
+}
+
+.hero-primary:hover,
+.hero-secondary:hover{
+  transform:translateY(-1px);
+}
+
+.hero-secondary:hover{
+  border-color:rgba(255,79,216,.32);
+  background:rgba(255,79,216,.06);
+  box-shadow:0 0 14px rgba(255,79,216,.10);
+}
+
+.pulse-corner-meta{
+  min-width:160px;
+}
+
+.pulse-corner-meta strong{
+  font-size:clamp(26px,4vw,54px);
+}
+
+.pulse-corner-meta em{
+  color:rgba(184,199,222,.86);
+}
+
+.ticker-chip-event{
+  gap:10px;
+}
+
+.ticker-chip-event small{
+  color:rgba(234,242,255,.82);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.06em;
+  text-transform:none;
+}
+
+.ticker-chip-event.ticker-in b{
+  color:var(--green);
+  text-shadow:0 0 9px rgba(93,255,177,.48);
+}
+
+.ticker-chip-event.ticker-out b{
+  color:var(--pink);
+  text-shadow:0 0 9px rgba(255,79,216,.42);
+}
+
+.ticker-chip-head b{
+  color:var(--cyan);
+}
+
+.signal-hub.arena-first{
+  border-color:rgba(125,249,255,.20);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(125,249,255,.13), transparent 36%),
+    radial-gradient(circle at 94% 94%, rgba(255,79,216,.10), transparent 38%),
+    rgba(7,10,18,.54);
+}
+
+.arena-grid{
+  grid-template-columns:1.2fr repeat(3, minmax(0, .85fr));
+}
+
+.hub-card-link{
+  position:relative;
+  overflow:hidden;
+  min-height:188px;
+  display:grid;
+  grid-template-columns:46px 1fr auto;
+  align-items:start;
+  gap:14px;
+  padding:20px;
+  border:1px solid rgba(148,163,184,.16);
+  border-radius:24px;
+  background:linear-gradient(180deg, rgba(16,25,48,.86), rgba(8,13,25,.76));
+  box-shadow:0 16px 44px rgba(0,0,0,.22);
+  transition:transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.hub-card-link::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity:.72;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(125,249,255,.13), transparent 36%),
+    linear-gradient(120deg, transparent, rgba(255,255,255,.025), transparent);
+}
+
+.hub-card-link:hover{
+  transform:translateY(-3px);
+  border-color:rgba(125,249,255,.34);
+  background:linear-gradient(180deg, rgba(18,35,58,.90), rgba(8,13,25,.80));
+  box-shadow:
+    0 20px 58px rgba(0,0,0,.30),
+    0 0 22px rgba(125,249,255,.10);
+}
+
+.hub-card-link.arena-main{
+  border-color:rgba(125,249,255,.30);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(125,249,255,.12), transparent 38%),
+    linear-gradient(180deg, rgba(18,35,58,.90), rgba(8,13,25,.80));
+}
+
+.hub-card-link.arena-sub:nth-child(3)::before{
+  background:
+    radial-gradient(circle at 18% 0%, rgba(93,255,177,.12), transparent 36%),
+    linear-gradient(120deg, transparent, rgba(255,255,255,.025), transparent);
+}
+
+.hub-card-link.arena-sub:nth-child(4)::before{
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255,79,216,.12), transparent 36%),
+    linear-gradient(120deg, transparent, rgba(255,255,255,.025), transparent);
+}
+
+.hub-card-link > *{
+  position:relative;
+  z-index:2;
+}
+
+.hub-copy em{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  font-style:normal;
+  font-weight:950;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.hub-copy strong{
+  display:block;
+  margin-top:6px;
+  color:#fff;
+  font-size:clamp(22px,2vw,31px);
+  line-height:1;
+  font-weight:950;
+  letter-spacing:-.06em;
+}
+
+.hub-copy small{
+  display:block;
+  max-width:360px;
+  margin-top:12px;
+  color:rgba(184,199,222,.78);
+  font-size:12px;
+  line-height:1.48;
+  font-weight:750;
+  letter-spacing:-.01em;
+}
+
+.hub-card-link > i{
+  padding:7px 9px;
+  border:1px solid rgba(148,163,184,.16);
+  border-radius:999px;
+  color:var(--soft);
+  background:rgba(255,255,255,.025);
+  font-size:10px;
+  font-style:normal;
+  font-weight:950;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+}
+
+.hub-card-link:hover > i{
+  border-color:rgba(93,255,177,.28);
+  color:var(--green);
+  background:rgba(93,255,177,.05);
+}
+
+@media (max-width: 1080px){
+  .arena-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media (max-width: 760px){
+  .pulse-bg-icon{
+    width:clamp(82px, 28vw, 150px);
+    height:clamp(82px, 28vw, 150px);
+    transform:translate(calc(-50% + 28vw), calc(-50% - 9vw)) rotate(-6deg);
+    opacity:.20;
+  }
+
+  .hero-actions{
+    margin-top:16px;
+  }
+
+  .hero-primary,
+  .hero-secondary{
+    min-height:36px;
+    padding:9px 11px;
+    font-size:10px;
+  }
+
+  .arena-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hub-card-link{
+    min-height:160px;
+  }
+
+  .ticker-chip-event small{
+    font-size:11px;
+  }
+}
