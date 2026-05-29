@@ -1,14 +1,14 @@
 schema_version: jp_agent_portfolio_rules_v1
-rules_version: jp_agent_portfolio_2026_dev_v002
+rules_version: jp_agent_portfolio_2026_dev_v003
 updated_at: 2026-05-29
 
 # Portfolio rules are intentionally separated from signal rules.
 # Signal rules answer "what should the agent buy/sell?".
 # Portfolio rules answer "how much should the agent buy/sell?".
 #
-# v002:
-# - max_new_entries_per_day is standardized to 3 for all seven agents.
-# - Share lot remains 1 share for the AI Arena JP simulation.
+# v003:
+# - HIZUMI is changed from high-turnover value trading to slower, higher-conviction value allocation.
+# - Other agents keep the v002 max_new_entries_per_day=3 behavior unless explicitly tuned.
 global:
   initial_capital_jpy: 10000000
   share_lot_size: 1
@@ -73,8 +73,8 @@ agents:
     max_new_entries_per_day: 3
 
   value_mispricing:
-    max_positions: 7
-    target_position_pct: 0.12
-    max_position_pct: 0.17
-    max_total_exposure_pct: 0.85
-    max_new_entries_per_day: 3
+    max_positions: 5
+    target_position_pct: 0.14
+    max_position_pct: 0.20
+    max_total_exposure_pct: 0.72
+    max_new_entries_per_day: 1
