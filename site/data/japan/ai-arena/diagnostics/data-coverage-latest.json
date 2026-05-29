@@ -1,6 +1,6 @@
 {
   "schema_version": "neon_tokyo_data_coverage_review_v1",
-  "generated_at": "2026-05-29T01:48:27+00:00",
+  "generated_at": "2026-05-29T02:42:07+00:00",
   "duckdb": {
     "path": "data/cache/neon_tokyo_jp.duckdb",
     "exists": true,
@@ -24,13 +24,9 @@
   },
   "repo_artifacts": {
     "site_data_exists": true,
-    "site_data_file_count": 322,
-    "site_data_total_mb": 182.197,
+    "site_data_file_count": 330,
+    "site_data_total_mb": 133.73,
     "largest_files": [
-      {
-        "path": "site/data/prices-jp/latest.json",
-        "size_mb": 49.64
-      },
       {
         "path": "site/data/backtest-daily-jp/latest.json",
         "size_mb": 28.595
@@ -54,6 +50,10 @@
       {
         "path": "site/data/weekly-jp/backtest/2026-05-20.json",
         "size_mb": 1.297
+      },
+      {
+        "path": "site/data/prices-jp/latest.json",
+        "size_mb": 0.935
       },
       {
         "path": "site/data/japan/weekly/backtest/latest.json",
@@ -150,7 +150,7 @@
     ],
     "dated_prices_json_count": 0,
     "dated_prices_json_files": [],
-    "prices_latest_size_mb": 49.64
+    "prices_latest_size_mb": 0.935
   },
   "universe": {
     "csv": {
@@ -337,7 +337,7 @@
     "max_date": "2026-05-27",
     "by_agent": [
       {
-        "agent": "CONTRARIAN_MONK",
+        "agent": "contrarian_monk",
         "rows": 219,
         "unique_tickers": 219,
         "max_score": null,
@@ -349,7 +349,7 @@
         }
       },
       {
-        "agent": "DAILY_STRIKER",
+        "agent": "daily_striker",
         "rows": 239,
         "unique_tickers": 239,
         "max_score": null,
@@ -361,7 +361,7 @@
         }
       },
       {
-        "agent": "DISCOVERY_SCOUT",
+        "agent": "discovery_scout",
         "rows": 21,
         "unique_tickers": 21,
         "max_score": null,
@@ -373,7 +373,7 @@
         }
       },
       {
-        "agent": "REVERSAL_SNAPBACK",
+        "agent": "reversal_snapback",
         "rows": 239,
         "unique_tickers": 239,
         "max_score": null,
@@ -385,7 +385,7 @@
         }
       },
       {
-        "agent": "RISK_SENTINEL",
+        "agent": "risk_sentinel",
         "rows": 219,
         "unique_tickers": 219,
         "max_score": null,
@@ -397,7 +397,7 @@
         }
       },
       {
-        "agent": "VALUE_MISPRICING",
+        "agent": "value_mispricing",
         "rows": 239,
         "unique_tickers": 239,
         "max_score": null,
@@ -409,7 +409,7 @@
         }
       },
       {
-        "agent": "WEEKLY_SAGE",
+        "agent": "weekly_sage",
         "rows": 219,
         "unique_tickers": 219,
         "max_score": null,
@@ -421,15 +421,7 @@
         }
       }
     ],
-    "missing_core_agents": [
-      "KYOU",
-      "NAGARE",
-      "MAMORU",
-      "SAGURI",
-      "MATSU",
-      "KAESHI",
-      "HIZUMI"
-    ]
+    "missing_core_agents": []
   },
   "company_and_fundamentals": {
     "company_master_jp": {
@@ -527,10 +519,10 @@
       {
         "path": "site/data/japan/ai-arena/live/latest.json",
         "exists": true,
-        "size_mb": 0.157,
+        "size_mb": 0.162,
         "valid_json": true,
         "schema_version": "ai_arena_live_v1",
-        "generated_at": "2026-05-29T01:06:54Z"
+        "generated_at": "2026-05-29T02:40:04Z"
       },
       {
         "path": "site/data/japan/ai-arena/ranking/latest.json",
@@ -538,39 +530,39 @@
         "size_mb": 0.19,
         "valid_json": true,
         "schema_version": "ai_arena_ranking_v2",
-        "generated_at": "2026-05-29T01:06:54Z"
+        "generated_at": "2026-05-29T02:40:04Z"
       },
       {
         "path": "site/data/japan/ai-arena/positions/latest.json",
         "exists": true,
-        "size_mb": 0.169,
+        "size_mb": 0.174,
         "valid_json": true,
         "schema_version": "ai_arena_positions_v2",
-        "generated_at": "2026-05-29T01:06:54Z"
+        "generated_at": "2026-05-29T02:40:04Z"
       },
       {
         "path": "site/data/japan/ai-arena/summary/latest.json",
         "exists": true,
-        "size_mb": 0.174,
+        "size_mb": 0.175,
         "valid_json": true,
         "schema_version": "ai_arena_annual_summary_v1",
-        "generated_at": "2026-05-29T01:06:54Z"
+        "generated_at": "2026-05-29T02:40:04Z"
       },
       {
         "path": "site/data/japan/ai-arena/summary/2026/latest.json",
         "exists": true,
-        "size_mb": 0.174,
+        "size_mb": 0.175,
         "valid_json": true,
         "schema_version": "ai_arena_annual_summary_v1",
-        "generated_at": "2026-05-29T01:06:54Z"
+        "generated_at": "2026-05-29T02:40:04Z"
       },
       {
         "path": "site/data/japan/ai-arena/signals/latest.json",
         "exists": true,
-        "size_mb": 0.055,
+        "size_mb": 0.075,
         "valid_json": true,
         "schema_version": "ai_arena_signals_v1",
-        "generated_at": "2026-05-29T01:06:55Z"
+        "generated_at": "2026-05-29T02:40:05Z"
       },
       {
         "path": "site/data/japan/ai-arena/agents/latest.json",
@@ -578,7 +570,7 @@
         "size_mb": 0.012,
         "valid_json": true,
         "schema_version": "ai_arena_agent_profiles_v1",
-        "generated_at": "2026-05-29T01:06:56Z"
+        "generated_at": "2026-05-29T02:40:05Z"
       },
       {
         "path": "site/data/japan/ai-arena/log/latest.json",
@@ -586,7 +578,7 @@
         "size_mb": 0.031,
         "valid_json": true,
         "schema_version": "ai_arena_log_v1",
-        "generated_at": "2026-05-29T01:06:56Z"
+        "generated_at": "2026-05-29T02:40:06Z"
       },
       {
         "path": "site/data/japan/ai-arena/diagnostics/latest.json",
@@ -594,7 +586,7 @@
         "size_mb": 0.006,
         "valid_json": true,
         "schema_version": "ai_arena_diagnostics_v1",
-        "generated_at": "2026-05-29T01:06:54Z"
+        "generated_at": "2026-05-29T02:40:04Z"
       },
       {
         "path": "site/data/japan/ai-arena/diagnostics/latest.md",
@@ -667,20 +659,6 @@
       }
     },
     {
-      "code": "MISSING_CORE_AGENTS_IN_SCORES",
-      "severity": "critical",
-      "message": "Some core agents are missing from agent_scores_daily.",
-      "detail": [
-        "KYOU",
-        "NAGARE",
-        "MAMORU",
-        "SAGURI",
-        "MATSU",
-        "KAESHI",
-        "HIZUMI"
-      ]
-    },
-    {
       "code": "LOW_FUNDAMENTAL_ROW_COVERAGE",
       "severity": "warning",
       "message": "Fundamental row coverage is low.",
@@ -723,15 +701,6 @@
       "detail": {
         "count": 0,
         "coverage_pct": null
-      }
-    },
-    {
-      "code": "PRICES_LATEST_TOO_LARGE",
-      "severity": "warning",
-      "message": "site/data/prices-jp/latest.json is larger than expected.",
-      "detail": {
-        "size_mb": 49.64,
-        "threshold_mb": 5.0
       }
     }
   ]

@@ -1,6 +1,6 @@
 # Neon Tokyo Data Coverage Review
 
-Generated: 2026-05-29T01:48:27+00:00
+Generated: 2026-05-29T02:42:07+00:00
 DuckDB: `data/cache/neon_tokyo_jp.duckdb`
 DuckDB exists: **True**
 
@@ -8,14 +8,12 @@ DuckDB exists: **True**
 
 | Severity | Code | Message |
 |---|---|---|
-| critical | `MISSING_CORE_AGENTS_IN_SCORES` | Some core agents are missing from agent_scores_daily. |
 | warning | `LOW_FEATURE_LATEST_COVERAGE` | Latest feature-date symbol coverage is low. |
 | warning | `LOW_FUNDAMENTAL_METRIC_COVERAGE` | per coverage is low. |
 | warning | `LOW_FUNDAMENTAL_METRIC_COVERAGE` | pbr coverage is low. |
 | warning | `LOW_FUNDAMENTAL_METRIC_COVERAGE` | roe_pct coverage is low. |
 | warning | `LOW_FUNDAMENTAL_METRIC_COVERAGE` | market_cap_jpy coverage is low. |
 | warning | `LOW_FUNDAMENTAL_ROW_COVERAGE` | Fundamental row coverage is low. |
-| warning | `PRICES_LATEST_TOO_LARGE` | site/data/prices-jp/latest.json is larger than expected. |
 | warning | `STALE_PRICE_SYMBOLS` | Some symbols are stale versus latest price date. |
 
 ## Universe
@@ -65,13 +63,13 @@ DuckDB exists: **True**
 
 | Agent | Rows | Tickers | Max Score | Avg Score | Actions |
 |---|---:|---:|---:|---:|---|
-| CONTRARIAN_MONK | 219 | 219 | N/A | N/A | Ignore:176, Watch:40, Trade:3 |
-| DAILY_STRIKER | 239 | 239 | N/A | N/A | Ignore:209, Watch:26, Trade:4 |
-| DISCOVERY_SCOUT | 21 | 21 | N/A | N/A | Ignore:14, Watch:4, Trade:3 |
-| REVERSAL_SNAPBACK | 239 | 239 | N/A | N/A | Ignore:228, Watch:10, Trade:1 |
-| RISK_SENTINEL | 219 | 219 | N/A | N/A | Trade:184, Watch:32, Ignore:3 |
-| VALUE_MISPRICING | 239 | 239 | N/A | N/A | Watch:114, Ignore:107, Trade:18 |
-| WEEKLY_SAGE | 219 | 219 | N/A | N/A | Ignore:167, Trade:33, Watch:19 |
+| MATSU / `contrarian_monk` | 219 | 219 | N/A | N/A | Ignore:176, Watch:40, Trade:3 |
+| KYOU / `daily_striker` | 239 | 239 | N/A | N/A | Ignore:209, Watch:26, Trade:4 |
+| SAGURI / `discovery_scout` | 21 | 21 | N/A | N/A | Ignore:14, Watch:4, Trade:3 |
+| KAESHI / `reversal_snapback` | 239 | 239 | N/A | N/A | Ignore:228, Watch:10, Trade:1 |
+| MAMORU / `risk_sentinel` | 219 | 219 | N/A | N/A | Trade:184, Watch:32, Ignore:3 |
+| HIZUMI / `value_mispricing` | 239 | 239 | N/A | N/A | Watch:114, Ignore:107, Trade:18 |
+| NAGARE / `weekly_sage` | 219 | 219 | N/A | N/A | Ignore:167, Trade:33, Watch:19 |
 
 ## Company / Fundamentals
 
@@ -135,20 +133,20 @@ DuckDB exists: **True**
 
 ## Repo Artifact Size
 
-- site/data files: 322
-- site/data total MB: 182.197
-- prices latest MB: 49.64
+- site/data files: 330
+- site/data total MB: 133.73
+- prices latest MB: 0.935
 - dated prices JSON count: 0
 
 | Largest file | MB |
 |---|---:|
-| `site/data/prices-jp/latest.json` | 49.64 |
 | `site/data/backtest-daily-jp/latest.json` | 28.595 |
 | `site/data/backtest-daily-jp/2026-05-28.json` | 28.595 |
 | `site/data/japan/weekly/backtest/2026-05-26.json` | 1.298 |
 | `site/data/weekly-jp/backtest/2026-05-26.json` | 1.298 |
 | `site/data/japan/weekly/backtest/2026-05-20.json` | 1.297 |
 | `site/data/weekly-jp/backtest/2026-05-20.json` | 1.297 |
+| `site/data/prices-jp/latest.json` | 0.935 |
 | `site/data/japan/weekly/backtest/latest.json` | 0.423 |
 | `site/data/japan/weekly/backtest/2026-05-29.json` | 0.423 |
 | `site/data/weekly-jp/backtest/latest.json` | 0.423 |
