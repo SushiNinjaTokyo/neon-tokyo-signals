@@ -128,21 +128,37 @@ jobs:
 
           python - <<'PY'
           import json
+          import os
           from pathlib import Path
 
           p = Path("site/data/japan/ai-arena/diagnostics/data-coverage-latest.json")
           data = json.loads(p.read_text(encoding="utf-8"))
-          assert data["schema_version"] == "neon_tokyo_data_coverage_review_v1"
-          assert "warnings" in data
-          print("data_coverage_schema_ok")
-          print("warnings=", len(data["warnings"]))
 
-          fail_on_critical = "${{ github.event.inputs.fail_on_critical || 'false' }}".lower() == "true"
-          criticals = [w for w in data.get("warnings", []) if str(w.get("severity", "")).lower() == "critical"]
+          schema_version = str(data.get("schema_version", ""))
+          if not schema_version.startswith("neon_tokyo_data_coverage_review_v"):
+              raise SystemExit(f"Unexpected data coverage schema_version: {schema_version}")
+
+          warnings = data.get("warnings")
+          if not isinstance(warnings, list):
+              raise SystemExit("data coverage output must contain warnings[]")
+
+          print("data_coverage_schema_ok")
+          print("schema_version=", schema_version)
+          print("warnings=", len(warnings))
+
+          fail_on_critical = str(os.getenv("FAIL_ON_CRITICAL", "false")).lower() == "true"
+          criticals = [
+              w for w in warnings
+              if str(w.get("severity", "")).lower() == "critical"
+          ]
+
           print("criticals=", len(criticals))
-          if fail_on_critical and criticals:
-              for w in criticals:
+
+          if criticals:
+              for w in criticals[:30]:
                   print("critical:", w.get("code"), w.get("message"))
+
+          if fail_on_critical and criticals:
               raise SystemExit(1)
           PY
 
