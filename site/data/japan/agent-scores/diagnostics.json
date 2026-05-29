@@ -1,6 +1,6 @@
 {
   "schema_version": "neon_tokyo_agent_scores_diagnostics_v1",
-  "generated_at": "2026-05-29T08:40:00+00:00",
+  "generated_at": "2026-05-29T10:11:41+00:00",
   "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
   "mode": "range",
   "range": {
@@ -9,10 +9,10 @@
     "end_date": "2026-05-29",
     "latest_equity_feature_date": "2026-05-29"
   },
-  "price_rows": 102729,
+  "price_rows": 102732,
   "feature_diagnostics": {
-    "prices_rows": 102729,
-    "feature_rows": 102729,
+    "prices_rows": 102732,
+    "feature_rows": 102732,
     "tickers": 301,
     "min_date": "2024-12-25",
     "max_date": "2026-05-29"
@@ -94,21 +94,21 @@
       },
       {
         "date": "2026-05-29",
-        "symbols": 292,
-        "coverage_pct": 97.99
+        "symbols": 295,
+        "coverage_pct": 98.99
       }
     ],
     "latest_recent_eligible_date": "2026-05-29"
   },
-  "agent_score_rows": 137361,
+  "agent_score_rows": 137364,
   "agent_score_date_count": 97,
-  "trade_candidate_rows": 26194,
+  "trade_candidate_rows": 26228,
   "latest_date": "2026-05-29",
   "agents": [
     {
       "agent_id": "daily_striker",
       "name": "KYOU",
-      "candidates_scored": 23561,
+      "candidates_scored": 23562,
       "top_items": 30
     },
     {
@@ -138,13 +138,13 @@
     {
       "agent_id": "reversal_snapback",
       "name": "KAESHI",
-      "candidates_scored": 23561,
+      "candidates_scored": 23562,
       "top_items": 30
     },
     {
       "agent_id": "value_mispricing",
       "name": "HIZUMI",
-      "candidates_scored": 23561,
+      "candidates_scored": 23562,
       "top_items": 30
     }
   ],
