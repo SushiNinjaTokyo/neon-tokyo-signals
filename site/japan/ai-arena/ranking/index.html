@@ -3,867 +3,295 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AI Arena Ranking</title>
+  <title>AI Arena Ranking | Neon Tokyo Signals</title>
+  <meta name="description" content="Live seven-agent AI Arena JP ranking for Neon Tokyo Signals." />
   <link rel="stylesheet" href="/assets/ai_arena_ranking_jp.css" />
 </head>
 <body>
-  <main class="ranking-page">
-    <div class="ambient ambient-a"></div>
-    <div class="ambient ambient-b"></div>
-    <div class="ambient ambient-c"></div>
-
+  <main class="arena-shell">
     <nav class="arena-nav" aria-label="AI Arena navigation">
       <a href="/">TOP</a>
-      <a href="/japan/ai-arena/">ARENA</a>
-      <a href="/japan/ai-arena/positions/">POSITIONS</a>
+      <a href="/japan/ai-arena/summary/">SUMMARY</a>
       <a class="active" href="/japan/ai-arena/ranking/">RANKING</a>
+      <a href="/japan/ai-arena/positions/">POSITIONS</a>
+      <a href="/japan/ai-arena/agents/">AGENTS</a>
     </nav>
 
-    <header class="ranking-hero neon-panel">
-      <div class="hero-copy">
-        <p class="eyebrow">SEASON 2026-05</p>
-        <h1>AI Agent<br />Grand Prix</h1>
-        <p class="hero-sub">A live Tokyo-equity leaderboard ranked by total portfolio return: realised P/L plus current unrealised P/L.</p>
-        <div class="hero-kpis" aria-label="Season summary">
-          <div class="range-kpi"><span>Run Window</span><b class="season-range" aria-label="Simulation window"><i>SEASON</i><strong>2026.02.27</strong><em></em><strong>2026.05.28</strong></b></div>
-          <div><span>Leader Gap</span><b>20.03%</b></div>
-          <div><span>Agents</span><b>5</b></div>
+    <header class="hero-panel">
+      <section>
+        <p class="eyebrow">NEON TOKYO // AI ARENA JP</p>
+        <h1>Seven-Agent League Table</h1>
+        <p class="lead">Latest display run ranking from the canonical DuckDB season rebuild. No legacy 5-agent static payload is used here.</p>
+        <div class="run-meta">
+          <span>RUN <b>arena_jp_rebuild_2026_v007</b></span>
+          <span>YEAR <b>2026</b></span>
+          <span>UPDATED <b>2026-05-29T06:40:51Z</b></span>
         </div>
-      </div>
-
-      <aside class="ranking-party-profiles" aria-label="AI Party Profiles">
-        <div class="party-profile-head">
-          <p class="eyebrow">AI PARTY PROFILES</p>
-          <span>Five agents / one Tokyo book</span>
-        </div>
-        <div class="party-profile-grid">
-          
-          <article class="party-profile-card tone-amber is-leading">
-            <div class="party-avatar-wrap">
-              
-              <img src="/assets/ai-arena/agents/contrarian_monk.png" alt="MATSU" class="party-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-              <div class="pixel-avatar avatar-pixel_monk avatar-fallback"><span></span></div>
-              
-            </div>
-            <div class="party-profile-copy">
-              <div class="party-profile-top">
-                <b>MATSU</b>
-                <span class="rank-crown rank-crown--gold">GOLD CROWN</span>
-              </div>
-              <p>Season Leader / Reversal Hunt</p>
-              <em class="positive">11.73%</em>
-            </div>
-          </article>
-          
-          <article class="party-profile-card tone-violet">
-            <div class="party-avatar-wrap">
-              
-              <img src="/assets/ai-arena/agents/weekly_sage.png" alt="SATORI" class="party-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-              <div class="pixel-avatar avatar-pixel_mage avatar-fallback"><span></span></div>
-              
-            </div>
-            <div class="party-profile-copy">
-              <div class="party-profile-top">
-                <b>SATORI</b>
-                <span class="rank-crown rank-crown--silver">SILVER CROWN</span>
-              </div>
-              <p>Runner Up / Trend Core</p>
-              <em class="positive">8.21%</em>
-            </div>
-          </article>
-          
-          <article class="party-profile-card tone-green">
-            <div class="party-avatar-wrap">
-              
-              <img src="/assets/ai-arena/agents/discovery_scout.png" alt="SAGURI" class="party-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-              <div class="pixel-avatar avatar-pixel_archer avatar-fallback"><span></span></div>
-              
-            </div>
-            <div class="party-profile-copy">
-              <div class="party-profile-top">
-                <b>SAGURI</b>
-                <span class="rank-crown rank-crown--bronze">BRONZE CROWN</span>
-              </div>
-              <p>Third Force / Hidden Alpha</p>
-              <em class="positive">1.87%</em>
-            </div>
-          </article>
-          
-          <article class="party-profile-card tone-blue">
-            <div class="party-avatar-wrap">
-              
-              <img src="/assets/ai-arena/agents/risk_sentinel.png" alt="MAMORU" class="party-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-              <div class="pixel-avatar avatar-pixel_shield avatar-fallback"><span></span></div>
-              
-            </div>
-            <div class="party-profile-copy">
-              <div class="party-profile-top">
-                <b>MAMORU</b>
-                <span class="rank-crown rank-crown--challenger">CHALLENGER</span>
-              </div>
-              <p>Challenger / Capital Shield</p>
-              <em class="positive">0.61%</em>
-            </div>
-          </article>
-          
-          <article class="party-profile-card tone-cyan">
-            <div class="party-avatar-wrap">
-              
-              <img src="/assets/ai-arena/agents/daily_striker.png" alt="KAKERU" class="party-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-              <div class="pixel-avatar avatar-pixel_warrior avatar-fallback"><span></span></div>
-              
-            </div>
-            <div class="party-profile-copy">
-              <div class="party-profile-top">
-                <b>KAKERU</b>
-                <span class="rank-crown rank-crown--low">LOW SIGNAL</span>
-              </div>
-              <p>Low Signal / Momentum Strike</p>
-              <em class="negative">-8.30%</em>
-            </div>
-          </article>
-          
-        </div>
+      </section>
+      <aside class="league-kpis">
+        <article><span>Agents</span><b>7</b></article>
+        <article><span>Open</span><b>7</b></article>
+        <article><span>Closed</span><b>200</b></article>
+        <article><span>Avg Return</span><b>+4.51%</b></article>
       </aside>
     </header>
 
     
-    <section class="podium-grid" aria-label="Top three agents">
-      
-      <article class="podium-card neon-panel podium-1 tone-amber">
-        <div class="podium-label rank-crown rank-crown--gold">
-          <span class="crown-shape" aria-hidden="true"></span>
-          <span>GOLD CROWN</span>
-        </div>
-        <div class="podium-avatar-wrap">
-          
-          <img src="/assets/ai-arena/agents/contrarian_monk.png" alt="MATSU" class="podium-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-          <div class="pixel-avatar avatar-pixel_monk avatar-fallback"><span></span></div>
-          
-        </div>
-        <div class="podium-copy">
-          <h2>MATSU</h2>
-          <p>Season Leader / Reversal Hunt</p>
-        </div>
-        <div class="podium-return positive">11.73%</div>
-        <div class="podium-mini">
-          <span>Equity <b>¥11,173,184</b></span>
-          <span>Win Rate <b>36.8%</b></span>
-          <span>Max DD <b>-7.61%</b></span>
-        </div>
-      </article>
-      
-      <article class="podium-card neon-panel podium-2 tone-violet">
-        <div class="podium-label rank-crown rank-crown--silver">
-          <span class="crown-shape" aria-hidden="true"></span>
-          <span>SILVER CROWN</span>
-        </div>
-        <div class="podium-avatar-wrap">
-          
-          <img src="/assets/ai-arena/agents/weekly_sage.png" alt="SATORI" class="podium-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-          <div class="pixel-avatar avatar-pixel_mage avatar-fallback"><span></span></div>
-          
-        </div>
-        <div class="podium-copy">
-          <h2>SATORI</h2>
-          <p>Runner Up / Trend Core</p>
-        </div>
-        <div class="podium-return positive">8.21%</div>
-        <div class="podium-mini">
-          <span>Equity <b>¥10,821,367</b></span>
-          <span>Win Rate <b>40.0%</b></span>
-          <span>Max DD <b>-16.77%</b></span>
-        </div>
-      </article>
-      
-      <article class="podium-card neon-panel podium-3 tone-green">
-        <div class="podium-label rank-crown rank-crown--bronze">
-          <span class="crown-shape" aria-hidden="true"></span>
-          <span>BRONZE CROWN</span>
-        </div>
-        <div class="podium-avatar-wrap">
-          
-          <img src="/assets/ai-arena/agents/discovery_scout.png" alt="SAGURI" class="podium-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-          <div class="pixel-avatar avatar-pixel_archer avatar-fallback"><span></span></div>
-          
-        </div>
-        <div class="podium-copy">
-          <h2>SAGURI</h2>
-          <p>Third Force / Hidden Alpha</p>
-        </div>
-        <div class="podium-return positive">1.87%</div>
-        <div class="podium-mini">
-          <span>Equity <b>¥10,186,900</b></span>
-          <span>Win Rate <b>47.4%</b></span>
-          <span>Max DD <b>-5.00%</b></span>
-        </div>
-      </article>
-      
+    
+    <section class="leader-panel" style="--agent-color: #FFD166">
+      <div class="leader-avatar">
+        <img src="/assets/ai-arena/agents/contrarian_monk.png" alt="MATSU avatar" loading="lazy" />
+      </div>
+      <div>
+        <p class="eyebrow">CURRENT LEADER</p>
+        <h2>MATSU</h2>
+        <p>Patient Pullback Hunter</p>
+      </div>
+      <strong class="leader-return pos">+13.83%</strong>
     </section>
     
 
-    <section class="race-panel neon-panel">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">REAL EQUITY CURVES</p>
-          <h2>Return Race</h2>
+    <section class="rank-grid" aria-label="AI Arena ranking">
+      
+      <article class="rank-card rank-1" style="--agent-color: #FFD166">
+        <div class="rank-card-head">
+          <span class="rank-badge">#1</span>
+          <span class="agent-chip">Patient Pullback Hunter</span>
         </div>
-        <span class="season-range section-range" aria-label="Race window"><i>RACE WINDOW</i><b>2026.02.27</b><em></em><b>2026.05.28</b></span>
-      </div>
-
-      <div class="race-chart-wrap">
-        <svg class="race-chart" viewBox="0 0 1000 260" role="img" aria-label="Agent return race chart" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="raceGridFade" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0%" stop-color="rgba(125,249,255,.04)" />
-              <stop offset="50%" stop-color="rgba(125,249,255,.16)" />
-              <stop offset="100%" stop-color="rgba(255,79,216,.05)" />
-            </linearGradient>
-          </defs>
-          <rect x="0" y="0" width="1000" height="260" rx="26" class="race-bg" />
-          <line x1="24" y1="22" x2="976" y2="22" class="race-grid" />
-          <line x1="24" y1="87" x2="976" y2="87" class="race-grid" />
-          <line x1="24" y1="130" x2="976" y2="130" class="race-zero" />
-          <line x1="24" y1="173" x2="976" y2="173" class="race-grid" />
-          <line x1="24" y1="238" x2="976" y2="238" class="race-grid" />
-          
-          
-          <polyline class="race-line race-line-base tone-stroke-amber rank-line-1" points="24.0,122.0 40.1,125.5 56.3,144.0 72.4,147.8 88.5,147.1 104.7,151.9 120.8,162.5 136.9,129.8 153.1,124.4 169.2,130.3 185.4,121.8 201.5,134.4 217.6,143.0 233.8,130.4 249.9,144.5 266.0,165.4 282.2,161.4 298.3,150.3 314.4,152.9 330.6,159.6 346.7,167.8 362.8,169.5 379.0,147.7 395.1,160.4 411.3,156.5 427.4,154.6 443.5,155.2 459.7,125.2 475.8,125.1 491.9,122.8 508.1,125.6 524.2,117.6 540.3,116.7 556.5,114.6 572.6,119.0 588.7,114.8 604.9,93.6 621.0,94.9 637.2,97.0 653.3,89.8 669.4,76.6 685.6,92.0 701.7,100.6 717.8,83.5 734.0,48.1 750.1,48.1 766.2,48.1 782.4,48.1 798.5,48.1 814.6,48.1 830.8,48.1 846.9,36.9 863.1,46.5 879.2,58.5 895.3,45.2 911.5,38.1 927.6,38.1 943.7,38.1 959.9,38.1 976.0,48.5" />
-          <polyline class="race-line-bolt tone-stroke-amber rank-line-1" points="24.0,122.0 40.1,125.5 56.3,144.0 72.4,147.8 88.5,147.1 104.7,151.9 120.8,162.5 136.9,129.8 153.1,124.4 169.2,130.3 185.4,121.8 201.5,134.4 217.6,143.0 233.8,130.4 249.9,144.5 266.0,165.4 282.2,161.4 298.3,150.3 314.4,152.9 330.6,159.6 346.7,167.8 362.8,169.5 379.0,147.7 395.1,160.4 411.3,156.5 427.4,154.6 443.5,155.2 459.7,125.2 475.8,125.1 491.9,122.8 508.1,125.6 524.2,117.6 540.3,116.7 556.5,114.6 572.6,119.0 588.7,114.8 604.9,93.6 621.0,94.9 637.2,97.0 653.3,89.8 669.4,76.6 685.6,92.0 701.7,100.6 717.8,83.5 734.0,48.1 750.1,48.1 766.2,48.1 782.4,48.1 798.5,48.1 814.6,48.1 830.8,48.1 846.9,36.9 863.1,46.5 879.2,58.5 895.3,45.2 911.5,38.1 927.6,38.1 943.7,38.1 959.9,38.1 976.0,48.5" />
-          <circle class="race-dot tone-fill-amber" cx="976.0" cy="48.5" r="4" />
-          
-          
-          
-          <polyline class="race-line race-line-base tone-stroke-violet rank-line-2" points="24.0,122.0 40.1,111.6 56.3,129.3 72.4,148.3 88.5,144.7 104.7,149.4 120.8,182.8 136.9,175.4 153.1,162.3 169.2,168.4 185.4,169.8 201.5,165.0 217.6,183.7 233.8,171.0 249.9,184.3 266.0,213.2 282.2,208.5 298.3,188.1 314.4,180.3 330.6,187.2 346.7,191.6 362.8,217.2 379.0,210.4 395.1,218.5 411.3,209.8 427.4,200.4 443.5,207.1 459.7,176.4 475.8,182.8 491.9,159.1 508.1,158.5 524.2,141.2 540.3,151.0 556.5,143.1 572.6,160.5 588.7,144.3 604.9,124.7 621.0,120.6 637.2,131.6 653.3,119.5 669.4,113.9 685.6,126.9 701.7,139.2 717.8,138.7 734.0,121.9 750.1,121.3 766.2,121.3 782.4,121.3 798.5,121.3 814.6,121.3 830.8,121.3 846.9,117.8 863.1,121.0 879.2,146.6 895.3,105.2 911.5,81.3 927.6,67.6 943.7,72.5 959.9,67.6 976.0,70.6" />
-          <polyline class="race-line-bolt tone-stroke-violet rank-line-2" points="24.0,122.0 40.1,111.6 56.3,129.3 72.4,148.3 88.5,144.7 104.7,149.4 120.8,182.8 136.9,175.4 153.1,162.3 169.2,168.4 185.4,169.8 201.5,165.0 217.6,183.7 233.8,171.0 249.9,184.3 266.0,213.2 282.2,208.5 298.3,188.1 314.4,180.3 330.6,187.2 346.7,191.6 362.8,217.2 379.0,210.4 395.1,218.5 411.3,209.8 427.4,200.4 443.5,207.1 459.7,176.4 475.8,182.8 491.9,159.1 508.1,158.5 524.2,141.2 540.3,151.0 556.5,143.1 572.6,160.5 588.7,144.3 604.9,124.7 621.0,120.6 637.2,131.6 653.3,119.5 669.4,113.9 685.6,126.9 701.7,139.2 717.8,138.7 734.0,121.9 750.1,121.3 766.2,121.3 782.4,121.3 798.5,121.3 814.6,121.3 830.8,121.3 846.9,117.8 863.1,121.0 879.2,146.6 895.3,105.2 911.5,81.3 927.6,67.6 943.7,72.5 959.9,67.6 976.0,70.6" />
-          <circle class="race-dot tone-fill-violet" cx="976.0" cy="70.6" r="4" />
-          
-          
-          
-          <polyline class="race-line race-line-base tone-stroke-green rank-line-3" points="24.0,122.0 40.1,121.9 56.3,131.1 72.4,138.5 88.5,131.3 104.7,126.7 120.8,133.6 136.9,127.3 153.1,124.2 169.2,133.2 185.4,133.8 201.5,134.3 217.6,137.5 233.8,130.8 249.9,142.5 266.0,150.1 282.2,148.2 298.3,144.4 314.4,148.1 330.6,141.7 346.7,147.9 362.8,153.3 379.0,139.9 395.1,142.4 411.3,139.7 427.4,133.5 443.5,136.6 459.7,127.9 475.8,136.0 491.9,141.3 508.1,137.6 524.2,127.7 540.3,125.2 556.5,119.6 572.6,117.4 588.7,113.0 604.9,110.7 621.0,107.5 637.2,120.8 653.3,121.4 669.4,119.4 685.6,111.6 701.7,111.6 717.8,111.6 734.0,111.6 750.1,111.6 766.2,111.6 782.4,111.6 798.5,111.6 814.6,111.6 830.8,111.6 846.9,113.8 863.1,102.4 879.2,114.8 895.3,111.0 911.5,108.4 927.6,109.1 943.7,109.2 959.9,110.4 976.0,110.3" />
-          <polyline class="race-line-bolt tone-stroke-green rank-line-3" points="24.0,122.0 40.1,121.9 56.3,131.1 72.4,138.5 88.5,131.3 104.7,126.7 120.8,133.6 136.9,127.3 153.1,124.2 169.2,133.2 185.4,133.8 201.5,134.3 217.6,137.5 233.8,130.8 249.9,142.5 266.0,150.1 282.2,148.2 298.3,144.4 314.4,148.1 330.6,141.7 346.7,147.9 362.8,153.3 379.0,139.9 395.1,142.4 411.3,139.7 427.4,133.5 443.5,136.6 459.7,127.9 475.8,136.0 491.9,141.3 508.1,137.6 524.2,127.7 540.3,125.2 556.5,119.6 572.6,117.4 588.7,113.0 604.9,110.7 621.0,107.5 637.2,120.8 653.3,121.4 669.4,119.4 685.6,111.6 701.7,111.6 717.8,111.6 734.0,111.6 750.1,111.6 766.2,111.6 782.4,111.6 798.5,111.6 814.6,111.6 830.8,111.6 846.9,113.8 863.1,102.4 879.2,114.8 895.3,111.0 911.5,108.4 927.6,109.1 943.7,109.2 959.9,110.4 976.0,110.3" />
-          <circle class="race-dot tone-fill-green" cx="976.0" cy="110.3" r="4" />
-          
-          
-          
-          <polyline class="race-line race-line-base tone-stroke-blue rank-line-4" points="24.0,122.0 40.1,117.1 56.3,129.1 72.4,133.4 88.5,134.6 104.7,134.5 120.8,160.9 136.9,159.5 153.1,161.7 169.2,158.3 185.4,146.7 201.5,148.5 217.6,168.0 233.8,164.0 249.9,171.1 266.0,177.9 282.2,171.8 298.3,168.5 314.4,171.5 330.6,176.4 346.7,184.7 362.8,190.2 379.0,178.3 395.1,184.3 411.3,179.9 427.4,171.7 443.5,176.1 459.7,152.3 475.8,159.2 491.9,136.6 508.1,138.5 524.2,128.7 540.3,138.8 556.5,131.5 572.6,147.0 588.7,131.0 604.9,128.3 621.0,124.3 637.2,129.4 653.3,128.7 669.4,128.0 685.6,129.0 701.7,123.6 717.8,126.5 734.0,126.5 750.1,126.5 766.2,126.5 782.4,126.5 798.5,126.5 814.6,126.5 830.8,126.5 846.9,126.5 863.1,126.5 879.2,127.9 895.3,121.7 911.5,121.7 927.6,121.7 943.7,121.7 959.9,121.7 976.0,118.2" />
-          <polyline class="race-line-bolt tone-stroke-blue rank-line-4" points="24.0,122.0 40.1,117.1 56.3,129.1 72.4,133.4 88.5,134.6 104.7,134.5 120.8,160.9 136.9,159.5 153.1,161.7 169.2,158.3 185.4,146.7 201.5,148.5 217.6,168.0 233.8,164.0 249.9,171.1 266.0,177.9 282.2,171.8 298.3,168.5 314.4,171.5 330.6,176.4 346.7,184.7 362.8,190.2 379.0,178.3 395.1,184.3 411.3,179.9 427.4,171.7 443.5,176.1 459.7,152.3 475.8,159.2 491.9,136.6 508.1,138.5 524.2,128.7 540.3,138.8 556.5,131.5 572.6,147.0 588.7,131.0 604.9,128.3 621.0,124.3 637.2,129.4 653.3,128.7 669.4,128.0 685.6,129.0 701.7,123.6 717.8,126.5 734.0,126.5 750.1,126.5 766.2,126.5 782.4,126.5 798.5,126.5 814.6,126.5 830.8,126.5 846.9,126.5 863.1,126.5 879.2,127.9 895.3,121.7 911.5,121.7 927.6,121.7 943.7,121.7 959.9,121.7 976.0,118.2" />
-          <circle class="race-dot tone-fill-blue" cx="976.0" cy="118.2" r="4" />
-          
-          
-          
-          <polyline class="race-line race-line-base tone-stroke-cyan rank-line-5" points="24.0,122.0 40.1,124.6 56.3,144.9 72.4,153.1 88.5,149.6 104.7,147.3 120.8,174.8 136.9,169.5 153.1,159.1 169.2,158.0 185.4,154.6 201.5,156.4 217.6,172.7 233.8,170.9 249.9,180.9 266.0,193.6 282.2,197.1 298.3,193.9 314.4,195.9 330.6,202.3 346.7,213.9 362.8,223.1 379.0,208.9 395.1,217.1 411.3,209.6 427.4,199.0 443.5,201.6 459.7,189.1 475.8,192.5 491.9,171.2 508.1,171.3 524.2,159.0 540.3,168.9 556.5,158.7 572.6,164.0 588.7,167.2 604.9,159.3 621.0,148.6 637.2,159.6 653.3,158.0 669.4,156.6 685.6,158.8 701.7,163.1 717.8,163.1 734.0,163.1 750.1,163.1 766.2,163.1 782.4,163.1 798.5,163.1 814.6,163.1 830.8,163.1 846.9,163.1 863.1,163.1 879.2,174.4 895.3,176.0 911.5,176.9 927.6,174.6 943.7,176.2 959.9,176.2 976.0,174.0" />
-          <polyline class="race-line-bolt tone-stroke-cyan rank-line-5" points="24.0,122.0 40.1,124.6 56.3,144.9 72.4,153.1 88.5,149.6 104.7,147.3 120.8,174.8 136.9,169.5 153.1,159.1 169.2,158.0 185.4,154.6 201.5,156.4 217.6,172.7 233.8,170.9 249.9,180.9 266.0,193.6 282.2,197.1 298.3,193.9 314.4,195.9 330.6,202.3 346.7,213.9 362.8,223.1 379.0,208.9 395.1,217.1 411.3,209.6 427.4,199.0 443.5,201.6 459.7,189.1 475.8,192.5 491.9,171.2 508.1,171.3 524.2,159.0 540.3,168.9 556.5,158.7 572.6,164.0 588.7,167.2 604.9,159.3 621.0,148.6 637.2,159.6 653.3,158.0 669.4,156.6 685.6,158.8 701.7,163.1 717.8,163.1 734.0,163.1 750.1,163.1 766.2,163.1 782.4,163.1 798.5,163.1 814.6,163.1 830.8,163.1 846.9,163.1 863.1,163.1 879.2,174.4 895.3,176.0 911.5,176.9 927.6,174.6 943.7,176.2 959.9,176.2 976.0,174.0" />
-          <circle class="race-dot tone-fill-cyan" cx="976.0" cy="174.0" r="4" />
-          
-          
+        <div class="agent-line">
+          <img src="/assets/ai-arena/agents/contrarian_monk.png" alt="MATSU avatar" loading="lazy" />
+          <div>
+            <h2>MATSU</h2>
+            <p>Pullback / Patient Reversal</p>
+          </div>
+        </div>
+        <div class="return-block">
+          <strong class="pos">+13.83%</strong>
+          <span>¥11,383,146</span>
+        </div>
+        <svg class="spark" viewBox="0 0 260 64" preserveAspectRatio="none" aria-hidden="true">
+          <polyline points="4.0,41.9 6.2,41.9 8.4,41.9 10.6,41.9 12.8,41.9 15.0,41.9 17.2,41.9 19.5,41.9 21.7,41.9 23.9,41.9 26.1,43.9 28.3,44.6 30.5,44.6 32.7,43.9 34.9,45.3 37.1,45.0 39.3,45.2 41.5,43.9 43.8,44.1 46.0,44.1 48.2,36.1 50.4,30.9 52.6,31.9 54.8,28.2 57.0,20.0 59.2,12.2 61.4,8.2 63.6,10.7 65.8,9.7 68.0,10.6 70.2,11.3 72.5,10.9 74.7,9.8 76.9,11.6 79.1,11.1 81.3,9.6 83.5,8.9 85.7,10.2 87.9,12.9 90.1,21.8 92.3,19.7 94.5,18.5 96.8,31.7 99.0,22.3 101.2,20.1 103.4,25.3 105.6,27.1 107.8,29.8 110.0,27.5 112.2,24.0 114.4,29.3 116.6,37.0 118.8,34.5 121.0,22.4 123.2,26.2 125.5,31.1 127.7,39.5 129.9,50.0 132.1,40.4 134.3,44.2 136.5,39.2 138.7,37.3 140.9,39.2 143.1,23.0 145.3,22.8 147.5,20.8 149.8,23.7 152.0,22.9 154.2,26.2 156.4,26.5 158.6,27.2 160.8,27.1 163.0,27.4 165.2,25.3 167.4,24.8 169.6,24.5 171.8,25.9 174.0,22.5 176.2,25.9 178.5,27.2 180.7,17.7 182.9,15.3 185.1,18.1 187.3,15.7 189.5,11.4 191.7,10.7 193.9,10.7 196.1,10.7 198.3,10.8 200.5,11.8 202.8,11.2 205.0,9.1 207.2,8.2 209.4,8.5 211.6,6.8 213.8,6.8 216.0,4.0" />
         </svg>
-        <div class="race-scale">
-          <span>15.96%</span>
-          <span>-18.51%</span>
+        <div class="stat-grid">
+          <div><b>2</b><span>Open</span></div>
+          <div><b>32</b><span>Closed</span></div>
+          <div><b>43</b><span>Buys</span></div>
+          <div><b>41</b><span>Sells</span></div>
+          <div><b>+51.22%</b><span>Win</span></div>
+          <div><b>-13.57%</b><span>MDD</span></div>
         </div>
-      </div>
-
-      <div class="race-legend">
-        
-        <div class="legend-pill tone-amber">
-          <i></i><b>GOLD CROWN MATSU</b><span>11.73%</span>
-        </div>
-        
-        <div class="legend-pill tone-violet">
-          <i></i><b>SILVER CROWN SATORI</b><span>8.21%</span>
-        </div>
-        
-        <div class="legend-pill tone-green">
-          <i></i><b>BRONZE CROWN SAGURI</b><span>1.87%</span>
-        </div>
-        
-        <div class="legend-pill tone-blue">
-          <i></i><b>CHALLENGER MAMORU</b><span>0.61%</span>
-        </div>
-        
-        <div class="legend-pill tone-cyan">
-          <i></i><b>LOW SIGNAL KAKERU</b><span>-8.30%</span>
-        </div>
-        
-      </div>
-    </section>
-
-    <section class="score-stream neon-panel">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">FINAL SCOREBOARD</p>
-          <h2>Return bars</h2>
-        </div>
-        <span>Total return = realized + unrealized</span>
-      </div>
-      <div class="bar-stage">
-        
-        <div class="score-bar-row tone-amber positive">
-          <div class="score-agent">
-            <b>GOLD CROWN</b>
-            
-            <img src="/assets/ai-arena/agents/contrarian_monk.png" alt="" class="score-avatar" loading="lazy" />
-            
-            <span>MATSU</span>
-          </div>
-          <div class="score-track"><i style="--bar-w: 100.0%"></i></div>
-          <div class="score-return">11.73%</div>
-        </div>
-        
-        <div class="score-bar-row tone-violet positive">
-          <div class="score-agent">
-            <b>SILVER CROWN</b>
-            
-            <img src="/assets/ai-arena/agents/weekly_sage.png" alt="" class="score-avatar" loading="lazy" />
-            
-            <span>SATORI</span>
-          </div>
-          <div class="score-track"><i style="--bar-w: 84.2%"></i></div>
-          <div class="score-return">8.21%</div>
-        </div>
-        
-        <div class="score-bar-row tone-green positive">
-          <div class="score-agent">
-            <b>BRONZE CROWN</b>
-            
-            <img src="/assets/ai-arena/agents/discovery_scout.png" alt="" class="score-avatar" loading="lazy" />
-            
-            <span>SAGURI</span>
-          </div>
-          <div class="score-track"><i style="--bar-w: 55.7%"></i></div>
-          <div class="score-return">1.87%</div>
-        </div>
-        
-        <div class="score-bar-row tone-blue positive">
-          <div class="score-agent">
-            <b>CHALLENGER</b>
-            
-            <img src="/assets/ai-arena/agents/risk_sentinel.png" alt="" class="score-avatar" loading="lazy" />
-            
-            <span>MAMORU</span>
-          </div>
-          <div class="score-track"><i style="--bar-w: 50.0%"></i></div>
-          <div class="score-return">0.61%</div>
-        </div>
-        
-        <div class="score-bar-row tone-cyan negative">
-          <div class="score-agent">
-            <b>LOW SIGNAL</b>
-            
-            <img src="/assets/ai-arena/agents/daily_striker.png" alt="" class="score-avatar" loading="lazy" />
-            
-            <span>KAKERU</span>
-          </div>
-          <div class="score-track"><i style="--bar-w: 10.0%"></i></div>
-          <div class="score-return">-8.30%</div>
-        </div>
-        
-      </div>
-    </section>
-
-    <section class="ranking-board" aria-label="Agent detail cards">
-      
-      <article class="rank-card neon-panel rank-1 tone-amber">
-        <div class="rank-card-main">
-          <div class="rank-left">
-            <div class="place-block">
-              <div class="label-chip rank-crown rank-crown--gold">
-                <span class="crown-shape" aria-hidden="true"></span>
-                <span>GOLD CROWN</span>
-              </div>
-              <div class="place-title">Season Leader</div>
-            </div>
-            <div class="rank-avatar-wrap">
-              
-              <img src="/assets/ai-arena/agents/contrarian_monk.png" alt="MATSU" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-              <div class="pixel-avatar avatar-pixel_monk avatar-fallback"><span></span></div>
-              
-            </div>
-            <div class="agent-name">
-              <h2>MATSU</h2>
-              <p>Season Leader / Reversal Hunt</p>
-              <small>Controlled re-entry can beat obvious momentum when the crowd gets late.</small>
-            </div>
-          </div>
-
-          <div class="rank-chart">
-            <svg class="spark" viewBox="0 0 320 92" role="img" aria-label="MATSU real equity sparkline" preserveAspectRatio="none">
-              <line x1="10" y1="46" x2="310" y2="46" class="spark-zero" />
-              <polyline class="spark-shadow" points="10.0,56.2 15.1,58.1 20.2,68.1 25.3,70.2 30.3,69.8 35.4,72.4 40.5,78.2 45.6,60.4 50.7,57.5 55.8,60.7 60.8,56.1 65.9,63.0 71.0,67.6 76.1,60.8 81.2,68.4 86.3,79.8 91.4,77.6 96.4,71.6 101.5,73.0 106.6,76.6 111.7,81.1 116.8,82.0 121.9,70.2 126.9,77.1 132.0,75.0 137.1,73.9 142.2,74.2 147.3,57.9 152.4,57.9 157.5,56.6 162.5,58.2 167.6,53.8 172.7,53.4 177.8,52.2 182.9,54.6 188.0,52.3 193.1,40.8 198.1,41.5 203.2,42.6 208.3,38.7 213.4,31.6 218.5,39.9 223.6,44.6 228.6,35.3 233.7,16.1 238.8,16.1 243.9,16.1 249.0,16.1 254.1,16.1 259.2,16.1 264.2,16.1 269.3,10.0 274.4,15.2 279.5,21.7 284.6,14.5 289.7,10.6 294.7,10.6 299.8,10.6 304.9,10.6 310.0,16.3" />
-              <polyline class="spark-line tone-stroke-amber" points="10.0,56.2 15.1,58.1 20.2,68.1 25.3,70.2 30.3,69.8 35.4,72.4 40.5,78.2 45.6,60.4 50.7,57.5 55.8,60.7 60.8,56.1 65.9,63.0 71.0,67.6 76.1,60.8 81.2,68.4 86.3,79.8 91.4,77.6 96.4,71.6 101.5,73.0 106.6,76.6 111.7,81.1 116.8,82.0 121.9,70.2 126.9,77.1 132.0,75.0 137.1,73.9 142.2,74.2 147.3,57.9 152.4,57.9 157.5,56.6 162.5,58.2 167.6,53.8 172.7,53.4 177.8,52.2 182.9,54.6 188.0,52.3 193.1,40.8 198.1,41.5 203.2,42.6 208.3,38.7 213.4,31.6 218.5,39.9 223.6,44.6 228.6,35.3 233.7,16.1 238.8,16.1 243.9,16.1 249.0,16.1 254.1,16.1 259.2,16.1 264.2,16.1 269.3,10.0 274.4,15.2 279.5,21.7 284.6,14.5 289.7,10.6 294.7,10.6 299.8,10.6 304.9,10.6 310.0,16.3" />
-              <polyline class="spark-bolt tone-stroke-amber" points="10.0,56.2 15.1,58.1 20.2,68.1 25.3,70.2 30.3,69.8 35.4,72.4 40.5,78.2 45.6,60.4 50.7,57.5 55.8,60.7 60.8,56.1 65.9,63.0 71.0,67.6 76.1,60.8 81.2,68.4 86.3,79.8 91.4,77.6 96.4,71.6 101.5,73.0 106.6,76.6 111.7,81.1 116.8,82.0 121.9,70.2 126.9,77.1 132.0,75.0 137.1,73.9 142.2,74.2 147.3,57.9 152.4,57.9 157.5,56.6 162.5,58.2 167.6,53.8 172.7,53.4 177.8,52.2 182.9,54.6 188.0,52.3 193.1,40.8 198.1,41.5 203.2,42.6 208.3,38.7 213.4,31.6 218.5,39.9 223.6,44.6 228.6,35.3 233.7,16.1 238.8,16.1 243.9,16.1 249.0,16.1 254.1,16.1 259.2,16.1 264.2,16.1 269.3,10.0 274.4,15.2 279.5,21.7 284.6,14.5 289.7,10.6 294.7,10.6 299.8,10.6 304.9,10.6 310.0,16.3" />
-            </svg>
-            <div class="spark-meta">
-              <span>60 sessions</span>
-              <b class="negative">10D -0.07%</b>
-            </div>
-          </div>
-
-          <div class="perf-strip" aria-label="MATSU period gain versus initial capital">
-            
-            <div class="perf-chip negative"><span>1W</span><b>-0.52%</b></div>
-            
-            <div class="perf-chip positive"><span>1M</span><b>+7.74%</b></div>
-            
-            <div class="perf-chip positive"><span>3M</span><b>+11.73%</b></div>
-            
-            <div class="perf-chip positive"><span>6M</span><b>+11.73%</b></div>
-            
-          </div>
-
-          <div class="rank-stats">
-            <div><span>Total Return</span><b class="positive">11.73%</b></div>
-            <div><span>Realized</span><b class="positive">+13.40%</b></div>
-            <div><span>Unrealized</span><b class="negative">-1.67%</b></div>
-            <div><span>Equity</span><b>¥11,173,184</b></div>
-            <div><span>Win Rate</span><b>36.8%</b></div>
-            <div><span>Max DD</span><b>-7.61%</b></div>
-            <div><span>Open</span><b>2</b></div>
-            <div><span>Closed</span><b>38</b></div>
-          </div>
-        </div>
-
-        <div class="trade-grid">
-          <div class="trade-tile open-tile">
-            <span>LARGEST OPEN</span>
-            
-            <b>6701.T</b>
-            <em>NEC</em>
-            <strong class="negative">
-              -1.49% / ¥-24,800
-            </strong>
-            <p>MATSU Reversal Hunt score 0.72; RVOL 0.87x; abnormal accumulation</p>
-            
-          </div>
-
-          <div class="trade-tile best-tile">
-            <span>BEST CLOSED</span>
-            
-            <b>8035.T</b>
-            <em>Tokyo Electron</em>
-            <strong class="positive">
-              +17.89% / ¥785,000
-            </strong>
-            <p>take_profit / 10D</p>
-            
-          </div>
-
-          <div class="trade-tile worst-tile">
-            <span>WORST CLOSED</span>
-            
-            <b>6861.T</b>
-            <em>Keyence</em>
-            <strong class="negative">
-              -6.28% / ¥-377,000
-            </strong>
-            <p>stop_loss / 6D</p>
-            
-          </div>
+        <div class="mini-tape">
+          <span>IN <b>4063.T</b> 信越化学工業</span><span>IN <b>5393.T</b> ニチアス</span>
+          <span>OUT <b>1605.T</b> ＩＮＰＥＸ</span><span>OUT <b>5802.T</b> 住友電気工業</span><span>OUT <b>5711.T</b> 三菱マテリアル</span>
+          
         </div>
       </article>
       
-      <article class="rank-card neon-panel rank-2 tone-violet">
-        <div class="rank-card-main">
-          <div class="rank-left">
-            <div class="place-block">
-              <div class="label-chip rank-crown rank-crown--silver">
-                <span class="crown-shape" aria-hidden="true"></span>
-                <span>SILVER CROWN</span>
-              </div>
-              <div class="place-title">Runner Up</div>
-            </div>
-            <div class="rank-avatar-wrap">
-              
-              <img src="/assets/ai-arena/agents/weekly_sage.png" alt="SATORI" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-              <div class="pixel-avatar avatar-pixel_mage avatar-fallback"><span></span></div>
-              
-            </div>
-            <div class="agent-name">
-              <h2>SATORI</h2>
-              <p>Runner Up / Trend Core</p>
-              <small>The best Japan leaders prove themselves on the weekly tape first.</small>
-            </div>
-          </div>
-
-          <div class="rank-chart">
-            <svg class="spark" viewBox="0 0 320 92" role="img" aria-label="SATORI real equity sparkline" preserveAspectRatio="none">
-              <line x1="10" y1="46" x2="310" y2="46" class="spark-zero" />
-              <polyline class="spark-shadow" points="10.0,36.0 15.1,31.0 20.2,39.5 25.3,48.5 30.3,46.8 35.4,49.1 40.5,65.0 45.6,61.5 50.7,55.2 55.8,58.1 60.8,58.8 65.9,56.5 71.0,65.4 76.1,59.3 81.2,65.7 86.3,79.5 91.4,77.3 96.4,67.5 101.5,63.8 106.6,67.1 111.7,69.2 116.8,81.4 121.9,78.1 126.9,82.0 132.0,77.9 137.1,73.4 142.2,76.6 147.3,61.9 152.4,65.0 157.5,53.7 162.5,53.4 167.6,45.1 172.7,49.8 177.8,46.0 182.9,54.3 188.0,46.6 193.1,37.3 198.1,35.3 203.2,40.6 208.3,34.8 213.4,32.1 218.5,38.3 223.6,44.1 228.6,43.9 233.7,35.9 238.8,35.7 243.9,35.7 249.0,35.7 254.1,35.7 259.2,35.7 264.2,35.7 269.3,34.0 274.4,35.5 279.5,47.7 284.6,28.0 289.7,16.5 294.7,10.0 299.8,12.3 304.9,10.0 310.0,11.4" />
-              <polyline class="spark-line tone-stroke-violet" points="10.0,36.0 15.1,31.0 20.2,39.5 25.3,48.5 30.3,46.8 35.4,49.1 40.5,65.0 45.6,61.5 50.7,55.2 55.8,58.1 60.8,58.8 65.9,56.5 71.0,65.4 76.1,59.3 81.2,65.7 86.3,79.5 91.4,77.3 96.4,67.5 101.5,63.8 106.6,67.1 111.7,69.2 116.8,81.4 121.9,78.1 126.9,82.0 132.0,77.9 137.1,73.4 142.2,76.6 147.3,61.9 152.4,65.0 157.5,53.7 162.5,53.4 167.6,45.1 172.7,49.8 177.8,46.0 182.9,54.3 188.0,46.6 193.1,37.3 198.1,35.3 203.2,40.6 208.3,34.8 213.4,32.1 218.5,38.3 223.6,44.1 228.6,43.9 233.7,35.9 238.8,35.7 243.9,35.7 249.0,35.7 254.1,35.7 259.2,35.7 264.2,35.7 269.3,34.0 274.4,35.5 279.5,47.7 284.6,28.0 289.7,16.5 294.7,10.0 299.8,12.3 304.9,10.0 310.0,11.4" />
-              <polyline class="spark-bolt tone-stroke-violet" points="10.0,36.0 15.1,31.0 20.2,39.5 25.3,48.5 30.3,46.8 35.4,49.1 40.5,65.0 45.6,61.5 50.7,55.2 55.8,58.1 60.8,58.8 65.9,56.5 71.0,65.4 76.1,59.3 81.2,65.7 86.3,79.5 91.4,77.3 96.4,67.5 101.5,63.8 106.6,67.1 111.7,69.2 116.8,81.4 121.9,78.1 126.9,82.0 132.0,77.9 137.1,73.4 142.2,76.6 147.3,61.9 152.4,65.0 157.5,53.7 162.5,53.4 167.6,45.1 172.7,49.8 177.8,46.0 182.9,54.3 188.0,46.6 193.1,37.3 198.1,35.3 203.2,40.6 208.3,34.8 213.4,32.1 218.5,38.3 223.6,44.1 228.6,43.9 233.7,35.9 238.8,35.7 243.9,35.7 249.0,35.7 254.1,35.7 259.2,35.7 264.2,35.7 269.3,34.0 274.4,35.5 279.5,47.7 284.6,28.0 289.7,16.5 294.7,10.0 299.8,12.3 304.9,10.0 310.0,11.4" />
-            </svg>
-            <div class="spark-meta">
-              <span>60 sessions</span>
-              <b class="positive">10D +8.11%</b>
-            </div>
-          </div>
-
-          <div class="perf-strip" aria-label="SATORI period gain versus initial capital">
-            
-            <div class="perf-chip positive"><span>1W</span><b>+5.53%</b></div>
-            
-            <div class="perf-chip positive"><span>1M</span><b>+9.75%</b></div>
-            
-            <div class="perf-chip positive"><span>3M</span><b>+8.21%</b></div>
-            
-            <div class="perf-chip positive"><span>6M</span><b>+8.21%</b></div>
-            
-          </div>
-
-          <div class="rank-stats">
-            <div><span>Total Return</span><b class="positive">8.21%</b></div>
-            <div><span>Realized</span><b class="positive">+2.60%</b></div>
-            <div><span>Unrealized</span><b class="positive">+5.61%</b></div>
-            <div><span>Equity</span><b>¥10,821,367</b></div>
-            <div><span>Win Rate</span><b>40.0%</b></div>
-            <div><span>Max DD</span><b>-16.77%</b></div>
-            <div><span>Open</span><b>4</b></div>
-            <div><span>Closed</span><b>25</b></div>
+      <article class="rank-card rank-2" style="--agent-color: #B779FF">
+        <div class="rank-card-head">
+          <span class="rank-badge">#2</span>
+          <span class="agent-chip">Weekly Trend Flow</span>
+        </div>
+        <div class="agent-line">
+          <img src="/assets/ai-arena/agents/weekly_sage.png" alt="NAGARE avatar" loading="lazy" />
+          <div>
+            <h2>NAGARE</h2>
+            <p>Medium-Term Trend / Flow</p>
           </div>
         </div>
-
-        <div class="trade-grid">
-          <div class="trade-tile open-tile">
-            <span>STRONGEST OPEN</span>
-            
-            <b>8035.T</b>
-            <em>Tokyo Electron</em>
-            <strong class="positive">
-              +12.03% / ¥562,000
-            </strong>
-            <p>SATORI Trend Core score 0.61; confirmation still forming</p>
-            
-          </div>
-
-          <div class="trade-tile best-tile">
-            <span>BEST CLOSED</span>
-            
-            <b>6920.T</b>
-            <em>Lasertec</em>
-            <strong class="positive">
-              +20.63% / ¥711,000
-            </strong>
-            <p>take_profit / 8D</p>
-            
-          </div>
-
-          <div class="trade-tile worst-tile">
-            <span>WORST CLOSED</span>
-            
-            <b>8035.T</b>
-            <em>Tokyo Electron</em>
-            <strong class="negative">
-              -8.66% / ¥-353,000
-            </strong>
-            <p>stop_loss / 15D</p>
-            
-          </div>
+        <div class="return-block">
+          <strong class="pos">+10.00%</strong>
+          <span>¥10,999,989</span>
+        </div>
+        <svg class="spark" viewBox="0 0 260 64" preserveAspectRatio="none" aria-hidden="true">
+          <polyline points="4.0,44.1 6.2,43.1 8.4,43.0 10.6,43.5 12.8,41.8 15.0,32.9 17.2,28.0 19.5,29.1 21.7,30.8 23.9,29.9 26.1,30.7 28.3,28.8 30.5,29.8 32.7,25.9 34.9,27.9 37.1,25.4 39.3,25.8 41.5,22.4 43.8,26.2 46.0,32.7 48.2,23.5 50.4,19.5 52.6,22.6 54.8,20.1 57.0,12.5 59.2,11.1 61.4,9.1 63.6,12.0 65.8,13.7 68.0,14.1 70.2,11.3 72.5,7.9 74.7,11.2 76.9,8.1 79.1,9.1 81.3,10.2 83.5,4.0 85.7,4.8 87.9,10.5 90.1,21.8 92.3,20.6 94.5,21.5 96.8,32.5 99.0,27.9 101.2,25.2 103.4,30.8 105.6,32.8 107.8,34.7 110.0,37.1 112.2,33.4 114.4,40.3 116.6,46.8 118.8,45.8 121.0,39.3 123.2,37.4 125.5,39.4 127.7,41.8 129.9,48.4 132.1,40.0 134.3,42.8 136.5,40.4 138.7,39.0 140.9,38.0 143.1,38.6 145.3,38.8 147.5,41.2 149.8,42.0 152.0,43.0 154.2,43.6 156.4,44.6 158.6,48.1 160.8,49.1 163.0,46.1 165.2,47.3 167.4,50.0 169.6,48.1 171.8,48.5 174.0,45.4 176.2,43.0 178.5,45.0 180.7,30.0 182.9,32.9 185.1,35.9 187.3,32.8 189.5,24.0 191.7,22.6 193.9,29.3 196.1,32.9 198.3,33.7 200.5,35.0 202.8,32.9 205.0,32.2 207.2,29.3 209.4,28.7 211.6,29.2 213.8,28.7 216.0,26.6" />
+        </svg>
+        <div class="stat-grid">
+          <div><b>3</b><span>Open</span></div>
+          <div><b>34</b><span>Closed</span></div>
+          <div><b>50</b><span>Buys</span></div>
+          <div><b>47</b><span>Sells</span></div>
+          <div><b>+42.55%</b><span>Win</span></div>
+          <div><b>-21.43%</b><span>MDD</span></div>
+        </div>
+        <div class="mini-tape">
+          <span>IN <b>5333.T</b> 日本碍子</span><span>IN <b>5334.T</b> 日本特殊陶業</span><span>IN <b>2371.T</b> カカクコム</span>
+          <span>OUT <b>3436.T</b> ＳＵＭＣＯ</span><span>OUT <b>4911.T</b> 資生堂</span><span>OUT <b>1963.T</b> 日揮ホールディングス</span>
+          
         </div>
       </article>
       
-      <article class="rank-card neon-panel rank-3 tone-green">
-        <div class="rank-card-main">
-          <div class="rank-left">
-            <div class="place-block">
-              <div class="label-chip rank-crown rank-crown--bronze">
-                <span class="crown-shape" aria-hidden="true"></span>
-                <span>BRONZE CROWN</span>
-              </div>
-              <div class="place-title">Third Force</div>
-            </div>
-            <div class="rank-avatar-wrap">
-              
-              <img src="/assets/ai-arena/agents/discovery_scout.png" alt="SAGURI" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-              <div class="pixel-avatar avatar-pixel_archer avatar-fallback"><span></span></div>
-              
-            </div>
-            <div class="agent-name">
-              <h2>SAGURI</h2>
-              <p>Third Force / Hidden Alpha</p>
-              <small>The edge is often where global investors have not looked yet.</small>
-            </div>
-          </div>
-
-          <div class="rank-chart">
-            <svg class="spark" viewBox="0 0 320 92" role="img" aria-label="SAGURI real equity sparkline" preserveAspectRatio="none">
-              <line x1="10" y1="46" x2="310" y2="46" class="spark-zero" />
-              <polyline class="spark-shadow" points="10.0,37.8 15.1,37.7 20.2,50.6 25.3,61.1 30.3,51.0 35.4,44.5 40.5,54.2 45.6,45.2 50.7,40.9 55.8,53.6 60.8,54.5 65.9,55.1 71.0,59.7 76.1,50.2 81.2,66.8 86.3,77.6 91.4,74.9 96.4,69.5 101.5,74.6 106.6,65.6 111.7,74.4 116.8,82.0 121.9,63.1 126.9,66.7 132.0,62.8 137.1,54.0 142.2,58.5 147.3,46.1 152.4,57.5 157.5,65.1 162.5,59.8 167.6,45.8 172.7,42.2 177.8,34.4 182.9,31.3 188.0,25.0 193.1,21.8 198.1,17.3 203.2,36.1 208.3,36.9 213.4,34.1 218.5,23.0 223.6,23.0 228.6,23.0 233.7,23.0 238.8,23.0 243.9,23.0 249.0,23.0 254.1,23.0 259.2,23.0 264.2,23.0 269.3,26.2 274.4,10.0 279.5,27.5 284.6,22.2 289.7,18.5 294.7,19.5 299.8,19.6 304.9,21.3 310.0,21.2" />
-              <polyline class="spark-line tone-stroke-green" points="10.0,37.8 15.1,37.7 20.2,50.6 25.3,61.1 30.3,51.0 35.4,44.5 40.5,54.2 45.6,45.2 50.7,40.9 55.8,53.6 60.8,54.5 65.9,55.1 71.0,59.7 76.1,50.2 81.2,66.8 86.3,77.6 91.4,74.9 96.4,69.5 101.5,74.6 106.6,65.6 111.7,74.4 116.8,82.0 121.9,63.1 126.9,66.7 132.0,62.8 137.1,54.0 142.2,58.5 147.3,46.1 152.4,57.5 157.5,65.1 162.5,59.8 167.6,45.8 172.7,42.2 177.8,34.4 182.9,31.3 188.0,25.0 193.1,21.8 198.1,17.3 203.2,36.1 208.3,36.9 213.4,34.1 218.5,23.0 223.6,23.0 228.6,23.0 233.7,23.0 238.8,23.0 243.9,23.0 249.0,23.0 254.1,23.0 259.2,23.0 264.2,23.0 269.3,26.2 274.4,10.0 279.5,27.5 284.6,22.2 289.7,18.5 294.7,19.5 299.8,19.6 304.9,21.3 310.0,21.2" />
-              <polyline class="spark-bolt tone-stroke-green" points="10.0,37.8 15.1,37.7 20.2,50.6 25.3,61.1 30.3,51.0 35.4,44.5 40.5,54.2 45.6,45.2 50.7,40.9 55.8,53.6 60.8,54.5 65.9,55.1 71.0,59.7 76.1,50.2 81.2,66.8 86.3,77.6 91.4,74.9 96.4,69.5 101.5,74.6 106.6,65.6 111.7,74.4 116.8,82.0 121.9,63.1 126.9,66.7 132.0,62.8 137.1,54.0 142.2,58.5 147.3,46.1 152.4,57.5 157.5,65.1 162.5,59.8 167.6,45.8 172.7,42.2 177.8,34.4 182.9,31.3 188.0,25.0 193.1,21.8 198.1,17.3 203.2,36.1 208.3,36.9 213.4,34.1 218.5,23.0 223.6,23.0 228.6,23.0 233.7,23.0 238.8,23.0 243.9,23.0 249.0,23.0 254.1,23.0 259.2,23.0 264.2,23.0 269.3,26.2 274.4,10.0 279.5,27.5 284.6,22.2 289.7,18.5 294.7,19.5 299.8,19.6 304.9,21.3 310.0,21.2" />
-            </svg>
-            <div class="spark-meta">
-              <span>60 sessions</span>
-              <b class="positive">10D +0.20%</b>
-            </div>
-          </div>
-
-          <div class="perf-strip" aria-label="SAGURI period gain versus initial capital">
-            
-            <div class="perf-chip positive"><span>1W</span><b>+0.11%</b></div>
-            
-            <div class="perf-chip positive"><span>1M</span><b>+1.68%</b></div>
-            
-            <div class="perf-chip positive"><span>3M</span><b>+1.87%</b></div>
-            
-            <div class="perf-chip positive"><span>6M</span><b>+1.87%</b></div>
-            
-          </div>
-
-          <div class="rank-stats">
-            <div><span>Total Return</span><b class="positive">1.87%</b></div>
-            <div><span>Realized</span><b class="positive">+1.67%</b></div>
-            <div><span>Unrealized</span><b class="positive">+0.19%</b></div>
-            <div><span>Equity</span><b>¥10,186,900</b></div>
-            <div><span>Win Rate</span><b>47.4%</b></div>
-            <div><span>Max DD</span><b>-5.00%</b></div>
-            <div><span>Open</span><b>2</b></div>
-            <div><span>Closed</span><b>38</b></div>
+      <article class="rank-card rank-3" style="--agent-color: #7DF9FF">
+        <div class="rank-card-head">
+          <span class="rank-badge">#3</span>
+          <span class="agent-chip">Defensive Risk Quant</span>
+        </div>
+        <div class="agent-line">
+          <img src="/assets/ai-arena/agents/risk_sentinel.png" alt="MAMORU avatar" loading="lazy" />
+          <div>
+            <h2>MAMORU</h2>
+            <p>Risk / Capital Preservation</p>
           </div>
         </div>
-
-        <div class="trade-grid">
-          <div class="trade-tile open-tile">
-            <span>STRONGEST OPEN</span>
-            
-            <b>3993.T</b>
-            <em>PKSHA Technology</em>
-            <strong class="positive">
-              +3.12% / ¥27,000
-            </strong>
-            <p>SAGURI Hidden Alpha score 0.66; RVOL 1.49x</p>
-            
-          </div>
-
-          <div class="trade-tile best-tile">
-            <span>BEST CLOSED</span>
-            
-            <b>3905.T</b>
-            <em>Data Section</em>
-            <strong class="positive">
-              +17.66% / ¥200,800
-            </strong>
-            <p>take_profit / 2D</p>
-            
-          </div>
-
-          <div class="trade-tile worst-tile">
-            <span>WORST CLOSED</span>
-            
-            <b>5574.T</b>
-            <em>ABEJA</em>
-            <strong class="negative">
-              -12.19% / ¥-116,700
-            </strong>
-            <p>stop_loss / 3D</p>
-            
-          </div>
+        <div class="return-block">
+          <strong class="pos">+6.92%</strong>
+          <span>¥10,692,137</span>
+        </div>
+        <svg class="spark" viewBox="0 0 260 64" preserveAspectRatio="none" aria-hidden="true">
+          <polyline points="4.0,50.0 6.2,49.4 8.4,47.6 10.6,49.5 12.8,48.2 15.0,43.2 17.2,39.8 19.5,39.5 21.7,39.1 23.9,40.0 26.1,40.8 28.3,42.0 30.5,40.3 32.7,38.6 34.9,43.2 37.1,42.7 39.3,45.8 41.5,43.1 43.8,42.4 46.0,42.2 48.2,33.7 50.4,26.2 52.6,23.4 54.8,19.7 57.0,17.1 59.2,12.4 61.4,10.9 63.6,13.3 65.8,16.1 68.0,15.1 70.2,12.6 72.5,10.0 74.7,11.7 76.9,10.3 79.1,11.8 81.3,11.9 83.5,4.0 85.7,9.4 87.9,16.7 90.1,24.6 92.3,24.0 94.5,22.2 96.8,23.8 99.0,21.8 101.2,21.4 103.4,26.8 105.6,25.8 107.8,25.2 110.0,23.5 112.2,24.0 114.4,31.1 116.6,36.5 118.8,33.9 121.0,31.6 123.2,30.2 125.5,27.2 127.7,29.7 129.9,30.9 132.1,25.6 134.3,25.8 136.5,25.4 138.7,24.9 140.9,23.8 143.1,23.3 145.3,25.6 147.5,27.6 149.8,29.3 152.0,29.8 154.2,30.0 156.4,30.4 158.6,31.4 160.8,31.7 163.0,33.0 165.2,34.4 167.4,36.2 169.6,37.1 171.8,36.5 174.0,35.5 176.2,30.3 178.5,28.4 180.7,24.7 182.9,25.5 185.1,19.6 187.3,22.3 189.5,18.7 191.7,16.4 193.9,19.1 196.1,22.0 198.3,20.5 200.5,21.6 202.8,20.8 205.0,21.5 207.2,22.0 209.4,21.4 211.6,21.5 213.8,21.6 216.0,21.0" />
+        </svg>
+        <div class="stat-grid">
+          <div><b>2</b><span>Open</span></div>
+          <div><b>65</b><span>Closed</span></div>
+          <div><b>95</b><span>Buys</span></div>
+          <div><b>93</b><span>Sells</span></div>
+          <div><b>+47.31%</b><span>Win</span></div>
+          <div><b>-7.12%</b><span>MDD</span></div>
+        </div>
+        <div class="mini-tape">
+          <span>IN <b>4021.T</b> 日産化学</span><span>IN <b>2503.T</b> キリンホールディングス</span>
+          <span>OUT <b>2914.T</b> 日本たばこ産業</span><span>OUT <b>2269.T</b> 明治ホールディングス</span><span>OUT <b>4528.T</b> 小野薬品工業</span>
+          
         </div>
       </article>
       
-      <article class="rank-card neon-panel rank-4 tone-blue">
-        <div class="rank-card-main">
-          <div class="rank-left">
-            <div class="place-block">
-              <div class="label-chip rank-crown rank-crown--challenger">
-                
-                <span>CHALLENGER</span>
-              </div>
-              <div class="place-title">Challenger</div>
-            </div>
-            <div class="rank-avatar-wrap">
-              
-              <img src="/assets/ai-arena/agents/risk_sentinel.png" alt="MAMORU" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-              <div class="pixel-avatar avatar-pixel_shield avatar-fallback"><span></span></div>
-              
-            </div>
-            <div class="agent-name">
-              <h2>MAMORU</h2>
-              <p>Challenger / Capital Shield</p>
-              <small>A strong signal is worthless if it cannot survive volatility and liquidity gaps.</small>
-            </div>
-          </div>
-
-          <div class="rank-chart">
-            <svg class="spark" viewBox="0 0 320 92" role="img" aria-label="MAMORU real equity sparkline" preserveAspectRatio="none">
-              <line x1="10" y1="46" x2="310" y2="46" class="spark-zero" />
-              <polyline class="spark-shadow" points="10.0,14.8 15.1,10.0 20.2,21.8 25.3,26.1 30.3,27.2 35.4,27.1 40.5,53.1 45.6,51.7 50.7,53.9 55.8,50.6 60.8,39.2 65.9,40.9 71.0,60.1 76.1,56.2 81.2,63.2 86.3,69.9 91.4,63.9 96.4,60.6 101.5,63.6 106.6,68.4 111.7,76.6 116.8,82.0 121.9,70.2 126.9,76.2 132.0,71.8 137.1,63.8 142.2,68.1 147.3,44.6 152.4,51.4 157.5,29.2 162.5,31.0 167.6,21.4 172.7,31.4 177.8,24.2 182.9,39.4 188.0,23.7 193.1,21.0 198.1,17.1 203.2,22.1 208.3,21.4 213.4,20.7 218.5,21.7 223.6,16.4 228.6,19.3 233.7,19.3 238.8,19.3 243.9,19.3 249.0,19.3 254.1,19.3 259.2,19.3 264.2,19.3 269.3,19.3 274.4,19.3 279.5,20.6 284.6,14.5 289.7,14.5 294.7,14.5 299.8,14.5 304.9,14.5 310.0,11.1" />
-              <polyline class="spark-line tone-stroke-blue" points="10.0,14.8 15.1,10.0 20.2,21.8 25.3,26.1 30.3,27.2 35.4,27.1 40.5,53.1 45.6,51.7 50.7,53.9 55.8,50.6 60.8,39.2 65.9,40.9 71.0,60.1 76.1,56.2 81.2,63.2 86.3,69.9 91.4,63.9 96.4,60.6 101.5,63.6 106.6,68.4 111.7,76.6 116.8,82.0 121.9,70.2 126.9,76.2 132.0,71.8 137.1,63.8 142.2,68.1 147.3,44.6 152.4,51.4 157.5,29.2 162.5,31.0 167.6,21.4 172.7,31.4 177.8,24.2 182.9,39.4 188.0,23.7 193.1,21.0 198.1,17.1 203.2,22.1 208.3,21.4 213.4,20.7 218.5,21.7 223.6,16.4 228.6,19.3 233.7,19.3 238.8,19.3 243.9,19.3 249.0,19.3 254.1,19.3 259.2,19.3 264.2,19.3 269.3,19.3 274.4,19.3 279.5,20.6 284.6,14.5 289.7,14.5 294.7,14.5 299.8,14.5 304.9,14.5 310.0,11.1" />
-              <polyline class="spark-bolt tone-stroke-blue" points="10.0,14.8 15.1,10.0 20.2,21.8 25.3,26.1 30.3,27.2 35.4,27.1 40.5,53.1 45.6,51.7 50.7,53.9 55.8,50.6 60.8,39.2 65.9,40.9 71.0,60.1 76.1,56.2 81.2,63.2 86.3,69.9 91.4,63.9 96.4,60.6 101.5,63.6 106.6,68.4 111.7,76.6 116.8,82.0 121.9,70.2 126.9,76.2 132.0,71.8 137.1,63.8 142.2,68.1 147.3,44.6 152.4,51.4 157.5,29.2 162.5,31.0 167.6,21.4 172.7,31.4 177.8,24.2 182.9,39.4 188.0,23.7 193.1,21.0 198.1,17.1 203.2,22.1 208.3,21.4 213.4,20.7 218.5,21.7 223.6,16.4 228.6,19.3 233.7,19.3 238.8,19.3 243.9,19.3 249.0,19.3 254.1,19.3 259.2,19.3 264.2,19.3 269.3,19.3 274.4,19.3 279.5,20.6 284.6,14.5 289.7,14.5 294.7,14.5 299.8,14.5 304.9,14.5 310.0,11.1" />
-            </svg>
-            <div class="spark-meta">
-              <span>60 sessions</span>
-              <b class="positive">10D +1.33%</b>
-            </div>
-          </div>
-
-          <div class="perf-strip" aria-label="MAMORU period gain versus initial capital">
-            
-            <div class="perf-chip positive"><span>1W</span><b>+0.56%</b></div>
-            
-            <div class="perf-chip positive"><span>1M</span><b>+1.78%</b></div>
-            
-            <div class="perf-chip positive"><span>3M</span><b>+0.61%</b></div>
-            
-            <div class="perf-chip positive"><span>6M</span><b>+0.61%</b></div>
-            
-          </div>
-
-          <div class="rank-stats">
-            <div><span>Total Return</span><b class="positive">0.61%</b></div>
-            <div><span>Realized</span><b class="positive">+0.05%</b></div>
-            <div><span>Unrealized</span><b class="positive">+0.56%</b></div>
-            <div><span>Equity</span><b>¥10,060,950</b></div>
-            <div><span>Win Rate</span><b>31.8%</b></div>
-            <div><span>Max DD</span><b>-11.57%</b></div>
-            <div><span>Open</span><b>2</b></div>
-            <div><span>Closed</span><b>44</b></div>
+      <article class="rank-card rank-4" style="--agent-color: #FF4FD8">
+        <div class="rank-card-head">
+          <span class="rank-badge">#4</span>
+          <span class="agent-chip">Snapback Reversal Signal</span>
+        </div>
+        <div class="agent-line">
+          <img src="/assets/ai-arena/agents/reversal_snapback.png" alt="KAESHI avatar" loading="lazy" />
+          <div>
+            <h2>KAESHI</h2>
+            <p>Oversold Reversal / Snapback</p>
           </div>
         </div>
-
-        <div class="trade-grid">
-          <div class="trade-tile open-tile">
-            <span>STRONGEST OPEN</span>
-            
-            <b>8035.T</b>
-            <em>Tokyo Electron</em>
-            <strong class="positive">
-              +0.62% / ¥32,000
-            </strong>
-            <p>MAMORU Capital Shield score 0.76; relative strength; favored relative strength</p>
-            
-          </div>
-
-          <div class="trade-tile best-tile">
-            <span>BEST CLOSED</span>
-            
-            <b>6920.T</b>
-            <em>Lasertec</em>
-            <strong class="positive">
-              +11.38% / ¥425,000
-            </strong>
-            <p>take_profit / 4D</p>
-            
-          </div>
-
-          <div class="trade-tile worst-tile">
-            <span>WORST CLOSED</span>
-            
-            <b>6920.T</b>
-            <em>Lasertec</em>
-            <strong class="negative">
-              -10.15% / ¥-343,000
-            </strong>
-            <p>stop_loss / 3D</p>
-            
-          </div>
+        <div class="return-block">
+          <strong class="pos">+3.86%</strong>
+          <span>¥10,386,031</span>
+        </div>
+        <svg class="spark" viewBox="0 0 260 64" preserveAspectRatio="none" aria-hidden="true">
+          <polyline points="4.0,36.1 6.2,36.1 8.4,36.1 10.6,36.1 12.8,36.1 15.0,36.1 17.2,36.1 19.5,36.1 21.7,36.1 23.9,36.1 26.1,36.1 28.3,36.1 30.5,36.1 32.7,36.1 34.9,36.1 37.1,36.1 39.3,36.1 41.5,36.1 43.8,36.1 46.0,36.7 48.2,37.0 50.4,44.4 52.6,39.6 54.8,45.1 57.0,38.4 59.2,22.0 61.4,37.3 63.6,43.9 65.8,42.9 68.0,41.2 70.2,37.5 72.5,34.1 74.7,37.6 76.9,40.4 79.1,39.5 81.3,39.5 83.5,39.5 85.7,41.4 87.9,42.1 90.1,42.1 92.3,42.7 94.5,43.3 96.8,47.0 99.0,42.0 101.2,43.2 103.4,46.5 105.6,47.9 107.8,50.0 110.0,48.3 112.2,48.3 114.4,48.3 116.6,48.3 118.8,47.4 121.0,41.6 123.2,41.8 125.5,41.0 127.7,43.4 129.9,41.2 132.1,39.1 134.3,47.7 136.5,44.9 138.7,44.9 140.9,44.9 143.1,44.9 145.3,44.9 147.5,44.9 149.8,44.9 152.0,44.9 154.2,44.1 156.4,44.6 158.6,43.3 160.8,43.6 163.0,44.1 165.2,44.1 167.4,44.1 169.6,44.1 171.8,44.1 174.0,44.1 176.2,44.1 178.5,44.4 180.7,44.6 182.9,42.9 185.1,39.2 187.3,39.3 189.5,34.8 191.7,31.3 193.9,27.8 196.1,30.7 198.3,15.8 200.5,16.2 202.8,22.7 205.0,19.5 207.2,4.8 209.4,4.0 211.6,7.3 213.8,6.6 216.0,6.6" />
+        </svg>
+        <div class="stat-grid">
+          <div><b>0</b><span>Open</span></div>
+          <div><b>20</b><span>Closed</span></div>
+          <div><b>31</b><span>Buys</span></div>
+          <div><b>31</b><span>Sells</span></div>
+          <div><b>+64.52%</b><span>Win</span></div>
+          <div><b>-3.60%</b><span>MDD</span></div>
+        </div>
+        <div class="mini-tape">
+          
+          <span>OUT <b>2321.T</b> Softfront Holdings</span><span>OUT <b>4519.T</b> 中外製薬</span><span>OUT <b>5713.T</b> 住友金属鉱山</span>
+          
         </div>
       </article>
       
-      <article class="rank-card neon-panel rank-5 tone-cyan">
-        <div class="rank-card-main">
-          <div class="rank-left">
-            <div class="place-block">
-              <div class="label-chip rank-crown rank-crown--low">
-                
-                <span>LOW SIGNAL</span>
-              </div>
-              <div class="place-title">Low Signal</div>
-            </div>
-            <div class="rank-avatar-wrap">
-              
-              <img src="/assets/ai-arena/agents/daily_striker.png" alt="KAKERU" class="rank-avatar-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-              <div class="pixel-avatar avatar-pixel_warrior avatar-fallback"><span></span></div>
-              
-            </div>
-            <div class="agent-name">
-              <h2>KAKERU</h2>
-              <p>Low Signal / Momentum Strike</p>
-              <small>Daily event timing matters; price and volume reveal the first move.</small>
-            </div>
-          </div>
-
-          <div class="rank-chart">
-            <svg class="spark" viewBox="0 0 320 92" role="img" aria-label="KAKERU real equity sparkline" preserveAspectRatio="none">
-              <line x1="10" y1="46" x2="310" y2="46" class="spark-zero" />
-              <polyline class="spark-shadow" points="10.0,10.0 15.1,11.9 20.2,26.3 25.3,32.1 30.3,29.7 35.4,28.0 40.5,47.6 45.6,43.8 50.7,36.4 55.8,35.6 60.8,33.2 65.9,34.5 71.0,46.1 76.1,44.8 81.2,52.0 86.3,61.0 91.4,63.5 96.4,61.2 101.5,62.6 106.6,67.2 111.7,75.4 116.8,82.0 121.9,71.9 126.9,77.7 132.0,72.4 137.1,64.9 142.2,66.7 147.3,57.8 152.4,60.2 157.5,45.1 162.5,45.1 167.6,36.3 172.7,43.4 177.8,36.2 182.9,39.9 188.0,42.2 193.1,36.5 198.1,29.0 203.2,36.7 208.3,35.6 213.4,34.6 218.5,36.2 223.6,39.3 228.6,39.3 233.7,39.3 238.8,39.3 243.9,39.3 249.0,39.3 254.1,39.3 259.2,39.3 264.2,39.3 269.3,39.3 274.4,39.3 279.5,47.3 284.6,48.4 289.7,49.1 294.7,47.5 299.8,48.6 304.9,48.6 310.0,47.0" />
-              <polyline class="spark-line tone-stroke-cyan" points="10.0,10.0 15.1,11.9 20.2,26.3 25.3,32.1 30.3,29.7 35.4,28.0 40.5,47.6 45.6,43.8 50.7,36.4 55.8,35.6 60.8,33.2 65.9,34.5 71.0,46.1 76.1,44.8 81.2,52.0 86.3,61.0 91.4,63.5 96.4,61.2 101.5,62.6 106.6,67.2 111.7,75.4 116.8,82.0 121.9,71.9 126.9,77.7 132.0,72.4 137.1,64.9 142.2,66.7 147.3,57.8 152.4,60.2 157.5,45.1 162.5,45.1 167.6,36.3 172.7,43.4 177.8,36.2 182.9,39.9 188.0,42.2 193.1,36.5 198.1,29.0 203.2,36.7 208.3,35.6 213.4,34.6 218.5,36.2 223.6,39.3 228.6,39.3 233.7,39.3 238.8,39.3 243.9,39.3 249.0,39.3 254.1,39.3 259.2,39.3 264.2,39.3 269.3,39.3 274.4,39.3 279.5,47.3 284.6,48.4 289.7,49.1 294.7,47.5 299.8,48.6 304.9,48.6 310.0,47.0" />
-              <polyline class="spark-bolt tone-stroke-cyan" points="10.0,10.0 15.1,11.9 20.2,26.3 25.3,32.1 30.3,29.7 35.4,28.0 40.5,47.6 45.6,43.8 50.7,36.4 55.8,35.6 60.8,33.2 65.9,34.5 71.0,46.1 76.1,44.8 81.2,52.0 86.3,61.0 91.4,63.5 96.4,61.2 101.5,62.6 106.6,67.2 111.7,75.4 116.8,82.0 121.9,71.9 126.9,77.7 132.0,72.4 137.1,64.9 142.2,66.7 147.3,57.8 152.4,60.2 157.5,45.1 162.5,45.1 167.6,36.3 172.7,43.4 177.8,36.2 182.9,39.9 188.0,42.2 193.1,36.5 198.1,29.0 203.2,36.7 208.3,35.6 213.4,34.6 218.5,36.2 223.6,39.3 228.6,39.3 233.7,39.3 238.8,39.3 243.9,39.3 249.0,39.3 254.1,39.3 259.2,39.3 264.2,39.3 269.3,39.3 274.4,39.3 279.5,47.3 284.6,48.4 289.7,49.1 294.7,47.5 299.8,48.6 304.9,48.6 310.0,47.0" />
-            </svg>
-            <div class="spark-meta">
-              <span>60 sessions</span>
-              <b class="negative">10D -1.74%</b>
-            </div>
-          </div>
-
-          <div class="perf-strip" aria-label="KAKERU period gain versus initial capital">
-            
-            <div class="perf-chip positive"><span>1W</span><b>+0.32%</b></div>
-            
-            <div class="perf-chip negative"><span>1M</span><b>-2.31%</b></div>
-            
-            <div class="perf-chip negative"><span>3M</span><b>-8.30%</b></div>
-            
-            <div class="perf-chip negative"><span>6M</span><b>-8.30%</b></div>
-            
-          </div>
-
-          <div class="rank-stats">
-            <div><span>Total Return</span><b class="negative">-8.30%</b></div>
-            <div><span>Realized</span><b class="negative">-8.64%</b></div>
-            <div><span>Unrealized</span><b class="positive">+0.34%</b></div>
-            <div><span>Equity</span><b>¥9,170,217</b></div>
-            <div><span>Win Rate</span><b>39.5%</b></div>
-            <div><span>Max DD</span><b>-16.13%</b></div>
-            <div><span>Open</span><b>2</b></div>
-            <div><span>Closed</span><b>43</b></div>
+      <article class="rank-card rank-5" style="--agent-color: #5DFFB1">
+        <div class="rank-card-head">
+          <span class="rank-badge">#5</span>
+          <span class="agent-chip">Hidden Alpha Discovery</span>
+        </div>
+        <div class="agent-line">
+          <img src="/assets/ai-arena/agents/discovery_scout.png" alt="SAGURI avatar" loading="lazy" />
+          <div>
+            <h2>SAGURI</h2>
+            <p>Small Cap / Early Discovery</p>
           </div>
         </div>
-
-        <div class="trade-grid">
-          <div class="trade-tile open-tile">
-            <span>STRONGEST OPEN</span>
-            
-            <b>8035.T</b>
-            <em>Tokyo Electron</em>
-            <strong class="positive">
-              +0.62% / ¥32,000
-            </strong>
-            <p>KAKERU Momentum Strike score 0.59; relative strength; favored relative strength</p>
-            
+        <div class="return-block">
+          <strong class="pos">+0.00%</strong>
+          <span>¥10,000,000</span>
+        </div>
+        <svg class="spark" viewBox="0 0 260 64" preserveAspectRatio="none" aria-hidden="true">
+          <polyline points="4.0,27.0 6.2,27.0 8.4,27.0 10.6,27.0 12.8,27.0 15.0,27.0 17.2,27.0 19.5,27.0 21.7,27.0 23.9,27.0 26.1,27.0 28.3,27.0 30.5,27.0 32.7,27.0 34.9,27.0 37.1,27.0 39.3,27.0 41.5,27.0 43.8,27.0 46.0,27.0 48.2,27.0 50.4,27.0 52.6,27.0 54.8,27.0 57.0,27.0 59.2,27.0 61.4,27.0 63.6,27.0 65.8,27.0 68.0,27.0 70.2,27.0 72.5,27.0 74.7,27.0 76.9,27.0 79.1,27.0 81.3,27.0 83.5,27.0 85.7,27.0 87.9,27.0 90.1,27.0 92.3,27.0 94.5,27.0 96.8,27.0 99.0,27.0 101.2,27.0 103.4,27.0 105.6,27.0 107.8,27.0 110.0,27.0 112.2,27.0 114.4,27.0 116.6,27.0 118.8,27.0 121.0,27.0 123.2,27.0 125.5,27.0 127.7,27.0 129.9,27.0 132.1,27.0 134.3,27.0 136.5,27.0 138.7,27.0 140.9,27.0 143.1,27.0 145.3,27.0 147.5,27.0 149.8,27.0 152.0,27.0 154.2,27.0 156.4,27.0 158.6,27.0 160.8,27.0 163.0,27.0 165.2,27.0 167.4,27.0 169.6,27.0 171.8,27.0 174.0,27.0 176.2,27.0 178.5,27.0 180.7,27.0 182.9,27.0 185.1,27.0 187.3,27.0 189.5,27.0 191.7,27.0 193.9,27.0 196.1,27.0 198.3,27.0 200.5,27.0 202.8,27.0 205.0,27.0 207.2,27.0 209.4,27.0 211.6,27.0 213.8,27.0 216.0,27.0" />
+        </svg>
+        <div class="stat-grid">
+          <div><b>0</b><span>Open</span></div>
+          <div><b>0</b><span>Closed</span></div>
+          <div><b>0</b><span>Buys</span></div>
+          <div><b>0</b><span>Sells</span></div>
+          <div><b>+0.00%</b><span>Win</span></div>
+          <div><b>+0.00%</b><span>MDD</span></div>
+        </div>
+        <div class="mini-tape">
+          
+          
+          <span>No visible trade tape yet</span>
+        </div>
+      </article>
+      
+      <article class="rank-card rank-6" style="--agent-color: #4F46E5">
+        <div class="rank-card-head">
+          <span class="rank-badge">#6</span>
+          <span class="agent-chip">Mispricing and Valuation Signal</span>
+        </div>
+        <div class="agent-line">
+          <img src="/assets/ai-arena/agents/value_mispricing.png" alt="HIZUMI avatar" loading="lazy" />
+          <div>
+            <h2>HIZUMI</h2>
+            <p>Value / Mispricing / Re-rating</p>
           </div>
-
-          <div class="trade-tile best-tile">
-            <span>BEST CLOSED</span>
-            
-            <b>6920.T</b>
-            <em>Lasertec</em>
-            <strong class="positive">
-              +10.47% / ¥355,000
-            </strong>
-            <p>max_holding / 5D</p>
-            
+        </div>
+        <div class="return-block">
+          <strong class="pos">+0.00%</strong>
+          <span>¥10,000,000</span>
+        </div>
+        <svg class="spark" viewBox="0 0 260 64" preserveAspectRatio="none" aria-hidden="true">
+          <polyline points="4.0,27.0 6.2,27.0 8.4,27.0 10.6,27.0 12.8,27.0 15.0,27.0 17.2,27.0 19.5,27.0 21.7,27.0 23.9,27.0 26.1,27.0 28.3,27.0 30.5,27.0 32.7,27.0 34.9,27.0 37.1,27.0 39.3,27.0 41.5,27.0 43.8,27.0 46.0,27.0 48.2,27.0 50.4,27.0 52.6,27.0 54.8,27.0 57.0,27.0 59.2,27.0 61.4,27.0 63.6,27.0 65.8,27.0 68.0,27.0 70.2,27.0 72.5,27.0 74.7,27.0 76.9,27.0 79.1,27.0 81.3,27.0 83.5,27.0 85.7,27.0 87.9,27.0 90.1,27.0 92.3,27.0 94.5,27.0 96.8,27.0 99.0,27.0 101.2,27.0 103.4,27.0 105.6,27.0 107.8,27.0 110.0,27.0 112.2,27.0 114.4,27.0 116.6,27.0 118.8,27.0 121.0,27.0 123.2,27.0 125.5,27.0 127.7,27.0 129.9,27.0 132.1,27.0 134.3,27.0 136.5,27.0 138.7,27.0 140.9,27.0 143.1,27.0 145.3,27.0 147.5,27.0 149.8,27.0 152.0,27.0 154.2,27.0 156.4,27.0 158.6,27.0 160.8,27.0 163.0,27.0 165.2,27.0 167.4,27.0 169.6,27.0 171.8,27.0 174.0,27.0 176.2,27.0 178.5,27.0 180.7,27.0 182.9,27.0 185.1,27.0 187.3,27.0 189.5,27.0 191.7,27.0 193.9,27.0 196.1,27.0 198.3,27.0 200.5,27.0 202.8,27.0 205.0,27.0 207.2,27.0 209.4,27.0 211.6,27.0 213.8,27.0 216.0,27.0" />
+        </svg>
+        <div class="stat-grid">
+          <div><b>0</b><span>Open</span></div>
+          <div><b>0</b><span>Closed</span></div>
+          <div><b>0</b><span>Buys</span></div>
+          <div><b>0</b><span>Sells</span></div>
+          <div><b>+0.00%</b><span>Win</span></div>
+          <div><b>+0.00%</b><span>MDD</span></div>
+        </div>
+        <div class="mini-tape">
+          
+          
+          <span>No visible trade tape yet</span>
+        </div>
+      </article>
+      
+      <article class="rank-card rank-7" style="--agent-color: #FF4B5C">
+        <div class="rank-card-head">
+          <span class="rank-badge">#7</span>
+          <span class="agent-chip">Today's Momentum Signal</span>
+        </div>
+        <div class="agent-line">
+          <img src="/assets/ai-arena/agents/daily_striker.png" alt="KYOU avatar" loading="lazy" />
+          <div>
+            <h2>KYOU</h2>
+            <p>Daily Momentum / Price Acceleration</p>
           </div>
-
-          <div class="trade-tile worst-tile">
-            <span>WORST CLOSED</span>
-            
-            <b>6920.T</b>
-            <em>Lasertec</em>
-            <strong class="negative">
-              -9.43% / ¥-316,000
-            </strong>
-            <p>stop_loss / 4D</p>
-            
-          </div>
+        </div>
+        <div class="return-block">
+          <strong class="neg">-3.06%</strong>
+          <span>¥9,694,294</span>
+        </div>
+        <svg class="spark" viewBox="0 0 260 64" preserveAspectRatio="none" aria-hidden="true">
+          <polyline points="4.0,41.0 6.2,41.0 8.4,41.7 10.6,44.9 12.8,43.2 15.0,41.3 17.2,44.3 19.5,37.5 21.7,32.0 23.9,14.5 26.1,16.4 28.3,18.2 30.5,20.6 32.7,20.1 34.9,25.4 37.1,29.2 39.3,26.9 41.5,27.6 43.8,27.2 46.0,31.4 48.2,25.2 50.4,13.6 52.6,23.4 54.8,19.5 57.0,14.1 59.2,12.9 61.4,11.7 63.6,12.1 65.8,11.9 68.0,16.5 70.2,16.7 72.5,4.0 74.7,15.9 76.9,22.3 79.1,19.3 81.3,18.3 83.5,19.4 85.7,21.3 87.9,25.2 90.1,23.5 92.3,24.4 94.5,24.5 96.8,25.0 99.0,22.1 101.2,20.9 103.4,22.8 105.6,27.4 107.8,26.0 110.0,26.0 112.2,26.0 114.4,29.0 116.6,31.2 118.8,31.2 121.0,31.2 123.2,31.2 125.5,31.2 127.7,31.2 129.9,31.2 132.1,31.2 134.3,31.2 136.5,31.2 138.7,31.2 140.9,36.9 143.1,37.5 145.3,36.6 147.5,38.2 149.8,37.6 152.0,33.2 154.2,42.0 156.4,36.8 158.6,42.9 160.8,37.8 163.0,36.3 165.2,37.5 167.4,41.0 169.6,42.9 171.8,44.6 174.0,44.8 176.2,42.8 178.5,45.1 180.7,31.3 182.9,33.9 185.1,34.2 187.3,30.9 189.5,35.2 191.7,38.5 193.9,43.3 196.1,45.5 198.3,45.2 200.5,49.5 202.8,45.8 205.0,44.5 207.2,43.4 209.4,45.3 211.6,48.7 213.8,50.0 216.0,50.0" />
+        </svg>
+        <div class="stat-grid">
+          <div><b>0</b><span>Open</span></div>
+          <div><b>49</b><span>Closed</span></div>
+          <div><b>79</b><span>Buys</span></div>
+          <div><b>79</b><span>Sells</span></div>
+          <div><b>+43.04%</b><span>Win</span></div>
+          <div><b>-13.85%</b><span>MDD</span></div>
+        </div>
+        <div class="mini-tape">
+          
+          <span>OUT <b>5803.T</b> フジクラ</span><span>OUT <b>186A.T</b> Astroscale Holdings Inc.</span><span>OUT <b>5016.T</b> ＪＸ金属</span>
+          
         </div>
       </article>
       
     </section>
-
-    <footer class="ranking-footer">
-      <p>Ranking uses total portfolio equity: cash + market value. Realized and unrealized P/L are shown separately for transparency. 1W / 1M / 3M / 6M show period gain or loss measured against initial capital.</p>
-    </footer>
   </main>
 </body>
 </html>
