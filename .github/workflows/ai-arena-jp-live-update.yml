@@ -133,6 +133,7 @@ jobs:
             scripts/build_value_features_jp.py \
             scripts/build_agent_scores_jp.py \
             scripts/rebuild_ai_arena_season_from_duckdb_jp.py \
+            scripts/render_index.py \
             scripts/stamp_duckdb_build_metadata.py \
             scripts/show_duckdb_build_metadata.py \
             scripts/lib
@@ -176,6 +177,14 @@ jobs:
           set -euo pipefail
           python scripts/rebuild_ai_arena_season_from_duckdb_jp.py
 
+      - name: Render Neon Tokyo TOP from AI Arena hero
+        run: |
+          set -euo pipefail
+          test -s site/data/japan/ai-arena/hero/latest.json
+          python scripts/render_index.py
+          test -s site/index.html
+          test -s site/assets/index.css
+
       - name: Stamp canonical DuckDB metadata
         run: |
           set -euo pipefail
@@ -201,6 +210,7 @@ jobs:
           test -f site/data/japan/ai-arena/live/latest.json
           test -f site/data/japan/ai-arena/ranking/latest.json
           test -f site/data/japan/ai-arena/summary/latest.json
+          test -f site/data/japan/ai-arena/hero/latest.json
           test -f site/data/japan/ai-arena/signals/latest.json
           test -f site/data/prices-jp/latest.json
           python - <<'PY'
@@ -210,6 +220,11 @@ jobs:
           db_path = Path("data/cache/neon_tokyo_jp.duckdb")
           assert db_path.exists()
           live = json.loads(Path("site/data/japan/ai-arena/live/latest.json").read_text(encoding="utf-8"))
+          hero = json.loads(Path("site/data/japan/ai-arena/hero/latest.json").read_text(encoding="utf-8"))
+          assert hero.get("schema_version") == "neon_tokyo_ai_arena_hero_v1", hero.get("schema_version")
+          assert len(hero.get("agents", [])) == 7, len(hero.get("agents", []))
+          assert hero.get("ticker_tape"), "hero ticker_tape is empty"
+          assert "AI Arena" in Path("site/index.html").read_text(encoding="utf-8")
           assert len(live.get("agents", [])) == 7
           assert live.get("ranking") is not None
           prices = json.loads(Path("site/data/prices-jp/latest.json").read_text(encoding="utf-8"))
@@ -264,6 +279,7 @@ jobs:
             site/data/prices-jp \
             site/data/japan/agent-scores \
             site/data/japan/ai-arena \
+            site/index.html \
             site/japan/ai-arena \
             site/assets
           if git diff --cached --quiet; then
