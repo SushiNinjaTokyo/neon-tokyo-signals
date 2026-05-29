@@ -40,17 +40,29 @@ DEFAULT_TICKERS = [
 ]
 
 AGENT_THEME_TONE = {
-    "cyan": "nikkei",
-    "blue": "topix",
-    "violet": "topix",
-    "purple": "topix",
-    "indigo": "topix",
-    "green": "growth",
-    "amber": "growth",
-    "yellow": "growth",
-    "magenta": "growth",
-    "pink": "growth",
     "red": "growth",
+    "purple": "topix",
+    "violet": "topix",
+    "cyan": "nikkei",
+    "light_blue": "nikkei",
+    "blue": "topix",
+    "green": "growth",
+    "yellow": "growth",
+    "amber": "growth",
+    "pink": "growth",
+    "magenta": "growth",
+    "indigo": "topix",
+    "indigo_blue": "topix",
+}
+
+AGENT_COLOR_BY_ID = {
+    "KYOU": "#FF4B5C",
+    "NAGARE": "#B779FF",
+    "MAMORU": "#7DF9FF",
+    "SAGURI": "#5DFFB1",
+    "MATSU": "#FFD166",
+    "KAESHI": "#FF4FD8",
+    "HIZUMI": "#4F46E5",
 }
 
 
@@ -81,6 +93,11 @@ def pct_class(value: float | None) -> str:
     if value < 0:
         return "ret-down"
     return "ret-flat"
+
+
+def agent_color(agent: dict[str, Any]) -> str:
+    aid = str(agent.get("agent_id") or agent.get("id") or "").upper()
+    return AGENT_COLOR_BY_ID.get(aid) or str(agent.get("color") or "#7DF9FF")
 
 
 def parse_date(value: str | None) -> datetime | None:
@@ -222,7 +239,7 @@ def build_agent_pulse(hero: dict[str, Any], fallback_summary: dict[str, Any]) ->
                 "role_label": agent.get("role") or agent.get("style") or "AI Agent",
                 "theme": str(agent.get("theme_color") or "cyan").lower(),
                 "tone": _agent_tone(agent),
-                "color": agent.get("color") or "#7DF9FF",
+                "color": agent_color({**agent, "agent_id": aid}),
                 "icon_src": agent.get("image") or f"/assets/ai-arena/agents/{aid}.png",
                 "rank": r.get("rank"),
                 "return_pct": as_float(r.get("total_return_pct"), 0.0),
@@ -252,7 +269,7 @@ def build_agent_pulse(hero: dict[str, Any], fallback_summary: dict[str, Any]) ->
             "performance_pct": ret,
             "performance_label": pct(ret, 1),
             "performance_class": pct_class(ret),
-            "color": str(a.get("color") or "#7DF9FF"),
+            "color": agent_color(a),
             "icon_src": str(a.get("icon_src") or a.get("image") or ""),
             "rank": a.get("rank"),
             "is_agent": True,
