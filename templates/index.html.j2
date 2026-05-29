@@ -234,11 +234,10 @@ function activatePulse(i) {
 
   if (bgIcon) {
     if (item.icon) {
+      bgIcon.classList.remove("is-visible", "is-peaking");
       bgIcon.src = item.icon;
-      bgIcon.classList.remove("is-peaking");
-      bgIcon.classList.add("is-visible");
       void bgIcon.getBoundingClientRect();
-      bgIcon.classList.add("is-peaking");
+      bgIcon.classList.add("is-visible", "is-peaking");
     } else {
       bgIcon.removeAttribute("src");
       bgIcon.classList.remove("is-visible", "is-peaking");
@@ -264,7 +263,7 @@ activatePulse(activeIndex);
 setInterval(() => {
   activeIndex = (activeIndex + 1) % Math.max(1, pulseData.length);
   activatePulse(activeIndex);
-}, 2600);
+}, 4100);
 
 if (bgWord) {
   function triggerPulseNoise() {
