@@ -1,0 +1,1376 @@
+{
+  "schema_version": "ai_arena_signals_v1",
+  "generated_at": "2026-05-29T00:44:38Z",
+  "score_date": "2026-05-29",
+  "gpt_notes_enabled": false,
+  "agents": [
+    {
+      "agent_id": "daily_striker",
+      "name": "KYOU",
+      "japanese_name": "今日",
+      "role": "Today's Momentum Signal",
+      "style_label": "Daily Momentum / Price Acceleration",
+      "theme_color": "cyan",
+      "image": "/assets/ai-arena/agents/daily_striker.png",
+      "short_description": "Finds Japanese stocks moving now through price acceleration, volume expansion, and short-term breakout pressure.",
+      "strengths": [
+        "Fast reaction to fresh momentum",
+        "Strong fit for short-term catalysts",
+        "Clear invalidation when momentum fades"
+      ],
+      "weaknesses": [
+        "Can enter after a move has already extended",
+        "Needs strict exits to avoid stale momentum trades"
+      ],
+      "picks": [
+        {
+          "ticker": "3436.T",
+          "name": "ＳＵＭＣＯ",
+          "action": "Trade",
+          "rank": 1,
+          "score": 0.7556,
+          "signal_type": "Short Momentum",
+          "reason": "KYOU: short_momentum / volume_pressure / liquid_tape",
+          "metrics": {
+            "return_5d_pct": 23.858986465218756,
+            "return_20d_pct": 65.37087623450304,
+            "return_60d_pct": 115.3214774281806,
+            "volume_ratio_20d": 0.2690812494468581,
+            "rsi_14": 57.298277425203985,
+            "avg_traded_value_20d_jpy": 48592508817.5,
+            "liquidity_score": 1.0,
+            "risk_score": 0.6513702740762547
+          },
+          "company": {
+            "ticker": "3436.T",
+            "code": "3436",
+            "name_en": "ＳＵＭＣＯ",
+            "name_ja": "ＳＵＭＣＯ",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "ＳＵＭＣＯ is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "KYOU highlights this name for a Short Momentum setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "280A.T",
+          "name": "TMH Inc.",
+          "action": "Watch",
+          "rank": 2,
+          "score": 0.6772,
+          "signal_type": "Short Momentum",
+          "reason": "KYOU: short_momentum / volume_pressure / liquid_tape",
+          "metrics": {
+            "return_5d_pct": 48.38541666666667,
+            "return_20d_pct": 105.11159107271419,
+            "return_60d_pct": 82.27767114523353,
+            "volume_ratio_20d": 0.5738155435857976,
+            "rsi_14": 77.64060356652949,
+            "avg_traded_value_20d_jpy": 526367840.0,
+            "liquidity_score": 0.537520708900317,
+            "risk_score": 0.4881322481151109
+          },
+          "company": {
+            "ticker": "280A.T",
+            "code": "280A",
+            "name_en": "TMH Inc.",
+            "name_ja": "TMH Inc.",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "TMH Inc. is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "KYOU highlights this name for a Short Momentum setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "4062.T",
+          "name": "イビデン",
+          "action": "Watch",
+          "rank": 3,
+          "score": 0.6576,
+          "signal_type": "Short Momentum",
+          "reason": "KYOU: short_momentum / volume_pressure / liquid_tape",
+          "metrics": {
+            "return_5d_pct": 10.155844155844163,
+            "return_20d_pct": 67.36385161799528,
+            "return_60d_pct": 122.3445527943798,
+            "volume_ratio_20d": 0.22880216925810384,
+            "rsi_14": 74.17247386759581,
+            "avg_traded_value_20d_jpy": 143922661200.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.6499999999999999
+          },
+          "company": {
+            "ticker": "4062.T",
+            "code": "4062",
+            "name_en": "イビデン",
+            "name_ja": "イビデン",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "イビデン is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "KYOU highlights this name for a Short Momentum setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "5233.T",
+          "name": "太平洋セメント",
+          "action": "Watch",
+          "rank": 4,
+          "score": 0.6451,
+          "signal_type": "Short Momentum",
+          "reason": "KYOU: short_momentum / volume_pressure / liquid_tape",
+          "metrics": {
+            "return_5d_pct": 10.128112158569014,
+            "return_20d_pct": 25.786858089453336,
+            "return_60d_pct": 1.402181170710004,
+            "volume_ratio_20d": 0.331990210861988,
+            "rsi_14": 76.92757009345794,
+            "avg_traded_value_20d_jpy": 3195444995.0,
+            "liquidity_score": 0.9497533401013891,
+            "risk_score": 0.8551141504631685
+          },
+          "company": {
+            "ticker": "5233.T",
+            "code": "5233",
+            "name_en": "太平洋セメント",
+            "name_ja": "太平洋セメント",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "太平洋セメント is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "KYOU highlights this name for a Short Momentum setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "186A.T",
+          "name": "Astroscale Holdings Inc.",
+          "action": "Watch",
+          "rank": 5,
+          "score": 0.6433,
+          "signal_type": "Short Momentum",
+          "reason": "KYOU: short_momentum / volume_pressure / liquid_tape",
+          "metrics": {
+            "return_5d_pct": 20.408163265306122,
+            "return_20d_pct": 128.38709677419354,
+            "return_60d_pct": 169.7142857142857,
+            "volume_ratio_20d": 0.3147589940885191,
+            "rsi_14": 78.69209809264305,
+            "avg_traded_value_20d_jpy": 35101990675.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.6499999999999999
+          },
+          "company": {
+            "ticker": "186A.T",
+            "code": "186A",
+            "name_en": "Astroscale Holdings Inc.",
+            "name_ja": "Astroscale Holdings Inc.",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "Astroscale Holdings Inc. is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "KYOU highlights this name for a Short Momentum setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        }
+      ]
+    },
+    {
+      "agent_id": "weekly_sage",
+      "name": "NAGARE",
+      "japanese_name": "流れ",
+      "role": "Weekly Trend Flow",
+      "style_label": "Medium-Term Trend / Flow",
+      "theme_color": "blue",
+      "image": "/assets/ai-arena/agents/weekly_sage.png",
+      "short_description": "Follows medium-term trend structure and tries to hold winners while the broader flow remains intact.",
+      "strengths": [
+        "Lets durable trends compound",
+        "Filters short-term noise",
+        "Good fit for structural leaders"
+      ],
+      "weaknesses": [
+        "Slower to exit reversals",
+        "May underperform in choppy tape"
+      ],
+      "picks": [
+        {
+          "ticker": "5301.T",
+          "name": "東海カーボン",
+          "action": "Trade",
+          "rank": 1,
+          "score": 0.9717,
+          "signal_type": "Weekly Flow",
+          "reason": "NAGARE: weekly_flow / trend_structure / relative_strength",
+          "metrics": {
+            "return_5d_pct": 8.91210817455439,
+            "return_20d_pct": 68.04172593646278,
+            "return_60d_pct": 59.13785361472834,
+            "volume_ratio_20d": 0.265254528757477,
+            "rsi_14": 83.63636363636364,
+            "avg_traded_value_20d_jpy": 4127510257.5,
+            "liquidity_score": 1.0,
+            "risk_score": 0.8529297972414971
+          },
+          "company": {
+            "ticker": "5301.T",
+            "code": "5301",
+            "name_en": "東海カーボン",
+            "name_ja": "東海カーボン",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "東海カーボン is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "NAGARE highlights this name for a Weekly Flow setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "3774.T",
+          "name": "インターネットイニシアティブ",
+          "action": "Trade",
+          "rank": 2,
+          "score": 0.9659,
+          "signal_type": "Weekly Flow",
+          "reason": "NAGARE: weekly_flow / trend_structure / relative_strength",
+          "metrics": {
+            "return_5d_pct": 1.6971279373368064,
+            "return_20d_pct": 14.243813015582042,
+            "return_60d_pct": 36.786654960491646,
+            "volume_ratio_20d": 0.07717109783815213,
+            "rsi_14": 65.49963530269875,
+            "avg_traded_value_20d_jpy": 2246199637.5,
+            "liquidity_score": 0.8691833435900387,
+            "risk_score": 0.9366303609422335
+          },
+          "company": {
+            "ticker": "3774.T",
+            "code": "3774",
+            "name_en": "インターネットイニシアティブ",
+            "name_ja": "インターネットイニシアティブ",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "インターネットイニシアティブ is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "NAGARE highlights this name for a Weekly Flow setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "5333.T",
+          "name": "日本碍子",
+          "action": "Trade",
+          "rank": 3,
+          "score": 0.9607,
+          "signal_type": "Weekly Flow",
+          "reason": "NAGARE: weekly_flow / trend_structure / relative_strength",
+          "metrics": {
+            "return_5d_pct": 5.357447534550408,
+            "return_20d_pct": 33.8608280945155,
+            "return_60d_pct": 34.61957706562022,
+            "volume_ratio_20d": 0.11520298057073136,
+            "rsi_14": 67.1609006040637,
+            "avg_traded_value_20d_jpy": 10194939350.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.891965442163503
+          },
+          "company": {
+            "ticker": "5333.T",
+            "code": "5333",
+            "name_en": "日本碍子",
+            "name_ja": "日本碍子",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "日本碍子 is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "NAGARE highlights this name for a Weekly Flow setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "2531.T",
+          "name": "宝ホールディングス",
+          "action": "Trade",
+          "rank": 4,
+          "score": 0.9583,
+          "signal_type": "Weekly Flow",
+          "reason": "NAGARE: weekly_flow / trend_structure / relative_strength",
+          "metrics": {
+            "return_5d_pct": 13.001245330012456,
+            "return_20d_pct": 29.40673131774101,
+            "return_60d_pct": 39.342751842751845,
+            "volume_ratio_20d": 0.23839846076320492,
+            "rsi_14": 86.33791430881163,
+            "avg_traded_value_20d_jpy": 1045708135.0,
+            "liquidity_score": 0.6944265718894995,
+            "risk_score": 0.8307504319629577
+          },
+          "company": {
+            "ticker": "2531.T",
+            "code": "2531",
+            "name_en": "宝ホールディングス",
+            "name_ja": "宝ホールディングス",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "宝ホールディングス is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "NAGARE highlights this name for a Weekly Flow setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "3105.T",
+          "name": "日清紡ホールディングス",
+          "action": "Trade",
+          "rank": 5,
+          "score": 0.9481,
+          "signal_type": "Weekly Flow",
+          "reason": "NAGARE: weekly_flow / trend_structure / relative_strength",
+          "metrics": {
+            "return_5d_pct": 1.213643021552624,
+            "return_20d_pct": 23.803429741489634,
+            "return_60d_pct": 37.884834663626,
+            "volume_ratio_20d": 0.09115183495716579,
+            "rsi_14": 66.93857965451056,
+            "avg_traded_value_20d_jpy": 2818951045.0,
+            "liquidity_score": 0.9210987020053908,
+            "risk_score": 0.8157435270115687
+          },
+          "company": {
+            "ticker": "3105.T",
+            "code": "3105",
+            "name_en": "日清紡ホールディングス",
+            "name_ja": "日清紡ホールディングス",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "日清紡ホールディングス is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "NAGARE highlights this name for a Weekly Flow setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        }
+      ]
+    },
+    {
+      "agent_id": "risk_sentinel",
+      "name": "MAMORU",
+      "japanese_name": "守る",
+      "role": "Defensive Risk Quant",
+      "style_label": "Risk / Capital Preservation",
+      "theme_color": "green",
+      "image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "short_description": "Prioritizes liquidity, drawdown control, volatility discipline, and capital preservation.",
+      "strengths": [
+        "Strong downside discipline",
+        "Avoids fragile liquidity",
+        "Useful in risk-off markets"
+      ],
+      "weaknesses": [
+        "Can miss high-beta winners",
+        "May sell too early when volatility rises"
+      ],
+      "picks": [
+        {
+          "ticker": "2914.T",
+          "name": "日本たばこ産業",
+          "action": "Trade",
+          "rank": 1,
+          "score": 0.9404,
+          "signal_type": "Liquidity Guard",
+          "reason": "MAMORU: liquidity_guard / drawdown_control / survivable_setup",
+          "metrics": {
+            "return_5d_pct": -0.19563090968373054,
+            "return_20d_pct": 5.898633454419655,
+            "return_60d_pct": 2.254885585435118,
+            "volume_ratio_20d": 0.10830619900706936,
+            "rsi_14": 47.72727272727273,
+            "avg_traded_value_20d_jpy": 24648957005.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.9952248258735811
+          },
+          "company": {
+            "ticker": "2914.T",
+            "code": "2914",
+            "name_en": "日本たばこ産業",
+            "name_ja": "日本たばこ産業",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "日本たばこ産業 is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "MAMORU highlights this name for a Liquidity Guard setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "4578.T",
+          "name": "大塚ホールディングス",
+          "action": "Trade",
+          "rank": 2,
+          "score": 0.9394,
+          "signal_type": "Liquidity Guard",
+          "reason": "MAMORU: liquidity_guard / drawdown_control / survivable_setup",
+          "metrics": {
+            "return_5d_pct": -3.090128755364807,
+            "return_20d_pct": 6.0591827148896105,
+            "return_60d_pct": 5.415499533146595,
+            "volume_ratio_20d": 0.07208643728563005,
+            "rsi_14": 57.6530612244898,
+            "avg_traded_value_20d_jpy": 13590929700.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.9652039776026853
+          },
+          "company": {
+            "ticker": "4578.T",
+            "code": "4578",
+            "name_en": "大塚ホールディングス",
+            "name_ja": "大塚ホールディングス",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "大塚ホールディングス is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "MAMORU highlights this name for a Liquidity Guard setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "2503.T",
+          "name": "キリンホールディングス",
+          "action": "Trade",
+          "rank": 3,
+          "score": 0.9307,
+          "signal_type": "Liquidity Guard",
+          "reason": "MAMORU: liquidity_guard / drawdown_control / survivable_setup",
+          "metrics": {
+            "return_5d_pct": -0.14703179562580715,
+            "return_20d_pct": 9.24994972853408,
+            "return_60d_pct": 0.3509420022164811,
+            "volume_ratio_20d": 0.07704355311845537,
+            "rsi_14": 73.70478983382209,
+            "avg_traded_value_20d_jpy": 10775741385.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.9873584023350854
+          },
+          "company": {
+            "ticker": "2503.T",
+            "code": "2503",
+            "name_en": "キリンホールディングス",
+            "name_ja": "キリンホールディングス",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "キリンホールディングス is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "MAMORU highlights this name for a Liquidity Guard setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "4021.T",
+          "name": "日産化学",
+          "action": "Trade",
+          "rank": 4,
+          "score": 0.93,
+          "signal_type": "Liquidity Guard",
+          "reason": "MAMORU: liquidity_guard / drawdown_control / survivable_setup",
+          "metrics": {
+            "return_5d_pct": 3.0227743271221463,
+            "return_20d_pct": 12.749244712990926,
+            "return_60d_pct": 5.023216547066278,
+            "volume_ratio_20d": 0.11106709508927916,
+            "rsi_14": 68.53846153846155,
+            "avg_traded_value_20d_jpy": 4880479045.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.9584372159172738
+          },
+          "company": {
+            "ticker": "4021.T",
+            "code": "4021",
+            "name_en": "日産化学",
+            "name_ja": "日産化学",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "日産化学 is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "MAMORU highlights this name for a Liquidity Guard setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "3099.T",
+          "name": "三越伊勢丹ホールディングス",
+          "action": "Trade",
+          "rank": 5,
+          "score": 0.9278,
+          "signal_type": "Liquidity Guard",
+          "reason": "MAMORU: liquidity_guard / drawdown_control / survivable_setup",
+          "metrics": {
+            "return_5d_pct": -0.6654567453115545,
+            "return_20d_pct": 11.567861389502298,
+            "return_60d_pct": 6.62337662337662,
+            "volume_ratio_20d": 0.07614206995980305,
+            "rsi_14": 61.717791411042946,
+            "avg_traded_value_20d_jpy": 6520387282.5,
+            "liquidity_score": 1.0,
+            "risk_score": 0.9573038809880847
+          },
+          "company": {
+            "ticker": "3099.T",
+            "code": "3099",
+            "name_en": "三越伊勢丹ホールディングス",
+            "name_ja": "三越伊勢丹ホールディングス",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "三越伊勢丹ホールディングス is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "MAMORU highlights this name for a Liquidity Guard setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        }
+      ]
+    },
+    {
+      "agent_id": "discovery_scout",
+      "name": "SAGURI",
+      "japanese_name": "探り",
+      "role": "Hidden Alpha Discovery",
+      "style_label": "Small Cap / Early Discovery",
+      "theme_color": "amber",
+      "image": "/assets/ai-arena/agents/discovery_scout.png",
+      "short_description": "Searches smaller and less-discovered names for early volume shifts and hidden alpha signals.",
+      "strengths": [
+        "Finds names before they become obvious",
+        "Strong discovery identity",
+        "Captures early volume anomalies"
+      ],
+      "weaknesses": [
+        "Liquidity risk is structurally higher",
+        "Requires fast exits when small-cap interest disappears"
+      ],
+      "picks": [
+        {
+          "ticker": "186A.T",
+          "name": "Astroscale Holdings Inc.",
+          "action": "Watch",
+          "rank": 1,
+          "score": 0.62,
+          "signal_type": "Small Cap Discovery",
+          "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha",
+          "metrics": {
+            "return_5d_pct": 20.408163265306122,
+            "return_20d_pct": 128.38709677419354,
+            "return_60d_pct": 169.7142857142857,
+            "volume_ratio_20d": 0.3147589940885191,
+            "rsi_14": 78.69209809264305,
+            "avg_traded_value_20d_jpy": 35101990675.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.6499999999999999
+          },
+          "company": {
+            "ticker": "186A.T",
+            "code": "186A",
+            "name_en": "Astroscale Holdings Inc.",
+            "name_ja": "Astroscale Holdings Inc.",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "Astroscale Holdings Inc. is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "SAGURI highlights this name for a Small Cap Discovery setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "153A.T",
+          "name": "Caulis Inc.",
+          "action": "Watch",
+          "rank": 2,
+          "score": 0.5721,
+          "signal_type": "Small Cap Discovery",
+          "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha",
+          "metrics": {
+            "return_5d_pct": 7.616580310880838,
+            "return_20d_pct": 40.62288422477995,
+            "return_60d_pct": 82.19298245614036,
+            "volume_ratio_20d": 0.11519661259690527,
+            "rsi_14": 64.3835616438356,
+            "avg_traded_value_20d_jpy": 290761890.0,
+            "liquidity_score": 0.4018618332524781,
+            "risk_score": 0.48670590236437883
+          },
+          "company": {
+            "ticker": "153A.T",
+            "code": "153A",
+            "name_en": "Caulis Inc.",
+            "name_ja": "Caulis Inc.",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "Caulis Inc. is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "SAGURI highlights this name for a Small Cap Discovery setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "280A.T",
+          "name": "TMH Inc.",
+          "action": "Watch",
+          "rank": 3,
+          "score": 0.5666,
+          "signal_type": "Small Cap Discovery",
+          "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha",
+          "metrics": {
+            "return_5d_pct": 48.38541666666667,
+            "return_20d_pct": 105.11159107271419,
+            "return_60d_pct": 82.27767114523353,
+            "volume_ratio_20d": 0.5738155435857976,
+            "rsi_14": 77.64060356652949,
+            "avg_traded_value_20d_jpy": 526367840.0,
+            "liquidity_score": 0.537520708900317,
+            "risk_score": 0.4881322481151109
+          },
+          "company": {
+            "ticker": "280A.T",
+            "code": "280A",
+            "name_en": "TMH Inc.",
+            "name_ja": "TMH Inc.",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "TMH Inc. is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "SAGURI highlights this name for a Small Cap Discovery setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "1436.T",
+          "name": "GreenEnergy & Company Inc.",
+          "action": "Watch",
+          "rank": 4,
+          "score": 0.5549,
+          "signal_type": "Small Cap Discovery",
+          "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha",
+          "metrics": {
+            "return_5d_pct": -1.486988847583648,
+            "return_20d_pct": 36.900369003690045,
+            "return_60d_pct": 86.55716347828238,
+            "volume_ratio_20d": 0.06285448628544862,
+            "rsi_14": 52.31513476157567,
+            "avg_traded_value_20d_jpy": 479632240.0,
+            "liquidity_score": 0.5162675620457856,
+            "risk_score": 0.45819364671602497
+          },
+          "company": {
+            "ticker": "1436.T",
+            "code": "1436",
+            "name_en": "GreenEnergy & Company Inc.",
+            "name_ja": "GreenEnergy & Company Inc.",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "GreenEnergy & Company Inc. is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "SAGURI highlights this name for a Small Cap Discovery setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "2334.T",
+          "name": "eole Inc.",
+          "action": "Watch",
+          "rank": 5,
+          "score": 0.5544,
+          "signal_type": "Small Cap Discovery",
+          "reason": "SAGURI: small_cap_discovery / early_volume_shift / hidden_alpha",
+          "metrics": {
+            "return_5d_pct": -1.3513513513513487,
+            "return_20d_pct": 19.9530516431925,
+            "return_60d_pct": 27.11442786069651,
+            "volume_ratio_20d": 0.07815372994391087,
+            "rsi_14": 40.0,
+            "avg_traded_value_20d_jpy": 1600393010.0,
+            "liquidity_score": 0.7916982346594802,
+            "risk_score": 0.6291044406111179
+          },
+          "company": {
+            "ticker": "2334.T",
+            "code": "2334",
+            "name_en": "eole Inc.",
+            "name_ja": "eole Inc.",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "eole Inc. is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "SAGURI highlights this name for a Small Cap Discovery setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        }
+      ]
+    },
+    {
+      "agent_id": "contrarian_monk",
+      "name": "MATSU",
+      "japanese_name": "待つ",
+      "role": "Patient Pullback Hunter",
+      "style_label": "Pullback / Patient Reversal",
+      "theme_color": "violet",
+      "image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "short_description": "Waits for controlled pullbacks inside still-healthy trends rather than chasing heat.",
+      "strengths": [
+        "Avoids obvious overextension",
+        "Looks for better risk/reward entry points",
+        "Good fit for trend pullbacks"
+      ],
+      "weaknesses": [
+        "May wait too long",
+        "Can confuse pullbacks with trend breaks without strict risk rules"
+      ],
+      "picks": [
+        {
+          "ticker": "5801.T",
+          "name": "古河電気工業",
+          "action": "Trade",
+          "rank": 1,
+          "score": 0.7653,
+          "signal_type": "Patient Pullback",
+          "reason": "MATSU: patient_pullback / trend_still_alive / cooled_entry",
+          "metrics": {
+            "return_5d_pct": -4.249767008387694,
+            "return_20d_pct": 20.53026748005631,
+            "return_60d_pct": 82.81138790035587,
+            "volume_ratio_20d": 0.12916130447293658,
+            "rsi_14": 58.798758865248224,
+            "avg_traded_value_20d_jpy": 277559956400.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.554173594945128
+          },
+          "company": {
+            "ticker": "5801.T",
+            "code": "5801",
+            "name_en": "古河電気工業",
+            "name_ja": "古河電気工業",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "古河電気工業 is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "MATSU highlights this name for a Patient Pullback setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "2371.T",
+          "name": "カカクコム",
+          "action": "Trade",
+          "rank": 2,
+          "score": 0.7132,
+          "signal_type": "Patient Pullback",
+          "reason": "MATSU: patient_pullback / trend_still_alive / cooled_entry",
+          "metrics": {
+            "return_5d_pct": -1.6705744431418479,
+            "return_20d_pct": 27.809523809523817,
+            "return_60d_pct": 94.88817891373802,
+            "volume_ratio_20d": 0.06268141356743212,
+            "rsi_14": 78.13255926463474,
+            "avg_traded_value_20d_jpy": 6731754922.5,
+            "liquidity_score": 1.0,
+            "risk_score": 0.7624880294061154
+          },
+          "company": {
+            "ticker": "2371.T",
+            "code": "2371",
+            "name_en": "カカクコム",
+            "name_ja": "カカクコム",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "カカクコム is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "MATSU highlights this name for a Patient Pullback setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "5344.T",
+          "name": "ＭＡＲＵＷＡ",
+          "action": "Trade",
+          "rank": 3,
+          "score": 0.7025,
+          "signal_type": "Patient Pullback",
+          "reason": "MATSU: patient_pullback / trend_still_alive / cooled_entry",
+          "metrics": {
+            "return_5d_pct": -3.8197713517148624,
+            "return_20d_pct": -3.1423540566165475,
+            "return_60d_pct": 16.69386422976502,
+            "volume_ratio_20d": 0.12621447380368656,
+            "rsi_14": 57.89473684210526,
+            "avg_traded_value_20d_jpy": 15767618200.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.6873840154325057
+          },
+          "company": {
+            "ticker": "5344.T",
+            "code": "5344",
+            "name_en": "ＭＡＲＵＷＡ",
+            "name_ja": "ＭＡＲＵＷＡ",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "ＭＡＲＵＷＡ is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "MATSU highlights this name for a Patient Pullback setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "3132.T",
+          "name": "マクニカホールディングス",
+          "action": "Trade",
+          "rank": 4,
+          "score": 0.6996,
+          "signal_type": "Patient Pullback",
+          "reason": "MATSU: patient_pullback / trend_still_alive / cooled_entry",
+          "metrics": {
+            "return_5d_pct": -3.8425782460489666,
+            "return_20d_pct": 19.737603704418284,
+            "return_60d_pct": 12.082355065920169,
+            "volume_ratio_20d": 0.12623840680502343,
+            "rsi_14": 51.65496489468405,
+            "avg_traded_value_20d_jpy": 3039161490.0,
+            "liquidity_score": 0.9382914618547405,
+            "risk_score": 0.8432403459711948
+          },
+          "company": {
+            "ticker": "3132.T",
+            "code": "3132",
+            "name_en": "マクニカホールディングス",
+            "name_ja": "マクニカホールディングス",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "マクニカホールディングス is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "MATSU highlights this name for a Patient Pullback setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "3774.T",
+          "name": "インターネットイニシアティブ",
+          "action": "Watch",
+          "rank": 5,
+          "score": 0.6676,
+          "signal_type": "Patient Pullback",
+          "reason": "MATSU: patient_pullback / trend_still_alive / cooled_entry",
+          "metrics": {
+            "return_5d_pct": 1.6971279373368064,
+            "return_20d_pct": 14.243813015582042,
+            "return_60d_pct": 36.786654960491646,
+            "volume_ratio_20d": 0.07717109783815213,
+            "rsi_14": 65.49963530269875,
+            "avg_traded_value_20d_jpy": 2246199637.5,
+            "liquidity_score": 0.8691833435900387,
+            "risk_score": 0.9366303609422335
+          },
+          "company": {
+            "ticker": "3774.T",
+            "code": "3774",
+            "name_en": "インターネットイニシアティブ",
+            "name_ja": "インターネットイニシアティブ",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "インターネットイニシアティブ is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "MATSU highlights this name for a Patient Pullback setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        }
+      ]
+    },
+    {
+      "agent_id": "reversal_snapback",
+      "name": "KAESHI",
+      "japanese_name": "返し",
+      "role": "Snapback Reversal Signal",
+      "style_label": "Oversold Reversal / Snapback",
+      "theme_color": "magenta",
+      "image": "/assets/ai-arena/agents/reversal_snapback.png",
+      "short_description": "Hunts short, sharp rebounds after oversold pressure and exhaustion-style setups.",
+      "strengths": [
+        "Clear short-term reversal identity",
+        "Takes profits quickly after snapbacks",
+        "Useful after forced selling"
+      ],
+      "weaknesses": [
+        "Reversal trades can fail quickly",
+        "Should not overstay after the bounce normalizes"
+      ],
+      "picks": [
+        {
+          "ticker": "3558.T",
+          "name": "JADE GROUP,Inc.",
+          "action": "Watch",
+          "rank": 1,
+          "score": 0.6622,
+          "signal_type": "Oversold Exhaustion",
+          "reason": "KAESHI: oversold_exhaustion / snapback_pressure / reaccumulation",
+          "metrics": {
+            "return_5d_pct": -25.662544169611312,
+            "return_20d_pct": -16.6005946481665,
+            "return_60d_pct": -1.348182883939042,
+            "volume_ratio_20d": 0.738735357975715,
+            "rsi_14": 26.631853785900773,
+            "avg_traded_value_20d_jpy": 370903425.0,
+            "liquidity_score": 0.45750570721759926,
+            "risk_score": 0.30309632193038194
+          },
+          "company": {
+            "ticker": "3558.T",
+            "code": "3558",
+            "name_en": "JADE GROUP,Inc.",
+            "name_ja": "JADE GROUP,Inc.",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "JADE GROUP,Inc. is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "KAESHI highlights this name for a Oversold Exhaustion setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "338A.T",
+          "name": "ZenmuTech,Inc.",
+          "action": "Watch",
+          "rank": 2,
+          "score": 0.5705,
+          "signal_type": "Oversold Exhaustion",
+          "reason": "KAESHI: oversold_exhaustion / snapback_pressure / reaccumulation",
+          "metrics": {
+            "return_5d_pct": -13.188647746243742,
+            "return_20d_pct": -8.127208480565374,
+            "return_60d_pct": -12.897822445561136,
+            "volume_ratio_20d": 0.21766863339180353,
+            "rsi_14": 38.52167732764748,
+            "avg_traded_value_20d_jpy": 365725590.0,
+            "liquidity_score": 0.4542922890528525,
+            "risk_score": 0.4093402327545006
+          },
+          "company": {
+            "ticker": "338A.T",
+            "code": "338A",
+            "name_en": "ZenmuTech,Inc.",
+            "name_ja": "ZenmuTech,Inc.",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "ZenmuTech,Inc. is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "KAESHI highlights this name for a Oversold Exhaustion setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "4523.T",
+          "name": "エーザイ",
+          "action": "Watch",
+          "rank": 3,
+          "score": 0.5309,
+          "signal_type": "Oversold Exhaustion",
+          "reason": "KAESHI: oversold_exhaustion / snapback_pressure / reaccumulation",
+          "metrics": {
+            "return_5d_pct": -5.845561703151314,
+            "return_20d_pct": -14.354485776805248,
+            "return_60d_pct": -25.319595497042545,
+            "volume_ratio_20d": 0.15306493196952653,
+            "rsi_14": 17.086330935251794,
+            "avg_traded_value_20d_jpy": 7495127360.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.7682966985314421
+          },
+          "company": {
+            "ticker": "4523.T",
+            "code": "4523",
+            "name_en": "エーザイ",
+            "name_ja": "エーザイ",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "エーザイ is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "KAESHI highlights this name for a Oversold Exhaustion setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        }
+      ]
+    },
+    {
+      "agent_id": "value_mispricing",
+      "name": "HIZUMI",
+      "japanese_name": "歪み",
+      "role": "Mispricing and Valuation Signal",
+      "style_label": "Value / Mispricing / Re-rating",
+      "theme_color": "indigo",
+      "image": "/assets/ai-arena/agents/value_mispricing.png",
+      "short_description": "Looks for price/value distortion, conservative re-rating setups, and trap-aware value signals.",
+      "strengths": [
+        "Differentiates price action from value distortion",
+        "Can hold re-rating candidates longer",
+        "Adds non-momentum diversity"
+      ],
+      "weaknesses": [
+        "Full strength requires better fundamentals data",
+        "Must avoid value traps"
+      ],
+      "picks": [
+        {
+          "ticker": "2334.T",
+          "name": "eole Inc.",
+          "action": "Trade",
+          "rank": 1,
+          "score": 0.7911,
+          "signal_type": "Mispricing Proxy",
+          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard",
+          "metrics": {
+            "return_5d_pct": -1.3513513513513487,
+            "return_20d_pct": 19.9530516431925,
+            "return_60d_pct": 27.11442786069651,
+            "volume_ratio_20d": 0.07815372994391087,
+            "rsi_14": 40.0,
+            "avg_traded_value_20d_jpy": 1600393010.0,
+            "liquidity_score": 0.7916982346594802,
+            "risk_score": 0.6291044406111179
+          },
+          "company": {
+            "ticker": "2334.T",
+            "code": "2334",
+            "name_en": "eole Inc.",
+            "name_ja": "eole Inc.",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "eole Inc. is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "HIZUMI highlights this name for a Mispricing Proxy setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "4704.T",
+          "name": "トレンドマイクロ",
+          "action": "Trade",
+          "rank": 2,
+          "score": 0.7726,
+          "signal_type": "Mispricing Proxy",
+          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard",
+          "metrics": {
+            "return_5d_pct": -1.309831824062091,
+            "return_20d_pct": 11.449963476990499,
+            "return_60d_pct": 17.365384615384617,
+            "volume_ratio_20d": 0.12417618768925417,
+            "rsi_14": 60.79170593779453,
+            "avg_traded_value_20d_jpy": 5715803735.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.9097964639494034
+          },
+          "company": {
+            "ticker": "4704.T",
+            "code": "4704",
+            "name_en": "トレンドマイクロ",
+            "name_ja": "トレンドマイクロ",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "トレンドマイクロ is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "HIZUMI highlights this name for a Mispricing Proxy setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "5334.T",
+          "name": "日本特殊陶業",
+          "action": "Trade",
+          "rank": 3,
+          "score": 0.7392,
+          "signal_type": "Mispricing Proxy",
+          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard",
+          "metrics": {
+            "return_5d_pct": 3.513317442221986,
+            "return_20d_pct": 21.31665249605248,
+            "return_60d_pct": 26.38238643553081,
+            "volume_ratio_20d": 0.08118021685678585,
+            "rsi_14": 67.13225665648189,
+            "avg_traded_value_20d_jpy": 11546655255.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.9010236383547408
+          },
+          "company": {
+            "ticker": "5334.T",
+            "code": "5334",
+            "name_en": "日本特殊陶業",
+            "name_ja": "日本特殊陶業",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "日本特殊陶業 is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "HIZUMI highlights this name for a Mispricing Proxy setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "5333.T",
+          "name": "日本碍子",
+          "action": "Trade",
+          "rank": 4,
+          "score": 0.7199,
+          "signal_type": "Mispricing Proxy",
+          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard",
+          "metrics": {
+            "return_5d_pct": 5.357447534550408,
+            "return_20d_pct": 33.8608280945155,
+            "return_60d_pct": 34.61957706562022,
+            "volume_ratio_20d": 0.11520298057073136,
+            "rsi_14": 67.1609006040637,
+            "avg_traded_value_20d_jpy": 10194939350.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.891965442163503
+          },
+          "company": {
+            "ticker": "5333.T",
+            "code": "5333",
+            "name_en": "日本碍子",
+            "name_ja": "日本碍子",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "日本碍子 is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "HIZUMI highlights this name for a Mispricing Proxy setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        },
+        {
+          "ticker": "5332.T",
+          "name": "ＴＯＴＯ",
+          "action": "Trade",
+          "rank": 5,
+          "score": 0.707,
+          "signal_type": "Mispricing Proxy",
+          "reason": "HIZUMI: mispricing_proxy / value_rerating / trap_guard",
+          "metrics": {
+            "return_5d_pct": 10.967741935483865,
+            "return_20d_pct": 40.852410199143876,
+            "return_60d_pct": 23.801734009487973,
+            "volume_ratio_20d": 0.20701450870915739,
+            "rsi_14": 57.17939349652905,
+            "avg_traded_value_20d_jpy": 10388447750.0,
+            "liquidity_score": 1.0,
+            "risk_score": 0.819767407418025
+          },
+          "company": {
+            "ticker": "5332.T",
+            "code": "5332",
+            "name_en": "ＴＯＴＯ",
+            "name_ja": "ＴＯＴＯ",
+            "market": "JP",
+            "sector": "",
+            "industry": "",
+            "description_en": "",
+            "website": "",
+            "fundamentals": {}
+          },
+          "notes": {
+            "company_brief_en": "ＴＯＴＯ is a Japanese listed company monitored by Neon Tokyo Signals.",
+            "signal_thesis_en": "HIZUMI highlights this name for a Mispricing Proxy setup based on the supplied quantitative metrics.",
+            "valuation_comment_en": "Valuation data is limited.",
+            "risk_comment_en": "Signal quality can deteriorate if liquidity, trend, or risk metrics weaken."
+          }
+        }
+      ]
+    }
+  ]
+}

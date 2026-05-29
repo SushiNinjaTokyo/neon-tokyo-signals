@@ -1,0 +1,54 @@
+# Legacy Cleanup Candidates
+
+Do not delete until new AI Arena season rebuild, live update, summary, signals, positions, ranking, and log have been verified.
+
+## daily_workflows
+- `.github/workflows/build-daily-jp.yml`
+- `.github/workflows/daily-jp-auto.yml`
+- `.github/workflows/daily-jp-simulation.yml`
+- `.github/workflows/backtest-daily-jp-incremental.yml`
+- `.github/workflows/backtest-daily-jp-range.yml`
+- `.github/workflows/render-daily-jp.yml`
+- `.github/workflows/render-backtest-daily-jp.yml`
+
+## weekly_workflows
+- `.github/workflows/weekly-jp-analysis.yml`
+- `.github/workflows/weekly-jp-screening.yml`
+
+## old_ai_arena_workflows
+- `.github/workflows/ai-arena-jp.yml`
+- `.github/workflows/ai-arena-jp-historical-simulation.yml`
+
+## daily_weekly_scripts
+- `scripts/build_daily_jp.py`
+- `scripts/render_daily_jp.py`
+- `scripts/backtest_daily_jp.py`
+- `scripts/render_backtest_daily_jp.py`
+- `scripts/rebuild_daily_simulation_jp.py`
+- `scripts/render_daily_simulation_jp.py`
+- `scripts/build_weekly_jp.py`
+- `scripts/render_weekly_jp.py`
+- `scripts/rebuild_weekly_backtest_jp.py`
+- `scripts/render_weekly_backtest_jp.py`
+- `scripts/rebuild_weekly_simulation_jp.py`
+- `scripts/render_weekly_simulation_jp.py`
+
+## old_ai_arena_scripts
+- `scripts/rebuild_ai_arena_simulation_jp.py`
+- `scripts/build_ai_arena_historical_daily_snapshots_jp.py`
+
+## large_legacy_data
+- `site/data/backtest-daily-jp/latest.json`
+- `site/data/backtest-daily-jp/20??-??-??.json`
+- `site/data/weekly-jp/backtest/*.json`
+- `site/data/japan/weekly/backtest/*.json`
+
+## Keep until verified
+- `scripts/render_ai_arena_jp.py`
+- `scripts/render_ai_arena_positions_jp.py`
+- `scripts/render_ai_arena_ranking_jp.py`
+- `templates/ai_arena_jp.html.j2`
+- `templates/ai_arena_positions_jp.html.j2`
+- `templates/ai_arena_ranking_jp.html.j2`
+- `site/assets/ai-arena/agents/*.png`
+- `data/universe/*.csv`

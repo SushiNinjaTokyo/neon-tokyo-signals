@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Agent Profiles | Neon Tokyo Signals</title>
+  <link rel="stylesheet" href="/assets/ai_agent_profiles_jp.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">NEON TOKYO AI ARENA</p>
+        <h1>Agent Profiles</h1>
+        <p class="hero-copy">Seven Japanese equity agents. Each profile exposes the strategy, exit behavior, and portfolio discipline behind the Arena.</p>
+      </div>
+      <div class="meta-card">
+        <span>Strategy</span><strong>jp_agent_strategy_2026_dev_v001</strong>
+        <span>Portfolio</span><strong>jp_agent_portfolio_2026_dev_v001</strong>
+      </div>
+    </header>
+
+    <section class="agent-grid">
+      
+      <article class="agent-card agent-cyan">
+        <div class="agent-head">
+          <img src="/assets/ai-arena/agents/daily_striker.png" alt="KYOU" />
+          <div>
+            <p class="role">Today's Momentum Signal</p>
+            <h2>KYOU</h2>
+            <p class="jp">今日 / Daily Momentum / Price Acceleration</p>
+          </div>
+        </div>
+        <p class="summary">Finds Japanese stocks moving now through price acceleration, volume expansion, and short-term breakout pressure.</p>
+        <div class="logic-grid">
+          <div>
+            <h3>Entry Logic</h3>
+            <ul>
+              <li>Min score: 0.78</li>
+              <li>Max rank/day: 5</li>
+              <li>Liquidity guard: 0.35</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Exit Logic</h3>
+            <ul>
+              <li>Style: momentum_decay</li>
+              <li>Stop: -5.5%</li>
+              <li>Max days: 6</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Portfolio</h3>
+            <ul>
+              <li>Max positions: 8</li>
+              <li>Target: 12.0%</li>
+              <li>Max exposure: 95.0%</li>
+            </ul>
+          </div>
+        </div>
+        <div class="strengths">
+          <div><h3>Strengths</h3><span>Fast reaction to fresh momentum</span><span>Strong fit for short-term catalysts</span><span>Clear invalidation when momentum fades</span></div>
+          <div><h3>Weaknesses</h3><span>Can enter after a move has already extended</span><span>Needs strict exits to avoid stale momentum trades</span></div>
+        </div>
+      </article>
+      
+      <article class="agent-card agent-blue">
+        <div class="agent-head">
+          <img src="/assets/ai-arena/agents/weekly_sage.png" alt="NAGARE" />
+          <div>
+            <p class="role">Weekly Trend Flow</p>
+            <h2>NAGARE</h2>
+            <p class="jp">流れ / Medium-Term Trend / Flow</p>
+          </div>
+        </div>
+        <p class="summary">Follows medium-term trend structure and tries to hold winners while the broader flow remains intact.</p>
+        <div class="logic-grid">
+          <div>
+            <h3>Entry Logic</h3>
+            <ul>
+              <li>Min score: 0.82</li>
+              <li>Max rank/day: 6</li>
+              <li>Liquidity guard: 0.35</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Exit Logic</h3>
+            <ul>
+              <li>Style: trend_break</li>
+              <li>Stop: -8.5%</li>
+              <li>Max days: 30</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Portfolio</h3>
+            <ul>
+              <li>Max positions: 8</li>
+              <li>Target: 14.0%</li>
+              <li>Max exposure: 95.0%</li>
+            </ul>
+          </div>
+        </div>
+        <div class="strengths">
+          <div><h3>Strengths</h3><span>Lets durable trends compound</span><span>Filters short-term noise</span><span>Good fit for structural leaders</span></div>
+          <div><h3>Weaknesses</h3><span>Slower to exit reversals</span><span>May underperform in choppy tape</span></div>
+        </div>
+      </article>
+      
+      <article class="agent-card agent-green">
+        <div class="agent-head">
+          <img src="/assets/ai-arena/agents/risk_sentinel.png" alt="MAMORU" />
+          <div>
+            <p class="role">Defensive Risk Quant</p>
+            <h2>MAMORU</h2>
+            <p class="jp">守る / Risk / Capital Preservation</p>
+          </div>
+        </div>
+        <p class="summary">Prioritizes liquidity, drawdown control, volatility discipline, and capital preservation.</p>
+        <div class="logic-grid">
+          <div>
+            <h3>Entry Logic</h3>
+            <ul>
+              <li>Min score: 0.88</li>
+              <li>Max rank/day: 4</li>
+              <li>Liquidity guard: 0.65</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Exit Logic</h3>
+            <ul>
+              <li>Style: capital_preservation</li>
+              <li>Stop: -3.5%</li>
+              <li>Max days: 12</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Portfolio</h3>
+            <ul>
+              <li>Max positions: 12</li>
+              <li>Target: 7.0%</li>
+              <li>Max exposure: 75.0%</li>
+            </ul>
+          </div>
+        </div>
+        <div class="strengths">
+          <div><h3>Strengths</h3><span>Strong downside discipline</span><span>Avoids fragile liquidity</span><span>Useful in risk-off markets</span></div>
+          <div><h3>Weaknesses</h3><span>Can miss high-beta winners</span><span>May sell too early when volatility rises</span></div>
+        </div>
+      </article>
+      
+      <article class="agent-card agent-amber">
+        <div class="agent-head">
+          <img src="/assets/ai-arena/agents/discovery_scout.png" alt="SAGURI" />
+          <div>
+            <p class="role">Hidden Alpha Discovery</p>
+            <h2>SAGURI</h2>
+            <p class="jp">探り / Small Cap / Early Discovery</p>
+          </div>
+        </div>
+        <p class="summary">Searches smaller and less-discovered names for early volume shifts and hidden alpha signals.</p>
+        <div class="logic-grid">
+          <div>
+            <h3>Entry Logic</h3>
+            <ul>
+              <li>Min score: 0.84</li>
+              <li>Max rank/day: 4</li>
+              <li>Liquidity guard: 0.2</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Exit Logic</h3>
+            <ul>
+              <li>Style: discovery_risk</li>
+              <li>Stop: -7%</li>
+              <li>Max days: 10</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Portfolio</h3>
+            <ul>
+              <li>Max positions: 8</li>
+              <li>Target: 10.0%</li>
+              <li>Max exposure: 80.0%</li>
+            </ul>
+          </div>
+        </div>
+        <div class="strengths">
+          <div><h3>Strengths</h3><span>Finds names before they become obvious</span><span>Strong discovery identity</span><span>Captures early volume anomalies</span></div>
+          <div><h3>Weaknesses</h3><span>Liquidity risk is structurally higher</span><span>Requires fast exits when small-cap interest disappears</span></div>
+        </div>
+      </article>
+      
+      <article class="agent-card agent-violet">
+        <div class="agent-head">
+          <img src="/assets/ai-arena/agents/contrarian_monk.png" alt="MATSU" />
+          <div>
+            <p class="role">Patient Pullback Hunter</p>
+            <h2>MATSU</h2>
+            <p class="jp">待つ / Pullback / Patient Reversal</p>
+          </div>
+        </div>
+        <p class="summary">Waits for controlled pullbacks inside still-healthy trends rather than chasing heat.</p>
+        <div class="logic-grid">
+          <div>
+            <h3>Entry Logic</h3>
+            <ul>
+              <li>Min score: 0.76</li>
+              <li>Max rank/day: 5</li>
+              <li>Liquidity guard: 0.3</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Exit Logic</h3>
+            <ul>
+              <li>Style: pullback_resolution</li>
+              <li>Stop: -6%</li>
+              <li>Max days: 16</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Portfolio</h3>
+            <ul>
+              <li>Max positions: 8</li>
+              <li>Target: 11.0%</li>
+              <li>Max exposure: 85.0%</li>
+            </ul>
+          </div>
+        </div>
+        <div class="strengths">
+          <div><h3>Strengths</h3><span>Avoids obvious overextension</span><span>Looks for better risk/reward entry points</span><span>Good fit for trend pullbacks</span></div>
+          <div><h3>Weaknesses</h3><span>May wait too long</span><span>Can confuse pullbacks with trend breaks without strict risk rules</span></div>
+        </div>
+      </article>
+      
+      <article class="agent-card agent-magenta">
+        <div class="agent-head">
+          <img src="/assets/ai-arena/agents/reversal_snapback.png" alt="KAESHI" />
+          <div>
+            <p class="role">Snapback Reversal Signal</p>
+            <h2>KAESHI</h2>
+            <p class="jp">返し / Oversold Reversal / Snapback</p>
+          </div>
+        </div>
+        <p class="summary">Hunts short, sharp rebounds after oversold pressure and exhaustion-style setups.</p>
+        <div class="logic-grid">
+          <div>
+            <h3>Entry Logic</h3>
+            <ul>
+              <li>Min score: 0.7</li>
+              <li>Max rank/day: 5</li>
+              <li>Liquidity guard: 0.25</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Exit Logic</h3>
+            <ul>
+              <li>Style: snapback_harvest</li>
+              <li>Stop: -4.8%</li>
+              <li>Max days: 5</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Portfolio</h3>
+            <ul>
+              <li>Max positions: 7</li>
+              <li>Target: 10.0%</li>
+              <li>Max exposure: 75.0%</li>
+            </ul>
+          </div>
+        </div>
+        <div class="strengths">
+          <div><h3>Strengths</h3><span>Clear short-term reversal identity</span><span>Takes profits quickly after snapbacks</span><span>Useful after forced selling</span></div>
+          <div><h3>Weaknesses</h3><span>Reversal trades can fail quickly</span><span>Should not overstay after the bounce normalizes</span></div>
+        </div>
+      </article>
+      
+      <article class="agent-card agent-indigo">
+        <div class="agent-head">
+          <img src="/assets/ai-arena/agents/value_mispricing.png" alt="HIZUMI" />
+          <div>
+            <p class="role">Mispricing and Valuation Signal</p>
+            <h2>HIZUMI</h2>
+            <p class="jp">歪み / Value / Mispricing / Re-rating</p>
+          </div>
+        </div>
+        <p class="summary">Looks for price/value distortion, conservative re-rating setups, and trap-aware value signals.</p>
+        <div class="logic-grid">
+          <div>
+            <h3>Entry Logic</h3>
+            <ul>
+              <li>Min score: 0.86</li>
+              <li>Max rank/day: 3</li>
+              <li>Liquidity guard: 0.35</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Exit Logic</h3>
+            <ul>
+              <li>Style: mispricing_resolution</li>
+              <li>Stop: -7%</li>
+              <li>Max days: 25</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Portfolio</h3>
+            <ul>
+              <li>Max positions: 7</li>
+              <li>Target: 12.0%</li>
+              <li>Max exposure: 85.0%</li>
+            </ul>
+          </div>
+        </div>
+        <div class="strengths">
+          <div><h3>Strengths</h3><span>Differentiates price action from value distortion</span><span>Can hold re-rating candidates longer</span><span>Adds non-momentum diversity</span></div>
+          <div><h3>Weaknesses</h3><span>Full strength requires better fundamentals data</span><span>Must avoid value traps</span></div>
+        </div>
+      </article>
+      
+    </section>
+  </main>
+</body>
+</html>

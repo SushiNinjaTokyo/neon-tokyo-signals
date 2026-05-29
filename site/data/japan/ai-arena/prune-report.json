@@ -1,0 +1,18 @@
+{
+  "schema_version": "ai_arena_prune_report_v1",
+  "generated_at": "2026-05-29T00:44:40Z",
+  "dry_run": false,
+  "removed": [
+    {
+      "path": "data/cache/neon_tokyo_jp.duckdb",
+      "size_mb": 112.7617
+    },
+    {
+      "path": "site/data/prices-jp/2026-05-29.json",
+      "size_mb": 49.639
+    }
+  ],
+  "warnings": [
+    "site/data/prices-jp/latest.json is 49.64 MB; expected <= 5.0 MB"
+  ]
+}
