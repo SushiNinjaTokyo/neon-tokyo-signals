@@ -1,6 +1,6 @@
 {
   "schema_version": "ai_arena_agent_profiles_v1",
-  "generated_at": "2026-05-29T07:06:11Z",
+  "generated_at": "2026-05-29T07:37:32Z",
   "agents": [
     {
       "agent_id": "daily_striker",
@@ -24,25 +24,31 @@
         "exit_style": "momentum_decay",
         "year_end_entry_block_trading_days": 3,
         "entry": {
-          "min_score": 0.78,
-          "max_rank_per_day": 5,
+          "min_score": 0.7,
+          "max_rank_per_day": 10,
           "allowed_actions": [
             "Trade"
           ],
           "min_liquidity_score": 0.35,
-          "min_avg_traded_value_20d_jpy": 50000000,
+          "min_avg_traded_value_20d_jpy": 100000000,
           "require_price_above_ma20": true,
-          "require_volume_ratio_20d_min": 1.15,
-          "reject_if_rsi_14_gt": 82
+          "require_volume_ratio_20d_min": 1.35,
+          "require_return_1d_pct_min": 0.4,
+          "require_range_position_20d_0_1_min": 0.65,
+          "reject_if_rsi_14_gt": 78,
+          "reject_if_return_5d_pct_gt": 24,
+          "reject_if_return_20d_pct_gt": 55,
+          "reject_if_volatility_60d_annualized_pct_gt": 125
         },
         "exit": {
-          "hard_stop_loss_pct": -5.5,
-          "take_profit_pct": 11,
-          "trailing_stop_pct": 6,
-          "max_holding_days": 6,
-          "score_below": 0.48,
+          "hard_stop_loss_pct": -5.8,
+          "take_profit_pct": 13,
+          "trailing_stop_pct": 6.5,
+          "max_holding_days": 8,
+          "score_below": 0.46,
           "price_below_ma10": true,
-          "volume_ratio_20d_below": 0.8
+          "volume_ratio_20d_below": 0.7,
+          "return_3d_pct_below": -5
         }
       },
       "portfolio": {
@@ -75,25 +81,27 @@
         "exit_style": "trend_break",
         "year_end_entry_block_trading_days": 10,
         "entry": {
-          "min_score": 0.82,
-          "max_rank_per_day": 6,
+          "min_score": 0.76,
+          "max_rank_per_day": 10,
           "allowed_actions": [
             "Trade"
           ],
           "min_liquidity_score": 0.35,
           "min_avg_traded_value_20d_jpy": 80000000,
           "require_price_above_ma50": true,
-          "require_return_60d_pct_min": 3,
-          "reject_if_volatility_60d_annualized_pct_gt": 95
+          "require_trend_score_weekly_proxy_min": 0.55,
+          "require_return_60d_pct_min": 5,
+          "reject_if_volatility_60d_annualized_pct_gt": 90,
+          "reject_if_return_20d_pct_gt": 45
         },
         "exit": {
-          "hard_stop_loss_pct": -8.5,
-          "take_profit_pct": 24,
-          "trailing_stop_pct": 11,
-          "max_holding_days": 30,
-          "score_below": 0.5,
+          "hard_stop_loss_pct": -9.5,
+          "take_profit_pct": 30,
+          "trailing_stop_pct": 13,
+          "max_holding_days": 45,
+          "score_below": 0.46,
           "price_below_ma50": true,
-          "trend_score_weekly_proxy_below": 0.48
+          "trend_score_weekly_proxy_below": 0.44
         }
       },
       "portfolio": {
@@ -126,24 +134,28 @@
         "exit_style": "capital_preservation",
         "year_end_entry_block_trading_days": 5,
         "entry": {
-          "min_score": 0.88,
-          "max_rank_per_day": 4,
+          "min_score": 0.82,
+          "max_rank_per_day": 8,
           "allowed_actions": [
             "Trade"
           ],
-          "min_liquidity_score": 0.65,
-          "min_avg_traded_value_20d_jpy": 250000000,
-          "reject_if_volatility_60d_annualized_pct_gt": 55,
-          "reject_if_max_drawdown_60d_pct_lt": -22,
-          "require_price_above_ma120": true
+          "min_liquidity_score": 0.68,
+          "min_avg_traded_value_20d_jpy": 300000000,
+          "reject_if_volatility_60d_annualized_pct_gt": 50,
+          "reject_if_max_drawdown_60d_pct_lt": -18,
+          "reject_if_return_20d_pct_lt": -8,
+          "reject_if_rsi_14_gt": 74,
+          "require_price_above_ma50": true,
+          "require_price_above_ma120": true,
+          "require_trend_score_weekly_proxy_min": 0.42
         },
         "exit": {
-          "hard_stop_loss_pct": -3.5,
-          "take_profit_pct": 8,
-          "trailing_stop_pct": 4.5,
-          "max_holding_days": 12,
-          "score_below": 0.62,
-          "risk_score_below": 0.58,
+          "hard_stop_loss_pct": -4.2,
+          "take_profit_pct": 10,
+          "trailing_stop_pct": 5.5,
+          "max_holding_days": 18,
+          "score_below": 0.56,
+          "risk_score_below": 0.52,
           "liquidity_score_below": 0.65,
           "volatility_20d_annualized_pct_above": 55,
           "price_below_ma50": true
@@ -179,23 +191,39 @@
         "exit_style": "discovery_risk",
         "year_end_entry_block_trading_days": 5,
         "entry": {
-          "min_score": 0.84,
-          "max_rank_per_day": 4,
+          "min_score": 0.46,
+          "max_rank_per_day": 25,
           "allowed_actions": [
             "Trade"
           ],
-          "require_bucket": "small_discovery",
-          "min_liquidity_score": 0.2,
+          "allowed_buckets": [
+            "small_discovery",
+            "discovery",
+            "early_breakout",
+            "emerging_growth",
+            "liquid_growth",
+            "speculative_growth",
+            "small_growth"
+          ],
+          "min_liquidity_score": 0.25,
           "min_avg_traded_value_20d_jpy": 20000000,
-          "require_volume_ratio_20d_min": 1.2,
+          "require_volume_ratio_20d_min": 1.1,
+          "require_market_cap_jpy_min": 10000000000,
+          "require_market_cap_jpy_max": 800000000000,
+          "require_operating_margin_pct_min": -5,
+          "require_roe_pct_min": -10,
+          "reject_if_psr_gt": 20,
+          "reject_if_pbr_gt": 15,
+          "require_quality_guard_score_min": 0.25,
+          "reject_if_value_trap_penalty_gt": 0.8,
           "reject_if_return_5d_pct_gt": 35
         },
         "exit": {
           "hard_stop_loss_pct": -7,
           "take_profit_pct": 18,
           "trailing_stop_pct": 8,
-          "max_holding_days": 10,
-          "score_below": 0.46,
+          "max_holding_days": 12,
+          "score_below": 0.44,
           "liquidity_score_below": 0.3,
           "avg_traded_value_20d_jpy_below": 15000000,
           "return_3d_pct_below": -8,
@@ -232,34 +260,37 @@
         "exit_style": "pullback_resolution",
         "year_end_entry_block_trading_days": 7,
         "entry": {
-          "min_score": 0.76,
-          "max_rank_per_day": 5,
+          "min_score": 0.72,
+          "max_rank_per_day": 8,
           "allowed_actions": [
             "Trade"
           ],
           "min_liquidity_score": 0.3,
           "min_avg_traded_value_20d_jpy": 50000000,
-          "require_trend_score_weekly_proxy_min": 0.45,
+          "require_trend_score_weekly_proxy_min": 0.5,
           "require_price_above_ma120": true,
           "require_rsi_14_between": [
-            35,
-            66
+            38,
+            62
           ],
           "require_price_vs_ma50_pct_between": [
-            -12,
-            12
+            -10,
+            8
           ],
-          "reject_if_return_20d_pct_lt": -18
+          "reject_if_return_5d_pct_gt": 5,
+          "reject_if_return_20d_pct_lt": -15,
+          "reject_if_volatility_60d_annualized_pct_gt": 100
         },
         "exit": {
-          "hard_stop_loss_pct": -6,
-          "take_profit_pct": 13,
-          "trailing_stop_pct": 7,
-          "max_holding_days": 16,
-          "score_below": 0.44,
+          "hard_stop_loss_pct": -6.5,
+          "take_profit_pct": 15,
+          "trailing_stop_pct": 7.5,
+          "max_holding_days": 20,
+          "score_below": 0.42,
           "price_below_ma120": true,
-          "trend_score_weekly_proxy_below": 0.45,
-          "rsi_14_below": 32
+          "trend_score_weekly_proxy_below": 0.42,
+          "rsi_14_below": 32,
+          "return_5d_pct_above": 10
         }
       },
       "portfolio": {
@@ -346,26 +377,36 @@
         "exit_style": "mispricing_resolution",
         "year_end_entry_block_trading_days": 10,
         "entry": {
-          "min_score": 0.86,
-          "max_rank_per_day": 3,
+          "min_score": 0.42,
+          "max_rank_per_day": 25,
           "allowed_actions": [
             "Trade"
           ],
-          "min_liquidity_score": 0.35,
-          "min_avg_traded_value_20d_jpy": 50000000,
-          "require_price_above_ma20": true,
-          "require_range_position_252d_0_1_max": 0.72,
-          "reject_if_return_60d_pct_lt": -35
+          "min_liquidity_score": 0.25,
+          "min_avg_traded_value_20d_jpy": 30000000,
+          "require_value_mispricing_score_min": 0.5,
+          "require_valuation_discount_score_min": 0.35,
+          "require_quality_guard_score_min": 0.3,
+          "reject_if_value_trap_penalty_gt": 0.72,
+          "allowed_valuation_buckets": [
+            "deep_value",
+            "quality_value",
+            "watch_value"
+          ],
+          "reject_if_return_60d_pct_lt": -40,
+          "reject_if_psr_gt": 12,
+          "reject_if_pbr_gt": 8
         },
         "exit": {
-          "hard_stop_loss_pct": -7,
-          "take_profit_pct": 16,
-          "trailing_stop_pct": 8,
-          "max_holding_days": 25,
-          "score_below": 0.48,
-          "range_position_252d_0_1_above": 0.78,
-          "return_20d_pct_above": 18,
-          "liquidity_score_below": 0.35
+          "hard_stop_loss_pct": -8,
+          "take_profit_pct": 20,
+          "trailing_stop_pct": 9,
+          "max_holding_days": 35,
+          "score_below": 0.4,
+          "range_position_252d_0_1_above": 0.82,
+          "return_20d_pct_above": 22,
+          "liquidity_score_below": 0.25,
+          "value_trap_penalty_above": 0.85
         }
       },
       "portfolio": {
@@ -377,6 +418,6 @@
       }
     }
   ],
-  "strategy_rules_version": "jp_agent_strategy_2026_dev_v001",
+  "strategy_rules_version": "jp_agent_strategy_2026_dev_v006",
   "portfolio_rules_version": "jp_agent_portfolio_2026_dev_v002"
 }
