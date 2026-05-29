@@ -1,7 +1,7 @@
 # AI Arena Diagnostics
 
-Generated: 2026-05-29T06:07:03Z
-Run: `arena_jp_rebuild_2026_v005`
+Generated: 2026-05-29T06:21:33Z
+Run: `arena_jp_rebuild_2026_v006`
 Year: 2026
 
 ## Totals
@@ -25,7 +25,7 @@ Year: 2026
 | MAMORU | 18814 | 95 | 93 | 93 | 2 | 6.92% | - |
 | SAGURI | 167 | 0 | 0 | 0 | 0 | 0.00% | SIGNALS_BUT_NO_BUYS, FLAT_NO_EXECUTED_BUYS |
 | MATSU | 716 | 43 | 41 | 41 | 2 | 13.83% | - |
-| KAESHI | 103 | 31 | 31 | 31 | 0 | 4.98% | - |
+| KAESHI | 103 | 31 | 31 | 31 | 0 | 3.86% | - |
 | HIZUMI | 2639 | 0 | 0 | 0 | 0 | 0.00% | SIGNALS_BUT_NO_BUYS, FLAT_NO_EXECUTED_BUYS |
 
 ## Warnings
