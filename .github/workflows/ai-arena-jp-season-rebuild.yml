@@ -43,6 +43,22 @@ on:
         description: "Force close open positions at final available date; use only after year-end"
         required: true
         default: "false"
+      skip_price_fetch:
+        description: "Skip price fetch and reuse restored DuckDB cache"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+      skip_fundamentals_fetch:
+        description: "Skip fundamentals fetch and reuse restored DuckDB cache"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
       commit_outputs:
         description: "Commit generated site outputs"
         required: true
@@ -71,21 +87,26 @@ jobs:
   rebuild:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
-      - uses: actions/cache@v4
+      - name: Restore DuckDB cache
+        uses: actions/cache@v4
         with:
           path: data/cache/neon_tokyo_jp.duckdb
-          key: neon-tokyo-jp-duckdb-v2-${{ github.run_id }}
+          key: neon-tokyo-jp-duckdb-v3-${{ github.run_id }}
           restore-keys: |
+            neon-tokyo-jp-duckdb-v3-
             neon-tokyo-jp-duckdb-v2-
             neon-tokyo-jp-duckdb-v1
+          save-always: true
 
       - name: Install dependencies
         run: |
@@ -98,7 +119,7 @@ jobs:
           set -euo pipefail
           git pull --ff-only origin main
 
-      - name: Compile changed scripts
+      - name: Compile scripts
         run: |
           set -euo pipefail
           python -m compileall scripts
@@ -114,6 +135,7 @@ jobs:
           OUT_UNIVERSE_CSV=data/universe/jp_duckdb_trial_300.csv STRICT_INDEX_UNIVERSE=true python scripts/build_universe_300_from_index_csv.py
 
       - name: Fetch prices into DuckDB
+        if: ${{ inputs.skip_price_fetch != 'true' }}
         env:
           UNIVERSE_CSV: data/universe/jp_duckdb_trial_300.csv
           UNIVERSE_LIMIT: ${{ inputs.universe_limit }}
@@ -121,15 +143,28 @@ jobs:
           REQUEST_SLEEP_SECONDS: "0.20"
         run: |
           set -euo pipefail
+          mkdir -p data/cache
           python scripts/fetch_prices_jp.py
 
+      - name: Verify DuckDB cache before build
+        run: |
+          set -euo pipefail
+          if [ ! -f data/cache/neon_tokyo_jp.duckdb ]; then
+            echo "::error::DuckDB cache file is missing: data/cache/neon_tokyo_jp.duckdb"
+            echo "::error::Run this workflow once with skip_price_fetch=false to rebuild and save the DuckDB cache."
+            echo "::error::After a successful cache save, use skip_price_fetch=true for render/validation-only reruns."
+            exit 1
+          fi
+          ls -lh data/cache/neon_tokyo_jp.duckdb
+
       - name: Fetch fundamentals and value features
-        if: ${{ inputs.fetch_fundamentals == 'true' }}
+        if: ${{ inputs.fetch_fundamentals == 'true' && inputs.skip_fundamentals_fetch != 'true' }}
         env:
           FUNDAMENTALS_LIMIT: ${{ inputs.universe_limit }}
           FUNDAMENTALS_REQUEST_SLEEP_SECONDS: "0.10"
         run: |
           set -euo pipefail
+          mkdir -p data/cache
           python scripts/fetch_fundamentals_jp.py
 
       - name: Build agent scores for range
@@ -164,6 +199,7 @@ jobs:
       - name: Prune generated artifacts
         env:
           DRY_RUN: "false"
+          PRUNE_DUCKDB_CACHE: "false"
         run: |
           set -euo pipefail
           python scripts/prune_ai_arena_generated_artifacts.py
@@ -171,6 +207,7 @@ jobs:
       - name: Validate outputs
         run: |
           set -euo pipefail
+
           test -f site/data/japan/ai-arena/live/latest.json
           test -f site/data/japan/ai-arena/ranking/latest.json
           test -f site/data/japan/ai-arena/summary/latest.json
@@ -178,23 +215,46 @@ jobs:
           test -f site/japan/ai-arena/summary/index.html
           test -f site/japan/ai-arena/signals/index.html
           test -f site/japan/ai-arena/agents/index.html
+          test -f site/data/prices-jp/latest.json
+
+          if [ ! -f data/cache/neon_tokyo_jp.duckdb ]; then
+            echo "::error::DuckDB cache file was deleted before validation."
+            echo "::error::Check scripts/prune_ai_arena_generated_artifacts.py and keep PRUNE_DUCKDB_CACHE=false in this workflow."
+            exit 1
+          fi
+
+          ls -lh data/cache/neon_tokyo_jp.duckdb
+          ls -lh site/data/prices-jp/latest.json
+
           python - <<'PY'
           import json
           from pathlib import Path
           import duckdb
-          live=json.loads(Path('site/data/japan/ai-arena/live/latest.json').read_text())
-          assert len(live.get('agents', [])) == 7
+
+          live = json.loads(Path('site/data/japan/ai-arena/live/latest.json').read_text(encoding='utf-8'))
+          assert len(live.get('agents', [])) == 7, len(live.get('agents', []))
           assert live.get('ranking') is not None
+
           rid = live.get('run_id')
+          assert rid, 'live.latest.json has no run_id'
+
           con = duckdb.connect('data/cache/neon_tokyo_jp.duckdb', read_only=True)
-          for table in ['arena_orders','arena_trades','arena_open_positions','arena_equity_curve']:
+
+          for table in ['arena_orders', 'arena_trades', 'arena_open_positions', 'arena_equity_curve']:
             n = con.execute(f"select count(*) from {table} where run_id = ?", [rid]).fetchone()[0]
             print(table, n)
-          assert con.execute('select count(*) from arena_equity_curve where run_id = ?', [rid]).fetchone()[0] > 0
-          prices=json.loads(Path('site/data/prices-jp/latest.json').read_text())
-          assert prices.get('public_json_mode') == 'summary'
+
+          equity_rows = con.execute(
+            'select count(*) from arena_equity_curve where run_id = ?',
+            [rid]
+          ).fetchone()[0]
+          assert equity_rows > 0, 'arena_equity_curve has no rows for run_id=' + str(rid)
+
+          prices = json.loads(Path('site/data/prices-jp/latest.json').read_text(encoding='utf-8'))
+          assert prices.get('public_json_mode') == 'summary', prices.get('public_json_mode')
           assert prices.get('bars_omitted') is True
           assert Path('site/data/prices-jp/latest.json').stat().st_size < 5 * 1024 * 1024
+
           print('Validated run_id=', rid)
           PY
 
@@ -222,10 +282,13 @@ jobs:
           git commit -m "Build AI Arena JP season outputs"
           for i in 1 2 3; do
             if git push origin HEAD:main; then
+              echo "Push succeeded."
               exit 0
             fi
+            echo "Push rejected. Fetching origin/main and retrying ($i/3)..."
             git fetch origin main
             git rebase origin/main || { git rebase --abort || true; exit 1; }
             sleep 5
           done
+          echo "Push failed after retries."
           exit 1
