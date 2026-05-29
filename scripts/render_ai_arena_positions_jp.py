@@ -1,72 +1,37 @@
 from __future__ import annotations
 
-"""Render AI Arena Positions / Portfolio History page.
+"""Render the AI Arena JP Positions page from the current 7-agent JSON.
 
-The page is intentionally render-only. It does not change simulation, execution,
-ranking, cash accounting, or trade logic. It reads the current positions JSON and
-optionally enriches it with closed trade history from simulation/latest.json.
+Source of truth:
+- site/data/japan/ai-arena/positions/latest.json
+- site/data/japan/ai-arena/ranking/latest.json for the full 7-agent roster
+
+This renderer does not use legacy simulation agents, so old 5-agent names cannot
+leak into the deployed Positions page.
 """
 
 import os
-import re
-from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 from render_common import OUT_DIR, copy_asset, env, read_json, write_text
 
-POSITIONS_JSON = Path(
-    os.getenv(
-        "AI_ARENA_POSITIONS_JSON",
-        str(OUT_DIR / "data/japan/ai-arena/positions/latest.json"),
-    )
-)
-SIMULATION_JSON = Path(
-    os.getenv(
-        "AI_ARENA_SIMULATION_JSON",
-        str(OUT_DIR / "data/japan/ai-arena/simulation/latest.json"),
-    )
-)
+POSITIONS_JSON = Path(os.getenv("AI_ARENA_POSITIONS_JSON", str(OUT_DIR / "data/japan/ai-arena/positions/latest.json")))
+RANKING_JSON = Path(os.getenv("AI_ARENA_RANKING_JSON", str(OUT_DIR / "data/japan/ai-arena/ranking/latest.json")))
 
-RECENT_CLOSED_LIMIT = int(os.getenv("AI_ARENA_POSITIONS_RECENT_CLOSED_LIMIT", "10"))
-MAX_HISTORY_TOTAL = int(os.getenv("AI_ARENA_POSITIONS_MAX_HISTORY_TOTAL", "80"))
-
-STYLE_LABELS = {
-    "daily_striker": "Momentum Strike",
-    "weekly_sage": "Trend Core",
-    "risk_sentinel": "Capital Shield",
-    "discovery_scout": "Hidden Alpha",
-    "contrarian_monk": "Reversal Hunt",
-}
-
-PROFILE_LABELS = {
-    "daily_v2_core": "Momentum Strike",
-    "daily_stage1": "Opening Strike",
-    "daily_stage2": "Momentum Chase",
-    "weekly_stage1": "Trend Watch",
-    "weekly_stage2": "Trend Core",
-    "weekly_core": "Trend Core",
-    "risk_defender": "Capital Shield",
-    "risk_stage1": "Risk Guard",
-    "risk_stage2": "Capital Shield",
-    "discovery_alpha": "Hidden Alpha",
-    "discovery_stage1": "Discovery Watch",
-    "discovery_stage2": "Early Breakout",
-    "contrarian_reentry": "Reversal Hunt",
-    "contrarian_stage1": "Pullback Watch",
-    "contrarian_stage2": "Reversal Setup",
-}
-
-EXIT_REASON_LABELS = {
-    "stop_loss": "Risk exit",
-    "max_holding": "Time exit",
-    "take_profit": "Profit take",
-    "signal_exit": "Signal exit",
-    "risk_off": "Risk-off exit",
+CANONICAL_AGENT_NAMES = ["KYOU", "NAGARE", "MAMORU", "SAGURI", "MATSU", "KAESHI", "HIZUMI"]
+CANONICAL_COLORS = {
+    "KYOU": "#FF4B5C",
+    "NAGARE": "#B779FF",
+    "MAMORU": "#7DF9FF",
+    "SAGURI": "#5DFFB1",
+    "MATSU": "#FFD166",
+    "KAESHI": "#FF4FD8",
+    "HIZUMI": "#4F46E5",
 }
 
 
-def num(value: Any, default: float = 0.0) -> float:
+def fnum(value: Any, default: float = 0.0) -> float:
     try:
         if value is None:
             return default
@@ -75,7 +40,7 @@ def num(value: Any, default: float = 0.0) -> float:
         return default
 
 
-def int_num(value: Any, default: int = 0) -> int:
+def inum(value: Any, default: int = 0) -> int:
     try:
         if value is None:
             return default
@@ -84,24 +49,30 @@ def int_num(value: Any, default: int = 0) -> int:
         return default
 
 
-def fmt_jpy(value: Any) -> str:
-    return f"¥{num(value):,.0f}"
+def first_present(*values: Any, default: Any = None) -> Any:
+    for v in values:
+        if v is not None and v != "":
+            return v
+    return default
 
 
-def fmt_signed_jpy(value: Any) -> str:
-    v = num(value)
+def pct(value: Any) -> str:
+    v = fnum(value)
+    return f"{v:+.2f}%"
+
+
+def jpy(value: Any) -> str:
+    return f"¥{fnum(value):,.0f}"
+
+
+def signed_jpy(value: Any) -> str:
+    v = fnum(value)
     sign = "+" if v > 0 else ""
     return f"{sign}¥{v:,.0f}"
 
 
-def fmt_pct(value: Any) -> str:
-    v = num(value)
-    sign = "+" if v > 0 else ""
-    return f"{sign}{v:.2f}%"
-
-
 def pnl_class(value: Any) -> str:
-    v = num(value)
+    v = fnum(value)
     if v > 0:
         return "pos"
     if v < 0:
@@ -111,198 +82,159 @@ def pnl_class(value: Any) -> str:
 
 def short_date(value: Any) -> str:
     s = str(value or "")
-    if not s:
-        return "—"
-    try:
-        return datetime.fromisoformat(s[:10]).strftime("%Y-%m-%d")
-    except Exception:
-        return s[:10]
+    return s[:10] if s else "—"
 
 
-def clean_reason(text: Any) -> str:
-    s = str(text or "").strip()
-    if not s:
-        return "Signal-based entry."
-    for raw, label in sorted(PROFILE_LABELS.items(), key=lambda x: -len(x[0])):
-        s = re.sub(rf"\b{re.escape(raw)}\b", label, s)
-    s = re.sub(r"\bscore\s+([0-9]+(?:\.[0-9]+)?)", r"score \1", s, flags=re.I)
-    s = s.replace("no daily confirmation", "without daily confirmation")
-    s = s.replace("penalty drag", "risk penalty")
-    return s[:220]
-
-
-def clean_exit_reason(text: Any) -> str:
-    s = str(text or "").strip()
-    return EXIT_REASON_LABELS.get(s, clean_reason(s) if s else "Closed")
-
-
-def trade_sort_key(trade: dict[str, Any]) -> str:
-    return str(trade.get("exit_date") or trade.get("entry_date") or "")
-
-
-def enrich_open_position(p: dict[str, Any]) -> dict[str, Any]:
-    out = dict(p)
-    out["entry_date_fmt"] = short_date(out.get("entry_date"))
-    out["current_date_fmt"] = short_date(out.get("current_date"))
-    out["entry_price_fmt"] = fmt_jpy(out.get("entry_price"))
-    out["current_price_fmt"] = fmt_jpy(out.get("current_price"))
-    out["market_value_fmt"] = fmt_jpy(out.get("market_value_jpy"))
-    out["unrealized_pnl_fmt"] = fmt_signed_jpy(out.get("unrealized_pnl_jpy"))
-    out["unrealized_return_fmt"] = fmt_pct(out.get("unrealized_return_pct"))
-    out["pnl_class"] = pnl_class(out.get("unrealized_pnl_jpy"))
-    out["return_bar_width"] = min(100, max(4, abs(num(out.get("unrealized_return_pct"))) * 4.5))
-    out["entry_reason_clean"] = clean_reason(out.get("entry_reason"))
-    out["holding_days"] = int_num(out.get("holding_days"))
-    out["shares_fmt"] = f"{int_num(out.get('shares')):,}"
+def group_by_agent(rows: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    out: dict[str, list[dict[str, Any]]] = {}
+    for row in rows or []:
+        aid = str(row.get("agent_id") or "")
+        if aid:
+            out.setdefault(aid, []).append(row)
     return out
 
 
-def enrich_closed_trade(t: dict[str, Any]) -> dict[str, Any]:
-    out = dict(t)
-    out["entry_date_fmt"] = short_date(out.get("entry_date"))
-    out["exit_date_fmt"] = short_date(out.get("exit_date"))
-    out["entry_price_fmt"] = fmt_jpy(out.get("entry_price"))
-    out["exit_price_fmt"] = fmt_jpy(out.get("exit_price"))
-    out["pnl_fmt"] = fmt_signed_jpy(out.get("pnl_jpy"))
-    out["return_fmt"] = fmt_pct(out.get("return_pct"))
-    out["pnl_class"] = pnl_class(out.get("pnl_jpy"))
-    out["exit_reason_clean"] = clean_exit_reason(out.get("exit_reason"))
-    out["entry_reason_clean"] = clean_reason(out.get("entry_reason"))
-    out["holding_days"] = int_num(out.get("holding_days"))
-    out["shares_fmt"] = f"{int_num(out.get('shares')):,}"
-    return out
-
-
-def avg(values: list[float]) -> float:
-    return sum(values) / len(values) if values else 0.0
-
-
-def agent_style_label(agent: dict[str, Any]) -> str:
-    aid = str(agent.get("agent_id") or "")
-    profile = str((agent.get("summary") or {}).get("screening_profile") or "")
-    return STYLE_LABELS.get(aid) or PROFILE_LABELS.get(profile) or str(agent.get("class") or "AI Agent")
-
-
-def enrich_agent(agent: dict[str, Any], sim_agent: dict[str, Any] | None) -> dict[str, Any]:
-    out = dict(agent)
-    if sim_agent:
-        # Keep current positions payload as the base, but use simulation for full history.
-        out.setdefault("personality", sim_agent.get("personality"))
-        out.setdefault("philosophy", sim_agent.get("philosophy"))
-        out["closed_trades"] = list(sim_agent.get("closed_trades") or [])
-        if not out.get("open_positions"):
-            out["open_positions"] = list(sim_agent.get("open_positions") or [])
-        out["equity_curve"] = list(sim_agent.get("equity_curve") or [])
-    else:
-        out["closed_trades"] = list(out.get("closed_trades") or [])
-        out["equity_curve"] = list(out.get("equity_curve") or [])
-
-    summary = dict(out.get("summary") or {})
-    out["style_label"] = agent_style_label(out)
-    out["return_fmt"] = fmt_pct(summary.get("return_pct"))
-    out["equity_fmt"] = fmt_jpy(summary.get("portfolio_equity_jpy"))
-    out["cash_fmt"] = fmt_jpy(summary.get("cash_jpy"))
-    out["market_value_fmt"] = fmt_jpy(summary.get("market_value_jpy"))
-    out["return_class"] = pnl_class(summary.get("return_pct"))
-
-    opens = [enrich_open_position(p) for p in (out.get("open_positions") or [])]
-    out["open_positions"] = sorted(opens, key=lambda p: abs(num(p.get("market_value_jpy"))), reverse=True)
-    closed = [enrich_closed_trade(t) for t in (out.get("closed_trades") or [])]
-    closed = sorted(closed, key=trade_sort_key, reverse=True)
-    out["closed_trades"] = closed
-    out["recent_closed_trades"] = closed[:RECENT_CLOSED_LIMIT]
-
-    open_pnl = sum(num(p.get("unrealized_pnl_jpy")) for p in opens)
-    open_value = sum(num(p.get("market_value_jpy")) for p in opens)
-    realized_pnl = sum(num(t.get("pnl_jpy")) for t in closed)
-    wins = [t for t in closed if num(t.get("pnl_jpy")) > 0]
-    losses = [t for t in closed if num(t.get("pnl_jpy")) < 0]
-    returns = [num(t.get("return_pct")) for t in closed]
-    holding = [num(t.get("holding_days")) for t in closed]
-
-    out["position_summary"] = {
-        "open_count": len(opens),
-        "closed_count": len(closed),
-        "open_market_value_jpy": open_value,
-        "open_market_value_fmt": fmt_jpy(open_value),
-        "unrealized_pnl_jpy": open_pnl,
-        "unrealized_pnl_fmt": fmt_signed_jpy(open_pnl),
-        "unrealized_class": pnl_class(open_pnl),
-        "realized_pnl_jpy": realized_pnl,
-        "realized_pnl_fmt": fmt_signed_jpy(realized_pnl),
-        "realized_class": pnl_class(realized_pnl),
-        "win_rate_fmt": fmt_pct((len(wins) / len(closed) * 100) if closed else summary.get("win_rate_pct", 0)),
-        "avg_return_fmt": fmt_pct(avg(returns)),
-        "avg_holding_fmt": f"{avg(holding):.1f}d" if holding else "—",
+def normalise_position(row: dict[str, Any]) -> dict[str, Any]:
+    ticker = first_present(row.get("ticker"), row.get("symbol"), "—")
+    name = first_present(row.get("name"), row.get("company_name"), ticker)
+    mv = fnum(row.get("market_value_jpy"))
+    pnl = fnum(row.get("unrealized_pnl_jpy"))
+    ret = fnum(row.get("unrealized_return_pct"))
+    return {
+        **row,
+        "ticker": ticker,
+        "name": name,
+        "entry_date_fmt": short_date(row.get("entry_date")),
+        "current_date_fmt": short_date(first_present(row.get("current_date"), row.get("last_date"))),
+        "shares_fmt": f"{inum(row.get('shares')):,}",
+        "market_value_fmt": jpy(mv),
+        "unrealized_pnl_fmt": signed_jpy(pnl),
+        "unrealized_return_fmt": pct(ret),
+        "pnl_class": pnl_class(pnl),
+        "market_value_jpy": mv,
+        "unrealized_pnl_jpy": pnl,
+        "unrealized_return_pct": ret,
+        "holding_days": inum(row.get("holding_days")),
     }
-    out["largest_open"] = max(opens, key=lambda p: num(p.get("market_value_jpy")), default=None)
-    out["best_open"] = max(opens, key=lambda p: num(p.get("unrealized_pnl_jpy")), default=None)
-    out["worst_open"] = min(opens, key=lambda p: num(p.get("unrealized_pnl_jpy")), default=None)
-    out["best_closed"] = max(closed, key=lambda t: num(t.get("pnl_jpy")), default=None)
-    out["worst_closed"] = min(closed, key=lambda t: num(t.get("pnl_jpy")), default=None)
-    return out
 
 
-def build_payload(positions: dict[str, Any], simulation: dict[str, Any]) -> dict[str, Any]:
-    base_agents = list(positions.get("agents") or [])
-    sim_by_id = {a.get("agent_id"): a for a in simulation.get("agents") or []}
-    if not base_agents:
-        base_agents = list(simulation.get("agents") or [])
-
-    agents = [enrich_agent(a, sim_by_id.get(a.get("agent_id"))) for a in base_agents]
-    all_closed: list[dict[str, Any]] = []
-    for a in agents:
-        for t in a.get("closed_trades") or []:
-            tt = dict(t)
-            tt["agent_name"] = a.get("name")
-            tt["agent_style_label"] = a.get("style_label")
-            tt["ui_tone"] = a.get("ui_tone")
-            all_closed.append(tt)
-    all_closed = sorted(all_closed, key=trade_sort_key, reverse=True)
-
-    all_open = [p for a in agents for p in (a.get("open_positions") or [])]
-    total_open_value = sum(num(p.get("market_value_jpy")) for p in all_open)
-    total_unrealized = sum(num(p.get("unrealized_pnl_jpy")) for p in all_open)
-    total_realized = sum(num(t.get("pnl_jpy")) for t in all_closed)
-    wins = [t for t in all_closed if num(t.get("pnl_jpy")) > 0]
-
-    out = dict(positions or {})
-    if not out.get("range"):
-        out["range"] = simulation.get("range")
-    if not out.get("season"):
-        out["season"] = simulation.get("season")
-    if not out.get("generated_at"):
-        out["generated_at"] = simulation.get("generated_at")
-    out["agents"] = agents
-    out["history"] = {
-        "recent_closed_trades": all_closed[:MAX_HISTORY_TOTAL],
-        "closed_count": len(all_closed),
-        "open_count": len(all_open),
-        "total_open_value_fmt": fmt_jpy(total_open_value),
-        "total_unrealized_fmt": fmt_signed_jpy(total_unrealized),
-        "total_unrealized_class": pnl_class(total_unrealized),
-        "total_realized_fmt": fmt_signed_jpy(total_realized),
-        "total_realized_class": pnl_class(total_realized),
-        "win_rate_fmt": fmt_pct((len(wins) / len(all_closed) * 100) if all_closed else 0),
-        "best_closed": max(all_closed, key=lambda t: num(t.get("pnl_jpy")), default=None),
-        "worst_closed": min(all_closed, key=lambda t: num(t.get("pnl_jpy")), default=None),
+def normalise_trade(row: dict[str, Any]) -> dict[str, Any]:
+    ticker = first_present(row.get("ticker"), row.get("symbol"), "—")
+    name = first_present(row.get("name"), row.get("company_name"), ticker)
+    pnl = fnum(first_present(row.get("pnl_jpy"), row.get("realized_pnl_jpy")))
+    ret = fnum(first_present(row.get("return_pct"), row.get("realized_return_pct")))
+    return {
+        **row,
+        "ticker": ticker,
+        "name": name,
+        "entry_date_fmt": short_date(row.get("entry_date")),
+        "exit_date_fmt": short_date(row.get("exit_date")),
+        "pnl_fmt": signed_jpy(pnl),
+        "return_fmt": pct(ret),
+        "pnl_class": pnl_class(pnl),
+        "pnl_jpy": pnl,
+        "return_pct": ret,
+        "holding_days": inum(row.get("holding_days")),
     }
-    out["render_note"] = {
-        "positions_json": str(POSITIONS_JSON),
-        "simulation_json_loaded": bool(simulation),
-        "recent_closed_limit_per_agent": RECENT_CLOSED_LIMIT,
-        "max_history_total": MAX_HISTORY_TOTAL,
+
+
+def build_payload(positions: dict[str, Any], ranking: dict[str, Any]) -> dict[str, Any]:
+    profiles = {str(a.get("agent_id") or ""): a for a in ranking.get("agents") or []}
+    rank_by_agent = {str(r.get("agent_id") or ""): r for r in ranking.get("ranking") or []}
+    activity_by_agent = {
+        str(a.get("agent_id") or ""): a
+        for a in ((positions.get("diagnostics") or ranking.get("diagnostics") or {}).get("agent_activity") or [])
     }
-    return out
+    open_by_agent = group_by_agent(positions.get("open_positions") or [])
+    closed_by_agent = group_by_agent(positions.get("closed_trades") or [])
+
+    agents: list[dict[str, Any]] = []
+    # Ranking JSON is the roster.  It should be 7 rows after the new season rebuild.
+    ranking_rows = ranking.get("ranking") or []
+    for rank_row in sorted(ranking_rows, key=lambda r: inum(r.get("rank"), 999)):
+        aid = str(rank_row.get("agent_id") or "")
+        profile = profiles.get(aid) or rank_row.get("agent") or {}
+        name = str(first_present(profile.get("name"), rank_row.get("agent_name"), aid))
+        color = CANONICAL_COLORS.get(name.upper()) or rank_row.get("color") or profile.get("color") or "#7DF9FF"
+        opens = [normalise_position(p) for p in open_by_agent.get(aid, [])]
+        closed = [normalise_trade(t) for t in closed_by_agent.get(aid, [])]
+        opens.sort(key=lambda p: fnum(p.get("market_value_jpy")), reverse=True)
+        closed.sort(key=lambda t: str(first_present(t.get("exit_date"), t.get("entry_date"), "")), reverse=True)
+        realized = sum(fnum(t.get("pnl_jpy")) for t in closed)
+        unrealized = sum(fnum(p.get("unrealized_pnl_jpy")) for p in opens)
+        wins = [t for t in closed if fnum(t.get("pnl_jpy")) > 0]
+        activity = activity_by_agent.get(aid, {})
+        agents.append({
+            "agent_id": aid,
+            "name": name,
+            "role": first_present(profile.get("role"), profile.get("style"), profile.get("style_label"), aid),
+            "description": first_present(profile.get("short_description"), profile.get("description"), "AI Arena Agent"),
+            "image": first_present(profile.get("image"), f"/assets/ai-arena/agents/{aid}.png"),
+            "color": color,
+            "rank": inum(rank_row.get("rank"), len(agents) + 1),
+            "return_pct": fnum(first_present(rank_row.get("total_return_pct"), rank_row.get("return_pct"))),
+            "return_fmt": pct(first_present(rank_row.get("total_return_pct"), rank_row.get("return_pct"))),
+            "equity_fmt": jpy(first_present(rank_row.get("end_equity_jpy"), rank_row.get("portfolio_equity_jpy"))),
+            "open_positions": opens,
+            "closed_trades": closed,
+            "recent_closed_trades": closed[:12],
+            "open_count": len(opens),
+            "closed_count": len(closed),
+            "realized_pnl_fmt": signed_jpy(realized),
+            "unrealized_pnl_fmt": signed_jpy(unrealized),
+            "realized_class": pnl_class(realized),
+            "unrealized_class": pnl_class(unrealized),
+            "win_rate_fmt": pct((len(wins) / len(closed) * 100.0) if closed else rank_row.get("win_rate_pct")),
+            "executed_buys": inum(activity.get("executed_buys")),
+            "executed_sells": inum(activity.get("executed_sells")),
+            "trade_signals": inum(activity.get("trade_signals")),
+        })
+
+    all_open = [p for a in agents for p in a["open_positions"]]
+    all_closed = [dict(t, agent_name=a["name"], color=a["color"]) for a in agents for t in a["closed_trades"]]
+    all_closed.sort(key=lambda t: str(first_present(t.get("exit_date"), t.get("entry_date"), "")), reverse=True)
+    total_open_value = sum(fnum(p.get("market_value_jpy")) for p in all_open)
+    total_unrealized = sum(fnum(p.get("unrealized_pnl_jpy")) for p in all_open)
+    total_realized = sum(fnum(t.get("pnl_jpy")) for t in all_closed)
+    wins = [t for t in all_closed if fnum(t.get("pnl_jpy")) > 0]
+
+    return {
+        **positions,
+        "schema_version": positions.get("schema_version") or "ai_arena_positions_v2",
+        "run_id": positions.get("run_id") or ranking.get("run_id"),
+        "year": positions.get("year") or ranking.get("year"),
+        "generated_at": positions.get("generated_at") or ranking.get("generated_at"),
+        "agents": agents,
+        "agent_count": len(agents),
+        "history": {
+            "open_count": len(all_open),
+            "closed_count": len(all_closed),
+            "total_open_value_fmt": jpy(total_open_value),
+            "total_unrealized_fmt": signed_jpy(total_unrealized),
+            "total_unrealized_class": pnl_class(total_unrealized),
+            "total_realized_fmt": signed_jpy(total_realized),
+            "total_realized_class": pnl_class(total_realized),
+            "win_rate_fmt": pct((len(wins) / len(all_closed) * 100.0) if all_closed else 0),
+            "recent_closed_trades": all_closed[:80],
+        },
+    }
 
 
 def main() -> None:
     positions = read_json(POSITIONS_JSON, {})
-    simulation = read_json(SIMULATION_JSON, {})
-    payload = build_payload(positions, simulation)
-    html = env().get_template("ai_arena_positions_jp.html.j2").render(positions=payload)
+    ranking = read_json(RANKING_JSON, {})
+    payload = build_payload(positions, ranking)
+    html = env().get_template("ai_arena_positions_jp.html.j2").render(payload=payload)
     write_text(OUT_DIR / "japan/ai-arena/positions/index.html", html)
     copy_asset("ai_arena_positions_jp.css")
+
+    out = OUT_DIR / "japan/ai-arena/positions/index.html"
+    if len(payload.get("agents") or []) != 7:
+        raise RuntimeError(f"AI Arena Positions rendered {len(payload.get('agents') or [])} agents, expected 7")
+    text = out.read_text(encoding="utf-8")
+    for name in CANONICAL_AGENT_NAMES:
+        if name not in text:
+            raise RuntimeError(f"AI Arena Positions is missing agent name: {name}")
 
 
 if __name__ == "__main__":
