@@ -66,6 +66,7 @@
               class="pulse-path pulse-path-{{ loop.index0 }}"
               data-label="{{ item.label }}"
               data-tone="{{ item.tone }}"
+              data-color="{{ item.color or '#7DF9FF' }}"
               data-perf="{{ item.performance_label }}"
               data-perf-class="{{ item.performance_class }}"
               data-symbol="{{ item.symbol }}"
@@ -91,7 +92,6 @@
         <span class="ticker-chip ticker-chip-head"><b>AI ARENA FLOW</b></span>
         {% for item in ticker_items %}
         <span class="ticker-chip ticker-chip-event {{ 'ticker-in' if item.type == 'IN' else 'ticker-out' if item.type == 'OUT' else '' }}">
-          <b>{{ item.agent_name or item.agent_id or 'AGENT' }}</b>
           <small>{{ item.text }}</small>
         </span>
         {% endfor %}
@@ -114,7 +114,6 @@
           <span class="hub-copy">
             <em>Live Season</em>
             <strong>AI Arena Summary</strong>
-            <small>Annual standings, Agent curves, portfolio allocation, trades, and diagnostics.</small>
           </span>
           <i>Enter</i>
         </a>
@@ -124,7 +123,6 @@
           <span class="hub-copy">
             <em>League Table</em>
             <strong>Ranking</strong>
-            <small>Seven-Agent performance view with season equity curves.</small>
           </span>
           <i>View</i>
         </a>
@@ -134,7 +132,6 @@
           <span class="hub-copy">
             <em>Book</em>
             <strong>Positions</strong>
-            <small>Open holdings and closed trade history by Agent.</small>
           </span>
           <i>Open</i>
         </a>
@@ -144,7 +141,6 @@
           <span class="hub-copy">
             <em>Characters</em>
             <strong>Agents</strong>
-            <small>KYOU, NAGARE, MAMORU, SAGURI, MATSU, KAESHI, and HIZUMI.</small>
           </span>
           <i>Meet</i>
         </a>
@@ -208,6 +204,7 @@ const pulseData = paths.map((path) => {
     smooth,
     label: path.getAttribute("data-label") || "AGENT",
     tone: path.getAttribute("data-tone") || "nikkei",
+    color: path.getAttribute("data-color") || "#7DF9FF",
     performance: path.getAttribute("data-perf") || "—",
     performanceClass: path.getAttribute("data-perf-class") || "ret-flat",
     symbol: path.getAttribute("data-symbol") || "AI AGENT",
@@ -231,16 +228,20 @@ function activatePulse(i) {
   const item = pulseData[i % pulseData.length];
 
   stage.dataset.tone = item.tone || "nikkei";
+  stage.style.setProperty("--agent-color", item.color || "#7DF9FF");
   bgWord.textContent = item.label;
   bgWord.setAttribute("data-text", item.label);
 
   if (bgIcon) {
     if (item.icon) {
       bgIcon.src = item.icon;
+      bgIcon.classList.remove("is-peaking");
       bgIcon.classList.add("is-visible");
+      void bgIcon.getBoundingClientRect();
+      bgIcon.classList.add("is-peaking");
     } else {
       bgIcon.removeAttribute("src");
-      bgIcon.classList.remove("is-visible");
+      bgIcon.classList.remove("is-visible", "is-peaking");
     }
   }
 
