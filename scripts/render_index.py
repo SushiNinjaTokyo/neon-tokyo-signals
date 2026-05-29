@@ -252,6 +252,7 @@ def build_agent_pulse(hero: dict[str, Any], fallback_summary: dict[str, Any]) ->
             "performance_pct": ret,
             "performance_label": pct(ret, 1),
             "performance_class": pct_class(ret),
+            "color": str(a.get("color") or "#7DF9FF"),
             "icon_src": str(a.get("icon_src") or a.get("image") or ""),
             "rank": a.get("rank"),
             "is_agent": True,
@@ -319,7 +320,7 @@ def build_ai_arena_ticker_items(hero: dict[str, Any], fallback_summary: dict[str
             "symbol": symbol,
             "company_name": company,
             "display_symbol_name": display,
-            "text": f"{name} is IN {display} based on its latest signal.",
+            "text": f"{name} IN {display}",
         })
     for t in ((fallback_summary.get("rankings") or {}).get("best_trades") or [])[:8]:
         aid = str(t.get("agent_id") or "")
@@ -334,7 +335,7 @@ def build_ai_arena_ticker_items(hero: dict[str, Any], fallback_summary: dict[str
             "symbol": symbol,
             "company_name": company,
             "display_symbol_name": display,
-            "text": f"{name} is OUT {display} after the trade completed.",
+            "text": f"{name} OUT {display}",
         })
     return out[:18] if out else build_ticker_items(prices, daily)
 
