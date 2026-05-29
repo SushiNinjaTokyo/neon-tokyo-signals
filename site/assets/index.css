@@ -2218,3 +2218,158 @@ button{
     font-size:11px;
   }
 }
+
+/* === 2026-05-29 TOP Hero visual refinement v2 ===
+   - Stronger Agent background names
+   - Agent theme-colored background names
+   - Softer synchronized Agent icon bloom
+   - Slower electric ticker
+   - Compact AI Arena hub cards without explanatory copy
+*/
+.pulse-stage{
+  --agent-color: var(--cyan);
+}
+
+.pulse-bg-word{
+  font-weight: 1000;
+  color: color-mix(in srgb, var(--agent-color) 74%, transparent);
+  -webkit-text-stroke: 1.35px color-mix(in srgb, var(--agent-color) 72%, transparent);
+  text-shadow:
+    0 0 16px color-mix(in srgb, var(--agent-color) 92%, transparent),
+    0 0 42px color-mix(in srgb, var(--agent-color) 54%, transparent),
+    0 0 92px color-mix(in srgb, var(--agent-color) 28%, transparent),
+    1px 0 0 color-mix(in srgb, var(--agent-color) 44%, transparent),
+    -1px 0 0 color-mix(in srgb, var(--agent-color) 44%, transparent);
+  opacity: .86;
+  filter: saturate(1.65) brightness(1.16) contrast(1.10);
+  transition:
+    color 220ms ease,
+    text-shadow 220ms ease,
+    -webkit-text-stroke-color 220ms ease,
+    opacity 220ms ease;
+}
+
+.pulse-stage[data-tone="topix"] .pulse-bg-word,
+.pulse-stage[data-tone="growth"] .pulse-bg-word{
+  color: color-mix(in srgb, var(--agent-color) 74%, transparent);
+  text-shadow:
+    0 0 16px color-mix(in srgb, var(--agent-color) 92%, transparent),
+    0 0 42px color-mix(in srgb, var(--agent-color) 54%, transparent),
+    0 0 92px color-mix(in srgb, var(--agent-color) 28%, transparent),
+    1px 0 0 color-mix(in srgb, var(--agent-color) 44%, transparent),
+    -1px 0 0 color-mix(in srgb, var(--agent-color) 44%, transparent);
+}
+
+.pulse-bg-word::before{
+  color: color-mix(in srgb, var(--agent-color) 80%, #ff4484 20%);
+}
+
+.pulse-bg-word::after{
+  color: color-mix(in srgb, var(--agent-color) 80%, #48ffd6 20%);
+}
+
+.pulse-bg-icon{
+  opacity: 0;
+  filter:
+    drop-shadow(0 0 18px color-mix(in srgb, var(--agent-color) 72%, transparent))
+    drop-shadow(0 0 54px color-mix(in srgb, var(--agent-color) 36%, transparent));
+  transition:
+    opacity 360ms ease,
+    filter 360ms ease,
+    transform 520ms cubic-bezier(.2,.8,.2,1);
+}
+
+.pulse-bg-icon.is-visible{
+  opacity: .28;
+}
+
+.pulse-bg-icon.is-visible.is-peaking{
+  animation: agentIconSoftBloom 920ms ease-out both;
+}
+
+.pulse-stage[data-tone="topix"] .pulse-bg-icon,
+.pulse-stage[data-tone="growth"] .pulse-bg-icon{
+  filter:
+    drop-shadow(0 0 18px color-mix(in srgb, var(--agent-color) 72%, transparent))
+    drop-shadow(0 0 54px color-mix(in srgb, var(--agent-color) 36%, transparent));
+}
+
+@keyframes agentIconSoftBloom{
+  0%{
+    opacity: 0;
+    transform: translate(calc(-50% + 18vw), calc(-50% - 5vw)) rotate(-6deg) scale(.965);
+    filter:
+      drop-shadow(0 0 8px color-mix(in srgb, var(--agent-color) 42%, transparent))
+      drop-shadow(0 0 22px color-mix(in srgb, var(--agent-color) 18%, transparent));
+  }
+  42%{
+    opacity: .56;
+    transform: translate(calc(-50% + 18vw), calc(-50% - 5vw)) rotate(-6deg) scale(1.035);
+    filter:
+      drop-shadow(0 0 24px color-mix(in srgb, var(--agent-color) 90%, transparent))
+      drop-shadow(0 0 78px color-mix(in srgb, var(--agent-color) 48%, transparent));
+  }
+  100%{
+    opacity: .28;
+    transform: translate(calc(-50% + 18vw), calc(-50% - 5vw)) rotate(-6deg) scale(1);
+    filter:
+      drop-shadow(0 0 18px color-mix(in srgb, var(--agent-color) 72%, transparent))
+      drop-shadow(0 0 54px color-mix(in srgb, var(--agent-color) 36%, transparent));
+  }
+}
+
+.ticker-track{
+  animation-duration: 88s;
+}
+
+.ticker-chip-event small{
+  color: rgba(234,242,255,.90);
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: .075em;
+  text-transform: uppercase;
+}
+
+.ticker-chip-event.ticker-in small{
+  color: var(--green);
+  text-shadow: 0 0 9px rgba(93,255,177,.44);
+}
+
+.ticker-chip-event.ticker-out small{
+  color: var(--pink);
+  text-shadow: 0 0 9px rgba(255,79,216,.40);
+}
+
+.hub-card-link{
+  min-height: 142px;
+  align-items: center;
+}
+
+.hub-copy small{
+  display: none !important;
+}
+
+@media (max-width: 760px){
+  .pulse-bg-icon.is-visible.is-peaking{
+    animation-name: agentIconSoftBloomMobile;
+  }
+
+  @keyframes agentIconSoftBloomMobile{
+    0%{
+      opacity: 0;
+      transform: translate(calc(-50% + 28vw), calc(-50% - 9vw)) rotate(-6deg) scale(.965);
+    }
+    42%{
+      opacity: .48;
+      transform: translate(calc(-50% + 28vw), calc(-50% - 9vw)) rotate(-6deg) scale(1.03);
+    }
+    100%{
+      opacity: .24;
+      transform: translate(calc(-50% + 28vw), calc(-50% - 9vw)) rotate(-6deg) scale(1);
+    }
+  }
+
+  .ticker-track{
+    animation-duration: 96s;
+  }
+}
