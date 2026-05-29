@@ -1,0 +1,245 @@
+schema_version: jp_agent_strategy_rules_v1
+rules_version: jp_agent_strategy_2026_dev_v011
+effective_date: 2026-01-01
+updated_at: 2026-05-29
+
+# Rules in this file are intentionally plain YAML so the strategy can be tuned
+# without editing Python. The engine only uses fields it explicitly supports;
+# unsupported fields are still useful as documentation for future enhancements.
+#
+# v011:
+# - HIZUMI is rebalanced after v010 over-tightening: fewer trades than v009, but enough
+#   samples for the value agent to matter.  It no longer requires price > MA20.
+# - SAGURI bucket gating is further relaxed through financial/score discovery bypasses.
+# - KYOU, NAGARE, MAMORU, MATSU, and KAESHI are intentionally unchanged from v010.
+common:
+  min_price_jpy: 50
+  max_price_jpy: 200000
+  missing_price_exit_after_days: 5
+  stale_price_exit_reason_code: STALE_PRICE_EXIT
+  score_collapse_exit_reason_code: SCORE_COLLAPSE
+  liquidity_exit_reason_code: LIQUIDITY_DRYUP
+
+agents:
+  daily_striker:
+    exit_style: momentum_decay
+    year_end_entry_block_trading_days: 3
+    entry:
+      min_score: 0.74
+      max_rank_per_day: 6
+      allowed_actions: [Trade]
+      min_liquidity_score: 0.35
+      min_avg_traded_value_20d_jpy: 100000000
+      require_price_above_ma20: true
+      require_volume_ratio_20d_min: 1.60
+      require_return_1d_pct_min: 0.4
+      require_range_position_20d_0_1_min: 0.78
+      require_range_position_252d_0_1_min: 0.42
+      reject_if_rsi_14_gt: 76
+      reject_if_return_5d_pct_gt: 18
+      reject_if_return_20d_pct_gt: 55
+      reject_if_volatility_60d_annualized_pct_gt: 125
+    exit:
+      hard_stop_loss_pct: -5.8
+      take_profit_pct: 16
+      trailing_stop_pct: 7.5
+      max_holding_days: 10
+      score_below: 0.46
+      price_below_ma10: true
+      volume_ratio_20d_below: 0.70
+      return_3d_pct_below: -5
+
+  weekly_sage:
+    exit_style: trend_break
+    year_end_entry_block_trading_days: 10
+    entry:
+      min_score: 0.76
+      max_rank_per_day: 10
+      allowed_actions: [Trade]
+      min_liquidity_score: 0.35
+      min_avg_traded_value_20d_jpy: 80000000
+      require_price_above_ma50: true
+      require_trend_score_weekly_proxy_min: 0.55
+      require_return_60d_pct_min: 5
+      reject_if_return_20d_pct_gt: 45
+      reject_if_volatility_60d_annualized_pct_gt: 90
+    exit:
+      hard_stop_loss_pct: -9.5
+      take_profit_pct: 30
+      trailing_stop_pct: 13
+      max_holding_days: 45
+      score_below: 0.46
+      price_below_ma50: true
+      trend_score_weekly_proxy_below: 0.44
+
+  risk_sentinel:
+    exit_style: capital_preservation
+    year_end_entry_block_trading_days: 5
+    entry:
+      min_score: 0.82
+      max_rank_per_day: 8
+      allowed_actions: [Trade]
+      min_liquidity_score: 0.68
+      min_avg_traded_value_20d_jpy: 300000000
+      reject_if_volatility_60d_annualized_pct_gt: 50
+      reject_if_max_drawdown_60d_pct_lt: -18
+      reject_if_return_20d_pct_lt: -8
+      reject_if_rsi_14_gt: 74
+      require_price_above_ma50: true
+      require_price_above_ma120: true
+      require_trend_score_weekly_proxy_min: 0.42
+    exit:
+      hard_stop_loss_pct: -4.2
+      take_profit_pct: 10
+      trailing_stop_pct: 5.5
+      max_holding_days: 18
+      score_below: 0.56
+      risk_score_below: 0.52
+      liquidity_score_below: 0.65
+      volatility_20d_annualized_pct_above: 55
+      price_below_ma50: true
+
+  discovery_scout:
+    exit_style: discovery_risk
+    year_end_entry_block_trading_days: 5
+    entry:
+      min_score: 0.46
+      max_rank_per_day: 25
+      allowed_actions: [Trade]
+      allowed_buckets:
+        - small_discovery
+        - discovery
+        - early_breakout
+        - emerging_growth
+        - liquid_growth
+        - speculative_growth
+        - small_growth
+        - growth
+        - core_growth
+        - momentum
+        - breakout
+        - watch_growth
+        - value_growth
+        - unknown
+      bucket_optional_if_financial_setup: true
+      bucket_optional_if_score_setup: true
+      allow_bucket_bypass_for_discovery_setup: true
+      min_liquidity_score: 0.25
+      min_avg_traded_value_20d_jpy: 20000000
+      require_volume_ratio_20d_min: 1.20
+      reject_if_return_5d_pct_gt: 35
+      require_market_cap_jpy_min: 10000000000
+      require_market_cap_jpy_max: 800000000000
+      require_operating_margin_pct_min: -5
+      require_roe_pct_min: -10
+      reject_if_psr_gt: 20
+      reject_if_pbr_gt: 15
+      require_quality_guard_score_min: 0.25
+      reject_if_value_trap_penalty_gt: 0.80
+      discovery_financial_setup:
+        require_market_cap_jpy_min: 10000000000
+        require_market_cap_jpy_max: 800000000000
+        require_quality_guard_score_min: 0.25
+        reject_if_value_trap_penalty_gt: 0.80
+        require_volume_ratio_20d_min: 1.15
+        require_range_position_60d_0_1_min: 0.30
+        require_liquidity_score_min: 0.22
+      discovery_score_setup:
+        min_score: 0.50
+        require_volume_ratio_20d_min: 1.15
+        require_range_position_60d_0_1_min: 0.30
+        require_market_cap_jpy_max: 1000000000000
+        require_liquidity_score_min: 0.22
+    exit:
+      hard_stop_loss_pct: -7
+      take_profit_pct: 18
+      trailing_stop_pct: 8
+      max_holding_days: 10
+      score_below: 0.46
+      liquidity_score_below: 0.30
+      avg_traded_value_20d_jpy_below: 15000000
+      return_3d_pct_below: -8
+      price_below_ma20: true
+
+  contrarian_monk:
+    exit_style: pullback_resolution
+    year_end_entry_block_trading_days: 7
+    entry:
+      min_score: 0.72
+      max_rank_per_day: 8
+      allowed_actions: [Trade]
+      min_liquidity_score: 0.30
+      min_avg_traded_value_20d_jpy: 50000000
+      require_trend_score_weekly_proxy_min: 0.50
+      require_price_above_ma120: true
+      require_rsi_14_between: [38, 62]
+      require_price_vs_ma50_pct_between: [-10, 8]
+      reject_if_return_5d_pct_gt: 5
+      reject_if_return_20d_pct_lt: -15
+      reject_if_volatility_60d_annualized_pct_gt: 100
+    exit:
+      hard_stop_loss_pct: -6.5
+      take_profit_pct: 15
+      trailing_stop_pct: 7.5
+      max_holding_days: 20
+      score_below: 0.42
+      price_below_ma120: true
+      trend_score_weekly_proxy_below: 0.42
+      rsi_14_below: 32
+      return_5d_pct_above: 10
+
+  reversal_snapback:
+    exit_style: snapback_harvest
+    year_end_entry_block_trading_days: 3
+    entry:
+      min_score: 0.70
+      max_rank_per_day: 5
+      allowed_actions: [Trade]
+      min_liquidity_score: 0.25
+      min_avg_traded_value_20d_jpy: 30000000
+      require_rsi_14_max: 45
+      require_bollinger_b_20_max: 0.45
+      require_return_5d_pct_max: 4
+      require_reversal_exhaustion_score_min: 0.45
+    exit:
+      hard_stop_loss_pct: -4.8
+      take_profit_pct: 9
+      trailing_stop_pct: 4.5
+      max_holding_days: 5
+      score_below: 0.42
+      rsi_14_above: 58
+      bollinger_b_20_above: 0.55
+      return_3d_pct_above: 7
+      exit_if_no_positive_close_after_days: 3
+
+  value_mispricing:
+    exit_style: mispricing_resolution
+    year_end_entry_block_trading_days: 10
+    entry:
+      min_score: 0.48
+      max_rank_per_day: 18
+      allowed_actions: [Trade]
+      min_liquidity_score: 0.35
+      min_avg_traded_value_20d_jpy: 50000000
+      require_price_above_ma20: false
+      require_range_position_252d_0_1_max: 0.82
+      reject_if_return_60d_pct_lt: -35
+      require_value_mispricing_score_min: 0.58
+      require_valuation_discount_score_min: 0.54
+      require_quality_guard_score_min: 0.44
+      reject_if_value_trap_penalty_gt: 0.60
+      reject_if_psr_gt: 6
+      reject_if_pbr_gt: 3.5
+      allowed_valuation_buckets:
+        - deep_value
+        - quality_value
+        - watch_value
+    exit:
+      hard_stop_loss_pct: -11
+      take_profit_pct: 24
+      trailing_stop_pct: 12
+      max_holding_days: 75
+      score_below: 0.42
+      range_position_252d_0_1_above: 0.82
+      return_20d_pct_above: 24
+      liquidity_score_below: 0.35
