@@ -238,6 +238,41 @@ def _passes_discovery_score_setup(score_row: dict[str, Any], feature_row: dict[s
     return True, "discovery_score_setup_passed"
 
 
+
+def _passes_value_rerating_confirmation(feature_row: dict[str, Any], entry: dict[str, Any]) -> tuple[bool, str]:
+    """Require a concrete re-rating signal for HIZUMI-style value entries.
+
+    Cheap stocks can remain cheap.  This confirmation gate lets a candidate pass
+    when at least one price/re-rating signal indicates that the market has begun
+    to recognize the mispricing.
+    """
+    if not boolish(entry.get("require_value_rerating_confirmation")):
+        return True, "value_rerating_confirmation_not_required"
+
+    setup = entry.get("rerating_confirmation_any") or {}
+    if not setup:
+        return False, "value_rerating_confirmation_missing"
+
+    checks: list[tuple[bool, str]] = []
+    close = num(feature_row.get("close"))
+
+    if boolish(setup.get("price_above_ma20")):
+        checks.append((close > num(feature_row.get("ma_20")), "price_above_ma20"))
+    if "return_20d_pct_min" in setup:
+        checks.append((num(feature_row.get("return_20d_pct")) >= num(setup.get("return_20d_pct_min")), "return_20d_positive"))
+    if "return_60d_pct_min" in setup:
+        checks.append((num(feature_row.get("return_60d_pct")) >= num(setup.get("return_60d_pct_min")), "return_60d_positive"))
+    if "range_position_60d_0_1_min" in setup:
+        checks.append((num(feature_row.get("range_position_60d_0_1")) >= num(setup.get("range_position_60d_0_1_min")), "range_position_60d_recovered"))
+    if "re_rating_signal_score_min" in setup:
+        checks.append((num(feature_row.get("re_rating_signal_score")) >= num(setup.get("re_rating_signal_score_min")), "rerating_signal_score_ok"))
+
+    if any(ok for ok, _ in checks):
+        passed = [name for ok, name in checks if ok]
+        return True, "value_rerating_confirmation_passed:" + ",".join(passed[:3])
+    return False, "value_rerating_confirmation_failed"
+
+
 def passes_entry_rule(
     *,
     score_row: dict[str, Any],
@@ -352,8 +387,14 @@ def passes_entry_rule(
         return False, "twenty_day_move_too_extended"
     if "reject_if_return_20d_pct_lt" in entry and num(feature_row.get("return_20d_pct")) < num(entry["reject_if_return_20d_pct_lt"]):
         return False, "pullback_too_deep"
+    if "reject_if_price_vs_ma50_pct_lt" in entry and num(feature_row.get("price_vs_ma50_pct")) < num(entry["reject_if_price_vs_ma50_pct_lt"]):
+        return False, "price_vs_ma50_too_low"
     if "require_trend_score_weekly_proxy_min" in entry and num(feature_row.get("trend_score_weekly_proxy")) < num(entry["require_trend_score_weekly_proxy_min"]):
         return False, "weekly_trend_too_weak"
+
+    ok, reason = _passes_value_rerating_confirmation(feature_row, entry)
+    if not ok:
+        return False, reason
 
     ok, reason = _passes_numeric_financial_gates(feature_row, entry)
     if not ok:
