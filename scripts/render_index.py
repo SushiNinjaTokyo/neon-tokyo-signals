@@ -1,8 +1,18 @@
 from __future__ import annotations
 
+"""Render the Neon Tokyo top page.
+
+Third-phase AI Arena migration:
+- Keep the existing Neon Tokyo TOP visual language and chart animation.
+- Replace the old NIKKEI/TOPIX/GROWTH Hero chart data with AI Agent equity curves.
+- Use the dedicated, lightweight AI Arena Hero JSON when available:
+  site/data/japan/ai-arena/hero/latest.json
+- Fall back safely to summary/latest.json, and finally to the previous market
+  pulse data only when no Arena payload exists.
+"""
+
 from datetime import datetime
 from pathlib import Path
-from statistics import mean
 from typing import Any
 
 from render_common import OUT_DIR, copy_asset, env, generated_at, read_json, write_text
@@ -28,6 +38,20 @@ DEFAULT_TICKERS = [
     "3993.T",
     "5582.T",
 ]
+
+AGENT_THEME_TONE = {
+    "cyan": "nikkei",
+    "blue": "topix",
+    "violet": "topix",
+    "purple": "topix",
+    "indigo": "topix",
+    "green": "growth",
+    "amber": "growth",
+    "yellow": "growth",
+    "magenta": "growth",
+    "pink": "growth",
+    "red": "growth",
+}
 
 
 def as_float(value: Any, default: float | None = None) -> float | None:
@@ -71,10 +95,8 @@ def parse_date(value: str | None) -> datetime | None:
 def split_adjusted_closes(bars: list[dict[str, Any]]) -> list[tuple[str, float]]:
     """Return a continuous close series by back-adjusting obvious split-like jumps.
 
-    yfinance occasionally returns unadjusted pre-split prices for JP ETFs such as
-    1306.T. A one-day close ratio below ~0.35 is not a market move; it is treated
-    as a split-like discontinuity and prior history is scaled into the latest unit.
-    This only affects the display chart/performance, never trading logic.
+    This function is retained as a fallback for legacy market-pulse rendering.
+    TOP now prefers AI Arena Agent equity curves.
     """
     rows: list[tuple[str, float]] = []
     for b in bars or []:
@@ -94,10 +116,7 @@ def split_adjusted_closes(bars: list[dict[str, Any]]) -> list[tuple[str, float]]
             continue
         ratio = curr / prev
         if ratio < 0.35 or ratio > 3.2:
-            # Back-adjust all previous closes so the series remains continuous.
             factor = ratio
-            if ratio > 3.2:
-                factor = ratio
             for j in range(i):
                 adjusted[j][1] *= factor
     return [(d, float(c)) for d, c in adjusted]
@@ -133,6 +152,7 @@ def normalize_points(values: list[float]) -> list[int]:
 
 
 def build_market_pulse(prices: dict[str, Any]) -> list[dict[str, Any]]:
+    """Legacy fallback: build NIKKEI/TOPIX/GROWTH market pulse items."""
     items = prices.get("items") or []
     by_symbol = {str(x.get("symbol")): x for x in items if isinstance(x, dict)}
     out: list[dict[str, Any]] = []
@@ -147,6 +167,7 @@ def build_market_pulse(prices: dict[str, Any]) -> list[dict[str, Any]]:
         points = normalize_points(closes)
         out.append({
             "label": label,
+            "name": label,
             "symbol": cfg["symbol"],
             "tone": cfg["tone"],
             "points": ",".join(str(x) for x in points),
@@ -155,11 +176,91 @@ def build_market_pulse(prices: dict[str, Any]) -> list[dict[str, Any]]:
             "performance_class": pct_class(perf),
             "date_start": weeks[0][0] if weeks else None,
             "date_end": weeks[-1][0] if weeks else None,
+            "icon_src": "",
+            "is_agent": False,
+        })
+    return out
+
+
+def _agent_tone(agent: dict[str, Any]) -> str:
+    tone = str(agent.get("tone") or "").strip().lower()
+    if tone in {"nikkei", "topix", "growth"}:
+        return tone
+    theme = str(agent.get("theme") or agent.get("theme_color") or "cyan").strip().lower()
+    return AGENT_THEME_TONE.get(theme, "nikkei")
+
+
+def _agent_spark_values(agent: dict[str, Any]) -> list[float]:
+    values: list[float] = []
+    for p in agent.get("sparkline") or []:
+        if not isinstance(p, dict):
+            continue
+        v = as_float(p.get("equity"))
+        if v is not None and v > 0:
+            values.append(v)
+    return values
+
+
+def build_agent_pulse(hero: dict[str, Any], fallback_summary: dict[str, Any]) -> list[dict[str, Any]]:
+    """Build TOP Hero pulse items from hero/latest.json or summary/latest.json."""
+    agents = hero.get("agents") if isinstance(hero, dict) else None
+
+    if not agents:
+        # Fallback to summary/latest.json.  This keeps the TOP page usable even
+        # if an old canonical DB has not yet exported hero/latest.json.
+        agents = []
+        annual = ((fallback_summary.get("rankings") or {}).get("annual_performance") or [])
+        for r in annual:
+            agent = r.get("agent") or {}
+            aid = str(r.get("agent_id") or agent.get("agent_id") or "")
+            if not aid:
+                continue
+            agents.append({
+                "agent_id": aid,
+                "display_name": agent.get("name") or aid.upper(),
+                "role": aid,
+                "role_label": agent.get("role") or agent.get("style") or "AI Agent",
+                "theme": str(agent.get("theme_color") or "cyan").lower(),
+                "tone": _agent_tone(agent),
+                "color": agent.get("color") or "#7DF9FF",
+                "icon_src": agent.get("image") or f"/assets/ai-arena/agents/{aid}.png",
+                "rank": r.get("rank"),
+                "return_pct": as_float(r.get("total_return_pct"), 0.0),
+                "sparkline": r.get("sparkline") or [],
+                "background_label": agent.get("name") or aid.upper(),
+            })
+
+    out: list[dict[str, Any]] = []
+    for a in agents or []:
+        if not isinstance(a, dict):
+            continue
+        values = _agent_spark_values(a)
+        # If sparkline is temporarily unavailable, draw a flat but valid line.
+        if len(values) < 2:
+            ret = as_float(a.get("return_pct"), 0.0) or 0.0
+            values = [100.0, 100.0 * (1 + ret / 100.0)]
+        points = normalize_points(values)
+        label = str(a.get("display_name") or a.get("name") or a.get("agent_id") or "AGENT").upper()
+        ret = as_float(a.get("return_pct"), 0.0)
+        out.append({
+            "label": label,
+            "name": label,
+            "symbol": str(a.get("role") or a.get("agent_id") or "AI AGENT"),
+            "role_label": str(a.get("role_label") or a.get("role") or "AI Agent"),
+            "tone": _agent_tone(a),
+            "points": ",".join(str(x) for x in points),
+            "performance_pct": ret,
+            "performance_label": pct(ret, 1),
+            "performance_class": pct_class(ret),
+            "icon_src": str(a.get("icon_src") or a.get("image") or ""),
+            "rank": a.get("rank"),
+            "is_agent": True,
         })
     return out
 
 
 def build_ticker_items(prices: dict[str, Any], daily: dict[str, Any], limit: int = 12) -> list[dict[str, Any]]:
+    """Legacy fallback ticker used only when AI Arena ticker tape is missing."""
     price_items = prices.get("items") or []
     price_by_symbol = {str(x.get("symbol")): x for x in price_items if isinstance(x, dict)}
     daily_items = daily.get("items") or daily.get("all_items") or []
@@ -186,13 +287,59 @@ def build_ticker_items(prices: dict[str, Any], daily: dict[str, Any], limit: int
             "return_1d_pct": ret,
             "return_1d_label": pct(ret, 1),
             "return_class": pct_class(ret),
+            "text": f"SIGNAL WATCH {s} {item.get('name') or s} {pct(ret, 1)}",
+            "type": "WATCH",
+            "agent_name": "SIGNAL WATCH",
         })
         if len(out) >= limit:
             break
     return out
 
 
-def build_status(prices: dict[str, Any]) -> dict[str, Any]:
+def build_ai_arena_ticker_items(hero: dict[str, Any], fallback_summary: dict[str, Any], prices: dict[str, Any], daily: dict[str, Any]) -> list[dict[str, Any]]:
+    items = hero.get("ticker_tape") if isinstance(hero, dict) else None
+    if items:
+        return [x for x in items if isinstance(x, dict) and x.get("text")]
+
+    # Fallback from Summary open positions and recent trades.
+    out: list[dict[str, Any]] = []
+    annual = ((fallback_summary.get("rankings") or {}).get("annual_performance") or [])
+    agent_name = {str(r.get("agent_id")): ((r.get("agent") or {}).get("name") or str(r.get("agent_id")).upper()) for r in annual}
+    portfolio = fallback_summary.get("portfolio") or {}
+    for p in portfolio.get("top_positions") or []:
+        aid = str(p.get("agent_id") or "")
+        name = str(agent_name.get(aid) or aid or "AGENT").upper()
+        symbol = str(p.get("ticker") or "")
+        company = str(p.get("name") or symbol)
+        display = f"{symbol} {company}".strip()
+        out.append({
+            "agent_id": aid,
+            "agent_name": name,
+            "type": "IN",
+            "symbol": symbol,
+            "company_name": company,
+            "display_symbol_name": display,
+            "text": f"{name} is IN {display} based on its latest signal.",
+        })
+    for t in ((fallback_summary.get("rankings") or {}).get("best_trades") or [])[:8]:
+        aid = str(t.get("agent_id") or "")
+        name = str(agent_name.get(aid) or aid or "AGENT").upper()
+        symbol = str(t.get("ticker") or "")
+        company = str(t.get("name") or symbol)
+        display = f"{symbol} {company}".strip()
+        out.append({
+            "agent_id": aid,
+            "agent_name": name,
+            "type": "OUT",
+            "symbol": symbol,
+            "company_name": company,
+            "display_symbol_name": display,
+            "text": f"{name} is OUT {display} after the trade completed.",
+        })
+    return out[:18] if out else build_ticker_items(prices, daily)
+
+
+def build_status(prices: dict[str, Any], hero: dict[str, Any]) -> dict[str, Any]:
     items = prices.get("items") or []
     dates = []
     for x in items:
@@ -200,9 +347,13 @@ def build_status(prices: dict[str, Any]) -> dict[str, Any]:
         d = m.get("latest_date") or x.get("date_end")
         if d:
             dates.append(str(d)[:10])
+    season = hero.get("season") if isinstance(hero, dict) else {}
     return {
         "latest_price_date": max(dates) if dates else None,
         "prices_generated_at": prices.get("generated_at"),
+        "arena_latest_date": (season or {}).get("latest_date"),
+        "arena_generated_at": hero.get("generated_at") if isinstance(hero, dict) else None,
+        "arena_run_id": hero.get("run_id") or hero.get("display_run_id") if isinstance(hero, dict) else None,
     }
 
 
@@ -216,21 +367,28 @@ def main() -> None:
     if not weekly.get("items"):
         weekly = read_json(OUT_DIR / "data" / "weekly-jp" / "latest.json", {"items": []})
 
+    hero = read_json(OUT_DIR / "data" / "japan" / "ai-arena" / "hero" / "latest.json", {})
+    summary = read_json(OUT_DIR / "data" / "japan" / "ai-arena" / "summary" / "latest.json", {})
+
     top = daily.get("items", [{}])[0] if daily.get("items") else {}
-    market_pulse = build_market_pulse(prices)
-    ticker_items = build_ticker_items(prices, daily)
+    market_pulse = build_agent_pulse(hero, summary)
+    if not market_pulse:
+        market_pulse = build_market_pulse(prices)
+    ticker_items = build_ai_arena_ticker_items(hero, summary, prices, daily)
 
     html = e.get_template("index.html.j2").render(
         brand="Neon Tokyo Signals",
-        tagline="Japan equity signals after the Tokyo close.",
+        tagline="AI Arena JP is live after the Tokyo close.",
         generated_at=generated_at(),
         top=top,
         daily=daily,
         weekly=weekly,
         prices=prices,
+        ai_arena_hero=hero,
+        ai_arena_summary=summary,
         market_pulse=market_pulse,
         ticker_items=ticker_items,
-        status=build_status(prices),
+        status=build_status(prices, hero),
     )
 
     write_text(OUT_DIR / "index.html", html)

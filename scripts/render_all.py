@@ -16,6 +16,7 @@ for script in [
     "render_ai_arena_jp.py",
     "render_ai_arena_positions_jp.py",
     "render_ai_arena_ranking_jp.py",
+    "render_ai_arena_summary_jp.py",
     "render_static_pages.py",
 ]:
     print(f"==> {script}")
