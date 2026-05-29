@@ -1,20 +1,20 @@
 {
   "schema_version": "ai_arena_diagnostics_v1",
-  "generated_at": "2026-05-29T06:40:51Z",
+  "generated_at": "2026-05-29T07:06:10Z",
   "year": 2026,
-  "run_id": "arena_jp_rebuild_2026_v007",
+  "run_id": "arena_jp_rebuild_2026_v008",
   "period": {
     "start_date": "2026-01-01 00:00:00",
     "end_date": "2026-05-29 00:00:00"
   },
   "totals": {
-    "orders": 601,
-    "filled_orders": 589,
-    "cancelled_orders": 12,
+    "orders": 625,
+    "filled_orders": 607,
+    "cancelled_orders": 18,
     "pending_orders": 0,
-    "buy_orders": 310,
-    "sell_orders": 291,
-    "trades": 291,
+    "buy_orders": 325,
+    "sell_orders": 300,
+    "trades": 300,
     "open_positions": 7,
     "equity_rows": 679,
     "agents": 7,
@@ -36,16 +36,16 @@
       "watch_signals": 1678,
       "ignore_signals": 21262,
       "latest_score_date": "2026-05-29 00:00:00",
-      "buy_orders": 80,
-      "executed_buys": 79,
+      "buy_orders": 85,
+      "executed_buys": 84,
       "cancelled_buys": 1,
-      "sell_orders": 79,
-      "executed_sells": 79,
+      "sell_orders": 84,
+      "executed_sells": 84,
       "pending_orders": 0,
-      "closed_trades": 79,
+      "closed_trades": 84,
       "open_positions": 0,
-      "latest_equity_jpy": 9694293.70148401,
-      "total_return_pct": -3.0571,
+      "latest_equity_jpy": 9574138.350284008,
+      "total_return_pct": -4.2586,
       "first_equity_date": "2026-01-05 00:00:00",
       "last_equity_date": "2026-05-29 00:00:00",
       "warnings": []
@@ -60,16 +60,16 @@
       "watch_signals": 2910,
       "ignore_signals": 12712,
       "latest_score_date": "2026-05-29 00:00:00",
-      "buy_orders": 61,
+      "buy_orders": 67,
       "executed_buys": 50,
-      "cancelled_buys": 11,
+      "cancelled_buys": 17,
       "sell_orders": 47,
       "executed_sells": 47,
       "pending_orders": 0,
       "closed_trades": 47,
       "open_positions": 3,
-      "latest_equity_jpy": 10999989.361461407,
-      "total_return_pct": 9.9999,
+      "latest_equity_jpy": 12679898.107400008,
+      "total_return_pct": 26.799,
       "first_equity_date": "2026-01-05 00:00:00",
       "last_equity_date": "2026-05-29 00:00:00",
       "warnings": []
@@ -84,16 +84,16 @@
       "watch_signals": 2333,
       "ignore_signals": 176,
       "latest_score_date": "2026-05-29 00:00:00",
-      "buy_orders": 95,
-      "executed_buys": 95,
+      "buy_orders": 96,
+      "executed_buys": 96,
       "cancelled_buys": 0,
-      "sell_orders": 93,
-      "executed_sells": 93,
+      "sell_orders": 94,
+      "executed_sells": 94,
       "pending_orders": 0,
-      "closed_trades": 93,
+      "closed_trades": 94,
       "open_positions": 2,
-      "latest_equity_jpy": 10692136.63790001,
-      "total_return_pct": 6.9214,
+      "latest_equity_jpy": 10594845.661000017,
+      "total_return_pct": 5.9485,
       "first_equity_date": "2026-01-05 00:00:00",
       "last_equity_date": "2026-05-29 00:00:00",
       "warnings": []
@@ -143,8 +143,8 @@
       "pending_orders": 0,
       "closed_trades": 41,
       "open_positions": 2,
-      "latest_equity_jpy": 11383146.289285509,
-      "total_return_pct": 13.8315,
+      "latest_equity_jpy": 11406253.557452006,
+      "total_return_pct": 14.0625,
       "first_equity_date": "2026-01-05 00:00:00",
       "last_equity_date": "2026-05-29 00:00:00",
       "warnings": []
@@ -159,16 +159,16 @@
       "watch_signals": 1088,
       "ignore_signals": 22370,
       "latest_score_date": "2026-05-29 00:00:00",
-      "buy_orders": 31,
-      "executed_buys": 31,
+      "buy_orders": 34,
+      "executed_buys": 34,
       "cancelled_buys": 0,
-      "sell_orders": 31,
-      "executed_sells": 31,
+      "sell_orders": 34,
+      "executed_sells": 34,
       "pending_orders": 0,
-      "closed_trades": 31,
+      "closed_trades": 34,
       "open_positions": 0,
-      "latest_equity_jpy": 10386031.475,
-      "total_return_pct": 3.8603,
+      "latest_equity_jpy": 10398524.474800006,
+      "total_return_pct": 3.9852,
       "first_equity_date": "2026-01-05 00:00:00",
       "last_equity_date": "2026-05-29 00:00:00",
       "warnings": []
@@ -205,24 +205,24 @@
     {
       "side": "BUY",
       "order_status": "CANCELLED",
-      "count": 12
+      "count": 18
     },
     {
       "side": "BUY",
       "order_status": "FILLED",
-      "count": 298
+      "count": 307
     },
     {
       "side": "SELL",
       "order_status": "FILLED",
-      "count": 291
+      "count": 300
     }
   ],
   "cancel_reason_counts": [
     {
       "side": "BUY",
       "reason_code": "ENTRY_RULE_PASS",
-      "count": 12
+      "count": 18
     }
   ],
   "warnings": [
