@@ -215,3 +215,262 @@ def initialize_schema(conn: duckdb.DuckDBPyConnection) -> None:
     conn.execute("CREATE INDEX IF NOT EXISTS idx_prices_daily_ticker_date ON prices_daily(ticker, date)")
     conn.execute("CREATE INDEX IF NOT EXISTS idx_features_daily_date_ticker ON features_daily(date, ticker)")
     conn.execute("CREATE INDEX IF NOT EXISTS idx_agent_scores_daily ON agent_scores_daily(date, agent_id, rank)")
+
+    # ------------------------------------------------------------------
+    # AI Arena calendar-year season tables.
+    # These tables are run_id-scoped so that live runs and rebuild runs can
+    # coexist. This allows strategy-rule tuning during development without
+    # destroying prior results.
+    # ------------------------------------------------------------------
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS company_master_jp (
+          ticker TEXT,
+          code TEXT,
+          name_ja TEXT,
+          name_en TEXT,
+          market TEXT,
+          sector TEXT,
+          industry TEXT,
+          description_en TEXT,
+          website TEXT,
+          updated_at TIMESTAMP
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS fundamentals_latest_jp (
+          ticker TEXT,
+          fiscal_period TEXT,
+          market_cap_jpy DOUBLE,
+          revenue_jpy DOUBLE,
+          operating_profit_jpy DOUBLE,
+          net_income_jpy DOUBLE,
+          equity_jpy DOUBLE,
+          roe_pct DOUBLE,
+          roa_pct DOUBLE,
+          per DOUBLE,
+          pbr DOUBLE,
+          psr DOUBLE,
+          dividend_yield_pct DOUBLE,
+          updated_at TIMESTAMP
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS arena_simulation_runs (
+          run_id TEXT,
+          year INTEGER,
+          run_type TEXT,
+          status TEXT,
+          start_date DATE,
+          end_date DATE,
+          initial_capital_jpy DOUBLE,
+          share_lot_size INTEGER,
+          reset_positions_at_year_start BOOLEAN,
+          force_close_positions_at_year_end BOOLEAN,
+          strategy_rules_version TEXT,
+          portfolio_rules_version TEXT,
+          rules_hash TEXT,
+          source_data_start_date DATE,
+          source_data_end_date DATE,
+          parent_run_id TEXT,
+          promoted_from_run_id TEXT,
+          is_display_run BOOLEAN,
+          is_official BOOLEAN,
+          rules_locked BOOLEAN,
+          created_at TIMESTAMP,
+          updated_at TIMESTAMP,
+          frozen_at TIMESTAMP,
+          note TEXT
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS arena_display_runs (
+          year INTEGER,
+          display_type TEXT,
+          run_id TEXT,
+          status TEXT,
+          selected_at TIMESTAMP,
+          note TEXT
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS arena_orders (
+          run_id TEXT,
+          order_id TEXT,
+          agent_id TEXT,
+          ticker TEXT,
+          name TEXT,
+          signal_date DATE,
+          execution_date DATE,
+          side TEXT,
+          order_type TEXT,
+          planned_price DOUBLE,
+          execution_price DOUBLE,
+          shares INTEGER,
+          order_value_jpy DOUBLE,
+          commission_jpy DOUBLE,
+          slippage_jpy DOUBLE,
+          order_status TEXT,
+          reason_code TEXT,
+          reason_text TEXT,
+          created_at TIMESTAMP
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS arena_open_positions (
+          run_id TEXT,
+          position_id TEXT,
+          agent_id TEXT,
+          ticker TEXT,
+          name TEXT,
+          entry_signal_date DATE,
+          entry_date DATE,
+          entry_price DOUBLE,
+          shares INTEGER,
+          cost_basis_jpy DOUBLE,
+          last_date DATE,
+          last_price DOUBLE,
+          market_value_jpy DOUBLE,
+          unrealized_pnl_jpy DOUBLE,
+          unrealized_return_pct DOUBLE,
+          holding_days INTEGER,
+          high_water_return_pct DOUBLE,
+          status TEXT,
+          updated_at TIMESTAMP
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS arena_trades (
+          run_id TEXT,
+          trade_id TEXT,
+          agent_id TEXT,
+          ticker TEXT,
+          name TEXT,
+          entry_signal_date DATE,
+          entry_date DATE,
+          entry_price DOUBLE,
+          exit_signal_date DATE,
+          exit_date DATE,
+          exit_price DOUBLE,
+          shares INTEGER,
+          realized_pnl_jpy DOUBLE,
+          realized_return_pct DOUBLE,
+          holding_days INTEGER,
+          entry_reason_code TEXT,
+          entry_reason_text TEXT,
+          exit_reason_code TEXT,
+          exit_reason_text TEXT,
+          created_at TIMESTAMP
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS arena_equity_curve (
+          run_id TEXT,
+          agent_id TEXT,
+          date DATE,
+          cash_jpy DOUBLE,
+          market_value_jpy DOUBLE,
+          realized_pnl_jpy DOUBLE,
+          unrealized_pnl_jpy DOUBLE,
+          portfolio_equity_jpy DOUBLE,
+          daily_return_pct DOUBLE,
+          total_return_pct DOUBLE,
+          open_positions INTEGER,
+          created_at TIMESTAMP
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS arena_yearly_rankings (
+          run_id TEXT,
+          year INTEGER,
+          agent_id TEXT,
+          start_equity_jpy DOUBLE,
+          end_equity_jpy DOUBLE,
+          total_return_pct DOUBLE,
+          realized_pnl_jpy DOUBLE,
+          unrealized_pnl_jpy DOUBLE,
+          max_drawdown_pct DOUBLE,
+          win_rate_pct DOUBLE,
+          trade_count INTEGER,
+          rank INTEGER,
+          updated_at TIMESTAMP
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS arena_monthly_rankings (
+          run_id TEXT,
+          year INTEGER,
+          month INTEGER,
+          agent_id TEXT,
+          month_start_equity_jpy DOUBLE,
+          month_end_equity_jpy DOUBLE,
+          monthly_return_pct DOUBLE,
+          realized_pnl_jpy DOUBLE,
+          unrealized_pnl_jpy DOUBLE,
+          rank INTEGER,
+          updated_at TIMESTAMP
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS arena_trade_rankings (
+          run_id TEXT,
+          year INTEGER,
+          ranking_type TEXT,
+          rank INTEGER,
+          agent_id TEXT,
+          ticker TEXT,
+          name TEXT,
+          entry_date DATE,
+          exit_date DATE,
+          entry_price DOUBLE,
+          exit_price DOUBLE,
+          shares INTEGER,
+          realized_pnl_jpy DOUBLE,
+          realized_return_pct DOUBLE,
+          holding_days INTEGER,
+          entry_reason_text TEXT,
+          exit_reason_text TEXT,
+          updated_at TIMESTAMP
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS agent_pick_notes_daily (
+          date DATE,
+          agent_id TEXT,
+          ticker TEXT,
+          note_version TEXT,
+          company_brief_en TEXT,
+          signal_thesis_en TEXT,
+          valuation_comment_en TEXT,
+          risk_comment_en TEXT,
+          generated_by TEXT,
+          generated_at TIMESTAMP
+        )
+        """
+    )
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_arena_equity_run_agent_date ON arena_equity_curve(run_id, agent_id, date)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_arena_trades_run_agent ON arena_trades(run_id, agent_id)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_arena_orders_run_date ON arena_orders(run_id, execution_date)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_arena_positions_run_agent ON arena_open_positions(run_id, agent_id)")
