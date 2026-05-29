@@ -17,7 +17,7 @@ on historical prices, so future prices are not needed for a given signal date.
 
 import json
 import os
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -38,9 +38,67 @@ PRICE_DUCKDB_PATH = os.getenv("PRICE_DUCKDB_PATH") or "data/cache/neon_tokyo_jp.
 AS_OF_DATE = os.getenv("AGENT_SCORE_AS_OF_DATE") or ""
 TOP_N_PER_AGENT = int(os.getenv("AGENT_SCORE_TOP_N", "30"))
 MODE = os.getenv("AGENT_SCORE_MODE", "latest").lower().strip()
-START_DATE = os.getenv("AGENT_SCORE_START_DATE") or os.getenv("START_DATE") or ""
-END_DATE = os.getenv("AGENT_SCORE_END_DATE") or os.getenv("END_DATE") or ""
+START_DATE = (
+    os.getenv("AGENT_SCORE_START_DATE")
+    or os.getenv("VALUE_FEATURE_START_DATE")
+    or os.getenv("AI_ARENA_START_DATE")
+    or os.getenv("START_DATE")
+    or ""
+)
+END_DATE = (
+    os.getenv("AGENT_SCORE_END_DATE")
+    or os.getenv("VALUE_FEATURE_END_DATE")
+    or os.getenv("AI_ARENA_END_DATE")
+    or os.getenv("END_DATE")
+    or ""
+)
+FAIL_IF_RANGE_TOO_SMALL = os.getenv("AGENT_SCORE_FAIL_IF_RANGE_TOO_SMALL", "true").lower() in {"1", "true", "yes", "on"}
 
+
+
+def first_env(*names: str, default: str = "") -> str:
+    for name in names:
+        value = os.getenv(name)
+        if value is not None and str(value).strip() != "":
+            return str(value).strip()
+    return default
+
+
+def latest_equity_feature_date(conn) -> date | None:
+    row = conn.execute(
+        """
+        WITH counts AS (
+          SELECT f.date, COUNT(DISTINCT f.ticker) AS symbols
+          FROM features_daily f
+          JOIN universe_master u USING (ticker)
+          WHERE COALESCE(LOWER(u.asset_type), 'equity') = 'equity'
+            AND COALESCE(u.is_excluded, FALSE) = FALSE
+          GROUP BY 1
+        ), mx AS (SELECT MAX(symbols) AS max_symbols FROM counts)
+        SELECT date
+        FROM counts, mx
+        WHERE symbols >= GREATEST(1, CAST(CEIL(max_symbols * 0.70) AS INTEGER))
+        ORDER BY date DESC
+        LIMIT 1
+        """
+    ).fetchone()
+    return parse_date(row[0]) if row and row[0] is not None else None
+
+
+def resolve_score_range(conn) -> tuple[str, str, dict[str, Any]]:
+    start = START_DATE
+    end = END_DATE
+    year_raw = first_env("AGENT_SCORE_YEAR", "VALUE_FEATURE_YEAR", "AI_ARENA_YEAR", "ARENA_YEAR", "YEAR", default=str(datetime.utcnow().year))
+    latest_date = latest_equity_feature_date(conn)
+    if year_raw.lower() == "auto":
+        year = int(latest_date.year if latest_date else datetime.utcnow().year)
+    else:
+        year = int(year_raw)
+    if MODE == "range" and (not start or start.lower() == "auto"):
+        start = f"{year}-01-01"
+    if MODE == "range" and (not end or end.lower() == "auto") and latest_date:
+        end = str(latest_date)
+    return start, end, {"year": year, "start_date": start, "end_date": end, "latest_equity_feature_date": str(latest_date) if latest_date else None}
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -218,6 +276,12 @@ def write_agent_score_outputs(scores: pd.DataFrame, generated_at: str, diagnosti
     write_json(AGENT_SCORE_OUT_DIR / "diagnostics.json", diagnostics)
 
 
+def _score_date_count(scores: pd.DataFrame) -> int:
+    if scores.empty or "date" not in scores.columns:
+        return 0
+    return int(pd.to_datetime(scores["date"], errors="coerce").dt.date.nunique())
+
+
 def main() -> int:
     generated_at = datetime.now().astimezone().isoformat(timespec="seconds")
     conn = connect_db(PRICE_DUCKDB_PATH)
@@ -230,10 +294,12 @@ def main() -> int:
     feature_diag = rebuild_features(conn)
     df = load_feature_universe_frame(conn)
 
+    score_start_date, score_end_date, range_runtime = resolve_score_range(conn)
+
     if MODE == "range":
-        scores = score_range(df, START_DATE, END_DATE)
-        s = parse_date(START_DATE) if START_DATE else None
-        e = parse_date(END_DATE) if END_DATE else None
+        scores = score_range(df, score_start_date, score_end_date)
+        s = parse_date(score_start_date) if score_start_date else None
+        e = parse_date(score_end_date) if score_end_date else None
         if s and e:
             conn.execute("DELETE FROM agent_scores_daily WHERE date BETWEEN ? AND ?", [s, e])
         elif s:
@@ -253,16 +319,20 @@ def main() -> int:
         conn.execute("INSERT INTO agent_scores_daily SELECT * FROM _agent_scores_daily")
         conn.unregister("_agent_scores_daily")
 
+    score_date_count = _score_date_count(scores)
+    trade_candidate_rows = int((scores.get("action") == "Trade").sum()) if not scores.empty and "action" in scores.columns else 0
     diagnostics = {
         "schema_version": "neon_tokyo_agent_scores_diagnostics_v1",
         "generated_at": generated_at,
         "duckdb_path": safe_rel(Path(PRICE_DUCKDB_PATH)),
         "mode": MODE,
-        "range": {"start_date": START_DATE, "end_date": END_DATE},
+        "range": range_runtime,
         "price_rows": price_rows,
         "feature_diagnostics": feature_diag,
         "score_date_coverage": date_coverage_diagnostics(df),
         "agent_score_rows": int(len(scores)),
+        "agent_score_date_count": score_date_count,
+        "trade_candidate_rows": trade_candidate_rows,
     }
     write_agent_score_outputs(scores, generated_at, diagnostics)
     print(f"Wrote {safe_rel(AGENT_SCORE_OUT_DIR / 'latest.json')}")
@@ -270,9 +340,17 @@ def main() -> int:
     print(f"price_rows={price_rows}")
     print(f"feature_rows={feature_diag.get('feature_rows')}")
     print(f"agent_score_rows={len(scores)}")
+    print(f"agent_score_date_count={score_date_count}")
+    print(f"trade_candidate_rows={trade_candidate_rows}")
     if len(scores) == 0:
         print("No agent scores were generated. Check diagnostics.json for feature dates and universe filters.")
         return 2
+    if MODE == "range" and FAIL_IF_RANGE_TOO_SMALL and score_date_count < 2:
+        print("Range mode generated fewer than 2 score dates. This would create a cash-only Arena season.")
+        return 3
+    if MODE == "range" and FAIL_IF_RANGE_TOO_SMALL and trade_candidate_rows <= 0:
+        print("Range mode generated no Trade candidates. Entry orders cannot be created.")
+        return 4
     return 0
 
 

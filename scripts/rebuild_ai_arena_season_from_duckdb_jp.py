@@ -54,15 +54,63 @@ if not OUT_DIR.is_absolute():
 OUT_DIR = OUT_DIR.resolve()
 
 PRICE_DUCKDB_PATH = os.getenv("PRICE_DUCKDB_PATH") or "data/cache/neon_tokyo_jp.duckdb"
-YEAR = int(os.getenv("ARENA_YEAR", os.getenv("YEAR", str(datetime.utcnow().year))))
-START_DATE = os.getenv("START_DATE") or f"{YEAR}-01-01"
-END_DATE = os.getenv("END_DATE") or ""
-RUN_MODE = os.getenv("RUN_MODE", "rebuild").lower().strip()  # rebuild|live
-RUN_ID_ENV = os.getenv("RUN_ID", "").strip()
-RESET_RUN = os.getenv("RESET_RUN", "true").lower() == "true"
-PROMOTE_DISPLAY_RUN = os.getenv("PROMOTE_DISPLAY_RUN", "true").lower() == "true"
-FORCE_FINALIZE_SEASON = os.getenv("FORCE_FINALIZE_SEASON", "false").lower() in {"1", "true", "yes", "on"}
-RULE_NOTE = os.getenv("RULES_VERSION_NOTE", "")
+
+
+def truthy_env(value: str | None, default: bool = False) -> bool:
+    if value is None or str(value).strip() == "":
+        return default
+    return str(value).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def first_env(*names: str, default: str = "") -> str:
+    for name in names:
+        value = os.getenv(name)
+        if value is not None and str(value).strip() != "":
+            return str(value).strip()
+    return default
+
+
+def latest_equity_price_date(conn) -> date | None:
+    row = conn.execute(
+        """
+        SELECT MAX(p.date)
+        FROM prices_daily p
+        LEFT JOIN universe_master u USING (ticker)
+        WHERE COALESCE(LOWER(u.asset_type), 'equity') = 'equity'
+        """
+    ).fetchone()
+    return parse_date(row[0]) if row and row[0] is not None else None
+
+
+def resolve_year(conn) -> int:
+    raw = first_env("AI_ARENA_YEAR", "ARENA_YEAR", "YEAR", default=str(datetime.utcnow().year))
+    if raw.lower() == "auto":
+        d = latest_equity_price_date(conn)
+        return int(d.year if d else datetime.utcnow().year)
+    return int(raw)
+
+
+def resolve_runtime_config(conn) -> dict[str, Any]:
+    year = resolve_year(conn)
+    start_date = first_env("AI_ARENA_START_DATE", "ARENA_START_DATE", "START_DATE", default=f"{year}-01-01")
+    end_date = first_env("AI_ARENA_END_DATE", "ARENA_END_DATE", "END_DATE", default="")
+    run_mode = first_env("AI_ARENA_RUN_MODE", "ARENA_RUN_MODE", "RUN_MODE", default="rebuild").lower()
+    # Workflow previously used append. Internally this engine rebuilds a full deterministic season.
+    # Keep the display run stable by treating append as live.
+    if run_mode == "append":
+        run_mode = "live"
+    return {
+        "year": year,
+        "start_date": start_date,
+        "end_date": end_date,
+        "run_mode": run_mode,
+        "run_id": first_env("AI_ARENA_RUN_ID", "ARENA_RUN_ID", "RUN_ID", default=""),
+        "reset_run": truthy_env(first_env("AI_ARENA_RESET_RUN", "ARENA_RESET_RUN", "RESET_RUN", default="true"), True),
+        "promote_display_run": truthy_env(first_env("AI_ARENA_PROMOTE_DISPLAY_RUN", "ARENA_PROMOTE_DISPLAY_RUN", "PROMOTE_DISPLAY_RUN", default="true"), True),
+        "force_finalize_season": truthy_env(os.getenv("FORCE_FINALIZE_SEASON"), False),
+        "rule_note": os.getenv("RULES_VERSION_NOTE", ""),
+        "fail_if_no_orders": truthy_env(os.getenv("AI_ARENA_FAIL_IF_NO_ORDERS"), True),
+    }
 
 AGENTS_YML = ROOT / "data" / "agents" / "jp_agents.yml"
 STRATEGY_YML = ROOT / "data" / "agents" / "jp_agent_strategy_rules.yml"
@@ -116,9 +164,25 @@ def score_for_ticker(score_map: dict[tuple[str, str], dict[str, Any]], agent_id:
     return score_map.get((agent_id, ticker))
 
 
+def _single_value(conn, sql: str, params: list[Any] | None = None) -> Any:
+    row = conn.execute(sql, params or []).fetchone()
+    return row[0] if row else None
+
+
 def main() -> int:
     conn = connect_db(PRICE_DUCKDB_PATH)
     initialize_schema(conn)
+    cfg = resolve_runtime_config(conn)
+    year = int(cfg["year"])
+    start_date = str(cfg["start_date"])
+    end_date = str(cfg["end_date"] or "")
+    run_mode = str(cfg["run_mode"])
+    run_id_env = str(cfg["run_id"] or "")
+    reset_run = bool(cfg["reset_run"])
+    promote_display = bool(cfg["promote_display_run"])
+    force_finalize = bool(cfg["force_finalize_season"])
+    rule_note = str(cfg["rule_note"] or "")
+    fail_if_no_orders = bool(cfg["fail_if_no_orders"])
 
     agents_cfg = load_yaml(AGENTS_YML)
     strategy_cfg = load_yaml(STRATEGY_YML)
@@ -133,19 +197,49 @@ def main() -> int:
     commission_bps = float(global_pf.get("commission_bps", 0) or 0)
     slippage_bps = float(global_pf.get("slippage_bps", 10) or 0)
 
-    season = build_season_dates(conn, YEAR, START_DATE, END_DATE or None)
+    season = build_season_dates(conn, year, start_date, end_date or None)
     if not season.trading_dates:
-        raise SystemExit(f"No trading dates found in prices_daily for {START_DATE} - {END_DATE or YEAR}")
+        raise SystemExit(f"No trading dates found in prices_daily for {start_date} - {end_date or year}")
 
-    run_id = RUN_ID_ENV
+    score_dates = int(_single_value(
+        conn,
+        """
+        SELECT COUNT(DISTINCT date)
+        FROM agent_scores_daily
+        WHERE date BETWEEN ? AND ?
+        """,
+        [season.season_start, season.last_trading_date or season.season_end],
+    ) or 0)
+    trade_score_rows = int(_single_value(
+        conn,
+        """
+        SELECT COUNT(*)
+        FROM agent_scores_daily
+        WHERE date BETWEEN ? AND ? AND action = 'Trade'
+        """,
+        [season.season_start, season.last_trading_date or season.season_end],
+    ) or 0)
+    if score_dates < 2:
+        raise SystemExit(
+            f"agent_scores_daily has only {score_dates} score date(s) in season range "
+            f"{season.season_start} - {season.last_trading_date or season.season_end}. "
+            "Run scripts/build_agent_scores_jp.py with AGENT_SCORE_MODE=range before season rebuild."
+        )
+    if trade_score_rows <= 0:
+        raise SystemExit(
+            f"agent_scores_daily has no Trade rows in season range {season.season_start} - "
+            f"{season.last_trading_date or season.season_end}. Entry orders cannot be created."
+        )
+
+    run_id = run_id_env
     if not run_id:
-        run_id = default_live_run_id(YEAR) if RUN_MODE == "live" else next_rebuild_run_id(conn, YEAR)
+        run_id = default_live_run_id(year) if run_mode == "live" else next_rebuild_run_id(conn, year)
 
     rules_hash = rules_hash_for_files([AGENTS_YML, STRATEGY_YML, PORTFOLIO_YML])
     run_cfg = RunConfig(
         run_id=run_id,
-        year=YEAR,
-        run_type=RUN_MODE,
+        year=year,
+        run_type=run_mode,
         start_date=season.season_start,
         end_date=season.last_trading_date or season.season_end,
         initial_capital_jpy=initial_capital,
@@ -154,11 +248,11 @@ def main() -> int:
         portfolio_rules_version=str(portfolio_cfg.get("rules_version") or "unknown"),
         rules_hash=rules_hash,
     )
-    create_or_replace_run(conn, run_cfg, reset_run=RESET_RUN, note=RULE_NOTE)
+    create_or_replace_run(conn, run_cfg, reset_run=reset_run, note=rule_note)
     try:
         conn.execute(
             "UPDATE arena_simulation_runs SET force_close_positions_at_year_end = ?, finalized_season = ? WHERE run_id = ?",
-            [FORCE_FINALIZE_SEASON, FORCE_FINALIZE_SEASON, run_id],
+            [force_finalize, force_finalize, run_id],
         )
     except Exception:
         # Older DB caches may not have finalized_season until schema migration.
@@ -442,7 +536,7 @@ def main() -> int:
     # longer represents the live season.  Force-close only when explicitly
     # finalizing the season, typically after year-end.
     last_d = season.last_trading_date
-    should_finalize = bool(FORCE_FINALIZE_SEASON)
+    should_finalize = bool(force_finalize)
     if should_finalize and last_d:
         equity_rows = [r for r in equity_rows if r["date"] != last_d]
         for aid, state in states.items():
@@ -519,15 +613,26 @@ def main() -> int:
     }
     if persisted_counts["arena_equity_curve"] <= 0:
         raise RuntimeError(f"Arena run {run_id} did not persist equity curve rows to DuckDB: {persisted_counts}")
+    if fail_if_no_orders and persisted_counts["arena_orders"] <= 0:
+        raise RuntimeError(
+            f"Arena run {run_id} produced zero orders: {persisted_counts}. "
+            "This usually means agent_scores_daily was not built in range mode, or entry rules are too strict."
+        )
+    if fail_if_no_orders and (persisted_counts["arena_open_positions"] + persisted_counts["arena_trades"] <= 0):
+        raise RuntimeError(
+            f"Arena run {run_id} produced neither open positions nor closed trades: {persisted_counts}."
+        )
 
-    ranking_diag = rebuild_rankings(conn, run_id=run_id, year=YEAR, initial_capital_jpy=initial_capital)
-    if PROMOTE_DISPLAY_RUN:
-        promote_display_run(conn, year=YEAR, run_id=run_id, note=RULE_NOTE or "Promoted by season rebuild workflow")
+    ranking_diag = rebuild_rankings(conn, run_id=run_id, year=year, initial_capital_jpy=initial_capital)
+    if promote_display:
+        promote_display_run(conn, year=year, run_id=run_id, note=rule_note or "Promoted by season rebuild workflow")
 
-    outputs = export_arena_payloads(conn, out_dir=OUT_DIR, run_id=run_id, year=YEAR, agents=load_agents_for_public())
+    outputs = export_arena_payloads(conn, out_dir=OUT_DIR, run_id=run_id, year=year, agents=load_agents_for_public())
+    print(f"runtime_config={cfg}")
     print(f"run_id={run_id}")
+    print(f"agent_score_dates={score_dates} trade_score_rows={trade_score_rows}")
     print(f"trading_dates={len(season.trading_dates)}")
-    print(f"orders={len(orders)} trades={len(trades)} equity_rows={len(equity_rows)} open_positions={len(open_rows)} finalized={FORCE_FINALIZE_SEASON}")
+    print(f"orders={len(orders)} trades={len(trades)} equity_rows={len(equity_rows)} open_positions={len(open_rows)} finalized={force_finalize}")
     print(f"persisted_counts={persisted_counts}")
     print(f"ranking_diag={ranking_diag}")
     for key, path in outputs.items():
