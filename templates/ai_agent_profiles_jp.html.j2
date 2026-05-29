@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Agent Profiles | Neon Tokyo Signals</title>
+  <link rel="stylesheet" href="/assets/ai_agent_profiles_jp.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">NEON TOKYO AI ARENA</p>
+        <h1>Agent Profiles</h1>
+        <p class="hero-copy">Seven Japanese equity agents. Each profile exposes the strategy, exit behavior, and portfolio discipline behind the Arena.</p>
+      </div>
+      <div class="meta-card">
+        <span>Strategy</span><strong>{{ payload.strategy_rules_version }}</strong>
+        <span>Portfolio</span><strong>{{ payload.portfolio_rules_version }}</strong>
+      </div>
+    </header>
+
+    <section class="agent-grid">
+      {% for agent in payload.agents %}
+      <article class="agent-card agent-{{ agent.theme_color }}">
+        <div class="agent-head">
+          <img src="{{ agent.image }}" alt="{{ agent.name }}" />
+          <div>
+            <p class="role">{{ agent.role }}</p>
+            <h2>{{ agent.name }}</h2>
+            <p class="jp">{{ agent.japanese_name }} / {{ agent.style_label }}</p>
+          </div>
+        </div>
+        <p class="summary">{{ agent.short_description }}</p>
+        <div class="logic-grid">
+          <div>
+            <h3>Entry Logic</h3>
+            <ul>
+              <li>Min score: {{ agent.strategy.entry.min_score if agent.strategy.entry else 'N/A' }}</li>
+              <li>Max rank/day: {{ agent.strategy.entry.max_rank_per_day if agent.strategy.entry else 'N/A' }}</li>
+              <li>Liquidity guard: {{ agent.strategy.entry.min_liquidity_score if agent.strategy.entry else 'N/A' }}</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Exit Logic</h3>
+            <ul>
+              <li>Style: {{ agent.strategy.exit_style }}</li>
+              <li>Stop: {{ agent.strategy.exit.hard_stop_loss_pct if agent.strategy.exit else 'N/A' }}%</li>
+              <li>Max days: {{ agent.strategy.exit.max_holding_days if agent.strategy.exit else 'N/A' }}</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Portfolio</h3>
+            <ul>
+              <li>Max positions: {{ agent.portfolio.max_positions }}</li>
+              <li>Target: {{ (agent.portfolio.target_position_pct * 100) | round(1) }}%</li>
+              <li>Max exposure: {{ (agent.portfolio.max_total_exposure_pct * 100) | round(1) }}%</li>
+            </ul>
+          </div>
+        </div>
+        <div class="strengths">
+          <div><h3>Strengths</h3>{% for item in agent.strengths %}<span>{{ item }}</span>{% endfor %}</div>
+          <div><h3>Weaknesses</h3>{% for item in agent.weaknesses %}<span>{{ item }}</span>{% endfor %}</div>
+        </div>
+      </article>
+      {% endfor %}
+    </section>
+  </main>
+</body>
+</html>

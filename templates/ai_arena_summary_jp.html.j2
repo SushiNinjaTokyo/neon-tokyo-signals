@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>AI Arena Summary | Neon Tokyo Signals</title><link rel="stylesheet" href="/assets/ai_arena_summary_jp.css"/></head>
+<body><main class="shell">
+<header class="hero"><p class="eyebrow">NEON TOKYO AI ARENA</p><h1>{{ payload.year }} Season Summary</h1><p>Run: <strong>{{ payload.run_id }}</strong> / Status: <strong>{{ payload.status }}</strong></p></header>
+<section class="rank-grid">
+{% for r in payload.rankings.annual_performance %}
+<article class="rank-card"><div class="rank">#{{ r.rank }}</div><h2>{{ r.agent.name if r.agent else r.agent_id }}</h2><div class="return {{ 'pos' if r.total_return_pct >= 0 else 'neg' }}">{{ '%.2f'|format(r.total_return_pct) }}%</div><p>Equity ¥{{ '{:,.0f}'.format(r.end_equity_jpy) }} / MDD {{ '%.2f'|format(r.max_drawdown_pct) }}%</p></article>
+{% endfor %}
+</section>
+<section class="panel"><h2>Monthly Heatmap</h2><div class="heatmap">{% for m in payload.rankings.monthly_equity_performance %}<div class="heat {{ 'pos' if m.monthly_return_pct >= 0 else 'neg' }}"><span>{{ m.agent_id }} / {{ m.month }}</span><strong>{{ '%.1f'|format(m.monthly_return_pct) }}%</strong></div>{% endfor %}</div></section>
+<section class="two"><div class="panel"><h2>Best Closed Trades</h2>{% for t in payload.rankings.best_trades %}<div class="trade"><b>#{{ t.rank }} {{ t.ticker }}</b><span>{{ t.agent_id }}</span><strong class="pos">{{ '%.1f'|format(t.realized_return_pct) }}%</strong></div>{% endfor %}</div><div class="panel"><h2>Worst Closed Trades</h2>{% for t in payload.rankings.worst_trades %}<div class="trade"><b>#{{ t.rank }} {{ t.ticker }}</b><span>{{ t.agent_id }}</span><strong class="neg">{{ '%.1f'|format(t.realized_return_pct) }}%</strong></div>{% endfor %}</div></section>
+</main></body></html>
