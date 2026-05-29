@@ -31,6 +31,21 @@ def text(value: Any, default: str = "") -> str:
     return str(value)
 
 
+def boolish(value: Any) -> bool:
+    """Return strict truthiness for YAML-style feature gates.
+
+    This avoids treating strings such as "false" as enabled, and makes
+    explicit YAML false values disable their gate reliably.
+    """
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return False
+    if isinstance(value, (int, float)):
+        return bool(value)
+    return str(value).strip().lower() in {"1", "true", "yes", "y", "on"}
+
+
 def _table_exists(conn: duckdb.DuckDBPyConnection, table: str) -> bool:
     try:
         return bool(conn.execute("SELECT COUNT(*) FROM information_schema.tables WHERE table_name = ?", [table]).fetchone()[0])
@@ -259,7 +274,7 @@ def passes_entry_rule(
 
         # SAGURI/discovery rules can bypass imperfect bucket taxonomy if the
         # stock independently satisfies a financial discovery setup.
-        if entry.get("bucket_optional_if_financial_setup") or entry.get("allow_bucket_bypass_for_discovery_setup"):
+        if boolish(entry.get("bucket_optional_if_financial_setup")) or boolish(entry.get("allow_bucket_bypass_for_discovery_setup")):
             setup_ok, setup_reason = _passes_discovery_financial_setup(feature_row, entry.get("discovery_financial_setup") or {})
             bypass_ok = bypass_ok or setup_ok
             if not setup_ok:
@@ -268,7 +283,7 @@ def passes_entry_rule(
         # A second, lighter bypass allows high-quality early discovery setups
         # based on score + volume + market-cap range, while all normal gates
         # still run below.
-        if entry.get("bucket_optional_if_score_setup") or entry.get("allow_bucket_bypass_for_discovery_setup"):
+        if boolish(entry.get("bucket_optional_if_score_setup")) or boolish(entry.get("allow_bucket_bypass_for_discovery_setup")):
             score_setup_ok, score_setup_reason = _passes_discovery_score_setup(score_row, feature_row, entry.get("discovery_score_setup") or {})
             bypass_ok = bypass_ok or score_setup_ok
             if not score_setup_ok:
@@ -293,11 +308,11 @@ def passes_entry_rule(
     if close > max_price:
         return False, "price_too_high"
 
-    if entry.get("require_price_above_ma20") and close <= num(feature_row.get("ma_20")):
+    if boolish(entry.get("require_price_above_ma20")) and close <= num(feature_row.get("ma_20")):
         return False, "price_not_above_ma20"
-    if entry.get("require_price_above_ma50") and close <= num(feature_row.get("ma_50")):
+    if boolish(entry.get("require_price_above_ma50")) and close <= num(feature_row.get("ma_50")):
         return False, "price_not_above_ma50"
-    if entry.get("require_price_above_ma120") and close <= num(feature_row.get("ma_120")):
+    if boolish(entry.get("require_price_above_ma120")) and close <= num(feature_row.get("ma_120")):
         return False, "price_not_above_ma120"
 
     if "require_volume_ratio_20d_min" in entry and num(feature_row.get("volume_ratio_20d")) < num(entry["require_volume_ratio_20d_min"]):
