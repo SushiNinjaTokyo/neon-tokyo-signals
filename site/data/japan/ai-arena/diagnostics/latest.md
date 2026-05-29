@@ -1,7 +1,7 @@
 # AI Arena Diagnostics
 
-Generated: 2026-05-29T10:13:01Z
-Run: `arena_jp_rebuild_2026_v014`
+Generated: 2026-05-29T10:31:12Z
+Run: `arena_jp_live_2026`
 Year: 2026
 
 ## Totals
