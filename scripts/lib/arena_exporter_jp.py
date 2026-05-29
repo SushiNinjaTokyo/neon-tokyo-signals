@@ -671,8 +671,7 @@ def _build_hero_ticker_tape(
         agent_name = str(agent.get("name") or agent_id).upper()
         side = "OUT" if event_type == "OUT" else "IN"
         display = _company_name_display(symbol, name)
-        reason = _ticker_reason(str(agent_id), side)
-        text = f"{agent_name} is {side} {display} {reason}."
+        text = f"{agent_name} {side} {display}"
         rows.append({
             "agent_id": str(agent_id),
             "agent_name": agent_name,
@@ -733,7 +732,6 @@ def _build_hero_ticker_tape(
     for agent in agents[:7]:
         aid = str(agent.get("agent_id"))
         name = str(agent.get("name") or aid).upper()
-        reason = _ticker_reason(aid, "IN")
         deduped.append({
             "agent_id": aid,
             "agent_name": name,
@@ -742,7 +740,7 @@ def _build_hero_ticker_tape(
             "company_name": "Tokyo Market",
             "display_symbol_name": "AI-ARENA Tokyo Market",
             "event_date": None,
-            "text": f"{name} is scanning AI-ARENA Tokyo Market {reason}.",
+            "text": f"{name} IN AI-ARENA Tokyo Market",
             "color": agent.get("color") or "#7DF9FF",
         })
     return deduped
