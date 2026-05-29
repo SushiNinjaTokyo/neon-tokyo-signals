@@ -29,6 +29,10 @@ def scale(value: Any, lo: float, hi: float) -> float:
     return clamp01((v - lo) / (hi - lo))
 
 
+def inv_scale(value: Any, lo: float, hi: float) -> float:
+    return 1.0 - scale(value, lo, hi)
+
+
 @dataclass(frozen=True)
 class AgentProfile:
     id: str
@@ -77,7 +81,6 @@ def score_agent_row(row: pd.Series, profile: AgentProfile) -> tuple[float, dict[
     rev = nz(row.get("reversal_exhaustion_score"), 0.0)
     vol_re = nz(row.get("volume_reaccumulation_score"), 0.0)
     r1 = nz(row.get("return_1d_pct"), 0.0)
-    r3 = nz(row.get("return_3d_pct"), 0.0)
     r5 = nz(row.get("return_5d_pct"), 0.0)
     r20 = nz(row.get("return_20d_pct"), 0.0)
     r60 = nz(row.get("return_60d_pct"), 0.0)
@@ -89,23 +92,23 @@ def score_agent_row(row: pd.Series, profile: AgentProfile) -> tuple[float, dict[
     range20 = nz(row.get("range_position_20d_0_1"), 0.0)
     range60 = nz(row.get("range_position_60d_0_1"), 0.0)
     range252 = nz(row.get("range_position_252d_0_1"), 0.0)
-    vol20 = nz(row.get("volatility_20d_annualized_pct"), 80.0)
     vol60 = nz(row.get("volatility_60d_annualized_pct"), 80.0)
-    rsi14 = nz(row.get("rsi_14"), 50.0)
-    volratio20 = nz(row.get("volume_ratio_20d"), 1.0)
     dryup = nz(row.get("volume_dryup_10d"), 1.0)
+    rsi = nz(row.get("rsi_14"), 50.0)
+    volratio = nz(row.get("volume_ratio_20d"), 1.0)
+
     value_rerate = scale(r60, -10, 25) * 0.35 + scale(row.get("distance_from_52w_low_pct"), 5, 80) * 0.25 + scale(liq, 0.2, 0.9) * 0.20 + scale(-dist52, 10, 65) * 0.20
     value_mispricing = row.get("value_mispricing_score")
     value_quality = row.get("quality_guard_score")
     value_discount = row.get("valuation_discount_score")
+    trap = nz(row.get("value_trap_penalty"), 0.0)
     has_value_features = any(pd.notna(x) for x in [value_mispricing, value_quality, value_discount])
 
     if profile.id == "daily_striker":
-        # KYOU v2: short-term breakout quality, not merely recent momentum.
-        # This rewards high-volume initial strength and penalizes overheated / noisy moves.
+        # KYOU v2: favor fresh high-volume daily breakouts, not generic hot momentum.
         breakout_quality = (
             scale(r1, 0.4, 6.0) * 0.18
-            + scale(volratio20, 1.2, 4.0) * 0.22
+            + scale(volratio, 1.2, 4.0) * 0.22
             + scale(range20, 0.65, 1.0) * 0.16
             + scale(dist20, -3.0, 0.5) * 0.10
             + trend_d * 0.16
@@ -113,90 +116,54 @@ def score_agent_row(row: pd.Series, profile: AgentProfile) -> tuple[float, dict[
         )
         risk_control = clamp01(
             1.0
-            - scale(rsi14, 70, 86) * 0.45
+            - scale(rsi, 70, 86) * 0.45
             - scale(r5, 18, 35) * 0.35
             - scale(vol60, 80, 140) * 0.20
         )
         raw = breakout_quality + risk_control * 0.08
-        reasons = ["fresh_breakout", "volume_quality", "overheat_guard"]
+        reasons = ["fresh_daily_breakout", "volume_quality", "overheat_control"]
     elif profile.id == "weekly_sage":
-        # NAGARE v2: closer to the old weekly screen spirit using the daily
-        # feature proxy: sustained trend, 60d strength, MA structure and lower extension risk.
-        extension_guard = clamp01(1.0 - scale(r20, 35, 60) * 0.55 - scale(vol60, 75, 120) * 0.45)
-        raw = (
-            trend_w * 0.50
-            + scale(r60, 5, 45) * 0.18
-            + scale(vs50, -2, 16) * 0.10
-            + scale(range252, 0.50, 0.98) * 0.08
-            + liq * 0.08
-            + extension_guard * 0.06
-        )
-        reasons = ["weekly_stage2_proxy", "trend_structure", "extension_guard"]
+        raw = trend_w * 0.52 + scale(r60, 0, 35) * 0.18 + scale(vs50, -3, 14) * 0.12 + liq * 0.10 + inv_scale(vol60, 35, 100) * 0.08
+        reasons = ["weekly_flow", "trend_structure", "relative_strength"]
     elif profile.id == "risk_sentinel":
-        # MAMORU v2: defensive compounder. Low volatility and drawdown resilience
-        # still dominate, but a mild positive trend is required to avoid dead money.
-        low_vol_score = clamp01(1.0 - scale(vol60, 25, 75))
+        low_vol = inv_scale(vol60, 25, 75)
         drawdown_resilience = scale(dd60, -24, -3)
-        ma_stability = clamp01(1.0 - scale(abs(vs20), 0, 14))
-        raw = (
-            risk * 0.38
-            + liq * 0.20
-            + low_vol_score * 0.16
-            + drawdown_resilience * 0.12
-            + trend_w * 0.08
-            + ma_stability * 0.06
-        )
-        reasons = ["capital_preservation", "liquidity_guard", "low_vol_trend"]
+        ma_stability = inv_scale(abs(vs20), 0, 14)
+        raw = risk * 0.38 + liq * 0.20 + low_vol * 0.16 + drawdown_resilience * 0.12 + trend_w * 0.08 + ma_stability * 0.06
+        reasons = ["low_vol_liquidity", "drawdown_resilience", "capital_preservation"]
     elif profile.id == "discovery_scout":
-        # SAGURI v2: small / emerging discovery, guarded by basic quality signals
-        # from value_features_daily when available.
         small_bonus = 1.0 if bool(row.get("is_small_discovery")) else 0.35
-        q_guard = nz(row.get("quality_guard_score"), 0.35 if not has_value_features else 0.0)
-        trap = nz(row.get("value_trap_penalty"), 0.35 if not has_value_features else 0.0)
-        financial_guard = clamp01(q_guard * 0.75 + (1.0 - trap) * 0.25)
-        early = (
-            scale(r20, -5, 24) * 0.20
-            + scale(volratio20, 0.9, 4.0) * 0.24
-            + scale(range60, 0.25, 0.90) * 0.12
-            + vol_re * 0.12
-        )
-        raw = early + small_bonus * 0.12 + financial_guard * 0.12 + liq * 0.08
-        reasons = ["small_cap_discovery", "quality_guarded_growth", "early_volume_shift"]
+        quality = nz(value_quality, 0.30 if not has_value_features else 0.0)
+        trap_guard = 1.0 - trap
+        early = scale(r20, -5, 20) * 0.22 + scale(volratio, 0.9, 4.0) * 0.24 + scale(range60, 0.25, 0.85) * 0.13
+        raw = early + small_bonus * 0.14 + vol_re * 0.11 + liq * 0.08 + quality * 0.05 + trap_guard * 0.03
+        reasons = ["small_cap_discovery", "early_volume_shift", "quality_guard"]
     elif profile.id == "contrarian_monk":
-        # MATSU v2: quality pullback inside an intact medium-term trend.
         pullback_depth = scale(-r5, 1.0, 9.0)
-        calm_volume = clamp01(1.0 - scale(dryup, 0.55, 1.35))
-        ma_reversion_zone = clamp01(1.0 - scale(abs(vs50), 0, 12))
-        rsi_neutral = clamp01(1.0 - abs(rsi14 - 50.0) / 28.0)
+        calm_volume = inv_scale(dryup, 0.55, 1.35)
+        ma_reversion_zone = inv_scale(abs(vs50), 0, 12)
+        rsi_neutral = clamp01(1.0 - abs(rsi - 50.0) / 28.0)
         range_health = scale(range252, 0.35, 0.80)
-        raw = (
-            trend_w * 0.34
-            + pullback_depth * 0.18
-            + calm_volume * 0.14
-            + ma_reversion_zone * 0.12
-            + rsi_neutral * 0.10
-            + liq * 0.08
-            + range_health * 0.04
-        )
-        reasons = ["quality_pullback", "trend_still_alive", "calm_entry"]
+        raw = trend_w * 0.34 + pullback_depth * 0.18 + calm_volume * 0.14 + ma_reversion_zone * 0.12 + rsi_neutral * 0.10 + liq * 0.08 + range_health * 0.04
+        reasons = ["quality_pullback", "trend_still_alive", "cooled_entry"]
     elif profile.id == "reversal_snapback":
         raw = rev * 0.54 + scale(-r5, 2, 16) * 0.16 + vol_re * 0.12 + scale(row.get("distance_from_20d_low_pct"), 0, 14) * 0.08 + liq * 0.10
         reasons = ["oversold_exhaustion", "snapback_pressure", "reaccumulation"]
     elif profile.id == "value_mispricing":
         if has_value_features:
-            # True HIZUMI mode: valuation + quality + re-rating, with a price proxy fallback.
+            # HIZUMI v2: fewer, higher-quality value candidates.  Penalize traps strongly.
             raw = (
-                nz(value_mispricing, 0.0) * 0.42
-                + nz(value_quality, 0.0) * 0.18
-                + nz(value_discount, 0.0) * 0.16
-                + value_rerate * 0.12
-                + risk * 0.07
-                + liq * 0.05
+                nz(value_mispricing, 0.0) * 0.34
+                + nz(value_quality, 0.0) * 0.26
+                + nz(value_discount, 0.0) * 0.20
+                + value_rerate * 0.10
+                + risk * 0.06
+                + liq * 0.04
+                - trap * 0.18
             )
-            reasons = ["valuation_mispricing", "quality_guard", "rerating_signal"]
+            reasons = ["quality_value_mispricing", "trap_guard", "rerating_signal"]
         else:
-            # Fallback mode while fundamentals are not populated.
-            raw = value_rerate * 0.36 + risk * 0.18 + liq * 0.16 + scale(-dist52, 12, 70) * 0.14 + scale(r20, -3, 16) * 0.10 + (1 - scale(abs(vs50), 0, 35)) * 0.06
+            raw = value_rerate * 0.36 + risk * 0.18 + liq * 0.16 + scale(-dist52, 12, 70) * 0.14 + scale(r20, -3, 16) * 0.10 + inv_scale(abs(vs50), 0, 35) * 0.06
             reasons = ["mispricing_proxy", "value_rerating", "trap_guard"]
     else:
         raw = 0.0

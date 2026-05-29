@@ -2,7 +2,7 @@ from __future__ import annotations
 
 """Agent-specific exit rule evaluation.
 
-The engine returns the first matching reason in a fixed priority order.  This is
+The engine returns the first matching reason in a fixed priority order. This is
 important for clean UI: each sale should have one primary reason rather than a
 random list of simultaneous conditions.
 """
@@ -15,11 +15,9 @@ def f(row: dict[str, Any] | None, key: str, default: float = 0.0) -> float:
         return default
     try:
         v = float(row.get(key))
-        if v == v:
-            return v
+        return v
     except Exception:
-        pass
-    return default
+        return default
 
 
 def should_exit_position(
@@ -38,7 +36,7 @@ def should_exit_position(
     entry_price = f(position, "entry_price", 0.0)
     if entry_price <= 0 or current_price <= 0:
         return True, "MISSING_PRICE_EXIT", "Price data became invalid."
-    ret_pct = (current_price / entry_price - 1.0) * 100.0
+    ret_pct = (current_price / entry_price - 1.0) * 100.0 if entry_price else 0.0
 
     hard_stop = exit_rule.get("hard_stop_loss_pct")
     if hard_stop is not None and ret_pct <= float(hard_stop):
@@ -47,12 +45,12 @@ def should_exit_position(
     # Emergency liquidity/risk exits before ordinary profit exits.
     if "liquidity_score_below" in exit_rule and f(feature_row, "liquidity_score", 1.0) < float(exit_rule["liquidity_score_below"]):
         return True, "LIQUIDITY_DRYUP", "Liquidity score fell below the agent threshold."
+    if "avg_traded_value_20d_jpy_below" in exit_rule and f(feature_row, "avg_traded_value_20d_jpy", 10**18) < float(exit_rule["avg_traded_value_20d_jpy_below"]):
+        return True, "LIQUIDITY_DRYUP", "Average traded value fell below the agent threshold."
     if "risk_score_below" in exit_rule and f(feature_row, "risk_score", 1.0) < float(exit_rule["risk_score_below"]):
         return True, "CAPITAL_PROTECTION", "Risk score deteriorated below the agent threshold."
     if "volatility_20d_annualized_pct_above" in exit_rule and f(feature_row, "volatility_20d_annualized_pct", 0.0) > float(exit_rule["volatility_20d_annualized_pct_above"]):
         return True, "VOLATILITY_SPIKE", "Volatility spiked beyond the risk budget."
-    if "value_trap_penalty_above" in exit_rule and f(feature_row, "value_trap_penalty", 0.0) > float(exit_rule["value_trap_penalty_above"]):
-        return True, "VALUE_TRAP_RISK", "Value-trap penalty rose beyond the agent threshold."
 
     score = f(score_row, "normalized_score", 1.0)
     if "score_below" in exit_rule and score < float(exit_rule["score_below"]):
@@ -69,22 +67,22 @@ def should_exit_position(
         return True, "PULLBACK_FAILED", "Pullback turned into a deeper trend break."
     if "trend_score_weekly_proxy_below" in exit_rule and f(feature_row, "trend_score_weekly_proxy", 1.0) < float(exit_rule["trend_score_weekly_proxy_below"]):
         return True, "TREND_BREAK", "Weekly trend proxy weakened."
-
+    if "volume_ratio_20d_below" in exit_rule and f(feature_row, "volume_ratio_20d", 1.0) < float(exit_rule["volume_ratio_20d_below"]):
+        return True, "VOLUME_DECAY", "Volume confirmation faded."
     if "rsi_14_above" in exit_rule and f(feature_row, "rsi_14", 0.0) > float(exit_rule["rsi_14_above"]):
         return True, "SNAPBACK_COMPLETE", "RSI normalized after the snapback."
     if "rsi_14_below" in exit_rule and f(feature_row, "rsi_14", 100.0) < float(exit_rule["rsi_14_below"]):
-        return True, "PULLBACK_FAILED", "RSI weakened below the agent threshold."
+        return True, "PULLBACK_FAILED", "RSI deteriorated below the pullback floor."
     if "bollinger_b_20_above" in exit_rule and f(feature_row, "bollinger_b_20", 0.0) > float(exit_rule["bollinger_b_20_above"]):
         return True, "SNAPBACK_COMPLETE", "Bollinger position normalized after rebound."
-
     if "range_position_252d_0_1_above" in exit_rule and f(feature_row, "range_position_252d_0_1", 0.0) > float(exit_rule["range_position_252d_0_1_above"]):
         return True, "MISPRICING_RESOLVED", "Price moved high enough in its yearly range to reduce the distortion."
     if "return_20d_pct_above" in exit_rule and f(feature_row, "return_20d_pct", 0.0) > float(exit_rule["return_20d_pct_above"]):
         return True, "MISPRICING_RESOLVED", "Recent re-rating progressed enough to harvest gains."
     if "return_5d_pct_above" in exit_rule and f(feature_row, "return_5d_pct", 0.0) > float(exit_rule["return_5d_pct_above"]):
-        return True, "PULLBACK_RESOLVED", "Short-term rebound resolved the pullback setup."
+        return True, "PULLBACK_RESOLVED", "Short-term rebound resolved the pullback."
     if "return_3d_pct_above" in exit_rule and f(feature_row, "return_3d_pct", 0.0) > float(exit_rule["return_3d_pct_above"]):
-        return True, "SNAPBACK_COMPLETE", "Three-day rebound target was reached."
+        return True, "SNAPBACK_COMPLETE", "Three-day rebound reached the snapback target."
     if "return_3d_pct_below" in exit_rule and f(feature_row, "return_3d_pct", 0.0) < float(exit_rule["return_3d_pct_below"]):
         return True, "MOMENTUM_DECAY", "Three-day return deteriorated below the agent threshold."
 
