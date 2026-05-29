@@ -1,7 +1,7 @@
 # AI Arena Agent Rejection Diagnostics
 
-Generated: 2026-05-29T07:54:04Z
-Run: `arena_jp_rebuild_2026_v010`
+Generated: 2026-05-29T08:09:51Z
+Run: `arena_jp_rebuild_2026_v011`
 Season: 2026-01-01 → 2026-05-29
 
 | Agent | Candidates | Evaluated | Entry Pass | Orders | Buy Fills | Buy Cancels | Sells | Trades | Open | Rejected | Top Reject Reason |
@@ -101,7 +101,8 @@ Season: 2026-01-01 → 2026-05-29
 - `ENTRY_RULE_REJECTED`: 120
 - `ALREADY_OPEN_POSITION`: 9
 - Entry rule details:
-  - bucket_not_allowed: 96
+  - quality_guard_below_threshold: 49
+  - market_cap_too_small: 47
   - blocked_near_year_end: 9
   - liquidity_below_threshold: 7
   - pbr_too_high: 7

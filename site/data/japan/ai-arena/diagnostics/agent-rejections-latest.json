@@ -1,7 +1,7 @@
 {
   "schema_version": "neon_tokyo_ai_arena_agent_rejection_diagnostics_v1",
-  "generated_at": "2026-05-29T07:54:04Z",
-  "run_id": "arena_jp_rebuild_2026_v010",
+  "generated_at": "2026-05-29T08:09:51Z",
+  "run_id": "arena_jp_rebuild_2026_v011",
   "year": 2026,
   "season": {
     "start_date": "2026-01-01",
@@ -226,7 +226,8 @@
         "ALREADY_OPEN_POSITION": 9
       },
       "entry_rule_reject_reasons_top20": {
-        "bucket_not_allowed": 96,
+        "quality_guard_below_threshold": 49,
+        "market_cap_too_small": 47,
         "blocked_near_year_end": 9,
         "liquidity_below_threshold": 7,
         "pbr_too_high": 7,
