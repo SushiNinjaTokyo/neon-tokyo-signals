@@ -5,35 +5,12 @@ on:
     inputs:
       commit_outputs:
         description: "Commit rendered AI Arena pages"
-        required: false
+        required: true
         default: "true"
         type: choice
-        options: ["true", "false"]
-  push:
-    branches:
-      - main
-    paths:
-      - "scripts/render_all.py"
-      - "scripts/render_index.py"
-      - "scripts/render_ai_arena_jp.py"
-      - "scripts/render_ai_arena_summary_jp.py"
-      - "scripts/render_ai_arena_ranking_jp.py"
-      - "scripts/render_ai_arena_positions_jp.py"
-      - "scripts/render_ai_arena_signals_jp.py"
-      - "scripts/render_ai_agent_profiles_jp.py"
-      - "scripts/render_static_pages.py"
-      - "templates/index.html.j2"
-      - "templates/index.css"
-      - "templates/ai_arena*.j2"
-      - "templates/ai_arena*.css"
-      - "templates/ai_arena*.js"
-      - "templates/ai_agent_profiles_jp.html.j2"
-      - "templates/ai_agent_profiles_jp.css"
-      - "templates/disclaimer.html.j2"
-      - "templates/privacy.html.j2"
-      - "templates/base.css"
-      - "requirements-render.txt"
-      - ".github/workflows/render-all-pages.yml"
+        options:
+          - "true"
+          - "false"
 
 permissions:
   contents: write
@@ -42,20 +19,23 @@ concurrency:
   group: render-ai-arena-pages-${{ github.ref }}
   cancel-in-progress: false
 
+env:
+  OUT_DIR: site
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+  # AI Arena / shared JSON only.
+  # Do not reintroduce Daily / Weekly public JSON dependencies here.
+  PRICE_JSON: site/data/prices-jp/latest.json
+  ARENA_HERO_JSON: site/data/japan/ai-arena/hero/latest.json
+  ARENA_SUMMARY_JSON: site/data/japan/ai-arena/summary/latest.json
+  ARENA_RANKING_JSON: site/data/japan/ai-arena/ranking/latest.json
+  ARENA_POSITIONS_JSON: site/data/japan/ai-arena/positions/latest.json
+  ARENA_SIGNALS_JSON: site/data/japan/ai-arena/signals/latest.json
+  ARENA_AGENTS_JSON: site/data/japan/ai-arena/agents/latest.json
+
 jobs:
   render-ai-arena-pages:
-    runs-on: ubuntu-24.04
-
-    env:
-      OUT_DIR: site
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-      PRICE_JSON: site/data/prices-jp/latest.json
-      ARENA_HERO_JSON: site/data/japan/ai-arena/hero/latest.json
-      ARENA_SUMMARY_JSON: site/data/japan/ai-arena/summary/latest.json
-      ARENA_RANKING_JSON: site/data/japan/ai-arena/ranking/latest.json
-      ARENA_POSITIONS_JSON: site/data/japan/ai-arena/positions/latest.json
-      ARENA_SIGNALS_JSON: site/data/japan/ai-arena/signals/latest.json
-      ARENA_AGENTS_JSON: site/data/japan/ai-arena/agents/latest.json
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -68,13 +48,13 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Install render dependencies
         run: |
           set -euo pipefail
           python -m pip install --upgrade pip
           pip install -r requirements-render.txt
 
-      - name: Compile AI Arena render scripts
+      - name: Compile render scripts
         run: |
           set -euo pipefail
           python -m compileall \
@@ -149,7 +129,7 @@ jobs:
           set -euo pipefail
           python scripts/render_all.py
 
-      - name: Verify rendered AI Arena files
+      - name: Verify rendered AI Arena pages
         run: |
           set -euo pipefail
 
@@ -170,6 +150,7 @@ jobs:
             "site/assets/ai_arena_positions_jp.css"
             "site/assets/ai_arena_signals_jp.css"
             "site/assets/ai_agent_profiles_jp.css"
+            "site/data/japan/ai-arena/agents/latest.json"
             "site/disclaimer/index.html"
             "site/privacy/index.html"
           )
@@ -221,7 +202,7 @@ jobs:
           PY
 
       - name: Commit rendered AI Arena pages
-        if: ${{ github.event_name == 'push' || github.event.inputs.commit_outputs != 'false' }}
+        if: ${{ inputs.commit_outputs == 'true' }}
         run: |
           set -euo pipefail
 
@@ -240,6 +221,7 @@ jobs:
             "site/assets/ai_arena_positions_jp.css"
             "site/assets/ai_arena_signals_jp.css"
             "site/assets/ai_agent_profiles_jp.css"
+            "site/data/japan/ai-arena/agents/latest.json"
             "site/disclaimer"
             "site/privacy"
           )
@@ -278,7 +260,6 @@ jobs:
           exit 1
 
       - name: Verify clean working tree
-        if: ${{ github.event_name == 'push' || github.event.inputs.commit_outputs != 'false' }}
         run: |
           set -euo pipefail
 
