@@ -1,18 +1,20 @@
 from __future__ import annotations
 
-"""Render the Neon Tokyo top page.
+"""Render the Neon Tokyo top page from AI Arena and prices-jp data only.
 
-Third-phase AI Arena migration:
-- Keep the existing Neon Tokyo TOP visual language and chart animation.
-- Replace the old NIKKEI/TOPIX/GROWTH Hero chart data with AI Agent equity curves.
-- Use the dedicated, lightweight AI Arena Hero JSON when available:
-  site/data/japan/ai-arena/hero/latest.json
-- Fall back safely to summary/latest.json, and finally to the previous market
-  pulse data only when no Arena payload exists.
+Daily / Weekly pages are being retired. This renderer intentionally does not
+read legacy research or backtest artifacts. The TOP page is allowed to depend only on:
+- site/data/japan/ai-arena/hero/latest.json
+- site/data/japan/ai-arena/summary/latest.json
+- site/data/prices-jp/latest.json
+
+If AI Arena hero data is temporarily missing, the page falls back to AI Arena
+summary data. If both Arena payloads are unavailable, it renders a minimal market
+pulse from prices-jp so that the homepage remains valid HTML, but it still does
+not depend on Daily / Weekly artifacts.
 """
 
 from datetime import datetime
-from pathlib import Path
 from typing import Any
 
 from render_common import OUT_DIR, copy_asset, env, generated_at, read_json, write_text
@@ -112,8 +114,7 @@ def parse_date(value: str | None) -> datetime | None:
 def split_adjusted_closes(bars: list[dict[str, Any]]) -> list[tuple[str, float]]:
     """Return a continuous close series by back-adjusting obvious split-like jumps.
 
-    This function is retained as a fallback for legacy market-pulse rendering.
-    TOP now prefers AI Arena Agent equity curves.
+    This is a prices-jp-only fallback. It does not read Daily / Weekly outputs.
     """
     rows: list[tuple[str, float]] = []
     for b in bars or []:
@@ -163,13 +164,13 @@ def normalize_points(values: list[float]) -> list[int]:
         return [52 for _ in values]
     out = []
     for v in values:
-        # Keep some vertical margin so the neon trace never touches the edge.
+        # Keep vertical margin so the neon trace never touches the SVG edge.
         out.append(int(round(18 + ((v - lo) / (hi - lo)) * 68)))
     return out
 
 
 def build_market_pulse(prices: dict[str, Any]) -> list[dict[str, Any]]:
-    """Legacy fallback: build NIKKEI/TOPIX/GROWTH market pulse items."""
+    """Build a minimal NIKKEI/TOPIX/GROWTH fallback from prices-jp only."""
     items = prices.get("items") or []
     by_symbol = {str(x.get("symbol")): x for x in items if isinstance(x, dict)}
     out: list[dict[str, Any]] = []
@@ -186,6 +187,7 @@ def build_market_pulse(prices: dict[str, Any]) -> list[dict[str, Any]]:
             "label": label,
             "name": label,
             "symbol": cfg["symbol"],
+            "role_label": label,
             "tone": cfg["tone"],
             "points": ",".join(str(x) for x in points),
             "performance_pct": perf,
@@ -193,6 +195,7 @@ def build_market_pulse(prices: dict[str, Any]) -> list[dict[str, Any]]:
             "performance_class": pct_class(perf),
             "date_start": weeks[0][0] if weeks else None,
             "date_end": weeks[-1][0] if weeks else None,
+            "color": "#7DF9FF",
             "icon_src": "",
             "is_agent": False,
         })
@@ -219,15 +222,17 @@ def _agent_spark_values(agent: dict[str, Any]) -> list[float]:
 
 
 def build_agent_pulse(hero: dict[str, Any], fallback_summary: dict[str, Any]) -> list[dict[str, Any]]:
-    """Build TOP Hero pulse items from hero/latest.json or summary/latest.json."""
+    """Build TOP Hero pulse items from AI Arena hero or summary JSON."""
     agents = hero.get("agents") if isinstance(hero, dict) else None
 
     if not agents:
-        # Fallback to summary/latest.json.  This keeps the TOP page usable even
-        # if an old canonical DB has not yet exported hero/latest.json.
+        # Fallback to AI Arena summary. This keeps the TOP page usable even when
+        # an older canonical DB has not exported hero/latest.json yet.
         agents = []
         annual = ((fallback_summary.get("rankings") or {}).get("annual_performance") or [])
         for r in annual:
+            if not isinstance(r, dict):
+                continue
             agent = r.get("agent") or {}
             aid = str(r.get("agent_id") or agent.get("agent_id") or "")
             if not aid:
@@ -277,23 +282,33 @@ def build_agent_pulse(hero: dict[str, Any], fallback_summary: dict[str, Any]) ->
     return out
 
 
-def build_ticker_items(prices: dict[str, Any], daily: dict[str, Any], limit: int = 12) -> list[dict[str, Any]]:
-    """Legacy fallback ticker used only when AI Arena ticker tape is missing."""
+def build_price_ticker_items(prices: dict[str, Any], limit: int = 12) -> list[dict[str, Any]]:
+    """Fallback ticker from prices-jp summary only.
+
+    prices-jp/latest.json is expected to stay in summary mode; bars are not
+    required here. This function never reads Daily / Weekly signal files.
+    """
     price_items = prices.get("items") or []
     price_by_symbol = {str(x.get("symbol")): x for x in price_items if isinstance(x, dict)}
-    daily_items = daily.get("items") or daily.get("all_items") or []
 
+    # Prefer symbols explicitly present in DEFAULT_TICKERS, then fill from the
+    # first available price items. This keeps the ticker non-empty even when a
+    # default ETF or stock is temporarily absent from the universe.
     symbols: list[str] = []
-    for x in daily_items:
-        s = str(x.get("symbol") or "")
+    for s in DEFAULT_TICKERS:
+        if s in price_by_symbol and s not in symbols:
+            symbols.append(s)
+    for item in price_items:
+        if not isinstance(item, dict):
+            continue
+        s = str(item.get("symbol") or "")
         if s and s not in symbols:
             symbols.append(s)
-    for s in DEFAULT_TICKERS:
-        if s not in symbols:
-            symbols.append(s)
+        if len(symbols) >= limit:
+            break
 
     out: list[dict[str, Any]] = []
-    for s in symbols:
+    for s in symbols[:limit]:
         item = price_by_symbol.get(s)
         if not item:
             continue
@@ -305,26 +320,38 @@ def build_ticker_items(prices: dict[str, Any], daily: dict[str, Any], limit: int
             "return_1d_pct": ret,
             "return_1d_label": pct(ret, 1),
             "return_class": pct_class(ret),
-            "text": f"SIGNAL WATCH {s} {item.get('name') or s} {pct(ret, 1)}",
+            "text": f"TOKYO WATCH {s} {item.get('name') or s} {pct(ret, 1)}",
             "type": "WATCH",
-            "agent_name": "SIGNAL WATCH",
+            "agent_name": "TOKYO WATCH",
         })
-        if len(out) >= limit:
-            break
     return out
 
 
-def build_ai_arena_ticker_items(hero: dict[str, Any], fallback_summary: dict[str, Any], prices: dict[str, Any], daily: dict[str, Any]) -> list[dict[str, Any]]:
+def build_ai_arena_ticker_items(
+    hero: dict[str, Any],
+    fallback_summary: dict[str, Any],
+    prices: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Build the TOP ticker tape from AI Arena first, prices-jp second."""
     items = hero.get("ticker_tape") if isinstance(hero, dict) else None
     if items:
-        return [x for x in items if isinstance(x, dict) and x.get("text")]
+        valid = [x for x in items if isinstance(x, dict) and x.get("text")]
+        if valid:
+            return valid
 
-    # Fallback from Summary open positions and recent trades.
+    # Fallback from Summary open positions and best trades.
     out: list[dict[str, Any]] = []
     annual = ((fallback_summary.get("rankings") or {}).get("annual_performance") or [])
-    agent_name = {str(r.get("agent_id")): ((r.get("agent") or {}).get("name") or str(r.get("agent_id")).upper()) for r in annual}
+    agent_name = {
+        str(r.get("agent_id")): ((r.get("agent") or {}).get("name") or str(r.get("agent_id")).upper())
+        for r in annual
+        if isinstance(r, dict)
+    }
+
     portfolio = fallback_summary.get("portfolio") or {}
     for p in portfolio.get("top_positions") or []:
+        if not isinstance(p, dict):
+            continue
         aid = str(p.get("agent_id") or "")
         name = str(agent_name.get(aid) or aid or "AGENT").upper()
         symbol = str(p.get("ticker") or "")
@@ -339,7 +366,10 @@ def build_ai_arena_ticker_items(hero: dict[str, Any], fallback_summary: dict[str
             "display_symbol_name": display,
             "text": f"{name} IN {display}",
         })
+
     for t in ((fallback_summary.get("rankings") or {}).get("best_trades") or [])[:8]:
+        if not isinstance(t, dict):
+            continue
         aid = str(t.get("agent_id") or "")
         name = str(agent_name.get(aid) or aid or "AGENT").upper()
         symbol = str(t.get("ticker") or "")
@@ -354,59 +384,56 @@ def build_ai_arena_ticker_items(hero: dict[str, Any], fallback_summary: dict[str
             "display_symbol_name": display,
             "text": f"{name} OUT {display}",
         })
-    return out[:18] if out else build_ticker_items(prices, daily)
+
+    return out[:18] if out else build_price_ticker_items(prices)
 
 
-def build_status(prices: dict[str, Any], hero: dict[str, Any]) -> dict[str, Any]:
+def build_status(prices: dict[str, Any], hero: dict[str, Any], summary: dict[str, Any]) -> dict[str, Any]:
     items = prices.get("items") or []
     dates = []
     for x in items:
+        if not isinstance(x, dict):
+            continue
         m = x.get("metrics") or {}
         d = m.get("latest_date") or x.get("date_end")
         if d:
             dates.append(str(d)[:10])
+
     season = hero.get("season") if isinstance(hero, dict) else {}
+    summary_season = summary.get("season") if isinstance(summary, dict) else {}
+
     return {
         "latest_price_date": max(dates) if dates else None,
         "prices_generated_at": prices.get("generated_at"),
-        "arena_latest_date": (season or {}).get("latest_date"),
+        "arena_latest_date": (season or {}).get("latest_date") or (summary_season or {}).get("latest_date"),
         "arena_generated_at": hero.get("generated_at") if isinstance(hero, dict) else None,
-        "arena_run_id": hero.get("run_id") or hero.get("display_run_id") if isinstance(hero, dict) else None,
+        "arena_run_id": (hero.get("run_id") or hero.get("display_run_id")) if isinstance(hero, dict) else None,
     }
 
 
 def main() -> None:
     e = env()
-    prices = read_json(OUT_DIR / "data" / "prices-jp" / "latest.json", {"items": []})
-    daily = read_json(OUT_DIR / "data" / "daily-jp" / "latest.json", {"items": []})
-    if not daily.get("items"):
-        daily = read_json(OUT_DIR / "data" / "daily-v2-jp" / "latest.json", {"items": []})
-    weekly = read_json(OUT_DIR / "data" / "japan" / "weekly" / "latest.json", {"items": []})
-    if not weekly.get("items"):
-        weekly = read_json(OUT_DIR / "data" / "weekly-jp" / "latest.json", {"items": []})
 
+    prices = read_json(OUT_DIR / "data" / "prices-jp" / "latest.json", {"items": []})
     hero = read_json(OUT_DIR / "data" / "japan" / "ai-arena" / "hero" / "latest.json", {})
     summary = read_json(OUT_DIR / "data" / "japan" / "ai-arena" / "summary" / "latest.json", {})
 
-    top = daily.get("items", [{}])[0] if daily.get("items") else {}
     market_pulse = build_agent_pulse(hero, summary)
     if not market_pulse:
         market_pulse = build_market_pulse(prices)
-    ticker_items = build_ai_arena_ticker_items(hero, summary, prices, daily)
+
+    ticker_items = build_ai_arena_ticker_items(hero, summary, prices)
 
     html = e.get_template("index.html.j2").render(
         brand="Neon Tokyo Signals",
         tagline="AI Arena JP is live after the Tokyo close.",
         generated_at=generated_at(),
-        top=top,
-        daily=daily,
-        weekly=weekly,
         prices=prices,
         ai_arena_hero=hero,
         ai_arena_summary=summary,
         market_pulse=market_pulse,
         ticker_items=ticker_items,
-        status=build_status(prices, hero),
+        status=build_status(prices, hero, summary),
     )
 
     write_text(OUT_DIR / "index.html", html)
