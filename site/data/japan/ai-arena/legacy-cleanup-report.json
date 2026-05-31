@@ -1,0 +1,132 @@
+{
+  "schema_version": "legacy_daily_weekly_cleanup_report_v1",
+  "generated_at": "2026-05-31T13:38:07+00:00",
+  "scope": "data",
+  "dry_run": false,
+  "candidate_count": 6,
+  "candidate_existing_count": 6,
+  "candidate_tracked_count": 6,
+  "candidate_size_mb": 130.4358,
+  "deleted": [
+    {
+      "path": "site/data/backtest-daily-jp",
+      "kind": "legacy_data",
+      "reason": "legacy Daily / Weekly generated public data",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 59969150
+    },
+    {
+      "path": "site/data/daily-jp",
+      "kind": "legacy_data",
+      "reason": "legacy Daily / Weekly generated public data",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 67138608
+    },
+    {
+      "path": "site/data/daily-v2-jp",
+      "kind": "legacy_data",
+      "reason": "legacy Daily / Weekly generated public data",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 1240
+    },
+    {
+      "path": "site/data/japan/daily",
+      "kind": "legacy_data",
+      "reason": "legacy Daily / Weekly generated public data",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 810798
+    },
+    {
+      "path": "site/data/weekly-jp",
+      "kind": "legacy_data",
+      "reason": "legacy Daily / Weekly generated public data",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 4172698
+    },
+    {
+      "path": "site/data/japan/weekly",
+      "kind": "legacy_data",
+      "reason": "legacy Daily / Weekly generated public data",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 4679344
+    }
+  ],
+  "candidates": [
+    {
+      "path": "site/data/backtest-daily-jp",
+      "kind": "legacy_data",
+      "reason": "legacy Daily / Weekly generated public data",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 59969150
+    },
+    {
+      "path": "site/data/daily-jp",
+      "kind": "legacy_data",
+      "reason": "legacy Daily / Weekly generated public data",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 67138608
+    },
+    {
+      "path": "site/data/daily-v2-jp",
+      "kind": "legacy_data",
+      "reason": "legacy Daily / Weekly generated public data",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 1240
+    },
+    {
+      "path": "site/data/japan/daily",
+      "kind": "legacy_data",
+      "reason": "legacy Daily / Weekly generated public data",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 810798
+    },
+    {
+      "path": "site/data/weekly-jp",
+      "kind": "legacy_data",
+      "reason": "legacy Daily / Weekly generated public data",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 4172698
+    },
+    {
+      "path": "site/data/japan/weekly",
+      "kind": "legacy_data",
+      "reason": "legacy Daily / Weekly generated public data",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 4679344
+    }
+  ],
+  "protected_prefixes": [
+    "site/data/japan/ai-arena",
+    "site/data/japan/agent-scores",
+    "site/data/prices-jp/latest.json",
+    "site/data/prices-jp/manifest.json",
+    "site/data/japan/universe",
+    "site/data/japan/company",
+    "site/data/japan/fundamentals",
+    "site/japan/ai-arena",
+    "site/assets/ai_arena",
+    "data/agents",
+    "data/cache"
+  ],
+  "required_after_cleanup": [
+    "site/index.html",
+    "site/data/prices-jp/latest.json",
+    "site/data/japan/ai-arena",
+    "site/japan/ai-arena",
+    "site/assets/ai_arena_jp.css",
+    "site/assets/ai_arena_jp.js",
+    "data/agents"
+  ]
+}
