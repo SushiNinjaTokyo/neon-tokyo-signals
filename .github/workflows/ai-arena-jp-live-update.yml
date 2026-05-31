@@ -59,8 +59,8 @@ jobs:
       MIN_ACCEPTABLE_BARS: "20"
       AGENT_SCORE_TOP_N: "30"
       AI_ARENA_YEAR: "auto"
-      AI_ARENA_RUN_MODE: append
-      AI_ARENA_RESET_RUN: "false"
+      AI_ARENA_RUN_MODE: live
+      AI_ARENA_RESET_RUN: "true"
       AI_ARENA_PROMOTE_DISPLAY_RUN: "true"
       AI_ARENA_ENABLE_GPT_SIGNAL_NOTES: "false"
       FORCE_FINALIZE_SEASON: "false"
@@ -180,7 +180,7 @@ jobs:
           set -euo pipefail
           python scripts/build_agent_scores_jp.py
 
-      - name: Rebuild / append AI Arena season
+      - name: Rebuild AI Arena live season
         run: |
           set -euo pipefail
           python scripts/rebuild_ai_arena_season_from_duckdb_jp.py

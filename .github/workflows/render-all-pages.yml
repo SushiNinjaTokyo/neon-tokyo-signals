@@ -1,20 +1,37 @@
-name: Render all pages
+name: Render AI Arena pages
 
 on:
   workflow_dispatch:
+    inputs:
+      commit_outputs:
+        description: "Commit rendered AI Arena pages"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
   push:
     branches:
       - main
     paths:
+      - "scripts/render_all.py"
       - "scripts/render_index.py"
-      - "scripts/render_daily_jp.py"
-      - "scripts/render_backtest_daily_jp.py"
-      - "scripts/render_daily_simulation_jp.py"
-      - "scripts/render_weekly_jp.py"
-      - "scripts/render_weekly_backtest_jp.py"
-      - "scripts/render_weekly_simulation_jp.py"
       - "scripts/render_ai_arena_jp.py"
-      - "templates/**"
+      - "scripts/render_ai_arena_summary_jp.py"
+      - "scripts/render_ai_arena_ranking_jp.py"
+      - "scripts/render_ai_arena_positions_jp.py"
+      - "scripts/render_ai_arena_signals_jp.py"
+      - "scripts/render_ai_agent_profiles_jp.py"
+      - "scripts/render_static_pages.py"
+      - "templates/index.html.j2"
+      - "templates/index.css"
+      - "templates/ai_arena*.j2"
+      - "templates/ai_arena*.css"
+      - "templates/ai_arena*.js"
+      - "templates/ai_agent_profiles_jp.html.j2"
+      - "templates/ai_agent_profiles_jp.css"
+      - "templates/disclaimer.html.j2"
+      - "templates/privacy.html.j2"
+      - "templates/base.css"
       - "requirements-render.txt"
       - ".github/workflows/render-all-pages.yml"
 
@@ -22,29 +39,29 @@ permissions:
   contents: write
 
 concurrency:
-  group: render-all-pages-${{ github.ref }}
+  group: render-ai-arena-pages-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  render-all:
-    runs-on: ubuntu-latest
+  render-ai-arena-pages:
+    runs-on: ubuntu-24.04
 
     env:
       OUT_DIR: site
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
-      DAILY_JSON: site/data/daily-jp/latest.json
-      BACKTEST_JSON: site/data/backtest-daily-jp/latest.json
-      DAILY_SIM_JSON: site/data/japan/daily/simulation/latest.json
-
-      WEEKLY_JSON: site/data/japan/weekly/latest.json
-      WEEKLY_BACKTEST_JSON: site/data/japan/weekly/backtest/latest.json
-      WEEKLY_SIM_JSON: site/data/japan/weekly/simulation/latest.json
-      ARENA_JSON: site/data/japan/ai-arena/latest.json
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+      PRICE_JSON: site/data/prices-jp/latest.json
+      ARENA_HERO_JSON: site/data/japan/ai-arena/hero/latest.json
+      ARENA_SUMMARY_JSON: site/data/japan/ai-arena/summary/latest.json
+      ARENA_RANKING_JSON: site/data/japan/ai-arena/ranking/latest.json
+      ARENA_POSITIONS_JSON: site/data/japan/ai-arena/positions/latest.json
+      ARENA_SIGNALS_JSON: site/data/japan/ai-arena/signals/latest.json
+      ARENA_AGENTS_JSON: site/data/japan/ai-arena/agents/latest.json
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -57,112 +74,108 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-render.txt
 
-      - name: Validate render scripts
+      - name: Compile AI Arena render scripts
         run: |
           set -euo pipefail
+          python -m compileall \
+            scripts/render_all.py \
+            scripts/render_index.py \
+            scripts/render_ai_arena_jp.py \
+            scripts/render_ai_arena_summary_jp.py \
+            scripts/render_ai_arena_ranking_jp.py \
+            scripts/render_ai_arena_positions_jp.py \
+            scripts/render_ai_arena_signals_jp.py \
+            scripts/render_ai_agent_profiles_jp.py \
+            scripts/render_static_pages.py \
+            scripts/render_common.py
 
-          scripts=(
-            "scripts/render_index.py"
-            "scripts/render_daily_jp.py"
-            "scripts/render_backtest_daily_jp.py"
-            "scripts/render_daily_simulation_jp.py"
-            "scripts/render_weekly_jp.py"
-            "scripts/render_weekly_backtest_jp.py"
-            "scripts/render_weekly_simulation_jp.py"
-            "scripts/render_ai_arena_jp.py"
-          )
-
-          for script in "${scripts[@]}"; do
-            if [ -f "$script" ]; then
-              python -m py_compile "$script"
-            else
-              echo "Skip missing render script: $script"
-            fi
-          done
-
-      - name: Verify source JSON files
+      - name: Verify AI Arena source JSON files
         run: |
           set -euo pipefail
 
           required_jsons=(
-            "site/data/daily-jp/latest.json"
-            "site/data/backtest-daily-jp/latest.json"
-            "site/data/japan/daily/simulation/latest.json"
-            "site/data/japan/weekly/latest.json"
-            "site/data/japan/weekly/backtest/latest.json"
-            "site/data/japan/weekly/simulation/latest.json"
+            "${PRICE_JSON}"
+            "${ARENA_HERO_JSON}"
+            "${ARENA_SUMMARY_JSON}"
+            "${ARENA_RANKING_JSON}"
+            "${ARENA_POSITIONS_JSON}"
+            "${ARENA_SIGNALS_JSON}"
+            "${ARENA_AGENTS_JSON}"
           )
 
           for json_path in "${required_jsons[@]}"; do
-            if [ ! -f "$json_path" ]; then
-              echo "::error::Missing required JSON: $json_path"
-              echo "Run the corresponding build/backtest/simulation workflow first."
+            if [ ! -s "$json_path" ]; then
+              echo "::error::Missing required AI Arena JSON: $json_path"
+              echo "::error::Run AI Arena JP season rebuild or live update first."
               exit 1
             fi
           done
 
-      - name: Render index
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          checks = {
+              "prices": Path("site/data/prices-jp/latest.json"),
+              "hero": Path("site/data/japan/ai-arena/hero/latest.json"),
+              "summary": Path("site/data/japan/ai-arena/summary/latest.json"),
+              "ranking": Path("site/data/japan/ai-arena/ranking/latest.json"),
+              "positions": Path("site/data/japan/ai-arena/positions/latest.json"),
+              "signals": Path("site/data/japan/ai-arena/signals/latest.json"),
+              "agents": Path("site/data/japan/ai-arena/agents/latest.json"),
+          }
+
+          for name, path in checks.items():
+              data = json.loads(path.read_text(encoding="utf-8"))
+              if not isinstance(data, dict):
+                  raise SystemExit(f"{name} JSON must be an object: {path}")
+              print(f"json_ok {name} {path} schema={data.get('schema_version')}")
+
+          hero = json.loads(checks["hero"].read_text(encoding="utf-8"))
+          if len(hero.get("agents", [])) != 7:
+              raise SystemExit(f"hero agents must be 7, got {len(hero.get('agents', []))}")
+          if not hero.get("ticker_tape"):
+              raise SystemExit("hero ticker_tape is empty")
+
+          prices = json.loads(checks["prices"].read_text(encoding="utf-8"))
+          if prices.get("public_json_mode") != "summary":
+              raise SystemExit(f"prices-jp must remain summary mode, got {prices.get('public_json_mode')}")
+          if prices.get("bars_omitted") is not True:
+              raise SystemExit("prices-jp/latest.json must omit bars")
+          PY
+
+      - name: Render AI Arena pages
         run: |
           set -euo pipefail
-          python scripts/render_index.py
+          python scripts/render_all.py
 
-      - name: Render Daily pages
-        run: |
-          set -euo pipefail
-          python scripts/render_daily_jp.py
-          python scripts/render_backtest_daily_jp.py
-          python scripts/render_daily_simulation_jp.py
-
-      - name: Render Weekly pages
-        run: |
-          set -euo pipefail
-          python scripts/render_weekly_jp.py
-          python scripts/render_weekly_backtest_jp.py
-          python scripts/render_weekly_simulation_jp.py
-
-      - name: Render AI Arena page
-        run: |
-          set -euo pipefail
-          if [ -f "site/data/japan/ai-arena/latest.json" ]; then
-            python scripts/render_ai_arena_jp.py
-          else
-            echo "Skip AI Arena render because site/data/japan/ai-arena/latest.json is missing."
-            echo "Run AI Arena JP workflow first."
-          fi
-
-      - name: Verify rendered files
+      - name: Verify rendered AI Arena files
         run: |
           set -euo pipefail
 
           required_files=(
             "site/index.html"
+            "site/assets/base.css"
             "site/assets/index.css"
-
-            "site/japan/daily/index.html"
-            "site/assets/daily_jp.css"
-
-            "site/japan/daily/backtest/index.html"
-            "site/assets/backtest_daily_jp.css"
-
-            "site/japan/daily/simulation/index.html"
-            "site/assets/daily_simulation_jp.css"
-
-            "site/japan/weekly/index.html"
-            "site/assets/weekly_jp.css"
-
-            "site/japan/weekly-backtest/index.html"
-            "site/assets/weekly_backtest_jp.css"
-
-            "site/japan/weekly-simulation/index.html"
-            "site/assets/weekly_simulation_jp.css"
-
             "site/japan/ai-arena/index.html"
+            "site/japan/ai-arena/summary/index.html"
+            "site/japan/ai-arena/ranking/index.html"
+            "site/japan/ai-arena/positions/index.html"
+            "site/japan/ai-arena/signals/index.html"
+            "site/japan/ai-arena/agents/index.html"
             "site/assets/ai_arena_jp.css"
             "site/assets/ai_arena_jp.js"
+            "site/assets/ai_arena_summary_jp.css"
+            "site/assets/ai_arena_ranking_jp.css"
+            "site/assets/ai_arena_positions_jp.css"
+            "site/assets/ai_arena_signals_jp.css"
+            "site/assets/ai_agent_profiles_jp.css"
+            "site/disclaimer/index.html"
+            "site/privacy/index.html"
           )
 
           for f in "${required_files[@]}"; do
-            test -f "$f"
+            test -s "$f"
           done
 
           python - <<'PY'
@@ -170,15 +183,16 @@ jobs:
 
           files = [
               "site/index.html",
-              "site/japan/daily/index.html",
-              "site/japan/daily/backtest/index.html",
-              "site/japan/daily/simulation/index.html",
-              "site/japan/weekly/index.html",
-              "site/japan/weekly-backtest/index.html",
-              "site/japan/weekly-simulation/index.html",
+              "site/japan/ai-arena/index.html",
+              "site/japan/ai-arena/summary/index.html",
+              "site/japan/ai-arena/ranking/index.html",
+              "site/japan/ai-arena/positions/index.html",
+              "site/japan/ai-arena/signals/index.html",
+              "site/japan/ai-arena/agents/index.html",
           ]
 
           forbidden = ["{{", "{%", "%}", "UndefinedError", "Traceback"]
+          required_agents = ["KYOU", "NAGARE", "MAMORU", "SAGURI", "MATSU", "KAESHI", "HIZUMI"]
 
           for fp in files:
               p = Path(fp)
@@ -189,9 +203,25 @@ jobs:
               for token in forbidden:
                   assert token not in text, f"{fp} contains unrendered/error token: {token}"
               print("verified", fp, len(text))
+
+          for fp in [
+              "site/index.html",
+              "site/japan/ai-arena/summary/index.html",
+              "site/japan/ai-arena/ranking/index.html",
+              "site/japan/ai-arena/positions/index.html",
+          ]:
+              text = Path(fp).read_text(encoding="utf-8")
+              for agent in required_agents:
+                  assert agent in text, f"{fp} missing {agent}"
+
+          top = Path("site/index.html").read_text(encoding="utf-8")
+          assert "Daily and weekly research pages" not in top
+          assert "daily-jp/latest.json" not in top
+          assert "weekly-jp" not in top.lower()
           PY
 
-      - name: Commit rendered pages
+      - name: Commit rendered AI Arena pages
+        if: ${{ github.event_name == 'push' || github.event.inputs.commit_outputs != 'false' }}
         run: |
           set -euo pipefail
 
@@ -200,29 +230,18 @@ jobs:
 
           paths=(
             "site/index.html"
+            "site/assets/base.css"
             "site/assets/index.css"
-
-            "site/japan/daily/index.html"
-            "site/assets/daily_jp.css"
-
-            "site/japan/daily/backtest/index.html"
-            "site/assets/backtest_daily_jp.css"
-
-            "site/japan/daily/simulation/index.html"
-            "site/assets/daily_simulation_jp.css"
-
-            "site/japan/weekly/index.html"
-            "site/assets/weekly_jp.css"
-
-            "site/japan/weekly-backtest/index.html"
-            "site/assets/weekly_backtest_jp.css"
-
-            "site/japan/weekly-simulation/index.html"
-            "site/assets/weekly_simulation_jp.css"
-
-            "site/japan/ai-arena/index.html"
+            "site/japan/ai-arena"
             "site/assets/ai_arena_jp.css"
             "site/assets/ai_arena_jp.js"
+            "site/assets/ai_arena_summary_jp.css"
+            "site/assets/ai_arena_ranking_jp.css"
+            "site/assets/ai_arena_positions_jp.css"
+            "site/assets/ai_arena_signals_jp.css"
+            "site/assets/ai_agent_profiles_jp.css"
+            "site/disclaimer"
+            "site/privacy"
           )
 
           for path in "${paths[@]}"; do
@@ -234,16 +253,32 @@ jobs:
           done
 
           if git diff --cached --quiet; then
-            echo "No rendered page changes to commit."
+            echo "No rendered AI Arena page changes to commit."
             exit 0
           fi
 
-          git commit -m "Render all pages"
+          git commit -m "Render AI Arena pages"
 
-          git pull --rebase origin main
-          git push origin main
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Push succeeded."
+              exit 0
+            fi
+            echo "Push rejected. Fetching origin/main and retrying ($i/3)..."
+            git fetch origin main
+            if ! git rebase origin/main; then
+              echo "Rebase failed. Aborting to avoid overwriting rendered pages."
+              git rebase --abort || true
+              exit 1
+            fi
+            sleep 5
+          done
+
+          echo "Push failed after retries."
+          exit 1
 
       - name: Verify clean working tree
+        if: ${{ github.event_name == 'push' || github.event.inputs.commit_outputs != 'false' }}
         run: |
           set -euo pipefail
 

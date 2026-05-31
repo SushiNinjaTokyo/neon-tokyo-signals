@@ -6,7 +6,7 @@ on:
       fail_on_critical:
         description: "Fail workflow when critical warnings are detected"
         required: false
-        default: "false"
+        default: "true"
         type: choice
         options: ["false", "true"]
       commit_outputs:
@@ -45,7 +45,7 @@ jobs:
       MIN_BARS_REQUIRED: ${{ github.event.inputs.min_bars_required || '60' }}
       STALE_PRICE_DAYS: ${{ github.event.inputs.stale_price_days || '5' }}
       MIN_FUNDAMENTAL_COVERAGE_PCT: ${{ github.event.inputs.min_fundamental_coverage_pct || '50' }}
-      FAIL_ON_CRITICAL: ${{ github.event.inputs.fail_on_critical || 'false' }}
+      FAIL_ON_CRITICAL: ${{ github.event.inputs.fail_on_critical || 'true' }}
       CANONICAL_DUCKDB_RELEASE_TAG: ai-arena-duckdb-latest
       CANONICAL_DUCKDB_ASSET: neon_tokyo_jp_latest.duckdb.zst
       CANONICAL_DUCKDB_MANIFEST_ASSET: neon_tokyo_jp_latest_manifest.json
