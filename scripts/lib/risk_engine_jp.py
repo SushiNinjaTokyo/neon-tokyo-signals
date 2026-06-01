@@ -42,6 +42,38 @@ def should_exit_position(
     if hard_stop is not None and ret_pct <= float(hard_stop):
         return True, "HARD_STOP", f"Hard stop triggered at {ret_pct:.1f}%."
 
+    # Early-fail exit: if a fresh trade cannot produce even a small favorable
+    # excursion and is already underwater, abandon it before it becomes a full
+    # stop-loss. This is intentionally configurable per agent because HIZUMI,
+    # KAESHI, and SAGURI fail in different time horizons.
+    early_days = exit_rule.get("early_fail_after_days")
+    if early_days is not None and holding_days >= int(early_days):
+        mfe_ceiling = float(exit_rule.get("early_fail_mfe_below_pct", 0.0) or 0.0)
+        ret_floor = float(exit_rule.get("early_fail_return_below_pct", -10**9) or -10**9)
+        if high_water_return_pct < mfe_ceiling and ret_pct <= ret_floor:
+            return True, "EARLY_FAIL", f"Early failure: MFE {high_water_return_pct:.1f}% stayed below {mfe_ceiling:.1f}% and return fell to {ret_pct:.1f}%."
+
+    # MFE-based profit protection. Once a trade has shown enough upside, do not
+    # allow it to round-trip into a weak close.  Rules are evaluated from the
+    # highest MFE threshold down so the strictest applicable floor wins.
+    protection_rules = exit_rule.get("mfe_profit_protection") or []
+    if isinstance(protection_rules, list):
+        applicable = []
+        for item in protection_rules:
+            if not isinstance(item, dict):
+                continue
+            try:
+                trigger = float(item.get("mfe_pct"))
+                floor = float(item.get("floor_return_pct"))
+            except Exception:
+                continue
+            if high_water_return_pct >= trigger:
+                applicable.append((trigger, floor, str(item.get("code") or "PROFIT_PROTECTION")))
+        if applicable:
+            trigger, floor, code = sorted(applicable, key=lambda x: x[0], reverse=True)[0]
+            if ret_pct <= floor:
+                return True, code, f"Profit protection: MFE reached {high_water_return_pct:.1f}% after {trigger:.1f}% trigger, current return fell to {ret_pct:.1f}% below {floor:.1f}% floor."
+
     # Emergency liquidity/risk exits before ordinary profit exits.
     if "liquidity_score_below" in exit_rule and f(feature_row, "liquidity_score", 1.0) < float(exit_rule["liquidity_score_below"]):
         return True, "LIQUIDITY_DRYUP", "Liquidity score fell below the agent threshold."

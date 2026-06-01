@@ -33,6 +33,25 @@ def inv_scale(value: Any, lo: float, hi: float) -> float:
     return 1.0 - scale(value, lo, hi)
 
 
+def regime_state(row: pd.Series) -> str:
+    state = str(row.get("market_regime_state") or "NEUTRAL").upper().strip()
+    return state if state in {"BULL", "NEUTRAL", "BEAR", "PANIC"} else "NEUTRAL"
+
+
+def regime_modifier(row: pd.Series, *, bull: float = 0.0, neutral: float = 0.0, bear: float = 0.0, panic: float = 0.0) -> float:
+    state = regime_state(row)
+    return {"BULL": bull, "NEUTRAL": neutral, "BEAR": bear, "PANIC": panic}.get(state, neutral)
+
+
+def is_manual_theme(row: pd.Series) -> bool:
+    theme = str(row.get("theme") or "").lower()
+    detail = str(row.get("source_detail") or "").lower()
+    bucket = str(row.get("bucket") or "").lower()
+    text = " ".join([theme, detail, bucket])
+    keys = ["manual", "space", "robot", "drone", "uav", "aerospace", "physical ai", "satellite"]
+    return any(k in text for k in keys)
+
+
 @dataclass(frozen=True)
 class AgentProfile:
     id: str
@@ -132,12 +151,17 @@ def score_agent_row(row: pd.Series, profile: AgentProfile) -> tuple[float, dict[
         raw = risk * 0.38 + liq * 0.20 + low_vol * 0.16 + drawdown_resilience * 0.12 + trend_w * 0.08 + ma_stability * 0.06
         reasons = ["low_vol_liquidity", "drawdown_resilience", "capital_preservation"]
     elif profile.id == "discovery_scout":
+        # SAGURI v3: keep the early-discovery mandate but avoid illiquid weak
+        # regimes. Manual theme names receive only a small bonus; they must still
+        # pass liquidity and momentum gates in jp_agent_strategy_rules.yml.
         small_bonus = 1.0 if bool(row.get("is_small_discovery")) else 0.35
         quality = nz(value_quality, 0.30 if not has_value_features else 0.0)
         trap_guard = 1.0 - trap
-        early = scale(r20, -5, 20) * 0.22 + scale(volratio, 0.9, 4.0) * 0.24 + scale(range60, 0.25, 0.85) * 0.13
-        raw = early + small_bonus * 0.14 + vol_re * 0.11 + liq * 0.08 + quality * 0.05 + trap_guard * 0.03
-        reasons = ["small_cap_discovery", "early_volume_shift", "quality_guard"]
+        theme_bonus = 0.05 if is_manual_theme(row) else 0.0
+        regime_adj = regime_modifier(row, bull=0.03, neutral=0.0, bear=-0.08, panic=-0.30)
+        early = scale(r20, -5, 20) * 0.20 + scale(volratio, 1.0, 4.0) * 0.25 + scale(range60, 0.30, 0.88) * 0.13
+        raw = early + small_bonus * 0.13 + vol_re * 0.10 + liq * 0.10 + quality * 0.05 + trap_guard * 0.03 + theme_bonus + regime_adj
+        reasons = ["small_cap_discovery", "theme_volume_shift", "regime_liquidity_guard"]
     elif profile.id == "contrarian_monk":
         pullback_depth = scale(-r5, 1.0, 9.0)
         calm_volume = inv_scale(dryup, 0.55, 1.35)
@@ -147,24 +171,34 @@ def score_agent_row(row: pd.Series, profile: AgentProfile) -> tuple[float, dict[
         raw = trend_w * 0.34 + pullback_depth * 0.18 + calm_volume * 0.14 + ma_reversion_zone * 0.12 + rsi_neutral * 0.10 + liq * 0.08 + range_health * 0.04
         reasons = ["quality_pullback", "trend_still_alive", "cooled_entry"]
     elif profile.id == "reversal_snapback":
-        raw = rev * 0.54 + scale(-r5, 2, 16) * 0.16 + vol_re * 0.12 + scale(row.get("distance_from_20d_low_pct"), 0, 14) * 0.08 + liq * 0.10
-        reasons = ["oversold_exhaustion", "snapback_pressure", "reaccumulation"]
+        # KAESHI v3: oversold reversal still matters, but broad-market panic and
+        # missing confirmation should not become automatic falling-knife buys.
+        regime_adj = regime_modifier(row, bull=0.02, neutral=0.0, bear=-0.07, panic=-0.35)
+        confirm = scale(r1, -1.0, 3.0) * 0.06 + scale(volratio, 0.9, 2.5) * 0.06 + scale(range20, 0.10, 0.55) * 0.04
+        raw = rev * 0.50 + scale(-r5, 2, 16) * 0.14 + vol_re * 0.12 + scale(row.get("distance_from_20d_low_pct"), 0, 14) * 0.08 + liq * 0.10 + confirm + regime_adj
+        reasons = ["oversold_exhaustion", "confirmed_snapback", "regime_reversal_guard"]
     elif profile.id == "value_mispricing":
         if has_value_features:
-            # HIZUMI v2: fewer, higher-quality value candidates.  Penalize traps strongly.
+            # HIZUMI v3: value + quality + visible re-rating.  A weak market
+            # regime should reduce cheap-stock enthusiasm because value traps are
+            # most dangerous in broad drawdowns.
+            regime_adj = regime_modifier(row, bull=0.02, neutral=0.0, bear=-0.09, panic=-0.40)
+            rerate_confirm = scale(r5, 0.0, 8.0) * 0.05 + scale(r20, -3.0, 12.0) * 0.05 + scale(volratio, 0.8, 2.0) * 0.04
             raw = (
-                nz(value_mispricing, 0.0) * 0.34
-                + nz(value_quality, 0.0) * 0.26
-                + nz(value_discount, 0.0) * 0.20
+                nz(value_mispricing, 0.0) * 0.30
+                + nz(value_quality, 0.0) * 0.28
+                + nz(value_discount, 0.0) * 0.18
                 + value_rerate * 0.10
-                + risk * 0.06
+                + rerate_confirm
+                + risk * 0.05
                 + liq * 0.04
-                - trap * 0.18
+                - trap * 0.28
+                + regime_adj
             )
-            reasons = ["quality_value_mispricing", "trap_guard", "rerating_signal"]
+            reasons = ["quality_value_mispricing", "rerating_confirmed", "regime_trap_guard"]
         else:
-            raw = value_rerate * 0.36 + risk * 0.18 + liq * 0.16 + scale(-dist52, 12, 70) * 0.14 + scale(r20, -3, 16) * 0.10 + inv_scale(abs(vs50), 0, 35) * 0.06
-            reasons = ["mispricing_proxy", "value_rerating", "trap_guard"]
+            raw = value_rerate * 0.34 + risk * 0.18 + liq * 0.16 + scale(-dist52, 12, 70) * 0.12 + scale(r20, -3, 16) * 0.10 + inv_scale(abs(vs50), 0, 35) * 0.06 + regime_modifier(row, bull=0.01, neutral=0.0, bear=-0.08, panic=-0.35)
+            reasons = ["mispricing_proxy", "value_rerating", "regime_trap_guard"]
     else:
         raw = 0.0
         reasons = ["unknown", "", ""]

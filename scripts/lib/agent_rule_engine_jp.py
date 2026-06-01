@@ -14,6 +14,7 @@ from typing import Any
 import duckdb
 
 from .arena_calendar_jp import trading_days_until_year_end
+from .market_regime_jp import regime_for_date
 
 
 def num(value: Any, default: float = 0.0) -> float:
@@ -131,6 +132,13 @@ def fetch_feature_map(conn: duckdb.DuckDBPyConnection, d: date) -> dict[str, dic
     ).fetchdf()
     if rows.empty:
         return {}
+
+    # Attach broad market regime to every security for that signal date.
+    # Entry rules can then adjust thresholds without adding columns to
+    # features_daily or requiring a schema migration.
+    regime = regime_for_date(conn, d)
+    for key, value in regime.items():
+        rows[key] = value
     return {str(r["ticker"]): r.to_dict() for _, r in rows.iterrows()}
 
 
@@ -258,6 +266,8 @@ def _passes_value_rerating_confirmation(feature_row: dict[str, Any], entry: dict
 
     if boolish(setup.get("price_above_ma20")):
         checks.append((close > num(feature_row.get("ma_20")), "price_above_ma20"))
+    if "return_5d_pct_min" in setup:
+        checks.append((num(feature_row.get("return_5d_pct")) >= num(setup.get("return_5d_pct_min")), "return_5d_recovered"))
     if "return_20d_pct_min" in setup:
         checks.append((num(feature_row.get("return_20d_pct")) >= num(setup.get("return_20d_pct_min")), "return_20d_positive"))
     if "return_60d_pct_min" in setup:
@@ -266,12 +276,86 @@ def _passes_value_rerating_confirmation(feature_row: dict[str, Any], entry: dict
         checks.append((num(feature_row.get("range_position_60d_0_1")) >= num(setup.get("range_position_60d_0_1_min")), "range_position_60d_recovered"))
     if "re_rating_signal_score_min" in setup:
         checks.append((num(feature_row.get("re_rating_signal_score")) >= num(setup.get("re_rating_signal_score_min")), "rerating_signal_score_ok"))
+    if "volume_ratio_20d_min" in setup:
+        checks.append((num(feature_row.get("volume_ratio_20d")) >= num(setup.get("volume_ratio_20d_min")), "volume_rerating_confirmation"))
 
     if any(ok for ok, _ in checks):
         passed = [name for ok, name in checks if ok]
         return True, "value_rerating_confirmation_passed:" + ",".join(passed[:3])
     return False, "value_rerating_confirmation_failed"
 
+
+
+
+def market_regime_state(feature_row: dict[str, Any] | None) -> str:
+    if not feature_row:
+        return "NEUTRAL"
+    state = text(feature_row.get("market_regime_state"), "NEUTRAL").upper().strip()
+    return state if state in {"BULL", "NEUTRAL", "BEAR", "PANIC"} else "NEUTRAL"
+
+
+def effective_entry_rule(entry: dict[str, Any], feature_row: dict[str, Any] | None) -> dict[str, Any]:
+    """Return entry rules after applying market-regime overrides.
+
+    YAML can define:
+
+      market_regime_rules:
+        BULL: {min_score: 0.66}
+        BEAR: {min_score: 0.74, position_size_multiplier: 0.5}
+        PANIC: {new_entries_enabled: false}
+
+    The returned dict is a shallow merge; top-level regime keys override base
+    entry keys. Nested fields that are not explicitly overridden remain intact.
+    """
+    merged = dict(entry or {})
+    state = market_regime_state(feature_row)
+    rules = entry.get("market_regime_rules") or {}
+    override = rules.get(state) or rules.get(state.lower()) or {}
+    if isinstance(override, dict):
+        for k, v in override.items():
+            if k == "note":
+                continue
+            merged[k] = v
+    merged["_market_regime_state"] = state
+    return merged
+
+
+def entry_position_size_multiplier(agent_rule: dict[str, Any], feature_row: dict[str, Any] | None) -> float:
+    entry = effective_entry_rule((agent_rule.get("entry") or {}), feature_row)
+    raw = entry.get("position_size_multiplier", 1.0)
+    try:
+        v = float(raw)
+        if v <= 0:
+            return 0.0
+        return max(0.0, min(1.0, v))
+    except Exception:
+        return 1.0
+
+
+def _passes_reversal_confirmation(feature_row: dict[str, Any], entry: dict[str, Any]) -> tuple[bool, str]:
+    """Count snapback confirmation signals for KAESHI-style entries."""
+    min_count = int(entry.get("reversal_confirmation_min_count", 0) or 0)
+    setup = entry.get("reversal_confirmation_any") or {}
+    if min_count <= 0 and not setup:
+        return True, "reversal_confirmation_not_required"
+
+    checks: list[tuple[bool, str]] = []
+    if "return_1d_pct_min" in setup:
+        checks.append((num(feature_row.get("return_1d_pct")) >= num(setup.get("return_1d_pct_min")), "positive_1d_return"))
+    if "volume_ratio_20d_min" in setup:
+        checks.append((num(feature_row.get("volume_ratio_20d")) >= num(setup.get("volume_ratio_20d_min")), "volume_confirmation"))
+    if "range_position_20d_0_1_min" in setup:
+        checks.append((num(feature_row.get("range_position_20d_0_1")) >= num(setup.get("range_position_20d_0_1_min")), "range_recovery_20d"))
+    if "price_above_ma5" in setup and boolish(setup.get("price_above_ma5")):
+        checks.append((num(feature_row.get("close")) > num(feature_row.get("ma_5")), "price_above_ma5"))
+    if "volume_reaccumulation_score_min" in setup:
+        checks.append((num(feature_row.get("volume_reaccumulation_score")) >= num(setup.get("volume_reaccumulation_score_min")), "reaccumulation"))
+
+    passed = [name for ok, name in checks if ok]
+    required = min_count if min_count > 0 else 1
+    if len(passed) >= required:
+        return True, "reversal_confirmation_passed:" + ",".join(passed[:4])
+    return False, f"reversal_confirmation_failed:{len(passed)}/{required}"
 
 def passes_entry_rule(
     *,
@@ -282,10 +366,14 @@ def passes_entry_rule(
     signal_date: date,
 ) -> tuple[bool, str]:
     """Return whether a scored row is eligible for a new position."""
-    entry = agent_rule.get("entry", {}) or {}
+    base_entry = agent_rule.get("entry", {}) or {}
     common = agent_rule.get("common", {}) or {}
     if not feature_row:
         return False, "missing_feature_row"
+    entry = effective_entry_rule(base_entry, feature_row)
+
+    if boolish(entry.get("new_entries_enabled")) is False and "new_entries_enabled" in entry:
+        return False, f"market_regime_{market_regime_state(feature_row).lower()}_entry_disabled"
 
     if trading_days_until_year_end(trading_dates, signal_date) < int(agent_rule.get("year_end_entry_block_trading_days", 0) or 0):
         return False, "blocked_near_year_end"
@@ -354,6 +442,10 @@ def passes_entry_rule(
         return False, "volume_ratio_below_threshold"
     if "require_return_1d_pct_min" in entry and num(feature_row.get("return_1d_pct")) < num(entry["require_return_1d_pct_min"]):
         return False, "one_day_return_too_low"
+    if "require_return_5d_pct_min" in entry and num(feature_row.get("return_5d_pct")) < num(entry["require_return_5d_pct_min"]):
+        return False, "five_day_return_too_low"
+    if "require_return_20d_pct_min" in entry and num(feature_row.get("return_20d_pct")) < num(entry["require_return_20d_pct_min"]):
+        return False, "twenty_day_return_too_low"
     if "require_range_position_20d_0_1_min" in entry and num(feature_row.get("range_position_20d_0_1")) < num(entry["require_range_position_20d_0_1_min"]):
         return False, "range_position_20d_too_low"
     if "require_range_position_60d_0_1_min" in entry and num(feature_row.get("range_position_60d_0_1")) < num(entry["require_range_position_60d_0_1_min"]):
@@ -393,6 +485,10 @@ def passes_entry_rule(
         return False, "weekly_trend_too_weak"
 
     ok, reason = _passes_value_rerating_confirmation(feature_row, entry)
+    if not ok:
+        return False, reason
+
+    ok, reason = _passes_reversal_confirmation(feature_row, entry)
     if not ok:
         return False, reason
 
