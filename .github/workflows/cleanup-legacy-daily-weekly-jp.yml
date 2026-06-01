@@ -12,7 +12,7 @@ on:
           - "true"
           - "false"
       scope:
-        description: "Cleanup scope. data_pages_and_workflows also removes obsolete Daily/Weekly/prototype Actions."
+        description: "Cleanup scope. Start with data. Use wider scopes only after AI Arena pages are stable."
         required: true
         default: "data"
         type: choice
@@ -74,6 +74,7 @@ jobs:
         if: ${{ inputs.dry_run == 'false' }}
         run: |
           set -euo pipefail
+
           if [ "${{ inputs.confirm }}" != "DELETE_LEGACY_DAILY_WEEKLY_JP" ]; then
             echo "::error::Confirmation text mismatch. Cleanup aborted."
             echo "For dry_run=false, set confirm to DELETE_LEGACY_DAILY_WEEKLY_JP."
@@ -83,6 +84,7 @@ jobs:
       - name: Preview cleanup targets
         run: |
           set -euo pipefail
+
           python scripts/cleanup_legacy_daily_weekly_artifacts_jp.py \
             --dry-run \
             --scope "${LEGACY_CLEANUP_SCOPE}"
@@ -91,6 +93,7 @@ jobs:
         if: ${{ inputs.dry_run == 'false' }}
         run: |
           set -euo pipefail
+
           python scripts/cleanup_legacy_daily_weekly_artifacts_jp.py \
             --execute \
             --scope "${LEGACY_CLEANUP_SCOPE}"
@@ -130,47 +133,72 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@users.noreply.github.com"
 
-          # Stage only the known legacy deletion targets plus the cleanup report.
-          # AI Arena, AI_LAB/discussion/memory outputs, prices latest, DuckDB, and
-          # data/agents are intentionally not staged here unless already included
-          # in the report path.
-          git add -A \
-            site/data/backtest-daily-jp \
-            site/data/daily-jp \
-            site/data/daily-v2-jp \
-            site/data/japan/daily \
-            site/data/weekly-jp \
-            site/data/japan/weekly \
-            site/japan/daily \
-            site/japan/weekly \
-            site/japan/weekly-backtest \
-            site/japan/weekly-simulation \
-            site/assets/daily_jp.css \
-            site/assets/backtest_daily_jp.css \
-            site/assets/daily_simulation_jp.css \
-            site/assets/weekly_jp.css \
-            site/assets/weekly_backtest_jp.css \
-            site/assets/weekly_simulation_jp.css \
-            .github/workflows/backtest-daily-jp-incremental.yml \
-            .github/workflows/backtest-daily-jp-range.yml \
-            .github/workflows/build-daily-jp.yml \
-            .github/workflows/daily-jp-auto.yml \
-            .github/workflows/daily-jp-simulation.yml \
-            .github/workflows/render-backtest-daily-jp.yml \
-            .github/workflows/render-daily-jp.yml \
-            .github/workflows/weekly-jp-analysis.yml \
-            .github/workflows/weekly-jp-screening.yml \
-            .github/workflows/prune-safe-generated-artifacts.yml \
-            .github/workflows/prune-heavy-price-json.yml \
-            .github/workflows/fetch-prices-jp.yml \
-            .github/workflows/render-only.yml \
-            .github/workflows/agent-scores-jp-duckdb-trial.yml \
-            .github/workflows/ai-arena-cleanup.yml \
-            .github/workflows/ai-arena-jp.yml \
-            .github/workflows/ai-arena-jp-historical-simulation.yml \
-            site/data/japan/ai-arena/legacy-cleanup-report.json \
-            scripts/cleanup_legacy_daily_weekly_artifacts_jp.py \
-            .github/workflows/cleanup-legacy-daily-weekly-jp.yml
+          # Stage only known legacy deletion targets plus the cleanup report/script/workflow.
+          #
+          # Important:
+          # Some paths may already have been removed by a previous cleanup run.
+          # Calling `git add -A path` directly on an already-missing and untracked
+          # path causes:
+          #   fatal: pathspec '...' did not match any files
+          #
+          # Therefore each path is staged only when:
+          # - it currently exists in the working tree, or
+          # - it is still tracked by Git and needs deletion staged.
+          #
+          # AI Arena, AI_LAB/discussion/memory outputs, prices latest, DuckDB,
+          # and data/agents are intentionally not included here.
+          paths=(
+            "site/data/backtest-daily-jp"
+            "site/data/daily-jp"
+            "site/data/daily-v2-jp"
+            "site/data/japan/daily"
+            "site/data/weekly-jp"
+            "site/data/japan/weekly"
+
+            "site/japan/daily"
+            "site/japan/weekly"
+            "site/japan/weekly-backtest"
+            "site/japan/weekly-simulation"
+
+            "site/assets/daily_jp.css"
+            "site/assets/backtest_daily_jp.css"
+            "site/assets/daily_simulation_jp.css"
+            "site/assets/weekly_jp.css"
+            "site/assets/weekly_backtest_jp.css"
+            "site/assets/weekly_simulation_jp.css"
+
+            ".github/workflows/backtest-daily-jp-incremental.yml"
+            ".github/workflows/backtest-daily-jp-range.yml"
+            ".github/workflows/build-daily-jp.yml"
+            ".github/workflows/daily-jp-auto.yml"
+            ".github/workflows/daily-jp-simulation.yml"
+            ".github/workflows/render-backtest-daily-jp.yml"
+            ".github/workflows/render-daily-jp.yml"
+            ".github/workflows/weekly-jp-analysis.yml"
+            ".github/workflows/weekly-jp-screening.yml"
+
+            ".github/workflows/prune-safe-generated-artifacts.yml"
+            ".github/workflows/prune-heavy-price-json.yml"
+            ".github/workflows/fetch-prices-jp.yml"
+            ".github/workflows/render-only.yml"
+            ".github/workflows/agent-scores-jp-duckdb-trial.yml"
+            ".github/workflows/ai-arena-cleanup.yml"
+            ".github/workflows/ai-arena-jp.yml"
+            ".github/workflows/ai-arena-jp-historical-simulation.yml"
+
+            "site/data/japan/ai-arena/legacy-cleanup-report.json"
+            "scripts/cleanup_legacy_daily_weekly_artifacts_jp.py"
+            ".github/workflows/cleanup-legacy-daily-weekly-jp.yml"
+          )
+
+          for path in "${paths[@]}"; do
+            if [ -e "$path" ] || [ -n "$(git ls-files -- "$path")" ]; then
+              echo "stage $path"
+              git add -A -- "$path"
+            else
+              echo "skip missing/untracked $path"
+            fi
+          done
 
           if git diff --cached --quiet; then
             echo "No cleanup changes to commit."
@@ -184,13 +212,16 @@ jobs:
               echo "Push succeeded."
               exit 0
             fi
+
             echo "Push rejected. Fetching origin/main and retrying ($i/3)..."
             git fetch origin main
+
             if ! git rebase origin/main; then
               echo "Rebase failed. Aborting to avoid overwriting generated files."
               git rebase --abort || true
               exit 1
             fi
+
             sleep 5
           done
 
