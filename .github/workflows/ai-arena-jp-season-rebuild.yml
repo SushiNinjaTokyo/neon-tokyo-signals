@@ -16,9 +16,15 @@ on:
         required: false
         default: ""
       universe_limit:
-        description: "Number of JP equities to include"
+        description: "Maximum AI Arena universe size including manual includes"
         required: false
-        default: "300"
+        default: "1000"
+      price_refresh_mode:
+        description: "Price refresh mode. Use missing for new theme additions, incremental for normal repair, full only for forced repair."
+        required: false
+        default: "missing"
+        type: choice
+        options: ["missing", "incremental", "full"]
       run_mode:
         description: "Season rebuild mode"
         required: false
@@ -92,9 +98,14 @@ jobs:
       PRICE_STORE_MODE: json_and_duckdb
       PRICE_PUBLIC_JSON_MODE: summary
       WRITE_DATED_PRICE_JSON: "false"
-      UNIVERSE_LIMIT: ${{ github.event.inputs.universe_limit || '300' }}
+      UNIVERSE_LIMIT: ${{ github.event.inputs.universe_limit || '1000' }}
       OUT_UNIVERSE_CSV: data/universe/jp_duckdb_trial_300.csv
+      MANUAL_THEME_INCLUDE_CSV: data/universe/jp_manual_theme_includes.csv
+      UNIVERSE_DIAGNOSTICS_JSON: site/data/japan/universe/jp_duckdb_trial_300_diagnostics.json
       STRICT_INDEX_UNIVERSE: "true"
+      PRICE_REFRESH_MODE: ${{ github.event.inputs.price_refresh_mode || 'missing' }}
+      PRICE_INCREMENTAL_OVERLAP_DAYS: "10"
+      PRICE_MAX_FAILURE_RATIO: "0.05"
       LOOKBACK_DAYS: "520"
       REQUEST_SLEEP_SECONDS: "0.20"
       AGENT_SCORE_MIN_DATE_COVERAGE_PCT: "70"
@@ -221,7 +232,7 @@ jobs:
             python scripts/build_jp_index_universe_csv.py
           fi
 
-      - name: Build 300 ticker universe
+      - name: Build AI Arena ticker universe
         run: |
           set -euo pipefail
           python scripts/build_universe_300_from_index_csv.py
@@ -406,6 +417,7 @@ jobs:
           git add -A \
             data/universe/jp_index_universe.csv \
             data/universe/jp_duckdb_trial_300.csv \
+            data/universe/jp_manual_theme_includes.csv \
             site/data/japan/universe \
             site/data/prices-jp \
             site/data/japan/agent-scores \

@@ -9,6 +9,16 @@ on:
         default: "false"
         type: choice
         options: ["false", "true"]
+      universe_limit:
+        description: "Maximum AI Arena universe size including manual includes"
+        required: false
+        default: "1000"
+      price_refresh_mode:
+        description: "Price refresh mode: incremental for daily, missing for new tickers only, full for manual repair"
+        required: false
+        default: "incremental"
+        type: choice
+        options: ["incremental", "missing", "full"]
       fetch_fundamentals:
         description: "Fetch fundamentals during live update"
         required: false
@@ -49,9 +59,14 @@ jobs:
       PRICE_STORE_MODE: json_and_duckdb
       PRICE_PUBLIC_JSON_MODE: summary
       WRITE_DATED_PRICE_JSON: "false"
-      UNIVERSE_LIMIT: "300"
+      UNIVERSE_LIMIT: ${{ github.event.inputs.universe_limit || '1000' }}
       OUT_UNIVERSE_CSV: data/universe/jp_duckdb_trial_300.csv
+      MANUAL_THEME_INCLUDE_CSV: data/universe/jp_manual_theme_includes.csv
+      UNIVERSE_DIAGNOSTICS_JSON: site/data/japan/universe/jp_duckdb_trial_300_diagnostics.json
       STRICT_INDEX_UNIVERSE: "true"
+      PRICE_REFRESH_MODE: ${{ github.event.inputs.price_refresh_mode || 'incremental' }}
+      PRICE_INCREMENTAL_OVERLAP_DAYS: "10"
+      PRICE_MAX_FAILURE_RATIO: "0.05"
       LOOKBACK_DAYS: "520"
       REQUEST_SLEEP_SECONDS: "0.20"
       AGENT_SCORE_MIN_DATE_COVERAGE_PCT: "70"
@@ -128,6 +143,8 @@ jobs:
         run: |
           set -euo pipefail
           python -m compileall \
+            scripts/build_jp_index_universe_csv.py \
+            scripts/build_universe_300_from_index_csv.py \
             scripts/fetch_prices_jp.py \
             scripts/fetch_fundamentals_jp.py \
             scripts/build_value_features_jp.py \
@@ -138,7 +155,7 @@ jobs:
             scripts/show_duckdb_build_metadata.py \
             scripts/lib
 
-      - name: Ensure JP universe exists
+      - name: Ensure JP index universe exists
         run: |
           set -euo pipefail
           if [ ! -f data/universe/jp_index_universe.csv ]; then
@@ -303,6 +320,8 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add -A \
             data/universe/jp_duckdb_trial_300.csv \
+            data/universe/jp_manual_theme_includes.csv \
+            site/data/japan/universe \
             site/data/prices-jp \
             site/data/japan/agent-scores \
             site/data/japan/ai-arena \
