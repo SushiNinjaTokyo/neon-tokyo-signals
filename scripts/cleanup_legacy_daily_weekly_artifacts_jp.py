@@ -34,8 +34,9 @@ Scopes
 
 ``data_pages_and_workflows``
     Remove legacy public JSON directories, rendered legacy pages/assets, and
-    legacy Daily / Weekly workflow files.  Python source scripts are preserved
-    by design so they can be audited or recovered later.
+    obsolete Daily / Weekly / prototype GitHub Actions workflow files.  Python
+    source scripts are preserved by design so they can be audited or recovered
+    later.  AI_LAB data and scripts are also preserved.
 
 The script writes a report to:
     site/data/japan/ai-arena/legacy-cleanup-report.json
@@ -86,7 +87,8 @@ LEGACY_PAGE_AND_ASSET_PATHS = (
 )
 
 LEGACY_WORKFLOW_PATHS = (
-    # Daily build / render / simulation workflows.
+    # Daily build / render / simulation workflows.  These are intentionally
+    # removed after AI Arena becomes the main product path.
     ".github/workflows/backtest-daily-jp-incremental.yml",
     ".github/workflows/backtest-daily-jp-range.yml",
     ".github/workflows/build-daily-jp.yml",
@@ -94,9 +96,25 @@ LEGACY_WORKFLOW_PATHS = (
     ".github/workflows/daily-jp-simulation.yml",
     ".github/workflows/render-backtest-daily-jp.yml",
     ".github/workflows/render-daily-jp.yml",
-    # Weekly build workflows.
+
+    # Weekly build / render workflows.
     ".github/workflows/weekly-jp-analysis.yml",
     ".github/workflows/weekly-jp-screening.yml",
+
+    # Generic / old cleanup workflows that still assume Daily / Backtest
+    # public JSON exists.  Keeping them scheduled causes false failures after
+    # legacy cleanup.
+    ".github/workflows/prune-safe-generated-artifacts.yml",
+    ".github/workflows/prune-heavy-price-json.yml",
+    ".github/workflows/fetch-prices-jp.yml",
+    ".github/workflows/render-only.yml",
+
+    # Superseded AI Arena prototype / trial workflows.  AI_LAB data and scripts
+    # are preserved; only obsolete GitHub Actions entry points are removed.
+    ".github/workflows/agent-scores-jp-duckdb-trial.yml",
+    ".github/workflows/ai-arena-cleanup.yml",
+    ".github/workflows/ai-arena-jp.yml",
+    ".github/workflows/ai-arena-jp-historical-simulation.yml",
 )
 
 # Files/directories that must remain after cleanup.  These are AI Arena or
