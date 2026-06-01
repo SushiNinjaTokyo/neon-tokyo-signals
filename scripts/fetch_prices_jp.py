@@ -34,7 +34,7 @@ import sys
 import time
 import traceback
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -65,7 +65,14 @@ LOOKBACK_DAYS = int(os.getenv("LOOKBACK_DAYS", "520"))
 MIN_BARS_REQUIRED = int(os.getenv("MIN_BARS_REQUIRED", "60"))
 MIN_ACCEPTABLE_BARS = int(os.getenv("MIN_ACCEPTABLE_BARS", "20"))
 REQUEST_SLEEP_SECONDS = float(os.getenv("REQUEST_SLEEP_SECONDS", "0.25"))
-UNIVERSE_LIMIT = int(os.getenv("UNIVERSE_LIMIT", "0") or "0")
+PRICE_UNIVERSE_LIMIT = int(os.getenv("PRICE_UNIVERSE_LIMIT", "0") or "0")
+# PRICE_REFRESH_MODE controls how scheduled runs use existing DuckDB prices.
+# - incremental: fetch recent overlap for existing tickers, full lookback for new tickers
+# - missing: only fetch tickers with no existing DB prices; use cached prices for the rest
+# - full: refetch the full lookback and replace existing rows for refreshed tickers
+PRICE_REFRESH_MODE = os.getenv("PRICE_REFRESH_MODE", "incremental").strip().lower()
+PRICE_INCREMENTAL_OVERLAP_DAYS = int(os.getenv("PRICE_INCREMENTAL_OVERLAP_DAYS", "10") or "10")
+PRICE_MAX_FAILURE_RATIO = float(os.getenv("PRICE_MAX_FAILURE_RATIO", "0.05") or "0.05")
 PRICE_STORE_MODE = os.getenv("PRICE_STORE_MODE", "json").strip().lower()
 PRICE_PUBLIC_JSON_MODE = os.getenv("PRICE_PUBLIC_JSON_MODE", "summary").strip().lower()
 WRITE_DATED_PRICE_JSON = os.getenv("WRITE_DATED_PRICE_JSON", "false").strip().lower() in {"1", "true", "yes", "on"}
@@ -553,43 +560,20 @@ def build_public_payload(payload: dict[str, Any], mode: str) -> dict[str, Any]:
     raise ValueError(f"Unsupported PRICE_PUBLIC_JSON_MODE={mode!r}. Use full, summary, or none.")
 
 
-def fetch_symbol(row: UniverseRow, start: datetime, end: datetime) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
-    source_errors: list[str] = []
-
-    df, err = fetch_from_yfinance(row.symbol, start, end)
-    if err:
-        source_errors.append(err)
-
-    source = "yfinance"
-
-    if df.empty or len(df) < MIN_BARS_REQUIRED:
-        stooq_df, stooq_err = fetch_from_stooq(row.symbol, start, end)
-        if stooq_err:
-            source_errors.append(stooq_err)
-
-        if not stooq_df.empty and len(stooq_df) >= max(len(df), MIN_ACCEPTABLE_BARS):
-            df = stooq_df
-            source = "stooq"
-
-    if df.empty or len(df) < MIN_ACCEPTABLE_BARS:
-        failure = {
-            "symbol": row.symbol,
-            "name": row.name,
-            "asset_type": row.asset_type,
-            "reason": "insufficient_data",
-            "bars": int(len(df)) if df is not None else 0,
-            "source_errors": source_errors,
-        }
-        return None, failure
-
-    warnings: list[str] = []
-
+def item_from_df(
+    row: UniverseRow,
+    df: pd.DataFrame,
+    *,
+    source: str,
+    source_errors: list[str] | None = None,
+    warnings: list[str] | None = None,
+) -> dict[str, Any]:
+    warnings = list(warnings or [])
+    source_errors = list(source_errors or [])
     if len(df) < MIN_BARS_REQUIRED:
         warnings.append(f"bars_below_min_required:{len(df)}<{MIN_BARS_REQUIRED}")
-
     metrics = compute_metrics(df)
-
-    item = {
+    return {
         "symbol": row.symbol,
         "name": row.name,
         "theme": row.theme,
@@ -600,7 +584,7 @@ def fetch_symbol(row: UniverseRow, start: datetime, end: datetime) -> tuple[dict
         "market": "JP",
         "currency": "JPY",
         "source": source,
-        "source_symbol": yf_symbol(row.symbol) if source == "yfinance" else stooq_symbol(row.symbol),
+        "source_symbol": yf_symbol(row.symbol) if source in {"yfinance", "duckdb_cache+yfinance"} else stooq_symbol(row.symbol),
         "bars_count": int(len(df)),
         "date_start": df.index[0].date().isoformat(),
         "date_end": df.index[-1].date().isoformat(),
@@ -611,8 +595,133 @@ def fetch_symbol(row: UniverseRow, start: datetime, end: datetime) -> tuple[dict
         "bars": df_to_bars(df),
     }
 
-    return item, None
 
+def open_price_connection():
+    """Open DuckDB when cache-aware price refresh is useful.
+
+    Returns None for pure JSON mode.  In DuckDB-backed modes, this connection is
+    read-only in spirit but not opened read_only because the DB may be created
+    later in the same process by the canonical storage layer.
+    """
+    if PRICE_STORE_MODE not in {"json_and_duckdb", "duckdb", "duckdb_only"}:
+        return None
+    try:
+        from lib.db import connect_db
+        from lib.duckdb_schema import initialize_schema
+        conn = connect_db(PRICE_DUCKDB_PATH)
+        initialize_schema(conn)
+        return conn
+    except Exception as exc:
+        print(f"WARNING: price cache connection unavailable: {type(exc).__name__}: {exc}")
+        return None
+
+
+def load_existing_price_df(conn, symbol: str) -> pd.DataFrame:
+    if conn is None:
+        return pd.DataFrame()
+    try:
+        df = conn.execute(
+            """
+            SELECT date, open, high, low, close, volume
+            FROM prices_daily
+            WHERE ticker = ?
+            ORDER BY date
+            """,
+            [symbol],
+        ).df()
+    except Exception:
+        return pd.DataFrame()
+    if df.empty:
+        return pd.DataFrame()
+    df["date"] = pd.to_datetime(df["date"], errors="coerce")
+    df = df.dropna(subset=["date"])
+    if df.empty:
+        return pd.DataFrame()
+    df = df.set_index("date")[["open", "high", "low", "close", "volume"]]
+    return standardize_ohlcv(df)
+
+
+def combine_existing_and_fetched(existing: pd.DataFrame, fetched: pd.DataFrame) -> pd.DataFrame:
+    if existing.empty:
+        return fetched
+    if fetched.empty:
+        return existing
+    combined = pd.concat([existing, fetched], axis=0)
+    combined = combined[~combined.index.duplicated(keep="last")]
+    combined = combined.sort_index()
+    return standardize_ohlcv(combined)
+
+
+def fetch_symbol_range(row: UniverseRow, start: datetime, end: datetime) -> tuple[pd.DataFrame, str, list[str]]:
+    source_errors: list[str] = []
+    df, err = fetch_from_yfinance(row.symbol, start, end)
+    if err:
+        source_errors.append(err)
+    source = "yfinance"
+    if df.empty or len(df) < MIN_ACCEPTABLE_BARS:
+        stooq_df, stooq_err = fetch_from_stooq(row.symbol, start, end)
+        if stooq_err:
+            source_errors.append(stooq_err)
+        if not stooq_df.empty and len(stooq_df) >= max(len(df), MIN_ACCEPTABLE_BARS):
+            df = stooq_df
+            source = "stooq"
+    return df, source, source_errors
+
+
+def fetch_symbol(row: UniverseRow, start: datetime, end: datetime, price_conn=None) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
+    mode = PRICE_REFRESH_MODE
+    if mode not in {"incremental", "missing", "full"}:
+        raise ValueError(f"Unsupported PRICE_REFRESH_MODE={mode!r}. Use incremental, missing, or full.")
+
+    existing = load_existing_price_df(price_conn, row.symbol)
+    has_existing = not existing.empty and len(existing) >= MIN_ACCEPTABLE_BARS
+
+    if mode == "missing" and has_existing:
+        return item_from_df(row, existing, source="duckdb_cache", warnings=["price_refresh_mode:missing_cached"]), None
+
+    fetch_start = start
+    if mode == "incremental" and has_existing:
+        latest_date = existing.index[-1].date()
+        fetch_start = datetime.combine(latest_date - timedelta(days=PRICE_INCREMENTAL_OVERLAP_DAYS), datetime.min.time(), tzinfo=TZ)
+        if fetch_start < start:
+            fetch_start = start
+
+    fetched, source, source_errors = fetch_symbol_range(row, fetch_start, end)
+
+    if mode == "incremental" and has_existing:
+        combined = combine_existing_and_fetched(existing, fetched)
+        if combined.empty or len(combined) < MIN_ACCEPTABLE_BARS:
+            failure = {
+                "symbol": row.symbol,
+                "name": row.name,
+                "asset_type": row.asset_type,
+                "reason": "insufficient_data_after_incremental_merge",
+                "bars": int(len(combined)) if combined is not None else 0,
+                "source_errors": source_errors,
+            }
+            return None, failure
+        merged_source = "duckdb_cache+" + source if not fetched.empty else "duckdb_cache"
+        warnings = [f"price_refresh_mode:incremental", f"fetch_start:{fetch_start.date().isoformat()}"]
+        if fetched.empty:
+            warnings.append("no_new_source_bars_used_cached_prices")
+        return item_from_df(row, combined, source=merged_source, source_errors=source_errors, warnings=warnings), None
+
+    df = fetched
+    if df.empty or len(df) < MIN_ACCEPTABLE_BARS:
+        if has_existing and mode != "full":
+            return item_from_df(row, existing, source="duckdb_cache", source_errors=source_errors, warnings=["source_failed_used_cached_prices"]), None
+        failure = {
+            "symbol": row.symbol,
+            "name": row.name,
+            "asset_type": row.asset_type,
+            "reason": "insufficient_data",
+            "bars": int(len(df)) if df is not None else 0,
+            "source_errors": source_errors,
+        }
+        return None, failure
+
+    warnings = [f"price_refresh_mode:{mode}"]
+    return item_from_df(row, df, source=source, source_errors=source_errors, warnings=warnings), None
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -640,18 +749,23 @@ def main() -> int:
     print(f"PRICE_OUT_DIR={safe_relative(PRICE_OUT_DIR)}")
     print(f"LOOKBACK_DAYS={LOOKBACK_DAYS}")
     print(f"MIN_BARS_REQUIRED={MIN_BARS_REQUIRED}")
-    print(f"UNIVERSE_LIMIT={UNIVERSE_LIMIT}")
+    print(f"PRICE_UNIVERSE_LIMIT={PRICE_UNIVERSE_LIMIT}")
+    print(f"PRICE_REFRESH_MODE={PRICE_REFRESH_MODE}")
+    print(f"PRICE_INCREMENTAL_OVERLAP_DAYS={PRICE_INCREMENTAL_OVERLAP_DAYS}")
+    print(f"PRICE_MAX_FAILURE_RATIO={PRICE_MAX_FAILURE_RATIO}")
     print(f"PRICE_STORE_MODE={PRICE_STORE_MODE}")
     print(f"PRICE_PUBLIC_JSON_MODE={PRICE_PUBLIC_JSON_MODE}")
     print(f"WRITE_DATED_PRICE_JSON={WRITE_DATED_PRICE_JSON}")
     print(f"PRICE_DUCKDB_PATH={PRICE_DUCKDB_PATH}")
 
     universe = read_universe(UNIVERSE_CSV)
-    if UNIVERSE_LIMIT > 0:
+    if PRICE_UNIVERSE_LIMIT > 0:
         market_pulse_rows = [r for r in universe if r.asset_type == "market_pulse"]
         equity_rows = [r for r in universe if r.asset_type != "market_pulse"]
-        universe = equity_rows[:UNIVERSE_LIMIT] + market_pulse_rows
-        print(f"Universe limited to equities={min(len(equity_rows), UNIVERSE_LIMIT)} + market_pulse={len(market_pulse_rows)}")
+        universe = equity_rows[:PRICE_UNIVERSE_LIMIT] + market_pulse_rows
+        print(f"Universe limited by PRICE_UNIVERSE_LIMIT to equities={min(len(equity_rows), PRICE_UNIVERSE_LIMIT)} + market_pulse={len(market_pulse_rows)}")
+
+    price_conn = open_price_connection()
 
     items: list[dict[str, Any]] = []
     failures: list[dict[str, Any]] = []
@@ -660,7 +774,7 @@ def main() -> int:
         print(f"[{idx}/{len(universe)}] Fetch {row.symbol} {row.name}")
 
         try:
-            item, failure = fetch_symbol(row, start, end)
+            item, failure = fetch_symbol(row, start, end, price_conn)
             if item:
                 items.append(item)
                 print(
@@ -803,6 +917,14 @@ def main() -> int:
     if len(items_sorted) == 0:
         print("No symbols fetched successfully. Failing workflow.")
         return 2
+
+    total_symbols = max(1, len(universe))
+    failure_ratio = len(failures) / total_symbols
+    print(f"Failure ratio={failure_ratio:.4%} threshold={PRICE_MAX_FAILURE_RATIO:.4%}")
+    if PRICE_MAX_FAILURE_RATIO >= 0 and failure_ratio > PRICE_MAX_FAILURE_RATIO:
+        raise RuntimeError(
+            f"Price fetch failure ratio {failure_ratio:.2%} exceeds PRICE_MAX_FAILURE_RATIO={PRICE_MAX_FAILURE_RATIO:.2%}"
+        )
 
     return 0
 
