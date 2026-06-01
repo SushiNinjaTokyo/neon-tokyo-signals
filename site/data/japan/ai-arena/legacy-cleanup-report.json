@@ -1,13 +1,230 @@
 {
   "schema_version": "legacy_daily_weekly_cleanup_report_v1",
-  "generated_at": "2026-06-01T01:12:03+00:00",
-  "scope": "data",
+  "generated_at": "2026-06-01T01:18:21+00:00",
+  "scope": "data_pages_and_workflows",
   "dry_run": false,
-  "candidate_count": 6,
-  "candidate_existing_count": 0,
-  "candidate_tracked_count": 0,
-  "candidate_size_mb": 0.0,
-  "deleted": [],
+  "candidate_count": 33,
+  "candidate_existing_count": 27,
+  "candidate_tracked_count": 27,
+  "candidate_size_mb": 0.5198,
+  "deleted": [
+    {
+      "path": "site/japan/daily",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 254823
+    },
+    {
+      "path": "site/japan/weekly",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 10899
+    },
+    {
+      "path": "site/japan/weekly-backtest",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 32507
+    },
+    {
+      "path": "site/japan/weekly-simulation",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 12679
+    },
+    {
+      "path": "site/assets/daily_jp.css",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 26975
+    },
+    {
+      "path": "site/assets/backtest_daily_jp.css",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 30072
+    },
+    {
+      "path": "site/assets/daily_simulation_jp.css",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 19342
+    },
+    {
+      "path": "site/assets/weekly_jp.css",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 19342
+    },
+    {
+      "path": "site/assets/weekly_backtest_jp.css",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 18848
+    },
+    {
+      "path": "site/assets/weekly_simulation_jp.css",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 16496
+    },
+    {
+      "path": ".github/workflows/backtest-daily-jp-incremental.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 4929
+    },
+    {
+      "path": ".github/workflows/backtest-daily-jp-range.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 5020
+    },
+    {
+      "path": ".github/workflows/build-daily-jp.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 4904
+    },
+    {
+      "path": ".github/workflows/daily-jp-auto.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 6543
+    },
+    {
+      "path": ".github/workflows/daily-jp-simulation.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 7511
+    },
+    {
+      "path": ".github/workflows/render-backtest-daily-jp.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 4559
+    },
+    {
+      "path": ".github/workflows/render-daily-jp.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 4532
+    },
+    {
+      "path": ".github/workflows/weekly-jp-analysis.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 13278
+    },
+    {
+      "path": ".github/workflows/weekly-jp-screening.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 8335
+    },
+    {
+      "path": ".github/workflows/prune-safe-generated-artifacts.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 3396
+    },
+    {
+      "path": ".github/workflows/prune-heavy-price-json.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 2759
+    },
+    {
+      "path": ".github/workflows/fetch-prices-jp.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 2939
+    },
+    {
+      "path": ".github/workflows/render-only.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 2695
+    },
+    {
+      "path": ".github/workflows/agent-scores-jp-duckdb-trial.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 9192
+    },
+    {
+      "path": ".github/workflows/ai-arena-cleanup.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 1614
+    },
+    {
+      "path": ".github/workflows/ai-arena-jp.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 9252
+    },
+    {
+      "path": ".github/workflows/ai-arena-jp-historical-simulation.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 11562
+    }
+  ],
   "candidates": [
     {
       "path": "site/data/backtest-daily-jp",
@@ -56,6 +273,222 @@
       "exists": false,
       "tracked": false,
       "size_bytes": 0
+    },
+    {
+      "path": "site/japan/daily",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 254823
+    },
+    {
+      "path": "site/japan/weekly",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 10899
+    },
+    {
+      "path": "site/japan/weekly-backtest",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 32507
+    },
+    {
+      "path": "site/japan/weekly-simulation",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 12679
+    },
+    {
+      "path": "site/assets/daily_jp.css",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 26975
+    },
+    {
+      "path": "site/assets/backtest_daily_jp.css",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 30072
+    },
+    {
+      "path": "site/assets/daily_simulation_jp.css",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 19342
+    },
+    {
+      "path": "site/assets/weekly_jp.css",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 19342
+    },
+    {
+      "path": "site/assets/weekly_backtest_jp.css",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 18848
+    },
+    {
+      "path": "site/assets/weekly_simulation_jp.css",
+      "kind": "legacy_page_or_asset",
+      "reason": "legacy Daily / Weekly rendered page or asset",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 16496
+    },
+    {
+      "path": ".github/workflows/backtest-daily-jp-incremental.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 4929
+    },
+    {
+      "path": ".github/workflows/backtest-daily-jp-range.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 5020
+    },
+    {
+      "path": ".github/workflows/build-daily-jp.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 4904
+    },
+    {
+      "path": ".github/workflows/daily-jp-auto.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 6543
+    },
+    {
+      "path": ".github/workflows/daily-jp-simulation.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 7511
+    },
+    {
+      "path": ".github/workflows/render-backtest-daily-jp.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 4559
+    },
+    {
+      "path": ".github/workflows/render-daily-jp.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 4532
+    },
+    {
+      "path": ".github/workflows/weekly-jp-analysis.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 13278
+    },
+    {
+      "path": ".github/workflows/weekly-jp-screening.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 8335
+    },
+    {
+      "path": ".github/workflows/prune-safe-generated-artifacts.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 3396
+    },
+    {
+      "path": ".github/workflows/prune-heavy-price-json.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 2759
+    },
+    {
+      "path": ".github/workflows/fetch-prices-jp.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 2939
+    },
+    {
+      "path": ".github/workflows/render-only.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 2695
+    },
+    {
+      "path": ".github/workflows/agent-scores-jp-duckdb-trial.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 9192
+    },
+    {
+      "path": ".github/workflows/ai-arena-cleanup.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 1614
+    },
+    {
+      "path": ".github/workflows/ai-arena-jp.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 9252
+    },
+    {
+      "path": ".github/workflows/ai-arena-jp-historical-simulation.yml",
+      "kind": "legacy_workflow",
+      "reason": "legacy Daily / Weekly GitHub Actions workflow",
+      "exists": true,
+      "tracked": true,
+      "size_bytes": 11562
     }
   ],
   "protected_prefixes": [
