@@ -1,18 +1,16 @@
 schema_version: jp_agent_strategy_rules_v1
-rules_version: jp_agent_strategy_2026_dev_v013
+rules_version: jp_agent_strategy_2026_dev_v014_market_regime_mfe
 effective_date: 2026-01-01
-updated_at: 2026-05-29
+updated_at: 2026-06-01
 
-# Rules in this file are intentionally plain YAML so the strategy can be tuned
-# without editing Python. The engine only uses fields it explicitly supports;
-# unsupported fields are still useful as documentation for future enhancements.
-#
-# v013:
-# - HIZUMI becomes Value Re-rating: value + quality + trap control + price confirmation.
-#   It no longer buys cheap stocks merely because they are cheap. It requires a re-rating
-#   confirmation and tighter downside/trap filters, plus re-entry limits in the rebuild engine.
-# - SAGURI is tightened after v012 over-relaxed discovery gates and produced weak results.
-# - KYOU, NAGARE, MAMORU, MATSU, and KAESHI are intentionally unchanged.
+# v014:
+# - Adds simple TOPIX/Nikkei/Growth market-regime controls for HIZUMI, KAESHI, and SAGURI.
+# - Adds MFE-based profit protection and early-fail exits where the Trade Diagnostics
+#   showed payoff asymmetry, MFE giveback, or deep adverse moves.
+# - Keeps each agent's identity intact:
+#     HIZUMI = quality value + re-rating confirmation, not cheap falling knives.
+#     KAESHI = oversold snapback, but only after a real reversal confirmation.
+#     SAGURI = early discovery, but with stricter liquidity and weak-regime gates.
 common:
   min_price_jpy: 50
   max_price_jpy: 200000
@@ -49,6 +47,13 @@ agents:
       price_below_ma10: true
       volume_ratio_20d_below: 0.70
       return_3d_pct_below: -5
+      mfe_profit_protection:
+        - mfe_pct: 8
+          floor_return_pct: 3
+          code: PROFIT_PROTECTION
+        - mfe_pct: 12
+          floor_return_pct: 5
+          code: PROFIT_PROTECTION
 
   weekly_sage:
     exit_style: trend_break
@@ -64,6 +69,12 @@ agents:
       require_return_60d_pct_min: 5
       reject_if_return_20d_pct_gt: 45
       reject_if_volatility_60d_annualized_pct_gt: 90
+      market_regime_rules:
+        BEAR:
+          position_size_multiplier: 0.70
+        PANIC:
+          position_size_multiplier: 0.50
+          min_score: 0.82
     exit:
       hard_stop_loss_pct: -9.5
       take_profit_pct: 30
@@ -72,6 +83,9 @@ agents:
       score_below: 0.46
       price_below_ma50: true
       trend_score_weekly_proxy_below: 0.44
+      early_fail_after_days: 7
+      early_fail_mfe_below_pct: 3
+      early_fail_return_below_pct: -6
 
   risk_sentinel:
     exit_style: capital_preservation
@@ -99,13 +113,16 @@ agents:
       liquidity_score_below: 0.65
       volatility_20d_annualized_pct_above: 55
       price_below_ma50: true
+      early_fail_after_days: 3
+      early_fail_mfe_below_pct: 1
+      early_fail_return_below_pct: -5
 
   discovery_scout:
     exit_style: discovery_risk
     year_end_entry_block_trading_days: 5
     entry:
-      min_score: 0.48
-      max_rank_per_day: 18
+      min_score: 0.68
+      max_rank_per_day: 10
       allowed_actions: [Trade]
       allowed_buckets:
         - small_discovery
@@ -124,9 +141,11 @@ agents:
       bucket_optional_if_financial_setup: true
       bucket_optional_if_score_setup: true
       allow_bucket_bypass_for_discovery_setup: true
-      min_liquidity_score: 0.24
-      min_avg_traded_value_20d_jpy: 20000000
-      require_volume_ratio_20d_min: 1.25
+      min_liquidity_score: 0.45
+      min_avg_traded_value_20d_jpy: 150000000
+      require_volume_ratio_20d_min: 1.10
+      require_return_5d_pct_min: 0
+      reject_if_return_20d_pct_lt: -5
       reject_if_return_5d_pct_gt: 18
       require_market_cap_jpy_min: 5000000000
       require_market_cap_jpy_max: 1000000000000
@@ -136,6 +155,25 @@ agents:
       reject_if_pbr_gt: 15
       require_quality_guard_score_min: 0.25
       reject_if_value_trap_penalty_gt: 0.82
+      market_regime_rules:
+        BULL:
+          min_score: 0.68
+          min_liquidity_score: 0.45
+          require_volume_ratio_20d_min: 1.10
+          position_size_multiplier: 1.00
+        NEUTRAL:
+          min_score: 0.72
+          min_liquidity_score: 0.50
+          require_volume_ratio_20d_min: 1.20
+          position_size_multiplier: 0.85
+        BEAR:
+          min_score: 0.78
+          min_liquidity_score: 0.60
+          require_volume_ratio_20d_min: 1.50
+          min_avg_traded_value_20d_jpy: 200000000
+          position_size_multiplier: 0.50
+        PANIC:
+          new_entries_enabled: false
       discovery_financial_setup:
         require_market_cap_jpy_min: 5000000000
         require_market_cap_jpy_max: 1000000000000
@@ -143,23 +181,37 @@ agents:
         reject_if_value_trap_penalty_gt: 0.82
         require_volume_ratio_20d_min: 1.25
         require_range_position_60d_0_1_min: 0.32
-        require_liquidity_score_min: 0.24
+        require_liquidity_score_min: 0.45
+        require_avg_traded_value_20d_jpy_min: 120000000
       discovery_score_setup:
-        min_score: 0.52
+        min_score: 0.68
         require_volume_ratio_20d_min: 1.25
         require_range_position_60d_0_1_min: 0.32
         require_market_cap_jpy_max: 1000000000000
-        require_liquidity_score_min: 0.24
+        require_liquidity_score_min: 0.45
     exit:
-      hard_stop_loss_pct: -6.5
-      take_profit_pct: 17
+      hard_stop_loss_pct: -6.0
+      take_profit_pct: 18
       trailing_stop_pct: 7.5
-      max_holding_days: 10
-      score_below: 0.48
-      liquidity_score_below: 0.30
-      avg_traded_value_20d_jpy_below: 15000000
-      return_3d_pct_below: -8
+      max_holding_days: 25
+      score_below: 0.50
+      liquidity_score_below: 0.35
+      avg_traded_value_20d_jpy_below: 80000000
+      return_3d_pct_below: -7
       price_below_ma20: true
+      early_fail_after_days: 3
+      early_fail_mfe_below_pct: 2
+      early_fail_return_below_pct: -3
+      mfe_profit_protection:
+        - mfe_pct: 8
+          floor_return_pct: 3
+          code: PROFIT_PROTECTION
+        - mfe_pct: 12
+          floor_return_pct: 5
+          code: PROFIT_PROTECTION
+        - mfe_pct: 18
+          floor_return_pct: 8
+          code: PROFIT_PROTECTION
 
   contrarian_monk:
     exit_style: pullback_resolution
@@ -187,77 +239,148 @@ agents:
       trend_score_weekly_proxy_below: 0.42
       rsi_14_below: 32
       return_5d_pct_above: 10
+      mfe_profit_protection:
+        - mfe_pct: 8
+          floor_return_pct: 3
+          code: PROFIT_PROTECTION
+        - mfe_pct: 12
+          floor_return_pct: 5
+          code: PROFIT_PROTECTION
 
   reversal_snapback:
     exit_style: snapback_harvest
     year_end_entry_block_trading_days: 3
     entry:
-      min_score: 0.70
+      min_score: 0.68
       max_rank_per_day: 5
       allowed_actions: [Trade]
       min_liquidity_score: 0.25
       min_avg_traded_value_20d_jpy: 30000000
-      require_rsi_14_max: 45
+      require_rsi_14_max: 42
       require_bollinger_b_20_max: 0.45
       require_return_5d_pct_max: 4
       require_reversal_exhaustion_score_min: 0.45
+      reversal_confirmation_min_count: 1
+      reversal_confirmation_any:
+        return_1d_pct_min: 0
+        volume_ratio_20d_min: 1.20
+        range_position_20d_0_1_min: 0.18
+        price_above_ma5: true
+        volume_reaccumulation_score_min: 0.10
+      market_regime_rules:
+        BULL:
+          min_score: 0.68
+          reversal_confirmation_min_count: 1
+          position_size_multiplier: 1.00
+        NEUTRAL:
+          min_score: 0.70
+          reversal_confirmation_min_count: 1
+          position_size_multiplier: 0.90
+        BEAR:
+          min_score: 0.74
+          reversal_confirmation_min_count: 2
+          position_size_multiplier: 0.50
+        PANIC:
+          new_entries_enabled: false
     exit:
-      hard_stop_loss_pct: -4.8
-      take_profit_pct: 9
+      hard_stop_loss_pct: -4.0
+      take_profit_pct: 8
       trailing_stop_pct: 4.5
-      max_holding_days: 5
+      max_holding_days: 12
       score_below: 0.42
       rsi_14_above: 58
       bollinger_b_20_above: 0.55
       return_3d_pct_above: 7
       exit_if_no_positive_close_after_days: 3
+      early_fail_after_days: 2
+      early_fail_mfe_below_pct: 1.5
+      early_fail_return_below_pct: -2
+      mfe_profit_protection:
+        - mfe_pct: 5
+          floor_return_pct: 2
+          code: SNAPBACK_PROFIT_PROTECTION
+        - mfe_pct: 8
+          floor_return_pct: 4
+          code: SNAPBACK_PROFIT_PROTECTION
 
   value_mispricing:
     exit_style: value_rerating
     year_end_entry_block_trading_days: 10
     entry:
-      min_score: 0.50
-      max_rank_per_day: 18
+      min_score: 0.66
+      max_rank_per_day: 8
       allowed_actions: [Trade]
       min_liquidity_score: 0.35
       min_avg_traded_value_20d_jpy: 50000000
 
-      # Value Re-rating confirmation. HIZUMI must be cheap and improving, not merely cheap.
       require_value_rerating_confirmation: true
       rerating_confirmation_any:
         price_above_ma20: true
-        return_20d_pct_min: 0
+        return_5d_pct_min: 1.5
+        return_20d_pct_min: -3
+        volume_ratio_20d_min: 1.20
         range_position_60d_0_1_min: 0.45
         re_rating_signal_score_min: 0.45
 
-      # Avoid falling knives / value traps.
+      require_return_5d_pct_min: 0
+      reject_if_return_20d_pct_lt: -3
+      reject_if_return_60d_pct_lt: -15
+      reject_if_price_vs_ma50_pct_lt: -10
+      require_range_position_252d_0_1_min: 0.25
       require_range_position_252d_0_1_max: 0.84
-      reject_if_return_20d_pct_lt: -8
-      reject_if_return_60d_pct_lt: -18
-      reject_if_price_vs_ma50_pct_lt: -12
 
-      # Financial quality and valuation gates.
-      require_value_mispricing_score_min: 0.60
+      require_value_mispricing_score_min: 0.58
       require_valuation_discount_score_min: 0.54
-      require_quality_guard_score_min: 0.52
-      reject_if_value_trap_penalty_gt: 0.50
-      reject_if_psr_gt: 6
-      reject_if_pbr_gt: 3.5
+      require_quality_guard_score_min: 0.45
+      require_roe_pct_min: 6
+      require_operating_margin_pct_min: 4
+      reject_if_value_trap_penalty_gt: 0.35
+      reject_if_psr_gt: 3.0
+      reject_if_pbr_gt: 2.5
       allowed_valuation_buckets:
         - deep_value
         - quality_value
         - watch_value
 
-      # Re-entry control is enforced in the season rebuild engine.
+      market_regime_rules:
+        BULL:
+          min_score: 0.66
+          reject_if_value_trap_penalty_gt: 0.35
+          position_size_multiplier: 1.00
+        NEUTRAL:
+          min_score: 0.69
+          reject_if_value_trap_penalty_gt: 0.30
+          require_return_5d_pct_min: 0
+          position_size_multiplier: 0.90
+        BEAR:
+          min_score: 0.74
+          require_quality_guard_score_min: 0.55
+          require_roe_pct_min: 8
+          require_operating_margin_pct_min: 6
+          reject_if_value_trap_penalty_gt: 0.20
+          position_size_multiplier: 0.50
+        PANIC:
+          new_entries_enabled: false
+
       cooldown_after_loss_days: 20
       max_closed_trades_per_symbol_per_season: 2
       reject_if_symbol_realized_pnl_negative_after_trades: 2
     exit:
-      hard_stop_loss_pct: -6.5
-      take_profit_pct: 16
-      trailing_stop_pct: 7.5
-      max_holding_days: 35
-      score_below: 0.44
+      hard_stop_loss_pct: -4.2
+      take_profit_pct: 9
+      trailing_stop_pct: 5.5
+      max_holding_days: 42
+      score_below: 0.46
       range_position_252d_0_1_above: 0.86
-      return_20d_pct_above: 20
+      return_20d_pct_above: 18
       liquidity_score_below: 0.35
+      early_fail_after_days: 5
+      early_fail_mfe_below_pct: 1.5
+      early_fail_return_below_pct: -2.5
+      mfe_profit_protection:
+        - mfe_pct: 5
+          floor_return_pct: 1.5
+          code: VALUE_PROFIT_PROTECTION
+        - mfe_pct: 8
+          floor_return_pct: 3
+          code: VALUE_PROFIT_PROTECTION
