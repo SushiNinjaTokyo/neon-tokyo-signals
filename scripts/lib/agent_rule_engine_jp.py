@@ -272,6 +272,8 @@ def _passes_value_rerating_confirmation(feature_row: dict[str, Any], entry: dict
         checks.append((num(feature_row.get("return_20d_pct")) >= num(setup.get("return_20d_pct_min")), "return_20d_positive"))
     if "return_60d_pct_min" in setup:
         checks.append((num(feature_row.get("return_60d_pct")) >= num(setup.get("return_60d_pct_min")), "return_60d_positive"))
+    if "range_position_20d_0_1_min" in setup:
+        checks.append((num(feature_row.get("range_position_20d_0_1")) >= num(setup.get("range_position_20d_0_1_min")), "range_position_20d_recovered"))
     if "range_position_60d_0_1_min" in setup:
         checks.append((num(feature_row.get("range_position_60d_0_1")) >= num(setup.get("range_position_60d_0_1_min")), "range_position_60d_recovered"))
     if "re_rating_signal_score_min" in setup:
