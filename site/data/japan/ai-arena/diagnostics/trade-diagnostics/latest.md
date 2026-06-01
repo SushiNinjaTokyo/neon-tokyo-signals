@@ -1,6 +1,6 @@
 # Neon Tokyo AI Arena Trade Diagnostics
 
-Generated: `2026-06-01T05:31:56+00:00`
+Generated: `2026-06-01T16:22:49+00:00`
 Run ID: `arena_jp_rebuild_2026_v017`
 
 > Purpose: paste this Markdown into ChatGPT and ask for detailed agent-by-agent win/loss diagnosis and rule-improvement ideas.
