@@ -12,7 +12,7 @@ on:
           - "true"
           - "false"
       scope:
-        description: "Cleanup scope. Start with data. Use wider scopes only after AI Arena pages are stable."
+        description: "Cleanup scope. data_pages_and_workflows also removes obsolete Daily/Weekly/prototype Actions."
         required: true
         default: "data"
         type: choice
@@ -160,6 +160,14 @@ jobs:
             .github/workflows/render-daily-jp.yml \
             .github/workflows/weekly-jp-analysis.yml \
             .github/workflows/weekly-jp-screening.yml \
+            .github/workflows/prune-safe-generated-artifacts.yml \
+            .github/workflows/prune-heavy-price-json.yml \
+            .github/workflows/fetch-prices-jp.yml \
+            .github/workflows/render-only.yml \
+            .github/workflows/agent-scores-jp-duckdb-trial.yml \
+            .github/workflows/ai-arena-cleanup.yml \
+            .github/workflows/ai-arena-jp.yml \
+            .github/workflows/ai-arena-jp-historical-simulation.yml \
             site/data/japan/ai-arena/legacy-cleanup-report.json \
             scripts/cleanup_legacy_daily_weekly_artifacts_jp.py \
             .github/workflows/cleanup-legacy-daily-weekly-jp.yml

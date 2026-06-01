@@ -27,6 +27,11 @@ on:
         description: "Minimum acceptable fundamental coverage percentage"
         required: false
         default: "50"
+  schedule:
+    # GitHub cron is UTC. 10:10 UTC = 19:10 JST.
+    # Runs after the weekday AI Arena live update (18:30 JST) to validate the
+    # newly published canonical DuckDB and public JSON outputs.
+    - cron: "10 10 * * 1-5"
 
 permissions:
   contents: write

@@ -11,6 +11,11 @@ on:
         description: "Commit diagnostics and generated reports"
         required: true
         default: "true"
+  schedule:
+    # GitHub cron is UTC. 21:00 UTC Sunday = 06:00 JST Monday.
+    # Fundamentals do not need intraday refresh.  Weekly refresh keeps HIZUMI
+    # value features current without adding daily yfinance load.
+    - cron: "00 21 * * 0"
 
 permissions:
   contents: write
@@ -104,7 +109,7 @@ jobs:
 
       - name: Refresh fundamentals
         env:
-          FUNDAMENTALS_LIMIT: ${{ inputs.universe_limit }}
+          FUNDAMENTALS_LIMIT: ${{ github.event.inputs.universe_limit || '300' }}
           FUNDAMENTALS_REQUEST_SLEEP_SECONDS: "0.10"
           BUILD_COMPAT_VALUE_FEATURE_LATEST: "true"
         run: |
@@ -199,7 +204,7 @@ jobs:
             --clobber
 
       - name: Commit diagnostics
-        if: ${{ inputs.commit_outputs == 'true' }}
+        if: ${{ github.event_name == 'schedule' || github.event.inputs.commit_outputs == 'true' }}
         run: |
           set -euo pipefail
 

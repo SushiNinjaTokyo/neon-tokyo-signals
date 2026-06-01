@@ -4,60 +4,160 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "Only report deletions"
+        description: "Only report deletions without modifying files"
         required: true
         default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
       commit_outputs:
         description: "Commit prune report and deletions"
         required: true
         default: "true"
-  # Enable after manual verification:
-  # schedule:
-  #   - cron: "00 11 * * 1-5"  # 20:00 JST on weekdays
+        type: choice
+        options:
+          - "true"
+          - "false"
+  schedule:
+    # GitHub cron is UTC. 11:00 UTC = 20:00 JST.
+    # Runs after live update and data coverage review.  This only prunes AI
+    # Arena-safe generated noise such as dated prices JSON and old agent-score
+    # snapshots.  It does not touch canonical DuckDB, AI_LAB data, or current
+    # AI Arena public JSON.
+    - cron: "00 11 * * 1-5"
 
 permissions:
   contents: write
 
 concurrency:
-  group: neon-tokyo-site-${{ github.ref }}
+  group: ai-arena-jp-prune-generated-artifacts-${{ github.ref }}
   cancel-in-progress: false
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   OUT_DIR: site
+  DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run || 'false' }}
+  PRUNE_DUCKDB_CACHE: "false"
+  MAX_PRICE_LATEST_JSON_MB: "5"
+  MAX_AI_ARENA_JSON_MB: "20"
 
 jobs:
   prune:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout repository
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+
       - name: Install dependencies
         run: |
+          set -euo pipefail
           python -m pip install --upgrade pip
           pip install -r requirements-render.txt
+
       - name: Pull latest main
         run: |
           set -euo pipefail
           git pull --ff-only origin main
 
-      - name: Prune
-        env:
-          DRY_RUN: ${{ inputs.dry_run }}
+      - name: Validate prune script
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/prune_ai_arena_generated_artifacts.py
+
+      - name: Prune AI Arena-safe generated artifacts
         run: |
           set -euo pipefail
           python scripts/prune_ai_arena_generated_artifacts.py
-      - name: Commit prune changes
-        if: ${{ inputs.commit_outputs == 'true' }}
+
+      - name: Verify protected outputs still exist
         run: |
           set -euo pipefail
+
+          required_paths=(
+            "site/index.html"
+            "site/data/prices-jp/latest.json"
+            "site/data/japan/ai-arena"
+            "site/data/japan/ai-arena/hero/latest.json"
+            "site/data/japan/ai-arena/summary/latest.json"
+            "site/data/japan/ai-arena/ranking/latest.json"
+            "site/data/japan/ai-arena/positions/latest.json"
+            "site/data/japan/ai-arena/signals/latest.json"
+            "site/data/japan/ai-arena/agents/latest.json"
+            "site/japan/ai-arena"
+            "site/assets/ai_arena_jp.css"
+            "site/assets/ai_arena_jp.js"
+            "data/agents"
+          )
+
+          for path in "${required_paths[@]}"; do
+            if [ ! -e "$path" ]; then
+              echo "::error::Required AI Arena/shared path missing after prune: $path"
+              exit 1
+            fi
+            echo "verified $path"
+          done
+
+          python -m json.tool site/data/japan/ai-arena/prune-report.json >/dev/null
+          echo "verified site/data/japan/ai-arena/prune-report.json"
+
+      - name: Commit prune changes
+        if: ${{ env.DRY_RUN != 'true' && (github.event_name == 'schedule' || github.event.inputs.commit_outputs == 'true') }}
+        run: |
+          set -euo pipefail
+
           git config user.name "github-actions"
           git config user.email "actions@users.noreply.github.com"
-          git add -A site/data/japan/ai-arena/prune-report.json site/data/prices-jp site/data/japan/agent-scores
-          if git diff --cached --quiet; then exit 0; fi
+
+          git add -A \
+            site/data/japan/ai-arena/prune-report.json \
+            site/data/prices-jp \
+            site/data/japan/agent-scores
+
+          if git diff --cached --quiet; then
+            echo "No AI Arena prune changes to commit."
+            exit 0
+          fi
+
           git commit -m "Prune AI Arena generated artifacts"
-          git push origin HEAD:main
+
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Push succeeded."
+              exit 0
+            fi
+            echo "Push rejected. Fetching origin/main and retrying ($i/3)..."
+            git fetch origin main
+            if ! git rebase origin/main; then
+              echo "Rebase failed. Aborting to avoid overwriting generated prune outputs."
+              git rebase --abort || true
+              exit 1
+            fi
+            sleep 5
+          done
+
+          echo "Push failed after retries."
+          exit 1
+
+      - name: Verify clean working tree when committing
+        if: ${{ env.DRY_RUN != 'true' && (github.event_name == 'schedule' || github.event.inputs.commit_outputs == 'true') }}
+        run: |
+          set -euo pipefail
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Working tree is still dirty after prune commit."
+            git status --short
+            exit 1
+          fi
+
+      - name: Show final git status
+        run: |
+          set -euo pipefail
+          git status --short
