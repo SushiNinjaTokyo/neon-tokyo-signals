@@ -43,7 +43,7 @@ from lib.arena_run_manager_jp import (
     promote_display_run,
     rules_hash_for_files,
 )
-from lib.agent_rule_engine_jp import fetch_feature_map, fetch_score_map, passes_entry_rule
+from lib.agent_rule_engine_jp import fetch_feature_map, fetch_score_map, passes_entry_rule, entry_position_size_multiplier, market_regime_state
 from lib.execution_engine_jp import choose_execution_price, fetch_price_row
 from lib.portfolio_engine_jp import apply_bps, compute_buy_shares
 from lib.risk_engine_jp import should_exit_position
@@ -678,14 +678,20 @@ def main() -> int:
                         pr = fetch_price_row(conn, p.ticker, d)
                         cp = choose_execution_price(pr, "close") or p.entry_price
                         current_mv += cp * p.shares
+                    size_multiplier = entry_position_size_multiplier(arule, feat)
+                    if size_multiplier <= 0:
+                        diag_reject(diag, "REGIME_POSITION_SIZE_ZERO")
+                        continue
+                    base_target_pct = float(prule.get("target_position_pct", 0.10) or 0.10)
+                    base_max_pct = float(prule.get("max_position_pct", 0.15) or 0.15)
                     shares = compute_buy_shares(
                         equity_jpy=state.cash_jpy + current_mv,
                         cash_jpy=state.cash_jpy,
                         execution_price=apply_bps(next_price, slippage_bps, "BUY"),
                         score=float(row.get("normalized_score") or 0.0),
                         min_score=float((arule.get("entry") or {}).get("min_score", 0.0) or 0.0),
-                        target_position_pct=float(prule.get("target_position_pct", 0.10) or 0.10),
-                        max_position_pct=float(prule.get("max_position_pct", 0.15) or 0.15),
+                        target_position_pct=base_target_pct * size_multiplier,
+                        max_position_pct=base_max_pct * size_multiplier,
                         max_total_exposure_pct=float(prule.get("max_total_exposure_pct", 0.90) or 0.90),
                         current_market_value_jpy=current_mv,
                         commission_bps=commission_bps,
@@ -712,7 +718,7 @@ def main() -> int:
                         "slippage_jpy": None,
                         "order_status": "PENDING",
                         "reason_code": "ENTRY_RULE_PASS",
-                        "reason_text": f"{agent_label(agent)} entry: {reason}",
+                        "reason_text": f"{agent_label(agent)} entry: {reason}; regime={market_regime_state(feat)}; size_multiplier={size_multiplier:.2f}",
                         "created_at": now,
                     })
                     diag["orders_created"] += 1

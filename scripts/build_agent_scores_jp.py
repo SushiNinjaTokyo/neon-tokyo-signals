@@ -27,6 +27,7 @@ from lib.agent_profiles_jp import AGENT_PROFILES, build_agent_scores
 from lib.db import ROOT, connect_db, safe_rel, scalar
 from lib.duckdb_schema import initialize_schema
 from lib.feature_engine_jp import rebuild_features
+from lib.market_regime_jp import attach_market_regime
 from lib.arena_calendar_jp import parse_date
 
 OUT_DIR = Path(os.getenv("OUT_DIR", str(ROOT / "site")))
@@ -117,7 +118,12 @@ def _table_exists(conn, table: str) -> bool:
 
 
 def load_feature_universe_frame(conn) -> pd.DataFrame:
-    """Load all features joined with universe metadata and optional value features."""
+    """Load all features joined with universe metadata, value features, and market regime.
+
+    Market regime is intentionally attached at score-build time rather than
+    stored in features_daily so the schema remains stable and the regime logic
+    can be tuned independently from technical feature generation.
+    """
     value_join = ""
     value_cols = ""
     if _table_exists(conn, "value_features_daily"):
@@ -133,7 +139,7 @@ def load_feature_universe_frame(conn) -> pd.DataFrame:
           vf.valuation_bucket,
           vf.value_status
         """
-    return conn.execute(
+    df = conn.execute(
         f"""
         SELECT
           f.*,
@@ -153,13 +159,16 @@ def load_feature_universe_frame(conn) -> pd.DataFrame:
           u.is_small_discovery,
           u.is_value_candidate,
           u.is_excluded,
-          u.exclude_reason
+          u.exclude_reason,
+          u.source_detail,
+          u.source_url
           {value_cols}
         FROM features_daily f
         LEFT JOIN universe_master u USING (ticker)
         {value_join}
         """
     ).df()
+    return attach_market_regime(df, conn)
 
 
 def score_range(df: pd.DataFrame, start_date: str, end_date: str) -> pd.DataFrame:
