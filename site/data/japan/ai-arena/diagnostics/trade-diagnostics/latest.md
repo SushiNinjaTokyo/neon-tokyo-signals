@@ -1,8 +1,8 @@
 # Neon Tokyo AI Arena Trade Diagnostics
 
-Generated: `2026-06-02T11:17:35+00:00`
+Generated: `2026-06-02T12:32:56+00:00`
 Requested Run ID: `display`
-Effective Run ID: `arena_jp_rebuild_2026_v021`
+Effective Run ID: `arena_jp_rebuild_2026_v022`
 Schema: `neon_tokyo_ai_arena_trade_diagnostics_v2`
 
 > Purpose: high-integrity agent-by-agent win/loss diagnosis and rule-improvement source data.
@@ -20,12 +20,12 @@ Schema: `neon_tokyo_ai_arena_trade_diagnostics_v2`
 ## Run Resolution
 
 - Requested run_id: `display`
-- Effective run_id: `arena_jp_rebuild_2026_v021`
+- Effective run_id: `arena_jp_rebuild_2026_v022`
 - Display resolved: `True`
 - Used run_id filter: `True`
 - Fallback used: `False`
-- display candidate `arena_jp_rebuild_2026_v021`: trades=393, orders=823, equity=686
-- display candidate `arena_jp_rebuild_2026_v021`: trades=393, orders=823, equity=686
+- display candidate `arena_jp_rebuild_2026_v022`: trades=393, orders=823, equity=686
+- display candidate `arena_jp_rebuild_2026_v022`: trades=393, orders=823, equity=686
 
 ## Agent Summary
 
