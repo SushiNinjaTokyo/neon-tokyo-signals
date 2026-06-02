@@ -137,7 +137,17 @@ def load_feature_universe_frame(conn) -> pd.DataFrame:
           vf.value_trap_penalty,
           vf.value_mispricing_score,
           vf.valuation_bucket,
-          vf.value_status
+          vf.value_status,
+          vf.sector_33_code,
+          vf.sector_33_name,
+          vf.valuation_profile,
+          vf.theme_tags_json,
+          vf.sector_relative_per_discount,
+          vf.sector_relative_pbr_discount,
+          vf.sector_relative_psr_discount,
+          vf.sector_relative_valuation_score,
+          vf.sector_relative_quality_score,
+          vf.sector_relative_value_confidence
         """
     df = conn.execute(
         f"""
