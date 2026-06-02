@@ -277,9 +277,11 @@ jobs:
 
       - name: Build AI Arena War Room payload
         env:
-          OPENAI_ENABLE_AI: ${{ vars.OPENAI_ENABLE_AI || 'false' }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          AI_ARENA_WAR_ROOM_MODEL: ${{ vars.AI_ARENA_WAR_ROOM_MODEL || 'gpt-4o-mini' }}
+          AI_ARENA_WAR_ROOM_MODEL: ${{ vars.AI_ARENA_WAR_ROOM_MODEL || 'gpt-4o' }}
+          AI_ARENA_WAR_ROOM_MESSAGES: ${{ vars.AI_ARENA_WAR_ROOM_MESSAGES || '34' }}
+          AI_ARENA_WAR_ROOM_MIN_DELAY_SECONDS: '180'
+          AI_ARENA_WAR_ROOM_MAX_DELAY_SECONDS: '300'
           AI_ARENA_WAR_ROOM_DAILY_USD_LIMIT: ${{ vars.AI_ARENA_WAR_ROOM_DAILY_USD_LIMIT || '0.65' }}
         run: |
           set -euo pipefail
