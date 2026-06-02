@@ -349,6 +349,91 @@ def entry_position_size_multiplier(agent_rule: dict[str, Any], feature_row: dict
         return 1.0
 
 
+
+def _eval_feature_condition(feature_row: dict[str, Any], condition_key: str, threshold: Any) -> bool:
+    """Evaluate a compact YAML condition such as return_5d_pct_gt: 18.
+
+    Supported suffixes are _gt, _gte, _lt, _lte, and _between.  The feature
+    name is the condition key without the suffix.  Missing values never pass a
+    soft guard condition; this keeps the guard conservative and prevents sparse
+    fundamentals from accidentally excluding otherwise valid candidates.
+    """
+    suffix_ops = (
+        ("_between", "between"),
+        ("_gte", ">="),
+        ("_lte", "<="),
+        ("_gt", ">"),
+        ("_lt", "<"),
+    )
+    for suffix, op in suffix_ops:
+        if condition_key.endswith(suffix):
+            feature_key = condition_key[: -len(suffix)]
+            actual_raw = feature_row.get(feature_key)
+            if actual_raw is None:
+                return False
+            actual = num(actual_raw)
+            if op == "between":
+                try:
+                    lo, hi = threshold
+                except Exception:
+                    return False
+                return num(lo) <= actual <= num(hi)
+            target = num(threshold)
+            if op == ">":
+                return actual > target
+            if op == ">=":
+                return actual >= target
+            if op == "<":
+                return actual < target
+            if op == "<=":
+                return actual <= target
+    return False
+
+
+def _conditions_pass(feature_row: dict[str, Any], conditions: dict[str, Any] | None, *, mode: str) -> bool:
+    if not isinstance(conditions, dict) or not conditions:
+        return False
+    results = [_eval_feature_condition(feature_row, key, value) for key, value in conditions.items()]
+    if mode == "all":
+        return all(results)
+    if mode == "any":
+        return any(results)
+    return False
+
+
+def _passes_soft_rejects(feature_row: dict[str, Any], entry: dict[str, Any]) -> tuple[bool, str]:
+    """Apply optional soft exclusion blocks for fragile entries.
+
+    These are intentionally data-driven and conservative.  A rule rejects only
+    when its `all` block is fully true, optionally combined with `any`.  If
+    `unless_any` is present and at least one recovery/confirmation condition is
+    true, the candidate is allowed through.  This is used for SAGURI overheat
+    avoidance and KAESHI falling-knife avoidance without making either strategy
+    inert.
+    """
+    rules = entry.get("soft_rejects") or []
+    if not isinstance(rules, list):
+        return True, "soft_rejects_not_configured"
+
+    for idx, rule in enumerate(rules):
+        if not isinstance(rule, dict):
+            continue
+        all_conditions = rule.get("all") or {}
+        any_conditions = rule.get("any") or {}
+        unless_any = rule.get("unless_any") or {}
+
+        all_ok = _conditions_pass(feature_row, all_conditions, mode="all") if all_conditions else True
+        any_ok = _conditions_pass(feature_row, any_conditions, mode="any") if any_conditions else True
+        if not (all_ok and any_ok):
+            continue
+        if unless_any and _conditions_pass(feature_row, unless_any, mode="any"):
+            continue
+
+        reason = text(rule.get("reason"), f"soft_reject_{idx}").strip() or f"soft_reject_{idx}"
+        return False, reason
+
+    return True, "soft_rejects_passed"
+
 def _passes_reversal_confirmation(feature_row: dict[str, Any], entry: dict[str, Any]) -> tuple[bool, str]:
     """Count snapback confirmation signals for KAESHI-style entries."""
     min_count = int(entry.get("reversal_confirmation_min_count", 0) or 0)
@@ -520,6 +605,10 @@ def passes_entry_rule(
             return False, "short_term_euphoria_rejected"
     if "require_trend_score_weekly_proxy_min" in entry and num(feature_row.get("trend_score_weekly_proxy")) < num(entry["require_trend_score_weekly_proxy_min"]):
         return False, "weekly_trend_too_weak"
+
+    ok, reason = _passes_soft_rejects(feature_row, entry)
+    if not ok:
+        return False, reason
 
     ok, reason = _passes_value_rerating_confirmation(feature_row, entry)
     if not ok:
