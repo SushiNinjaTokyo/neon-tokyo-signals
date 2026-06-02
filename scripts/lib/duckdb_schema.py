@@ -194,6 +194,16 @@ def initialize_schema(conn: duckdb.DuckDBPyConnection) -> None:
           value_mispricing_score DOUBLE,
           valuation_bucket TEXT,
           value_status TEXT,
+          sector_33_code TEXT,
+          sector_33_name TEXT,
+          valuation_profile TEXT,
+          theme_tags_json TEXT,
+          sector_relative_per_discount DOUBLE,
+          sector_relative_pbr_discount DOUBLE,
+          sector_relative_psr_discount DOUBLE,
+          sector_relative_valuation_score DOUBLE,
+          sector_relative_quality_score DOUBLE,
+          sector_relative_value_confidence DOUBLE,
           updated_at TIMESTAMP
         )
         """
@@ -502,6 +512,16 @@ def initialize_schema(conn: duckdb.DuckDBPyConnection) -> None:
     ensure_columns(conn, "value_features_daily", {
         "fundamental_coverage_score": "DOUBLE",
         "source": "TEXT",
+        "sector_33_code": "TEXT",
+        "sector_33_name": "TEXT",
+        "valuation_profile": "TEXT",
+        "theme_tags_json": "TEXT",
+        "sector_relative_per_discount": "DOUBLE",
+        "sector_relative_pbr_discount": "DOUBLE",
+        "sector_relative_psr_discount": "DOUBLE",
+        "sector_relative_valuation_score": "DOUBLE",
+        "sector_relative_quality_score": "DOUBLE",
+        "sector_relative_value_confidence": "DOUBLE",
     })
     ensure_columns(conn, "arena_simulation_runs", {
         "finalized_season": "BOOLEAN",

@@ -120,8 +120,12 @@ def score_agent_row(row: pd.Series, profile: AgentProfile) -> tuple[float, dict[
     value_mispricing = row.get("value_mispricing_score")
     value_quality = row.get("quality_guard_score")
     value_discount = row.get("valuation_discount_score")
+    sector_rel_value = row.get("sector_relative_valuation_score")
+    sector_rel_quality = row.get("sector_relative_quality_score")
+    sector_rel_confidence = row.get("sector_relative_value_confidence")
     trap = nz(row.get("value_trap_penalty"), 0.0)
     has_value_features = any(pd.notna(x) for x in [value_mispricing, value_quality, value_discount])
+    has_sector_relative_value = any(pd.notna(x) for x in [sector_rel_value, sector_rel_quality, sector_rel_confidence])
 
     if profile.id == "daily_striker":
         # KYOU v2: favor fresh high-volume daily breakouts, not generic hot momentum.
@@ -179,23 +183,32 @@ def score_agent_row(row: pd.Series, profile: AgentProfile) -> tuple[float, dict[
         reasons = ["oversold_exhaustion", "confirmed_snapback", "regime_reversal_guard"]
     elif profile.id == "value_mispricing":
         if has_value_features:
-            # HIZUMI v3: value + quality + visible re-rating.  A weak market
-            # regime should reduce cheap-stock enthusiasm because value traps are
-            # most dangerous in broad drawdowns.
+            # HIZUMI v4: absolute value is not enough.  The agent now gives
+            # first-class weight to 33-sector relative valuation so a low PER/PBR
+            # only matters when the stock is cheap against the correct peer set.
+            # Sector-relative confidence prevents noisy/small peer groups from
+            # dominating the signal while still allowing the absolute value model
+            # to work when a sector overlay is unavailable.
             regime_adj = regime_modifier(row, bull=0.02, neutral=0.0, bear=-0.09, panic=-0.40)
-            rerate_confirm = scale(r5, 0.0, 8.0) * 0.05 + scale(r20, -3.0, 12.0) * 0.05 + scale(volratio, 0.8, 2.0) * 0.04
+            rerate_confirm = scale(r5, 0.0, 8.0) * 0.04 + scale(r20, -3.0, 12.0) * 0.04 + scale(volratio, 0.8, 2.0) * 0.03
+            sector_value_component = nz(sector_rel_value, 0.0) * 0.22 if has_sector_relative_value else 0.0
+            sector_quality_component = nz(sector_rel_quality, 0.0) * 0.08 if has_sector_relative_value else 0.0
+            sector_conf_component = nz(sector_rel_confidence, 0.0) * 0.05 if has_sector_relative_value else 0.0
             raw = (
-                nz(value_mispricing, 0.0) * 0.30
-                + nz(value_quality, 0.0) * 0.28
-                + nz(value_discount, 0.0) * 0.18
-                + value_rerate * 0.10
+                nz(value_mispricing, 0.0) * 0.22
+                + nz(value_quality, 0.0) * 0.20
+                + nz(value_discount, 0.0) * 0.12
+                + sector_value_component
+                + sector_quality_component
+                + sector_conf_component
+                + value_rerate * 0.07
                 + rerate_confirm
-                + risk * 0.05
-                + liq * 0.04
-                - trap * 0.28
+                + risk * 0.04
+                + liq * 0.03
+                - trap * 0.30
                 + regime_adj
             )
-            reasons = ["quality_value_mispricing", "rerating_confirmed", "regime_trap_guard"]
+            reasons = ["sector33_relative_mispricing", "quality_value_rerating", "regime_trap_guard"]
         else:
             raw = value_rerate * 0.34 + risk * 0.18 + liq * 0.16 + scale(-dist52, 12, 70) * 0.12 + scale(r20, -3, 16) * 0.10 + inv_scale(abs(vs50), 0, 35) * 0.06 + regime_modifier(row, bull=0.01, neutral=0.0, bear=-0.08, panic=-0.35)
             reasons = ["mispricing_proxy", "value_rerating", "regime_trap_guard"]

@@ -75,7 +75,17 @@ def fetch_feature_map(conn: duckdb.DuckDBPyConnection, d: date) -> dict[str, dic
           vf.value_mispricing_score,
           vf.valuation_bucket,
           vf.value_status,
-          vf.fundamental_coverage_score
+          vf.fundamental_coverage_score,
+          vf.sector_33_code,
+          vf.sector_33_name,
+          vf.valuation_profile,
+          vf.theme_tags_json,
+          vf.sector_relative_per_discount,
+          vf.sector_relative_pbr_discount,
+          vf.sector_relative_psr_discount,
+          vf.sector_relative_valuation_score,
+          vf.sector_relative_quality_score,
+          vf.sector_relative_value_confidence
         """
         value_join = "LEFT JOIN value_features_daily vf ON f.ticker = vf.ticker AND f.date = vf.date"
 
@@ -173,6 +183,11 @@ def _passes_numeric_financial_gates(feature_row: dict[str, Any], entry: dict[str
         ("require_quality_guard_score_min", "quality_guard_score", "quality_guard_below_threshold", ">="),
         ("require_value_mispricing_score_min", "value_mispricing_score", "value_mispricing_below_threshold", ">="),
         ("require_valuation_discount_score_min", "valuation_discount_score", "valuation_discount_below_threshold", ">="),
+        ("require_sector_relative_valuation_score_min", "sector_relative_valuation_score", "sector_relative_valuation_below_threshold", ">="),
+        ("require_sector_relative_quality_score_min", "sector_relative_quality_score", "sector_relative_quality_below_threshold", ">="),
+        ("require_sector_relative_value_confidence_min", "sector_relative_value_confidence", "sector_relative_value_confidence_below_threshold", ">="),
+        ("reject_if_sector_relative_valuation_score_lt", "sector_relative_valuation_score", "sector_relative_valuation_too_weak", ">="),
+        ("reject_if_sector_relative_quality_score_lt", "sector_relative_quality_score", "sector_relative_quality_too_weak", ">="),
         ("reject_if_value_trap_penalty_gt", "value_trap_penalty", "value_trap_penalty_too_high", "<="),
         ("reject_if_psr_gt", "psr", "psr_too_high", "<="),
         ("reject_if_pbr_gt", "pbr", "pbr_too_high", "<="),
@@ -456,9 +471,13 @@ def passes_entry_rule(
         return False, "year_range_position_too_low"
     if "require_range_position_252d_0_1_max" in entry and num(feature_row.get("range_position_252d_0_1")) > num(entry["require_range_position_252d_0_1_max"]):
         return False, "year_range_position_too_high"
+    if "reject_if_range_position_252d_0_1_lt" in entry and num(feature_row.get("range_position_252d_0_1")) < num(entry["reject_if_range_position_252d_0_1_lt"]):
+        return False, "year_range_position_extremely_low"
 
     if "reject_if_rsi_14_gt" in entry and num(feature_row.get("rsi_14")) > num(entry["reject_if_rsi_14_gt"]):
         return False, "rsi_overheated"
+    if "reject_if_rsi_14_lt" in entry and num(feature_row.get("rsi_14")) < num(entry["reject_if_rsi_14_lt"]):
+        return False, "rsi_extremely_weak"
     if "require_rsi_14_max" in entry and num(feature_row.get("rsi_14")) > num(entry["require_rsi_14_max"]):
         return False, "rsi_not_oversold_enough"
     if "require_bollinger_b_20_max" in entry and num(feature_row.get("bollinger_b_20")) > num(entry["require_bollinger_b_20_max"]):
@@ -477,12 +496,28 @@ def passes_entry_rule(
         return False, "drawdown_too_deep"
     if "reject_if_return_5d_pct_gt" in entry and num(feature_row.get("return_5d_pct")) > num(entry["reject_if_return_5d_pct_gt"]):
         return False, "five_day_move_too_extended"
+    if "reject_if_return_5d_pct_lt" in entry and num(feature_row.get("return_5d_pct")) < num(entry["reject_if_return_5d_pct_lt"]):
+        return False, "five_day_falling_knife"
     if "reject_if_return_20d_pct_gt" in entry and num(feature_row.get("return_20d_pct")) > num(entry["reject_if_return_20d_pct_gt"]):
         return False, "twenty_day_move_too_extended"
     if "reject_if_return_20d_pct_lt" in entry and num(feature_row.get("return_20d_pct")) < num(entry["reject_if_return_20d_pct_lt"]):
         return False, "pullback_too_deep"
     if "reject_if_price_vs_ma50_pct_lt" in entry and num(feature_row.get("price_vs_ma50_pct")) < num(entry["reject_if_price_vs_ma50_pct_lt"]):
         return False, "price_vs_ma50_too_low"
+
+    euphoria = entry.get("reject_if_short_term_euphoria") or {}
+    if isinstance(euphoria, dict) and euphoria:
+        euphoria_hits = []
+        if "return_5d_pct_gt" in euphoria:
+            euphoria_hits.append(num(feature_row.get("return_5d_pct")) > num(euphoria.get("return_5d_pct_gt")))
+        if "return_20d_pct_gt" in euphoria:
+            euphoria_hits.append(num(feature_row.get("return_20d_pct")) > num(euphoria.get("return_20d_pct_gt")))
+        if "rsi_14_gt" in euphoria:
+            euphoria_hits.append(num(feature_row.get("rsi_14")) > num(euphoria.get("rsi_14_gt")))
+        if "volume_ratio_20d_gt" in euphoria:
+            euphoria_hits.append(num(feature_row.get("volume_ratio_20d")) > num(euphoria.get("volume_ratio_20d_gt")))
+        if euphoria_hits and all(euphoria_hits):
+            return False, "short_term_euphoria_rejected"
     if "require_trend_score_weekly_proxy_min" in entry and num(feature_row.get("trend_score_weekly_proxy")) < num(entry["require_trend_score_weekly_proxy_min"]):
         return False, "weekly_trend_too_weak"
 
