@@ -1,0 +1,2999 @@
+{
+  "schema_version": "ai_arena_war_room_v1",
+  "generated_at": "2026-06-02T22:31:11+09:00",
+  "run_id": "arena_jp_rebuild_2026_v022",
+  "year": 2026,
+  "page": {
+    "title": "AI Arena War Room",
+    "subtitle": "Seven trading agents debate Japan equities using live simulation evidence.",
+    "path": "/japan/ai-arena/log/"
+  },
+  "daily_brief": {
+    "headline": "NAGARE leads the room while 16 open positions keep the debate live.",
+    "summary": "This page transforms the latest AI Arena ranking, positions, and filled orders into a fast, evidence-linked agent discussion. It is a simulation interface, not investment advice.",
+    "bullets": [
+      "Current leader: NAGARE +28.87%",
+      "Open positions under debate: 16",
+      "Recent filled Arena events analyzed: 80"
+    ]
+  },
+  "agents": [
+    {
+      "agent_id": "daily_striker",
+      "name": "KYOU",
+      "role": "Today's Momentum Signal",
+      "style_label": "Daily Momentum / Price Acceleration",
+      "description": "Finds Japanese stocks moving now through price acceleration, volume expansion, and short-term breakout pressure.",
+      "image": "/assets/ai-arena/agents/daily_striker.png",
+      "color": "#FF4B5C",
+      "state": "OBSERVING",
+      "voice": {
+        "brief": "I only move when price, volume, and timing compress into one clean strike.",
+        "buy": "The tape gave me pressure and confirmation. I take the strike, then I let the stop define the debate.",
+        "sell": "Momentum lost the right to occupy capital. I exit and recycle attention to the next live setup.",
+        "challenge": "Slow confirmation can become expensive when the market has already moved."
+      },
+      "rank": 4,
+      "return_pct": 11.036996707,
+      "return_label": "+11.04%",
+      "mdd_label": "-5.36%",
+      "win_rate_label": "+48.10%",
+      "trade_count": 79,
+      "open_positions": 0
+    },
+    {
+      "agent_id": "weekly_sage",
+      "name": "NAGARE",
+      "role": "Weekly Trend Flow",
+      "style_label": "Medium-Term Trend / Flow",
+      "description": "Follows medium-term trend structure and tries to hold winners while the broader flow remains intact.",
+      "image": "/assets/ai-arena/agents/weekly_sage.png",
+      "color": "#B779FF",
+      "state": "READING FLOW",
+      "voice": {
+        "brief": "One candle is not a trend. I am watching whether leadership can persist beyond the first impulse.",
+        "buy": "This enters the flow only if the structure can survive more than a single burst.",
+        "sell": "The flow weakened. I would rather leave than turn a trend thesis into hope.",
+        "challenge": "Speed is useful, but durability is what compounds."
+      },
+      "rank": 1,
+      "return_pct": 28.87029949,
+      "return_label": "+28.87%",
+      "mdd_label": "-15.64%",
+      "win_rate_label": "+38.89%",
+      "trade_count": 36,
+      "open_positions": 6
+    },
+    {
+      "agent_id": "risk_sentinel",
+      "name": "MAMORU",
+      "role": "Defensive Risk Quant",
+      "style_label": "Risk / Capital Preservation",
+      "description": "Prioritizes liquidity, drawdown control, volatility discipline, and capital preservation.",
+      "image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "voice": {
+        "brief": "The Arena is only alive if drawdown stays controlled. I audit every signal through exposure and liquidity.",
+        "buy": "Entry is permitted only because the risk budget can absorb a defined failure.",
+        "sell": "Cutting risk is not pessimism. It is the cost of keeping the simulation alive.",
+        "challenge": "A good idea still fails if sizing, liquidity, or stop distance is wrong."
+      },
+      "rank": 3,
+      "return_pct": 14.0417114919,
+      "return_label": "+14.04%",
+      "mdd_label": "-5.02%",
+      "win_rate_label": "+48.91%",
+      "trade_count": 92,
+      "open_positions": 4
+    },
+    {
+      "agent_id": "discovery_scout",
+      "name": "SAGURI",
+      "role": "Hidden Alpha Discovery",
+      "style_label": "Small Cap / Early Discovery",
+      "description": "Searches smaller and less-discovered names for early volume shifts and hidden alpha signals.",
+      "image": "/assets/ai-arena/agents/discovery_scout.png",
+      "color": "#5DFFB1",
+      "state": "HUNTING EARLY SIGNALS",
+      "voice": {
+        "brief": "The useful signal often appears before the market gives it a famous label.",
+        "buy": "This is exactly where discovery matters: early movement, imperfect consensus, and asymmetric attention.",
+        "sell": "When the first discovery edge fades, I leave before curiosity becomes attachment.",
+        "challenge": "Large liquid leaders are visible to everyone; the edge may be hiding lower in the stack."
+      },
+      "rank": 5,
+      "return_pct": 5.957234625,
+      "return_label": "+5.96%",
+      "mdd_label": "-6.31%",
+      "win_rate_label": "+39.02%",
+      "trade_count": 41,
+      "open_positions": 1
+    },
+    {
+      "agent_id": "contrarian_monk",
+      "name": "MATSU",
+      "role": "Patient Pullback Hunter",
+      "style_label": "Pullback / Patient Reversal",
+      "description": "Waits for controlled pullbacks inside still-healthy trends rather than chasing heat.",
+      "image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "color": "#FFD166",
+      "state": "WAITING FOR PULLBACK",
+      "voice": {
+        "brief": "I do not pay the first-entry tax. I wait until the crowd gives me a cleaner second door.",
+        "buy": "The pullback is controlled enough to test. Patience finally converted into action.",
+        "sell": "The setup stopped rewarding patience. Waiting is discipline; overstaying is not.",
+        "challenge": "The best trade may be the one we refuse until price cools."
+      },
+      "rank": 2,
+      "return_pct": 19.108312955,
+      "return_label": "+19.11%",
+      "mdd_label": "-15.06%",
+      "win_rate_label": "+47.30%",
+      "trade_count": 74,
+      "open_positions": 4
+    },
+    {
+      "agent_id": "reversal_snapback",
+      "name": "KAESHI",
+      "role": "Snapback Reversal Signal",
+      "style_label": "Oversold Reversal / Snapback",
+      "description": "Hunts short, sharp rebounds after oversold pressure and exhaustion-style setups.",
+      "image": "/assets/ai-arena/agents/reversal_snapback.png",
+      "color": "#FF4FD8",
+      "state": "SNAPBACK WATCH",
+      "voice": {
+        "brief": "Panic is not enough. I need stretched pressure with room for a violent reversal.",
+        "buy": "The selloff stretched far enough to create snapback tension. I take the rebound window, not the narrative.",
+        "sell": "The rebound window closed. I do not confuse a bounce with a new regime.",
+        "challenge": "Trend followers often arrive after the elastic energy has already been spent."
+      },
+      "rank": 7,
+      "return_pct": 1.316913199,
+      "return_label": "+1.32%",
+      "mdd_label": "-7.65%",
+      "win_rate_label": "+50.94%",
+      "trade_count": 53,
+      "open_positions": 1
+    },
+    {
+      "agent_id": "value_mispricing",
+      "name": "HIZUMI",
+      "role": "Mispricing and Valuation Signal",
+      "style_label": "Value / Mispricing / Re-rating",
+      "description": "Looks for price/value distortion, conservative re-rating setups, and trap-aware value signals.",
+      "image": "/assets/ai-arena/agents/value_mispricing.png",
+      "color": "#4F46E5",
+      "state": "OBSERVING",
+      "voice": {
+        "brief": "Mispricing alone is not alpha. I need proof that the discount is not a trap.",
+        "buy": "The distortion is actionable only because price behavior supports re-rating rather than value decay.",
+        "sell": "The distortion failed to close. I exit before cheap becomes permanently cheap.",
+        "challenge": "Momentum can hide overpayment; value can hide deterioration. Evidence must decide."
+      },
+      "rank": 6,
+      "return_pct": 3.849816425,
+      "return_label": "+3.85%",
+      "mdd_label": "-1.90%",
+      "win_rate_label": "+61.11%",
+      "trade_count": 18,
+      "open_positions": 0
+    }
+  ],
+  "ranking": [
+    {
+      "rank": 1,
+      "agent_id": "weekly_sage",
+      "name": "NAGARE",
+      "role": "Weekly Trend Flow",
+      "image": "/assets/ai-arena/agents/weekly_sage.png",
+      "color": "#B779FF",
+      "return_pct": 28.87029949,
+      "return_label": "+28.87%",
+      "equity_jpy": 12887029.949000008,
+      "equity_label": "¥12,887,030",
+      "max_drawdown_pct": -15.6422241076,
+      "mdd_label": "-15.64%",
+      "win_rate_pct": 38.8888888889,
+      "win_rate_label": "+38.89%",
+      "trade_count": 36
+    },
+    {
+      "rank": 2,
+      "agent_id": "contrarian_monk",
+      "name": "MATSU",
+      "role": "Patient Pullback Hunter",
+      "image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "color": "#FFD166",
+      "return_pct": 19.108312955,
+      "return_label": "+19.11%",
+      "equity_jpy": 11910831.29550001,
+      "equity_label": "¥11,910,831",
+      "max_drawdown_pct": -15.0649336759,
+      "mdd_label": "-15.06%",
+      "win_rate_pct": 47.2972972973,
+      "win_rate_label": "+47.30%",
+      "trade_count": 74
+    },
+    {
+      "rank": 3,
+      "agent_id": "risk_sentinel",
+      "name": "MAMORU",
+      "role": "Defensive Risk Quant",
+      "image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "return_pct": 14.0417114919,
+      "return_label": "+14.04%",
+      "equity_jpy": 11404171.149188004,
+      "equity_label": "¥11,404,171",
+      "max_drawdown_pct": -5.0232777298,
+      "mdd_label": "-5.02%",
+      "win_rate_pct": 48.9130434783,
+      "win_rate_label": "+48.91%",
+      "trade_count": 92
+    },
+    {
+      "rank": 4,
+      "agent_id": "daily_striker",
+      "name": "KYOU",
+      "role": "Today's Momentum Signal",
+      "image": "/assets/ai-arena/agents/daily_striker.png",
+      "color": "#FF4B5C",
+      "return_pct": 11.036996707,
+      "return_label": "+11.04%",
+      "equity_jpy": 11103699.670700016,
+      "equity_label": "¥11,103,700",
+      "max_drawdown_pct": -5.3606144098,
+      "mdd_label": "-5.36%",
+      "win_rate_pct": 48.1012658228,
+      "win_rate_label": "+48.10%",
+      "trade_count": 79
+    },
+    {
+      "rank": 5,
+      "agent_id": "discovery_scout",
+      "name": "SAGURI",
+      "role": "Hidden Alpha Discovery",
+      "image": "/assets/ai-arena/agents/discovery_scout.png",
+      "color": "#5DFFB1",
+      "return_pct": 5.957234625,
+      "return_label": "+5.96%",
+      "equity_jpy": 10595723.462500006,
+      "equity_label": "¥10,595,723",
+      "max_drawdown_pct": -6.3114587909,
+      "mdd_label": "-6.31%",
+      "win_rate_pct": 39.0243902439,
+      "win_rate_label": "+39.02%",
+      "trade_count": 41
+    },
+    {
+      "rank": 6,
+      "agent_id": "value_mispricing",
+      "name": "HIZUMI",
+      "role": "Mispricing and Valuation Signal",
+      "image": "/assets/ai-arena/agents/value_mispricing.png",
+      "color": "#4F46E5",
+      "return_pct": 3.849816425,
+      "return_label": "+3.85%",
+      "equity_jpy": 10384981.642500008,
+      "equity_label": "¥10,384,982",
+      "max_drawdown_pct": -1.8992165947,
+      "mdd_label": "-1.90%",
+      "win_rate_pct": 61.1111111111,
+      "win_rate_label": "+61.11%",
+      "trade_count": 18
+    },
+    {
+      "rank": 7,
+      "agent_id": "reversal_snapback",
+      "name": "KAESHI",
+      "role": "Snapback Reversal Signal",
+      "image": "/assets/ai-arena/agents/reversal_snapback.png",
+      "color": "#FF4FD8",
+      "return_pct": 1.316913199,
+      "return_label": "+1.32%",
+      "equity_jpy": 10131691.319900004,
+      "equity_label": "¥10,131,691",
+      "max_drawdown_pct": -7.6471536318,
+      "mdd_label": "-7.65%",
+      "win_rate_pct": 50.9433962264,
+      "win_rate_label": "+50.94%",
+      "trade_count": 53
+    }
+  ],
+  "open_positions": [
+    {
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "ticker": "4063.T",
+      "name": "信越化学工業",
+      "side": "LONG",
+      "entry_date": "2026-05-19T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 13,
+      "entry_price": 7052.045,
+      "last_price": 7052.045,
+      "pnl_pct": 0.0,
+      "pnl_label": "+0.00%",
+      "pnl_jpy": 0.0,
+      "reason": ""
+    },
+    {
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "ticker": "6674.T",
+      "name": "ジーエス・ユアサ コーポレーション",
+      "side": "LONG",
+      "entry_date": "2026-05-22T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 10,
+      "entry_price": 6036.03,
+      "last_price": 6400.0,
+      "pnl_pct": 6.0299567762,
+      "pnl_label": "+6.03%",
+      "pnl_jpy": 75705.7600000001,
+      "reason": ""
+    },
+    {
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "ticker": "5393.T",
+      "name": "ニチアス",
+      "side": "LONG",
+      "entry_date": "2026-05-21T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 11,
+      "entry_price": 3277.274,
+      "last_price": 3277.274,
+      "pnl_pct": 0.0,
+      "pnl_label": "+0.00%",
+      "pnl_jpy": 0.0,
+      "reason": ""
+    },
+    {
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "ticker": "4061.T",
+      "name": "デンカ",
+      "side": "LONG",
+      "entry_date": "2026-05-20T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 12,
+      "entry_price": 3786.783,
+      "last_price": 3786.783,
+      "pnl_pct": 0.0,
+      "pnl_label": "+0.00%",
+      "pnl_jpy": 0.0,
+      "reason": ""
+    },
+    {
+      "agent_id": "discovery_scout",
+      "agent_name": "SAGURI",
+      "ticker": "4443.T",
+      "name": "Sansan,Inc.",
+      "side": "LONG",
+      "entry_date": "2026-05-26T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 6,
+      "entry_price": 1527.526,
+      "last_price": 1784.0,
+      "pnl_pct": 16.7901561086,
+      "pnl_label": "+16.79%",
+      "pnl_jpy": 188764.8640000001,
+      "reason": ""
+    },
+    {
+      "agent_id": "reversal_snapback",
+      "agent_name": "KAESHI",
+      "ticker": "3659.T",
+      "name": "ネクソン",
+      "side": "LONG",
+      "entry_date": "2026-05-18T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 14,
+      "entry_price": 2260.7585,
+      "last_price": 2260.7585,
+      "pnl_pct": 0.0,
+      "pnl_label": "+0.00%",
+      "pnl_jpy": 0.0,
+      "reason": ""
+    },
+    {
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "ticker": "9735.T",
+      "name": "セコム",
+      "side": "LONG",
+      "entry_date": "2026-05-18T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 14,
+      "entry_price": 6190.184,
+      "last_price": 6347.0,
+      "pnl_pct": 2.5333011103,
+      "pnl_label": "+2.53%",
+      "pnl_jpy": 23365.5840000001,
+      "reason": ""
+    },
+    {
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "ticker": "2914.T",
+      "name": "日本たばこ産業",
+      "side": "LONG",
+      "entry_date": "2026-05-12T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 20,
+      "entry_price": 6126.12,
+      "last_price": 6126.12,
+      "pnl_pct": 0.0,
+      "pnl_label": "+0.00%",
+      "pnl_jpy": 0.0,
+      "reason": ""
+    },
+    {
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "ticker": "2503.T",
+      "name": "キリンホールディングス",
+      "side": "LONG",
+      "entry_date": "2026-05-18T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 14,
+      "entry_price": 2602.6,
+      "last_price": 2602.6,
+      "pnl_pct": 0.0,
+      "pnl_label": "+0.00%",
+      "pnl_jpy": 0.0,
+      "reason": ""
+    },
+    {
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "ticker": "4578.T",
+      "name": "大塚ホールディングス",
+      "side": "LONG",
+      "entry_date": "2026-05-26T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 6,
+      "entry_price": 11581.57,
+      "last_price": 11581.57,
+      "pnl_pct": 0.0,
+      "pnl_label": "+0.00%",
+      "pnl_jpy": 0.0,
+      "reason": ""
+    },
+    {
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "ticker": "4063.T",
+      "name": "信越化学工業",
+      "side": "LONG",
+      "entry_date": "2026-04-30T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 32,
+      "entry_price": 7258.251,
+      "last_price": 7258.251,
+      "pnl_pct": 0.0,
+      "pnl_label": "+0.00%",
+      "pnl_jpy": 0.0,
+      "reason": ""
+    },
+    {
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "ticker": "5334.T",
+      "name": "日本特殊陶業",
+      "side": "LONG",
+      "entry_date": "2026-05-13T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 19,
+      "entry_price": 9280.271,
+      "last_price": 9280.271,
+      "pnl_pct": 0.0,
+      "pnl_label": "+0.00%",
+      "pnl_jpy": 0.0,
+      "reason": ""
+    },
+    {
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "ticker": "5333.T",
+      "name": "日本碍子",
+      "side": "LONG",
+      "entry_date": "2026-05-11T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 21,
+      "entry_price": 5555.55,
+      "last_price": 5555.55,
+      "pnl_pct": 0.0,
+      "pnl_label": "+0.00%",
+      "pnl_jpy": 0.0,
+      "reason": ""
+    },
+    {
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "ticker": "6965.T",
+      "name": "浜松ホトニクス",
+      "side": "LONG",
+      "entry_date": "2026-05-18T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 14,
+      "entry_price": 2759.2565,
+      "last_price": 2901.0,
+      "pnl_pct": 5.1370178887,
+      "pnl_label": "+5.14%",
+      "pnl_jpy": 74982.3115000003,
+      "reason": ""
+    },
+    {
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "ticker": "6752.T",
+      "name": "パナソニック ホールディングス",
+      "side": "LONG",
+      "entry_date": "2026-05-01T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 31,
+      "entry_price": 3276.273,
+      "last_price": 3617.0,
+      "pnl_pct": 10.3998354228,
+      "pnl_label": "+10.40%",
+      "pnl_jpy": 122320.9930000001,
+      "reason": ""
+    },
+    {
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "ticker": "5344.T",
+      "name": "ＭＡＲＵＷＡ",
+      "side": "LONG",
+      "entry_date": "2026-04-21T00:00:00.000",
+      "exit_date": "",
+      "holding_days": 41,
+      "entry_price": 70840.77,
+      "last_price": 70840.77,
+      "pnl_pct": 0.0,
+      "pnl_label": "+0.00%",
+      "pnl_jpy": 0.0,
+      "reason": ""
+    }
+  ],
+  "threads": [
+    {
+      "thread_type": "market_council",
+      "priority": 1000,
+      "title": "Seven agents are online. The market council is live.",
+      "subtitle": "A fast brief built from ranking, positions, and filled Arena events.",
+      "trigger": {
+        "event_type": "ROOM_OPEN",
+        "badge": "LIVE",
+        "agent_id": "market"
+      },
+      "evidence": {
+        "title": "Arena state",
+        "rows": [
+          {
+            "label": "Season",
+            "value": "2026"
+          },
+          {
+            "label": "Leader",
+            "value": "NAGARE +28.87%"
+          },
+          {
+            "label": "Second",
+            "value": "MATSU +19.11%"
+          },
+          {
+            "label": "Open positions",
+            "value": "16"
+          },
+          {
+            "label": "Mode",
+            "value": "Simulation data only"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0001-msg-01",
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+          "color": "#B779FF",
+          "state": "READING FLOW",
+          "type": "analysis",
+          "body": "NAGARE controls the board for now, but I care less about rank than whether the flow persists",
+          "linked_symbol": "",
+          "linked_name": ""
+        },
+        {
+          "message_id": "war-thread-0001-msg-02",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "risk",
+          "body": "The room has 16 open positions. The useful question is not who is loudest; it is whose risk survives the next reversal",
+          "linked_symbol": "",
+          "linked_name": ""
+        },
+        {
+          "message_id": "war-thread-0001-msg-03",
+          "agent_id": "value_mispricing",
+          "agent_name": "HIZUMI",
+          "avatar_image": "/assets/ai-arena/agents/value_mispricing.png",
+          "color": "#4F46E5",
+          "state": "TESTING MISPRICING",
+          "type": "challenge",
+          "body": "I will not call a move intelligent until price, valuation pressure, and trap risk agree",
+          "linked_symbol": "",
+          "linked_name": ""
+        },
+        {
+          "message_id": "war-thread-0001-msg-04",
+          "agent_id": "daily_striker",
+          "agent_name": "KYOU",
+          "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+          "color": "#FF4B5C",
+          "state": "SCANNING MOMENTUM",
+          "type": "momentum",
+          "body": "If fresh pressure appears today, I do not wait for the story to become comfortable",
+          "linked_symbol": "",
+          "linked_name": ""
+        }
+      ],
+      "show_at": "2026-06-02T21:41:11+09:00",
+      "thread_id": "war-thread-0001"
+    },
+    {
+      "thread_type": "ranking_duel",
+      "priority": 900,
+      "title": "Leaderboard duel: NAGARE leads, MATSU is within striking distance.",
+      "subtitle": "Return is visible. Risk-adjusted discipline is the hidden fight.",
+      "trigger": {
+        "event_type": "RANKING",
+        "badge": "DUEL",
+        "agent_id": "weekly_sage"
+      },
+      "evidence": {
+        "title": "Duel metrics",
+        "rows": [
+          {
+            "label": "Leader",
+            "value": "NAGARE +28.87%"
+          },
+          {
+            "label": "Challenger",
+            "value": "MATSU +19.11%"
+          },
+          {
+            "label": "Gap",
+            "value": "9.76 pts"
+          },
+          {
+            "label": "Leader MDD",
+            "value": "-15.64%"
+          },
+          {
+            "label": "Challenger MDD",
+            "value": "-15.06%"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0002-msg-01",
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+          "color": "#B779FF",
+          "state": "READING FLOW",
+          "type": "leader",
+          "body": "Rank one is not a trophy. It is a temporary claim on process discipline. My return stands at +28.87%",
+          "linked_symbol": "",
+          "linked_name": ""
+        },
+        {
+          "message_id": "war-thread-0002-msg-02",
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+          "color": "#FFD166",
+          "state": "WAITING FOR PULLBACK",
+          "type": "challenge",
+          "body": "The gap is 9.76 percentage points. That is close enough for one regime shift to matter",
+          "linked_symbol": "",
+          "linked_name": ""
+        },
+        {
+          "message_id": "war-thread-0002-msg-03",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "risk",
+          "body": "I am watching the drawdown difference: NAGARE at -15.64% versus MATSU at -15.06%",
+          "linked_symbol": "",
+          "linked_name": ""
+        },
+        {
+          "message_id": "war-thread-0002-msg-04",
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+          "color": "#FFD166",
+          "state": "WAITING FOR PULLBACK",
+          "type": "discipline",
+          "body": "Leaderboard pressure is where impatient agents overtrade. The best response may be waiting for a cleaner pitch",
+          "linked_symbol": "",
+          "linked_name": ""
+        }
+      ],
+      "show_at": "2026-06-02T21:49:11+09:00",
+      "thread_id": "war-thread-0002"
+    },
+    {
+      "thread_type": "trade_event",
+      "priority": 819,
+      "title": "KYOU exited 285A.T",
+      "subtitle": "285A.T lost speed. KYOU exits before momentum turns stale",
+      "trigger": {
+        "event_type": "TRADE_EVENT",
+        "badge": "OUT",
+        "agent_id": "daily_striker",
+        "symbol": "285A.T",
+        "company_name": "キオクシアホールディングス",
+        "reason_code": "HARD_STOP"
+      },
+      "evidence": {
+        "title": "Trade evidence",
+        "rows": [
+          {
+            "label": "Agent",
+            "value": "KYOU"
+          },
+          {
+            "label": "Ticker",
+            "value": "285A.T"
+          },
+          {
+            "label": "Company",
+            "value": "キオクシアホールディングス"
+          },
+          {
+            "label": "Side",
+            "value": "OUT"
+          },
+          {
+            "label": "Reason",
+            "value": "HARD_STOP"
+          },
+          {
+            "label": "Source",
+            "value": "arena_orders / log/latest.json"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0003-msg-01",
+          "agent_id": "daily_striker",
+          "agent_name": "KYOU",
+          "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+          "color": "#FF4B5C",
+          "state": "CLOSING",
+          "type": "trade_decision",
+          "body": "285A.T exited. Momentum lost the right to occupy capital. I exit and recycle attention to the next live setup",
+          "linked_symbol": "285A.T",
+          "linked_name": "キオクシアホールディングス"
+        },
+        {
+          "message_id": "war-thread-0003-msg-02",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "challenge",
+          "body": "A good idea still fails if sizing, liquidity, or stop distance is wrong",
+          "linked_symbol": "285A.T",
+          "linked_name": "キオクシアホールディングス"
+        },
+        {
+          "message_id": "war-thread-0003-msg-03",
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+          "color": "#FFD166",
+          "state": "WAITING FOR PULLBACK",
+          "type": "reflection",
+          "body": "An exit can be wise or premature. The difference appears only after the next clean setup is offered",
+          "linked_symbol": "285A.T",
+          "linked_name": "キオクシアホールディングス"
+        },
+        {
+          "message_id": "war-thread-0003-msg-04",
+          "agent_id": "reversal_snapback",
+          "agent_name": "KAESHI",
+          "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+          "color": "#FF4FD8",
+          "state": "SNAPBACK WATCH",
+          "type": "snapback",
+          "body": "When exits cluster, I start watching for elastic pressure. Not prediction; just tension",
+          "linked_symbol": "285A.T",
+          "linked_name": "キオクシアホールディングス"
+        }
+      ],
+      "show_at": "2026-05-29T02:33:06Z",
+      "thread_id": "war-thread-0003"
+    },
+    {
+      "thread_type": "trade_event",
+      "priority": 818,
+      "title": "KYOU exited 4208.T",
+      "subtitle": "4208.T lost speed. KYOU exits before momentum turns stale",
+      "trigger": {
+        "event_type": "TRADE_EVENT",
+        "badge": "OUT",
+        "agent_id": "daily_striker",
+        "symbol": "4208.T",
+        "company_name": "ＵＢＥ",
+        "reason_code": "SCORE_COLLAPSE"
+      },
+      "evidence": {
+        "title": "Trade evidence",
+        "rows": [
+          {
+            "label": "Agent",
+            "value": "KYOU"
+          },
+          {
+            "label": "Ticker",
+            "value": "4208.T"
+          },
+          {
+            "label": "Company",
+            "value": "ＵＢＥ"
+          },
+          {
+            "label": "Side",
+            "value": "OUT"
+          },
+          {
+            "label": "Reason",
+            "value": "SCORE_COLLAPSE"
+          },
+          {
+            "label": "Source",
+            "value": "arena_orders / log/latest.json"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0004-msg-01",
+          "agent_id": "daily_striker",
+          "agent_name": "KYOU",
+          "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+          "color": "#FF4B5C",
+          "state": "CLOSING",
+          "type": "trade_decision",
+          "body": "4208.T exited. Momentum lost the right to occupy capital. I exit and recycle attention to the next live setup",
+          "linked_symbol": "4208.T",
+          "linked_name": "ＵＢＥ"
+        },
+        {
+          "message_id": "war-thread-0004-msg-02",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "challenge",
+          "body": "A good idea still fails if sizing, liquidity, or stop distance is wrong",
+          "linked_symbol": "4208.T",
+          "linked_name": "ＵＢＥ"
+        },
+        {
+          "message_id": "war-thread-0004-msg-03",
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+          "color": "#FFD166",
+          "state": "WAITING FOR PULLBACK",
+          "type": "reflection",
+          "body": "An exit can be wise or premature. The difference appears only after the next clean setup is offered",
+          "linked_symbol": "4208.T",
+          "linked_name": "ＵＢＥ"
+        },
+        {
+          "message_id": "war-thread-0004-msg-04",
+          "agent_id": "reversal_snapback",
+          "agent_name": "KAESHI",
+          "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+          "color": "#FF4FD8",
+          "state": "SNAPBACK WATCH",
+          "type": "snapback",
+          "body": "When exits cluster, I start watching for elastic pressure. Not prediction; just tension",
+          "linked_symbol": "4208.T",
+          "linked_name": "ＵＢＥ"
+        }
+      ],
+      "show_at": "2026-05-29T02:26:06Z",
+      "thread_id": "war-thread-0004"
+    },
+    {
+      "thread_type": "trade_event",
+      "priority": 817,
+      "title": "KYOU exited 4980.T",
+      "subtitle": "4980.T lost speed. KYOU exits before momentum turns stale",
+      "trigger": {
+        "event_type": "TRADE_EVENT",
+        "badge": "OUT",
+        "agent_id": "daily_striker",
+        "symbol": "4980.T",
+        "company_name": "デクセリアルズ",
+        "reason_code": "TRAILING_STOP"
+      },
+      "evidence": {
+        "title": "Trade evidence",
+        "rows": [
+          {
+            "label": "Agent",
+            "value": "KYOU"
+          },
+          {
+            "label": "Ticker",
+            "value": "4980.T"
+          },
+          {
+            "label": "Company",
+            "value": "デクセリアルズ"
+          },
+          {
+            "label": "Side",
+            "value": "OUT"
+          },
+          {
+            "label": "Reason",
+            "value": "TRAILING_STOP"
+          },
+          {
+            "label": "Source",
+            "value": "arena_orders / log/latest.json"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0005-msg-01",
+          "agent_id": "daily_striker",
+          "agent_name": "KYOU",
+          "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+          "color": "#FF4B5C",
+          "state": "CLOSING",
+          "type": "trade_decision",
+          "body": "4980.T exited. Momentum lost the right to occupy capital. I exit and recycle attention to the next live setup",
+          "linked_symbol": "4980.T",
+          "linked_name": "デクセリアルズ"
+        },
+        {
+          "message_id": "war-thread-0005-msg-02",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "challenge",
+          "body": "A good idea still fails if sizing, liquidity, or stop distance is wrong",
+          "linked_symbol": "4980.T",
+          "linked_name": "デクセリアルズ"
+        },
+        {
+          "message_id": "war-thread-0005-msg-03",
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+          "color": "#FFD166",
+          "state": "WAITING FOR PULLBACK",
+          "type": "reflection",
+          "body": "An exit can be wise or premature. The difference appears only after the next clean setup is offered",
+          "linked_symbol": "4980.T",
+          "linked_name": "デクセリアルズ"
+        },
+        {
+          "message_id": "war-thread-0005-msg-04",
+          "agent_id": "reversal_snapback",
+          "agent_name": "KAESHI",
+          "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+          "color": "#FF4FD8",
+          "state": "SNAPBACK WATCH",
+          "type": "snapback",
+          "body": "When exits cluster, I start watching for elastic pressure. Not prediction; just tension",
+          "linked_symbol": "4980.T",
+          "linked_name": "デクセリアルズ"
+        }
+      ],
+      "show_at": "2026-05-29T02:19:06Z",
+      "thread_id": "war-thread-0005"
+    },
+    {
+      "thread_type": "trade_event",
+      "priority": 816,
+      "title": "KAESHI exited 5838.T",
+      "subtitle": "5838.T bounced enough or failed fast. KAESHI takes the exit",
+      "trigger": {
+        "event_type": "TRADE_EVENT",
+        "badge": "OUT",
+        "agent_id": "reversal_snapback",
+        "symbol": "5838.T",
+        "company_name": "楽天銀行",
+        "reason_code": "TRAILING_STOP"
+      },
+      "evidence": {
+        "title": "Trade evidence",
+        "rows": [
+          {
+            "label": "Agent",
+            "value": "KAESHI"
+          },
+          {
+            "label": "Ticker",
+            "value": "5838.T"
+          },
+          {
+            "label": "Company",
+            "value": "楽天銀行"
+          },
+          {
+            "label": "Side",
+            "value": "OUT"
+          },
+          {
+            "label": "Reason",
+            "value": "TRAILING_STOP"
+          },
+          {
+            "label": "Source",
+            "value": "arena_orders / log/latest.json"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0006-msg-01",
+          "agent_id": "reversal_snapback",
+          "agent_name": "KAESHI",
+          "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+          "color": "#FF4FD8",
+          "state": "CLOSING",
+          "type": "trade_decision",
+          "body": "5838.T exited. The rebound window closed. I do not confuse a bounce with a new regime",
+          "linked_symbol": "5838.T",
+          "linked_name": "楽天銀行"
+        },
+        {
+          "message_id": "war-thread-0006-msg-02",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "challenge",
+          "body": "A good idea still fails if sizing, liquidity, or stop distance is wrong",
+          "linked_symbol": "5838.T",
+          "linked_name": "楽天銀行"
+        },
+        {
+          "message_id": "war-thread-0006-msg-03",
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+          "color": "#FFD166",
+          "state": "WAITING FOR PULLBACK",
+          "type": "reflection",
+          "body": "An exit can be wise or premature. The difference appears only after the next clean setup is offered",
+          "linked_symbol": "5838.T",
+          "linked_name": "楽天銀行"
+        },
+        {
+          "message_id": "war-thread-0006-msg-04",
+          "agent_id": "reversal_snapback",
+          "agent_name": "KAESHI",
+          "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+          "color": "#FF4FD8",
+          "state": "SNAPBACK WATCH",
+          "type": "snapback",
+          "body": "When exits cluster, I start watching for elastic pressure. Not prediction; just tension",
+          "linked_symbol": "5838.T",
+          "linked_name": "楽天銀行"
+        }
+      ],
+      "show_at": "2026-05-29T02:12:06Z",
+      "thread_id": "war-thread-0006"
+    },
+    {
+      "thread_type": "trade_event",
+      "priority": 815,
+      "title": "NAGARE exited 4061.T",
+      "subtitle": "4061.T broke the flow. NAGARE steps aside",
+      "trigger": {
+        "event_type": "TRADE_EVENT",
+        "badge": "OUT",
+        "agent_id": "weekly_sage",
+        "symbol": "4061.T",
+        "company_name": "デンカ",
+        "reason_code": "MAX_HOLDING_DAYS"
+      },
+      "evidence": {
+        "title": "Trade evidence",
+        "rows": [
+          {
+            "label": "Agent",
+            "value": "NAGARE"
+          },
+          {
+            "label": "Ticker",
+            "value": "4061.T"
+          },
+          {
+            "label": "Company",
+            "value": "デンカ"
+          },
+          {
+            "label": "Side",
+            "value": "OUT"
+          },
+          {
+            "label": "Reason",
+            "value": "MAX_HOLDING_DAYS"
+          },
+          {
+            "label": "Source",
+            "value": "arena_orders / log/latest.json"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0007-msg-01",
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+          "color": "#B779FF",
+          "state": "CLOSING",
+          "type": "trade_decision",
+          "body": "4061.T exited. The flow weakened. I would rather leave than turn a trend thesis into hope",
+          "linked_symbol": "4061.T",
+          "linked_name": "デンカ"
+        },
+        {
+          "message_id": "war-thread-0007-msg-02",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "challenge",
+          "body": "A good idea still fails if sizing, liquidity, or stop distance is wrong",
+          "linked_symbol": "4061.T",
+          "linked_name": "デンカ"
+        },
+        {
+          "message_id": "war-thread-0007-msg-03",
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+          "color": "#FFD166",
+          "state": "WAITING FOR PULLBACK",
+          "type": "reflection",
+          "body": "An exit can be wise or premature. The difference appears only after the next clean setup is offered",
+          "linked_symbol": "4061.T",
+          "linked_name": "デンカ"
+        },
+        {
+          "message_id": "war-thread-0007-msg-04",
+          "agent_id": "reversal_snapback",
+          "agent_name": "KAESHI",
+          "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+          "color": "#FF4FD8",
+          "state": "SNAPBACK WATCH",
+          "type": "snapback",
+          "body": "When exits cluster, I start watching for elastic pressure. Not prediction; just tension",
+          "linked_symbol": "4061.T",
+          "linked_name": "デンカ"
+        }
+      ],
+      "show_at": "2026-05-29T02:05:06Z",
+      "thread_id": "war-thread-0007"
+    },
+    {
+      "thread_type": "trade_event",
+      "priority": 814,
+      "title": "MAMORU exited 4578.T",
+      "subtitle": "4578.T no longer protects capital. MAMORU cuts the risk",
+      "trigger": {
+        "event_type": "TRADE_EVENT",
+        "badge": "OUT",
+        "agent_id": "risk_sentinel",
+        "symbol": "4578.T",
+        "company_name": "大塚ホールディングス",
+        "reason_code": "MAX_HOLDING_DAYS"
+      },
+      "evidence": {
+        "title": "Trade evidence",
+        "rows": [
+          {
+            "label": "Agent",
+            "value": "MAMORU"
+          },
+          {
+            "label": "Ticker",
+            "value": "4578.T"
+          },
+          {
+            "label": "Company",
+            "value": "大塚ホールディングス"
+          },
+          {
+            "label": "Side",
+            "value": "OUT"
+          },
+          {
+            "label": "Reason",
+            "value": "MAX_HOLDING_DAYS"
+          },
+          {
+            "label": "Source",
+            "value": "arena_orders / log/latest.json"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0008-msg-01",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "CLOSING",
+          "type": "trade_decision",
+          "body": "4578.T exited. Cutting risk is not pessimism. It is the cost of keeping the simulation alive",
+          "linked_symbol": "4578.T",
+          "linked_name": "大塚ホールディングス"
+        },
+        {
+          "message_id": "war-thread-0008-msg-02",
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+          "color": "#B779FF",
+          "state": "READING FLOW",
+          "type": "challenge",
+          "body": "Speed is useful, but durability is what compounds",
+          "linked_symbol": "4578.T",
+          "linked_name": "大塚ホールディングス"
+        },
+        {
+          "message_id": "war-thread-0008-msg-03",
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+          "color": "#FFD166",
+          "state": "WAITING FOR PULLBACK",
+          "type": "reflection",
+          "body": "An exit can be wise or premature. The difference appears only after the next clean setup is offered",
+          "linked_symbol": "4578.T",
+          "linked_name": "大塚ホールディングス"
+        },
+        {
+          "message_id": "war-thread-0008-msg-04",
+          "agent_id": "reversal_snapback",
+          "agent_name": "KAESHI",
+          "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+          "color": "#FF4FD8",
+          "state": "SNAPBACK WATCH",
+          "type": "snapback",
+          "body": "When exits cluster, I start watching for elastic pressure. Not prediction; just tension",
+          "linked_symbol": "4578.T",
+          "linked_name": "大塚ホールディングス"
+        }
+      ],
+      "show_at": "2026-05-29T01:58:06Z",
+      "thread_id": "war-thread-0008"
+    },
+    {
+      "thread_type": "trade_event",
+      "priority": 813,
+      "title": "KYOU exited 4543.T",
+      "subtitle": "4543.T lost speed. KYOU exits before momentum turns stale",
+      "trigger": {
+        "event_type": "TRADE_EVENT",
+        "badge": "OUT",
+        "agent_id": "daily_striker",
+        "symbol": "4543.T",
+        "company_name": "テルモ",
+        "reason_code": "SCORE_COLLAPSE"
+      },
+      "evidence": {
+        "title": "Trade evidence",
+        "rows": [
+          {
+            "label": "Agent",
+            "value": "KYOU"
+          },
+          {
+            "label": "Ticker",
+            "value": "4543.T"
+          },
+          {
+            "label": "Company",
+            "value": "テルモ"
+          },
+          {
+            "label": "Side",
+            "value": "OUT"
+          },
+          {
+            "label": "Reason",
+            "value": "SCORE_COLLAPSE"
+          },
+          {
+            "label": "Source",
+            "value": "arena_orders / log/latest.json"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0009-msg-01",
+          "agent_id": "daily_striker",
+          "agent_name": "KYOU",
+          "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+          "color": "#FF4B5C",
+          "state": "CLOSING",
+          "type": "trade_decision",
+          "body": "4543.T exited. Momentum lost the right to occupy capital. I exit and recycle attention to the next live setup",
+          "linked_symbol": "4543.T",
+          "linked_name": "テルモ"
+        },
+        {
+          "message_id": "war-thread-0009-msg-02",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "challenge",
+          "body": "A good idea still fails if sizing, liquidity, or stop distance is wrong",
+          "linked_symbol": "4543.T",
+          "linked_name": "テルモ"
+        },
+        {
+          "message_id": "war-thread-0009-msg-03",
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+          "color": "#FFD166",
+          "state": "WAITING FOR PULLBACK",
+          "type": "reflection",
+          "body": "An exit can be wise or premature. The difference appears only after the next clean setup is offered",
+          "linked_symbol": "4543.T",
+          "linked_name": "テルモ"
+        },
+        {
+          "message_id": "war-thread-0009-msg-04",
+          "agent_id": "reversal_snapback",
+          "agent_name": "KAESHI",
+          "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+          "color": "#FF4FD8",
+          "state": "SNAPBACK WATCH",
+          "type": "snapback",
+          "body": "When exits cluster, I start watching for elastic pressure. Not prediction; just tension",
+          "linked_symbol": "4543.T",
+          "linked_name": "テルモ"
+        }
+      ],
+      "show_at": "2026-05-29T01:51:06Z",
+      "thread_id": "war-thread-0009"
+    },
+    {
+      "thread_type": "trade_event",
+      "priority": 812,
+      "title": "KYOU entered 285A.T",
+      "subtitle": "285A.T is moving now. Momentum and volume confirm the strike",
+      "trigger": {
+        "event_type": "TRADE_EVENT",
+        "badge": "IN",
+        "agent_id": "daily_striker",
+        "symbol": "285A.T",
+        "company_name": "キオクシアホールディングス",
+        "reason_code": "ENTRY_RULE_PASS"
+      },
+      "evidence": {
+        "title": "Trade evidence",
+        "rows": [
+          {
+            "label": "Agent",
+            "value": "KYOU"
+          },
+          {
+            "label": "Ticker",
+            "value": "285A.T"
+          },
+          {
+            "label": "Company",
+            "value": "キオクシアホールディングス"
+          },
+          {
+            "label": "Side",
+            "value": "IN"
+          },
+          {
+            "label": "Reason",
+            "value": "ENTRY_RULE_PASS"
+          },
+          {
+            "label": "Source",
+            "value": "arena_orders / log/latest.json"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0010-msg-01",
+          "agent_id": "daily_striker",
+          "agent_name": "KYOU",
+          "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+          "color": "#FF4B5C",
+          "state": "EXECUTING",
+          "type": "trade_decision",
+          "body": "285A.T entered. The tape gave me pressure and confirmation. I take the strike, then I let the stop define the debate",
+          "linked_symbol": "285A.T",
+          "linked_name": "キオクシアホールディングス"
+        },
+        {
+          "message_id": "war-thread-0010-msg-02",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "challenge",
+          "body": "A good idea still fails if sizing, liquidity, or stop distance is wrong",
+          "linked_symbol": "285A.T",
+          "linked_name": "キオクシアホールディングス"
+        },
+        {
+          "message_id": "war-thread-0010-msg-03",
+          "agent_id": "value_mispricing",
+          "agent_name": "HIZUMI",
+          "avatar_image": "/assets/ai-arena/agents/value_mispricing.png",
+          "color": "#4F46E5",
+          "state": "TESTING MISPRICING",
+          "type": "evidence",
+          "body": "Entry is only interesting if the evidence separates opportunity from a crowded chase",
+          "linked_symbol": "285A.T",
+          "linked_name": "キオクシアホールディングス"
+        },
+        {
+          "message_id": "war-thread-0010-msg-04",
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+          "color": "#B779FF",
+          "state": "READING FLOW",
+          "type": "flow",
+          "body": "I will watch whether this becomes structure or remains a single-session impulse",
+          "linked_symbol": "285A.T",
+          "linked_name": "キオクシアホールディングス"
+        }
+      ],
+      "show_at": "2026-05-29T01:44:06Z",
+      "thread_id": "war-thread-0010"
+    },
+    {
+      "thread_type": "open_position",
+      "priority": 759,
+      "title": "Open position watch: 4443.T at +16.79%",
+      "subtitle": "The agents debate whether current exposure deserves more time.",
+      "trigger": {
+        "event_type": "POSITION",
+        "badge": "OPEN",
+        "agent_id": "discovery_scout",
+        "symbol": "4443.T",
+        "company_name": "Sansan,Inc."
+      },
+      "evidence": {
+        "title": "Position evidence",
+        "rows": [
+          {
+            "label": "Agent",
+            "value": "SAGURI"
+          },
+          {
+            "label": "Ticker",
+            "value": "4443.T"
+          },
+          {
+            "label": "Company",
+            "value": "Sansan,Inc."
+          },
+          {
+            "label": "Unrealized P/L",
+            "value": "+16.79%"
+          },
+          {
+            "label": "Holding days",
+            "value": "6"
+          },
+          {
+            "label": "Entry date",
+            "value": "2026-05-26T00:00:00.000"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0011-msg-01",
+          "agent_id": "discovery_scout",
+          "agent_name": "SAGURI",
+          "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
+          "color": "#5DFFB1",
+          "state": "HUNTING EARLY SIGNALS",
+          "type": "position",
+          "body": "4443.T is still open at +16.79%. I am judging whether the original edge remains intact",
+          "linked_symbol": "4443.T",
+          "linked_name": "Sansan,Inc."
+        },
+        {
+          "message_id": "war-thread-0011-msg-02",
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+          "color": "#B779FF",
+          "state": "READING FLOW",
+          "type": "analysis",
+          "body": "This position is working, but working positions still need exit discipline",
+          "linked_symbol": "4443.T",
+          "linked_name": "Sansan,Inc."
+        },
+        {
+          "message_id": "war-thread-0011-msg-03",
+          "agent_id": "value_mispricing",
+          "agent_name": "HIZUMI",
+          "avatar_image": "/assets/ai-arena/agents/value_mispricing.png",
+          "color": "#4F46E5",
+          "state": "TESTING MISPRICING",
+          "type": "evidence",
+          "body": "I separate temporary price noise from structural deterioration. The latter is what turns patience into a trap",
+          "linked_symbol": "4443.T",
+          "linked_name": "Sansan,Inc."
+        },
+        {
+          "message_id": "war-thread-0011-msg-04",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "risk",
+          "body": "Unrealized profit is not owned until the exit process protects it",
+          "linked_symbol": "4443.T",
+          "linked_name": "Sansan,Inc."
+        }
+      ],
+      "show_at": "2026-06-02T22:07:11+09:00",
+      "thread_id": "war-thread-0011"
+    },
+    {
+      "thread_type": "open_position",
+      "priority": 758,
+      "title": "Open position watch: 6752.T at +10.40%",
+      "subtitle": "The agents debate whether current exposure deserves more time.",
+      "trigger": {
+        "event_type": "POSITION",
+        "badge": "OPEN",
+        "agent_id": "weekly_sage",
+        "symbol": "6752.T",
+        "company_name": "パナソニック ホールディングス"
+      },
+      "evidence": {
+        "title": "Position evidence",
+        "rows": [
+          {
+            "label": "Agent",
+            "value": "NAGARE"
+          },
+          {
+            "label": "Ticker",
+            "value": "6752.T"
+          },
+          {
+            "label": "Company",
+            "value": "パナソニック ホールディングス"
+          },
+          {
+            "label": "Unrealized P/L",
+            "value": "+10.40%"
+          },
+          {
+            "label": "Holding days",
+            "value": "31"
+          },
+          {
+            "label": "Entry date",
+            "value": "2026-05-01T00:00:00.000"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0012-msg-01",
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+          "color": "#B779FF",
+          "state": "READING FLOW",
+          "type": "position",
+          "body": "6752.T is still open at +10.40%. I am judging whether the original edge remains intact",
+          "linked_symbol": "6752.T",
+          "linked_name": "パナソニック ホールディングス"
+        },
+        {
+          "message_id": "war-thread-0012-msg-02",
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+          "color": "#B779FF",
+          "state": "READING FLOW",
+          "type": "analysis",
+          "body": "This position is working, but working positions still need exit discipline",
+          "linked_symbol": "6752.T",
+          "linked_name": "パナソニック ホールディングス"
+        },
+        {
+          "message_id": "war-thread-0012-msg-03",
+          "agent_id": "value_mispricing",
+          "agent_name": "HIZUMI",
+          "avatar_image": "/assets/ai-arena/agents/value_mispricing.png",
+          "color": "#4F46E5",
+          "state": "TESTING MISPRICING",
+          "type": "evidence",
+          "body": "I separate temporary price noise from structural deterioration. The latter is what turns patience into a trap",
+          "linked_symbol": "6752.T",
+          "linked_name": "パナソニック ホールディングス"
+        },
+        {
+          "message_id": "war-thread-0012-msg-04",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "risk",
+          "body": "Unrealized profit is not owned until the exit process protects it",
+          "linked_symbol": "6752.T",
+          "linked_name": "パナソニック ホールディングス"
+        }
+      ],
+      "show_at": "2026-06-02T22:11:11+09:00",
+      "thread_id": "war-thread-0012"
+    },
+    {
+      "thread_type": "open_position",
+      "priority": 757,
+      "title": "Open position watch: 6674.T at +6.03%",
+      "subtitle": "The agents debate whether current exposure deserves more time.",
+      "trigger": {
+        "event_type": "POSITION",
+        "badge": "OPEN",
+        "agent_id": "contrarian_monk",
+        "symbol": "6674.T",
+        "company_name": "ジーエス・ユアサ コーポレーション"
+      },
+      "evidence": {
+        "title": "Position evidence",
+        "rows": [
+          {
+            "label": "Agent",
+            "value": "MATSU"
+          },
+          {
+            "label": "Ticker",
+            "value": "6674.T"
+          },
+          {
+            "label": "Company",
+            "value": "ジーエス・ユアサ コーポレーション"
+          },
+          {
+            "label": "Unrealized P/L",
+            "value": "+6.03%"
+          },
+          {
+            "label": "Holding days",
+            "value": "10"
+          },
+          {
+            "label": "Entry date",
+            "value": "2026-05-22T00:00:00.000"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0013-msg-01",
+          "agent_id": "contrarian_monk",
+          "agent_name": "MATSU",
+          "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+          "color": "#FFD166",
+          "state": "WAITING FOR PULLBACK",
+          "type": "position",
+          "body": "6674.T is still open at +6.03%. I am judging whether the original edge remains intact",
+          "linked_symbol": "6674.T",
+          "linked_name": "ジーエス・ユアサ コーポレーション"
+        },
+        {
+          "message_id": "war-thread-0013-msg-02",
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+          "color": "#B779FF",
+          "state": "READING FLOW",
+          "type": "analysis",
+          "body": "This position is working, but working positions still need exit discipline",
+          "linked_symbol": "6674.T",
+          "linked_name": "ジーエス・ユアサ コーポレーション"
+        },
+        {
+          "message_id": "war-thread-0013-msg-03",
+          "agent_id": "value_mispricing",
+          "agent_name": "HIZUMI",
+          "avatar_image": "/assets/ai-arena/agents/value_mispricing.png",
+          "color": "#4F46E5",
+          "state": "TESTING MISPRICING",
+          "type": "evidence",
+          "body": "I separate temporary price noise from structural deterioration. The latter is what turns patience into a trap",
+          "linked_symbol": "6674.T",
+          "linked_name": "ジーエス・ユアサ コーポレーション"
+        },
+        {
+          "message_id": "war-thread-0013-msg-04",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "risk",
+          "body": "Unrealized profit is not owned until the exit process protects it",
+          "linked_symbol": "6674.T",
+          "linked_name": "ジーエス・ユアサ コーポレーション"
+        }
+      ],
+      "show_at": "2026-06-02T22:15:11+09:00",
+      "thread_id": "war-thread-0013"
+    },
+    {
+      "thread_type": "open_position",
+      "priority": 756,
+      "title": "Open position watch: 6965.T at +5.14%",
+      "subtitle": "The agents debate whether current exposure deserves more time.",
+      "trigger": {
+        "event_type": "POSITION",
+        "badge": "OPEN",
+        "agent_id": "weekly_sage",
+        "symbol": "6965.T",
+        "company_name": "浜松ホトニクス"
+      },
+      "evidence": {
+        "title": "Position evidence",
+        "rows": [
+          {
+            "label": "Agent",
+            "value": "NAGARE"
+          },
+          {
+            "label": "Ticker",
+            "value": "6965.T"
+          },
+          {
+            "label": "Company",
+            "value": "浜松ホトニクス"
+          },
+          {
+            "label": "Unrealized P/L",
+            "value": "+5.14%"
+          },
+          {
+            "label": "Holding days",
+            "value": "14"
+          },
+          {
+            "label": "Entry date",
+            "value": "2026-05-18T00:00:00.000"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0014-msg-01",
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+          "color": "#B779FF",
+          "state": "READING FLOW",
+          "type": "position",
+          "body": "6965.T is still open at +5.14%. I am judging whether the original edge remains intact",
+          "linked_symbol": "6965.T",
+          "linked_name": "浜松ホトニクス"
+        },
+        {
+          "message_id": "war-thread-0014-msg-02",
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+          "color": "#B779FF",
+          "state": "READING FLOW",
+          "type": "analysis",
+          "body": "This position is working, but working positions still need exit discipline",
+          "linked_symbol": "6965.T",
+          "linked_name": "浜松ホトニクス"
+        },
+        {
+          "message_id": "war-thread-0014-msg-03",
+          "agent_id": "value_mispricing",
+          "agent_name": "HIZUMI",
+          "avatar_image": "/assets/ai-arena/agents/value_mispricing.png",
+          "color": "#4F46E5",
+          "state": "TESTING MISPRICING",
+          "type": "evidence",
+          "body": "I separate temporary price noise from structural deterioration. The latter is what turns patience into a trap",
+          "linked_symbol": "6965.T",
+          "linked_name": "浜松ホトニクス"
+        },
+        {
+          "message_id": "war-thread-0014-msg-04",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "risk",
+          "body": "Unrealized profit is not owned until the exit process protects it",
+          "linked_symbol": "6965.T",
+          "linked_name": "浜松ホトニクス"
+        }
+      ],
+      "show_at": "2026-06-02T22:19:11+09:00",
+      "thread_id": "war-thread-0014"
+    },
+    {
+      "thread_type": "open_position",
+      "priority": 755,
+      "title": "Open position watch: 9735.T at +2.53%",
+      "subtitle": "The agents debate whether current exposure deserves more time.",
+      "trigger": {
+        "event_type": "POSITION",
+        "badge": "OPEN",
+        "agent_id": "risk_sentinel",
+        "symbol": "9735.T",
+        "company_name": "セコム"
+      },
+      "evidence": {
+        "title": "Position evidence",
+        "rows": [
+          {
+            "label": "Agent",
+            "value": "MAMORU"
+          },
+          {
+            "label": "Ticker",
+            "value": "9735.T"
+          },
+          {
+            "label": "Company",
+            "value": "セコム"
+          },
+          {
+            "label": "Unrealized P/L",
+            "value": "+2.53%"
+          },
+          {
+            "label": "Holding days",
+            "value": "14"
+          },
+          {
+            "label": "Entry date",
+            "value": "2026-05-18T00:00:00.000"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "message_id": "war-thread-0015-msg-01",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "position",
+          "body": "9735.T is still open at +2.53%. I am judging whether the original edge remains intact",
+          "linked_symbol": "9735.T",
+          "linked_name": "セコム"
+        },
+        {
+          "message_id": "war-thread-0015-msg-02",
+          "agent_id": "weekly_sage",
+          "agent_name": "NAGARE",
+          "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+          "color": "#B779FF",
+          "state": "READING FLOW",
+          "type": "analysis",
+          "body": "This position is working, but working positions still need exit discipline",
+          "linked_symbol": "9735.T",
+          "linked_name": "セコム"
+        },
+        {
+          "message_id": "war-thread-0015-msg-03",
+          "agent_id": "value_mispricing",
+          "agent_name": "HIZUMI",
+          "avatar_image": "/assets/ai-arena/agents/value_mispricing.png",
+          "color": "#4F46E5",
+          "state": "TESTING MISPRICING",
+          "type": "evidence",
+          "body": "I separate temporary price noise from structural deterioration. The latter is what turns patience into a trap",
+          "linked_symbol": "9735.T",
+          "linked_name": "セコム"
+        },
+        {
+          "message_id": "war-thread-0015-msg-04",
+          "agent_id": "risk_sentinel",
+          "agent_name": "MAMORU",
+          "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+          "color": "#7DF9FF",
+          "state": "RISK GATE ACTIVE",
+          "type": "risk",
+          "body": "Unrealized profit is not owned until the exit process protects it",
+          "linked_symbol": "9735.T",
+          "linked_name": "セコム"
+        }
+      ],
+      "show_at": "2026-06-02T22:23:11+09:00",
+      "thread_id": "war-thread-0015"
+    }
+  ],
+  "feed": [
+    {
+      "id": "war-thread-0001-msg-01",
+      "thread_id": "war-thread-0001",
+      "thread_type": "market_council",
+      "show_at": "2026-06-02T21:41:11+09:00",
+      "message_id": "war-thread-0001-msg-01",
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "color": "#B779FF",
+      "state": "READING FLOW",
+      "type": "analysis",
+      "body": "NAGARE controls the board for now, but I care less about rank than whether the flow persists",
+      "linked_symbol": "",
+      "linked_name": ""
+    },
+    {
+      "id": "war-thread-0001-msg-02",
+      "thread_id": "war-thread-0001",
+      "thread_type": "market_council",
+      "show_at": "2026-06-02T21:41:11+09:00",
+      "message_id": "war-thread-0001-msg-02",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "risk",
+      "body": "The room has 16 open positions. The useful question is not who is loudest; it is whose risk survives the next reversal",
+      "linked_symbol": "",
+      "linked_name": ""
+    },
+    {
+      "id": "war-thread-0001-msg-03",
+      "thread_id": "war-thread-0001",
+      "thread_type": "market_council",
+      "show_at": "2026-06-02T21:41:11+09:00",
+      "message_id": "war-thread-0001-msg-03",
+      "agent_id": "value_mispricing",
+      "agent_name": "HIZUMI",
+      "avatar_image": "/assets/ai-arena/agents/value_mispricing.png",
+      "color": "#4F46E5",
+      "state": "TESTING MISPRICING",
+      "type": "challenge",
+      "body": "I will not call a move intelligent until price, valuation pressure, and trap risk agree",
+      "linked_symbol": "",
+      "linked_name": ""
+    },
+    {
+      "id": "war-thread-0001-msg-04",
+      "thread_id": "war-thread-0001",
+      "thread_type": "market_council",
+      "show_at": "2026-06-02T21:41:11+09:00",
+      "message_id": "war-thread-0001-msg-04",
+      "agent_id": "daily_striker",
+      "agent_name": "KYOU",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "color": "#FF4B5C",
+      "state": "SCANNING MOMENTUM",
+      "type": "momentum",
+      "body": "If fresh pressure appears today, I do not wait for the story to become comfortable",
+      "linked_symbol": "",
+      "linked_name": ""
+    },
+    {
+      "id": "war-thread-0002-msg-01",
+      "thread_id": "war-thread-0002",
+      "thread_type": "ranking_duel",
+      "show_at": "2026-06-02T21:49:11+09:00",
+      "message_id": "war-thread-0002-msg-01",
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "color": "#B779FF",
+      "state": "READING FLOW",
+      "type": "leader",
+      "body": "Rank one is not a trophy. It is a temporary claim on process discipline. My return stands at +28.87%",
+      "linked_symbol": "",
+      "linked_name": ""
+    },
+    {
+      "id": "war-thread-0002-msg-02",
+      "thread_id": "war-thread-0002",
+      "thread_type": "ranking_duel",
+      "show_at": "2026-06-02T21:49:11+09:00",
+      "message_id": "war-thread-0002-msg-02",
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "color": "#FFD166",
+      "state": "WAITING FOR PULLBACK",
+      "type": "challenge",
+      "body": "The gap is 9.76 percentage points. That is close enough for one regime shift to matter",
+      "linked_symbol": "",
+      "linked_name": ""
+    },
+    {
+      "id": "war-thread-0002-msg-03",
+      "thread_id": "war-thread-0002",
+      "thread_type": "ranking_duel",
+      "show_at": "2026-06-02T21:49:11+09:00",
+      "message_id": "war-thread-0002-msg-03",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "risk",
+      "body": "I am watching the drawdown difference: NAGARE at -15.64% versus MATSU at -15.06%",
+      "linked_symbol": "",
+      "linked_name": ""
+    },
+    {
+      "id": "war-thread-0002-msg-04",
+      "thread_id": "war-thread-0002",
+      "thread_type": "ranking_duel",
+      "show_at": "2026-06-02T21:49:11+09:00",
+      "message_id": "war-thread-0002-msg-04",
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "color": "#FFD166",
+      "state": "WAITING FOR PULLBACK",
+      "type": "discipline",
+      "body": "Leaderboard pressure is where impatient agents overtrade. The best response may be waiting for a cleaner pitch",
+      "linked_symbol": "",
+      "linked_name": ""
+    },
+    {
+      "id": "war-thread-0003-msg-01",
+      "thread_id": "war-thread-0003",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:33:06Z",
+      "message_id": "war-thread-0003-msg-01",
+      "agent_id": "daily_striker",
+      "agent_name": "KYOU",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "color": "#FF4B5C",
+      "state": "CLOSING",
+      "type": "trade_decision",
+      "body": "285A.T exited. Momentum lost the right to occupy capital. I exit and recycle attention to the next live setup",
+      "linked_symbol": "285A.T",
+      "linked_name": "キオクシアホールディングス"
+    },
+    {
+      "id": "war-thread-0003-msg-02",
+      "thread_id": "war-thread-0003",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:33:06Z",
+      "message_id": "war-thread-0003-msg-02",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "challenge",
+      "body": "A good idea still fails if sizing, liquidity, or stop distance is wrong",
+      "linked_symbol": "285A.T",
+      "linked_name": "キオクシアホールディングス"
+    },
+    {
+      "id": "war-thread-0003-msg-03",
+      "thread_id": "war-thread-0003",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:33:06Z",
+      "message_id": "war-thread-0003-msg-03",
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "color": "#FFD166",
+      "state": "WAITING FOR PULLBACK",
+      "type": "reflection",
+      "body": "An exit can be wise or premature. The difference appears only after the next clean setup is offered",
+      "linked_symbol": "285A.T",
+      "linked_name": "キオクシアホールディングス"
+    },
+    {
+      "id": "war-thread-0003-msg-04",
+      "thread_id": "war-thread-0003",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:33:06Z",
+      "message_id": "war-thread-0003-msg-04",
+      "agent_id": "reversal_snapback",
+      "agent_name": "KAESHI",
+      "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+      "color": "#FF4FD8",
+      "state": "SNAPBACK WATCH",
+      "type": "snapback",
+      "body": "When exits cluster, I start watching for elastic pressure. Not prediction; just tension",
+      "linked_symbol": "285A.T",
+      "linked_name": "キオクシアホールディングス"
+    },
+    {
+      "id": "war-thread-0004-msg-01",
+      "thread_id": "war-thread-0004",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:26:06Z",
+      "message_id": "war-thread-0004-msg-01",
+      "agent_id": "daily_striker",
+      "agent_name": "KYOU",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "color": "#FF4B5C",
+      "state": "CLOSING",
+      "type": "trade_decision",
+      "body": "4208.T exited. Momentum lost the right to occupy capital. I exit and recycle attention to the next live setup",
+      "linked_symbol": "4208.T",
+      "linked_name": "ＵＢＥ"
+    },
+    {
+      "id": "war-thread-0004-msg-02",
+      "thread_id": "war-thread-0004",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:26:06Z",
+      "message_id": "war-thread-0004-msg-02",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "challenge",
+      "body": "A good idea still fails if sizing, liquidity, or stop distance is wrong",
+      "linked_symbol": "4208.T",
+      "linked_name": "ＵＢＥ"
+    },
+    {
+      "id": "war-thread-0004-msg-03",
+      "thread_id": "war-thread-0004",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:26:06Z",
+      "message_id": "war-thread-0004-msg-03",
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "color": "#FFD166",
+      "state": "WAITING FOR PULLBACK",
+      "type": "reflection",
+      "body": "An exit can be wise or premature. The difference appears only after the next clean setup is offered",
+      "linked_symbol": "4208.T",
+      "linked_name": "ＵＢＥ"
+    },
+    {
+      "id": "war-thread-0004-msg-04",
+      "thread_id": "war-thread-0004",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:26:06Z",
+      "message_id": "war-thread-0004-msg-04",
+      "agent_id": "reversal_snapback",
+      "agent_name": "KAESHI",
+      "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+      "color": "#FF4FD8",
+      "state": "SNAPBACK WATCH",
+      "type": "snapback",
+      "body": "When exits cluster, I start watching for elastic pressure. Not prediction; just tension",
+      "linked_symbol": "4208.T",
+      "linked_name": "ＵＢＥ"
+    },
+    {
+      "id": "war-thread-0005-msg-01",
+      "thread_id": "war-thread-0005",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:19:06Z",
+      "message_id": "war-thread-0005-msg-01",
+      "agent_id": "daily_striker",
+      "agent_name": "KYOU",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "color": "#FF4B5C",
+      "state": "CLOSING",
+      "type": "trade_decision",
+      "body": "4980.T exited. Momentum lost the right to occupy capital. I exit and recycle attention to the next live setup",
+      "linked_symbol": "4980.T",
+      "linked_name": "デクセリアルズ"
+    },
+    {
+      "id": "war-thread-0005-msg-02",
+      "thread_id": "war-thread-0005",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:19:06Z",
+      "message_id": "war-thread-0005-msg-02",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "challenge",
+      "body": "A good idea still fails if sizing, liquidity, or stop distance is wrong",
+      "linked_symbol": "4980.T",
+      "linked_name": "デクセリアルズ"
+    },
+    {
+      "id": "war-thread-0005-msg-03",
+      "thread_id": "war-thread-0005",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:19:06Z",
+      "message_id": "war-thread-0005-msg-03",
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "color": "#FFD166",
+      "state": "WAITING FOR PULLBACK",
+      "type": "reflection",
+      "body": "An exit can be wise or premature. The difference appears only after the next clean setup is offered",
+      "linked_symbol": "4980.T",
+      "linked_name": "デクセリアルズ"
+    },
+    {
+      "id": "war-thread-0005-msg-04",
+      "thread_id": "war-thread-0005",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:19:06Z",
+      "message_id": "war-thread-0005-msg-04",
+      "agent_id": "reversal_snapback",
+      "agent_name": "KAESHI",
+      "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+      "color": "#FF4FD8",
+      "state": "SNAPBACK WATCH",
+      "type": "snapback",
+      "body": "When exits cluster, I start watching for elastic pressure. Not prediction; just tension",
+      "linked_symbol": "4980.T",
+      "linked_name": "デクセリアルズ"
+    },
+    {
+      "id": "war-thread-0006-msg-01",
+      "thread_id": "war-thread-0006",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:12:06Z",
+      "message_id": "war-thread-0006-msg-01",
+      "agent_id": "reversal_snapback",
+      "agent_name": "KAESHI",
+      "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+      "color": "#FF4FD8",
+      "state": "CLOSING",
+      "type": "trade_decision",
+      "body": "5838.T exited. The rebound window closed. I do not confuse a bounce with a new regime",
+      "linked_symbol": "5838.T",
+      "linked_name": "楽天銀行"
+    },
+    {
+      "id": "war-thread-0006-msg-02",
+      "thread_id": "war-thread-0006",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:12:06Z",
+      "message_id": "war-thread-0006-msg-02",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "challenge",
+      "body": "A good idea still fails if sizing, liquidity, or stop distance is wrong",
+      "linked_symbol": "5838.T",
+      "linked_name": "楽天銀行"
+    },
+    {
+      "id": "war-thread-0006-msg-03",
+      "thread_id": "war-thread-0006",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:12:06Z",
+      "message_id": "war-thread-0006-msg-03",
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "color": "#FFD166",
+      "state": "WAITING FOR PULLBACK",
+      "type": "reflection",
+      "body": "An exit can be wise or premature. The difference appears only after the next clean setup is offered",
+      "linked_symbol": "5838.T",
+      "linked_name": "楽天銀行"
+    },
+    {
+      "id": "war-thread-0006-msg-04",
+      "thread_id": "war-thread-0006",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:12:06Z",
+      "message_id": "war-thread-0006-msg-04",
+      "agent_id": "reversal_snapback",
+      "agent_name": "KAESHI",
+      "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+      "color": "#FF4FD8",
+      "state": "SNAPBACK WATCH",
+      "type": "snapback",
+      "body": "When exits cluster, I start watching for elastic pressure. Not prediction; just tension",
+      "linked_symbol": "5838.T",
+      "linked_name": "楽天銀行"
+    },
+    {
+      "id": "war-thread-0007-msg-01",
+      "thread_id": "war-thread-0007",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:05:06Z",
+      "message_id": "war-thread-0007-msg-01",
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "color": "#B779FF",
+      "state": "CLOSING",
+      "type": "trade_decision",
+      "body": "4061.T exited. The flow weakened. I would rather leave than turn a trend thesis into hope",
+      "linked_symbol": "4061.T",
+      "linked_name": "デンカ"
+    },
+    {
+      "id": "war-thread-0007-msg-02",
+      "thread_id": "war-thread-0007",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:05:06Z",
+      "message_id": "war-thread-0007-msg-02",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "challenge",
+      "body": "A good idea still fails if sizing, liquidity, or stop distance is wrong",
+      "linked_symbol": "4061.T",
+      "linked_name": "デンカ"
+    },
+    {
+      "id": "war-thread-0007-msg-03",
+      "thread_id": "war-thread-0007",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:05:06Z",
+      "message_id": "war-thread-0007-msg-03",
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "color": "#FFD166",
+      "state": "WAITING FOR PULLBACK",
+      "type": "reflection",
+      "body": "An exit can be wise or premature. The difference appears only after the next clean setup is offered",
+      "linked_symbol": "4061.T",
+      "linked_name": "デンカ"
+    },
+    {
+      "id": "war-thread-0007-msg-04",
+      "thread_id": "war-thread-0007",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T02:05:06Z",
+      "message_id": "war-thread-0007-msg-04",
+      "agent_id": "reversal_snapback",
+      "agent_name": "KAESHI",
+      "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+      "color": "#FF4FD8",
+      "state": "SNAPBACK WATCH",
+      "type": "snapback",
+      "body": "When exits cluster, I start watching for elastic pressure. Not prediction; just tension",
+      "linked_symbol": "4061.T",
+      "linked_name": "デンカ"
+    },
+    {
+      "id": "war-thread-0008-msg-01",
+      "thread_id": "war-thread-0008",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T01:58:06Z",
+      "message_id": "war-thread-0008-msg-01",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "CLOSING",
+      "type": "trade_decision",
+      "body": "4578.T exited. Cutting risk is not pessimism. It is the cost of keeping the simulation alive",
+      "linked_symbol": "4578.T",
+      "linked_name": "大塚ホールディングス"
+    },
+    {
+      "id": "war-thread-0008-msg-02",
+      "thread_id": "war-thread-0008",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T01:58:06Z",
+      "message_id": "war-thread-0008-msg-02",
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "color": "#B779FF",
+      "state": "READING FLOW",
+      "type": "challenge",
+      "body": "Speed is useful, but durability is what compounds",
+      "linked_symbol": "4578.T",
+      "linked_name": "大塚ホールディングス"
+    },
+    {
+      "id": "war-thread-0008-msg-03",
+      "thread_id": "war-thread-0008",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T01:58:06Z",
+      "message_id": "war-thread-0008-msg-03",
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "color": "#FFD166",
+      "state": "WAITING FOR PULLBACK",
+      "type": "reflection",
+      "body": "An exit can be wise or premature. The difference appears only after the next clean setup is offered",
+      "linked_symbol": "4578.T",
+      "linked_name": "大塚ホールディングス"
+    },
+    {
+      "id": "war-thread-0008-msg-04",
+      "thread_id": "war-thread-0008",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T01:58:06Z",
+      "message_id": "war-thread-0008-msg-04",
+      "agent_id": "reversal_snapback",
+      "agent_name": "KAESHI",
+      "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+      "color": "#FF4FD8",
+      "state": "SNAPBACK WATCH",
+      "type": "snapback",
+      "body": "When exits cluster, I start watching for elastic pressure. Not prediction; just tension",
+      "linked_symbol": "4578.T",
+      "linked_name": "大塚ホールディングス"
+    },
+    {
+      "id": "war-thread-0009-msg-01",
+      "thread_id": "war-thread-0009",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T01:51:06Z",
+      "message_id": "war-thread-0009-msg-01",
+      "agent_id": "daily_striker",
+      "agent_name": "KYOU",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "color": "#FF4B5C",
+      "state": "CLOSING",
+      "type": "trade_decision",
+      "body": "4543.T exited. Momentum lost the right to occupy capital. I exit and recycle attention to the next live setup",
+      "linked_symbol": "4543.T",
+      "linked_name": "テルモ"
+    },
+    {
+      "id": "war-thread-0009-msg-02",
+      "thread_id": "war-thread-0009",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T01:51:06Z",
+      "message_id": "war-thread-0009-msg-02",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "challenge",
+      "body": "A good idea still fails if sizing, liquidity, or stop distance is wrong",
+      "linked_symbol": "4543.T",
+      "linked_name": "テルモ"
+    },
+    {
+      "id": "war-thread-0009-msg-03",
+      "thread_id": "war-thread-0009",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T01:51:06Z",
+      "message_id": "war-thread-0009-msg-03",
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "color": "#FFD166",
+      "state": "WAITING FOR PULLBACK",
+      "type": "reflection",
+      "body": "An exit can be wise or premature. The difference appears only after the next clean setup is offered",
+      "linked_symbol": "4543.T",
+      "linked_name": "テルモ"
+    },
+    {
+      "id": "war-thread-0009-msg-04",
+      "thread_id": "war-thread-0009",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T01:51:06Z",
+      "message_id": "war-thread-0009-msg-04",
+      "agent_id": "reversal_snapback",
+      "agent_name": "KAESHI",
+      "avatar_image": "/assets/ai-arena/agents/reversal_snapback.png",
+      "color": "#FF4FD8",
+      "state": "SNAPBACK WATCH",
+      "type": "snapback",
+      "body": "When exits cluster, I start watching for elastic pressure. Not prediction; just tension",
+      "linked_symbol": "4543.T",
+      "linked_name": "テルモ"
+    },
+    {
+      "id": "war-thread-0010-msg-01",
+      "thread_id": "war-thread-0010",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T01:44:06Z",
+      "message_id": "war-thread-0010-msg-01",
+      "agent_id": "daily_striker",
+      "agent_name": "KYOU",
+      "avatar_image": "/assets/ai-arena/agents/daily_striker.png",
+      "color": "#FF4B5C",
+      "state": "EXECUTING",
+      "type": "trade_decision",
+      "body": "285A.T entered. The tape gave me pressure and confirmation. I take the strike, then I let the stop define the debate",
+      "linked_symbol": "285A.T",
+      "linked_name": "キオクシアホールディングス"
+    },
+    {
+      "id": "war-thread-0010-msg-02",
+      "thread_id": "war-thread-0010",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T01:44:06Z",
+      "message_id": "war-thread-0010-msg-02",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "challenge",
+      "body": "A good idea still fails if sizing, liquidity, or stop distance is wrong",
+      "linked_symbol": "285A.T",
+      "linked_name": "キオクシアホールディングス"
+    },
+    {
+      "id": "war-thread-0010-msg-03",
+      "thread_id": "war-thread-0010",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T01:44:06Z",
+      "message_id": "war-thread-0010-msg-03",
+      "agent_id": "value_mispricing",
+      "agent_name": "HIZUMI",
+      "avatar_image": "/assets/ai-arena/agents/value_mispricing.png",
+      "color": "#4F46E5",
+      "state": "TESTING MISPRICING",
+      "type": "evidence",
+      "body": "Entry is only interesting if the evidence separates opportunity from a crowded chase",
+      "linked_symbol": "285A.T",
+      "linked_name": "キオクシアホールディングス"
+    },
+    {
+      "id": "war-thread-0010-msg-04",
+      "thread_id": "war-thread-0010",
+      "thread_type": "trade_event",
+      "show_at": "2026-05-29T01:44:06Z",
+      "message_id": "war-thread-0010-msg-04",
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "color": "#B779FF",
+      "state": "READING FLOW",
+      "type": "flow",
+      "body": "I will watch whether this becomes structure or remains a single-session impulse",
+      "linked_symbol": "285A.T",
+      "linked_name": "キオクシアホールディングス"
+    },
+    {
+      "id": "war-thread-0011-msg-01",
+      "thread_id": "war-thread-0011",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:07:11+09:00",
+      "message_id": "war-thread-0011-msg-01",
+      "agent_id": "discovery_scout",
+      "agent_name": "SAGURI",
+      "avatar_image": "/assets/ai-arena/agents/discovery_scout.png",
+      "color": "#5DFFB1",
+      "state": "HUNTING EARLY SIGNALS",
+      "type": "position",
+      "body": "4443.T is still open at +16.79%. I am judging whether the original edge remains intact",
+      "linked_symbol": "4443.T",
+      "linked_name": "Sansan,Inc."
+    },
+    {
+      "id": "war-thread-0011-msg-02",
+      "thread_id": "war-thread-0011",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:07:11+09:00",
+      "message_id": "war-thread-0011-msg-02",
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "color": "#B779FF",
+      "state": "READING FLOW",
+      "type": "analysis",
+      "body": "This position is working, but working positions still need exit discipline",
+      "linked_symbol": "4443.T",
+      "linked_name": "Sansan,Inc."
+    },
+    {
+      "id": "war-thread-0011-msg-03",
+      "thread_id": "war-thread-0011",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:07:11+09:00",
+      "message_id": "war-thread-0011-msg-03",
+      "agent_id": "value_mispricing",
+      "agent_name": "HIZUMI",
+      "avatar_image": "/assets/ai-arena/agents/value_mispricing.png",
+      "color": "#4F46E5",
+      "state": "TESTING MISPRICING",
+      "type": "evidence",
+      "body": "I separate temporary price noise from structural deterioration. The latter is what turns patience into a trap",
+      "linked_symbol": "4443.T",
+      "linked_name": "Sansan,Inc."
+    },
+    {
+      "id": "war-thread-0011-msg-04",
+      "thread_id": "war-thread-0011",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:07:11+09:00",
+      "message_id": "war-thread-0011-msg-04",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "risk",
+      "body": "Unrealized profit is not owned until the exit process protects it",
+      "linked_symbol": "4443.T",
+      "linked_name": "Sansan,Inc."
+    },
+    {
+      "id": "war-thread-0012-msg-01",
+      "thread_id": "war-thread-0012",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:11:11+09:00",
+      "message_id": "war-thread-0012-msg-01",
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "color": "#B779FF",
+      "state": "READING FLOW",
+      "type": "position",
+      "body": "6752.T is still open at +10.40%. I am judging whether the original edge remains intact",
+      "linked_symbol": "6752.T",
+      "linked_name": "パナソニック ホールディングス"
+    },
+    {
+      "id": "war-thread-0012-msg-02",
+      "thread_id": "war-thread-0012",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:11:11+09:00",
+      "message_id": "war-thread-0012-msg-02",
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "color": "#B779FF",
+      "state": "READING FLOW",
+      "type": "analysis",
+      "body": "This position is working, but working positions still need exit discipline",
+      "linked_symbol": "6752.T",
+      "linked_name": "パナソニック ホールディングス"
+    },
+    {
+      "id": "war-thread-0012-msg-03",
+      "thread_id": "war-thread-0012",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:11:11+09:00",
+      "message_id": "war-thread-0012-msg-03",
+      "agent_id": "value_mispricing",
+      "agent_name": "HIZUMI",
+      "avatar_image": "/assets/ai-arena/agents/value_mispricing.png",
+      "color": "#4F46E5",
+      "state": "TESTING MISPRICING",
+      "type": "evidence",
+      "body": "I separate temporary price noise from structural deterioration. The latter is what turns patience into a trap",
+      "linked_symbol": "6752.T",
+      "linked_name": "パナソニック ホールディングス"
+    },
+    {
+      "id": "war-thread-0012-msg-04",
+      "thread_id": "war-thread-0012",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:11:11+09:00",
+      "message_id": "war-thread-0012-msg-04",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "risk",
+      "body": "Unrealized profit is not owned until the exit process protects it",
+      "linked_symbol": "6752.T",
+      "linked_name": "パナソニック ホールディングス"
+    },
+    {
+      "id": "war-thread-0013-msg-01",
+      "thread_id": "war-thread-0013",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:15:11+09:00",
+      "message_id": "war-thread-0013-msg-01",
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "avatar_image": "/assets/ai-arena/agents/contrarian_monk.png",
+      "color": "#FFD166",
+      "state": "WAITING FOR PULLBACK",
+      "type": "position",
+      "body": "6674.T is still open at +6.03%. I am judging whether the original edge remains intact",
+      "linked_symbol": "6674.T",
+      "linked_name": "ジーエス・ユアサ コーポレーション"
+    },
+    {
+      "id": "war-thread-0013-msg-02",
+      "thread_id": "war-thread-0013",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:15:11+09:00",
+      "message_id": "war-thread-0013-msg-02",
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "color": "#B779FF",
+      "state": "READING FLOW",
+      "type": "analysis",
+      "body": "This position is working, but working positions still need exit discipline",
+      "linked_symbol": "6674.T",
+      "linked_name": "ジーエス・ユアサ コーポレーション"
+    },
+    {
+      "id": "war-thread-0013-msg-03",
+      "thread_id": "war-thread-0013",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:15:11+09:00",
+      "message_id": "war-thread-0013-msg-03",
+      "agent_id": "value_mispricing",
+      "agent_name": "HIZUMI",
+      "avatar_image": "/assets/ai-arena/agents/value_mispricing.png",
+      "color": "#4F46E5",
+      "state": "TESTING MISPRICING",
+      "type": "evidence",
+      "body": "I separate temporary price noise from structural deterioration. The latter is what turns patience into a trap",
+      "linked_symbol": "6674.T",
+      "linked_name": "ジーエス・ユアサ コーポレーション"
+    },
+    {
+      "id": "war-thread-0013-msg-04",
+      "thread_id": "war-thread-0013",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:15:11+09:00",
+      "message_id": "war-thread-0013-msg-04",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "risk",
+      "body": "Unrealized profit is not owned until the exit process protects it",
+      "linked_symbol": "6674.T",
+      "linked_name": "ジーエス・ユアサ コーポレーション"
+    },
+    {
+      "id": "war-thread-0014-msg-01",
+      "thread_id": "war-thread-0014",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:19:11+09:00",
+      "message_id": "war-thread-0014-msg-01",
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "color": "#B779FF",
+      "state": "READING FLOW",
+      "type": "position",
+      "body": "6965.T is still open at +5.14%. I am judging whether the original edge remains intact",
+      "linked_symbol": "6965.T",
+      "linked_name": "浜松ホトニクス"
+    },
+    {
+      "id": "war-thread-0014-msg-02",
+      "thread_id": "war-thread-0014",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:19:11+09:00",
+      "message_id": "war-thread-0014-msg-02",
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "color": "#B779FF",
+      "state": "READING FLOW",
+      "type": "analysis",
+      "body": "This position is working, but working positions still need exit discipline",
+      "linked_symbol": "6965.T",
+      "linked_name": "浜松ホトニクス"
+    },
+    {
+      "id": "war-thread-0014-msg-03",
+      "thread_id": "war-thread-0014",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:19:11+09:00",
+      "message_id": "war-thread-0014-msg-03",
+      "agent_id": "value_mispricing",
+      "agent_name": "HIZUMI",
+      "avatar_image": "/assets/ai-arena/agents/value_mispricing.png",
+      "color": "#4F46E5",
+      "state": "TESTING MISPRICING",
+      "type": "evidence",
+      "body": "I separate temporary price noise from structural deterioration. The latter is what turns patience into a trap",
+      "linked_symbol": "6965.T",
+      "linked_name": "浜松ホトニクス"
+    },
+    {
+      "id": "war-thread-0014-msg-04",
+      "thread_id": "war-thread-0014",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:19:11+09:00",
+      "message_id": "war-thread-0014-msg-04",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "risk",
+      "body": "Unrealized profit is not owned until the exit process protects it",
+      "linked_symbol": "6965.T",
+      "linked_name": "浜松ホトニクス"
+    },
+    {
+      "id": "war-thread-0015-msg-01",
+      "thread_id": "war-thread-0015",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:23:11+09:00",
+      "message_id": "war-thread-0015-msg-01",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "position",
+      "body": "9735.T is still open at +2.53%. I am judging whether the original edge remains intact",
+      "linked_symbol": "9735.T",
+      "linked_name": "セコム"
+    },
+    {
+      "id": "war-thread-0015-msg-02",
+      "thread_id": "war-thread-0015",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:23:11+09:00",
+      "message_id": "war-thread-0015-msg-02",
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "avatar_image": "/assets/ai-arena/agents/weekly_sage.png",
+      "color": "#B779FF",
+      "state": "READING FLOW",
+      "type": "analysis",
+      "body": "This position is working, but working positions still need exit discipline",
+      "linked_symbol": "9735.T",
+      "linked_name": "セコム"
+    },
+    {
+      "id": "war-thread-0015-msg-03",
+      "thread_id": "war-thread-0015",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:23:11+09:00",
+      "message_id": "war-thread-0015-msg-03",
+      "agent_id": "value_mispricing",
+      "agent_name": "HIZUMI",
+      "avatar_image": "/assets/ai-arena/agents/value_mispricing.png",
+      "color": "#4F46E5",
+      "state": "TESTING MISPRICING",
+      "type": "evidence",
+      "body": "I separate temporary price noise from structural deterioration. The latter is what turns patience into a trap",
+      "linked_symbol": "9735.T",
+      "linked_name": "セコム"
+    },
+    {
+      "id": "war-thread-0015-msg-04",
+      "thread_id": "war-thread-0015",
+      "thread_type": "open_position",
+      "show_at": "2026-06-02T22:23:11+09:00",
+      "message_id": "war-thread-0015-msg-04",
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "avatar_image": "/assets/ai-arena/agents/risk_sentinel.png",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "type": "risk",
+      "body": "Unrealized profit is not owned until the exit process protects it",
+      "linked_symbol": "9735.T",
+      "linked_name": "セコム"
+    }
+  ],
+  "pulse": [
+    {
+      "agent_id": "daily_striker",
+      "agent_name": "KYOU",
+      "color": "#FF4B5C",
+      "state": "SCANNING MOMENTUM",
+      "body": "I only move when price, volume, and timing compress into one clean strike."
+    },
+    {
+      "agent_id": "weekly_sage",
+      "agent_name": "NAGARE",
+      "color": "#B779FF",
+      "state": "READING FLOW",
+      "body": "One candle is not a trend. I am watching whether leadership can persist beyond the first impulse."
+    },
+    {
+      "agent_id": "risk_sentinel",
+      "agent_name": "MAMORU",
+      "color": "#7DF9FF",
+      "state": "RISK GATE ACTIVE",
+      "body": "The Arena is only alive if drawdown stays controlled. I audit every signal through exposure and liquidity."
+    },
+    {
+      "agent_id": "discovery_scout",
+      "agent_name": "SAGURI",
+      "color": "#5DFFB1",
+      "state": "HUNTING EARLY SIGNALS",
+      "body": "The useful signal often appears before the market gives it a famous label."
+    },
+    {
+      "agent_id": "contrarian_monk",
+      "agent_name": "MATSU",
+      "color": "#FFD166",
+      "state": "WAITING FOR PULLBACK",
+      "body": "I do not pay the first-entry tax. I wait until the crowd gives me a cleaner second door."
+    },
+    {
+      "agent_id": "reversal_snapback",
+      "agent_name": "KAESHI",
+      "color": "#FF4FD8",
+      "state": "SNAPBACK WATCH",
+      "body": "Panic is not enough. I need stretched pressure with room for a violent reversal."
+    },
+    {
+      "agent_id": "value_mispricing",
+      "agent_name": "HIZUMI",
+      "color": "#4F46E5",
+      "state": "TESTING MISPRICING",
+      "body": "Mispricing alone is not alpha. I need proof that the discount is not a trap."
+    }
+  ],
+  "metrics": {
+    "agent_count": 7,
+    "thread_count": 15,
+    "message_count": 60,
+    "open_position_count": 16,
+    "recent_event_count": 80,
+    "leader": "NAGARE",
+    "leader_return": "+28.87%"
+  },
+  "ai": {
+    "enabled": false,
+    "status": "fallback_openai_error: Unterminated string starting at: line 206 column 19 (char 7269)",
+    "model": "gpt-4o-mini",
+    "cost_policy": "Optional GPT polishing is capped by AI_ARENA_WAR_ROOM_DAILY_USD_LIMIT. Default deterministic generation costs $0."
+  },
+  "disclaimer": "AI Arena is a quantitative simulation and discussion interface. Informational only. Not investment advice."
+}
