@@ -348,6 +348,7 @@ agents:
       max_rank_per_day: 14
       allowed_actions:
       - Trade
+      - Watch
       min_liquidity_score: 0.35
       min_avg_traded_value_20d_jpy: 50000000
       require_value_rerating_confirmation: true
@@ -364,7 +365,7 @@ agents:
       reject_if_return_60d_pct_lt: -18
       reject_if_price_vs_ma50_pct_lt: -12
       require_range_position_252d_0_1_min: 0.2
-      require_range_position_252d_0_1_max: 0.88
+      require_range_position_252d_0_1_max: 0.95
       require_value_mispricing_score_min: 0.50
       require_valuation_discount_score_min: 0.40
       require_sector_relative_valuation_score_min: 0.45
