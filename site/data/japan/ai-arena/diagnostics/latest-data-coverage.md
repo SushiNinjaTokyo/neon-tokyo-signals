@@ -1,27 +1,27 @@
 # Neon Tokyo Data Coverage Review
 
-Generated: 2026-06-02T09:05:42+00:00
+Generated: 2026-06-02T14:22:46+00:00
 DuckDB: `data/cache/neon_tokyo_jp.duckdb`
 DuckDB exists: **True**
 
 ## Canonical DuckDB Metadata
 
 - Metadata table exists: True
-- DB size MB: 1465.512
+- DB size MB: 1682.512
 
 | Key | Value | Updated At |
 |---|---|---|
-| `artifact_kind` | github-release-asset | 2026-06-02T01:38:30.541917 |
-| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-06-02T01:38:30.545536 |
-| `build_id` | 26792866597-1 | 2026-06-02T01:38:30.531225 |
-| `generated_at` | 2026-06-02T01:38:30+00:00 | 2026-06-02T01:38:30.529254 |
-| `release_tag` | ai-arena-duckdb-latest | 2026-06-02T01:38:30.543802 |
-| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-06-02T01:38:30.524626 |
-| `source_ref` | refs/heads/main | 2026-06-02T01:38:30.540123 |
-| `source_run_attempt` | 1 | 2026-06-02T01:38:30.536700 |
-| `source_run_id` | 26792866597 | 2026-06-02T01:38:30.534758 |
-| `source_sha` | 9d50572e75ed5b7d3e66d3c33f74f1649523308b | 2026-06-02T01:38:30.538381 |
-| `source_workflow` | AI Arena JP season rebuild | 2026-06-02T01:38:30.533012 |
+| `artifact_kind` | github-release-asset | 2026-06-02T12:18:47.705791 |
+| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-06-02T12:18:47.709836 |
+| `build_id` | 26818944172-1 | 2026-06-02T12:18:47.694289 |
+| `generated_at` | 2026-06-02T12:18:47+00:00 | 2026-06-02T12:18:47.692057 |
+| `release_tag` | ai-arena-duckdb-latest | 2026-06-02T12:18:47.707792 |
+| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-06-02T12:18:47.687335 |
+| `source_ref` | refs/heads/main | 2026-06-02T12:18:47.703817 |
+| `source_run_attempt` | 1 | 2026-06-02T12:18:47.699983 |
+| `source_run_id` | 26818944172 | 2026-06-02T12:18:47.698153 |
+| `source_sha` | d214dcd1856a736abf4b58efb482da4769978f67 | 2026-06-02T12:18:47.701816 |
+| `source_workflow` | AI Arena JP season rebuild | 2026-06-02T12:18:47.696089 |
 
 ## Executive Warnings
 
@@ -148,23 +148,23 @@ DuckDB exists: **True**
 
 ## Arena Simulation Tables
 
-- Live run: `arena_jp_rebuild_2026_v020`
-- Live orders: 787
-- Live trades: 375
+- Live run: `arena_jp_rebuild_2026_v022`
+- Live orders: 823
+- Live trades: 393
 - Live open positions: 16
 - Live yearly ranking rows: 7
 
 | Table | Exists | Rows | Rows for live run |
 |---|---:|---:|---:|
-| `arena_simulation_runs` | True | 21 | N/A |
+| `arena_simulation_runs` | True | 23 | N/A |
 | `arena_display_runs` | True | 1 | N/A |
-| `arena_orders` | True | 14315 | 787 |
-| `arena_open_positions` | True | 258 | 16 |
-| `arena_trades` | True | 6841 | 375 |
-| `arena_equity_curve` | True | 14301 | 686 |
-| `arena_yearly_rankings` | True | 147 | 7 |
-| `arena_monthly_rankings` | True | 777 | 42 |
-| `arena_trade_rankings` | True | 800 | 40 |
+| `arena_orders` | True | 15961 | 823 |
+| `arena_open_positions` | True | 290 | 16 |
+| `arena_trades` | True | 7627 | 393 |
+| `arena_equity_curve` | True | 15673 | 686 |
+| `arena_yearly_rankings` | True | 161 | 7 |
+| `arena_monthly_rankings` | True | 861 | 42 |
+| `arena_trade_rankings` | True | 880 | 40 |
 | `agent_pick_notes_daily` | True | 0 | N/A |
 
 ## Site Outputs
@@ -173,15 +173,15 @@ DuckDB exists: **True**
 
 ## Repo Artifact Size
 
-- site/data files: 48
-- site/data total MB: 8.055
+- site/data files: 50
+- site/data total MB: 6.808
 - prices latest MB: 2.764
 - dated prices JSON count: 1
 
 | Largest file | MB |
 |---|---:|
 | `site/data/prices-jp/latest.json` | 2.764 |
-| `site/data/japan/ai-arena/diagnostics/trade-diagnostics/latest.json` | 2.476 |
+| `site/data/japan/ai-arena/diagnostics/trade-diagnostics/latest.json` | 1.136 |
 | `site/data/japan/universe/jp_index_universe.json` | 0.421 |
 | `site/data/japan/ai-arena/latest.json` | 0.242 |
 | `site/data/japan/ai-arena/positions/latest.json` | 0.217 |
@@ -189,9 +189,9 @@ DuckDB exists: **True**
 | `site/data/japan/ai-arena/summary/2026/latest.json` | 0.214 |
 | `site/data/japan/ai-arena/live/latest.json` | 0.203 |
 | `site/data/japan/ai-arena/simulation/latest.json` | 0.203 |
-| `site/data/japan/ai-arena/ranking/latest.json` | 0.195 |
+| `site/data/japan/ai-arena/ranking/latest.json` | 0.196 |
 | `site/data/japan/universe/jp_index_universe.csv` | 0.174 |
 | `site/data/japan/ai-arena/discussion/latest.json` | 0.127 |
 | `site/data/japan/agent-scores/latest.json` | 0.104 |
-| `site/data/japan/ai-arena/diagnostics/trade-diagnostics/latest.md` | 0.102 |
 | `site/data/japan/ai-arena/hero/latest.json` | 0.092 |
+| `site/data/japan/ai-arena/war-room/latest.json` | 0.087 |
