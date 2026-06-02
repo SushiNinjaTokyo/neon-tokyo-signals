@@ -136,6 +136,22 @@ agents:
       reject_if_pbr_gt: 15
       require_quality_guard_score_min: 0.25
       reject_if_value_trap_penalty_gt: 0.80
+      soft_rejects:
+        - reason: saguri_volume_climax_upper_range_soft
+          all:
+            return_20d_pct_gt: 55
+            volume_ratio_20d_gt: 3.0
+            range_position_252d_0_1_gt: 0.88
+        - reason: saguri_short_term_overheat_chase_soft
+          all:
+            return_5d_pct_gt: 18
+            rsi_14_gt: 74
+            volume_ratio_20d_gt: 1.8
+        - reason: saguri_expensive_overheated_growth_soft
+          all:
+            pbr_gt: 12
+            return_20d_pct_gt: 30
+            rsi_14_gt: 68
       discovery_financial_setup:
         require_market_cap_jpy_min: 10000000000
         require_market_cap_jpy_max: 800000000000
@@ -205,6 +221,30 @@ agents:
       reject_if_return_20d_pct_lt: -35
       reject_if_rsi_14_lt: 12
       reject_if_range_position_252d_0_1_lt: 0.03
+      soft_rejects:
+        - reason: kaeshi_falling_knife_oversold_soft
+          all:
+            return_5d_pct_lt: -13
+            return_20d_pct_lt: -22
+            rsi_14_lt: 22
+        - reason: kaeshi_structural_breakdown_soft
+          all:
+            range_position_252d_0_1_lt: 0.08
+            return_20d_pct_lt: -18
+            price_vs_ma50_pct_lt: -12
+        - reason: kaeshi_panic_volume_down_soft
+          all:
+            return_5d_pct_lt: -10
+            volume_ratio_20d_gt: 2.6
+            rsi_14_lt: 28
+        - reason: kaeshi_no_snapback_confirmation_soft
+          all:
+            return_5d_pct_lt: -8
+            volume_ratio_20d_gt: 2.0
+          unless_any:
+            return_1d_pct_gt: 1.0
+            range_position_20d_0_1_gt: 0.20
+            reversal_exhaustion_score_gt: 0.60
     exit:
       hard_stop_loss_pct: -4.8
       take_profit_pct: 9
