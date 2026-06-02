@@ -201,6 +201,10 @@ agents:
       require_bollinger_b_20_max: 0.45
       require_return_5d_pct_max: 4
       require_reversal_exhaustion_score_min: 0.45
+      reject_if_return_5d_pct_lt: -22
+      reject_if_return_20d_pct_lt: -35
+      reject_if_rsi_14_lt: 12
+      reject_if_range_position_252d_0_1_lt: 0.03
     exit:
       hard_stop_loss_pct: -4.8
       take_profit_pct: 9
