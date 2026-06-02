@@ -1,68 +1,47 @@
-name: AI Arena JP trade diagnostics
+name: AI Arena JP Trade Diagnostics
 
 on:
   workflow_dispatch:
     inputs:
       run_id:
-        description: "Run ID to diagnose. Use display/latest/auto for current display run."
+        description: "Run ID to diagnose. Use display for the currently promoted run."
         required: false
         default: "display"
-      max_trade_rows:
-        description: "Maximum compact trade rows exported to JSON. 0 means all rows."
+      allow_fallback:
+        description: "Allow fallback to all trades if run_id has no trades. Keep false for real analysis."
         required: false
-        default: "1500"
-      top_n:
-        description: "Number of best/worst trades per agent in Markdown."
-        required: false
-        default: "15"
-      include_trade_context:
-        description: "Include entry feature/value/fundamental context in JSON trade rows."
-        required: false
-        default: "true"
+        default: "false"
         type: choice
-        options: ["true", "false"]
-      commit_outputs:
-        description: "Commit generated diagnostics JSON/Markdown"
-        required: false
-        default: "true"
-        type: choice
-        options: ["true", "false"]
-  schedule:
-    # After weekday live update and data coverage review.
-    # 10:30 UTC = 19:30 JST.
-    - cron: "30 10 * * 1-5"
+        options: ["false", "true"]
 
 permissions:
   contents: write
-  actions: read
-
-concurrency:
-  group: ai-arena-jp-trade-diagnostics-${{ github.ref }}
-  cancel-in-progress: false
 
 jobs:
   trade-diagnostics:
     runs-on: ubuntu-24.04
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      OUT_DIR: site
       PRICE_DUCKDB_PATH: data/cache/neon_tokyo_jp.duckdb
       CANONICAL_DUCKDB_RELEASE_TAG: ai-arena-duckdb-latest
       CANONICAL_DUCKDB_ASSET: neon_tokyo_jp_latest.duckdb.zst
       CANONICAL_DUCKDB_MANIFEST_ASSET: neon_tokyo_jp_latest_manifest.json
-      AI_ARENA_DIAGNOSTICS_RUN_ID: ${{ github.event.inputs.run_id || 'display' }}
-      TRADE_DIAGNOSTICS_MAX_TRADE_ROWS: ${{ github.event.inputs.max_trade_rows || '1500' }}
-      TRADE_DIAGNOSTICS_TOP_N: ${{ github.event.inputs.top_n || '15' }}
-      TRADE_DIAGNOSTICS_INCLUDE_CONTEXT: ${{ github.event.inputs.include_trade_context || 'true' }}
+      TRADE_DIAGNOSTICS_RUN_ID: ${{ inputs.run_id }}
+      TRADE_DIAGNOSTICS_MAX_TRADE_ROWS: "1500"
+      TRADE_DIAGNOSTICS_TOP_N: "15"
+      TRADE_DIAGNOSTICS_INCLUDE_CONTEXT: "true"
       TRADE_DIAGNOSTICS_FAIL_IF_NO_TRADES: "true"
+      TRADE_DIAGNOSTICS_ALLOW_FALLBACK: ${{ inputs.allow_fallback }}
+      TRADE_DIAGNOSTICS_FAIL_ON_DATA_QUALITY: "true"
+      TRADE_DIAGNOSTICS_STRICT_DISPLAY_RESOLUTION: "true"
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -74,62 +53,28 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y zstd
 
-      - name: Pull latest main
-        run: |
-          set -euo pipefail
-          git pull --ff-only origin main
-
-      - name: Download canonical DuckDB from Release
+      - name: Restore canonical DuckDB
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           mkdir -p data/cache
-
-          if ! gh release view "${CANONICAL_DUCKDB_RELEASE_TAG}" >/dev/null 2>&1; then
-            echo "::error::Canonical DuckDB release not found: ${CANONICAL_DUCKDB_RELEASE_TAG}"
-            echo "::error::Run AI Arena JP season rebuild or live update first."
-            exit 1
-          fi
-
-          gh release download "${CANONICAL_DUCKDB_RELEASE_TAG}" \
-            --pattern "${CANONICAL_DUCKDB_ASSET}" \
-            --dir data/cache \
-            --clobber
-
-          gh release download "${CANONICAL_DUCKDB_RELEASE_TAG}" \
-            --pattern "${CANONICAL_DUCKDB_MANIFEST_ASSET}" \
-            --dir data/cache \
-            --clobber || true
-
-          test -f "data/cache/${CANONICAL_DUCKDB_ASSET}"
+          gh release download "${CANONICAL_DUCKDB_RELEASE_TAG}" --pattern "${CANONICAL_DUCKDB_ASSET}" --dir data/cache --clobber
           zstd -d -f "data/cache/${CANONICAL_DUCKDB_ASSET}" -o "${PRICE_DUCKDB_PATH}"
-          test -f "${PRICE_DUCKDB_PATH}"
+          test -s "${PRICE_DUCKDB_PATH}"
           ls -lh "${PRICE_DUCKDB_PATH}"
-
-      - name: Show canonical DB status
-        run: |
-          set -euo pipefail
-          python scripts/show_duckdb_build_metadata.py --db-path "${PRICE_DUCKDB_PATH}" --fail-if-missing
 
       - name: Compile diagnostics script
         run: |
           set -euo pipefail
-          python -m compileall \
-            scripts/build_ai_arena_trade_diagnostics_jp.py \
-            scripts/show_duckdb_build_metadata.py \
-            scripts/lib
+          python -m py_compile scripts/export_ai_arena_trade_diagnostics_jp.py
 
-      - name: Build trade diagnostics JSON and Markdown
+      - name: Export trade diagnostics
         run: |
           set -euo pipefail
-          python scripts/build_ai_arena_trade_diagnostics_jp.py \
-            --db-path "${PRICE_DUCKDB_PATH}" \
-            --run-id "${AI_ARENA_DIAGNOSTICS_RUN_ID}" \
-            --max-trade-rows "${TRADE_DIAGNOSTICS_MAX_TRADE_ROWS}" \
-            --top-n "${TRADE_DIAGNOSTICS_TOP_N}"
+          python scripts/export_ai_arena_trade_diagnostics_jp.py
 
-      - name: Validate diagnostics outputs
+      - name: Validate trade diagnostics output
         run: |
           set -euo pipefail
           test -s site/data/japan/ai-arena/diagnostics/trade-diagnostics/latest.json
@@ -141,56 +86,55 @@ jobs:
 
           p = Path("site/data/japan/ai-arena/diagnostics/trade-diagnostics/latest.json")
           data = json.loads(p.read_text(encoding="utf-8"))
-          schema = str(data.get("schema_version", ""))
-          if schema != "neon_tokyo_ai_arena_trade_diagnostics_v1":
-              raise SystemExit(f"Unexpected schema_version: {schema}")
+
+          assert data.get("schema_version") == "neon_tokyo_ai_arena_trade_diagnostics_v2", data.get("schema_version")
+          assert data.get("compat_schema_version") == "neon_tokyo_ai_arena_trade_diagnostics_v1"
+
+          rr = data.get("run_resolution") or {}
+          assert rr.get("used_run_id_filter") is True, rr
+          assert rr.get("fallback_used") is False, rr
+          assert data.get("effective_run_id"), "effective_run_id is empty"
+
           counts = data.get("counts") or {}
-          if int(counts.get("closed_trades") or 0) <= 0:
-              raise SystemExit("Trade diagnostics has no closed trades")
+          assert int(counts.get("closed_trades") or 0) > 0, counts
+          assert int(counts.get("agent_summaries") or 0) == 7, counts
+
+          quality = data.get("quality") or {}
+          assert quality.get("status") in {"ok", "warning"}, quality
+          assert not quality.get("issues"), quality
+
           summaries = data.get("agent_summaries") or {}
-          if len(summaries) < 7:
-              raise SystemExit(f"Expected 7 agent summaries, got {len(summaries)}")
+          required = ["daily_striker", "weekly_sage", "risk_sentinel", "discovery_scout", "contrarian_monk", "reversal_snapback", "value_mispricing"]
+          for aid in required:
+              assert aid in summaries, f"missing summary: {aid}"
+
+          # Guard against the exact broken output that caused the issue:
+          # all returns/MFE/MAE zero and all exits UNKNOWN.
+          trades = data.get("trades") or []
+          assert any(abs(float(t.get("realized_return_pct") or 0)) > 0.000001 for t in trades), "all returns are zero"
+          assert any(abs(float(t.get("mfe_pct") or 0)) > 0.000001 for t in trades), "all MFE values are zero"
+          assert any(abs(float(t.get("mae_pct") or 0)) > 0.000001 for t in trades), "all MAE values are zero"
+          assert any(str(t.get("exit_reason_code") or "UNKNOWN") != "UNKNOWN" for t in trades), "all exit reasons are UNKNOWN"
+
           md = Path("site/data/japan/ai-arena/diagnostics/trade-diagnostics/latest.md").read_text(encoding="utf-8")
-          for token in ["NAGARE", "MATSU", "MAMORU", "KYOU", "SAGURI", "KAESHI", "HIZUMI"]:
-              if token not in md:
-                  raise SystemExit(f"Markdown missing agent token: {token}")
-          print("trade_diagnostics_schema_ok")
+          for token in ["KYOU", "NAGARE", "MAMORU", "SAGURI", "MATSU", "KAESHI", "HIZUMI"]:
+              assert token in md, f"Markdown missing agent token: {token}"
+
+          print("trade_diagnostics_v2_validation_ok")
+          print("effective_run_id=", data.get("effective_run_id"))
           print("closed_trades=", counts.get("closed_trades"))
-          print("agents=", len(summaries))
           PY
 
-      - name: Commit trade diagnostics outputs
-        if: ${{ github.event.inputs.commit_outputs != 'false' }}
+      - name: Commit diagnostics output
         run: |
           set -euo pipefail
           git config user.name "github-actions"
           git config user.email "actions@users.noreply.github.com"
-
-          git add -A \
-            site/data/japan/ai-arena/diagnostics/trade-diagnostics/latest.json \
-            site/data/japan/ai-arena/diagnostics/trade-diagnostics/latest.md
-
+          git add -A site/data/japan/ai-arena/diagnostics/trade-diagnostics
           if git diff --cached --quiet; then
-            echo "No trade diagnostics changes to commit."
+            echo "No diagnostics output changes."
             exit 0
           fi
-
-          git commit -m "Update AI Arena trade diagnostics"
-
-          for i in 1 2 3; do
-            if git push origin HEAD:main; then
-              echo "Push succeeded."
-              exit 0
-            fi
-            echo "Push rejected. Fetching origin/main and retrying ($i/3)..."
-            git fetch origin main
-            if ! git rebase origin/main; then
-              echo "Rebase failed. Aborting to avoid overwriting diagnostics outputs."
-              git rebase --abort || true
-              exit 1
-            fi
-            sleep 5
-          done
-
-          echo "Push failed after retries."
-          exit 1
+          git commit -m "Fix AI Arena JP trade diagnostics"
+          git pull --rebase origin main
+          git push origin HEAD:main
