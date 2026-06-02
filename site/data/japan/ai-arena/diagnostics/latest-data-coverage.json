@@ -1,57 +1,57 @@
 {
   "schema_version": "neon_tokyo_data_coverage_review_v2",
-  "generated_at": "2026-06-01T16:18:45+00:00",
+  "generated_at": "2026-06-02T09:05:42+00:00",
   "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
   "duckdb_exists": true,
   "duckdb_metadata": {
     "db_path": "data/cache/neon_tokyo_jp.duckdb",
     "exists": true,
-    "size_mb": 1026.512,
+    "size_mb": 1465.512,
     "metadata_table_exists": true,
     "metadata": {
       "artifact_kind": {
         "value": "github-release-asset",
-        "updated_at": "2026-06-01T05:27:26.868834"
+        "updated_at": "2026-06-02T01:38:30.541917"
       },
       "asset_name": {
         "value": "neon_tokyo_jp_latest.duckdb.zst",
-        "updated_at": "2026-06-01T05:27:26.872840"
+        "updated_at": "2026-06-02T01:38:30.545536"
       },
       "build_id": {
-        "value": "26736770839-1",
-        "updated_at": "2026-06-01T05:27:26.854783"
+        "value": "26792866597-1",
+        "updated_at": "2026-06-02T01:38:30.531225"
       },
       "generated_at": {
-        "value": "2026-06-01T05:27:26+00:00",
-        "updated_at": "2026-06-01T05:27:26.852542"
+        "value": "2026-06-02T01:38:30+00:00",
+        "updated_at": "2026-06-02T01:38:30.529254"
       },
       "release_tag": {
         "value": "ai-arena-duckdb-latest",
-        "updated_at": "2026-06-01T05:27:26.870870"
+        "updated_at": "2026-06-02T01:38:30.543802"
       },
       "schema_version": {
         "value": "neon_tokyo_duckdb_state_v1",
-        "updated_at": "2026-06-01T05:27:26.847878"
+        "updated_at": "2026-06-02T01:38:30.524626"
       },
       "source_ref": {
         "value": "refs/heads/main",
-        "updated_at": "2026-06-01T05:27:26.866850"
+        "updated_at": "2026-06-02T01:38:30.540123"
       },
       "source_run_attempt": {
         "value": "1",
-        "updated_at": "2026-06-01T05:27:26.862636"
+        "updated_at": "2026-06-02T01:38:30.536700"
       },
       "source_run_id": {
-        "value": "26736770839",
-        "updated_at": "2026-06-01T05:27:26.858665"
+        "value": "26792866597",
+        "updated_at": "2026-06-02T01:38:30.534758"
       },
       "source_sha": {
-        "value": "b7c439392bca6781de1c1e4edb4d4ffc0a1e58b3",
-        "updated_at": "2026-06-01T05:27:26.864894"
+        "value": "9d50572e75ed5b7d3e66d3c33f74f1649523308b",
+        "updated_at": "2026-06-02T01:38:30.538381"
       },
       "source_workflow": {
         "value": "AI Arena JP season rebuild",
-        "updated_at": "2026-06-01T05:27:26.856772"
+        "updated_at": "2026-06-02T01:38:30.533012"
       }
     }
   },
@@ -111,13 +111,13 @@
       "jp_duckdb_trial_300": {
         "path": "data/universe/jp_duckdb_trial_300.csv",
         "exists": true,
-        "rows": 860,
+        "rows": 859,
         "suspicious": 0
       },
       "jp_index_universe": {
         "path": "data/universe/jp_index_universe.csv",
         "exists": true,
-        "rows": 852,
+        "rows": 851,
         "suspicious": 0
       },
       "legacy_universe_jp": {
@@ -130,7 +130,7 @@
   },
   "prices": {
     "table_exists": true,
-    "rows": 291853,
+    "rows": 291856,
     "unique_symbols": 860,
     "date_range": {
       "min": "2024-12-27",
@@ -138,23 +138,23 @@
     },
     "field_coverage": {
       "open": {
-        "count": 291853,
+        "count": 291856,
         "pct": 100.0
       },
       "high": {
-        "count": 291853,
+        "count": 291856,
         "pct": 100.0
       },
       "low": {
-        "count": 291853,
+        "count": 291856,
         "pct": 100.0
       },
       "close": {
-        "count": 291853,
+        "count": 291856,
         "pct": 100.0
       },
       "volume": {
-        "count": 291853,
+        "count": 291856,
         "pct": 100.0
       }
     },
@@ -182,45 +182,45 @@
   },
   "features": {
     "table_exists": true,
-    "rows": 291853,
+    "rows": 291856,
     "unique_symbols": 860,
     "latest_date": "2026-06-01",
-    "latest_date_symbols": 554,
+    "latest_date_symbols": 557,
     "field_coverage": {
       "return_1d_pct": {
-        "count": 290993,
+        "count": 290996,
         "pct": 99.705
       },
       "return_5d_pct": {
-        "count": 287553,
+        "count": 287556,
         "pct": 98.527
       },
       "return_20d_pct": {
-        "count": 274653,
+        "count": 274656,
         "pct": 94.107
       },
       "return_60d_pct": {
-        "count": 240253,
+        "count": 240256,
         "pct": 82.32
       },
       "volume_ratio_20d": {
-        "count": 288413,
+        "count": 288416,
         "pct": 98.821
       },
       "avg_traded_value_20d_jpy": {
-        "count": 288413,
+        "count": 288416,
         "pct": 98.821
       },
       "rsi_14": {
-        "count": 279813,
+        "count": 279816,
         "pct": 95.875
       },
       "range_position_252d_0_1": {
-        "count": 275513,
+        "count": 275516,
         "pct": 94.401
       },
       "liquidity_score": {
-        "count": 288413,
+        "count": 288416,
         "pct": 98.821
       }
     }
@@ -231,7 +231,7 @@
     "unique_agents": 7,
     "latest_date": "2026-05-29",
     "date_count": 97,
-    "trade_candidate_rows": 64489,
+    "trade_candidate_rows": 56772,
     "season_window": {
       "start_date": "2026-01-01",
       "end_date": "2026-06-01",
@@ -239,7 +239,7 @@
     },
     "season_rows": 377118,
     "season_date_count": 97,
-    "season_trade_candidate_rows": 64489,
+    "season_trade_candidate_rows": 56772,
     "agents": [
       {
         "agent_id": "contrarian_monk",
@@ -250,7 +250,7 @@
         "tickers": 596,
         "trade_candidate_rows": 1101,
         "max_score": 0.863977,
-        "avg_score": 0.4239621230686719,
+        "avg_score": 0.42396212306867187,
         "actions": {
           "Ignore": 42601,
           "Watch": 14095,
@@ -282,7 +282,7 @@
         "tickers": 254,
         "trade_candidate_rows": 575,
         "max_score": 1.0,
-        "avg_score": 0.32191605704914433,
+        "avg_score": 0.321912816539412,
         "actions": {
           "Ignore": 15831,
           "Watch": 2192,
@@ -328,13 +328,13 @@
         "rows": 64771,
         "date_count": 97,
         "tickers": 730,
-        "trade_candidate_rows": 7722,
-        "max_score": 0.945002,
-        "avg_score": 0.46630251140170614,
+        "trade_candidate_rows": 5,
+        "max_score": 0.690131,
+        "avg_score": 0.3241969566318275,
         "actions": {
-          "Ignore": 33963,
-          "Watch": 23086,
-          "Trade": 7722
+          "Ignore": 59536,
+          "Watch": 5230,
+          "Trade": 5
         }
       },
       {
@@ -359,9 +359,9 @@
   "fundamentals": {
     "company_master_jp": {
       "exists": true,
-      "rows": 0,
-      "unique_tickers": 0,
-      "coverage_vs_universe_pct": 0.0
+      "rows": 4052,
+      "unique_tickers": 4052,
+      "coverage_vs_universe_pct": 471.163
     },
     "fundamentals_latest_jp": {
       "exists": true,
@@ -538,7 +538,7 @@
   "arena_simulation_tables": {
     "arena_simulation_runs": {
       "exists": true,
-      "rows": 18
+      "rows": 21
     },
     "arena_display_runs": {
       "exists": true,
@@ -546,47 +546,47 @@
     },
     "arena_orders": {
       "exists": true,
-      "rows": 11656,
-      "rows_for_live_run_id": 795
+      "rows": 14315,
+      "rows_for_live_run_id": 787
     },
     "arena_open_positions": {
       "exists": true,
-      "rows": 205,
+      "rows": 258,
       "rows_for_live_run_id": 16
     },
     "arena_trades": {
       "exists": true,
-      "rows": 5570,
-      "rows_for_live_run_id": 379
+      "rows": 6841,
+      "rows_for_live_run_id": 375
     },
     "arena_equity_curve": {
       "exists": true,
-      "rows": 12236,
+      "rows": 14301,
       "rows_for_live_run_id": 686
     },
     "arena_yearly_rankings": {
       "exists": true,
-      "rows": 126,
+      "rows": 147,
       "rows_for_live_run_id": 7
     },
     "arena_monthly_rankings": {
       "exists": true,
-      "rows": 644,
+      "rows": 777,
       "rows_for_live_run_id": 42
     },
     "arena_trade_rankings": {
       "exists": true,
-      "rows": 680,
+      "rows": 800,
       "rows_for_live_run_id": 40
     },
     "agent_pick_notes_daily": {
       "exists": true,
       "rows": 0
     },
-    "live_run_id": "arena_jp_rebuild_2026_v017",
+    "live_run_id": "arena_jp_rebuild_2026_v020",
     "live_run_health": {
-      "orders": 795,
-      "trades": 379,
+      "orders": 787,
+      "trades": 375,
       "open_positions": 16,
       "equity_rows": 686,
       "yearly_ranking_rows": 7,
@@ -609,27 +609,21 @@
       },
       {
         "agent_id": "discovery_scout",
-        "orders": 51,
-        "filled_buys": 26,
-        "filled_sells": 25
+        "orders": 83,
+        "filled_buys": 42,
+        "filled_sells": 41
       },
       {
         "agent_id": "reversal_snapback",
-        "orders": 133,
-        "filled_buys": 67,
-        "filled_sells": 66
+        "orders": 107,
+        "filled_buys": 54,
+        "filled_sells": 53
       },
       {
         "agent_id": "risk_sentinel",
         "orders": 188,
         "filled_buys": 96,
         "filled_sells": 92
-      },
-      {
-        "agent_id": "value_mispricing",
-        "orders": 14,
-        "filled_buys": 7,
-        "filled_sells": 7
       },
       {
         "agent_id": "weekly_sage",
@@ -644,17 +638,17 @@
     "outputs": {
       "site/data/japan/ai-arena/live/latest.json": {
         "exists": true,
-        "size_bytes": 212945,
+        "size_bytes": 212982,
         "size_mb": 0.203
       },
       "site/data/japan/ai-arena/ranking/latest.json": {
         "exists": true,
-        "size_bytes": 205429,
-        "size_mb": 0.196
+        "size_bytes": 204894,
+        "size_mb": 0.195
       },
       "site/data/japan/ai-arena/summary/latest.json": {
         "exists": true,
-        "size_bytes": 224243,
+        "size_bytes": 224257,
         "size_mb": 0.214
       },
       "site/data/japan/ai-arena/signals/latest.json": {
@@ -664,7 +658,7 @@
       },
       "site/japan/ai-arena/summary/index.html": {
         "exists": true,
-        "size_bytes": 41747,
+        "size_bytes": 42298,
         "size_mb": 0.04
       },
       "site/japan/ai-arena/signals/index.html": {
@@ -674,14 +668,14 @@
       },
       "site/japan/ai-arena/agents/index.html": {
         "exists": true,
-        "size_bytes": 11982,
-        "size_mb": 0.011
+        "size_bytes": 12106,
+        "size_mb": 0.012
       }
     }
   },
   "repo_artifact_size": {
-    "site_data_files": 45,
-    "site_data_total_mb": 7.098,
+    "site_data_files": 48,
+    "site_data_total_mb": 8.055,
     "prices_latest_mb": 2.764,
     "dated_prices_json_count": 1,
     "largest_files": [
@@ -692,13 +686,13 @@
       },
       {
         "path": "site/data/japan/ai-arena/diagnostics/trade-diagnostics/latest.json",
-        "size_mb": 1.55,
-        "size_bytes": 1625737
+        "size_mb": 2.476,
+        "size_bytes": 2595801
       },
       {
         "path": "site/data/japan/universe/jp_index_universe.json",
-        "size_mb": 0.422,
-        "size_bytes": 442305
+        "size_mb": 0.421,
+        "size_bytes": 441807
       },
       {
         "path": "site/data/japan/ai-arena/latest.json",
@@ -707,38 +701,38 @@
       },
       {
         "path": "site/data/japan/ai-arena/positions/latest.json",
-        "size_mb": 0.216,
-        "size_bytes": 226501
+        "size_mb": 0.217,
+        "size_bytes": 227319
       },
       {
         "path": "site/data/japan/ai-arena/summary/latest.json",
         "size_mb": 0.214,
-        "size_bytes": 224243
+        "size_bytes": 224257
       },
       {
         "path": "site/data/japan/ai-arena/summary/2026/latest.json",
         "size_mb": 0.214,
-        "size_bytes": 224243
+        "size_bytes": 224257
       },
       {
         "path": "site/data/japan/ai-arena/live/latest.json",
         "size_mb": 0.203,
-        "size_bytes": 212945
+        "size_bytes": 212982
       },
       {
         "path": "site/data/japan/ai-arena/simulation/latest.json",
         "size_mb": 0.203,
-        "size_bytes": 212945
+        "size_bytes": 212982
       },
       {
         "path": "site/data/japan/ai-arena/ranking/latest.json",
-        "size_mb": 0.196,
-        "size_bytes": 205429
+        "size_mb": 0.195,
+        "size_bytes": 204894
       },
       {
         "path": "site/data/japan/universe/jp_index_universe.csv",
         "size_mb": 0.174,
-        "size_bytes": 182629
+        "size_bytes": 182436
       },
       {
         "path": "site/data/japan/ai-arena/discussion/latest.json",
@@ -748,17 +742,17 @@
       {
         "path": "site/data/japan/agent-scores/latest.json",
         "size_mb": 0.104,
-        "size_bytes": 108551
+        "size_bytes": 109059
+      },
+      {
+        "path": "site/data/japan/ai-arena/diagnostics/trade-diagnostics/latest.md",
+        "size_mb": 0.102,
+        "size_bytes": 106513
       },
       {
         "path": "site/data/japan/ai-arena/hero/latest.json",
         "size_mb": 0.092,
-        "size_bytes": 96260
-      },
-      {
-        "path": "site/data/japan/ai-arena/diagnostics/trade-diagnostics/latest.md",
-        "size_mb": 0.075,
-        "size_bytes": 78912
+        "size_bytes": 95987
       }
     ]
   }
