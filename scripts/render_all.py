@@ -29,6 +29,7 @@ RENDER_SCRIPTS = [
     "render_ai_arena_ranking_jp.py",
     "render_ai_arena_positions_jp.py",
     "render_ai_arena_jp.py",
+    "render_ai_arena_war_room_jp.py",
     "render_ai_arena_signals_jp.py",
     "render_ai_agent_profiles_jp.py",
     "render_static_pages.py",
