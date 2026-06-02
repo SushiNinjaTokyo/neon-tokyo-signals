@@ -369,12 +369,12 @@ def main() -> int:
         """,
         [season.season_start, season.last_trading_date or season.season_end],
     ) or 0)
-    trade_score_rows = int(_single_value(
+    candidate_score_rows = int(_single_value(
         conn,
         """
         SELECT COUNT(*)
         FROM agent_scores_daily
-        WHERE date BETWEEN ? AND ? AND action = 'Trade'
+        WHERE date BETWEEN ? AND ? AND action IN ('Trade', 'Watch')
         """,
         [season.season_start, season.last_trading_date or season.season_end],
     ) or 0)
@@ -384,9 +384,9 @@ def main() -> int:
             f"{season.season_start} - {season.last_trading_date or season.season_end}. "
             "Run scripts/build_agent_scores_jp.py with AGENT_SCORE_MODE=range before season rebuild."
         )
-    if trade_score_rows <= 0:
+    if candidate_score_rows <= 0:
         raise SystemExit(
-            f"agent_scores_daily has no Trade rows in season range {season.season_start} - "
+            f"agent_scores_daily has no Trade/Watch candidate rows in season range {season.season_start} - "
             f"{season.last_trading_date or season.season_end}. Entry orders cannot be created."
         )
 
@@ -429,6 +429,29 @@ def main() -> int:
     agent_diagnostics = {a["agent_id"]: new_agent_diag(a) for a in agents}
     default_max_new_entries_per_day = int(global_pf.get("default_max_new_entries_per_day", 3) or 3)
 
+    def effective_allowed_actions_for_agent(agent: dict[str, Any]) -> set[str]:
+        """Return actions that may become entry candidates for this agent.
+
+        agent_scores_daily uses a global action threshold where only scores >=0.68
+        become Trade.  HIZUMI/value_mispricing intentionally uses a lower entry
+        score, so its Watch rows must be allowed into the entry-rule engine and
+        then validated by the strategy-specific min_score/rank/value gates.
+        """
+        arule = strategy_rule_for_agent(agent_rules, agent)
+        entry = (arule.get("entry") or {}) if isinstance(arule, dict) else {}
+        allowed = entry.get("allowed_actions") or ["Trade"]
+        return {str(x) for x in allowed if str(x).strip()} or {"Trade"}
+
+    def filter_candidate_scores_for_agent(scores_df: pd.DataFrame, agent: dict[str, Any]) -> pd.DataFrame:
+        if scores_df.empty:
+            return pd.DataFrame()
+        aid = str(agent.get("agent_id") or "")
+        allowed_actions = effective_allowed_actions_for_agent(agent)
+        adf = scores_df[scores_df["agent_id"].astype(str) == aid]
+        if adf.empty:
+            return adf
+        return adf[adf["action"].astype(str).isin(allowed_actions)]
+
     def close_position(*, state: AgentState, pos: Position, signal_date: date, exit_date: date, exit_price_raw: float, code: str, text: str) -> None:
         exit_price = apply_bps(exit_price_raw, slippage_bps, "SELL")
         value = exit_price * pos.shares
@@ -436,6 +459,10 @@ def main() -> int:
         ret = (exit_price / pos.entry_price - 1.0) * 100.0 if pos.entry_price else 0.0
         state.cash_jpy += value
         state.realized_pnl_jpy += pnl
+        state.symbol_closed_trade_count[pos.ticker] = state.symbol_closed_trade_count.get(pos.ticker, 0) + 1
+        state.symbol_realized_pnl_jpy[pos.ticker] = state.symbol_realized_pnl_jpy.get(pos.ticker, 0.0) + pnl
+        if pnl < 0:
+            state.symbol_last_loss_exit_date[pos.ticker] = exit_date
         state.positions.pop(pos.ticker, None)
         agent_diagnostics[state.agent_id]["closed_trades"] += 1
         agent_diagnostics[state.agent_id]["sell_orders_filled"] += 1
@@ -621,7 +648,7 @@ def main() -> int:
         # 3) Create new entry orders from today's scores.
         if next_d:
             scores_df = conn.execute(
-                "SELECT * FROM agent_scores_daily WHERE date = ? AND action = 'Trade' ORDER BY agent_id, rank",
+                "SELECT * FROM agent_scores_daily WHERE date = ? AND action IN ('Trade', 'Watch') ORDER BY agent_id, rank",
                 [d],
             ).df()
             for agent in agents:
@@ -632,7 +659,7 @@ def main() -> int:
                 max_positions = int(prule.get("max_positions", 8) or 8)
                 max_new = int(prule.get("max_new_entries_per_day", default_max_new_entries_per_day) or default_max_new_entries_per_day)
                 diag = agent_diagnostics[aid]
-                adf = scores_df[scores_df["agent_id"] == aid] if not scores_df.empty else pd.DataFrame()
+                adf = filter_candidate_scores_for_agent(scores_df, agent)
                 candidate_count = int(len(adf))
                 diag["candidate_rows"] += candidate_count
                 if candidate_count <= 0:
@@ -726,13 +753,14 @@ def main() -> int:
         else:
             # Last trading day has no next-open execution. Count Trade rows as rejected for diagnostics.
             scores_df = conn.execute(
-                "SELECT agent_id, COUNT(*) AS c FROM agent_scores_daily WHERE date = ? AND action = 'Trade' GROUP BY agent_id",
+                "SELECT * FROM agent_scores_daily WHERE date = ? AND action IN ('Trade', 'Watch') ORDER BY agent_id, rank",
                 [d],
             ).df()
-            for row in scores_df.to_dict("records") if not scores_df.empty else []:
-                aid = str(row.get("agent_id"))
-                if aid in agent_diagnostics:
-                    count = int(row.get("c") or 0)
+            for agent in agents:
+                aid = str(agent.get("agent_id") or "")
+                adf = filter_candidate_scores_for_agent(scores_df, agent)
+                count = int(len(adf))
+                if aid in agent_diagnostics and count > 0:
                     agent_diagnostics[aid]["candidate_rows"] += count
                     diag_reject(agent_diagnostics[aid], "NO_NEXT_TRADING_DATE", count=count)
 
