@@ -20,7 +20,7 @@ on:
         type: choice
         options: ["true", "false"]
   schedule:
-    # Saturday 07:30 JST = Friday 22:30 UTC. Runs after the Tokyo week is effectively complete.
+    # Saturday 07:30 JST = Friday 22:30 UTC.
     - cron: "30 22 * * 5"
 
 permissions:
@@ -92,7 +92,9 @@ jobs:
       - name: Show canonical DB status
         run: |
           set -euo pipefail
-          python scripts/show_duckdb_build_metadata.py --db-path "${PRICE_DUCKDB_PATH}" --fail-if-missing
+          python scripts/show_duckdb_build_metadata.py \
+            --db-path "${PRICE_DUCKDB_PATH}" \
+            --fail-if-missing
 
       - name: Compile scripts
         run: |
@@ -133,28 +135,50 @@ jobs:
           set -euo pipefail
           python scripts/stamp_duckdb_build_metadata.py \
             --db-path "${PRICE_DUCKDB_PATH}" \
-            --schema-version neon_tokyo_duckdb_state_v1 \
             --source-workflow "AI Arena JP weekly fundamentals snapshot" \
+            --source-run-id "${GITHUB_RUN_ID}" \
+            --source-run-attempt "${GITHUB_RUN_ATTEMPT}" \
+            --source-sha "${GITHUB_SHA}" \
+            --source-ref "${GITHUB_REF}" \
             --artifact-kind github-release-asset \
             --release-tag "${CANONICAL_DUCKDB_RELEASE_TAG}" \
             --asset-name "${CANONICAL_DUCKDB_ASSET}"
-          python scripts/show_duckdb_build_metadata.py --db-path "${PRICE_DUCKDB_PATH}" --fail-if-missing
+
+          python scripts/show_duckdb_build_metadata.py \
+            --db-path "${PRICE_DUCKDB_PATH}" \
+            --fail-if-missing
 
       - name: Validate tables
         run: |
           set -euo pipefail
           python - <<'PY'
-          import duckdb, os
-          db=os.environ['PRICE_DUCKDB_PATH']
-          con=duckdb.connect(db)
-          for table in ['company_master_jp','fundamentals_latest_jp','fundamentals_snapshot_jp','sector_33_valuation_medians','value_features_sector_relative_jp']:
-              exists=con.execute("SELECT COUNT(*) FROM information_schema.tables WHERE table_name=?", [table]).fetchone()[0]
+          import os
+          import duckdb
+
+          db = os.environ["PRICE_DUCKDB_PATH"]
+          con = duckdb.connect(db)
+
+          required_tables = [
+              "company_master_jp",
+              "fundamentals_latest_jp",
+              "fundamentals_snapshot_jp",
+              "sector_33_valuation_medians",
+              "value_features_sector_relative_jp",
+          ]
+
+          for table in required_tables:
+              exists = con.execute(
+                  "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = ?",
+                  [table],
+              ).fetchone()[0]
               if not exists:
                   raise SystemExit(f"missing table: {table}")
-              rows=con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
-              print(table, rows)
+
+              rows = con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+              print(f"{table}: rows={rows}")
               if rows <= 0:
                   raise SystemExit(f"empty table: {table}")
+
           con.close()
           PY
 
@@ -166,9 +190,11 @@ jobs:
           zstd -T0 -19 -f "${PRICE_DUCKDB_PATH}" -o "data/cache/${CANONICAL_DUCKDB_ASSET}"
 
           python - <<'PY'
-          import json, os
+          import json
+          import os
           from datetime import datetime, timezone
           from pathlib import Path
+
           manifest = {
               "schema_version": "neon_tokyo_canonical_duckdb_manifest_v1",
               "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -180,7 +206,11 @@ jobs:
               "source_sha": os.environ.get("GITHUB_SHA"),
               "source_ref": os.environ.get("GITHUB_REF"),
           }
-          Path("data/cache/neon_tokyo_jp_latest_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+
+          Path("data/cache/neon_tokyo_jp_latest_manifest.json").write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2),
+              encoding="utf-8",
+          )
           PY
 
           gh release upload "${CANONICAL_DUCKDB_RELEASE_TAG}" \
@@ -194,24 +224,45 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions"
           git config user.email "actions@users.noreply.github.com"
-          git add -A \
-            data/universe/jpx_listed_issues_jp.csv \
-            data/universe/jpx_listed_issues_jp.json \
-            site/data/japan/ai-arena/diagnostics/company-master-latest.json \
-            site/data/japan/ai-arena/diagnostics/fundamentals-snapshot-latest.json \
-            site/data/japan/ai-arena/diagnostics/sector-relative-value-latest.json
+
+          paths=(
+            "data/universe/jpx_listed_issues_jp.csv"
+            "data/universe/jpx_listed_issues_jp.json"
+            "site/data/japan/ai-arena/diagnostics/company-master-latest.json"
+            "site/data/japan/ai-arena/diagnostics/fundamentals-snapshot-latest.json"
+            "site/data/japan/ai-arena/diagnostics/sector-relative-value-latest.json"
+          )
+
+          for path in "${paths[@]}"; do
+            if [ -e "$path" ] || [ -n "$(git ls-files -- "$path")" ]; then
+              git add -A -- "$path"
+            else
+              echo "Skip missing diagnostic path: $path"
+            fi
+          done
+
           if git diff --cached --quiet; then
             echo "No diagnostics changes to commit."
             exit 0
           fi
+
           git commit -m "Update JPX company master and fundamentals snapshot diagnostics"
+
           for i in 1 2 3; do
             if git push origin HEAD:main; then
               echo "Push succeeded."
               exit 0
             fi
+
+            echo "Push rejected. Fetching origin/main and retrying ($i/3)..."
             git fetch origin main
-            git rebase origin/main || { git rebase --abort || true; exit 1; }
+            if ! git rebase origin/main; then
+              echo "Rebase failed. Aborting to avoid overwriting diagnostics."
+              git rebase --abort || true
+              exit 1
+            fi
             sleep 5
           done
+
+          echo "Push failed after retries."
           exit 1
