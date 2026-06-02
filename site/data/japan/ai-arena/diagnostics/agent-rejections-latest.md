@@ -1,12 +1,12 @@
 # AI Arena Agent Rejection Diagnostics
 
-Generated: 2026-06-02T00:05:26Z
-Run: `arena_jp_rebuild_2026_v018`
+Generated: 2026-06-02T00:59:22Z
+Run: `arena_jp_rebuild_2026_v019`
 Season: 2026-01-01 → 2026-06-01
 
 | Agent | Candidates | Evaluated | Entry Pass | Orders | Buy Fills | Buy Cancels | Sells | Trades | Open | Rejected | Top Reject Reason |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| HIZUMI / `value_mispricing` | 7722 | 4518 | 31 | 31 | 31 | 0 | 29 | 29 | 2 | 7691 | ENTRY_RULE_REJECTED (4376) |
+| HIZUMI / `value_mispricing` | 7832 | 4703 | 30 | 30 | 30 | 0 | 28 | 28 | 2 | 7802 | ENTRY_RULE_REJECTED (4564) |
 | KAESHI / `reversal_snapback` | 257 | 115 | 67 | 67 | 67 | 0 | 66 | 66 | 1 | 190 | MAX_POSITIONS_FULL (72) |
 | KYOU / `daily_striker` | 1330 | 1056 | 83 | 83 | 79 | 4 | 79 | 79 | 0 | 1251 | ENTRY_RULE_REJECTED (957) |
 | MAMORU / `risk_sentinel` | 40093 | 28684 | 119 | 96 | 96 | 0 | 92 | 92 | 4 | 39997 | ENTRY_RULE_REJECTED (27935) |
@@ -17,19 +17,19 @@ Season: 2026-01-01 → 2026-06-01
 ## Reject reasons by agent
 
 ### HIZUMI / `value_mispricing`
-- `ENTRY_RULE_REJECTED`: 4376
-- `MAX_NEW_ENTRIES_PER_DAY`: 2801
-- `MAX_POSITIONS_FULL`: 403
-- `ALREADY_OPEN_POSITION`: 111
+- `ENTRY_RULE_REJECTED`: 4564
+- `MAX_NEW_ENTRIES_PER_DAY`: 2720
+- `MAX_POSITIONS_FULL`: 409
+- `ALREADY_OPEN_POSITION`: 109
 - Entry rule details:
-  - rank_below_cutoff: 3289
-  - blocked_near_year_end: 545
-  - year_range_position_too_high: 437
+  - rank_below_cutoff: 3451
+  - blocked_near_year_end: 557
+  - year_range_position_too_high: 451
   - five_day_return_too_low: 46
-  - score_below_entry_threshold: 41
-  - liquidity_below_threshold: 7
-  - pullback_too_deep: 4
-  - valuation_discount_below_threshold: 4
+  - score_below_entry_threshold: 42
+  - liquidity_below_threshold: 6
+  - valuation_discount_below_threshold: 5
+  - pullback_too_deep: 3
   - quality_guard_below_threshold: 2
   - medium_return_too_weak: 1
 
