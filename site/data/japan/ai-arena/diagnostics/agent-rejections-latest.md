@@ -1,36 +1,37 @@
 # AI Arena Agent Rejection Diagnostics
 
-Generated: 2026-06-01T05:26:24Z
-Run: `arena_jp_rebuild_2026_v017`
+Generated: 2026-06-02T00:05:26Z
+Run: `arena_jp_rebuild_2026_v018`
 Season: 2026-01-01 → 2026-06-01
 
 | Agent | Candidates | Evaluated | Entry Pass | Orders | Buy Fills | Buy Cancels | Sells | Trades | Open | Rejected | Top Reject Reason |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| HIZUMI / `value_mispricing` | 7722 | 7061 | 7 | 7 | 7 | 0 | 7 | 7 | 0 | 7715 | ENTRY_RULE_REJECTED (7025) |
+| HIZUMI / `value_mispricing` | 7722 | 4518 | 31 | 31 | 31 | 0 | 29 | 29 | 2 | 7691 | ENTRY_RULE_REJECTED (4376) |
 | KAESHI / `reversal_snapback` | 257 | 115 | 67 | 67 | 67 | 0 | 66 | 66 | 1 | 190 | MAX_POSITIONS_FULL (72) |
 | KYOU / `daily_striker` | 1330 | 1056 | 83 | 83 | 79 | 4 | 79 | 79 | 0 | 1251 | ENTRY_RULE_REJECTED (957) |
 | MAMORU / `risk_sentinel` | 40093 | 28684 | 119 | 96 | 96 | 0 | 92 | 92 | 4 | 39997 | ENTRY_RULE_REJECTED (27935) |
 | MATSU / `contrarian_monk` | 1101 | 557 | 78 | 78 | 78 | 0 | 74 | 74 | 4 | 1023 | ENTRY_RULE_REJECTED (390) |
 | NAGARE / `weekly_sage` | 13411 | 5600 | 253 | 57 | 42 | 15 | 36 | 36 | 6 | 13369 | MAX_POSITIONS_FULL (5466) |
-| SAGURI / `discovery_scout` | 575 | 573 | 26 | 26 | 26 | 0 | 25 | 25 | 1 | 549 | ENTRY_RULE_REJECTED (529) |
+| SAGURI / `discovery_scout` | 575 | 556 | 44 | 42 | 42 | 0 | 41 | 41 | 1 | 533 | ENTRY_RULE_REJECTED (486) |
 
 ## Reject reasons by agent
 
 ### HIZUMI / `value_mispricing`
-- `ENTRY_RULE_REJECTED`: 7025
-- `MAX_NEW_ENTRIES_PER_DAY`: 661
-- `ALREADY_OPEN_POSITION`: 29
+- `ENTRY_RULE_REJECTED`: 4376
+- `MAX_NEW_ENTRIES_PER_DAY`: 2801
+- `MAX_POSITIONS_FULL`: 403
+- `ALREADY_OPEN_POSITION`: 111
 - Entry rule details:
-  - rank_below_cutoff: 5846
-  - blocked_near_year_end: 639
-  - year_range_position_too_high: 333
-  - score_below_entry_threshold: 132
-  - five_day_return_too_low: 61
-  - liquidity_below_threshold: 5
-  - pullback_too_deep: 5
-  - medium_return_too_weak: 2
-  - psr_too_high: 1
-  - valuation_discount_below_threshold: 1
+  - rank_below_cutoff: 3289
+  - blocked_near_year_end: 545
+  - year_range_position_too_high: 437
+  - five_day_return_too_low: 46
+  - score_below_entry_threshold: 41
+  - liquidity_below_threshold: 7
+  - pullback_too_deep: 4
+  - valuation_discount_below_threshold: 4
+  - quality_guard_below_threshold: 2
+  - medium_return_too_weak: 1
 
 ### KAESHI / `reversal_snapback`
 - `MAX_POSITIONS_FULL`: 72
@@ -107,18 +108,20 @@ Season: 2026-01-01 → 2026-06-01
   - twenty_day_move_too_extended: 3
 
 ### SAGURI / `discovery_scout`
-- `ENTRY_RULE_REJECTED`: 529
-- `ALREADY_OPEN_POSITION`: 18
-- `MAX_NEW_ENTRIES_PER_DAY`: 2
+- `ENTRY_RULE_REJECTED`: 486
+- `ALREADY_OPEN_POSITION`: 26
+- `MAX_NEW_ENTRIES_PER_DAY`: 19
+- `ZERO_SHARES_AFTER_SIZING`: 2
 - Entry rule details:
-  - five_day_move_too_extended: 162
-  - quality_guard_below_threshold: 74
-  - rank_below_cutoff: 67
+  - five_day_move_too_extended: 153
+  - operating_margin_below_threshold: 69
+  - quality_guard_below_threshold: 69
   - liquidity_below_threshold: 63
-  - score_below_entry_threshold: 53
-  - operating_margin_below_threshold: 44
   - blocked_near_year_end: 37
-  - roe_below_threshold: 10
-  - market_cap_too_small: 8
-  - pbr_too_high: 7
-  - five_day_return_too_low: 4
+  - score_below_entry_threshold: 33
+  - roe_below_threshold: 23
+  - rank_below_cutoff: 14
+  - pbr_too_high: 11
+  - market_cap_too_small: 10
+  - five_day_return_too_low: 3
+  - pullback_too_deep: 1

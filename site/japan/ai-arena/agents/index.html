@@ -15,7 +15,7 @@
         <p class="hero-copy">Seven Japanese equity agents. Each profile exposes the strategy, exit behavior, and portfolio discipline behind the Arena.</p>
       </div>
       <div class="meta-card">
-        <span>Strategy</span><strong>jp_agent_strategy_2026_dev_v014_market_regime_mfe</strong>
+        <span>Strategy</span><strong>jp_agent_strategy_2026_dev_v018_hizumi_saguri_entry_exit</strong>
         <span>Portfolio</span><strong>jp_agent_portfolio_2026_dev_v003</strong>
       </div>
     </header>
@@ -162,16 +162,16 @@
           <div>
             <h3>Entry Logic</h3>
             <ul>
-              <li>Min score: 0.68</li>
-              <li>Max rank/day: 10</li>
-              <li>Liquidity guard: 0.45</li>
+              <li>Min score: 0.64</li>
+              <li>Max rank/day: 14</li>
+              <li>Liquidity guard: 0.38</li>
             </ul>
           </div>
           <div>
             <h3>Exit Logic</h3>
             <ul>
               <li>Style: discovery_risk</li>
-              <li>Stop: -6.0%</li>
+              <li>Stop: {'BULL': -7.0, 'NEUTRAL': -6.2, 'BEAR': -5.2, 'default': -6.2}%</li>
               <li>Max days: 25</li>
             </ul>
           </div>
@@ -288,8 +288,8 @@
           <div>
             <h3>Entry Logic</h3>
             <ul>
-              <li>Min score: 0.66</li>
-              <li>Max rank/day: 8</li>
+              <li>Min score: 0.62</li>
+              <li>Max rank/day: 14</li>
               <li>Liquidity guard: 0.35</li>
             </ul>
           </div>
@@ -297,8 +297,8 @@
             <h3>Exit Logic</h3>
             <ul>
               <li>Style: value_rerating</li>
-              <li>Stop: -4.2%</li>
-              <li>Max days: 42</li>
+              <li>Stop: {'BULL': -5.0, 'NEUTRAL': -4.5, 'BEAR': -3.8, 'default': -4.5}%</li>
+              <li>Max days: 45</li>
             </ul>
           </div>
           <div>
