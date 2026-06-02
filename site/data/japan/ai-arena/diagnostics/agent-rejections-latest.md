@@ -1,7 +1,7 @@
 # AI Arena Agent Rejection Diagnostics
 
-Generated: 2026-06-02T10:49:56Z
-Run: `arena_jp_rebuild_2026_v021`
+Generated: 2026-06-02T12:17:51Z
+Run: `arena_jp_rebuild_2026_v022`
 Season: 2026-01-01 → 2026-06-01
 
 | Agent | Candidates | Evaluated | Entry Pass | Orders | Buy Fills | Buy Cancels | Sells | Trades | Open | Rejected | Top Reject Reason |
