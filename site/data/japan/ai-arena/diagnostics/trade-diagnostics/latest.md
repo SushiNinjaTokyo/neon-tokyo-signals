@@ -1,16 +1,16 @@
 # Neon Tokyo AI Arena Trade Diagnostics
 
-Generated: `2026-06-01T16:22:49+00:00`
-Run ID: `arena_jp_rebuild_2026_v017`
+Generated: `2026-06-02T00:11:07+00:00`
+Run ID: `arena_jp_rebuild_2026_v018`
 
 > Purpose: paste this Markdown into ChatGPT and ask for detailed agent-by-agent win/loss diagnosis and rule-improvement ideas.
 
 ## Dataset Summary
 
-- Closed trades: **379**
-- Open positions: **16**
+- Closed trades: **417**
+- Open positions: **18**
 - Agents with closed trades: **7**
-- Exported compact trade rows in JSON: **379**
+- Exported compact trade rows in JSON: **417**
 - Equity curve rows: **686**
 
 ## Agent Summary
@@ -20,10 +20,10 @@ Run ID: `arena_jp_rebuild_2026_v017`
 | KYOU / `daily_striker` | 79 | 48.10% | 1.15% | 5.00% | -2.43% | 2.0621 | 1.7407 | ¥1,103,700 | 5.37% | -3.51% | NORMAL_LOSS:30, FAST_FAILED_ENTRY:4, DEEP_ADVERSE_MOVE:3, WINNER_TURNED_LOSER:3 |
 | NAGARE / `weekly_sage` | 36 | 38.89% | 4.92% | 24.91% | -7.80% | 3.1923 | 2.4006 | ¥2,689,727 | 15.32% | -7.97% | NORMAL_LOSS:9, DEEP_ADVERSE_MOVE:8, WINNER_TURNED_LOSER:5 |
 | MAMORU / `risk_sentinel` | 92 | 48.91% | 2.02% | 7.44% | -3.17% | 2.3451 | 2.2325 | ¥1,380,806 | 6.65% | -3.58% | NORMAL_LOSS:24, STOP_LOSS_HIT:17, WINNER_TURNED_LOSER:5, DEEP_ADVERSE_MOVE:1 |
-| SAGURI / `discovery_scout` | 25 | 40.00% | -0.09% | 7.85% | -5.39% | 1.4568 | 0.9277 | ¥-67,782 | 9.11% | -5.57% | DEEP_ADVERSE_MOVE:4, NORMAL_LOSS:4, WINNER_TURNED_LOSER:4, FAST_FAILED_ENTRY:3 |
+| SAGURI / `discovery_scout` | 41 | 41.46% | 1.04% | 10.48% | -5.65% | 1.8563 | 1.279 | ¥442,073 | 9.24% | -6.01% | DEEP_ADVERSE_MOVE:7, NORMAL_LOSS:6, WINNER_TURNED_LOSER:4, FAST_FAILED_ENTRY:4 |
 | MATSU / `contrarian_monk` | 74 | 47.30% | 2.50% | 10.49% | -4.68% | 2.2426 | 1.8252 | ¥1,835,126 | 8.33% | -5.78% | STOP_LOSS_HIT:14, NORMAL_LOSS:9, DEEP_ADVERSE_MOVE:8, WINNER_TURNED_LOSER:6 |
 | KAESHI / `reversal_snapback` | 66 | 46.97% | 0.74% | 7.07% | -4.86% | 1.4542 | 1.2506 | ¥460,933 | 6.30% | -5.18% | STOP_LOSS_HIT:20, NORMAL_LOSS:8, DEEP_ADVERSE_MOVE:4, WINNER_TURNED_LOSER:3 |
-| HIZUMI / `value_mispricing` | 7 | 28.57% | -3.51% | 0.54% | -5.13% | 0.1056 | 0.0501 | ¥-368,394 | 2.03% | -5.17% | STOP_LOSS_HIT:4, NORMAL_LOSS:1 |
+| HIZUMI / `value_mispricing` | 29 | 41.38% | 0.29% | 7.26% | -4.64% | 1.566 | 1.2434 | ¥286,688 | 5.43% | -4.91% | STOP_LOSS_HIT:10, NORMAL_LOSS:6, WINNER_TURNED_LOSER:1 |
 
 ## KYOU / `daily_striker`
 
@@ -414,21 +414,22 @@ Run ID: `arena_jp_rebuild_2026_v017`
 
 ### Key Metrics
 
-- Trades: **25**, Win rate: **40.00%**, Total PnL: **¥-67,782**
-- Avg return: **-0.09%**, Avg win: **7.85%**, Avg loss: **-5.39%**
-- Payoff ratio: **1.4568**, Profit factor: **0.9277**
-- Avg MFE: **9.11%**, Avg MAE: **-5.57%**
+- Trades: **41**, Win rate: **41.46%**, Total PnL: **¥442,073**
+- Avg return: **1.04%**, Avg win: **10.48%**, Avg loss: **-5.65%**
+- Payoff ratio: **1.8563**, Profit factor: **1.279**
+- Avg MFE: **9.24%**, Avg MAE: **-6.01%**
 
 ### Exit Reasons
 
 ```json
 {
-  "SCORE_COLLAPSE": 8,
-  "PROFIT_PROTECTION": 5,
-  "HARD_STOP": 4,
+  "SCORE_COLLAPSE": 11,
+  "HARD_STOP": 8,
+  "LIQUIDITY_DRYUP": 8,
+  "TAKE_PROFIT": 4,
   "EARLY_FAIL": 4,
-  "TAKE_PROFIT": 2,
-  "MOMENTUM_DECAY": 1,
+  "MOMENTUM_DECAY": 3,
+  "DISCOVERY_PROFIT_PROTECTION_1": 2,
   "MAX_HOLDING_DAYS": 1
 }
 ```
@@ -437,10 +438,11 @@ Run ID: `arena_jp_rebuild_2026_v017`
 
 ```json
 {
-  "DEEP_ADVERSE_MOVE": 4,
-  "NORMAL_LOSS": 4,
+  "DEEP_ADVERSE_MOVE": 7,
+  "NORMAL_LOSS": 6,
   "WINNER_TURNED_LOSER": 4,
-  "FAST_FAILED_ENTRY": 3
+  "FAST_FAILED_ENTRY": 4,
+  "STOP_LOSS_HIT": 3
 }
 ```
 
@@ -448,9 +450,9 @@ Run ID: `arena_jp_rebuild_2026_v017`
 
 ```json
 {
-  "NORMAL_WIN": 5,
-  "FAST_WINNER": 3,
-  "GAVE_BACK_LARGE_MFE_BUT_CLOSED_GREEN": 2
+  "NORMAL_WIN": 7,
+  "FAST_WINNER": 6,
+  "GAVE_BACK_LARGE_MFE_BUT_CLOSED_GREEN": 4
 }
 ```
 
@@ -458,86 +460,86 @@ Run ID: `arena_jp_rebuild_2026_v017`
 
 | Ticker | Name | Entry | Exit | Return | PnL | Hold | MFE | MAE | Exit | Pattern |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| 5243.T | note inc. | 2026-01-26 | 2026-01-27 | -11.91% | ¥-125,892 | 1 | 1.07% | -16.15% | HARD_STOP | DEEP_ADVERSE_MOVE |
-| 4443.T | Sansan,Inc. | 2026-01-16 | 2026-01-20 | -11.61% | ¥-156,214 | 4 | 1.47% | -14.61% | HARD_STOP | DEEP_ADVERSE_MOVE |
-| 3692.T | FFRI Security,Inc. | 2026-02-09 | 2026-02-10 | -9.73% | ¥-97,946 | 1 | 0.19% | -12.05% | HARD_STOP | DEEP_ADVERSE_MOVE |
-| 4419.T | Finatext Holdings Ltd. | 2026-05-11 | 2026-05-15 | -7.58% | ¥-81,489 | 4 | 13.35% | -12.69% | HARD_STOP | DEEP_ADVERSE_MOVE |
-| 5842.T | Integral Corporation | 2026-01-16 | 2026-01-20 | -7.07% | ¥-94,992 | 4 | 1.28% | -11.10% | EARLY_FAIL | FAST_FAILED_ENTRY |
-| 4071.T | Plus Alpha Consulting Co.,LTD. | 2026-05-08 | 2026-05-13 | -5.49% | ¥-59,250 | 5 | 0.94% | -6.60% | EARLY_FAIL | FAST_FAILED_ENTRY |
-| 5574.T | ABEJA,Inc. | 2026-02-06 | 2026-02-16 | -4.98% | ¥-55,297 | 10 | 3.78% | -7.37% | SCORE_COLLAPSE | NORMAL_LOSS |
-| 7172.T | Commodities | 2026-05-01 | 2026-05-08 | -4.81% | ¥-58,954 | 7 | 0.04% | -5.40% | EARLY_FAIL | FAST_FAILED_ENTRY |
-| 299A.T | Kurashiru,Inc. | 2026-05-12 | 2026-05-21 | -3.74% | ¥-44,876 | 9 | 6.72% | -5.95% | SCORE_COLLAPSE | WINNER_TURNED_LOSER |
-| 4384.T | RAKSUL INC. | 2026-02-05 | 2026-02-16 | -3.73% | ¥-38,272 | 11 | 1.33% | -5.60% | EARLY_FAIL | NORMAL_LOSS |
-| 7685.T | BuySell Technologies Co.,Ltd. | 2026-05-18 | 2026-05-19 | -3.38% | ¥-38,190 | 1 | 9.17% | -4.44% | SCORE_COLLAPSE | WINNER_TURNED_LOSER |
-| 6544.T | ジャパンエレベーターサービスホールディングス | 2026-05-18 | 2026-05-21 | -3.17% | ¥-41,196 | 3 | 0.83% | -3.98% | SCORE_COLLAPSE | NORMAL_LOSS |
-| 7685.T | BuySell Technologies Co.,Ltd. | 2026-02-17 | 2026-03-04 | -2.89% | ¥-37,108 | 15 | 14.79% | -4.76% | PROFIT_PROTECTION | WINNER_TURNED_LOSER |
-| 2986.T | LA Holdings Co.,Ltd. | 2026-02-02 | 2026-02-18 | -0.40% | ¥-4,528 | 16 | 20.14% | -5.67% | SCORE_COLLAPSE | WINNER_TURNED_LOSER |
-| 9279.T | GIFT HOLDINGS INC. | 2026-03-19 | 2026-03-23 | -0.31% | ¥-3,098 | 4 | 1.97% | -2.28% | SCORE_COLLAPSE | NORMAL_LOSS |
+| 5243.T | note inc. | 2026-01-26 | 2026-01-27 | -11.91% | ¥-134,118 | 1 | 1.07% | -16.15% | HARD_STOP | DEEP_ADVERSE_MOVE |
+| 4443.T | Sansan,Inc. | 2026-01-16 | 2026-01-20 | -11.61% | ¥-161,038 | 4 | 1.47% | -14.61% | HARD_STOP | DEEP_ADVERSE_MOVE |
+| 4419.T | Finatext Holdings Ltd. | 2026-02-13 | 2026-02-16 | -9.94% | ¥-110,173 | 3 | 2.00% | -12.78% | HARD_STOP | DEEP_ADVERSE_MOVE |
+| 3692.T | FFRI Security,Inc. | 2026-02-09 | 2026-02-10 | -9.73% | ¥-104,004 | 1 | 0.19% | -12.05% | HARD_STOP | DEEP_ADVERSE_MOVE |
+| 7777.T | 3-D Matrix,Ltd. | 2026-02-19 | 2026-02-24 | -9.17% | ¥-105,222 | 5 | 0.73% | -10.57% | HARD_STOP | STOP_LOSS_HIT |
+| 5574.T | ABEJA,Inc. | 2026-01-16 | 2026-01-23 | -8.12% | ¥-112,662 | 7 | 1.01% | -11.20% | HARD_STOP | STOP_LOSS_HIT |
+| 247A.T | Ai ROBOTICS INC. | 2026-02-17 | 2026-02-18 | -7.97% | ¥-88,662 | 1 | 2.83% | -17.36% | SCORE_COLLAPSE | DEEP_ADVERSE_MOVE |
+| 4419.T | Finatext Holdings Ltd. | 2026-05-11 | 2026-05-15 | -7.58% | ¥-87,435 | 4 | 13.35% | -12.69% | HARD_STOP | DEEP_ADVERSE_MOVE |
+| 9553.T | MicroAd,Inc. | 2026-02-20 | 2026-02-25 | -6.26% | ¥-25,488 | 5 | 2.58% | -8.50% | EARLY_FAIL | FAST_FAILED_ENTRY |
+| 9279.T | GIFT HOLDINGS INC. | 2026-02-26 | 2026-03-04 | -5.92% | ¥-68,983 | 6 | 0.85% | -7.49% | EARLY_FAIL | FAST_FAILED_ENTRY |
+| 5842.T | Integral Corporation | 2026-01-15 | 2026-01-21 | -5.71% | ¥-75,977 | 6 | 8.91% | -8.44% | SCORE_COLLAPSE | WINNER_TURNED_LOSER |
+| 7806.T | MTG Co.,Ltd. | 2026-03-02 | 2026-03-04 | -5.58% | ¥-61,668 | 2 | 1.12% | -7.92% | HARD_STOP | STOP_LOSS_HIT |
+| 4071.T | Plus Alpha Consulting Co.,LTD. | 2026-05-08 | 2026-05-13 | -5.49% | ¥-62,673 | 5 | 0.94% | -6.60% | EARLY_FAIL | FAST_FAILED_ENTRY |
+| 153A.T | Caulis Inc. | 2026-05-01 | 2026-05-08 | -5.20% | ¥-64,659 | 7 | 5.58% | -12.07% | LIQUIDITY_DRYUP | DEEP_ADVERSE_MOVE |
+| 7388.T | FP Partner Inc. | 2026-01-16 | 2026-01-27 | -4.47% | ¥-61,998 | 11 | 3.20% | -5.01% | LIQUIDITY_DRYUP | NORMAL_LOSS |
 
 
 ### Best Trades
 
 | Ticker | Name | Entry | Exit | Return | PnL | Hold | MFE | MAE | Exit | Pattern |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| 5243.T | note inc. | 2026-01-14 | 2026-01-16 | 25.88% | ¥312,944 | 2 | 31.01% | -1.33% | TAKE_PROFIT | FAST_WINNER |
-| 7318.T | SERENDIP HOLDINGS Co.,Ltd. | 2026-02-25 | 2026-03-02 | 19.40% | ¥198,538 | 5 | 29.74% | -0.17% | TAKE_PROFIT | FAST_WINNER |
-| 7777.T | 3-D Matrix,Ltd. | 2026-02-26 | 2026-03-05 | 9.78% | ¥102,208 | 7 | 18.55% | -2.93% | PROFIT_PROTECTION | FAST_WINNER |
-| 3479.T | TKP Corporation | 2026-01-26 | 2026-02-24 | 7.51% | ¥93,964 | 29 | 10.12% | -1.10% | MAX_HOLDING_DAYS | NORMAL_WIN |
-| 5253.T | COVER Corporation | 2026-05-18 | 2026-05-27 | 3.53% | ¥37,616 | 9 | 19.93% | -1.93% | PROFIT_PROTECTION | NORMAL_WIN |
-| 4449.T | giftee Inc. | 2026-04-28 | 2026-04-30 | 3.20% | ¥32,635 | 2 | 3.30% | -1.84% | SCORE_COLLAPSE | NORMAL_WIN |
-| 3905.T | Datasection Inc. | 2026-01-07 | 2026-01-13 | 3.06% | ¥34,754 | 6 | 10.60% | -3.04% | SCORE_COLLAPSE | NORMAL_WIN |
-| 7172.T | Commodities | 2026-02-12 | 2026-02-13 | 2.40% | ¥25,271 | 1 | 3.83% | -2.56% | MOMENTUM_DECAY | NORMAL_WIN |
-| 6532.T | ベイカレント | 2026-04-17 | 2026-04-24 | 2.25% | ¥13,702 | 7 | 12.85% | -0.25% | PROFIT_PROTECTION | GAVE_BACK_LARGE_MFE_BUT_CLOSED_GREEN |
-| 7806.T | MTG Co.,Ltd. | 2026-05-13 | 2026-05-18 | 1.46% | ¥17,888 | 5 | 10.65% | -5.55% | PROFIT_PROTECTION | GAVE_BACK_LARGE_MFE_BUT_CLOSED_GREEN |
-| 9279.T | GIFT HOLDINGS INC. | 2026-03-19 | 2026-03-23 | -0.31% | ¥-3,098 | 4 | 1.97% | -2.28% | SCORE_COLLAPSE | NORMAL_LOSS |
-| 2986.T | LA Holdings Co.,Ltd. | 2026-02-02 | 2026-02-18 | -0.40% | ¥-4,528 | 16 | 20.14% | -5.67% | SCORE_COLLAPSE | WINNER_TURNED_LOSER |
-| 7685.T | BuySell Technologies Co.,Ltd. | 2026-02-17 | 2026-03-04 | -2.89% | ¥-37,108 | 15 | 14.79% | -4.76% | PROFIT_PROTECTION | WINNER_TURNED_LOSER |
-| 6544.T | ジャパンエレベーターサービスホールディングス | 2026-05-18 | 2026-05-21 | -3.17% | ¥-41,196 | 3 | 0.83% | -3.98% | SCORE_COLLAPSE | NORMAL_LOSS |
-| 7685.T | BuySell Technologies Co.,Ltd. | 2026-05-18 | 2026-05-19 | -3.38% | ¥-38,190 | 1 | 9.17% | -4.44% | SCORE_COLLAPSE | WINNER_TURNED_LOSER |
+| 5243.T | note inc. | 2026-01-13 | 2026-01-16 | 45.00% | ¥535,976 | 3 | 50.90% | -4.55% | TAKE_PROFIT | FAST_WINNER |
+| 4055.T | T&S Group Inc. | 2026-05-08 | 2026-05-12 | 35.66% | ¥443,668 | 4 | 39.59% | -1.02% | TAKE_PROFIT | FAST_WINNER |
+| 7685.T | BuySell Technologies Co.,Ltd. | 2026-02-16 | 2026-02-24 | 29.00% | ¥269,090 | 8 | 30.35% | -1.02% | TAKE_PROFIT | FAST_WINNER |
+| 7318.T | SERENDIP HOLDINGS Co.,Ltd. | 2026-02-25 | 2026-03-03 | 23.36% | ¥252,849 | 6 | 30.37% | -0.17% | TAKE_PROFIT | FAST_WINNER |
+| 7777.T | 3-D Matrix,Ltd. | 2026-02-26 | 2026-03-05 | 9.78% | ¥108,258 | 7 | 18.55% | -2.93% | SCORE_COLLAPSE | FAST_WINNER |
+| 3479.T | TKP Corporation | 2026-01-26 | 2026-02-24 | 7.51% | ¥99,258 | 29 | 10.12% | -1.10% | MAX_HOLDING_DAYS | NORMAL_WIN |
+| 4475.T | HENNGE K.K. | 2026-05-11 | 2026-05-21 | 7.04% | ¥79,068 | 10 | 11.80% | -0.60% | SCORE_COLLAPSE | FAST_WINNER |
+| 5253.T | COVER Corporation | 2026-05-18 | 2026-05-27 | 3.53% | ¥41,388 | 9 | 19.93% | -1.93% | MOMENTUM_DECAY | NORMAL_WIN |
+| 3905.T | Datasection Inc. | 2026-01-07 | 2026-01-13 | 3.06% | ¥36,618 | 6 | 10.60% | -3.04% | SCORE_COLLAPSE | NORMAL_WIN |
+| 7806.T | MTG Co.,Ltd. | 2026-02-13 | 2026-02-26 | 2.78% | ¥36,490 | 13 | 12.04% | -0.80% | LIQUIDITY_DRYUP | GAVE_BACK_LARGE_MFE_BUT_CLOSED_GREEN |
+| 7172.T | Commodities | 2026-02-12 | 2026-02-13 | 2.40% | ¥26,885 | 1 | 3.83% | -2.56% | MOMENTUM_DECAY | NORMAL_WIN |
+| 3482.T | Loadstar Capital K.K. | 2026-02-17 | 2026-02-25 | 2.26% | ¥29,880 | 8 | 4.82% | -1.69% | LIQUIDITY_DRYUP | NORMAL_WIN |
+| 6532.T | ベイカレント | 2026-04-17 | 2026-04-24 | 2.25% | ¥14,543 | 7 | 12.85% | -0.25% | DISCOVERY_PROFIT_PROTECTION_1 | GAVE_BACK_LARGE_MFE_BUT_CLOSED_GREEN |
+| 9279.T | GIFT HOLDINGS INC. | 2026-03-19 | 2026-03-27 | 2.20% | ¥23,372 | 8 | 6.01% | -2.28% | SCORE_COLLAPSE | NORMAL_WIN |
+| 7806.T | MTG Co.,Ltd. | 2026-05-13 | 2026-05-18 | 1.46% | ¥19,435 | 5 | 10.65% | -5.55% | DISCOVERY_PROFIT_PROTECTION_1 | GAVE_BACK_LARGE_MFE_BUT_CLOSED_GREEN |
 
 
 ### Largest MFE Givebacks
 
 | Ticker | Name | Entry | Exit | Return | PnL | Hold | MFE | MAE | Exit | Pattern |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| 4419.T | Finatext Holdings Ltd. | 2026-05-11 | 2026-05-15 | -7.58% | ¥-81,489 | 4 | 13.35% | -12.69% | HARD_STOP | DEEP_ADVERSE_MOVE |
-| 2986.T | LA Holdings Co.,Ltd. | 2026-02-02 | 2026-02-18 | -0.40% | ¥-4,528 | 16 | 20.14% | -5.67% | SCORE_COLLAPSE | WINNER_TURNED_LOSER |
-| 7685.T | BuySell Technologies Co.,Ltd. | 2026-02-17 | 2026-03-04 | -2.89% | ¥-37,108 | 15 | 14.79% | -4.76% | PROFIT_PROTECTION | WINNER_TURNED_LOSER |
-| 5253.T | COVER Corporation | 2026-05-18 | 2026-05-27 | 3.53% | ¥37,616 | 9 | 19.93% | -1.93% | PROFIT_PROTECTION | NORMAL_WIN |
-| 4443.T | Sansan,Inc. | 2026-01-16 | 2026-01-20 | -11.61% | ¥-156,214 | 4 | 1.47% | -14.61% | HARD_STOP | DEEP_ADVERSE_MOVE |
-| 5243.T | note inc. | 2026-01-26 | 2026-01-27 | -11.91% | ¥-125,892 | 1 | 1.07% | -16.15% | HARD_STOP | DEEP_ADVERSE_MOVE |
-| 7685.T | BuySell Technologies Co.,Ltd. | 2026-05-18 | 2026-05-19 | -3.38% | ¥-38,190 | 1 | 9.17% | -4.44% | SCORE_COLLAPSE | WINNER_TURNED_LOSER |
-| 6532.T | ベイカレント | 2026-04-17 | 2026-04-24 | 2.25% | ¥13,702 | 7 | 12.85% | -0.25% | PROFIT_PROTECTION | GAVE_BACK_LARGE_MFE_BUT_CLOSED_GREEN |
-| 299A.T | Kurashiru,Inc. | 2026-05-12 | 2026-05-21 | -3.74% | ¥-44,876 | 9 | 6.72% | -5.95% | SCORE_COLLAPSE | WINNER_TURNED_LOSER |
-| 7318.T | SERENDIP HOLDINGS Co.,Ltd. | 2026-02-25 | 2026-03-02 | 19.40% | ¥198,538 | 5 | 29.74% | -0.17% | TAKE_PROFIT | FAST_WINNER |
+| 4419.T | Finatext Holdings Ltd. | 2026-05-11 | 2026-05-15 | -7.58% | ¥-87,435 | 4 | 13.35% | -12.69% | HARD_STOP | DEEP_ADVERSE_MOVE |
+| 2986.T | LA Holdings Co.,Ltd. | 2026-02-02 | 2026-02-18 | -0.40% | ¥-4,766 | 16 | 20.14% | -5.67% | SCORE_COLLAPSE | WINNER_TURNED_LOSER |
+| 5253.T | COVER Corporation | 2026-05-18 | 2026-05-27 | 3.53% | ¥41,388 | 9 | 19.93% | -1.93% | MOMENTUM_DECAY | NORMAL_WIN |
+| 5842.T | Integral Corporation | 2026-01-15 | 2026-01-21 | -5.71% | ¥-75,977 | 6 | 8.91% | -8.44% | SCORE_COLLAPSE | WINNER_TURNED_LOSER |
+| 7318.T | SERENDIP HOLDINGS Co.,Ltd. | 2026-02-13 | 2026-02-20 | 0.21% | ¥2,678 | 7 | 13.37% | -1.17% | MOMENTUM_DECAY | GAVE_BACK_LARGE_MFE_BUT_CLOSED_GREEN |
+| 4443.T | Sansan,Inc. | 2026-01-16 | 2026-01-20 | -11.61% | ¥-161,038 | 4 | 1.47% | -14.61% | HARD_STOP | DEEP_ADVERSE_MOVE |
+| 5243.T | note inc. | 2026-01-26 | 2026-01-27 | -11.91% | ¥-134,118 | 1 | 1.07% | -16.15% | HARD_STOP | DEEP_ADVERSE_MOVE |
+| 7685.T | BuySell Technologies Co.,Ltd. | 2026-05-18 | 2026-05-19 | -3.38% | ¥-41,928 | 1 | 9.17% | -4.44% | SCORE_COLLAPSE | WINNER_TURNED_LOSER |
+| 4419.T | Finatext Holdings Ltd. | 2026-02-13 | 2026-02-16 | -9.94% | ¥-110,173 | 3 | 2.00% | -12.78% | HARD_STOP | DEEP_ADVERSE_MOVE |
+| 247A.T | Ai ROBOTICS INC. | 2026-02-17 | 2026-02-18 | -7.97% | ¥-88,662 | 1 | 2.83% | -17.36% | SCORE_COLLAPSE | DEEP_ADVERSE_MOVE |
 
 
 ### Deepest Adverse Trades
 
 | Ticker | Name | Entry | Exit | Return | PnL | Hold | MFE | MAE | Exit | Pattern |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| 5243.T | note inc. | 2026-01-26 | 2026-01-27 | -11.91% | ¥-125,892 | 1 | 1.07% | -16.15% | HARD_STOP | DEEP_ADVERSE_MOVE |
-| 4443.T | Sansan,Inc. | 2026-01-16 | 2026-01-20 | -11.61% | ¥-156,214 | 4 | 1.47% | -14.61% | HARD_STOP | DEEP_ADVERSE_MOVE |
-| 4419.T | Finatext Holdings Ltd. | 2026-05-11 | 2026-05-15 | -7.58% | ¥-81,489 | 4 | 13.35% | -12.69% | HARD_STOP | DEEP_ADVERSE_MOVE |
-| 3692.T | FFRI Security,Inc. | 2026-02-09 | 2026-02-10 | -9.73% | ¥-97,946 | 1 | 0.19% | -12.05% | HARD_STOP | DEEP_ADVERSE_MOVE |
-| 5842.T | Integral Corporation | 2026-01-16 | 2026-01-20 | -7.07% | ¥-94,992 | 4 | 1.28% | -11.10% | EARLY_FAIL | FAST_FAILED_ENTRY |
-| 5574.T | ABEJA,Inc. | 2026-02-06 | 2026-02-16 | -4.98% | ¥-55,297 | 10 | 3.78% | -7.37% | SCORE_COLLAPSE | NORMAL_LOSS |
-| 4071.T | Plus Alpha Consulting Co.,LTD. | 2026-05-08 | 2026-05-13 | -5.49% | ¥-59,250 | 5 | 0.94% | -6.60% | EARLY_FAIL | FAST_FAILED_ENTRY |
-| 299A.T | Kurashiru,Inc. | 2026-05-12 | 2026-05-21 | -3.74% | ¥-44,876 | 9 | 6.72% | -5.95% | SCORE_COLLAPSE | WINNER_TURNED_LOSER |
-| 2986.T | LA Holdings Co.,Ltd. | 2026-02-02 | 2026-02-18 | -0.40% | ¥-4,528 | 16 | 20.14% | -5.67% | SCORE_COLLAPSE | WINNER_TURNED_LOSER |
-| 4384.T | RAKSUL INC. | 2026-02-05 | 2026-02-16 | -3.73% | ¥-38,272 | 11 | 1.33% | -5.60% | EARLY_FAIL | NORMAL_LOSS |
+| 247A.T | Ai ROBOTICS INC. | 2026-02-17 | 2026-02-18 | -7.97% | ¥-88,662 | 1 | 2.83% | -17.36% | SCORE_COLLAPSE | DEEP_ADVERSE_MOVE |
+| 5243.T | note inc. | 2026-01-26 | 2026-01-27 | -11.91% | ¥-134,118 | 1 | 1.07% | -16.15% | HARD_STOP | DEEP_ADVERSE_MOVE |
+| 4443.T | Sansan,Inc. | 2026-01-16 | 2026-01-20 | -11.61% | ¥-161,038 | 4 | 1.47% | -14.61% | HARD_STOP | DEEP_ADVERSE_MOVE |
+| 4419.T | Finatext Holdings Ltd. | 2026-02-13 | 2026-02-16 | -9.94% | ¥-110,173 | 3 | 2.00% | -12.78% | HARD_STOP | DEEP_ADVERSE_MOVE |
+| 4419.T | Finatext Holdings Ltd. | 2026-05-11 | 2026-05-15 | -7.58% | ¥-87,435 | 4 | 13.35% | -12.69% | HARD_STOP | DEEP_ADVERSE_MOVE |
+| 153A.T | Caulis Inc. | 2026-05-01 | 2026-05-08 | -5.20% | ¥-64,659 | 7 | 5.58% | -12.07% | LIQUIDITY_DRYUP | DEEP_ADVERSE_MOVE |
+| 3692.T | FFRI Security,Inc. | 2026-02-09 | 2026-02-10 | -9.73% | ¥-104,004 | 1 | 0.19% | -12.05% | HARD_STOP | DEEP_ADVERSE_MOVE |
+| 5574.T | ABEJA,Inc. | 2026-01-16 | 2026-01-23 | -8.12% | ¥-112,662 | 7 | 1.01% | -11.20% | HARD_STOP | STOP_LOSS_HIT |
+| 7777.T | 3-D Matrix,Ltd. | 2026-02-19 | 2026-02-24 | -9.17% | ¥-105,222 | 5 | 0.73% | -10.57% | HARD_STOP | STOP_LOSS_HIT |
+| 9553.T | MicroAd,Inc. | 2026-02-20 | 2026-02-25 | -6.26% | ¥-25,488 | 5 | 2.58% | -8.50% | EARLY_FAIL | FAST_FAILED_ENTRY |
 
 
 ### Compact Entry Context For Worst Trades
 
 - `5243.T` 2026-01-26 → 2026-01-27 -11.91%: score: rank=6, action=Trade / feature: return_5d_pct=17.384433030422763, return_20d_pct=90.93830334190231, volume_ratio_20d=1.4437206857180407, rsi_14=77.67672591980157, range_position_252d_0_1=0.9115797262301147 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=38538764288.0, per=74.13601, pbr=7.0371614, roe_pct=19.439, operating_margin_pct=19.326
 - `4443.T` 2026-01-16 → 2026-01-20 -11.61%: score: rank=2, action=Trade / feature: return_5d_pct=11.575381140598529, return_20d_pct=17.479191438763376, volume_ratio_20d=6.196071396537806, rsi_14=73.46938775510205, range_position_252d_0_1=0.376953125 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=226175877120.0, per=110.79404, pbr=11.916517, roe_pct=15.695, operating_margin_pct=21.867001
+- `4419.T` 2026-02-13 → 2026-02-16 -9.94%: score: rank=7, action=Trade / feature: return_5d_pct=19.35881627620222, return_20d_pct=2.869287991498415, volume_ratio_20d=3.4902118116635292, rsi_14=57.08333333333333, range_position_252d_0_1=0.35547355473554737 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=69232304128.0, per=46.4323, pbr=6.3791428, roe_pct=15.955, operating_margin_pct=28.726998
 - `3692.T` 2026-02-09 → 2026-02-10 -9.73%: score: rank=4, action=Trade / feature: return_5d_pct=7.8918918918919, return_20d_pct=20.531400966183575, volume_ratio_20d=1.3248302818350133, rsi_14=50.110864745011085, range_position_252d_0_1=0.6649122807017543 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=46191714304.0, per=42.084023, pbr=12.229753, roe_pct=33.481, operating_margin_pct=31.441997999999998
+- `7777.T` 2026-02-19 → 2026-02-24 -9.17%: score: rank=9, action=Trade / feature: return_5d_pct=19.565217391304344, return_20d_pct=31.23644251626898, volume_ratio_20d=1.6688280675644978, rsi_14=84.16988416988417, range_position_252d_0_1=0.9617590822179732 / value: value_trap_penalty=0.1 / fund: market_cap_jpy=46522241024.0, per=-30.234375, pbr=9.266132, roe_pct=31.863000000000003, operating_margin_pct=13.706
+- `5574.T` 2026-01-16 → 2026-01-23 -8.12%: score: rank=4, action=Trade / feature: return_5d_pct=21.125143513203206, return_20d_pct=24.068992551940415, volume_ratio_20d=4.660936007640879, rsi_14=83.00970873786407, range_position_252d_0_1=0.5215545395166558 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=22137724928.0, per=42.92044, pbr=4.523564, roe_pct=11.931, operating_margin_pct=14.396999999999998
+- `247A.T` 2026-02-17 → 2026-02-18 -7.97%: score: rank=14, action=Trade / feature: return_5d_pct=10.574018126888207, return_20d_pct=0.5494505494505475, volume_ratio_20d=3.8468236754900142, rsi_14=60.099750623441395, range_position_252d_0_1=0.5551206784083497 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=43677618176.0, per=16.56004, pbr=7.220023, roe_pct=56.730000000000004, operating_margin_pct=11.7740005
 - `4419.T` 2026-05-11 → 2026-05-15 -7.58%: score: rank=9, action=Trade / feature: return_5d_pct=16.34877384196185, return_20d_pct=26.33136094674555, volume_ratio_20d=1.87451106713911, rsi_14=79.29292929292929, range_position_252d_0_1=0.7140921409214093 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=69232304128.0, per=46.4323, pbr=6.3791428, roe_pct=15.955, operating_margin_pct=28.726998
-- `5842.T` 2026-01-16 → 2026-01-20 -7.07%: score: rank=3, action=Trade / feature: return_5d_pct=17.94117647058824, return_20d_pct=23.006134969325153, volume_ratio_20d=4.320946108360175, rsi_14=79.57446808510639, range_position_252d_0_1=0.8234495246717972 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=115273490432.0, per=19.651669, pbr=1.683341, roe_pct=20.898001, operating_margin_pct=85.797995
-- `4071.T` 2026-05-08 → 2026-05-13 -5.49%: score: rank=5, action=Trade / feature: return_5d_pct=10.551106924163921, return_20d_pct=11.602472658107455, volume_ratio_20d=2.412945426562066, rsi_14=77.67527675276753, range_position_252d_0_1=0.7497639282341831 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=113946345472.0, per=28.71488, pbr=7.0832276, roe_pct=29.786, operating_margin_pct=41.122
-- `5574.T` 2026-02-06 → 2026-02-16 -4.98%: score: rank=6, action=Trade / feature: return_5d_pct=12.862773199570054, return_20d_pct=20.55109070034442, volume_ratio_20d=2.08154803040774, rsi_14=53.95629238884702, range_position_252d_0_1=0.5058430717863105 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=22137724928.0, per=42.92044, pbr=4.523564, roe_pct=11.931, operating_margin_pct=14.396999999999998
-- `7172.T` 2026-05-01 → 2026-05-08 -4.81%: score: rank=2, action=Trade / feature: return_5d_pct=11.438739196746317, return_20d_pct=11.212582445459152, volume_ratio_20d=4.4394724078043595, rsi_14=67.48878923766816, range_position_252d_0_1=0.6659340659340659 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=121756221440.0, per=11.5514965, pbr=1.5774169, roe_pct=16.031000000000002, operating_margin_pct=67.407995
 
 
 ## MATSU / `contrarian_monk`
@@ -555,9 +557,9 @@ Run ID: `arena_jp_rebuild_2026_v017`
 {
   "PULLBACK_RESOLVED": 23,
   "HARD_STOP": 22,
-  "PULLBACK_FAILED": 14,
+  "PULLBACK_FAILED": 15,
   "MAX_HOLDING_DAYS": 9,
-  "PROFIT_PROTECTION": 4,
+  "PROFIT_PROTECTION": 3,
   "TREND_BREAK": 1,
   "TAKE_PROFIT": 1
 }
@@ -638,7 +640,7 @@ Run ID: `arena_jp_rebuild_2026_v017`
 | 6368.T | オルガノ | 2026-03-09 | 2026-03-24 | -2.35% | ¥-1,032 | 15 | 9.41% | -9.13% | HARD_STOP | WINNER_TURNED_LOSER |
 | 4385.T | メルカリ | 2026-02-25 | 2026-03-04 | -0.23% | ¥-2,986 | 7 | 11.26% | -2.41% | PROFIT_PROTECTION | WINNER_TURNED_LOSER |
 | 5101.T | 横浜ゴム | 2026-03-04 | 2026-03-10 | -7.01% | ¥-91,967 | 6 | 3.88% | -13.86% | HARD_STOP | DEEP_ADVERSE_MOVE |
-| 5471.T | 大同特殊鋼 | 2026-03-09 | 2026-03-23 | -1.66% | ¥-827 | 14 | 9.18% | -3.55% | PROFIT_PROTECTION | WINNER_TURNED_LOSER |
+| 5471.T | 大同特殊鋼 | 2026-03-09 | 2026-03-23 | -1.66% | ¥-827 | 14 | 9.18% | -3.55% | PULLBACK_FAILED | WINNER_TURNED_LOSER |
 | 5803.T | フジクラ | 2026-04-01 | 2026-04-10 | 18.21% | ¥198,317 | 9 | 29.02% | -3.12% | PULLBACK_RESOLVED | FAST_WINNER |
 
 
@@ -803,18 +805,19 @@ Run ID: `arena_jp_rebuild_2026_v017`
 
 ### Key Metrics
 
-- Trades: **7**, Win rate: **28.57%**, Total PnL: **¥-368,394**
-- Avg return: **-3.51%**, Avg win: **0.54%**, Avg loss: **-5.13%**
-- Payoff ratio: **0.1056**, Profit factor: **0.0501**
-- Avg MFE: **2.03%**, Avg MAE: **-5.17%**
+- Trades: **29**, Win rate: **41.38%**, Total PnL: **¥286,688**
+- Avg return: **0.29%**, Avg win: **7.26%**, Avg loss: **-4.64%**
+- Payoff ratio: **1.566**, Profit factor: **1.2434**
+- Avg MFE: **5.43%**, Avg MAE: **-4.91%**
 
 ### Exit Reasons
 
 ```json
 {
-  "HARD_STOP": 4,
-  "MISPRICING_RESOLVED": 2,
-  "EARLY_FAIL": 1
+  "MISPRICING_RESOLVED": 14,
+  "HARD_STOP": 11,
+  "SCORE_COLLAPSE": 2,
+  "VALUE_EARLY_FAIL": 2
 }
 ```
 
@@ -822,8 +825,9 @@ Run ID: `arena_jp_rebuild_2026_v017`
 
 ```json
 {
-  "STOP_LOSS_HIT": 4,
-  "NORMAL_LOSS": 1
+  "STOP_LOSS_HIT": 10,
+  "NORMAL_LOSS": 6,
+  "WINNER_TURNED_LOSER": 1
 }
 ```
 
@@ -831,7 +835,8 @@ Run ID: `arena_jp_rebuild_2026_v017`
 
 ```json
 {
-  "NORMAL_WIN": 2
+  "NORMAL_WIN": 7,
+  "FAST_WINNER": 5
 }
 ```
 
@@ -839,63 +844,86 @@ Run ID: `arena_jp_rebuild_2026_v017`
 
 | Ticker | Name | Entry | Exit | Return | PnL | Hold | MFE | MAE | Exit | Pattern |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| 6326.T | クボタ | 2026-05-11 | 2026-05-21 | -6.17% | ¥-101,927 | 10 | 3.45% | -7.78% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-05-18 | 2026-05-26 | -5.44% | ¥-92,750 | 8 | 0.09% | -7.28% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-04-09 | 2026-04-27 | -5.34% | ¥-42,476 | 18 | 4.10% | -6.96% | HARD_STOP | STOP_LOSS_HIT |
-| 7172.T | Commodities | 2026-05-01 | 2026-05-08 | -4.81% | ¥-80,535 | 7 | 0.04% | -5.40% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-04-30 | 2026-05-08 | -3.87% | ¥-70,123 | 8 | 0.43% | -5.76% | EARLY_FAIL | NORMAL_LOSS |
-| 8473.T | ＳＢＩホールディングス | 2026-01-06 | 2026-01-07 | 0.11% | ¥2,056 | 1 | 3.12% | -0.47% | MISPRICING_RESOLVED | NORMAL_WIN |
-| 8473.T | ＳＢＩホールディングス | 2026-02-09 | 2026-02-12 | 0.97% | ¥17,361 | 3 | 2.97% | -2.55% | MISPRICING_RESOLVED | NORMAL_WIN |
+| 8473.T | ＳＢＩホールディングス | 2026-01-21 | 2026-02-25 | -8.80% | ¥-163,143 | 35 | 6.01% | -9.49% | HARD_STOP | WINNER_TURNED_LOSER |
+| 4612.T | 日本ペイントホールディングス | 2026-02-17 | 2026-03-03 | -8.77% | ¥-168,896 | 14 | 3.48% | -10.63% | HARD_STOP | STOP_LOSS_HIT |
+| 6301.T | 小松製作所 | 2026-04-28 | 2026-04-30 | -8.38% | ¥-143,168 | 2 | -0.10% | -11.78% | HARD_STOP | STOP_LOSS_HIT |
+| 8604.T | 野村ホールディングス | 2026-04-17 | 2026-04-28 | -7.74% | ¥-62,542 | 11 | 0.45% | -9.70% | HARD_STOP | STOP_LOSS_HIT |
+| 5842.T | Integral Corporation | 2026-01-16 | 2026-01-20 | -7.07% | ¥-132,593 | 4 | 1.28% | -11.10% | HARD_STOP | STOP_LOSS_HIT |
+| 8473.T | ＳＢＩホールディングス | 2026-04-08 | 2026-04-27 | -5.85% | ¥-48,284 | 19 | 3.54% | -7.47% | HARD_STOP | STOP_LOSS_HIT |
+| 8604.T | 野村ホールディングス | 2026-01-29 | 2026-02-03 | -4.53% | ¥-80,520 | 5 | 2.17% | -7.41% | HARD_STOP | STOP_LOSS_HIT |
+| 9022.T | 東海旅客鉄道 | 2026-04-16 | 2026-04-24 | -4.34% | ¥-35,788 | 8 | 1.16% | -6.55% | HARD_STOP | STOP_LOSS_HIT |
+| 8766.T | 東京海上ホールディングス | 2026-04-07 | 2026-04-13 | -4.34% | ¥-35,570 | 6 | 2.65% | -5.26% | HARD_STOP | STOP_LOSS_HIT |
+| 8473.T | ＳＢＩホールディングス | 2026-04-30 | 2026-05-13 | -4.22% | ¥-76,376 | 13 | 0.43% | -5.76% | VALUE_EARLY_FAIL | NORMAL_LOSS |
+| 3635.T | コーエーテクモホールディングス | 2026-03-12 | 2026-03-24 | -4.04% | ¥-68,428 | 12 | 3.63% | -7.05% | HARD_STOP | STOP_LOSS_HIT |
+| 8473.T | ＳＢＩホールディングス | 2026-03-19 | 2026-03-24 | -3.09% | ¥-51,519 | 5 | 0.68% | -5.21% | HARD_STOP | STOP_LOSS_HIT |
+| 8473.T | ＳＢＩホールディングス | 2026-05-15 | 2026-05-26 | -2.81% | ¥-50,333 | 11 | 2.87% | -4.70% | VALUE_EARLY_FAIL | NORMAL_LOSS |
+| 4578.T | 大塚ホールディングス | 2026-02-18 | 2026-02-19 | -1.93% | ¥-36,912 | 1 | 2.49% | -1.83% | MISPRICING_RESOLVED | NORMAL_LOSS |
+| 3479.T | TKP Corporation | 2026-01-30 | 2026-02-02 | -1.76% | ¥-1,042 | 3 | 1.88% | -2.25% | MISPRICING_RESOLVED | NORMAL_LOSS |
 
 
 ### Best Trades
 
 | Ticker | Name | Entry | Exit | Return | PnL | Hold | MFE | MAE | Exit | Pattern |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| 8473.T | ＳＢＩホールディングス | 2026-02-09 | 2026-02-12 | 0.97% | ¥17,361 | 3 | 2.97% | -2.55% | MISPRICING_RESOLVED | NORMAL_WIN |
-| 8473.T | ＳＢＩホールディングス | 2026-01-06 | 2026-01-07 | 0.11% | ¥2,056 | 1 | 3.12% | -0.47% | MISPRICING_RESOLVED | NORMAL_WIN |
-| 8473.T | ＳＢＩホールディングス | 2026-04-30 | 2026-05-08 | -3.87% | ¥-70,123 | 8 | 0.43% | -5.76% | EARLY_FAIL | NORMAL_LOSS |
-| 7172.T | Commodities | 2026-05-01 | 2026-05-08 | -4.81% | ¥-80,535 | 7 | 0.04% | -5.40% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-04-09 | 2026-04-27 | -5.34% | ¥-42,476 | 18 | 4.10% | -6.96% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-05-18 | 2026-05-26 | -5.44% | ¥-92,750 | 8 | 0.09% | -7.28% | HARD_STOP | STOP_LOSS_HIT |
-| 6326.T | クボタ | 2026-05-11 | 2026-05-21 | -6.17% | ¥-101,927 | 10 | 3.45% | -7.78% | HARD_STOP | STOP_LOSS_HIT |
+| 4503.T | アステラス製薬 | 2026-01-28 | 2026-02-06 | 14.36% | ¥266,357 | 9 | 18.71% | -1.05% | MISPRICING_RESOLVED | FAST_WINNER |
+| 8591.T | オリックス | 2026-05-01 | 2026-05-12 | 13.64% | ¥242,406 | 11 | 16.10% | -0.89% | MISPRICING_RESOLVED | NORMAL_WIN |
+| 8766.T | 東京海上ホールディングス | 2026-04-21 | 2026-05-20 | 10.05% | ¥82,572 | 29 | 10.54% | -4.64% | MISPRICING_RESOLVED | NORMAL_WIN |
+| 6269.T | 三井海洋開発 | 2026-01-09 | 2026-01-15 | 9.42% | ¥164,971 | 6 | 12.92% | -2.29% | MISPRICING_RESOLVED | FAST_WINNER |
+| 8473.T | ＳＢＩホールディングス | 2026-01-06 | 2026-01-15 | 8.61% | ¥156,783 | 9 | 10.03% | -1.78% | MISPRICING_RESOLVED | FAST_WINNER |
+| 8725.T | ＭＳ＆ＡＤインシュアランスグループホールディングス | 2026-05-07 | 2026-05-14 | 8.10% | ¥135,948 | 7 | 9.50% | -2.52% | MISPRICING_RESOLVED | FAST_WINNER |
+| 1605.T | ＩＮＰＥＸ | 2026-02-24 | 2026-03-03 | 6.54% | ¥124,589 | 7 | 12.24% | -4.26% | MISPRICING_RESOLVED | FAST_WINNER |
+| 9022.T | 東海旅客鉄道 | 2026-01-23 | 2026-02-04 | 6.52% | ¥115,970 | 12 | 9.67% | -3.40% | MISPRICING_RESOLVED | NORMAL_WIN |
+| 8630.T | ＳＯＭＰＯホールディングス | 2026-02-04 | 2026-02-06 | 3.77% | ¥64,941 | 2 | 5.86% | -1.12% | MISPRICING_RESOLVED | NORMAL_WIN |
+| 8630.T | ＳＯＭＰＯホールディングス | 2026-03-04 | 2026-03-05 | 2.30% | ¥43,051 | 1 | 4.87% | -2.66% | SCORE_COLLAPSE | NORMAL_WIN |
+| 5838.T | 楽天銀行 | 2026-02-16 | 2026-02-19 | 2.25% | ¥38,538 | 3 | 6.43% | -1.70% | MISPRICING_RESOLVED | NORMAL_WIN |
+| 6479.T | ミネベアミツミ | 2026-05-19 | 2026-05-20 | 1.61% | ¥28,274 | 1 | 2.48% | -3.20% | MISPRICING_RESOLVED | NORMAL_WIN |
+| 8766.T | 東京海上ホールディングス | 2026-02-20 | 2026-03-02 | -0.39% | ¥-7,451 | 10 | 4.83% | -1.43% | MISPRICING_RESOLVED | NORMAL_LOSS |
+| 8766.T | 東京海上ホールディングス | 2026-03-03 | 2026-03-05 | -0.81% | ¥-15,145 | 2 | 0.73% | -5.16% | SCORE_COLLAPSE | NORMAL_LOSS |
+| 3479.T | TKP Corporation | 2026-01-30 | 2026-02-02 | -1.76% | ¥-1,042 | 3 | 1.88% | -2.25% | MISPRICING_RESOLVED | NORMAL_LOSS |
 
 
 ### Largest MFE Givebacks
 
 | Ticker | Name | Entry | Exit | Return | PnL | Hold | MFE | MAE | Exit | Pattern |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| 6326.T | クボタ | 2026-05-11 | 2026-05-21 | -6.17% | ¥-101,927 | 10 | 3.45% | -7.78% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-04-09 | 2026-04-27 | -5.34% | ¥-42,476 | 18 | 4.10% | -6.96% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-05-18 | 2026-05-26 | -5.44% | ¥-92,750 | 8 | 0.09% | -7.28% | HARD_STOP | STOP_LOSS_HIT |
-| 7172.T | Commodities | 2026-05-01 | 2026-05-08 | -4.81% | ¥-80,535 | 7 | 0.04% | -5.40% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-04-30 | 2026-05-08 | -3.87% | ¥-70,123 | 8 | 0.43% | -5.76% | EARLY_FAIL | NORMAL_LOSS |
-| 8473.T | ＳＢＩホールディングス | 2026-01-06 | 2026-01-07 | 0.11% | ¥2,056 | 1 | 3.12% | -0.47% | MISPRICING_RESOLVED | NORMAL_WIN |
-| 8473.T | ＳＢＩホールディングス | 2026-02-09 | 2026-02-12 | 0.97% | ¥17,361 | 3 | 2.97% | -2.55% | MISPRICING_RESOLVED | NORMAL_WIN |
+| 8473.T | ＳＢＩホールディングス | 2026-01-21 | 2026-02-25 | -8.80% | ¥-163,143 | 35 | 6.01% | -9.49% | HARD_STOP | WINNER_TURNED_LOSER |
+| 4612.T | 日本ペイントホールディングス | 2026-02-17 | 2026-03-03 | -8.77% | ¥-168,896 | 14 | 3.48% | -10.63% | HARD_STOP | STOP_LOSS_HIT |
+| 8473.T | ＳＢＩホールディングス | 2026-04-08 | 2026-04-27 | -5.85% | ¥-48,284 | 19 | 3.54% | -7.47% | HARD_STOP | STOP_LOSS_HIT |
+| 5842.T | Integral Corporation | 2026-01-16 | 2026-01-20 | -7.07% | ¥-132,593 | 4 | 1.28% | -11.10% | HARD_STOP | STOP_LOSS_HIT |
+| 6301.T | 小松製作所 | 2026-04-28 | 2026-04-30 | -8.38% | ¥-143,168 | 2 | -0.10% | -11.78% | HARD_STOP | STOP_LOSS_HIT |
+| 8604.T | 野村ホールディングス | 2026-04-17 | 2026-04-28 | -7.74% | ¥-62,542 | 11 | 0.45% | -9.70% | HARD_STOP | STOP_LOSS_HIT |
+| 3635.T | コーエーテクモホールディングス | 2026-03-12 | 2026-03-24 | -4.04% | ¥-68,428 | 12 | 3.63% | -7.05% | HARD_STOP | STOP_LOSS_HIT |
+| 8766.T | 東京海上ホールディングス | 2026-04-07 | 2026-04-13 | -4.34% | ¥-35,570 | 6 | 2.65% | -5.26% | HARD_STOP | STOP_LOSS_HIT |
+| 8604.T | 野村ホールディングス | 2026-01-29 | 2026-02-03 | -4.53% | ¥-80,520 | 5 | 2.17% | -7.41% | HARD_STOP | STOP_LOSS_HIT |
+| 1605.T | ＩＮＰＥＸ | 2026-02-24 | 2026-03-03 | 6.54% | ¥124,589 | 7 | 12.24% | -4.26% | MISPRICING_RESOLVED | FAST_WINNER |
 
 
 ### Deepest Adverse Trades
 
 | Ticker | Name | Entry | Exit | Return | PnL | Hold | MFE | MAE | Exit | Pattern |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| 6326.T | クボタ | 2026-05-11 | 2026-05-21 | -6.17% | ¥-101,927 | 10 | 3.45% | -7.78% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-05-18 | 2026-05-26 | -5.44% | ¥-92,750 | 8 | 0.09% | -7.28% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-04-09 | 2026-04-27 | -5.34% | ¥-42,476 | 18 | 4.10% | -6.96% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-04-30 | 2026-05-08 | -3.87% | ¥-70,123 | 8 | 0.43% | -5.76% | EARLY_FAIL | NORMAL_LOSS |
-| 7172.T | Commodities | 2026-05-01 | 2026-05-08 | -4.81% | ¥-80,535 | 7 | 0.04% | -5.40% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-02-09 | 2026-02-12 | 0.97% | ¥17,361 | 3 | 2.97% | -2.55% | MISPRICING_RESOLVED | NORMAL_WIN |
-| 8473.T | ＳＢＩホールディングス | 2026-01-06 | 2026-01-07 | 0.11% | ¥2,056 | 1 | 3.12% | -0.47% | MISPRICING_RESOLVED | NORMAL_WIN |
+| 6301.T | 小松製作所 | 2026-04-28 | 2026-04-30 | -8.38% | ¥-143,168 | 2 | -0.10% | -11.78% | HARD_STOP | STOP_LOSS_HIT |
+| 5842.T | Integral Corporation | 2026-01-16 | 2026-01-20 | -7.07% | ¥-132,593 | 4 | 1.28% | -11.10% | HARD_STOP | STOP_LOSS_HIT |
+| 4612.T | 日本ペイントホールディングス | 2026-02-17 | 2026-03-03 | -8.77% | ¥-168,896 | 14 | 3.48% | -10.63% | HARD_STOP | STOP_LOSS_HIT |
+| 8604.T | 野村ホールディングス | 2026-04-17 | 2026-04-28 | -7.74% | ¥-62,542 | 11 | 0.45% | -9.70% | HARD_STOP | STOP_LOSS_HIT |
+| 8473.T | ＳＢＩホールディングス | 2026-01-21 | 2026-02-25 | -8.80% | ¥-163,143 | 35 | 6.01% | -9.49% | HARD_STOP | WINNER_TURNED_LOSER |
+| 8473.T | ＳＢＩホールディングス | 2026-04-08 | 2026-04-27 | -5.85% | ¥-48,284 | 19 | 3.54% | -7.47% | HARD_STOP | STOP_LOSS_HIT |
+| 8604.T | 野村ホールディングス | 2026-01-29 | 2026-02-03 | -4.53% | ¥-80,520 | 5 | 2.17% | -7.41% | HARD_STOP | STOP_LOSS_HIT |
+| 3635.T | コーエーテクモホールディングス | 2026-03-12 | 2026-03-24 | -4.04% | ¥-68,428 | 12 | 3.63% | -7.05% | HARD_STOP | STOP_LOSS_HIT |
+| 9022.T | 東海旅客鉄道 | 2026-04-16 | 2026-04-24 | -4.34% | ¥-35,788 | 8 | 1.16% | -6.55% | HARD_STOP | STOP_LOSS_HIT |
+| 8473.T | ＳＢＩホールディングス | 2026-04-30 | 2026-05-13 | -4.22% | ¥-76,376 | 13 | 0.43% | -5.76% | VALUE_EARLY_FAIL | NORMAL_LOSS |
 
 
 ### Compact Entry Context For Worst Trades
 
-- `6326.T` 2026-05-11 → 2026-05-21 -6.17%: score: rank=7, action=Trade / feature: return_5d_pct=12.944009632751353, return_20d_pct=12.133891213389125, volume_ratio_20d=3.1022275267475954, rsi_14=53.79229871645275, range_position_252d_0_1=0.7392303273980471 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=3181151780864.0, per=17.115408, pbr=1.1835096, roe_pct=8.871, operating_margin_pct=12.104
-- `8473.T` 2026-05-18 → 2026-05-26 -5.44%: score: rank=4, action=Trade / feature: return_5d_pct=2.243483998680307, return_20d_pct=2.5479814692256797, volume_ratio_20d=0.8596020388015825, rsi_14=51.22410546139359, range_position_252d_0_1=0.6262183235867447 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1881560842240.0, per=4.6614037, pbr=1.0482572, roe_pct=20.613999999999997, operating_margin_pct=28.927000000000003
-- `8473.T` 2026-04-09 → 2026-04-27 -5.34%: score: rank=1, action=Trade / feature: return_5d_pct=5.094905094905089, return_20d_pct=4.746100232326578, volume_ratio_20d=1.229206606111055, rsi_14=48.45132743362832, range_position_252d_0_1=0.6944922547332186 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1881560842240.0, per=4.6614037, pbr=1.0482572, roe_pct=20.613999999999997, operating_margin_pct=28.927000000000003
-- `7172.T` 2026-05-01 → 2026-05-08 -4.81%: score: rank=7, action=Trade / feature: return_5d_pct=11.438739196746317, return_20d_pct=11.212582445459152, volume_ratio_20d=4.4394724078043595, rsi_14=67.48878923766816, range_position_252d_0_1=0.6659340659340659 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=121756221440.0, per=11.5514965, pbr=1.5774169, roe_pct=16.031000000000002, operating_margin_pct=67.407995
-- `8473.T` 2026-04-30 → 2026-05-08 -3.87%: score: rank=1, action=Trade / feature: return_5d_pct=0.712896953985731, return_20d_pct=9.090909090909083, volume_ratio_20d=1.3940624366076626, rsi_14=46.83377308707124, range_position_252d_0_1=0.6443818906873094 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1881560842240.0, per=4.6614037, pbr=1.0482572, roe_pct=20.613999999999997, operating_margin_pct=28.927000000000003
-- `8473.T` 2026-01-06 → 2026-01-07 0.11%: score: rank=1, action=Trade / feature: return_5d_pct=2.4578027835356897, return_20d_pct=7.253564786112832, volume_ratio_20d=1.2361704156025308, rsi_14=56.095143706640236, range_position_252d_0_1=0.8267241379310345 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1881560842240.0, per=4.6614037, pbr=1.0482572, roe_pct=20.613999999999997, operating_margin_pct=28.927000000000003
-- `8473.T` 2026-02-09 → 2026-02-12 0.97%: score: rank=7, action=Trade / feature: return_5d_pct=0.22962112514350874, return_20d_pct=1.1880614314691451, volume_ratio_20d=1.5178486273280283, rsi_14=38.36032388663968, range_position_252d_0_1=0.8390705679862306 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1881560842240.0, per=4.6614037, pbr=1.0482572, roe_pct=20.613999999999997, operating_margin_pct=28.927000000000003
+- `8473.T` 2026-01-21 → 2026-02-25 -8.80%: score: rank=1, action=Trade / feature: return_5d_pct=-1.4560439560439509, return_20d_pct=10.709876543209873, volume_ratio_20d=0.9530791788856305, rsi_14=58.788898233809924, range_position_252d_0_1=0.8799483648881239 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1881560842240.0, per=4.6614037, pbr=1.0482572, roe_pct=20.613999999999997, operating_margin_pct=28.927000000000003
+- `4612.T` 2026-02-17 → 2026-03-03 -8.77%: score: rank=11, action=Trade / feature: return_5d_pct=15.047619047619044, return_20d_pct=15.708812260536398, volume_ratio_20d=3.0999596057146306, rsi_14=89.02627511591963, range_position_252d_0_1=0.6674364896073903 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2384403365888.0, per=19.193428, pbr=1.2533177, roe_pct=11.474, operating_margin_pct=14.907
+- `6301.T` 2026-04-28 → 2026-04-30 -8.38%: score: rank=12, action=Trade / feature: return_5d_pct=0.7571428571428562, return_20d_pct=17.549999999999997, volume_ratio_20d=1.09497165301812, rsi_14=65.74074074074073, range_position_252d_0_1=0.803151575787894 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=5861702369280.0, per=15.717083, pbr=1.6688483, roe_pct=11.3900006, operating_margin_pct=12.184000000000001
+- `8604.T` 2026-04-17 → 2026-04-28 -7.74%: score: rank=3, action=Trade / feature: return_5d_pct=5.593607305936077, return_20d_pct=11.985472154963684, volume_ratio_20d=1.3134714950534514, rsi_14=68.07639836289222, range_position_252d_0_1=0.8573996405032954 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=3777450737664.0, per=10.862258, pbr=1.011357, roe_pct=10.07, operating_margin_pct=18.655
+- `5842.T` 2026-01-16 → 2026-01-20 -7.07%: score: rank=13, action=Trade / feature: return_5d_pct=17.94117647058824, return_20d_pct=23.006134969325153, volume_ratio_20d=4.320946108360175, rsi_14=79.57446808510639, range_position_252d_0_1=0.8234495246717972 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=115273490432.0, per=19.651669, pbr=1.683341, roe_pct=20.898001, operating_margin_pct=85.797995
+- `8473.T` 2026-04-08 → 2026-04-27 -5.85%: score: rank=2, action=Trade / feature: return_5d_pct=5.1246051246051305, return_20d_pct=2.1661265563704513, volume_ratio_20d=0.5991574996701348, rsi_14=44.25837320574162, range_position_252d_0_1=0.6252151462994836 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1881560842240.0, per=4.6614037, pbr=1.0482572, roe_pct=20.613999999999997, operating_margin_pct=28.927000000000003
+- `8604.T` 2026-01-29 → 2026-02-03 -4.53%: score: rank=10, action=Trade / feature: return_5d_pct=-0.6430868167202619, return_20d_pct=6.715272448196474, volume_ratio_20d=0.6618769920308206, rsi_14=47.332185886402755, range_position_252d_0_1=0.8609946075494308 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=3777450737664.0, per=10.862258, pbr=1.011357, roe_pct=10.07, operating_margin_pct=18.655
+- `9022.T` 2026-04-16 → 2026-04-24 -4.34%: score: rank=1, action=Trade / feature: return_5d_pct=3.4936587700406863, return_20d_pct=0.34802784222738303, volume_ratio_20d=1.4389955107437056, rsi_14=55.88235294117647, range_position_252d_0_1=0.7610598533238704 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=3246912700416.0, per=5.953757, pbr=0.64059347, roe_pct=11.4700004, operating_margin_pct=27.111
 
 
 ## Prompt Suggestion
