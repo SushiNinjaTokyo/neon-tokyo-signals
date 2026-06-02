@@ -907,7 +907,7 @@ def main() -> int:
     outputs.update(diagnostics_outputs)
     print(f"runtime_config={cfg}")
     print(f"run_id={run_id}")
-    print(f"agent_score_dates={score_dates} trade_score_rows={trade_score_rows}")
+    print(f"agent_score_dates={score_dates} candidate_score_rows={candidate_score_rows}")
     print(f"trading_dates={len(season.trading_dates)}")
     print(f"orders={len(orders)} trades={len(trades)} equity_rows={len(equity_rows)} open_positions={len(open_rows)} finalized={force_finalize}")
     print(f"persisted_counts={persisted_counts}")
