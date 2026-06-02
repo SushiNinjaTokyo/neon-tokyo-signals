@@ -1,8 +1,8 @@
 {
   "schema_version": "ai_arena_ranking_v2",
-  "generated_at": "2026-06-02T01:38:28Z",
+  "generated_at": "2026-06-02T10:50:42Z",
   "year": 2026,
-  "run_id": "arena_jp_rebuild_2026_v020",
+  "run_id": "arena_jp_rebuild_2026_v021",
   "agents": [
     {
       "agent_id": "daily_striker",
@@ -161,7 +161,7 @@
   ],
   "ranking": [
     {
-      "run_id": "arena_jp_rebuild_2026_v020",
+      "run_id": "arena_jp_rebuild_2026_v021",
       "year": 2026,
       "agent_id": "weekly_sage",
       "start_equity_jpy": 10000000.0,
@@ -173,7 +173,7 @@
       "win_rate_pct": 38.8888888889,
       "trade_count": 36,
       "rank": 1,
-      "updated_at": "2026-06-02T01:38:28.404",
+      "updated_at": "2026-06-02T10:50:42.194",
       "agent": {
         "agent_id": "weekly_sage",
         "name": "NAGARE",
@@ -716,7 +716,7 @@
       }
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v020",
+      "run_id": "arena_jp_rebuild_2026_v021",
       "year": 2026,
       "agent_id": "contrarian_monk",
       "start_equity_jpy": 10000000.0,
@@ -728,7 +728,7 @@
       "win_rate_pct": 47.2972972973,
       "trade_count": 74,
       "rank": 2,
-      "updated_at": "2026-06-02T01:38:28.404",
+      "updated_at": "2026-06-02T10:50:42.194",
       "agent": {
         "agent_id": "contrarian_monk",
         "name": "MATSU",
@@ -1271,7 +1271,7 @@
       }
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v020",
+      "run_id": "arena_jp_rebuild_2026_v021",
       "year": 2026,
       "agent_id": "risk_sentinel",
       "start_equity_jpy": 10000000.0,
@@ -1283,7 +1283,7 @@
       "win_rate_pct": 48.9130434783,
       "trade_count": 92,
       "rank": 3,
-      "updated_at": "2026-06-02T01:38:28.404",
+      "updated_at": "2026-06-02T10:50:42.194",
       "agent": {
         "agent_id": "risk_sentinel",
         "name": "MAMORU",
@@ -1826,7 +1826,7 @@
       }
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v020",
+      "run_id": "arena_jp_rebuild_2026_v021",
       "year": 2026,
       "agent_id": "daily_striker",
       "start_equity_jpy": 10000000.0,
@@ -1838,7 +1838,7 @@
       "win_rate_pct": 48.1012658228,
       "trade_count": 79,
       "rank": 4,
-      "updated_at": "2026-06-02T01:38:28.404",
+      "updated_at": "2026-06-02T10:50:42.194",
       "agent": {
         "agent_id": "daily_striker",
         "name": "KYOU",
@@ -2381,7 +2381,7 @@
       }
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v020",
+      "run_id": "arena_jp_rebuild_2026_v021",
       "year": 2026,
       "agent_id": "discovery_scout",
       "start_equity_jpy": 10000000.0,
@@ -2393,7 +2393,7 @@
       "win_rate_pct": 39.0243902439,
       "trade_count": 41,
       "rank": 5,
-      "updated_at": "2026-06-02T01:38:28.404",
+      "updated_at": "2026-06-02T10:50:42.194",
       "agent": {
         "agent_id": "discovery_scout",
         "name": "SAGURI",
@@ -2936,7 +2936,562 @@
       }
     },
     {
-      "run_id": "arena_jp_rebuild_2026_v020",
+      "run_id": "arena_jp_rebuild_2026_v021",
+      "year": 2026,
+      "agent_id": "value_mispricing",
+      "start_equity_jpy": 10000000.0,
+      "end_equity_jpy": 10384981.642500008,
+      "total_return_pct": 3.849816425,
+      "realized_pnl_jpy": 384981.642500003,
+      "unrealized_pnl_jpy": 0.0,
+      "max_drawdown_pct": -1.8992165947,
+      "win_rate_pct": 61.1111111111,
+      "trade_count": 18,
+      "rank": 6,
+      "updated_at": "2026-06-02T10:50:42.194",
+      "agent": {
+        "agent_id": "value_mispricing",
+        "name": "HIZUMI",
+        "japanese_name": "歪み",
+        "role": "Mispricing and Valuation Signal",
+        "style_label": "Value / Mispricing / Re-rating",
+        "theme_color": "indigo",
+        "image": "/assets/ai-arena/agents/value_mispricing.png",
+        "short_description": "Looks for price/value distortion, conservative re-rating setups, and trap-aware value signals.",
+        "strengths": [
+          "Differentiates price action from value distortion",
+          "Can hold re-rating candidates longer",
+          "Adds non-momentum diversity"
+        ],
+        "weaknesses": [
+          "Full strength requires better fundamentals data",
+          "Must avoid value traps"
+        ],
+        "color": "#4F46E5",
+        "style": "Value / Mispricing / Re-rating",
+        "description": "Looks for price/value distortion, conservative re-rating setups, and trap-aware value signals."
+      },
+      "sparkline": [
+        {
+          "date": "2026-01-05 00:00:00",
+          "equity": 10000000.0,
+          "return_pct": 0.0
+        },
+        {
+          "date": "2026-01-06 00:00:00",
+          "equity": 10044890.9,
+          "return_pct": 0.4489
+        },
+        {
+          "date": "2026-01-07 00:00:00",
+          "equity": 10002250.9,
+          "return_pct": 0.0225
+        },
+        {
+          "date": "2026-01-08 00:00:00",
+          "equity": 9974370.9,
+          "return_pct": -0.2563
+        },
+        {
+          "date": "2026-01-09 00:00:00",
+          "equity": 10017010.9,
+          "return_pct": 0.1701
+        },
+        {
+          "date": "2026-01-13 00:00:00",
+          "equity": 10051860.9,
+          "return_pct": 0.5186
+        },
+        {
+          "date": "2026-01-14 00:00:00",
+          "equity": 10086300.9,
+          "return_pct": 0.863
+        },
+        {
+          "date": "2026-01-15 00:00:00",
+          "equity": 10124094.7,
+          "return_pct": 1.2409
+        },
+        {
+          "date": "2026-01-16 00:00:00",
+          "equity": 10124094.7,
+          "return_pct": 1.2409
+        },
+        {
+          "date": "2026-01-19 00:00:00",
+          "equity": 10124094.7,
+          "return_pct": 1.2409
+        },
+        {
+          "date": "2026-01-20 00:00:00",
+          "equity": 10076247.7,
+          "return_pct": 0.7625
+        },
+        {
+          "date": "2026-01-21 00:00:00",
+          "equity": 10040577.7,
+          "return_pct": 0.4058
+        },
+        {
+          "date": "2026-01-22 00:00:00",
+          "equity": 10059622.2,
+          "return_pct": 0.5962
+        },
+        {
+          "date": "2026-01-23 00:00:00",
+          "equity": 10059622.2,
+          "return_pct": 0.5962
+        },
+        {
+          "date": "2026-01-26 00:00:00",
+          "equity": 10061706.59,
+          "return_pct": 0.6171
+        },
+        {
+          "date": "2026-01-27 00:00:00",
+          "equity": 10046784.09,
+          "return_pct": 0.4678
+        },
+        {
+          "date": "2026-01-28 00:00:00",
+          "equity": 10003921.59,
+          "return_pct": 0.0392
+        },
+        {
+          "date": "2026-01-29 00:00:00",
+          "equity": 10001064.09,
+          "return_pct": 0.0106
+        },
+        {
+          "date": "2026-01-30 00:00:00",
+          "equity": 10011541.59,
+          "return_pct": 0.1154
+        },
+        {
+          "date": "2026-02-02 00:00:00",
+          "equity": 9986388.19,
+          "return_pct": -0.1361
+        },
+        {
+          "date": "2026-02-03 00:00:00",
+          "equity": 10069464.23,
+          "return_pct": 0.6946
+        },
+        {
+          "date": "2026-02-04 00:00:00",
+          "equity": 10085021.73,
+          "return_pct": 0.8502
+        },
+        {
+          "date": "2026-02-05 00:00:00",
+          "equity": 10195194.23,
+          "return_pct": 1.9519
+        },
+        {
+          "date": "2026-02-06 00:00:00",
+          "equity": 10184775.78,
+          "return_pct": 1.8478
+        },
+        {
+          "date": "2026-02-09 00:00:00",
+          "equity": 10184775.78,
+          "return_pct": 1.8478
+        },
+        {
+          "date": "2026-02-10 00:00:00",
+          "equity": 10175829.78,
+          "return_pct": 1.7583
+        },
+        {
+          "date": "2026-02-12 00:00:00",
+          "equity": 10239914.92,
+          "return_pct": 2.3991
+        },
+        {
+          "date": "2026-02-13 00:00:00",
+          "equity": 10233063.6,
+          "return_pct": 2.3306
+        },
+        {
+          "date": "2026-02-16 00:00:00",
+          "equity": 10221055.04,
+          "return_pct": 2.2106
+        },
+        {
+          "date": "2026-02-17 00:00:00",
+          "equity": 10251823.44,
+          "return_pct": 2.5182
+        },
+        {
+          "date": "2026-02-18 00:00:00",
+          "equity": 10309723.46,
+          "return_pct": 3.0972
+        },
+        {
+          "date": "2026-02-19 00:00:00",
+          "equity": 10307852.6,
+          "return_pct": 3.0785
+        },
+        {
+          "date": "2026-02-20 00:00:00",
+          "equity": 10277853.5,
+          "return_pct": 2.7785
+        },
+        {
+          "date": "2026-02-24 00:00:00",
+          "equity": 10260797.44,
+          "return_pct": 2.608
+        },
+        {
+          "date": "2026-02-25 00:00:00",
+          "equity": 10219266.71,
+          "return_pct": 2.1927
+        },
+        {
+          "date": "2026-02-26 00:00:00",
+          "equity": 10234316.71,
+          "return_pct": 2.3432
+        },
+        {
+          "date": "2026-02-27 00:00:00",
+          "equity": 10286421.71,
+          "return_pct": 2.8642
+        },
+        {
+          "date": "2026-03-02 00:00:00",
+          "equity": 10390097.71,
+          "return_pct": 3.901
+        },
+        {
+          "date": "2026-03-03 00:00:00",
+          "equity": 10323532.07,
+          "return_pct": 3.2353
+        },
+        {
+          "date": "2026-03-04 00:00:00",
+          "equity": 10192767.25,
+          "return_pct": 1.9277
+        },
+        {
+          "date": "2026-03-05 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-06 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-09 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-10 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-11 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-12 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-13 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-16 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-17 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-18 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-19 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-23 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-24 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-25 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-26 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-27 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-30 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-03-31 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-01 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-02 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-03 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-06 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-07 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-08 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-09 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-10 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-13 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-14 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-15 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-16 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-17 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-20 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-21 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-22 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-23 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-24 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-27 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-28 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-04-30 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-05-01 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-05-07 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-05-08 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-05-11 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-05-12 00:00:00",
+          "equity": 10292956.91,
+          "return_pct": 2.9296
+        },
+        {
+          "date": "2026-05-13 00:00:00",
+          "equity": 10330145.21,
+          "return_pct": 3.3015
+        },
+        {
+          "date": "2026-05-14 00:00:00",
+          "equity": 10315441.08,
+          "return_pct": 3.1544
+        },
+        {
+          "date": "2026-05-15 00:00:00",
+          "equity": 10331986.53,
+          "return_pct": 3.3199
+        },
+        {
+          "date": "2026-05-18 00:00:00",
+          "equity": 10314108.53,
+          "return_pct": 3.1411
+        },
+        {
+          "date": "2026-05-19 00:00:00",
+          "equity": 10374966.53,
+          "return_pct": 3.7497
+        },
+        {
+          "date": "2026-05-20 00:00:00",
+          "equity": 10384981.64,
+          "return_pct": 3.8498
+        },
+        {
+          "date": "2026-05-21 00:00:00",
+          "equity": 10384981.64,
+          "return_pct": 3.8498
+        },
+        {
+          "date": "2026-05-22 00:00:00",
+          "equity": 10384981.64,
+          "return_pct": 3.8498
+        },
+        {
+          "date": "2026-05-25 00:00:00",
+          "equity": 10384981.64,
+          "return_pct": 3.8498
+        },
+        {
+          "date": "2026-05-26 00:00:00",
+          "equity": 10384981.64,
+          "return_pct": 3.8498
+        },
+        {
+          "date": "2026-05-27 00:00:00",
+          "equity": 10384981.64,
+          "return_pct": 3.8498
+        },
+        {
+          "date": "2026-05-28 00:00:00",
+          "equity": 10384981.64,
+          "return_pct": 3.8498
+        },
+        {
+          "date": "2026-05-29 00:00:00",
+          "equity": 10384981.64,
+          "return_pct": 3.8498
+        },
+        {
+          "date": "2026-06-01 00:00:00",
+          "equity": 10384981.64,
+          "return_pct": 3.8498
+        }
+      ],
+      "sparkline_points": "4.0,47.2 6.2,42.2 8.4,46.9 10.6,50.0 12.7,45.3 14.9,41.4 17.1,37.6 19.3,33.4 21.5,33.4 23.7,33.4 25.9,38.7 28.0,42.7 30.2,40.6 32.4,40.6 34.6,40.3 36.8,42.0 39.0,46.7 41.2,47.0 43.3,45.9 45.5,48.7 47.7,39.5 49.9,37.8 52.1,25.6 54.3,26.7 56.5,26.7 58.6,27.7 60.8,20.6 63.0,21.4 65.2,22.7 67.4,19.3 69.6,12.9 71.8,13.1 73.9,16.4 76.1,18.3 78.3,22.9 80.5,21.2 82.7,15.5 84.9,4.0 87.1,11.4 89.2,25.8 91.4,14.7 93.6,14.7 95.8,14.7 98.0,14.7 100.2,14.7 102.4,14.7 104.5,14.7 106.7,14.7 108.9,14.7 111.1,14.7 113.3,14.7 115.5,14.7 117.6,14.7 119.8,14.7 122.0,14.7 124.2,14.7 126.4,14.7 128.6,14.7 130.8,14.7 132.9,14.7 135.1,14.7 137.3,14.7 139.5,14.7 141.7,14.7 143.9,14.7 146.1,14.7 148.2,14.7 150.4,14.7 152.6,14.7 154.8,14.7 157.0,14.7 159.2,14.7 161.4,14.7 163.5,14.7 165.7,14.7 167.9,14.7 170.1,14.7 172.3,14.7 174.5,14.7 176.7,14.7 178.8,14.7 181.0,14.7 183.2,14.7 185.4,14.7 187.6,10.6 189.8,12.3 192.0,10.4 194.1,12.4 196.3,5.7 198.5,4.6 200.7,4.6 202.9,4.6 205.1,4.6 207.3,4.6 209.4,4.6 211.6,4.6 213.8,4.6 216.0,4.6",
+      "color": "#4F46E5",
+      "activity": {
+        "agent_id": "value_mispricing",
+        "name": "HIZUMI",
+        "role": "Mispricing and Valuation Signal",
+        "color": "#4F46E5",
+        "score_rows": 64771,
+        "trade_signals": 5,
+        "watch_signals": 5230,
+        "ignore_signals": 59536,
+        "latest_score_date": "2026-05-29 00:00:00",
+        "buy_orders": 18,
+        "executed_buys": 18,
+        "cancelled_buys": 0,
+        "sell_orders": 18,
+        "executed_sells": 18,
+        "pending_orders": 0,
+        "closed_trades": 18,
+        "open_positions": 0,
+        "latest_equity_jpy": 10384981.642500008,
+        "total_return_pct": 3.8498,
+        "first_equity_date": "2026-01-05 00:00:00",
+        "last_equity_date": "2026-06-01 00:00:00",
+        "warnings": []
+      }
+    },
+    {
+      "run_id": "arena_jp_rebuild_2026_v021",
       "year": 2026,
       "agent_id": "reversal_snapback",
       "start_equity_jpy": 10000000.0,
@@ -2947,8 +3502,8 @@
       "max_drawdown_pct": -7.6471536318,
       "win_rate_pct": 50.9433962264,
       "trade_count": 53,
-      "rank": 6,
-      "updated_at": "2026-06-02T01:38:28.404",
+      "rank": 7,
+      "updated_at": "2026-06-02T10:50:42.194",
       "agent": {
         "agent_id": "reversal_snapback",
         "name": "KAESHI",
@@ -3488,564 +4043,6 @@
         "first_equity_date": "2026-01-05 00:00:00",
         "last_equity_date": "2026-06-01 00:00:00",
         "warnings": []
-      }
-    },
-    {
-      "run_id": "arena_jp_rebuild_2026_v020",
-      "year": 2026,
-      "agent_id": "value_mispricing",
-      "start_equity_jpy": 10000000.0,
-      "end_equity_jpy": 10000000.0,
-      "total_return_pct": 0.0,
-      "realized_pnl_jpy": 0.0,
-      "unrealized_pnl_jpy": 0.0,
-      "max_drawdown_pct": 0.0,
-      "win_rate_pct": 0.0,
-      "trade_count": 0,
-      "rank": 7,
-      "updated_at": "2026-06-02T01:38:28.404",
-      "agent": {
-        "agent_id": "value_mispricing",
-        "name": "HIZUMI",
-        "japanese_name": "歪み",
-        "role": "Mispricing and Valuation Signal",
-        "style_label": "Value / Mispricing / Re-rating",
-        "theme_color": "indigo",
-        "image": "/assets/ai-arena/agents/value_mispricing.png",
-        "short_description": "Looks for price/value distortion, conservative re-rating setups, and trap-aware value signals.",
-        "strengths": [
-          "Differentiates price action from value distortion",
-          "Can hold re-rating candidates longer",
-          "Adds non-momentum diversity"
-        ],
-        "weaknesses": [
-          "Full strength requires better fundamentals data",
-          "Must avoid value traps"
-        ],
-        "color": "#4F46E5",
-        "style": "Value / Mispricing / Re-rating",
-        "description": "Looks for price/value distortion, conservative re-rating setups, and trap-aware value signals."
-      },
-      "sparkline": [
-        {
-          "date": "2026-01-05 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-06 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-07 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-08 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-09 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-13 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-14 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-15 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-16 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-19 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-20 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-21 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-22 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-23 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-26 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-27 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-28 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-29 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-01-30 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-02 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-03 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-04 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-05 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-06 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-09 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-10 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-12 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-13 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-16 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-17 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-18 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-19 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-20 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-24 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-25 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-26 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-02-27 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-02 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-03 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-04 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-05 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-06 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-09 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-10 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-11 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-12 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-13 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-16 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-17 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-18 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-19 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-23 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-24 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-25 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-26 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-27 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-30 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-03-31 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-01 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-02 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-03 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-06 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-07 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-08 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-09 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-10 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-13 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-14 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-15 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-16 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-17 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-20 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-21 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-22 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-23 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-24 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-27 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-28 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-04-30 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-01 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-07 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-08 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-11 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-12 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-13 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-14 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-15 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-18 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-19 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-20 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-21 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-22 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-25 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-26 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-27 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-28 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-05-29 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        },
-        {
-          "date": "2026-06-01 00:00:00",
-          "equity": 10000000.0,
-          "return_pct": 0.0
-        }
-      ],
-      "sparkline_points": "4.0,27.0 6.2,27.0 8.4,27.0 10.6,27.0 12.7,27.0 14.9,27.0 17.1,27.0 19.3,27.0 21.5,27.0 23.7,27.0 25.9,27.0 28.0,27.0 30.2,27.0 32.4,27.0 34.6,27.0 36.8,27.0 39.0,27.0 41.2,27.0 43.3,27.0 45.5,27.0 47.7,27.0 49.9,27.0 52.1,27.0 54.3,27.0 56.5,27.0 58.6,27.0 60.8,27.0 63.0,27.0 65.2,27.0 67.4,27.0 69.6,27.0 71.8,27.0 73.9,27.0 76.1,27.0 78.3,27.0 80.5,27.0 82.7,27.0 84.9,27.0 87.1,27.0 89.2,27.0 91.4,27.0 93.6,27.0 95.8,27.0 98.0,27.0 100.2,27.0 102.4,27.0 104.5,27.0 106.7,27.0 108.9,27.0 111.1,27.0 113.3,27.0 115.5,27.0 117.6,27.0 119.8,27.0 122.0,27.0 124.2,27.0 126.4,27.0 128.6,27.0 130.8,27.0 132.9,27.0 135.1,27.0 137.3,27.0 139.5,27.0 141.7,27.0 143.9,27.0 146.1,27.0 148.2,27.0 150.4,27.0 152.6,27.0 154.8,27.0 157.0,27.0 159.2,27.0 161.4,27.0 163.5,27.0 165.7,27.0 167.9,27.0 170.1,27.0 172.3,27.0 174.5,27.0 176.7,27.0 178.8,27.0 181.0,27.0 183.2,27.0 185.4,27.0 187.6,27.0 189.8,27.0 192.0,27.0 194.1,27.0 196.3,27.0 198.5,27.0 200.7,27.0 202.9,27.0 205.1,27.0 207.3,27.0 209.4,27.0 211.6,27.0 213.8,27.0 216.0,27.0",
-      "color": "#4F46E5",
-      "activity": {
-        "agent_id": "value_mispricing",
-        "name": "HIZUMI",
-        "role": "Mispricing and Valuation Signal",
-        "color": "#4F46E5",
-        "score_rows": 64771,
-        "trade_signals": 5,
-        "watch_signals": 5230,
-        "ignore_signals": 59536,
-        "latest_score_date": "2026-05-29 00:00:00",
-        "buy_orders": 0,
-        "executed_buys": 0,
-        "cancelled_buys": 0,
-        "sell_orders": 0,
-        "executed_sells": 0,
-        "pending_orders": 0,
-        "closed_trades": 0,
-        "open_positions": 0,
-        "latest_equity_jpy": 10000000.0,
-        "total_return_pct": 0.0,
-        "first_equity_date": "2026-01-05 00:00:00",
-        "last_equity_date": "2026-06-01 00:00:00",
-        "warnings": [
-          "SIGNALS_BUT_NO_BUYS",
-          "FLAT_NO_EXECUTED_BUYS"
-        ]
       }
     }
   ],
@@ -6518,488 +6515,488 @@
       },
       {
         "date": "2026-01-06 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10044890.9,
+        "return_pct": 0.4489
       },
       {
         "date": "2026-01-07 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10002250.9,
+        "return_pct": 0.0225
       },
       {
         "date": "2026-01-08 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 9974370.9,
+        "return_pct": -0.2563
       },
       {
         "date": "2026-01-09 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10017010.9,
+        "return_pct": 0.1701
       },
       {
         "date": "2026-01-13 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10051860.9,
+        "return_pct": 0.5186
       },
       {
         "date": "2026-01-14 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10086300.9,
+        "return_pct": 0.863
       },
       {
         "date": "2026-01-15 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10124094.7,
+        "return_pct": 1.2409
       },
       {
         "date": "2026-01-16 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10124094.7,
+        "return_pct": 1.2409
       },
       {
         "date": "2026-01-19 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10124094.7,
+        "return_pct": 1.2409
       },
       {
         "date": "2026-01-20 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10076247.7,
+        "return_pct": 0.7625
       },
       {
         "date": "2026-01-21 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10040577.7,
+        "return_pct": 0.4058
       },
       {
         "date": "2026-01-22 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10059622.2,
+        "return_pct": 0.5962
       },
       {
         "date": "2026-01-23 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10059622.2,
+        "return_pct": 0.5962
       },
       {
         "date": "2026-01-26 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10061706.59,
+        "return_pct": 0.6171
       },
       {
         "date": "2026-01-27 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10046784.09,
+        "return_pct": 0.4678
       },
       {
         "date": "2026-01-28 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10003921.59,
+        "return_pct": 0.0392
       },
       {
         "date": "2026-01-29 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10001064.09,
+        "return_pct": 0.0106
       },
       {
         "date": "2026-01-30 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10011541.59,
+        "return_pct": 0.1154
       },
       {
         "date": "2026-02-02 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 9986388.19,
+        "return_pct": -0.1361
       },
       {
         "date": "2026-02-03 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10069464.23,
+        "return_pct": 0.6946
       },
       {
         "date": "2026-02-04 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10085021.73,
+        "return_pct": 0.8502
       },
       {
         "date": "2026-02-05 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10195194.23,
+        "return_pct": 1.9519
       },
       {
         "date": "2026-02-06 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10184775.78,
+        "return_pct": 1.8478
       },
       {
         "date": "2026-02-09 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10184775.78,
+        "return_pct": 1.8478
       },
       {
         "date": "2026-02-10 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10175829.78,
+        "return_pct": 1.7583
       },
       {
         "date": "2026-02-12 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10239914.92,
+        "return_pct": 2.3991
       },
       {
         "date": "2026-02-13 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10233063.6,
+        "return_pct": 2.3306
       },
       {
         "date": "2026-02-16 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10221055.04,
+        "return_pct": 2.2106
       },
       {
         "date": "2026-02-17 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10251823.44,
+        "return_pct": 2.5182
       },
       {
         "date": "2026-02-18 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10309723.46,
+        "return_pct": 3.0972
       },
       {
         "date": "2026-02-19 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10307852.6,
+        "return_pct": 3.0785
       },
       {
         "date": "2026-02-20 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10277853.5,
+        "return_pct": 2.7785
       },
       {
         "date": "2026-02-24 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10260797.44,
+        "return_pct": 2.608
       },
       {
         "date": "2026-02-25 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10219266.71,
+        "return_pct": 2.1927
       },
       {
         "date": "2026-02-26 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10234316.71,
+        "return_pct": 2.3432
       },
       {
         "date": "2026-02-27 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10286421.71,
+        "return_pct": 2.8642
       },
       {
         "date": "2026-03-02 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10390097.71,
+        "return_pct": 3.901
       },
       {
         "date": "2026-03-03 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10323532.07,
+        "return_pct": 3.2353
       },
       {
         "date": "2026-03-04 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10192767.25,
+        "return_pct": 1.9277
       },
       {
         "date": "2026-03-05 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-06 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-09 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-10 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-11 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-12 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-13 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-16 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-17 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-18 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-19 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-23 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-24 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-25 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-26 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-27 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-30 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-03-31 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-01 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-02 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-03 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-06 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-07 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-08 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-09 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-10 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-13 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-14 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-15 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-16 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-17 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-20 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-21 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-22 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-23 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-24 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-27 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-28 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-04-30 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-05-01 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-05-07 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-05-08 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-05-11 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-05-12 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10292956.91,
+        "return_pct": 2.9296
       },
       {
         "date": "2026-05-13 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10330145.21,
+        "return_pct": 3.3015
       },
       {
         "date": "2026-05-14 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10315441.08,
+        "return_pct": 3.1544
       },
       {
         "date": "2026-05-15 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10331986.53,
+        "return_pct": 3.3199
       },
       {
         "date": "2026-05-18 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10314108.53,
+        "return_pct": 3.1411
       },
       {
         "date": "2026-05-19 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10374966.53,
+        "return_pct": 3.7497
       },
       {
         "date": "2026-05-20 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10384981.64,
+        "return_pct": 3.8498
       },
       {
         "date": "2026-05-21 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10384981.64,
+        "return_pct": 3.8498
       },
       {
         "date": "2026-05-22 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10384981.64,
+        "return_pct": 3.8498
       },
       {
         "date": "2026-05-25 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10384981.64,
+        "return_pct": 3.8498
       },
       {
         "date": "2026-05-26 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10384981.64,
+        "return_pct": 3.8498
       },
       {
         "date": "2026-05-27 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10384981.64,
+        "return_pct": 3.8498
       },
       {
         "date": "2026-05-28 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10384981.64,
+        "return_pct": 3.8498
       },
       {
         "date": "2026-05-29 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10384981.64,
+        "return_pct": 3.8498
       },
       {
         "date": "2026-06-01 00:00:00",
-        "equity": 10000000.0,
-        "return_pct": 0.0
+        "equity": 10384981.64,
+        "return_pct": 3.8498
       }
     ],
     "weekly_sage": [
@@ -7497,29 +7494,27 @@
   },
   "diagnostics": {
     "schema_version": "ai_arena_diagnostics_v1",
-    "generated_at": "2026-06-02T01:38:28Z",
+    "generated_at": "2026-06-02T10:50:42Z",
     "year": 2026,
-    "run_id": "arena_jp_rebuild_2026_v020",
+    "run_id": "arena_jp_rebuild_2026_v021",
     "period": {
       "start_date": "2026-01-01 00:00:00",
       "end_date": "2026-06-01 00:00:00"
     },
     "totals": {
-      "orders": 787,
-      "filled_orders": 766,
+      "orders": 823,
+      "filled_orders": 802,
       "cancelled_orders": 21,
       "pending_orders": 0,
-      "buy_orders": 410,
-      "sell_orders": 377,
-      "trades": 375,
+      "buy_orders": 428,
+      "sell_orders": 395,
+      "trades": 393,
       "open_positions": 16,
       "equity_rows": 686,
       "agents": 7,
-      "agents_with_executed_buys": 6,
-      "agents_with_closed_trades": 6,
-      "flat_agents_without_buys": [
-        "value_mispricing"
-      ]
+      "agents_with_executed_buys": 7,
+      "agents_with_closed_trades": 7,
+      "flat_agents_without_buys": []
     },
     "agent_activity": [
       {
@@ -7676,22 +7671,19 @@
         "watch_signals": 5230,
         "ignore_signals": 59536,
         "latest_score_date": "2026-05-29 00:00:00",
-        "buy_orders": 0,
-        "executed_buys": 0,
+        "buy_orders": 18,
+        "executed_buys": 18,
         "cancelled_buys": 0,
-        "sell_orders": 0,
-        "executed_sells": 0,
+        "sell_orders": 18,
+        "executed_sells": 18,
         "pending_orders": 0,
-        "closed_trades": 0,
+        "closed_trades": 18,
         "open_positions": 0,
-        "latest_equity_jpy": 10000000.0,
-        "total_return_pct": 0.0,
+        "latest_equity_jpy": 10384981.642500008,
+        "total_return_pct": 3.8498,
         "first_equity_date": "2026-01-05 00:00:00",
         "last_equity_date": "2026-06-01 00:00:00",
-        "warnings": [
-          "SIGNALS_BUT_NO_BUYS",
-          "FLAT_NO_EXECUTED_BUYS"
-        ]
+        "warnings": []
       }
     ],
     "order_status_counts": [
@@ -7703,7 +7695,7 @@
       {
         "side": "BUY",
         "order_status": "FILLED",
-        "count": 391
+        "count": 409
       },
       {
         "side": "SELL",
@@ -7713,7 +7705,7 @@
       {
         "side": "SELL",
         "order_status": "FILLED",
-        "count": 375
+        "count": 393
       }
     ],
     "cancel_reason_counts": [
@@ -7728,9 +7720,7 @@
         "count": 2
       }
     ],
-    "warnings": [
-      "Some agents have no executed buy orders. Check thresholds, feature availability, and skipped orders."
-    ]
+    "warnings": []
   },
   "trade_stats": [
     {
@@ -7827,16 +7817,16 @@
       "agent_id": "value_mispricing",
       "name": "HIZUMI",
       "color": "#4F46E5",
-      "closed_trades": 0,
-      "wins": 0,
-      "losses": 0,
-      "win_rate_pct": 0.0,
-      "avg_return_pct": 0.0,
-      "median_return_pct": 0.0,
-      "best_return_pct": null,
-      "worst_return_pct": null,
-      "realized_pnl_jpy": 0.0,
-      "avg_holding_days": 0.0
+      "closed_trades": 18,
+      "wins": 11,
+      "losses": 7,
+      "win_rate_pct": 61.11,
+      "avg_return_pct": 1.5131,
+      "median_return_pct": 1.0616,
+      "best_return_pct": 8.6145,
+      "worst_return_pct": -4.2458,
+      "realized_pnl_jpy": 384981.64,
+      "avg_holding_days": 3.22
     }
   ]
 }

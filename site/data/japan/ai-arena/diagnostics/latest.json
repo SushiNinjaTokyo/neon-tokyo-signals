@@ -1,28 +1,26 @@
 {
   "schema_version": "ai_arena_diagnostics_v1",
-  "generated_at": "2026-06-02T01:38:28Z",
+  "generated_at": "2026-06-02T10:50:42Z",
   "year": 2026,
-  "run_id": "arena_jp_rebuild_2026_v020",
+  "run_id": "arena_jp_rebuild_2026_v021",
   "period": {
     "start_date": "2026-01-01 00:00:00",
     "end_date": "2026-06-01 00:00:00"
   },
   "totals": {
-    "orders": 787,
-    "filled_orders": 766,
+    "orders": 823,
+    "filled_orders": 802,
     "cancelled_orders": 21,
     "pending_orders": 0,
-    "buy_orders": 410,
-    "sell_orders": 377,
-    "trades": 375,
+    "buy_orders": 428,
+    "sell_orders": 395,
+    "trades": 393,
     "open_positions": 16,
     "equity_rows": 686,
     "agents": 7,
-    "agents_with_executed_buys": 6,
-    "agents_with_closed_trades": 6,
-    "flat_agents_without_buys": [
-      "value_mispricing"
-    ]
+    "agents_with_executed_buys": 7,
+    "agents_with_closed_trades": 7,
+    "flat_agents_without_buys": []
   },
   "agent_activity": [
     {
@@ -179,22 +177,19 @@
       "watch_signals": 5230,
       "ignore_signals": 59536,
       "latest_score_date": "2026-05-29 00:00:00",
-      "buy_orders": 0,
-      "executed_buys": 0,
+      "buy_orders": 18,
+      "executed_buys": 18,
       "cancelled_buys": 0,
-      "sell_orders": 0,
-      "executed_sells": 0,
+      "sell_orders": 18,
+      "executed_sells": 18,
       "pending_orders": 0,
-      "closed_trades": 0,
+      "closed_trades": 18,
       "open_positions": 0,
-      "latest_equity_jpy": 10000000.0,
-      "total_return_pct": 0.0,
+      "latest_equity_jpy": 10384981.642500008,
+      "total_return_pct": 3.8498,
       "first_equity_date": "2026-01-05 00:00:00",
       "last_equity_date": "2026-06-01 00:00:00",
-      "warnings": [
-        "SIGNALS_BUT_NO_BUYS",
-        "FLAT_NO_EXECUTED_BUYS"
-      ]
+      "warnings": []
     }
   ],
   "order_status_counts": [
@@ -206,7 +201,7 @@
     {
       "side": "BUY",
       "order_status": "FILLED",
-      "count": 391
+      "count": 409
     },
     {
       "side": "SELL",
@@ -216,7 +211,7 @@
     {
       "side": "SELL",
       "order_status": "FILLED",
-      "count": 375
+      "count": 393
     }
   ],
   "cancel_reason_counts": [
@@ -231,7 +226,5 @@
       "count": 2
     }
   ],
-  "warnings": [
-    "Some agents have no executed buy orders. Check thresholds, feature availability, and skipped orders."
-  ]
+  "warnings": []
 }
