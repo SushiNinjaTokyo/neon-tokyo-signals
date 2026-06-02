@@ -1,0 +1,217 @@
+name: AI Arena JP weekly fundamentals snapshot
+
+on:
+  workflow_dispatch:
+    inputs:
+      fetch_fundamentals:
+        description: "Refresh fundamentals_latest_jp before snapshot"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+      snapshot_date:
+        description: "Snapshot date YYYY-MM-DD. Empty = runner UTC date"
+        required: false
+        default: ""
+      commit_outputs:
+        description: "Commit diagnostics outputs"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+  schedule:
+    # Saturday 07:30 JST = Friday 22:30 UTC. Runs after the Tokyo week is effectively complete.
+    - cron: "30 22 * * 5"
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: ai-arena-jp-canonical-db
+  cancel-in-progress: false
+
+jobs:
+  weekly-fundamentals-snapshot:
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+      PRICE_DUCKDB_PATH: data/cache/neon_tokyo_jp.duckdb
+      CANONICAL_DUCKDB_RELEASE_TAG: ai-arena-duckdb-latest
+      CANONICAL_DUCKDB_ASSET: neon_tokyo_jp_latest.duckdb.zst
+      CANONICAL_DUCKDB_MANIFEST_ASSET: neon_tokyo_jp_latest_manifest.json
+      FUNDAMENTALS_SNAPSHOT_DATE: ${{ github.event.inputs.snapshot_date || '' }}
+      JPX_LISTED_ISSUES_OUT_CSV: data/universe/jpx_listed_issues_jp.csv
+      JPX_LISTED_ISSUES_OUT_JSON: data/universe/jpx_listed_issues_jp.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install -r requirements-render.txt
+          pip install xlrd
+          sudo apt-get update
+          sudo apt-get install -y zstd
+
+      - name: Pull latest main
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin main
+
+      - name: Download canonical DuckDB from Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p data/cache
+          gh release view "${CANONICAL_DUCKDB_RELEASE_TAG}" >/dev/null
+          gh release download "${CANONICAL_DUCKDB_RELEASE_TAG}" \
+            --pattern "${CANONICAL_DUCKDB_ASSET}" \
+            --dir data/cache \
+            --clobber
+          gh release download "${CANONICAL_DUCKDB_RELEASE_TAG}" \
+            --pattern "${CANONICAL_DUCKDB_MANIFEST_ASSET}" \
+            --dir data/cache \
+            --clobber || true
+          test -s "data/cache/${CANONICAL_DUCKDB_ASSET}"
+          zstd -d -f "data/cache/${CANONICAL_DUCKDB_ASSET}" -o "${PRICE_DUCKDB_PATH}"
+          test -s "${PRICE_DUCKDB_PATH}"
+          ls -lh "${PRICE_DUCKDB_PATH}"
+
+      - name: Show canonical DB status
+        run: |
+          set -euo pipefail
+          python scripts/show_duckdb_build_metadata.py --db-path "${PRICE_DUCKDB_PATH}" --fail-if-missing
+
+      - name: Compile scripts
+        run: |
+          set -euo pipefail
+          python -m compileall \
+            scripts/fetch_jpx_listed_issues_jp.py \
+            scripts/build_company_master_jp.py \
+            scripts/stamp_fundamentals_snapshot_jp.py \
+            scripts/build_sector_relative_value_features_jp.py \
+            scripts/show_duckdb_build_metadata.py \
+            scripts/stamp_duckdb_build_metadata.py \
+            scripts/lib
+
+      - name: Fetch JPX listed issues and build company master
+        run: |
+          set -euo pipefail
+          python scripts/fetch_jpx_listed_issues_jp.py
+          python scripts/build_company_master_jp.py
+
+      - name: Refresh fundamentals latest
+        if: ${{ github.event.inputs.fetch_fundamentals != 'false' }}
+        run: |
+          set -euo pipefail
+          if [ ! -f scripts/fetch_fundamentals_jp.py ]; then
+            echo "::error::scripts/fetch_fundamentals_jp.py not found"
+            exit 1
+          fi
+          python scripts/fetch_fundamentals_jp.py
+
+      - name: Stamp fundamentals snapshot and sector relative features
+        run: |
+          set -euo pipefail
+          python scripts/stamp_fundamentals_snapshot_jp.py
+          python scripts/build_sector_relative_value_features_jp.py
+
+      - name: Stamp canonical DB metadata
+        run: |
+          set -euo pipefail
+          python scripts/stamp_duckdb_build_metadata.py \
+            --db-path "${PRICE_DUCKDB_PATH}" \
+            --schema-version neon_tokyo_duckdb_state_v1 \
+            --source-workflow "AI Arena JP weekly fundamentals snapshot" \
+            --artifact-kind github-release-asset \
+            --release-tag "${CANONICAL_DUCKDB_RELEASE_TAG}" \
+            --asset-name "${CANONICAL_DUCKDB_ASSET}"
+          python scripts/show_duckdb_build_metadata.py --db-path "${PRICE_DUCKDB_PATH}" --fail-if-missing
+
+      - name: Validate tables
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import duckdb, os
+          db=os.environ['PRICE_DUCKDB_PATH']
+          con=duckdb.connect(db)
+          for table in ['company_master_jp','fundamentals_latest_jp','fundamentals_snapshot_jp','sector_33_valuation_medians','value_features_sector_relative_jp']:
+              exists=con.execute("SELECT COUNT(*) FROM information_schema.tables WHERE table_name=?", [table]).fetchone()[0]
+              if not exists:
+                  raise SystemExit(f"missing table: {table}")
+              rows=con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+              print(table, rows)
+              if rows <= 0:
+                  raise SystemExit(f"empty table: {table}")
+          con.close()
+          PY
+
+      - name: Compress and upload canonical DuckDB
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          zstd -T0 -19 -f "${PRICE_DUCKDB_PATH}" -o "data/cache/${CANONICAL_DUCKDB_ASSET}"
+
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          manifest = {
+              "schema_version": "neon_tokyo_canonical_duckdb_manifest_v1",
+              "generated_at": datetime.now(timezone.utc).isoformat(),
+              "asset_name": os.environ["CANONICAL_DUCKDB_ASSET"],
+              "release_tag": os.environ["CANONICAL_DUCKDB_RELEASE_TAG"],
+              "source_workflow": "AI Arena JP weekly fundamentals snapshot",
+              "source_run_id": os.environ.get("GITHUB_RUN_ID"),
+              "source_run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
+              "source_sha": os.environ.get("GITHUB_SHA"),
+              "source_ref": os.environ.get("GITHUB_REF"),
+          }
+          Path("data/cache/neon_tokyo_jp_latest_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+          PY
+
+          gh release upload "${CANONICAL_DUCKDB_RELEASE_TAG}" \
+            "data/cache/${CANONICAL_DUCKDB_ASSET}" \
+            "data/cache/${CANONICAL_DUCKDB_MANIFEST_ASSET}" \
+            --clobber
+
+      - name: Commit diagnostics and JPX CSV
+        if: ${{ github.event.inputs.commit_outputs != 'false' }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A \
+            data/universe/jpx_listed_issues_jp.csv \
+            data/universe/jpx_listed_issues_jp.json \
+            site/data/japan/ai-arena/diagnostics/company-master-latest.json \
+            site/data/japan/ai-arena/diagnostics/fundamentals-snapshot-latest.json \
+            site/data/japan/ai-arena/diagnostics/sector-relative-value-latest.json
+          if git diff --cached --quiet; then
+            echo "No diagnostics changes to commit."
+            exit 0
+          fi
+          git commit -m "Update JPX company master and fundamentals snapshot diagnostics"
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "Push succeeded."
+              exit 0
+            fi
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort || true; exit 1; }
+            sleep 5
+          done
+          exit 1
