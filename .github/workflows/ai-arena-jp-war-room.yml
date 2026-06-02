@@ -1,0 +1,89 @@
+name: AI Arena JP War Room
+
+on:
+  workflow_dispatch:
+    inputs:
+      enable_gpt_polish:
+        description: "Use OpenAI to polish War Room dialogue"
+        required: false
+        default: "false"
+        type: choice
+        options: ["false", "true"]
+      commit_outputs:
+        description: "Commit generated War Room outputs"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+  schedule:
+    - cron: "45 9 * * 1-5"  # 18:45 JST weekdays, after the normal live update window
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ai-arena-jp-war-room
+  cancel-in-progress: true
+
+jobs:
+  war-room:
+    runs-on: ubuntu-24.04
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+      OUT_DIR: site
+      OPENAI_ENABLE_AI: ${{ github.event.inputs.enable_gpt_polish || vars.OPENAI_ENABLE_AI || 'false' }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      AI_ARENA_WAR_ROOM_MODEL: ${{ vars.AI_ARENA_WAR_ROOM_MODEL || 'gpt-4o-mini' }}
+      AI_ARENA_WAR_ROOM_DAILY_USD_LIMIT: ${{ vars.AI_ARENA_WAR_ROOM_DAILY_USD_LIMIT || '0.65' }}
+      AI_ARENA_WAR_ROOM_HISTORY_DAYS: "14"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install -r requirements-render.txt
+
+      - name: Pull latest main
+        run: |
+          set -euo pipefail
+          git pull --ff-only origin main
+
+      - name: Build and render War Room
+        run: |
+          set -euo pipefail
+          python -m compileall scripts/build_ai_arena_war_room_jp.py scripts/render_ai_arena_war_room_jp.py
+          python scripts/build_ai_arena_war_room_jp.py
+          python scripts/render_ai_arena_war_room_jp.py
+          test -s site/data/japan/ai-arena/war-room/latest.json
+          test -s site/japan/ai-arena/log/index.html
+          test -s site/assets/ai_arena_war_room_jp.css
+          test -s site/assets/ai_arena_war_room_jp.js
+
+      - name: Commit War Room outputs
+        if: ${{ github.event_name == 'schedule' || github.event.inputs.commit_outputs != 'false' }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            site/data/japan/ai-arena/war-room \
+            site/japan/ai-arena/log \
+            site/assets/ai_arena_war_room_jp.css \
+            site/assets/ai_arena_war_room_jp.js
+          if git diff --cached --quiet; then
+            echo "No War Room changes to commit."
+          else
+            git commit -m "Update AI Arena War Room"
+            git push
+          fi

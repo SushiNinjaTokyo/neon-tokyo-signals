@@ -150,6 +150,8 @@ jobs:
             scripts/build_value_features_jp.py \
             scripts/build_agent_scores_jp.py \
             scripts/rebuild_ai_arena_season_from_duckdb_jp.py \
+            scripts/build_ai_arena_war_room_jp.py \
+            scripts/render_ai_arena_war_room_jp.py \
             scripts/render_index.py \
             scripts/stamp_duckdb_build_metadata.py \
             scripts/show_duckdb_build_metadata.py \
@@ -202,6 +204,17 @@ jobs:
           set -euo pipefail
           python scripts/rebuild_ai_arena_season_from_duckdb_jp.py
 
+      - name: Build AI Arena War Room payload
+        env:
+          OPENAI_ENABLE_AI: ${{ vars.OPENAI_ENABLE_AI || 'false' }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          AI_ARENA_WAR_ROOM_MODEL: ${{ vars.AI_ARENA_WAR_ROOM_MODEL || 'gpt-4o-mini' }}
+          AI_ARENA_WAR_ROOM_DAILY_USD_LIMIT: ${{ vars.AI_ARENA_WAR_ROOM_DAILY_USD_LIMIT || '0.65' }}
+        run: |
+          set -euo pipefail
+          python scripts/build_ai_arena_war_room_jp.py
+          test -s site/data/japan/ai-arena/war-room/latest.json
+
       - name: Render Neon Tokyo static pages from AI Arena outputs
         run: |
           set -euo pipefail
@@ -215,6 +228,9 @@ jobs:
           test -s site/japan/ai-arena/summary/index.html
           test -s site/japan/ai-arena/ranking/index.html
           test -s site/japan/ai-arena/positions/index.html
+          test -s site/japan/ai-arena/log/index.html
+          test -s site/assets/ai_arena_war_room_jp.css
+          test -s site/assets/ai_arena_war_room_jp.js
           test -s site/assets/ai_arena_summary_jp.css
           test -s site/assets/ai_arena_ranking_jp.css
           test -s site/assets/ai_arena_positions_jp.css
