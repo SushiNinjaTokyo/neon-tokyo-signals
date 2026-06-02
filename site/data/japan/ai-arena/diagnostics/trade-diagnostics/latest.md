@@ -1,16 +1,16 @@
 # Neon Tokyo AI Arena Trade Diagnostics
 
-Generated: `2026-06-02T00:11:07+00:00`
-Run ID: `arena_jp_rebuild_2026_v018`
+Generated: `2026-06-02T01:04:50+00:00`
+Run ID: `arena_jp_rebuild_2026_v019`
 
 > Purpose: paste this Markdown into ChatGPT and ask for detailed agent-by-agent win/loss diagnosis and rule-improvement ideas.
 
 ## Dataset Summary
 
-- Closed trades: **417**
+- Closed trades: **416**
 - Open positions: **18**
 - Agents with closed trades: **7**
-- Exported compact trade rows in JSON: **417**
+- Exported compact trade rows in JSON: **416**
 - Equity curve rows: **686**
 
 ## Agent Summary
@@ -23,7 +23,7 @@ Run ID: `arena_jp_rebuild_2026_v018`
 | SAGURI / `discovery_scout` | 41 | 41.46% | 1.04% | 10.48% | -5.65% | 1.8563 | 1.279 | ¥442,073 | 9.24% | -6.01% | DEEP_ADVERSE_MOVE:7, NORMAL_LOSS:6, WINNER_TURNED_LOSER:4, FAST_FAILED_ENTRY:4 |
 | MATSU / `contrarian_monk` | 74 | 47.30% | 2.50% | 10.49% | -4.68% | 2.2426 | 1.8252 | ¥1,835,126 | 8.33% | -5.78% | STOP_LOSS_HIT:14, NORMAL_LOSS:9, DEEP_ADVERSE_MOVE:8, WINNER_TURNED_LOSER:6 |
 | KAESHI / `reversal_snapback` | 66 | 46.97% | 0.74% | 7.07% | -4.86% | 1.4542 | 1.2506 | ¥460,933 | 6.30% | -5.18% | STOP_LOSS_HIT:20, NORMAL_LOSS:8, DEEP_ADVERSE_MOVE:4, WINNER_TURNED_LOSER:3 |
-| HIZUMI / `value_mispricing` | 29 | 41.38% | 0.29% | 7.26% | -4.64% | 1.566 | 1.2434 | ¥286,688 | 5.43% | -4.91% | STOP_LOSS_HIT:10, NORMAL_LOSS:6, WINNER_TURNED_LOSER:1 |
+| HIZUMI / `value_mispricing` | 28 | 39.29% | -0.00% | 7.17% | -4.64% | 1.545 | 1.1226 | ¥142,562 | 5.10% | -4.96% | STOP_LOSS_HIT:10, NORMAL_LOSS:6, WINNER_TURNED_LOSER:1 |
 
 ## KYOU / `daily_striker`
 
@@ -143,14 +143,14 @@ Run ID: `arena_jp_rebuild_2026_v018`
 
 ### Compact Entry Context For Worst Trades
 
-- `5344.T` 2026-02-04 → 2026-02-06 -11.96%: score: rank=2, action=Trade / feature: return_5d_pct=5.068186444127831, return_20d_pct=14.787636201912392, volume_ratio_20d=3.3563511455788095, rsi_14=64.9367088607595, range_position_252d_0_1=0.988663967611336 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=917593915392.0, per=50.45084, pbr=6.2310295, roe_pct=13.204001000000002, operating_margin_pct=35.202998
-- `7419.T` 2026-04-22 → 2026-04-23 -8.57%: score: rank=1, action=Trade / feature: return_5d_pct=15.732368896925863, return_20d_pct=18.518518518518512, volume_ratio_20d=9.13923586250969, rsi_14=75.97402597402598, range_position_252d_0_1=0.8227349365635868 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=425198747648.0, per=11.646683, pbr=1.7179112, roe_pct=17.407, operating_margin_pct=6.364
-- `1803.T` 2026-05-13 → 2026-05-14 -8.14%: score: rank=1, action=Trade / feature: return_5d_pct=14.055299539170507, return_20d_pct=14.54545454545455, volume_ratio_20d=3.8606016588646725, rsi_14=70.77826725403818, range_position_252d_0_1=0.9309099119440054 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1749622456320.0, per=13.802711, pbr=1.7890282, roe_pct=13.411999999999999, operating_margin_pct=7.022
-- `6814.T` 2026-04-15 → 2026-04-16 -7.08%: score: rank=3, action=Trade / feature: return_5d_pct=15.522388059701498, return_20d_pct=13.823529411764701, volume_ratio_20d=1.7698911543768205, rsi_14=62.72040302267003, range_position_252d_0_1=0.7225264695144213 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=190917296128.0, per=11.400529, pbr=2.1369026, roe_pct=20.662001, operating_margin_pct=9.422
-- `4684.T` 2026-04-23 → 2026-04-24 -6.20%: score: rank=3, action=Trade / feature: return_5d_pct=10.944309927360774, return_20d_pct=18.581780538302283, volume_ratio_20d=2.9337932356041008, rsi_14=75.287797390637, range_position_252d_0_1=0.45045965270684374 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1811508887552.0, per=24.409725, pbr=3.5161414, roe_pct=15.831999999999999, operating_margin_pct=67.586
-- `4593.T` 2026-03-02 → 2026-03-04 -5.04%: score: rank=3, action=Trade / feature: return_5d_pct=14.88250652741514, return_20d_pct=21.88365650969528, volume_ratio_20d=2.92743850836723, rsi_14=64.53201970443351, range_position_252d_0_1=0.4448462929475588 / value: value_trap_penalty=0.55 / fund: market_cap_jpy=42795601920.0, per=-11.142355, pbr=5.2836857, roe_pct=-65.403, operating_margin_pct=-141.25
-- `4516.T` 2026-03-12 → 2026-03-13 -4.78%: score: rank=2, action=Trade / feature: return_5d_pct=16.028955532574972, return_20d_pct=9.784735812133082, volume_ratio_20d=2.228500899668387, rsi_14=73.08518253400143, range_position_252d_0_1=0.7419988770353734 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=279444258816.0, per=9.399229, pbr=0.9578595, roe_pct=11.027000000000001, operating_margin_pct=7.251
-- `9983.T` 2026-01-13 → 2026-01-16 -4.50%: score: rank=1, action=Trade / feature: return_5d_pct=10.203723217421846, return_20d_pct=12.717801329261725, volume_ratio_20d=3.6762576339482465, rsi_14=70.71330589849109, range_position_252d_0_1=1.0 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=24789582348288.0, per=51.920258, pbr=9.416889, roe_pct=20.616, operating_margin_pct=17.723
+- `5344.T` 2026-02-04 → 2026-02-06 -11.96%: score: rank=2, action=Trade / feature: return_5d_pct=5.068186444127831, return_20d_pct=14.787636201912392, volume_ratio_20d=3.3563511455788095, rsi_14=64.9367088607595, range_position_252d_0_1=0.988663967611336 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=900071292928.0, per=49.581947, pbr=6.11204, roe_pct=13.204001000000002, operating_margin_pct=35.202998
+- `7419.T` 2026-04-22 → 2026-04-23 -8.57%: score: rank=1, action=Trade / feature: return_5d_pct=15.732368896925863, return_20d_pct=18.518518518518512, volume_ratio_20d=9.13923586250969, rsi_14=75.97402597402598, range_position_252d_0_1=0.8227349365635868 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=447961628672.0, per=12.262342, pbr=1.8098791, roe_pct=17.407, operating_margin_pct=6.364
+- `1803.T` 2026-05-13 → 2026-05-14 -8.14%: score: rank=1, action=Trade / feature: return_5d_pct=14.055299539170507, return_20d_pct=14.54545454545455, volume_ratio_20d=3.8606016588646725, rsi_14=70.77826725403818, range_position_252d_0_1=0.9309099119440054 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1682381602816.0, per=13.267984, pbr=1.7202728, roe_pct=13.411999999999999, operating_margin_pct=7.022
+- `6814.T` 2026-04-15 → 2026-04-16 -7.08%: score: rank=3, action=Trade / feature: return_5d_pct=15.522388059701498, return_20d_pct=13.823529411764701, volume_ratio_20d=1.7698911543768205, rsi_14=62.72040302267003, range_position_252d_0_1=0.7225264695144213 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=189652942848.0, per=11.331873, pbr=2.122751, roe_pct=20.662001, operating_margin_pct=9.422
+- `4684.T` 2026-04-23 → 2026-04-24 -6.20%: score: rank=3, action=Trade / feature: return_5d_pct=10.944309927360774, return_20d_pct=18.581780538302283, volume_ratio_20d=2.9337932356041008, rsi_14=75.287797390637, range_position_252d_0_1=0.45045965270684374 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1824055754752.0, per=24.59313, pbr=3.540495, roe_pct=15.831999999999999, operating_margin_pct=67.586
+- `4593.T` 2026-03-02 → 2026-03-04 -5.04%: score: rank=3, action=Trade / feature: return_5d_pct=14.88250652741514, return_20d_pct=21.88365650969528, volume_ratio_20d=2.92743850836723, rsi_14=64.53201970443351, range_position_252d_0_1=0.4448462929475588 / value: value_trap_penalty=0.55 / fund: market_cap_jpy=43200610304.0, per=-11.247803, pbr=5.333689, roe_pct=-65.403, operating_margin_pct=-141.25
+- `4516.T` 2026-03-12 → 2026-03-13 -4.78%: score: rank=2, action=Trade / feature: return_5d_pct=16.028955532574972, return_20d_pct=9.784735812133082, volume_ratio_20d=2.228500899668387, rsi_14=73.08518253400143, range_position_252d_0_1=0.7419988770353734 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=278231023616.0, per=9.3563, pbr=0.95370096, roe_pct=11.027000000000001, operating_margin_pct=7.251
+- `9983.T` 2026-01-13 → 2026-01-16 -4.50%: score: rank=1, action=Trade / feature: return_5d_pct=10.203723217421846, return_20d_pct=12.717801329261725, volume_ratio_20d=3.6762576339482465, rsi_14=70.71330589849109, range_position_252d_0_1=1.0 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=24448990183424.0, per=51.015118, pbr=9.287507, roe_pct=20.616, operating_margin_pct=17.723
 
 
 ## NAGARE / `weekly_sage`
@@ -271,14 +271,14 @@ Run ID: `arena_jp_rebuild_2026_v018`
 
 ### Compact Entry Context For Worst Trades
 
-- `6305.T` 2026-02-17 → 2026-03-10 -11.81%: score: rank=4, action=Trade / feature: return_5d_pct=7.55055446836268, return_20d_pct=21.656520937096467, volume_ratio_20d=0.7333831275736258, rsi_14=91.7755991285403, range_position_252d_0_1=0.9633342881695789 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1083039350784.0, per=14.792108, pbr=1.2031553, roe_pct=9.119, operating_margin_pct=9.391
-- `6471.T` 2026-02-26 → 2026-03-06 -11.06%: score: rank=1, action=Trade / feature: return_5d_pct=4.461538461538472, return_20d_pct=24.873563218390803, volume_ratio_20d=1.031296417365805, rsi_14=87.7643504531722, range_position_252d_0_1=0.9957467493012516 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=585717252096.0, per=25.69221, pbr=0.87163514, roe_pct=3.5709999999999997, operating_margin_pct=4.281
-- `3563.T` 2026-03-05 → 2026-03-10 -11.01%: score: rank=2, action=Trade / feature: return_5d_pct=2.2297925054196366, return_20d_pct=19.21271217045866, volume_ratio_20d=1.3231653373749288, rsi_14=64.84490398818316, range_position_252d_0_1=0.9453457237360214 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1195190386688.0, per=41.87731, pbr=10.423231, roe_pct=29.883, operating_margin_pct=11.113000000000001
-- `1860.T` 2026-03-05 → 2026-03-13 -10.42%: score: rank=4, action=Trade / feature: return_5d_pct=1.3937282229965264, return_20d_pct=18.819599109131403, volume_ratio_20d=1.8044194981063186, rsi_14=56.8075117370892, range_position_252d_0_1=0.9656042192157762 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=470111584256.0, per=12.882291, pbr=1.2145845, roe_pct=9.923001, operating_margin_pct=5.298
-- `4061.T` 2026-03-12 → 2026-03-23 -9.39%: score: rank=6, action=Trade / feature: return_5d_pct=8.635947512969189, return_20d_pct=21.274058933742126, volume_ratio_20d=0.75237114134489, rsi_14=60.825958702064895, range_position_252d_0_1=0.905284147557328 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=370658770944.0, per=23.599142, pbr=1.1929642, roe_pct=3.4779999999999998, operating_margin_pct=8.5880004
-- `7685.T` 2026-03-11 → 2026-03-25 -9.18%: score: rank=4, action=Trade / feature: return_5d_pct=20.46678635547576, return_20d_pct=35.555555555555564, volume_ratio_20d=1.1572475364271877, rsi_14=68.75, range_position_252d_0_1=0.9911445649767545 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=242373541888.0, per=45.26559, pbr=5.0126595, roe_pct=39.259, operating_margin_pct=9.9750005
-- `5019.T` 2026-04-02 → 2026-04-21 -9.09%: score: rank=2, action=Trade / feature: return_5d_pct=7.188444743029887, return_20d_pct=8.389945652173903, volume_ratio_20d=1.1477653069277876, rsi_14=66.0164271047228, range_position_252d_0_1=0.996870697208662 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1616417652736.0, per=9.500748, pbr=0.84727466, operating_margin_pct=8.121
-- `1801.T` 2026-02-26 → 2026-03-10 -9.00%: score: rank=3, action=Trade / feature: return_5d_pct=9.985569985569986, return_20d_pct=23.57328145265889, volume_ratio_20d=0.7559730816132966, rsi_14=72.45989304812834, range_position_252d_0_1=0.9877113279213525 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2206328422400.0, per=13.198053, pbr=2.3271716, operating_margin_pct=9.766
+- `6305.T` 2026-02-17 → 2026-03-10 -11.81%: score: rank=4, action=Trade / feature: return_5d_pct=7.55055446836268, return_20d_pct=21.656520937096467, volume_ratio_20d=0.7333831275736258, rsi_14=91.7755991285403, range_position_252d_0_1=0.9633342881695789 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1051341684736.0, per=14.359182, pbr=1.1679422, roe_pct=9.119, operating_margin_pct=9.391
+- `6471.T` 2026-02-26 → 2026-03-06 -11.06%: score: rank=1, action=Trade / feature: return_5d_pct=4.461538461538472, return_20d_pct=24.873563218390803, volume_ratio_20d=1.031296417365805, rsi_14=87.7643504531722, range_position_252d_0_1=0.9957467493012516 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=564187103232.0, per=24.7478, pbr=0.8395951, roe_pct=3.5709999999999997, operating_margin_pct=4.281
+- `3563.T` 2026-03-05 → 2026-03-10 -11.01%: score: rank=2, action=Trade / feature: return_5d_pct=2.2297925054196366, return_20d_pct=19.21271217045866, volume_ratio_20d=1.3231653373749288, rsi_14=64.84490398818316, range_position_252d_0_1=0.9453457237360214 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1172468137984.0, per=41.099163, pbr=10.225071, roe_pct=29.883, operating_margin_pct=11.113000000000001
+- `1860.T` 2026-03-05 → 2026-03-13 -10.42%: score: rank=4, action=Trade / feature: return_5d_pct=1.3937282229965264, return_20d_pct=18.819599109131403, volume_ratio_20d=1.8044194981063186, rsi_14=56.8075117370892, range_position_252d_0_1=0.9656042192157762 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=470407610368.0, per=12.884131, pbr=1.2153493, roe_pct=9.923001, operating_margin_pct=5.298
+- `4061.T` 2026-03-12 → 2026-03-23 -9.39%: score: rank=6, action=Trade / feature: return_5d_pct=8.635947512969189, return_20d_pct=21.274058933742126, volume_ratio_20d=0.75237114134489, rsi_14=60.825958702064895, range_position_252d_0_1=0.905284147557328 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=357728813056.0, per=22.784672, pbr=1.1513492, roe_pct=3.4779999999999998, operating_margin_pct=8.5880004
+- `7685.T` 2026-03-11 → 2026-03-25 -9.18%: score: rank=4, action=Trade / feature: return_5d_pct=20.46678635547576, return_20d_pct=35.555555555555564, volume_ratio_20d=1.1572475364271877, rsi_14=68.75, range_position_252d_0_1=0.9911445649767545 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=240518643712.0, per=44.929543, pbr=4.974297, roe_pct=39.259, operating_margin_pct=9.9750005
+- `5019.T` 2026-04-02 → 2026-04-21 -9.09%: score: rank=2, action=Trade / feature: return_5d_pct=7.188444743029887, return_20d_pct=8.389945652173903, volume_ratio_20d=1.1477653069277876, rsi_14=66.0164271047228, range_position_252d_0_1=0.996870697208662 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1637622480896.0, per=9.632243, pbr=0.85838956, operating_margin_pct=8.121
+- `1801.T` 2026-02-26 → 2026-03-10 -9.00%: score: rank=3, action=Trade / feature: return_5d_pct=9.985569985569986, return_20d_pct=23.57328145265889, volume_ratio_20d=0.7559730816132966, rsi_14=72.45989304812834, range_position_252d_0_1=0.9877113279213525 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2096297279488.0, per=12.536313, pbr=2.211114, operating_margin_pct=9.766
 
 
 ## MAMORU / `risk_sentinel`
@@ -400,14 +400,14 @@ Run ID: `arena_jp_rebuild_2026_v018`
 
 ### Compact Entry Context For Worst Trades
 
-- `3391.T` 2026-01-06 → 2026-01-09 -9.78%: score: rank=3, action=Trade / feature: return_5d_pct=0.7005253940455258, return_20d_pct=4.166666666666674, volume_ratio_20d=1.0158954921040588, rsi_14=57.1875, range_position_252d_0_1=0.962278675904542 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=868679221248.0, per=13.304885, pbr=0.99174076, roe_pct=7.546, operating_margin_pct=3.636
-- `6383.T` 2026-03-03 → 2026-03-04 -8.22%: score: rank=4, action=Trade / feature: return_5d_pct=-0.9169960474308292, return_20d_pct=16.1200667037243, volume_ratio_20d=0.9488290812996651, rsi_14=66.91394658753708, range_position_252d_0_1=0.9260249554367201 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2659645390848.0, per=35.716755, pbr=5.802992, operating_margin_pct=15.223
-- `5406.T` 2026-02-19 → 2026-03-04 -8.21%: score: rank=1, action=Trade / feature: return_5d_pct=-0.8743169398907069, return_20d_pct=-0.17609509134932644, volume_ratio_20d=0.5840567480177463, rsi_14=54.97925311203319, range_position_252d_0_1=0.879957127545552 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=770737963008.0, per=8.195963, pbr=0.611056, roe_pct=7.621, operating_margin_pct=4.971
-- `4183.T` 2026-02-27 → 2026-03-05 -6.05%: score: rank=3, action=Trade / feature: return_5d_pct=-1.275781416117372, return_20d_pct=3.131941359395829, volume_ratio_20d=1.0877509288017249, rsi_14=44.09523809523809, range_position_252d_0_1=0.864905823771379 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=767109300224.0, per=23.160881, pbr=0.90329856, roe_pct=4.788, operating_margin_pct=3.531
-- `9531.T` 2026-03-03 → 2026-03-24 -5.96%: score: rank=5, action=Trade / feature: return_5d_pct=1.5049504950495063, return_20d_pct=14.436672123827954, volume_ratio_20d=1.045675908439635, rsi_14=67.22433460076046, range_position_252d_0_1=0.9257078777684329 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2036190281728.0, per=9.329504, pbr=1.184508, roe_pct=12.762, operating_margin_pct=6.959999999999999
-- `9042.T` 2026-04-16 → 2026-04-23 -5.95%: score: rank=3, action=Trade / feature: return_5d_pct=-0.29136316337148305, return_20d_pct=14.289122137404586, volume_ratio_20d=0.8045203303318319, rsi_14=73.81703470031546, range_position_252d_0_1=0.9069965870307167 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1089115717632.0, per=13.905801, pbr=0.9867622, roe_pct=7.153, operating_margin_pct=3.9739999999999998
-- `9502.T` 2026-04-21 → 2026-04-23 -5.85%: score: rank=8, action=Trade / feature: return_5d_pct=-0.10779734099892746, return_20d_pct=10.427010923535263, volume_ratio_20d=1.4799116968346917, rsi_14=68.36734693877551, range_position_252d_0_1=0.8752260397830018 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2132475904000.0, per=9.361011, pbr=0.6795099, roe_pct=7.7360004, operating_margin_pct=6.2750004
-- `2503.T` 2026-03-17 → 2026-03-23 -5.66%: score: rank=8, action=Trade / feature: return_5d_pct=0.07664303506418335, return_20d_pct=0.7717538105344479, volume_ratio_20d=0.6723104805527333, rsi_14=46.09297725024728, range_position_252d_0_1=0.8329065300896287 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2129601495040.0, per=14.527287, pbr=1.6203139, roe_pct=12.194, operating_margin_pct=8.402999999999999
+- `3391.T` 2026-01-06 → 2026-01-09 -9.78%: score: rank=3, action=Trade / feature: return_5d_pct=0.7005253940455258, return_20d_pct=4.166666666666674, volume_ratio_20d=1.0158954921040588, rsi_14=57.1875, range_position_252d_0_1=0.962278675904542 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=870038306816.0, per=13.336805, pbr=0.9932924, roe_pct=7.546, operating_margin_pct=3.636
+- `6383.T` 2026-03-03 → 2026-03-04 -8.22%: score: rank=4, action=Trade / feature: return_5d_pct=-0.9169960474308292, return_20d_pct=16.1200667037243, volume_ratio_20d=0.9488290812996651, rsi_14=66.91394658753708, range_position_252d_0_1=0.9260249554367201 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2581323317248.0, per=34.70094, pbr=5.632103, operating_margin_pct=15.223
+- `5406.T` 2026-02-19 → 2026-03-04 -8.21%: score: rank=1, action=Trade / feature: return_5d_pct=-0.8743169398907069, return_20d_pct=-0.17609509134932644, volume_ratio_20d=0.5840567480177463, rsi_14=54.97925311203319, range_position_252d_0_1=0.879957127545552 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=771924295680.0, per=8.210305, pbr=0.61199665, roe_pct=7.621, operating_margin_pct=4.971
+- `4183.T` 2026-02-27 → 2026-03-05 -6.05%: score: rank=3, action=Trade / feature: return_5d_pct=-1.275781416117372, return_20d_pct=3.131941359395829, volume_ratio_20d=1.0877509288017249, rsi_14=44.09523809523809, range_position_252d_0_1=0.864905823771379 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=758071754752.0, per=22.878027, pbr=0.8926565, roe_pct=4.788, operating_margin_pct=3.531
+- `9531.T` 2026-03-03 → 2026-03-24 -5.96%: score: rank=5, action=Trade / feature: return_5d_pct=1.5049504950495063, return_20d_pct=14.436672123827954, volume_ratio_20d=1.045675908439635, rsi_14=67.22433460076046, range_position_252d_0_1=0.9257078777684329 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2062196932608.0, per=9.44924, pbr=1.1996368, roe_pct=12.762, operating_margin_pct=6.959999999999999
+- `9042.T` 2026-04-16 → 2026-04-23 -5.95%: score: rank=3, action=Trade / feature: return_5d_pct=-0.29136316337148305, return_20d_pct=14.289122137404586, volume_ratio_20d=0.8045203303318319, rsi_14=73.81703470031546, range_position_252d_0_1=0.9069965870307167 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1075830915072.0, per=13.734933, pbr=0.97472596, roe_pct=7.153, operating_margin_pct=3.9739999999999998
+- `9502.T` 2026-04-21 → 2026-04-23 -5.85%: score: rank=8, action=Trade / feature: return_5d_pct=-0.10779734099892746, return_20d_pct=10.427010923535263, volume_ratio_20d=1.4799116968346917, rsi_14=68.36734693877551, range_position_252d_0_1=0.8752260397830018 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2130965168128.0, per=9.35593, pbr=0.6790285, roe_pct=7.7360004, operating_margin_pct=6.2750004
+- `2503.T` 2026-03-17 → 2026-03-23 -5.66%: score: rank=8, action=Trade / feature: return_5d_pct=0.07664303506418335, return_20d_pct=0.7717538105344479, volume_ratio_20d=0.6723104805527333, rsi_14=46.09297725024728, range_position_252d_0_1=0.8329065300896287 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2063604776960.0, per=14.080949, pbr=1.5701001, roe_pct=12.194, operating_margin_pct=8.402999999999999
 
 
 ## SAGURI / `discovery_scout`
@@ -532,14 +532,14 @@ Run ID: `arena_jp_rebuild_2026_v018`
 
 ### Compact Entry Context For Worst Trades
 
-- `5243.T` 2026-01-26 → 2026-01-27 -11.91%: score: rank=6, action=Trade / feature: return_5d_pct=17.384433030422763, return_20d_pct=90.93830334190231, volume_ratio_20d=1.4437206857180407, rsi_14=77.67672591980157, range_position_252d_0_1=0.9115797262301147 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=38538764288.0, per=74.13601, pbr=7.0371614, roe_pct=19.439, operating_margin_pct=19.326
-- `4443.T` 2026-01-16 → 2026-01-20 -11.61%: score: rank=2, action=Trade / feature: return_5d_pct=11.575381140598529, return_20d_pct=17.479191438763376, volume_ratio_20d=6.196071396537806, rsi_14=73.46938775510205, range_position_252d_0_1=0.376953125 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=226175877120.0, per=110.79404, pbr=11.916517, roe_pct=15.695, operating_margin_pct=21.867001
-- `4419.T` 2026-02-13 → 2026-02-16 -9.94%: score: rank=7, action=Trade / feature: return_5d_pct=19.35881627620222, return_20d_pct=2.869287991498415, volume_ratio_20d=3.4902118116635292, rsi_14=57.08333333333333, range_position_252d_0_1=0.35547355473554737 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=69232304128.0, per=46.4323, pbr=6.3791428, roe_pct=15.955, operating_margin_pct=28.726998
-- `3692.T` 2026-02-09 → 2026-02-10 -9.73%: score: rank=4, action=Trade / feature: return_5d_pct=7.8918918918919, return_20d_pct=20.531400966183575, volume_ratio_20d=1.3248302818350133, rsi_14=50.110864745011085, range_position_252d_0_1=0.6649122807017543 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=46191714304.0, per=42.084023, pbr=12.229753, roe_pct=33.481, operating_margin_pct=31.441997999999998
+- `5243.T` 2026-01-26 → 2026-01-27 -11.91%: score: rank=6, action=Trade / feature: return_5d_pct=17.384433030422763, return_20d_pct=90.93830334190231, volume_ratio_20d=1.4437206857180407, rsi_14=77.67672591980157, range_position_252d_0_1=0.9115797262301147 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=37862645760.0, per=72.83538, pbr=6.9137025, roe_pct=19.439, operating_margin_pct=19.326
+- `4443.T` 2026-01-16 → 2026-01-20 -11.61%: score: rank=2, action=Trade / feature: return_5d_pct=11.575381140598529, return_20d_pct=17.479191438763376, volume_ratio_20d=6.196071396537806, rsi_14=73.46938775510205, range_position_252d_0_1=0.376953125 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=222630019072.0, per=109.46451, pbr=11.729696, roe_pct=15.695, operating_margin_pct=21.867001
+- `4419.T` 2026-02-13 → 2026-02-16 -9.94%: score: rank=7, action=Trade / feature: return_5d_pct=19.35881627620222, return_20d_pct=2.869287991498415, volume_ratio_20d=3.4902118116635292, rsi_14=57.08333333333333, range_position_252d_0_1=0.35547355473554737 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=70529761280.0, per=47.30247, pbr=6.498692, roe_pct=15.955, operating_margin_pct=28.726998
+- `3692.T` 2026-02-09 → 2026-02-10 -9.73%: score: rank=4, action=Trade / feature: return_5d_pct=7.8918918918919, return_20d_pct=20.531400966183575, volume_ratio_20d=1.3248302818350133, rsi_14=50.110864745011085, range_position_252d_0_1=0.6649122807017543 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=45163474944.0, per=41.011276, pbr=11.957515, roe_pct=33.481, operating_margin_pct=31.441997999999998
 - `7777.T` 2026-02-19 → 2026-02-24 -9.17%: score: rank=9, action=Trade / feature: return_5d_pct=19.565217391304344, return_20d_pct=31.23644251626898, volume_ratio_20d=1.6688280675644978, rsi_14=84.16988416988417, range_position_252d_0_1=0.9617590822179732 / value: value_trap_penalty=0.1 / fund: market_cap_jpy=46522241024.0, per=-30.234375, pbr=9.266132, roe_pct=31.863000000000003, operating_margin_pct=13.706
-- `5574.T` 2026-01-16 → 2026-01-23 -8.12%: score: rank=4, action=Trade / feature: return_5d_pct=21.125143513203206, return_20d_pct=24.068992551940415, volume_ratio_20d=4.660936007640879, rsi_14=83.00970873786407, range_position_252d_0_1=0.5215545395166558 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=22137724928.0, per=42.92044, pbr=4.523564, roe_pct=11.931, operating_margin_pct=14.396999999999998
-- `247A.T` 2026-02-17 → 2026-02-18 -7.97%: score: rank=14, action=Trade / feature: return_5d_pct=10.574018126888207, return_20d_pct=0.5494505494505475, volume_ratio_20d=3.8468236754900142, rsi_14=60.099750623441395, range_position_252d_0_1=0.5551206784083497 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=43677618176.0, per=16.56004, pbr=7.220023, roe_pct=56.730000000000004, operating_margin_pct=11.7740005
-- `4419.T` 2026-05-11 → 2026-05-15 -7.58%: score: rank=9, action=Trade / feature: return_5d_pct=16.34877384196185, return_20d_pct=26.33136094674555, volume_ratio_20d=1.87451106713911, rsi_14=79.29292929292929, range_position_252d_0_1=0.7140921409214093 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=69232304128.0, per=46.4323, pbr=6.3791428, roe_pct=15.955, operating_margin_pct=28.726998
+- `5574.T` 2026-01-16 → 2026-01-23 -8.12%: score: rank=4, action=Trade / feature: return_5d_pct=21.125143513203206, return_20d_pct=24.068992551940415, volume_ratio_20d=4.660936007640879, rsi_14=83.00970873786407, range_position_252d_0_1=0.5215545395166558 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=21611108352.0, per=41.907513, pbr=4.4159565, roe_pct=11.931, operating_margin_pct=14.396999999999998
+- `247A.T` 2026-02-17 → 2026-02-18 -7.97%: score: rank=14, action=Trade / feature: return_5d_pct=10.574018126888207, return_20d_pct=0.5494505494505475, volume_ratio_20d=3.8468236754900142, rsi_14=60.099750623441395, range_position_252d_0_1=0.5551206784083497 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=42509418496.0, per=16.117126, pbr=7.026917, roe_pct=56.730000000000004, operating_margin_pct=11.7740005
+- `4419.T` 2026-05-11 → 2026-05-15 -7.58%: score: rank=9, action=Trade / feature: return_5d_pct=16.34877384196185, return_20d_pct=26.33136094674555, volume_ratio_20d=1.87451106713911, rsi_14=79.29292929292929, range_position_252d_0_1=0.7140921409214093 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=70529761280.0, per=47.30247, pbr=6.498692, roe_pct=15.955, operating_margin_pct=28.726998
 
 
 ## MATSU / `contrarian_monk`
@@ -662,14 +662,14 @@ Run ID: `arena_jp_rebuild_2026_v018`
 
 ### Compact Entry Context For Worst Trades
 
-- `5714.T` 2026-03-18 → 2026-03-23 -12.70%: score: rank=1, action=Trade / feature: return_5d_pct=-4.395822973644947, return_20d_pct=1.3922582006117512, volume_ratio_20d=0.4597549556203263, rsi_14=42.36495844875346, range_position_252d_0_1=0.716625 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=610114797568.0, per=9.827835, pbr=1.3392563, roe_pct=14.482999999999999, operating_margin_pct=8.708
-- `1801.T` 2026-03-11 → 2026-03-23 -9.86%: score: rank=2, action=Trade / feature: return_5d_pct=-12.556618017111221, return_20d_pct=-2.1953278919223163, volume_ratio_20d=0.7559751183592597, rsi_14=50.35816618911175, range_position_252d_0_1=0.7779942231477127 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2206328422400.0, per=13.198053, pbr=2.3271716, operating_margin_pct=9.766
-- `6323.T` 2026-03-03 → 2026-03-04 -8.22%: score: rank=1, action=Trade / feature: return_5d_pct=-8.5161662817552, return_20d_pct=-8.410404624277456, volume_ratio_20d=1.2897949708231768, rsi_14=44.80519480519481, range_position_252d_0_1=0.7836914757364452 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=669099687936.0, per=35.284435, pbr=5.137869, roe_pct=13.017999999999999, operating_margin_pct=22.115000000000002
-- `6525.T` 2026-03-04 → 2026-03-16 -8.08%: score: rank=6, action=Trade / feature: return_5d_pct=-2.808724305664523, return_20d_pct=-3.2187500000000036, volume_ratio_20d=0.6602304145866795, rsi_14=44.13043478260869, range_position_252d_0_1=0.8302007884844596 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1819397193728.0, per=60.41424, pbr=8.294063, roe_pct=14.49, operating_margin_pct=15.021999999999998
-- `5016.T` 2026-05-15 → 2026-05-18 -7.95%: score: rank=3, action=Trade / feature: return_5d_pct=-15.712661106899162, return_20d_pct=-2.8402883985143124, volume_ratio_20d=0.9871628110690178, rsi_14=43.43039772727273, range_position_252d_0_1=0.7287210010411141 / value: value_trap_penalty=0.2 / fund: market_cap_jpy=3550766956544.0, per=34.00142, pbr=5.349444, operating_margin_pct=-23.812
-- `5110.T` 2026-03-03 → 2026-03-05 -7.67%: score: rank=2, action=Trade / feature: return_5d_pct=-5.193370165745859, return_20d_pct=3.937007874015741, volume_ratio_20d=1.8931140667257984, rsi_14=45.00000000000001, range_position_252d_0_1=0.8516683184671292 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=530139774976.0, per=10.523844, pbr=0.73050123, roe_pct=8.461001, operating_margin_pct=4.986
-- `1605.T` 2026-04-13 → 2026-04-16 -7.51%: score: rank=1, action=Trade / feature: return_5d_pct=-11.29411764705882, return_20d_pct=-3.5357059781344513, volume_ratio_20d=0.5634858692435619, rsi_14=39.756097560975604, range_position_252d_0_1=0.7554479418886199 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=3946796548096.0, per=10.275652, pbr=0.8071259, roe_pct=8.282, operating_margin_pct=48.582
-- `4506.T` 2026-01-20 → 2026-01-23 -7.32%: score: rank=1, action=Trade / feature: return_5d_pct=-17.924041931603362, return_20d_pct=5.407194879717503, volume_ratio_20d=2.012274854419339, rsi_14=52.126892573900506, range_position_252d_0_1=0.7690427698574338 / value: value_trap_penalty=0.2 / fund: market_cap_jpy=702721622016.0, per=5.824936, pbr=2.1279428, roe_pct=46.266996999999996, operating_margin_pct=-52.859
+- `5714.T` 2026-03-18 → 2026-03-23 -12.70%: score: rank=1, action=Trade / feature: return_5d_pct=-4.395822973644947, return_20d_pct=1.3922582006117512, volume_ratio_20d=0.4597549556203263, rsi_14=42.36495844875346, range_position_252d_0_1=0.716625 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=599468081152.0, per=9.649624, pbr=1.3158858, roe_pct=14.482999999999999, operating_margin_pct=8.708
+- `1801.T` 2026-03-11 → 2026-03-23 -9.86%: score: rank=2, action=Trade / feature: return_5d_pct=-12.556618017111221, return_20d_pct=-2.1953278919223163, volume_ratio_20d=0.7559751183592597, rsi_14=50.35816618911175, range_position_252d_0_1=0.7779942231477127 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2096297279488.0, per=12.536313, pbr=2.211114, operating_margin_pct=9.766
+- `6323.T` 2026-03-03 → 2026-03-04 -8.22%: score: rank=1, action=Trade / feature: return_5d_pct=-8.5161662817552, return_20d_pct=-8.410404624277456, volume_ratio_20d=1.2897949708231768, rsi_14=44.80519480519481, range_position_252d_0_1=0.7836914757364452 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=643431792640.0, per=33.94949, pbr=4.9407706, roe_pct=13.017999999999999, operating_margin_pct=22.115000000000002
+- `6525.T` 2026-03-04 → 2026-03-16 -8.08%: score: rank=6, action=Trade / feature: return_5d_pct=-2.808724305664523, return_20d_pct=-3.2187500000000036, volume_ratio_20d=0.6602304145866795, rsi_14=44.13043478260869, range_position_252d_0_1=0.8302007884844596 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1737398157312.0, per=57.69141, pbr=7.920254, roe_pct=14.49, operating_margin_pct=15.021999999999998
+- `5016.T` 2026-05-15 → 2026-05-18 -7.95%: score: rank=3, action=Trade / feature: return_5d_pct=-15.712661106899162, return_20d_pct=-2.8402883985143124, volume_ratio_20d=0.9871628110690178, rsi_14=43.43039772727273, range_position_252d_0_1=0.7287210010411141 / value: value_trap_penalty=0.2 / fund: market_cap_jpy=3451671543808.0, per=33.05543, pbr=4.751172, operating_margin_pct=-23.812
+- `5110.T` 2026-03-03 → 2026-03-05 -7.67%: score: rank=2, action=Trade / feature: return_5d_pct=-5.193370165745859, return_20d_pct=3.937007874015741, volume_ratio_20d=1.8931140667257984, rsi_14=45.00000000000001, range_position_252d_0_1=0.8516683184671292 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=517655068672.0, per=10.2765465, pbr=0.713298, roe_pct=8.461001, operating_margin_pct=4.986
+- `1605.T` 2026-04-13 → 2026-04-16 -7.51%: score: rank=1, action=Trade / feature: return_5d_pct=-11.29411764705882, return_20d_pct=-3.5357059781344513, volume_ratio_20d=0.5634858692435619, rsi_14=39.756097560975604, range_position_252d_0_1=0.7554479418886199 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=4118800760832.0, per=10.717633, pbr=0.842301, roe_pct=8.282, operating_margin_pct=48.582
+- `4506.T` 2026-01-20 → 2026-01-23 -7.32%: score: rank=1, action=Trade / feature: return_5d_pct=-17.924041931603362, return_20d_pct=5.407194879717503, volume_ratio_20d=2.012274854419339, rsi_14=52.126892573900506, range_position_252d_0_1=0.7690427698574338 / value: value_trap_penalty=0.2 / fund: market_cap_jpy=663469686784.0, per=5.499777, pbr=2.0090823, roe_pct=46.266996999999996, operating_margin_pct=-52.859
 
 
 ## KAESHI / `reversal_snapback`
@@ -791,30 +791,30 @@ Run ID: `arena_jp_rebuild_2026_v018`
 
 ### Compact Entry Context For Worst Trades
 
-- `6098.T` 2026-02-12 → 2026-02-16 -11.57%: score: rank=3, action=Trade / feature: return_5d_pct=-11.792905081495686, return_20d_pct=-19.773272291257904, volume_ratio_20d=1.818524865961227, rsi_14=29.989015012815813, range_position_252d_0_1=0.2594059405940594 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=15552312508416.0, per=32.135155, pbr=9.854402, roe_pct=30.830999999999996, operating_margin_pct=14.045
-- `6701.T` 2026-02-12 → 2026-02-16 -10.52%: score: rank=2, action=Trade / feature: return_5d_pct=-9.676816738277605, return_20d_pct=-17.18054128126071, volume_ratio_20d=1.8749082183771328, rsi_14=32.18475073313783, range_position_252d_0_1=0.6204970678581402 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=5794909650944.0, per=21.477104, pbr=2.6338751, roe_pct=12.556999999999999, operating_margin_pct=15.059000000000001
-- `4013.T` 2026-02-13 → 2026-02-16 -9.73%: score: rank=2, action=Trade / feature: return_5d_pct=-17.497456765005083, return_20d_pct=-37.22910216718266, volume_ratio_20d=6.045451031923939, rsi_14=19.81845688350984, range_position_252d_0_1=0.35049683830171635 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=11168519168.0, per=11.007572, pbr=1.0873401, roe_pct=10.009, operating_margin_pct=24.493000000000002
-- `4307.T` 2026-02-02 → 2026-02-05 -9.68%: score: rank=1, action=Trade / feature: return_5d_pct=-20.725126475548063, return_20d_pct=-21.532298447671504, volume_ratio_20d=5.545538564332412, rsi_14=9.214830970556164, range_position_252d_0_1=0.056854410201912856 / value: value_trap_penalty=0.2 / fund: market_cap_jpy=3077084807168.0, per=201.23967, pbr=7.091607, roe_pct=3.604, operating_margin_pct=-28.653000000000002
-- `3626.T` 2026-02-12 → 2026-02-16 -9.13%: score: rank=1, action=Trade / feature: return_5d_pct=-19.35338005878363, return_20d_pct=-30.89887640449438, volume_ratio_20d=1.5358477481989443, rsi_14=11.967921036397286, range_position_252d_0_1=0.0903674280039722 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=754402197504.0, per=17.3947, pbr=2.4153821, roe_pct=14.008000000000001, operating_margin_pct=13.372
-- `4592.T` 2026-05-22 → 2026-05-26 -8.27%: score: rank=3, action=Trade / feature: return_5d_pct=-16.547553600879606, return_20d_pct=-27.403156384505024, volume_ratio_20d=0.7882147467537398, rsi_14=33.0532212885154, range_position_252d_0_1=0.050326546292739145 / value: value_trap_penalty=0.35 / fund: market_cap_jpy=99970965504.0, per=-31.389364, pbr=7.3472896, roe_pct=-50.003, operating_margin_pct=0.0
-- `4180.T` 2026-02-18 → 2026-02-20 -6.79%: score: rank=2, action=Trade / feature: return_5d_pct=-17.54932502596054, return_20d_pct=-28.532853285328528, volume_ratio_20d=2.3644846140091356, rsi_14=19.560439560439562, range_position_252d_0_1=0.012785388127853882 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=94620147712.0, per=37.094837, pbr=2.5063334, roe_pct=7.371999999999999, operating_margin_pct=1.52900005
-- `9024.T` 2026-05-18 → 2026-05-19 -6.73%: score: rank=4, action=Trade / feature: return_5d_pct=-15.116857284932872, return_20d_pct=-16.548521143974583, volume_ratio_20d=3.587528492467678, rsi_14=33.73056994818653, range_position_252d_0_1=0.11998567335243553 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=699497316352.0, per=18.244497, pbr=1.2294874, roe_pct=6.855, operating_margin_pct=0.5
+- `6098.T` 2026-02-12 → 2026-02-16 -11.57%: score: rank=3, action=Trade / feature: return_5d_pct=-11.792905081495686, return_20d_pct=-19.773272291257904, volume_ratio_20d=1.818524865961227, rsi_14=29.989015012815813, range_position_252d_0_1=0.2594059405940594 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=15468810207232.0, per=31.966295, pbr=9.801493, roe_pct=30.830999999999996, operating_margin_pct=14.045
+- `6701.T` 2026-02-12 → 2026-02-16 -10.52%: score: rank=2, action=Trade / feature: return_5d_pct=-9.676816738277605, return_20d_pct=-17.18054128126071, volume_ratio_20d=1.8749082183771328, rsi_14=32.18475073313783, range_position_252d_0_1=0.6204970678581402 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=5772324896768.0, per=21.387083, pbr=2.62361, roe_pct=12.556999999999999, operating_margin_pct=15.059000000000001
+- `4013.T` 2026-02-13 → 2026-02-16 -9.73%: score: rank=2, action=Trade / feature: return_5d_pct=-17.497456765005083, return_20d_pct=-37.22910216718266, volume_ratio_20d=6.045451031923939, rsi_14=19.81845688350984, range_position_252d_0_1=0.35049683830171635 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=11523075072.0, per=11.361429, pbr=1.1218588, roe_pct=10.009, operating_margin_pct=24.493000000000002
+- `4307.T` 2026-02-02 → 2026-02-05 -9.68%: score: rank=1, action=Trade / feature: return_5d_pct=-20.725126475548063, return_20d_pct=-21.532298447671504, volume_ratio_20d=5.545538564332412, rsi_14=9.214830970556164, range_position_252d_0_1=0.056854410201912856 / value: value_trap_penalty=0.2 / fund: market_cap_jpy=2940376449024.0, per=192.15466, pbr=6.776542, roe_pct=3.604, operating_margin_pct=-28.653000000000002
+- `3626.T` 2026-02-12 → 2026-02-16 -9.13%: score: rank=1, action=Trade / feature: return_5d_pct=-19.35338005878363, return_20d_pct=-30.89887640449438, volume_ratio_20d=1.5358477481989443, rsi_14=11.967921036397286, range_position_252d_0_1=0.0903674280039722 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=758000648192.0, per=17.481937, pbr=2.4269032, roe_pct=14.008000000000001, operating_margin_pct=13.372
+- `4592.T` 2026-05-22 → 2026-05-26 -8.27%: score: rank=3, action=Trade / feature: return_5d_pct=-16.547553600879606, return_20d_pct=-27.403156384505024, volume_ratio_20d=0.7882147467537398, rsi_14=33.0532212885154, range_position_252d_0_1=0.050326546292739145 / value: value_trap_penalty=0.35 / fund: market_cap_jpy=97941889024.0, per=-30.752266, pbr=7.1981645, roe_pct=-50.003, operating_margin_pct=0.0
+- `4180.T` 2026-02-18 → 2026-02-20 -6.79%: score: rank=2, action=Trade / feature: return_5d_pct=-17.54932502596054, return_20d_pct=-28.532853285328528, volume_ratio_20d=2.3644846140091356, rsi_14=19.560439560439562, range_position_252d_0_1=0.012785388127853882 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=96355360768.0, per=37.76, pbr=2.5554402, roe_pct=7.371999999999999, operating_margin_pct=1.52900005
+- `9024.T` 2026-05-18 → 2026-05-19 -6.73%: score: rank=4, action=Trade / feature: return_5d_pct=-15.116857284932872, return_20d_pct=-16.548521143974583, volume_ratio_20d=3.587528492467678, rsi_14=33.73056994818653, range_position_252d_0_1=0.11998567335243553 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=719196061696.0, per=18.769485, pbr=1.2641115, roe_pct=6.855, operating_margin_pct=0.5
 
 
 ## HIZUMI / `value_mispricing`
 
 ### Key Metrics
 
-- Trades: **29**, Win rate: **41.38%**, Total PnL: **¥286,688**
-- Avg return: **0.29%**, Avg win: **7.26%**, Avg loss: **-4.64%**
-- Payoff ratio: **1.566**, Profit factor: **1.2434**
-- Avg MFE: **5.43%**, Avg MAE: **-4.91%**
+- Trades: **28**, Win rate: **39.29%**, Total PnL: **¥142,562**
+- Avg return: **-0.00%**, Avg win: **7.17%**, Avg loss: **-4.64%**
+- Payoff ratio: **1.545**, Profit factor: **1.1226**
+- Avg MFE: **5.10%**, Avg MAE: **-4.96%**
 
 ### Exit Reasons
 
 ```json
 {
-  "MISPRICING_RESOLVED": 14,
+  "MISPRICING_RESOLVED": 13,
   "HARD_STOP": 11,
   "SCORE_COLLAPSE": 2,
   "VALUE_EARLY_FAIL": 2
@@ -836,7 +836,7 @@ Run ID: `arena_jp_rebuild_2026_v018`
 ```json
 {
   "NORMAL_WIN": 7,
-  "FAST_WINNER": 5
+  "FAST_WINNER": 4
 }
 ```
 
@@ -844,86 +844,86 @@ Run ID: `arena_jp_rebuild_2026_v018`
 
 | Ticker | Name | Entry | Exit | Return | PnL | Hold | MFE | MAE | Exit | Pattern |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| 8473.T | ＳＢＩホールディングス | 2026-01-21 | 2026-02-25 | -8.80% | ¥-163,143 | 35 | 6.01% | -9.49% | HARD_STOP | WINNER_TURNED_LOSER |
-| 4612.T | 日本ペイントホールディングス | 2026-02-17 | 2026-03-03 | -8.77% | ¥-168,896 | 14 | 3.48% | -10.63% | HARD_STOP | STOP_LOSS_HIT |
-| 6301.T | 小松製作所 | 2026-04-28 | 2026-04-30 | -8.38% | ¥-143,168 | 2 | -0.10% | -11.78% | HARD_STOP | STOP_LOSS_HIT |
-| 8604.T | 野村ホールディングス | 2026-04-17 | 2026-04-28 | -7.74% | ¥-62,542 | 11 | 0.45% | -9.70% | HARD_STOP | STOP_LOSS_HIT |
-| 5842.T | Integral Corporation | 2026-01-16 | 2026-01-20 | -7.07% | ¥-132,593 | 4 | 1.28% | -11.10% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-04-08 | 2026-04-27 | -5.85% | ¥-48,284 | 19 | 3.54% | -7.47% | HARD_STOP | STOP_LOSS_HIT |
-| 8604.T | 野村ホールディングス | 2026-01-29 | 2026-02-03 | -4.53% | ¥-80,520 | 5 | 2.17% | -7.41% | HARD_STOP | STOP_LOSS_HIT |
-| 9022.T | 東海旅客鉄道 | 2026-04-16 | 2026-04-24 | -4.34% | ¥-35,788 | 8 | 1.16% | -6.55% | HARD_STOP | STOP_LOSS_HIT |
-| 8766.T | 東京海上ホールディングス | 2026-04-07 | 2026-04-13 | -4.34% | ¥-35,570 | 6 | 2.65% | -5.26% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-04-30 | 2026-05-13 | -4.22% | ¥-76,376 | 13 | 0.43% | -5.76% | VALUE_EARLY_FAIL | NORMAL_LOSS |
-| 3635.T | コーエーテクモホールディングス | 2026-03-12 | 2026-03-24 | -4.04% | ¥-68,428 | 12 | 3.63% | -7.05% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-03-19 | 2026-03-24 | -3.09% | ¥-51,519 | 5 | 0.68% | -5.21% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-05-15 | 2026-05-26 | -2.81% | ¥-50,333 | 11 | 2.87% | -4.70% | VALUE_EARLY_FAIL | NORMAL_LOSS |
-| 4578.T | 大塚ホールディングス | 2026-02-18 | 2026-02-19 | -1.93% | ¥-36,912 | 1 | 2.49% | -1.83% | MISPRICING_RESOLVED | NORMAL_LOSS |
-| 3479.T | TKP Corporation | 2026-01-30 | 2026-02-02 | -1.76% | ¥-1,042 | 3 | 1.88% | -2.25% | MISPRICING_RESOLVED | NORMAL_LOSS |
+| 8473.T | ＳＢＩホールディングス | 2026-01-21 | 2026-02-25 | -8.80% | ¥-161,303 | 35 | 6.01% | -9.49% | HARD_STOP | WINNER_TURNED_LOSER |
+| 4612.T | 日本ペイントホールディングス | 2026-02-17 | 2026-03-03 | -8.77% | ¥-166,685 | 14 | 3.48% | -10.63% | HARD_STOP | STOP_LOSS_HIT |
+| 6301.T | 小松製作所 | 2026-04-28 | 2026-04-30 | -8.38% | ¥-141,934 | 2 | -0.10% | -11.78% | HARD_STOP | STOP_LOSS_HIT |
+| 8604.T | 野村ホールディングス | 2026-04-17 | 2026-04-28 | -7.74% | ¥-61,596 | 11 | 0.45% | -9.70% | HARD_STOP | STOP_LOSS_HIT |
+| 5842.T | Integral Corporation | 2026-01-16 | 2026-01-20 | -7.07% | ¥-131,180 | 4 | 1.28% | -11.10% | HARD_STOP | STOP_LOSS_HIT |
+| 8473.T | ＳＢＩホールディングス | 2026-04-08 | 2026-04-27 | -5.85% | ¥-47,549 | 19 | 3.54% | -7.47% | HARD_STOP | STOP_LOSS_HIT |
+| 8604.T | 野村ホールディングス | 2026-01-29 | 2026-02-03 | -4.53% | ¥-79,564 | 5 | 2.17% | -7.41% | HARD_STOP | STOP_LOSS_HIT |
+| 9022.T | 東海旅客鉄道 | 2026-04-16 | 2026-04-24 | -4.34% | ¥-35,229 | 8 | 1.16% | -6.55% | HARD_STOP | STOP_LOSS_HIT |
+| 8766.T | 東京海上ホールディングス | 2026-04-07 | 2026-04-13 | -4.34% | ¥-34,929 | 6 | 2.65% | -5.26% | HARD_STOP | STOP_LOSS_HIT |
+| 8473.T | ＳＢＩホールディングス | 2026-04-30 | 2026-05-13 | -4.22% | ¥-75,302 | 13 | 0.43% | -5.76% | VALUE_EARLY_FAIL | NORMAL_LOSS |
+| 3635.T | コーエーテクモホールディングス | 2026-03-12 | 2026-03-24 | -4.04% | ¥-67,533 | 12 | 3.63% | -7.05% | HARD_STOP | STOP_LOSS_HIT |
+| 8473.T | ＳＢＩホールディングス | 2026-03-19 | 2026-03-24 | -3.09% | ¥-50,754 | 5 | 0.68% | -5.21% | HARD_STOP | STOP_LOSS_HIT |
+| 8473.T | ＳＢＩホールディングス | 2026-05-15 | 2026-05-26 | -2.81% | ¥-49,645 | 11 | 2.87% | -4.70% | VALUE_EARLY_FAIL | NORMAL_LOSS |
+| 4578.T | 大塚ホールディングス | 2026-02-18 | 2026-02-19 | -1.93% | ¥-36,511 | 1 | 2.49% | -1.83% | MISPRICING_RESOLVED | NORMAL_LOSS |
+| 3479.T | TKP Corporation | 2026-01-30 | 2026-02-02 | -1.76% | ¥-1,084 | 3 | 1.88% | -2.25% | MISPRICING_RESOLVED | NORMAL_LOSS |
 
 
 ### Best Trades
 
 | Ticker | Name | Entry | Exit | Return | PnL | Hold | MFE | MAE | Exit | Pattern |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| 4503.T | アステラス製薬 | 2026-01-28 | 2026-02-06 | 14.36% | ¥266,357 | 9 | 18.71% | -1.05% | MISPRICING_RESOLVED | FAST_WINNER |
-| 8591.T | オリックス | 2026-05-01 | 2026-05-12 | 13.64% | ¥242,406 | 11 | 16.10% | -0.89% | MISPRICING_RESOLVED | NORMAL_WIN |
-| 8766.T | 東京海上ホールディングス | 2026-04-21 | 2026-05-20 | 10.05% | ¥82,572 | 29 | 10.54% | -4.64% | MISPRICING_RESOLVED | NORMAL_WIN |
-| 6269.T | 三井海洋開発 | 2026-01-09 | 2026-01-15 | 9.42% | ¥164,971 | 6 | 12.92% | -2.29% | MISPRICING_RESOLVED | FAST_WINNER |
+| 4503.T | アステラス製薬 | 2026-01-28 | 2026-02-06 | 14.36% | ¥263,639 | 9 | 18.71% | -1.05% | MISPRICING_RESOLVED | FAST_WINNER |
+| 8591.T | オリックス | 2026-05-01 | 2026-05-12 | 13.64% | ¥239,563 | 11 | 16.10% | -0.89% | MISPRICING_RESOLVED | NORMAL_WIN |
+| 8766.T | 東京海上ホールディングス | 2026-04-21 | 2026-05-20 | 10.05% | ¥81,841 | 29 | 10.54% | -4.64% | MISPRICING_RESOLVED | NORMAL_WIN |
 | 8473.T | ＳＢＩホールディングス | 2026-01-06 | 2026-01-15 | 8.61% | ¥156,783 | 9 | 10.03% | -1.78% | MISPRICING_RESOLVED | FAST_WINNER |
-| 8725.T | ＭＳ＆ＡＤインシュアランスグループホールディングス | 2026-05-07 | 2026-05-14 | 8.10% | ¥135,948 | 7 | 9.50% | -2.52% | MISPRICING_RESOLVED | FAST_WINNER |
-| 1605.T | ＩＮＰＥＸ | 2026-02-24 | 2026-03-03 | 6.54% | ¥124,589 | 7 | 12.24% | -4.26% | MISPRICING_RESOLVED | FAST_WINNER |
-| 9022.T | 東海旅客鉄道 | 2026-01-23 | 2026-02-04 | 6.52% | ¥115,970 | 12 | 9.67% | -3.40% | MISPRICING_RESOLVED | NORMAL_WIN |
-| 8630.T | ＳＯＭＰＯホールディングス | 2026-02-04 | 2026-02-06 | 3.77% | ¥64,941 | 2 | 5.86% | -1.12% | MISPRICING_RESOLVED | NORMAL_WIN |
-| 8630.T | ＳＯＭＰＯホールディングス | 2026-03-04 | 2026-03-05 | 2.30% | ¥43,051 | 1 | 4.87% | -2.66% | SCORE_COLLAPSE | NORMAL_WIN |
-| 5838.T | 楽天銀行 | 2026-02-16 | 2026-02-19 | 2.25% | ¥38,538 | 3 | 6.43% | -1.70% | MISPRICING_RESOLVED | NORMAL_WIN |
-| 6479.T | ミネベアミツミ | 2026-05-19 | 2026-05-20 | 1.61% | ¥28,274 | 1 | 2.48% | -3.20% | MISPRICING_RESOLVED | NORMAL_WIN |
-| 8766.T | 東京海上ホールディングス | 2026-02-20 | 2026-03-02 | -0.39% | ¥-7,451 | 10 | 4.83% | -1.43% | MISPRICING_RESOLVED | NORMAL_LOSS |
-| 8766.T | 東京海上ホールディングス | 2026-03-03 | 2026-03-05 | -0.81% | ¥-15,145 | 2 | 0.73% | -5.16% | SCORE_COLLAPSE | NORMAL_LOSS |
-| 3479.T | TKP Corporation | 2026-01-30 | 2026-02-02 | -1.76% | ¥-1,042 | 3 | 1.88% | -2.25% | MISPRICING_RESOLVED | NORMAL_LOSS |
+| 8725.T | ＭＳ＆ＡＤインシュアランスグループホールディングス | 2026-05-07 | 2026-05-14 | 8.10% | ¥133,983 | 7 | 9.50% | -2.52% | MISPRICING_RESOLVED | FAST_WINNER |
+| 1605.T | ＩＮＰＥＸ | 2026-02-24 | 2026-03-03 | 6.54% | ¥122,626 | 7 | 12.24% | -4.26% | MISPRICING_RESOLVED | FAST_WINNER |
+| 9022.T | 東海旅客鉄道 | 2026-01-23 | 2026-02-04 | 6.52% | ¥114,850 | 12 | 9.67% | -3.40% | MISPRICING_RESOLVED | NORMAL_WIN |
+| 8630.T | ＳＯＭＰＯホールディングス | 2026-02-04 | 2026-02-06 | 3.77% | ¥64,321 | 2 | 5.86% | -1.12% | MISPRICING_RESOLVED | NORMAL_WIN |
+| 2986.T | LA Holdings Co.,Ltd. | 2026-01-09 | 2026-01-14 | 3.33% | ¥57,602 | 5 | 4.65% | -0.54% | MISPRICING_RESOLVED | NORMAL_WIN |
+| 8630.T | ＳＯＭＰＯホールディングス | 2026-03-04 | 2026-03-05 | 2.30% | ¥42,518 | 1 | 4.87% | -2.66% | SCORE_COLLAPSE | NORMAL_WIN |
+| 6479.T | ミネベアミツミ | 2026-05-19 | 2026-05-20 | 1.61% | ¥27,906 | 1 | 2.48% | -3.20% | MISPRICING_RESOLVED | NORMAL_WIN |
+| 8766.T | 東京海上ホールディングス | 2026-02-20 | 2026-03-02 | -0.39% | ¥-7,328 | 10 | 4.83% | -1.43% | MISPRICING_RESOLVED | NORMAL_LOSS |
+| 8766.T | 東京海上ホールディングス | 2026-03-03 | 2026-03-05 | -0.81% | ¥-14,943 | 2 | 0.73% | -5.16% | SCORE_COLLAPSE | NORMAL_LOSS |
+| 3479.T | TKP Corporation | 2026-01-30 | 2026-02-02 | -1.76% | ¥-1,084 | 3 | 1.88% | -2.25% | MISPRICING_RESOLVED | NORMAL_LOSS |
+| 4578.T | 大塚ホールディングス | 2026-02-18 | 2026-02-19 | -1.93% | ¥-36,511 | 1 | 2.49% | -1.83% | MISPRICING_RESOLVED | NORMAL_LOSS |
 
 
 ### Largest MFE Givebacks
 
 | Ticker | Name | Entry | Exit | Return | PnL | Hold | MFE | MAE | Exit | Pattern |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| 8473.T | ＳＢＩホールディングス | 2026-01-21 | 2026-02-25 | -8.80% | ¥-163,143 | 35 | 6.01% | -9.49% | HARD_STOP | WINNER_TURNED_LOSER |
-| 4612.T | 日本ペイントホールディングス | 2026-02-17 | 2026-03-03 | -8.77% | ¥-168,896 | 14 | 3.48% | -10.63% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-04-08 | 2026-04-27 | -5.85% | ¥-48,284 | 19 | 3.54% | -7.47% | HARD_STOP | STOP_LOSS_HIT |
-| 5842.T | Integral Corporation | 2026-01-16 | 2026-01-20 | -7.07% | ¥-132,593 | 4 | 1.28% | -11.10% | HARD_STOP | STOP_LOSS_HIT |
-| 6301.T | 小松製作所 | 2026-04-28 | 2026-04-30 | -8.38% | ¥-143,168 | 2 | -0.10% | -11.78% | HARD_STOP | STOP_LOSS_HIT |
-| 8604.T | 野村ホールディングス | 2026-04-17 | 2026-04-28 | -7.74% | ¥-62,542 | 11 | 0.45% | -9.70% | HARD_STOP | STOP_LOSS_HIT |
-| 3635.T | コーエーテクモホールディングス | 2026-03-12 | 2026-03-24 | -4.04% | ¥-68,428 | 12 | 3.63% | -7.05% | HARD_STOP | STOP_LOSS_HIT |
-| 8766.T | 東京海上ホールディングス | 2026-04-07 | 2026-04-13 | -4.34% | ¥-35,570 | 6 | 2.65% | -5.26% | HARD_STOP | STOP_LOSS_HIT |
-| 8604.T | 野村ホールディングス | 2026-01-29 | 2026-02-03 | -4.53% | ¥-80,520 | 5 | 2.17% | -7.41% | HARD_STOP | STOP_LOSS_HIT |
-| 1605.T | ＩＮＰＥＸ | 2026-02-24 | 2026-03-03 | 6.54% | ¥124,589 | 7 | 12.24% | -4.26% | MISPRICING_RESOLVED | FAST_WINNER |
+| 8473.T | ＳＢＩホールディングス | 2026-01-21 | 2026-02-25 | -8.80% | ¥-161,303 | 35 | 6.01% | -9.49% | HARD_STOP | WINNER_TURNED_LOSER |
+| 4612.T | 日本ペイントホールディングス | 2026-02-17 | 2026-03-03 | -8.77% | ¥-166,685 | 14 | 3.48% | -10.63% | HARD_STOP | STOP_LOSS_HIT |
+| 8473.T | ＳＢＩホールディングス | 2026-04-08 | 2026-04-27 | -5.85% | ¥-47,549 | 19 | 3.54% | -7.47% | HARD_STOP | STOP_LOSS_HIT |
+| 5842.T | Integral Corporation | 2026-01-16 | 2026-01-20 | -7.07% | ¥-131,180 | 4 | 1.28% | -11.10% | HARD_STOP | STOP_LOSS_HIT |
+| 6301.T | 小松製作所 | 2026-04-28 | 2026-04-30 | -8.38% | ¥-141,934 | 2 | -0.10% | -11.78% | HARD_STOP | STOP_LOSS_HIT |
+| 8604.T | 野村ホールディングス | 2026-04-17 | 2026-04-28 | -7.74% | ¥-61,596 | 11 | 0.45% | -9.70% | HARD_STOP | STOP_LOSS_HIT |
+| 3635.T | コーエーテクモホールディングス | 2026-03-12 | 2026-03-24 | -4.04% | ¥-67,533 | 12 | 3.63% | -7.05% | HARD_STOP | STOP_LOSS_HIT |
+| 8766.T | 東京海上ホールディングス | 2026-04-07 | 2026-04-13 | -4.34% | ¥-34,929 | 6 | 2.65% | -5.26% | HARD_STOP | STOP_LOSS_HIT |
+| 8604.T | 野村ホールディングス | 2026-01-29 | 2026-02-03 | -4.53% | ¥-79,564 | 5 | 2.17% | -7.41% | HARD_STOP | STOP_LOSS_HIT |
+| 1605.T | ＩＮＰＥＸ | 2026-02-24 | 2026-03-03 | 6.54% | ¥122,626 | 7 | 12.24% | -4.26% | MISPRICING_RESOLVED | FAST_WINNER |
 
 
 ### Deepest Adverse Trades
 
 | Ticker | Name | Entry | Exit | Return | PnL | Hold | MFE | MAE | Exit | Pattern |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| 6301.T | 小松製作所 | 2026-04-28 | 2026-04-30 | -8.38% | ¥-143,168 | 2 | -0.10% | -11.78% | HARD_STOP | STOP_LOSS_HIT |
-| 5842.T | Integral Corporation | 2026-01-16 | 2026-01-20 | -7.07% | ¥-132,593 | 4 | 1.28% | -11.10% | HARD_STOP | STOP_LOSS_HIT |
-| 4612.T | 日本ペイントホールディングス | 2026-02-17 | 2026-03-03 | -8.77% | ¥-168,896 | 14 | 3.48% | -10.63% | HARD_STOP | STOP_LOSS_HIT |
-| 8604.T | 野村ホールディングス | 2026-04-17 | 2026-04-28 | -7.74% | ¥-62,542 | 11 | 0.45% | -9.70% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-01-21 | 2026-02-25 | -8.80% | ¥-163,143 | 35 | 6.01% | -9.49% | HARD_STOP | WINNER_TURNED_LOSER |
-| 8473.T | ＳＢＩホールディングス | 2026-04-08 | 2026-04-27 | -5.85% | ¥-48,284 | 19 | 3.54% | -7.47% | HARD_STOP | STOP_LOSS_HIT |
-| 8604.T | 野村ホールディングス | 2026-01-29 | 2026-02-03 | -4.53% | ¥-80,520 | 5 | 2.17% | -7.41% | HARD_STOP | STOP_LOSS_HIT |
-| 3635.T | コーエーテクモホールディングス | 2026-03-12 | 2026-03-24 | -4.04% | ¥-68,428 | 12 | 3.63% | -7.05% | HARD_STOP | STOP_LOSS_HIT |
-| 9022.T | 東海旅客鉄道 | 2026-04-16 | 2026-04-24 | -4.34% | ¥-35,788 | 8 | 1.16% | -6.55% | HARD_STOP | STOP_LOSS_HIT |
-| 8473.T | ＳＢＩホールディングス | 2026-04-30 | 2026-05-13 | -4.22% | ¥-76,376 | 13 | 0.43% | -5.76% | VALUE_EARLY_FAIL | NORMAL_LOSS |
+| 6301.T | 小松製作所 | 2026-04-28 | 2026-04-30 | -8.38% | ¥-141,934 | 2 | -0.10% | -11.78% | HARD_STOP | STOP_LOSS_HIT |
+| 5842.T | Integral Corporation | 2026-01-16 | 2026-01-20 | -7.07% | ¥-131,180 | 4 | 1.28% | -11.10% | HARD_STOP | STOP_LOSS_HIT |
+| 4612.T | 日本ペイントホールディングス | 2026-02-17 | 2026-03-03 | -8.77% | ¥-166,685 | 14 | 3.48% | -10.63% | HARD_STOP | STOP_LOSS_HIT |
+| 8604.T | 野村ホールディングス | 2026-04-17 | 2026-04-28 | -7.74% | ¥-61,596 | 11 | 0.45% | -9.70% | HARD_STOP | STOP_LOSS_HIT |
+| 8473.T | ＳＢＩホールディングス | 2026-01-21 | 2026-02-25 | -8.80% | ¥-161,303 | 35 | 6.01% | -9.49% | HARD_STOP | WINNER_TURNED_LOSER |
+| 8473.T | ＳＢＩホールディングス | 2026-04-08 | 2026-04-27 | -5.85% | ¥-47,549 | 19 | 3.54% | -7.47% | HARD_STOP | STOP_LOSS_HIT |
+| 8604.T | 野村ホールディングス | 2026-01-29 | 2026-02-03 | -4.53% | ¥-79,564 | 5 | 2.17% | -7.41% | HARD_STOP | STOP_LOSS_HIT |
+| 3635.T | コーエーテクモホールディングス | 2026-03-12 | 2026-03-24 | -4.04% | ¥-67,533 | 12 | 3.63% | -7.05% | HARD_STOP | STOP_LOSS_HIT |
+| 9022.T | 東海旅客鉄道 | 2026-04-16 | 2026-04-24 | -4.34% | ¥-35,229 | 8 | 1.16% | -6.55% | HARD_STOP | STOP_LOSS_HIT |
+| 8473.T | ＳＢＩホールディングス | 2026-04-30 | 2026-05-13 | -4.22% | ¥-75,302 | 13 | 0.43% | -5.76% | VALUE_EARLY_FAIL | NORMAL_LOSS |
 
 
 ### Compact Entry Context For Worst Trades
 
-- `8473.T` 2026-01-21 → 2026-02-25 -8.80%: score: rank=1, action=Trade / feature: return_5d_pct=-1.4560439560439509, return_20d_pct=10.709876543209873, volume_ratio_20d=0.9530791788856305, rsi_14=58.788898233809924, range_position_252d_0_1=0.8799483648881239 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1881560842240.0, per=4.6614037, pbr=1.0482572, roe_pct=20.613999999999997, operating_margin_pct=28.927000000000003
-- `4612.T` 2026-02-17 → 2026-03-03 -8.77%: score: rank=11, action=Trade / feature: return_5d_pct=15.047619047619044, return_20d_pct=15.708812260536398, volume_ratio_20d=3.0999596057146306, rsi_14=89.02627511591963, range_position_252d_0_1=0.6674364896073903 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2384403365888.0, per=19.193428, pbr=1.2533177, roe_pct=11.474, operating_margin_pct=14.907
-- `6301.T` 2026-04-28 → 2026-04-30 -8.38%: score: rank=12, action=Trade / feature: return_5d_pct=0.7571428571428562, return_20d_pct=17.549999999999997, volume_ratio_20d=1.09497165301812, rsi_14=65.74074074074073, range_position_252d_0_1=0.803151575787894 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=5861702369280.0, per=15.717083, pbr=1.6688483, roe_pct=11.3900006, operating_margin_pct=12.184000000000001
-- `8604.T` 2026-04-17 → 2026-04-28 -7.74%: score: rank=3, action=Trade / feature: return_5d_pct=5.593607305936077, return_20d_pct=11.985472154963684, volume_ratio_20d=1.3134714950534514, rsi_14=68.07639836289222, range_position_252d_0_1=0.8573996405032954 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=3777450737664.0, per=10.862258, pbr=1.011357, roe_pct=10.07, operating_margin_pct=18.655
-- `5842.T` 2026-01-16 → 2026-01-20 -7.07%: score: rank=13, action=Trade / feature: return_5d_pct=17.94117647058824, return_20d_pct=23.006134969325153, volume_ratio_20d=4.320946108360175, rsi_14=79.57446808510639, range_position_252d_0_1=0.8234495246717972 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=115273490432.0, per=19.651669, pbr=1.683341, roe_pct=20.898001, operating_margin_pct=85.797995
-- `8473.T` 2026-04-08 → 2026-04-27 -5.85%: score: rank=2, action=Trade / feature: return_5d_pct=5.1246051246051305, return_20d_pct=2.1661265563704513, volume_ratio_20d=0.5991574996701348, rsi_14=44.25837320574162, range_position_252d_0_1=0.6252151462994836 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1881560842240.0, per=4.6614037, pbr=1.0482572, roe_pct=20.613999999999997, operating_margin_pct=28.927000000000003
-- `8604.T` 2026-01-29 → 2026-02-03 -4.53%: score: rank=10, action=Trade / feature: return_5d_pct=-0.6430868167202619, return_20d_pct=6.715272448196474, volume_ratio_20d=0.6618769920308206, rsi_14=47.332185886402755, range_position_252d_0_1=0.8609946075494308 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=3777450737664.0, per=10.862258, pbr=1.011357, roe_pct=10.07, operating_margin_pct=18.655
-- `9022.T` 2026-04-16 → 2026-04-24 -4.34%: score: rank=1, action=Trade / feature: return_5d_pct=3.4936587700406863, return_20d_pct=0.34802784222738303, volume_ratio_20d=1.4389955107437056, rsi_14=55.88235294117647, range_position_252d_0_1=0.7610598533238704 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=3246912700416.0, per=5.953757, pbr=0.64059347, roe_pct=11.4700004, operating_margin_pct=27.111
+- `8473.T` 2026-01-21 → 2026-02-25 -8.80%: score: rank=1, action=Trade / feature: return_5d_pct=-1.4560439560439509, return_20d_pct=10.709876543209873, volume_ratio_20d=0.9530791788856305, rsi_14=58.788898233809924, range_position_252d_0_1=0.8799483648881239 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1849242681344.0, per=4.5819254, pbr=1.0302522, roe_pct=20.613999999999997, operating_margin_pct=28.927000000000003
+- `4612.T` 2026-02-17 → 2026-03-03 -8.77%: score: rank=7, action=Trade / feature: return_5d_pct=15.047619047619044, return_20d_pct=15.708812260536398, volume_ratio_20d=3.0999596057146306, rsi_14=89.02627511591963, range_position_252d_0_1=0.6674364896073903 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=2354250514432.0, per=18.933035, pbr=1.2374684, roe_pct=11.474, operating_margin_pct=14.907
+- `6301.T` 2026-04-28 → 2026-04-30 -8.38%: score: rank=9, action=Trade / feature: return_5d_pct=0.7571428571428562, return_20d_pct=17.549999999999997, volume_ratio_20d=1.09497165301812, rsi_14=65.74074074074073, range_position_252d_0_1=0.803151575787894 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=5664269139968.0, per=15.173397, pbr=1.6126382, roe_pct=11.3900006, operating_margin_pct=12.184000000000001
+- `8604.T` 2026-04-17 → 2026-04-28 -7.74%: score: rank=3, action=Trade / feature: return_5d_pct=5.593607305936077, return_20d_pct=11.985472154963684, volume_ratio_20d=1.3134714950534514, rsi_14=68.07639836289222, range_position_252d_0_1=0.8573996405032954 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=3815444578304.0, per=10.976122, pbr=1.0215292, roe_pct=10.07, operating_margin_pct=18.655
+- `5842.T` 2026-01-16 → 2026-01-20 -7.07%: score: rank=13, action=Trade / feature: return_5d_pct=17.94117647058824, return_20d_pct=23.006134969325153, volume_ratio_20d=4.320946108360175, rsi_14=79.57446808510639, range_position_252d_0_1=0.8234495246717972 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=112549158912.0, per=19.163864, pbr=1.6435574, roe_pct=20.898001, operating_margin_pct=85.797995
+- `8473.T` 2026-04-08 → 2026-04-27 -5.85%: score: rank=2, action=Trade / feature: return_5d_pct=5.1246051246051305, return_20d_pct=2.1661265563704513, volume_ratio_20d=0.5991574996701348, rsi_14=44.25837320574162, range_position_252d_0_1=0.6252151462994836 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=1849242681344.0, per=4.5819254, pbr=1.0302522, roe_pct=20.613999999999997, operating_margin_pct=28.927000000000003
+- `8604.T` 2026-01-29 → 2026-02-03 -4.53%: score: rank=10, action=Trade / feature: return_5d_pct=-0.6430868167202619, return_20d_pct=6.715272448196474, volume_ratio_20d=0.6618769920308206, rsi_14=47.332185886402755, range_position_252d_0_1=0.8609946075494308 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=3815444578304.0, per=10.976122, pbr=1.0215292, roe_pct=10.07, operating_margin_pct=18.655
+- `9022.T` 2026-04-16 → 2026-04-24 -4.34%: score: rank=1, action=Trade / feature: return_5d_pct=3.4936587700406863, return_20d_pct=0.34802784222738303, volume_ratio_20d=1.4389955107437056, rsi_14=55.88235294117647, range_position_252d_0_1=0.7610598533238704 / value: value_trap_penalty=0.0 / fund: market_cap_jpy=3203926327296.0, per=5.87514, pbr=0.63211256, roe_pct=11.4700004, operating_margin_pct=27.111
 
 
 ## Prompt Suggestion
