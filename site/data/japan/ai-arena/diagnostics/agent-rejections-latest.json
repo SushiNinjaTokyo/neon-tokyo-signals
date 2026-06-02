@@ -1,7 +1,7 @@
 {
   "schema_version": "neon_tokyo_ai_arena_agent_rejection_diagnostics_v1",
-  "generated_at": "2026-06-02T00:59:22Z",
-  "run_id": "arena_jp_rebuild_2026_v019",
+  "generated_at": "2026-06-02T01:37:43Z",
+  "run_id": "arena_jp_rebuild_2026_v020",
   "year": 2026,
   "season": {
     "start_date": "2026-01-01",
@@ -9,78 +9,70 @@
     "trading_days": 98
   },
   "totals": {
-    "candidate_rows": 64599,
-    "evaluated_rows": 41271,
-    "entry_rule_pass": 674,
-    "orders_created": 453,
-    "buy_orders_filled": 434,
+    "candidate_rows": 56772,
+    "evaluated_rows": 36676,
+    "entry_rule_pass": 629,
+    "orders_created": 410,
+    "buy_orders_filled": 391,
     "buy_orders_cancelled": 19,
-    "sell_orders_created": 418,
-    "sell_orders_filled": 416,
+    "sell_orders_created": 377,
+    "sell_orders_filled": 375,
     "sell_orders_cancelled": 2,
-    "closed_trades": 416,
-    "final_open_positions": 18,
-    "rejected_total": 64165
+    "closed_trades": 375,
+    "final_open_positions": 16,
+    "rejected_total": 56381
   },
   "agents": [
     {
       "agent_id": "value_mispricing",
       "agent_name": "HIZUMI",
-      "candidate_rows": 7832,
-      "evaluated_rows": 4703,
-      "entry_rule_pass": 30,
-      "orders_created": 30,
-      "buy_orders_filled": 30,
+      "candidate_rows": 5,
+      "evaluated_rows": 5,
+      "entry_rule_pass": 0,
+      "orders_created": 0,
+      "buy_orders_filled": 0,
       "buy_orders_cancelled": 0,
-      "sell_orders_created": 28,
-      "sell_orders_filled": 28,
+      "sell_orders_created": 0,
+      "sell_orders_filled": 0,
       "sell_orders_cancelled": 0,
-      "closed_trades": 28,
-      "final_open_positions": 2,
-      "rejected_total": 7802,
+      "closed_trades": 0,
+      "final_open_positions": 0,
+      "rejected_total": 5,
       "rejected_reasons": {
-        "ENTRY_RULE_REJECTED": 4564,
-        "MAX_NEW_ENTRIES_PER_DAY": 2720,
-        "MAX_POSITIONS_FULL": 409,
-        "ALREADY_OPEN_POSITION": 109
+        "ENTRY_RULE_REJECTED": 5
       },
       "entry_rule_reject_reasons_top20": {
-        "rank_below_cutoff": 3451,
-        "blocked_near_year_end": 557,
-        "year_range_position_too_high": 451,
-        "five_day_return_too_low": 46,
-        "score_below_entry_threshold": 42,
-        "liquidity_below_threshold": 6,
-        "valuation_discount_below_threshold": 5,
-        "pullback_too_deep": 3,
-        "quality_guard_below_threshold": 2,
-        "medium_return_too_weak": 1
+        "year_range_position_too_high": 5
       }
     },
     {
       "agent_id": "reversal_snapback",
       "agent_name": "KAESHI",
       "candidate_rows": 257,
-      "evaluated_rows": 115,
-      "entry_rule_pass": 67,
-      "orders_created": 67,
-      "buy_orders_filled": 67,
+      "evaluated_rows": 218,
+      "entry_rule_pass": 54,
+      "orders_created": 54,
+      "buy_orders_filled": 54,
       "buy_orders_cancelled": 0,
-      "sell_orders_created": 66,
-      "sell_orders_filled": 66,
+      "sell_orders_created": 53,
+      "sell_orders_filled": 53,
       "sell_orders_cancelled": 0,
-      "closed_trades": 66,
+      "closed_trades": 53,
       "final_open_positions": 1,
-      "rejected_total": 190,
+      "rejected_total": 203,
       "rejected_reasons": {
-        "MAX_POSITIONS_FULL": 72,
-        "MAX_NEW_ENTRIES_PER_DAY": 70,
-        "ALREADY_OPEN_POSITION": 37,
-        "ENTRY_RULE_REJECTED": 11
+        "ENTRY_RULE_REJECTED": 132,
+        "ALREADY_OPEN_POSITION": 32,
+        "MAX_NEW_ENTRIES_PER_DAY": 29,
+        "MAX_POSITIONS_FULL": 10
       },
       "entry_rule_reject_reasons_top20": {
+        "rank_below_cutoff": 53,
+        "year_range_position_extremely_low": 30,
+        "five_day_falling_knife": 19,
+        "rsi_extremely_weak": 16,
+        "score_below_entry_threshold": 6,
         "blocked_near_year_end": 4,
-        "score_below_entry_threshold": 3,
         "reversal_confirmation_failed:0/1": 2,
         "liquidity_below_threshold": 1,
         "rsi_not_oversold_enough": 1
@@ -221,7 +213,7 @@
       "agent_name": "SAGURI",
       "candidate_rows": 575,
       "evaluated_rows": 556,
-      "entry_rule_pass": 44,
+      "entry_rule_pass": 42,
       "orders_created": 42,
       "buy_orders_filled": 42,
       "buy_orders_cancelled": 0,
@@ -232,24 +224,26 @@
       "final_open_positions": 1,
       "rejected_total": 533,
       "rejected_reasons": {
-        "ENTRY_RULE_REJECTED": 486,
-        "ALREADY_OPEN_POSITION": 26,
-        "MAX_NEW_ENTRIES_PER_DAY": 19,
-        "ZERO_SHARES_AFTER_SIZING": 2
+        "ENTRY_RULE_REJECTED": 489,
+        "ALREADY_OPEN_POSITION": 25,
+        "MAX_NEW_ENTRIES_PER_DAY": 19
       },
       "entry_rule_reject_reasons_top20": {
-        "five_day_move_too_extended": 153,
-        "operating_margin_below_threshold": 69,
-        "quality_guard_below_threshold": 69,
+        "five_day_move_too_extended": 134,
+        "quality_guard_below_threshold": 67,
         "liquidity_below_threshold": 63,
+        "operating_margin_below_threshold": 62,
         "blocked_near_year_end": 37,
         "score_below_entry_threshold": 33,
-        "roe_below_threshold": 23,
+        "rsi_overheated": 28,
+        "roe_below_threshold": 20,
         "rank_below_cutoff": 14,
-        "pbr_too_high": 11,
         "market_cap_too_small": 10,
+        "pbr_too_high": 10,
+        "twenty_day_move_too_extended": 6,
         "five_day_return_too_low": 3,
-        "pullback_too_deep": 1
+        "pullback_too_deep": 1,
+        "short_term_euphoria_rejected": 1
       }
     }
   ]

@@ -1,6 +1,6 @@
 {
   "schema_version": "ai_arena_agent_profiles_v1",
-  "generated_at": "2026-06-02T00:59:52Z",
+  "generated_at": "2026-06-02T01:38:29Z",
   "agents": [
     {
       "agent_id": "daily_striker",
@@ -248,6 +248,13 @@
           "require_return_5d_pct_min": -2,
           "reject_if_return_20d_pct_lt": -5,
           "reject_if_return_5d_pct_gt": 22,
+          "reject_if_return_20d_pct_gt": 80,
+          "reject_if_rsi_14_gt": 88,
+          "reject_if_short_term_euphoria": {
+            "return_5d_pct_gt": 18,
+            "return_20d_pct_gt": 50,
+            "rsi_14_gt": 78
+          },
           "require_market_cap_jpy_min": 5000000000,
           "require_market_cap_jpy_max": 1000000000000,
           "require_operating_margin_pct_min": -5,
@@ -496,6 +503,10 @@
           "require_bollinger_b_20_max": 0.45,
           "require_return_5d_pct_max": 4,
           "require_reversal_exhaustion_score_min": 0.45,
+          "reject_if_return_5d_pct_lt": -22,
+          "reject_if_return_20d_pct_lt": -35,
+          "reject_if_rsi_14_lt": 12,
+          "reject_if_range_position_252d_0_1_lt": 0.03,
           "reversal_confirmation_min_count": 1,
           "reversal_confirmation_any": {
             "return_1d_pct_min": 0,
@@ -605,9 +616,13 @@
           "reject_if_price_vs_ma50_pct_lt": -12,
           "require_range_position_252d_0_1_min": 0.2,
           "require_range_position_252d_0_1_max": 0.88,
-          "require_value_mispricing_score_min": 0.52,
-          "require_valuation_discount_score_min": 0.45,
+          "require_value_mispricing_score_min": 0.5,
+          "require_valuation_discount_score_min": 0.4,
+          "require_sector_relative_valuation_score_min": 0.45,
+          "require_sector_relative_value_confidence_min": 0.35,
+          "reject_if_sector_relative_valuation_score_lt": 0.3,
           "require_quality_guard_score_min": 0.35,
+          "require_sector_relative_quality_score_min": 0.25,
           "require_roe_pct_min": 4,
           "require_operating_margin_pct_min": 2,
           "reject_if_value_trap_penalty_gt": 0.45,
@@ -622,6 +637,9 @@
             "BULL": {
               "min_score": 0.62,
               "require_quality_guard_score_min": 0.35,
+              "require_sector_relative_valuation_score_min": 0.42,
+              "require_sector_relative_value_confidence_min": 0.3,
+              "reject_if_sector_relative_valuation_score_lt": 0.28,
               "require_roe_pct_min": 4,
               "require_operating_margin_pct_min": 2,
               "reject_if_value_trap_penalty_gt": 0.45,
@@ -630,6 +648,9 @@
             "NEUTRAL": {
               "min_score": 0.64,
               "require_quality_guard_score_min": 0.38,
+              "require_sector_relative_valuation_score_min": 0.45,
+              "require_sector_relative_value_confidence_min": 0.35,
+              "reject_if_sector_relative_valuation_score_lt": 0.3,
               "require_roe_pct_min": 5,
               "require_operating_margin_pct_min": 3,
               "reject_if_value_trap_penalty_gt": 0.4,
@@ -638,6 +659,9 @@
             "BEAR": {
               "min_score": 0.7,
               "require_quality_guard_score_min": 0.5,
+              "require_sector_relative_valuation_score_min": 0.55,
+              "require_sector_relative_value_confidence_min": 0.45,
+              "reject_if_sector_relative_valuation_score_lt": 0.4,
               "require_roe_pct_min": 8,
               "require_operating_margin_pct_min": 6,
               "reject_if_value_trap_penalty_gt": 0.25,
