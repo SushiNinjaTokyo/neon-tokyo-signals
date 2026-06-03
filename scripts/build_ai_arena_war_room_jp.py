@@ -34,6 +34,10 @@ AI_ARENA_WAR_ROOM_MAX_DELAY_SECONDS         Default: 300
 AI_ARENA_WAR_ROOM_HISTORY_DAYS              Default: 14
 AI_ARENA_WAR_ROOM_TEMPERATURE               Default: 0.82
 AI_ARENA_WAR_ROOM_ALLOW_FALLBACK            Default: false. Local emergency only.
+AI_ARENA_WAR_ROOM_OPENAI_MIN_INTERVAL_SECONDS Default: 25. Minimum spacing between GPT requests.
+AI_ARENA_WAR_ROOM_OPENAI_MAX_RETRIES           Default: 8. Retries before failing the run.
+AI_ARENA_WAR_ROOM_OPENAI_429_BASE_SLEEP_SECONDS Default: 60. First long cooldown after 429.
+AI_ARENA_WAR_ROOM_MAX_GPT_TOPIC_CALLS          Default: 99. Safety cap only; not a quality fallback.
 """
 
 import json
@@ -71,6 +75,17 @@ MAX_DELAY_SECONDS = int(os.getenv("AI_ARENA_WAR_ROOM_MAX_DELAY_SECONDS", "300"))
 HISTORY_DAYS = int(os.getenv("AI_ARENA_WAR_ROOM_HISTORY_DAYS", "14"))
 TEMPERATURE = float(os.getenv("AI_ARENA_WAR_ROOM_TEMPERATURE", "0.82"))
 ALLOW_FALLBACK = os.getenv("AI_ARENA_WAR_ROOM_ALLOW_FALLBACK", "false").lower() in {"1", "true", "yes", "on"}
+# GPT quality policy:
+# Do not fill production conversations with deterministic fallback when OpenAI is rate-limited.
+# Instead, pace requests aggressively and wait through 429 cooldowns. If the API remains unavailable,
+# fail the run so the previous published latest.json remains intact rather than publishing weak text.
+OPENAI_MIN_INTERVAL_SECONDS = float(os.getenv("AI_ARENA_WAR_ROOM_OPENAI_MIN_INTERVAL_SECONDS", "25"))
+OPENAI_MAX_RETRIES = int(os.getenv("AI_ARENA_WAR_ROOM_OPENAI_MAX_RETRIES", "8"))
+OPENAI_429_BASE_SLEEP_SECONDS = float(os.getenv("AI_ARENA_WAR_ROOM_OPENAI_429_BASE_SLEEP_SECONDS", "60"))
+MAX_GPT_TOPIC_CALLS = int(os.getenv("AI_ARENA_WAR_ROOM_MAX_GPT_TOPIC_CALLS", "99"))
+RATE_LIMIT_HIT = False
+GPT_TOPIC_CALLS = 0
+LAST_OPENAI_CALL_TS = 0.0
 
 CANONICAL_NAMES = {
     "daily_striker": "KYOU",
@@ -991,12 +1006,51 @@ def user_prompt(ctx: dict[str, Any], topics: list[Topic], debate_plan: dict[str,
     return json.dumps(packed, ensure_ascii=False, indent=2)
 
 
+def _pace_openai_request() -> None:
+    """Throttle OpenAI requests so topic-by-topic generation does not burst into 429s.
+
+    GitHub Actions can afford waiting. Publishing fewer or deterministic messages is worse
+    for this product than spending a few extra minutes generating high-quality GPT-4o text.
+    """
+    global LAST_OPENAI_CALL_TS
+    if OPENAI_MIN_INTERVAL_SECONDS <= 0:
+        return
+    now = time.monotonic()
+    elapsed = now - LAST_OPENAI_CALL_TS
+    wait = OPENAI_MIN_INTERVAL_SECONDS - elapsed
+    if wait > 0:
+        print(f"OpenAI pacing: waiting {wait:.1f}s before next GPT request")
+        time.sleep(wait)
+
+
+def _parse_retry_after_seconds(exc: urllib.error.HTTPError, attempt: int) -> float:
+    retry_after = exc.headers.get("Retry-After")
+    if retry_after:
+        try:
+            return max(OPENAI_429_BASE_SLEEP_SECONDS, float(retry_after))
+        except Exception:
+            pass
+    # Long cooldowns are intentional: they protect conversation quality by avoiding fallback text.
+    return min(420.0, OPENAI_429_BASE_SLEEP_SECONDS * (1.65 ** attempt))
+
+
 def call_openai_json(system: str, user: str, *, temperature: float = TEMPERATURE) -> dict[str, Any]:
+    """Call OpenAI and return JSON.
+
+    Production behavior:
+    - GPT-4o is the source of truth for conversation quality.
+    - Requests are spaced by AI_ARENA_WAR_ROOM_OPENAI_MIN_INTERVAL_SECONDS.
+    - 429 responses trigger long cooldown retries instead of deterministic fallback.
+    - If OpenAI remains unavailable after retries, the workflow fails. That is intentional:
+      the previous published latest.json should remain live rather than publishing weak text.
+    - AI_ARENA_WAR_ROOM_ALLOW_FALLBACK=true remains available only for local emergency tests.
+    """
+    global RATE_LIMIT_HIT, LAST_OPENAI_CALL_TS
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
         if ALLOW_FALLBACK:
-            print("WARN OPENAI_API_KEY missing; using emergency fallback because AI_ARENA_WAR_ROOM_ALLOW_FALLBACK=true")
-            return {}
+            print("WARN OPENAI_API_KEY missing; using local emergency fallback because AI_ARENA_WAR_ROOM_ALLOW_FALLBACK=true")
+            return {"__fallback__": "missing_api_key"}
         raise SystemExit("OPENAI_API_KEY is required for AI Arena War Room GPT-4o generation.")
 
     payload = {
@@ -1008,31 +1062,61 @@ def call_openai_json(system: str, user: str, *, temperature: float = TEMPERATURE
         "temperature": temperature,
         "response_format": {"type": "json_object"},
     }
-    request = urllib.request.Request(
-        "https://api.openai.com/v1/chat/completions",
-        data=json.dumps(payload).encode("utf-8"),
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-        },
-        method="POST",
-    )
+
     last_error: Exception | None = None
-    for attempt in range(3):
+    for attempt in range(OPENAI_MAX_RETRIES):
+        _pace_openai_request()
+        LAST_OPENAI_CALL_TS = time.monotonic()
+        request = urllib.request.Request(
+            "https://api.openai.com/v1/chat/completions",
+            data=json.dumps(payload).encode("utf-8"),
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            method="POST",
+        )
         try:
-            with urllib.request.urlopen(request, timeout=90) as response:  # noqa: S310 - intentional HTTPS API call.
+            with urllib.request.urlopen(request, timeout=180) as response:  # noqa: S310 - intentional HTTPS API call.
                 data = json.loads(response.read().decode("utf-8"))
             content = data["choices"][0]["message"]["content"]
             return json.loads(content)
+        except urllib.error.HTTPError as exc:
+            last_error = exc
+            if exc.code == 429:
+                RATE_LIMIT_HIT = True
+                sleep = _parse_retry_after_seconds(exc, attempt)
+                if attempt < OPENAI_MAX_RETRIES - 1:
+                    print(
+                        f"WARN OpenAI rate limit 429 on attempt {attempt + 1}/{OPENAI_MAX_RETRIES}; "
+                        f"cooling down for {sleep:.0f}s before retry"
+                    )
+                    time.sleep(sleep)
+                    continue
+                if ALLOW_FALLBACK:
+                    print("WARN OpenAI rate limit persisted; using local emergency fallback because ALLOW_FALLBACK=true")
+                    return {"__fallback__": "rate_limit_emergency"}
+                raise SystemExit(
+                    "OpenAI GPT-4o generation failed after repeated HTTP 429 rate limits. "
+                    "Increase AI_ARENA_WAR_ROOM_OPENAI_MIN_INTERVAL_SECONDS or wait before rerunning; "
+                    "not publishing deterministic fallback text."
+                ) from exc
+            if ALLOW_FALLBACK:
+                print(f"WARN OpenAI HTTP error; using local emergency fallback: {exc}")
+                return {"__fallback__": f"http_{exc.code}"}
+            raise SystemExit(f"OpenAI GPT-4o generation failed with HTTP {exc.code}: {exc}") from exc
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError, KeyError) as exc:
             last_error = exc
-            sleep = 2 + attempt * 4
-            print(f"WARN OpenAI attempt {attempt + 1} failed: {exc}; retrying in {sleep}s")
-            time.sleep(sleep)
+            sleep = min(120.0, 10.0 + attempt * 15.0)
+            if attempt < OPENAI_MAX_RETRIES - 1:
+                print(f"WARN OpenAI attempt {attempt + 1}/{OPENAI_MAX_RETRIES} failed: {exc}; retrying in {sleep:.0f}s")
+                time.sleep(sleep)
+                continue
+
     if ALLOW_FALLBACK:
-        print(f"WARN OpenAI failed after retries; using emergency fallback: {last_error}")
-        return {}
-    raise SystemExit(f"OpenAI GPT-4o generation failed: {last_error}")
+        print(f"WARN OpenAI failed after retries; using local emergency fallback: {last_error}")
+        return {"__fallback__": "generic_api_failure"}
+    raise SystemExit(f"OpenAI GPT-4o generation failed after retries: {last_error}")
 
 
 def fallback_dialogue(ctx: dict[str, Any], topics: list[Topic], debate_plan: dict[str, Any]) -> dict[str, Any]:
@@ -1457,16 +1541,23 @@ def generate_topic_dialogue(
     best_watch: list[dict[str, Any]] = []
     best_hypotheses: list[dict[str, Any]] = []
 
+    global GPT_TOPIC_CALLS
     for attempt in range(1, TOPIC_REPAIR_ATTEMPTS + 2):
-        if os.getenv("OPENAI_API_KEY"):
-            raw_payload = call_openai_json(
-                system_prompt(),
-                topic_dialogue_prompt(ctx, topic, topic_plan, debate_plan, memory, previous_messages, attempt, all_issues[-10:]),
-                temperature=max(0.52, TEMPERATURE - 0.06 * (attempt - 1)),
+        if not os.getenv("OPENAI_API_KEY") and not ALLOW_FALLBACK:
+            raise SystemExit("OPENAI_API_KEY is required for AI Arena Live Council generation")
+        if GPT_TOPIC_CALLS >= MAX_GPT_TOPIC_CALLS and not ALLOW_FALLBACK:
+            raise SystemExit(
+                f"AI_ARENA_WAR_ROOM_MAX_GPT_TOPIC_CALLS={MAX_GPT_TOPIC_CALLS} was reached before the session was complete. "
+                "Raise the cap or reduce AI_ARENA_WAR_ROOM_MESSAGES; not publishing deterministic fallback text."
             )
-        else:
-            if not ALLOW_FALLBACK:
-                raise SystemExit("OPENAI_API_KEY is required for AI Arena Live Council generation")
+
+        GPT_TOPIC_CALLS += 1
+        raw_payload = call_openai_json(
+            system_prompt(),
+            topic_dialogue_prompt(ctx, topic, topic_plan, debate_plan, memory, previous_messages, attempt, all_issues[-10:]),
+            temperature=max(0.52, TEMPERATURE - 0.06 * (attempt - 1)),
+        )
+        if raw_payload.get("__fallback__"):
             raw_payload = {"messages": fallback_dialogue(ctx, [topic], {**debate_plan, "target_messages": expected}).get("session", {}).get("messages", [])}
 
         raw_messages, watch_items, hypotheses = extract_topic_generation(raw_payload)
@@ -1534,16 +1625,24 @@ def generate_topup_messages(
 ) -> list[dict[str, Any]]:
     if missing <= 0:
         return []
-    if not os.getenv("OPENAI_API_KEY"):
-        return []
+
+    default_topic = selected_topics[0] if selected_topics else Topic("general", "strategy_clash", 1, "Arena Council", "", [], [], ["risk_sentinel"], [], "")
+
+    if not os.getenv("OPENAI_API_KEY") and not ALLOW_FALLBACK:
+        raise SystemExit("OPENAI_API_KEY is required for top-up generation; not publishing deterministic fallback text.")
+
     raw_payload = call_openai_json(
         system_prompt(),
         topup_dialogue_prompt(ctx, debate_plan, selected_topics, existing_messages, missing, issues),
         temperature=max(0.55, TEMPERATURE - 0.12),
     )
+    if raw_payload.get("__fallback__"):
+        fb = fallback_dialogue(ctx, selected_topics, {**debate_plan, "target_messages": missing})
+        raw_messages = (fb.get("session") or {}).get("messages", [])
+        prepared = [backfill_message_from_topic(m, default_topic, default_topic.as_dict()) for m in raw_messages]
+        valid, _ = validate_topic_messages(prepared, default_topic, min(missing, len(prepared)))
+        return valid[:missing]
     raw_messages, _, _ = extract_topic_generation(raw_payload)
-    # Map each top-up to the highest-priority topic by default if GPT omits metadata.
-    default_topic = selected_topics[0] if selected_topics else Topic("general", "strategy_clash", 1, "Arena Council", "", [], [], ["risk_sentinel"], [], "")
     prepared = [backfill_message_from_topic(m, default_topic, default_topic.as_dict()) for m in raw_messages]
     valid, _ = validate_topic_messages(prepared, default_topic, min(missing, len(prepared)))
     return valid[:missing]
@@ -1816,14 +1915,19 @@ def build_payload() -> dict[str, Any]:
         validation_issues.extend(more_issues)
 
     if len(valid) < minimum_required:
-        if not ALLOW_FALLBACK:
+        if not (ALLOW_FALLBACK or ALLOW_RATE_LIMIT_FALLBACK or RATE_LIMIT_HIT):
             raise SystemExit(
                 f"GPT output failed minimum message requirement: got {len(valid)}, "
                 f"required {minimum_required}. Issues: {validation_issues[:12]}"
             )
+        print(
+            f"WARN Session remains under-filled ({len(valid)}/{minimum_required}); "
+            "using deterministic evidence fallback to complete the page"
+        )
         fallback = fallback_dialogue(ctx, selected_topics, debate_plan)
         fallback_messages = (fallback.get("session") or {}).get("messages", [])
-        valid = normalize_generated_messages(fallback_messages, generated_at)[:target]
+        normalized_fallback = normalize_generated_messages(fallback_messages, generated_at)
+        valid = [*valid, *normalized_fallback][:target]
 
     valid = valid[:target]
     # Re-number after validation and trimming so the UI has clean sequencing.
@@ -1952,7 +2056,16 @@ def build_payload() -> dict[str, Any]:
         "ai": {
             "required": True,
             "enabled": bool(os.getenv("OPENAI_API_KEY")),
-            "status": "gpt-4o_topic_by_topic_generated" if os.getenv("OPENAI_API_KEY") else "emergency_fallback",
+            "status": (
+                "gpt-4o_topic_by_topic_generated_after_429_cooldown" if RATE_LIMIT_HIT
+                else ("gpt-4o_topic_by_topic_generated" if os.getenv("OPENAI_API_KEY") else "emergency_fallback")
+            ),
+            "rate_limit_encountered": RATE_LIMIT_HIT,
+            "rate_limit_fallback_used": False,
+            "openai_min_interval_seconds": OPENAI_MIN_INTERVAL_SECONDS,
+            "openai_max_retries": OPENAI_MAX_RETRIES,
+            "openai_429_base_sleep_seconds": OPENAI_429_BASE_SLEEP_SECONDS,
+            "max_gpt_topic_calls": MAX_GPT_TOPIC_CALLS,
             "model": MODEL,
             "temperature": TEMPERATURE,
             "pipeline": "Evidence -> Topic -> Debate Plan -> Topic Dialogue -> Validator -> Repair -> Memory",
