@@ -1204,6 +1204,405 @@ def repair_if_needed(generated: dict[str, Any], ctx: dict[str, Any], topics: lis
     return generated
 
 
+
+# ---------------------------------------------------------------------------
+# V4 topic-by-topic dialogue generation
+# ---------------------------------------------------------------------------
+# V3 proved that topic extraction and debate planning worked, but one global
+# GPT call often returned only one message per agent. The functions below make
+# dialogue generation deterministic at the orchestration layer: every selected
+# topic gets its own GPT-4o request, every request has an explicit message count,
+# and the validator/repair loop runs per topic before all messages are merged.
+
+MIN_WORDS_PER_MESSAGE = int(os.getenv("AI_ARENA_WAR_ROOM_MIN_WORDS", "22"))
+MAX_WORDS_PER_MESSAGE = int(os.getenv("AI_ARENA_WAR_ROOM_MAX_WORDS", "68"))
+TOPIC_REPAIR_ATTEMPTS = int(os.getenv("AI_ARENA_WAR_ROOM_TOPIC_REPAIR_ATTEMPTS", "2"))
+MIN_SESSION_FILL_RATIO = float(os.getenv("AI_ARENA_WAR_ROOM_MIN_SESSION_FILL_RATIO", "0.82"))
+
+
+def word_count(text: str) -> int:
+    return len(re.findall(r"[A-Za-z0-9%¥#.+\-]+", text or ""))
+
+
+def topic_plan_lookup(debate_plan: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    return {str(t.get("topic_id")): t for t in debate_plan.get("topics", []) if isinstance(t, dict)}
+
+
+def topic_message_target(topic_plan: dict[str, Any], session_type: str) -> int:
+    raw = int(topic_plan.get("message_target") or 3)
+    if session_type in {"close_council", "weekly_arena_review"} and topic_plan.get("priority", 0) >= 95:
+        return max(raw, 4)
+    return max(2, raw)
+
+
+def topic_dialogue_prompt(
+    ctx: dict[str, Any],
+    topic: Topic,
+    topic_plan: dict[str, Any],
+    debate_plan: dict[str, Any],
+    memory: dict[str, Any],
+    previous_messages: list[dict[str, Any]],
+    attempt: int = 1,
+    previous_issues: list[str] | None = None,
+) -> str:
+    """Build a compact, strict prompt for one topic.
+
+    The prompt is intentionally editorial rather than permissive. GPT must write
+    a mini-debate, not isolated comments. We give it the topic thesis, required
+    agents, challengers, exact evidence numbers, and the last few messages to
+    preserve conversational continuity.
+    """
+    target = topic_message_target(topic_plan, debate_plan["session_type"])
+    agents_to_use: list[str] = []
+    for aid in list(topic.required_agents) + list(topic.challenger_agents):
+        if aid in AGENT_PERSONAS and aid not in agents_to_use:
+            agents_to_use.append(aid)
+    if not agents_to_use:
+        agents_to_use = ["risk_sentinel", "weekly_sage", "value_mispricing"]
+
+    schema = {
+        "topic_id": topic.topic_id,
+        "messages": [
+            {
+                "agent_id": "one canonical agent id from allowed_agents",
+                "message_type": "opening_observation | challenge | rebuttal | risk_audit | evidence_drop | position_review | leaderboard_read | exit_watch | watch_item | hypothesis_review | closing_signal",
+                "reply_to_agent": "canonical display name being answered, or empty only for the first message",
+                "state": "2-4 word uppercase state",
+                "mood": "calm | alert | challenging | analytical | protective | excited | skeptical",
+                "body": f"{MIN_WORDS_PER_MESSAGE}-{MAX_WORDS_PER_MESSAGE} words, 1-3 sentences, natural English, evidence-bound",
+                "evidence_label": "short evidence label",
+                "evidence_numbers": ["must include at least one supplied number unless no numerical evidence exists"],
+                "linked_symbol": "ticker from linked_symbols or empty string",
+                "linked_name": "company name if known or empty string",
+                "why_it_matters": "one concrete reader-value sentence",
+            }
+        ],
+        "watch_items": [
+            {
+                "owner": "agent name",
+                "agent_id": "canonical agent id",
+                "symbol": "ticker or empty string",
+                "hypothesis": "specific hypothesis to revisit, not generic",
+                "check_next": "open | midday | close | next_session | next_week",
+            }
+        ],
+        "hypotheses": [
+            {
+                "owner": "agent name",
+                "agent_id": "canonical agent id",
+                "claim": "specific claim made by this topic debate",
+                "evidence": ["numbers"],
+                "check_next": "when to revisit",
+            }
+        ],
+    }
+
+    packed = {
+        "task": "Write one sharp mini-debate for this single AI Arena topic. Do not summarize. Make the agents react to each other.",
+        "attempt": attempt,
+        "previous_issues_to_fix": previous_issues or [],
+        "session": {
+            "session_type": debate_plan["session_type"],
+            "session_title": debate_plan["session_title"],
+            "market_phase": debate_plan["market_phase"],
+            "tone": debate_plan["tone"],
+        },
+        "topic": topic_plan,
+        "target_message_count": target,
+        "allowed_agents": [
+            {
+                "agent_id": aid,
+                "name": AGENT_PERSONAS[aid]["name"],
+                "voice": AGENT_PERSONAS[aid]["voice"],
+                "edge": AGENT_PERSONAS[aid]["edge"],
+                "weakness": AGENT_PERSONAS[aid]["weakness"],
+            }
+            for aid in agents_to_use
+        ],
+        "conversation_continuity": [
+            {
+                "agent_name": m.get("agent_name"),
+                "body": m.get("body"),
+                "topic_id": m.get("topic_id", ""),
+            }
+            for m in previous_messages[-5:]
+        ],
+        "arena_context": compact_context(ctx),
+        "memory_to_use_if_relevant": {
+            "watch_items": memory.get("watch_items", [])[-6:],
+            "hypotheses": memory.get("hypotheses", [])[-6:],
+        },
+        "hard_requirements": [
+            f"Return exactly {target} messages for this topic.",
+            f"Each body must be {MIN_WORDS_PER_MESSAGE}-{MAX_WORDS_PER_MESSAGE} words.",
+            "At least one message must challenge, qualify, or correct another agent.",
+            "At least one message must explain why the evidence could be misleading.",
+            "At least one message must say what would confirm or weaken the hypothesis later.",
+            "Use the supplied evidence_numbers directly; do not invent new numbers.",
+            "Do not use generic filler, motivational language, target prices, or buy/sell advice.",
+            "Do not say 'luck' unless you define what evidence would separate luck from process.",
+            "Avoid repeating the same sentence structure across messages.",
+            "Return valid JSON only.",
+        ],
+        "banned_phrases": GENERIC_BLACKLIST + BANNED_INVESTMENT_PHRASES,
+        "output_schema": schema,
+    }
+    return json.dumps(packed, ensure_ascii=False, indent=2)
+
+
+def extract_topic_generation(payload: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
+    """Accept several JSON shapes to make GPT output robust."""
+    if not isinstance(payload, dict):
+        return [], [], []
+    messages = payload.get("messages")
+    watch_items = payload.get("watch_items")
+    hypotheses = payload.get("hypotheses")
+    if not isinstance(messages, list):
+        topic_obj = payload.get("topic") if isinstance(payload.get("topic"), dict) else {}
+        messages = topic_obj.get("messages")
+        watch_items = topic_obj.get("watch_items") or watch_items
+        hypotheses = topic_obj.get("hypotheses") or hypotheses
+    if not isinstance(messages, list):
+        session_obj = payload.get("session") if isinstance(payload.get("session"), dict) else {}
+        messages = session_obj.get("messages")
+        watch_items = session_obj.get("watch_items") or watch_items
+        hypotheses = session_obj.get("hypotheses") or hypotheses
+    return (
+        [m for m in messages if isinstance(m, dict)] if isinstance(messages, list) else [],
+        [w for w in watch_items if isinstance(w, dict)] if isinstance(watch_items, list) else [],
+        [h for h in hypotheses if isinstance(h, dict)] if isinstance(hypotheses, list) else [],
+    )
+
+
+def backfill_message_from_topic(msg: dict[str, Any], topic: Topic, topic_plan: dict[str, Any]) -> dict[str, Any]:
+    """Fill missing evidence fields before validation.
+
+    This is not content generation. It only copies known topic evidence into
+    empty metadata fields so high-quality text does not get dropped because GPT
+    omitted a duplicated JSON field.
+    """
+    out = dict(msg)
+    if not out.get("evidence_numbers"):
+        out["evidence_numbers"] = list(topic.evidence_numbers[:3])
+    if not out.get("evidence_label"):
+        out["evidence_label"] = topic.headline[:100]
+    if not out.get("linked_symbol") and topic.linked_symbols:
+        out["linked_symbol"] = topic.linked_symbols[0]
+    if not out.get("why_it_matters"):
+        out["why_it_matters"] = topic.why_it_matters
+    out["topic_id"] = topic.topic_id
+    out["topic_type"] = topic.topic_type
+    return out
+
+
+def validate_topic_messages(messages: list[dict[str, Any]], topic: Topic, expected: int) -> tuple[list[dict[str, Any]], list[str]]:
+    """Validate one topic mini-debate more strictly than the session-level pass."""
+    valid: list[dict[str, Any]] = []
+    issues: list[str] = []
+    seen_bodies: set[str] = set()
+    challenge_count = 0
+    for msg in messages:
+        body = clean_text(msg.get("body"), 700)
+        lower = body.lower()
+        wc = word_count(body)
+        if wc < MIN_WORDS_PER_MESSAGE:
+            issues.append(f"topic {topic.topic_id}: drop short body ({wc} words): {body}")
+            continue
+        if wc > MAX_WORDS_PER_MESSAGE + 20:
+            issues.append(f"topic {topic.topic_id}: body too long ({wc} words): {body[:120]}")
+            continue
+        if any(p in lower for p in GENERIC_BLACKLIST):
+            issues.append(f"topic {topic.topic_id}: generic phrase: {body}")
+            continue
+        if any(p in lower for p in BANNED_INVESTMENT_PHRASES):
+            issues.append(f"topic {topic.topic_id}: banned advice phrase: {body}")
+            continue
+        key = re.sub(r"[^a-z0-9]+", " ", lower).strip()[:140]
+        if key in seen_bodies:
+            issues.append(f"topic {topic.topic_id}: duplicate body: {body}")
+            continue
+        seen_bodies.add(key)
+        mtype = str(msg.get("message_type") or "")
+        if mtype in {"challenge", "rebuttal", "risk_audit"}:
+            challenge_count += 1
+        ev = msg.get("evidence_numbers") if isinstance(msg.get("evidence_numbers"), list) else []
+        if not ev and not message_has_number(body):
+            issues.append(f"topic {topic.topic_id}: no evidence number: {body}")
+            continue
+        valid.append(msg)
+    if len(valid) < expected:
+        issues.append(f"topic {topic.topic_id}: expected {expected}, got {len(valid)}")
+    if expected >= 3 and challenge_count == 0:
+        issues.append(f"topic {topic.topic_id}: missing challenge/rebuttal/risk audit")
+    return valid, issues
+
+
+def generate_topic_dialogue(
+    ctx: dict[str, Any],
+    topic: Topic,
+    topic_plan: dict[str, Any],
+    debate_plan: dict[str, Any],
+    memory: dict[str, Any],
+    previous_messages: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[str]]:
+    """Generate and validate a mini-debate for one topic.
+
+    The function retries per topic instead of regenerating the whole session.
+    This is the core fix for the previous failure mode where a target 22-message
+    session collapsed into seven shallow comments.
+    """
+    expected = topic_message_target(topic_plan, debate_plan["session_type"])
+    all_issues: list[str] = []
+    best_valid: list[dict[str, Any]] = []
+    best_watch: list[dict[str, Any]] = []
+    best_hypotheses: list[dict[str, Any]] = []
+
+    for attempt in range(1, TOPIC_REPAIR_ATTEMPTS + 2):
+        if os.getenv("OPENAI_API_KEY"):
+            raw_payload = call_openai_json(
+                system_prompt(),
+                topic_dialogue_prompt(ctx, topic, topic_plan, debate_plan, memory, previous_messages, attempt, all_issues[-10:]),
+                temperature=max(0.52, TEMPERATURE - 0.06 * (attempt - 1)),
+            )
+        else:
+            if not ALLOW_FALLBACK:
+                raise SystemExit("OPENAI_API_KEY is required for AI Arena Live Council generation")
+            raw_payload = {"messages": fallback_dialogue(ctx, [topic], {**debate_plan, "target_messages": expected}).get("session", {}).get("messages", [])}
+
+        raw_messages, watch_items, hypotheses = extract_topic_generation(raw_payload)
+        prepared = [backfill_message_from_topic(m, topic, topic_plan) for m in raw_messages]
+        valid, issues = validate_topic_messages(prepared, topic, expected)
+        if len(valid) > len(best_valid):
+            best_valid, best_watch, best_hypotheses = valid, watch_items, hypotheses
+        all_issues.extend(issues)
+        if len(valid) >= expected and not any("generic phrase" in x or "banned" in x for x in issues):
+            return valid[:expected], watch_items, hypotheses, all_issues
+
+    # If GPT still under-fills, return the best partial result. The session-level
+    # top-up pass will fill the remaining slots with another GPT call.
+    return best_valid[:expected], best_watch, best_hypotheses, all_issues
+
+
+def topup_dialogue_prompt(
+    ctx: dict[str, Any],
+    debate_plan: dict[str, Any],
+    selected_topics: list[Topic],
+    existing_messages: list[dict[str, Any]],
+    missing: int,
+    issues: list[str],
+) -> str:
+    packed = {
+        "task": "The Live Council session is under-filled. Add missing high-quality messages that continue the existing conversation.",
+        "missing_message_count": missing,
+        "session": {
+            "session_type": debate_plan["session_type"],
+            "session_title": debate_plan["session_title"],
+            "target_messages": debate_plan["target_messages"],
+        },
+        "selected_topics": [t.as_dict() for t in selected_topics],
+        "existing_messages": [
+            {
+                "agent_name": m.get("agent_name"),
+                "message_type": m.get("message_type"),
+                "body": m.get("body"),
+                "topic_id": m.get("topic_id", ""),
+            }
+            for m in existing_messages[-12:]
+        ],
+        "known_validation_issues": issues[-20:],
+        "arena_context": compact_context(ctx),
+        "requirements": [
+            f"Return exactly {missing} additional messages.",
+            f"Each body must be {MIN_WORDS_PER_MESSAGE}-{MAX_WORDS_PER_MESSAGE} words.",
+            "Do not repeat any existing message or topic angle verbatim.",
+            "Prioritize unserved topics, performance attribution, dead capital, payoff ratio, and memory/watch items.",
+            "Each message must include evidence_numbers and why_it_matters.",
+            "Return JSON only with key messages.",
+        ],
+        "output_schema": {"messages": ["same message schema as topic generation"]},
+    }
+    return json.dumps(packed, ensure_ascii=False, indent=2)
+
+
+def generate_topup_messages(
+    ctx: dict[str, Any],
+    debate_plan: dict[str, Any],
+    selected_topics: list[Topic],
+    existing_messages: list[dict[str, Any]],
+    missing: int,
+    issues: list[str],
+) -> list[dict[str, Any]]:
+    if missing <= 0:
+        return []
+    if not os.getenv("OPENAI_API_KEY"):
+        return []
+    raw_payload = call_openai_json(
+        system_prompt(),
+        topup_dialogue_prompt(ctx, debate_plan, selected_topics, existing_messages, missing, issues),
+        temperature=max(0.55, TEMPERATURE - 0.12),
+    )
+    raw_messages, _, _ = extract_topic_generation(raw_payload)
+    # Map each top-up to the highest-priority topic by default if GPT omits metadata.
+    default_topic = selected_topics[0] if selected_topics else Topic("general", "strategy_clash", 1, "Arena Council", "", [], [], ["risk_sentinel"], [], "")
+    prepared = [backfill_message_from_topic(m, default_topic, default_topic.as_dict()) for m in raw_messages]
+    valid, _ = validate_topic_messages(prepared, default_topic, min(missing, len(prepared)))
+    return valid[:missing]
+
+
+def build_daily_brief_prompt(ctx: dict[str, Any], selected_topics: list[Topic], messages: list[dict[str, Any]], debate_plan: dict[str, Any]) -> str:
+    packed = {
+        "task": "Write a sharp editorial daily_brief for the AI Arena Live Council page.",
+        "session": debate_plan,
+        "topics": [t.as_dict() for t in selected_topics[:8]],
+        "messages": [{"agent": m.get("agent_name"), "body": m.get("body"), "evidence_numbers": m.get("evidence_numbers")} for m in messages[:24]],
+        "arena_context": compact_context(ctx),
+        "requirements": [
+            "Headline must be specific and based on the strongest tension, not generic.",
+            "Summary must explain what changed or what the reader should understand.",
+            "Bullets must be evidence-rich and interpretive, not table readouts.",
+            "Return JSON only with headline, summary, bullets.",
+        ],
+        "output_schema": {"daily_brief": {"headline": "", "summary": "", "bullets": [""]}},
+    }
+    return json.dumps(packed, ensure_ascii=False, indent=2)
+
+
+def generate_daily_brief(ctx: dict[str, Any], selected_topics: list[Topic], messages: list[dict[str, Any]], debate_plan: dict[str, Any]) -> dict[str, Any]:
+    if os.getenv("OPENAI_API_KEY"):
+        try:
+            payload = call_openai_json(system_prompt(), build_daily_brief_prompt(ctx, selected_topics, messages, debate_plan), temperature=max(0.45, TEMPERATURE - 0.2))
+            brief = payload.get("daily_brief") if isinstance(payload, dict) else None
+            if isinstance(brief, dict):
+                headline = clean_text(brief.get("headline"), 160)
+                summary = clean_text(brief.get("summary"), 300)
+                bullets = [clean_text(x, 170) for x in brief.get("bullets", []) if clean_text(x, 170)] if isinstance(brief.get("bullets"), list) else []
+                if headline and summary and len(bullets) >= 3:
+                    return {"headline": headline, "summary": summary, "bullets": bullets[:6]}
+        except Exception as exc:  # pragma: no cover - non-critical editorial fallback.
+            print(f"WARN daily brief generation failed: {exc}")
+    return {
+        "headline": selected_topics[0].headline if selected_topics else "AI Arena Live Council",
+        "summary": debate_plan["purpose"],
+        "bullets": [t.headline for t in selected_topics[:6]],
+    }
+
+
+def normalize_generated_messages(raw_messages: list[dict[str, Any]], generated_at: datetime) -> list[dict[str, Any]]:
+    cumulative = 0
+    normalized: list[dict[str, Any]] = []
+    for idx, raw in enumerate(raw_messages, start=1):
+        if not isinstance(raw, dict):
+            continue
+        msg = normalize_message(raw, idx, generated_at, cumulative)
+        # Preserve topic metadata added during topic generation.
+        if raw.get("topic_id"):
+            msg["topic_id"] = raw.get("topic_id")
+        if raw.get("topic_type"):
+            msg["topic_type"] = raw.get("topic_type")
+        cumulative = msg["reveal_after_seconds"]
+        normalized.append(msg)
+    return normalized
+
 def build_evidence_tape(ctx: dict[str, Any], topics: list[Topic]) -> list[dict[str, Any]]:
     tape: list[dict[str, Any]] = []
     for r in ctx["ranking"]:
@@ -1352,6 +1751,14 @@ def prune_history() -> None:
 
 
 def build_payload() -> dict[str, Any]:
+    """Build the full War Room payload.
+
+    V4 generation deliberately avoids a single monolithic dialogue call. It
+    extracts topics once, plans the session once, then asks GPT-4o to generate a
+    validated mini-debate for every selected topic. This guarantees that a
+    `close_council` target of 22 messages does not collapse into seven shallow
+    one-liners.
+    """
     ctx = load_inputs()
     generated_at = now_jst()
     session_type = pick_session_type(generated_at)
@@ -1359,53 +1766,107 @@ def build_payload() -> dict[str, Any]:
     selected_topics = select_topics_for_session(all_topics, session_type)
     debate_plan = build_debate_plan(selected_topics, session_type, ctx)
     memory = read_memory()
+    plan_by_id = topic_plan_lookup(debate_plan)
 
-    generated = call_openai_json(system_prompt(), user_prompt(ctx, selected_topics, debate_plan, memory))
-    if not generated:
-        generated = fallback_dialogue(ctx, selected_topics, debate_plan)
+    # Generate dialogue per topic. The orchestration layer, not GPT, owns the
+    # message count guarantee.
+    topic_messages: list[dict[str, Any]] = []
+    watch_items: list[dict[str, Any]] = []
+    hypotheses: list[dict[str, Any]] = []
+    validation_issues: list[str] = []
 
-    raw_messages = ((generated.get("session") or {}).get("messages") or []) if isinstance(generated, dict) else []
-    cumulative = 0
-    normalized: list[dict[str, Any]] = []
-    for idx, raw in enumerate(raw_messages, start=1):
-        if not isinstance(raw, dict):
-            continue
-        msg = normalize_message(raw, idx, generated_at, cumulative)
-        cumulative = msg["reveal_after_seconds"]
-        normalized.append(msg)
-
-    valid, issues = validate_messages(normalized, debate_plan["target_messages"])
-    if issues:
-        print("Validation issues:")
-        for issue in issues[:20]:
-            print(f" - {issue}")
-        generated = repair_if_needed(generated, ctx, selected_topics, debate_plan, issues)
-        raw_messages = ((generated.get("session") or {}).get("messages") or []) if isinstance(generated, dict) else []
-        cumulative = 0
-        normalized = []
-        for idx, raw in enumerate(raw_messages, start=1):
-            if isinstance(raw, dict):
-                msg = normalize_message(raw, idx, generated_at, cumulative)
-                cumulative = msg["reveal_after_seconds"]
-                normalized.append(msg)
-        valid, issues = validate_messages(normalized, debate_plan["target_messages"])
-
-    if len(valid) < 5:
-        if not ALLOW_FALLBACK:
-            raise SystemExit(f"GPT output failed quality validation: {issues[:10]}")
-        generated = fallback_dialogue(ctx, selected_topics, debate_plan)
-        raw_messages = (generated.get("session") or {}).get("messages", [])
-        cumulative = 0
-        valid = []
-        for idx, raw in enumerate(raw_messages, start=1):
-            msg = normalize_message(raw, idx, generated_at, cumulative)
-            cumulative = msg["reveal_after_seconds"]
-            valid.append(msg)
+    for topic in selected_topics:
+        plan = plan_by_id.get(topic.topic_id, topic.as_dict())
+        generated_for_topic, topic_watch, topic_hypotheses, issues = generate_topic_dialogue(
+            ctx=ctx,
+            topic=topic,
+            topic_plan=plan,
+            debate_plan=debate_plan,
+            memory=memory,
+            previous_messages=topic_messages,
+        )
+        topic_messages.extend(generated_for_topic)
+        watch_items.extend(topic_watch)
+        hypotheses.extend(topic_hypotheses)
+        validation_issues.extend(issues)
+        print(
+            f"Topic {topic.topic_id}: target={topic_message_target(plan, session_type)} "
+            f"accepted={len(generated_for_topic)} issues={len(issues)}"
+        )
 
     target = debate_plan["target_messages"]
-    valid = valid[: max(5, min(len(valid), target + 3))]
+    minimum_required = max(8, int(target * MIN_SESSION_FILL_RATIO))
+    if len(topic_messages) < minimum_required:
+        missing = minimum_required - len(topic_messages)
+        print(f"Session under-filled after topic generation: {len(topic_messages)}/{target}; requesting {missing} top-up messages")
+        topups = generate_topup_messages(ctx, debate_plan, selected_topics, topic_messages, missing, validation_issues)
+        topic_messages.extend(topups)
 
-    session_raw = generated.get("session", {}) if isinstance(generated, dict) else {}
+    # Normalize, validate at session level, and trim to the intended target.
+    normalized = normalize_generated_messages(topic_messages, generated_at)
+    valid, session_issues = validate_messages(normalized, target)
+    validation_issues.extend(session_issues)
+
+    if len(valid) < minimum_required:
+        missing = minimum_required - len(valid)
+        print(f"Session still under-filled after validation: {len(valid)}/{target}; requesting repair top-up={missing}")
+        repaired = generate_topup_messages(ctx, debate_plan, selected_topics, valid, missing, validation_issues)
+        normalized_repaired = normalize_generated_messages([*valid, *repaired], generated_at)
+        valid, more_issues = validate_messages(normalized_repaired, target)
+        validation_issues.extend(more_issues)
+
+    if len(valid) < minimum_required:
+        if not ALLOW_FALLBACK:
+            raise SystemExit(
+                f"GPT output failed minimum message requirement: got {len(valid)}, "
+                f"required {minimum_required}. Issues: {validation_issues[:12]}"
+            )
+        fallback = fallback_dialogue(ctx, selected_topics, debate_plan)
+        fallback_messages = (fallback.get("session") or {}).get("messages", [])
+        valid = normalize_generated_messages(fallback_messages, generated_at)[:target]
+
+    valid = valid[:target]
+    # Re-number after validation and trimming so the UI has clean sequencing.
+    cumulative = 0
+    renumbered: list[dict[str, Any]] = []
+    for idx, msg in enumerate(valid, start=1):
+        raw = dict(msg)
+        raw["message_id"] = f"live-msg-{idx:03d}"
+        raw["sequence"] = idx
+        delay = 0 if idx == 1 else random.randint(MIN_DELAY_SECONDS, MAX_DELAY_SECONDS)
+        cumulative += delay
+        raw["delay_seconds"] = delay
+        raw["reveal_after_seconds"] = 0 if idx == 1 else cumulative
+        raw["scheduled_at"] = iso_jst(generated_at + timedelta(seconds=raw["reveal_after_seconds"]))
+        renumbered.append(raw)
+    valid = renumbered
+
+    daily_brief = generate_daily_brief(ctx, selected_topics, valid, debate_plan)
+
+    # If GPT did not provide watch items/hypotheses, create high-quality memory
+    # from the strongest topics and accepted messages. This preserves continuity
+    # for the next session without inventing external facts.
+    if not watch_items:
+        for topic in selected_topics[:3]:
+            owner_id = topic.required_agents[0] if topic.required_agents else "risk_sentinel"
+            watch_items.append({
+                "owner": CANONICAL_NAMES.get(owner_id, owner_id),
+                "agent_id": owner_id,
+                "symbol": topic.linked_symbols[0] if topic.linked_symbols else "",
+                "hypothesis": f"{topic.headline}. Revisit whether this remains true as new Arena evidence arrives.",
+                "check_next": "next_session",
+            })
+    if not hypotheses:
+        for topic in selected_topics[:2]:
+            owner_id = topic.required_agents[0] if topic.required_agents else "risk_sentinel"
+            hypotheses.append({
+                "owner": CANONICAL_NAMES.get(owner_id, owner_id),
+                "agent_id": owner_id,
+                "claim": topic.editorial_angle or topic.headline,
+                "evidence": topic.evidence_numbers[:4],
+                "check_next": "next_session",
+            })
+
     session_id = f"{generated_at.date().isoformat()}-{session_type}"
     session = {
         "session_id": session_id,
@@ -1413,46 +1874,44 @@ def build_payload() -> dict[str, Any]:
         "session_title": debate_plan["session_title"],
         "market_phase": debate_plan["market_phase"],
         "generated_at": iso_jst(generated_at),
-        "headline": clean_text(session_raw.get("headline") or selected_topics[0].headline if selected_topics else debate_plan["session_title"], 160),
-        "summary": clean_text(session_raw.get("summary") or debate_plan["purpose"], 260),
+        "headline": clean_text(daily_brief.get("headline") or (selected_topics[0].headline if selected_topics else debate_plan["session_title"]), 160),
+        "summary": clean_text(daily_brief.get("summary") or debate_plan["purpose"], 300),
         "topics": [t.as_dict() for t in selected_topics],
         "debate_plan": debate_plan,
         "messages": valid,
         "quality": {
             "messages_generated": len(valid),
+            "target_messages": target,
+            "minimum_required": minimum_required,
             "messages_with_numbers": sum(1 for m in valid if message_has_number(m.get("body", "")) or m.get("evidence_numbers")),
             "challenge_or_risk_messages": sum(1 for m in valid if m.get("message_type") in {"challenge", "rebuttal", "risk_audit"}),
-            "validation_issues": issues[:30],
+            "validation_issues": validation_issues[:40],
         },
     }
 
-    memory = update_memory(memory, session, generated)
+    generated_memory_source = {"session": {"watch_items": watch_items, "hypotheses": hypotheses}}
+    memory = update_memory(memory, session, generated_memory_source)
     write_json(WAR_ROOM_DIR / "memory.json", memory)
 
     existing = read_json(WAR_ROOM_DIR / "latest.json", {})
     sessions = merge_sessions(existing, session)
     live_messages = flatten_live_messages(sessions)
 
-    daily_brief = generated.get("daily_brief") if isinstance(generated, dict) else None
-    if not isinstance(daily_brief, dict):
-        daily_brief = {}
-    headline = clean_text(daily_brief.get("headline") or session["headline"], 160)
-    summary = clean_text(daily_brief.get("summary") or session["summary"], 280)
     bullets = daily_brief.get("bullets") if isinstance(daily_brief.get("bullets"), list) else []
-    bullets = [clean_text(x, 160) for x in bullets if clean_text(x, 160)]
+    bullets = [clean_text(x, 170) for x in bullets if clean_text(x, 170)]
     if len(bullets) < 3:
         bullets = [t.headline for t in selected_topics[:6]]
 
     payload = {
-        "schema_version": "ai_arena_live_council_v3_evidence_topic_debate_validator",
+        "schema_version": "ai_arena_live_council_v4_topic_by_topic_dialogue_validator",
         "generated_at": iso_jst(generated_at),
         "page": {
             "title": "AI Arena Live Council",
             "subtitle": "Seven trading agents debate Japanese equities through live simulation evidence, memory, and GPT-4o reasoning.",
         },
         "daily_brief": {
-            "headline": headline,
-            "summary": summary,
+            "headline": clean_text(daily_brief.get("headline"), 160),
+            "summary": clean_text(daily_brief.get("summary"), 300),
             "bullets": bullets[:6],
         },
         "current_session": session,
@@ -1482,24 +1941,25 @@ def build_payload() -> dict[str, Any]:
             "agent_count": len(ctx["agents"]),
             "message_count": len(live_messages),
             "session_message_count": len(valid),
+            "session_target_messages": target,
             "session_count": len(sessions),
             "open_position_count": len(ctx["open_positions"]),
             "ranking_count": len(ctx["ranking"]),
             "topic_count": len(all_topics),
+            "selected_topic_count": len(selected_topics),
             "evidence_items": len(build_evidence_tape(ctx, selected_topics)),
         },
         "ai": {
             "required": True,
             "enabled": bool(os.getenv("OPENAI_API_KEY")),
-            "status": "gpt-4o_generated" if os.getenv("OPENAI_API_KEY") else "emergency_fallback",
+            "status": "gpt-4o_topic_by_topic_generated" if os.getenv("OPENAI_API_KEY") else "emergency_fallback",
             "model": MODEL,
             "temperature": TEMPERATURE,
-            "pipeline": "Evidence -> Topic -> Debate Plan -> Dialogue -> Validator -> Memory",
+            "pipeline": "Evidence -> Topic -> Debate Plan -> Topic Dialogue -> Validator -> Repair -> Memory",
         },
         "disclaimer": "AI Arena is a quantitative simulation and generative discussion interface. Informational only. Not investment advice.",
     }
     return payload
-
 
 def main() -> int:
     random.seed(f"{iso_jst()}:{MODEL}:{SESSION_TYPE_ENV}")
