@@ -3,6 +3,18 @@ name: AI Arena JP War Room
 on:
   workflow_dispatch:
     inputs:
+      session_type:
+        description: "Council session type"
+        required: false
+        default: "auto"
+        type: choice
+        options:
+          - auto
+          - open_council
+          - midday_council
+          - close_council
+          - night_strategy_lab
+          - weekly_arena_review
       commit_outputs:
         description: "Commit generated War Room outputs"
         required: false
@@ -10,14 +22,18 @@ on:
         type: choice
         options: ["true", "false"]
   schedule:
-    - cron: "45 9 * * 1-5"  # 18:45 JST weekdays, after the normal live update window
+    - cron: "30 0 * * 1-5"   # 09:30 JST weekdays: Open +30m Council
+    - cron: "0 3 * * 1-5"    # 12:00 JST weekdays: Midday Council
+    - cron: "30 6 * * 1-5"   # 15:30 JST weekdays: Post-Close Council
+    - cron: "30 11 * * 1-5"  # 20:30 JST weekdays: Night Strategy Lab
+    - cron: "0 1 * * 6"      # 10:00 JST Saturdays: Weekly Arena Review
 
 permissions:
   contents: write
 
 concurrency:
-  group: ai-arena-jp-war-room
-  cancel-in-progress: true
+  group: ai-arena-jp-war-room-${{ github.event.inputs.session_type || 'auto' }}
+  cancel-in-progress: false
 
 jobs:
   war-room:
@@ -27,10 +43,11 @@ jobs:
       OUT_DIR: site
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       AI_ARENA_WAR_ROOM_MODEL: ${{ vars.AI_ARENA_WAR_ROOM_MODEL || 'gpt-4o' }}
-      AI_ARENA_WAR_ROOM_MESSAGES: ${{ vars.AI_ARENA_WAR_ROOM_MESSAGES || '34' }}
-      AI_ARENA_WAR_ROOM_MIN_DELAY_SECONDS: '180'
-      AI_ARENA_WAR_ROOM_MAX_DELAY_SECONDS: '300'
-      AI_ARENA_WAR_ROOM_DAILY_USD_LIMIT: ${{ vars.AI_ARENA_WAR_ROOM_DAILY_USD_LIMIT || '0.65' }}
+      AI_ARENA_WAR_ROOM_SESSION_TYPE: ${{ github.event.inputs.session_type || 'auto' }}
+      AI_ARENA_WAR_ROOM_MESSAGES: ${{ vars.AI_ARENA_WAR_ROOM_MESSAGES }}
+      AI_ARENA_WAR_ROOM_MIN_DELAY_SECONDS: "180"
+      AI_ARENA_WAR_ROOM_MAX_DELAY_SECONDS: "300"
+      AI_ARENA_WAR_ROOM_TEMPERATURE: ${{ vars.AI_ARENA_WAR_ROOM_TEMPERATURE || '0.82' }}
       AI_ARENA_WAR_ROOM_HISTORY_DAYS: "14"
 
     steps:
@@ -80,6 +97,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No War Room changes to commit."
           else
-            git commit -m "Update AI Arena War Room"
+            git commit -m "Update AI Arena Live Council"
             git push
           fi

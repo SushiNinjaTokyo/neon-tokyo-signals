@@ -204,14 +204,15 @@ jobs:
           set -euo pipefail
           python scripts/rebuild_ai_arena_season_from_duckdb_jp.py
 
-      - name: Build AI Arena War Room payload
+      - name: Build AI Arena Live Council payload
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           AI_ARENA_WAR_ROOM_MODEL: ${{ vars.AI_ARENA_WAR_ROOM_MODEL || 'gpt-4o' }}
-          AI_ARENA_WAR_ROOM_MESSAGES: ${{ vars.AI_ARENA_WAR_ROOM_MESSAGES || '34' }}
+          AI_ARENA_WAR_ROOM_MESSAGES: ${{ vars.AI_ARENA_WAR_ROOM_MESSAGES }}
           AI_ARENA_WAR_ROOM_MIN_DELAY_SECONDS: '180'
           AI_ARENA_WAR_ROOM_MAX_DELAY_SECONDS: '300'
-          AI_ARENA_WAR_ROOM_DAILY_USD_LIMIT: ${{ vars.AI_ARENA_WAR_ROOM_DAILY_USD_LIMIT || '0.65' }}
+          AI_ARENA_WAR_ROOM_SESSION_TYPE: auto
+          AI_ARENA_WAR_ROOM_TEMPERATURE: ${{ vars.AI_ARENA_WAR_ROOM_TEMPERATURE || '0.82' }}
         run: |
           set -euo pipefail
           python scripts/build_ai_arena_war_room_jp.py
