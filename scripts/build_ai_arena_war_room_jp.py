@@ -1214,16 +1214,25 @@ def normalize_message(raw: dict[str, Any], seq: int, scheduled_base: datetime, c
 
 
 def validate_messages(messages: list[dict[str, Any]], target: int) -> tuple[list[dict[str, Any]], list[str]]:
+    """Perform final session-level quality checks without destroying good topic output.
+
+    Topic-level validation is intentionally strict. The final session pass should only
+    remove clearly unsafe or malformed messages. Earlier versions also dropped messages
+    for soft editorial concerns such as agent overuse or repeated symbols; that caused
+    fully generated 20+ message sessions to collapse below the minimum fill ratio.
+    Those concerns are now reported as issues but not used to discard otherwise valid
+    GPT-4o dialogue.
+    """
     valid: list[dict[str, Any]] = []
     issues: list[str] = []
     seen_bodies: set[str] = set()
     agent_counts: dict[str, int] = {}
-    symbol_streak = 0
-    last_symbol = ""
+    symbol_counts: dict[str, int] = {}
+
     for msg in messages:
-        body = msg.get("body", "")
+        body = clean_text(msg.get("body"), 700)
         body_l = body.lower()
-        if len(body) < 40:
+        if len(body) < 30:
             issues.append(f"drop short message: {body}")
             continue
         if any(p in body_l for p in GENERIC_BLACKLIST):
@@ -1232,26 +1241,23 @@ def validate_messages(messages: list[dict[str, Any]], target: int) -> tuple[list
         if any(p in body_l for p in BANNED_INVESTMENT_PHRASES):
             issues.append(f"drop investment advice phrase: {body}")
             continue
-        dedupe_key = re.sub(r"[^a-z0-9]+", " ", body_l).strip()[:110]
+
+        dedupe_key = re.sub(r"[^a-z0-9]+", " ", body_l).strip()[:130]
         if dedupe_key in seen_bodies:
             issues.append(f"drop duplicate: {body}")
             continue
         seen_bodies.add(dedupe_key)
-        symbol = msg.get("linked_symbol") or ""
-        if symbol and symbol == last_symbol:
-            symbol_streak += 1
-        else:
-            symbol_streak = 1
-            last_symbol = symbol
-        if symbol_streak > 4:
-            issues.append(f"drop symbol streak {symbol}: {body}")
-            continue
-        agent_id = msg.get("agent_id", "")
-        agent_counts[agent_id] = agent_counts.get(agent_id, 0) + 1
-        if agent_counts[agent_id] > max(5, target // 3):
-            issues.append(f"drop agent overuse {agent_id}: {body}")
-            continue
+
+        msg = dict(msg)
+        msg["body"] = body
         valid.append(msg)
+
+        agent_id = str(msg.get("agent_id") or "")
+        symbol = str(msg.get("linked_symbol") or "")
+        if agent_id:
+            agent_counts[agent_id] = agent_counts.get(agent_id, 0) + 1
+        if symbol:
+            symbol_counts[symbol] = symbol_counts.get(symbol, 0) + 1
 
     if valid:
         with_number = sum(1 for m in valid if message_has_number(m.get("body", "")) or m.get("evidence_numbers"))
@@ -1260,6 +1266,16 @@ def validate_messages(messages: list[dict[str, Any]], target: int) -> tuple[list
             issues.append("low number/evidence density")
         if challenge / len(valid) < 0.25:
             issues.append("low challenge/rebuttal/risk density")
+
+    max_agent_allowed = max(7, target // 2)
+    overused_agents = [k for k, v in agent_counts.items() if v > max_agent_allowed]
+    if overused_agents:
+        issues.append(f"soft warning: agent concentration {overused_agents}")
+
+    repeated_symbols = [k for k, v in symbol_counts.items() if v > max(5, target // 3)]
+    if repeated_symbols:
+        issues.append(f"soft warning: symbol concentration {repeated_symbols}")
+
     return valid, issues
 
 
@@ -1915,19 +1931,11 @@ def build_payload() -> dict[str, Any]:
         validation_issues.extend(more_issues)
 
     if len(valid) < minimum_required:
-        if not (ALLOW_FALLBACK or ALLOW_RATE_LIMIT_FALLBACK or RATE_LIMIT_HIT):
-            raise SystemExit(
-                f"GPT output failed minimum message requirement: got {len(valid)}, "
-                f"required {minimum_required}. Issues: {validation_issues[:12]}"
-            )
-        print(
-            f"WARN Session remains under-filled ({len(valid)}/{minimum_required}); "
-            "using deterministic evidence fallback to complete the page"
+        raise SystemExit(
+            f"GPT output failed minimum message requirement: got {len(valid)}, "
+            f"required {minimum_required}. No deterministic fallback was used, "
+            f"because low-quality filler must not be published. Issues: {validation_issues[:12]}"
         )
-        fallback = fallback_dialogue(ctx, selected_topics, debate_plan)
-        fallback_messages = (fallback.get("session") or {}).get("messages", [])
-        normalized_fallback = normalize_generated_messages(fallback_messages, generated_at)
-        valid = [*valid, *normalized_fallback][:target]
 
     valid = valid[:target]
     # Re-number after validation and trimming so the UI has clean sequencing.
