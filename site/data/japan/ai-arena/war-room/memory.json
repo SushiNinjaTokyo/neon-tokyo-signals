@@ -125,6 +125,51 @@
       "hypothesis": "Enhance payoff capture to justify existing drawdown levels",
       "check_next": "next_session",
       "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T14:23:22+09:00",
+      "owner": "MAMORU",
+      "agent_id": "risk_sentinel",
+      "symbol": "",
+      "hypothesis": "NAGARE's drawdown could impact long-term strategy viability",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T14:23:22+09:00",
+      "owner": "SAGURI",
+      "agent_id": "discovery_scout",
+      "symbol": "4443.T",
+      "hypothesis": "Is 4443.T's performance a genuine early signal or one-time luck?",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T14:23:22+09:00",
+      "owner": "MAMORU",
+      "agent_id": "risk_sentinel",
+      "symbol": "",
+      "hypothesis": "NAGARE's drawdown could impact long-term strategy viability",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T14:23:22+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "symbol": "5711.T",
+      "hypothesis": "Verify if 5711.T's gains are repeatable across future trades",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T14:23:22+09:00",
+      "owner": "KAESHI",
+      "agent_id": "reversal_snapback",
+      "symbol": "",
+      "hypothesis": "Enhance payoff capture to justify existing drawdown levels",
+      "check_next": "next_session",
+      "status": "pending"
     }
   ],
   "hypotheses": [
@@ -280,6 +325,78 @@
       ],
       "check_next": "next_session",
       "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T14:23:22+09:00",
+      "owner": "MAMORU",
+      "agent_id": "risk_sentinel",
+      "claim": "NAGARE's drawdown could impact long-term strategy viability",
+      "evidence": [
+        "15.64%"
+      ],
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T14:23:22+09:00",
+      "owner": "MAMORU",
+      "agent_id": "risk_sentinel",
+      "claim": "A single strong return can mislead if not supported by broader evidence",
+      "evidence": [
+        "+16.79%",
+        "6"
+      ],
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T14:23:22+09:00",
+      "owner": "MAMORU",
+      "agent_id": "risk_sentinel",
+      "claim": "NAGARE's drawdown could impact long-term strategy viability",
+      "evidence": [
+        "15.64%"
+      ],
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T14:23:22+09:00",
+      "owner": "MAMORU",
+      "agent_id": "risk_sentinel",
+      "claim": "Concentration risk could magnify drawdown impact under trend reversals",
+      "evidence": [
+        "46.8%",
+        "positions 6",
+        "¥197,303"
+      ],
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T14:23:22+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "claim": "5711.T's past performance might not ensure future gains without more data",
+      "evidence": [
+        "total P/L ¥754,658",
+        "closed trades 2"
+      ],
+      "check_next": "next_week",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T14:23:22+09:00",
+      "owner": "MAMORU",
+      "agent_id": "risk_sentinel",
+      "claim": "Without improved payoff capture, KAESHI's strategy may remain economically weak",
+      "evidence": [
+        "+50.94%",
+        "+1.32%",
+        "7.65%"
+      ],
+      "check_next": "next_session",
+      "status": "pending"
     }
   ],
   "last_sessions": [
@@ -302,6 +419,13 @@
       "session_type": "night_strategy_lab",
       "generated_at": "2026-06-04T00:57:35+09:00",
       "headline": "NAGARE's Leadership Under Scrutiny Amid Rising Drawdown Concerns",
+      "message_count": 14
+    },
+    {
+      "session_id": "2026-06-04-night_strategy_lab",
+      "session_type": "night_strategy_lab",
+      "generated_at": "2026-06-04T14:20:17+09:00",
+      "headline": "Nagare's High Return Faces Scrutiny Amid Concentration and Drawdown Risks",
       "message_count": 14
     }
   ]
