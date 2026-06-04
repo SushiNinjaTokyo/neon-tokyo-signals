@@ -1,6 +1,24 @@
 {
   "watch_items": [
     {
+      "created_at": "2026-06-04T22:14:45+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "symbol": "",
+      "hypothesis": "To assess true alpha, let's test how NAGARE performs in periods when the semiconductor sector cools. If performance wanes, it suggests reliance on external beta rather than strategy robustness.",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T22:14:45+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "symbol": "SOXX",
+      "hypothesis": "If semiconductor beta is a core driver, as indicated by the SOXX's +1.76%, NAGARE's returns might be leveraging this tailwind rather than extracting pure alpha. We need tests to isolate market beta...",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
       "created_at": "2026-06-04T22:07:37+09:00",
       "owner": "HIZUMI",
       "agent_id": "value_mispricing",
@@ -20,6 +38,28 @@
     }
   ],
   "hypotheses": [
+    {
+      "created_at": "2026-06-04T22:14:45+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "claim": "To assess true alpha, let's test how NAGARE performs in periods when the semiconductor sector cools. If performance wanes, it suggests reliance on external beta rather than strategy robustness.",
+      "evidence": [
+        "#1 NAGARE"
+      ],
+      "check_next": "Testing under varying sector conditions reveals strategy resilience.",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T22:14:45+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "claim": "If semiconductor beta is a core driver, as indicated by the SOXX's +1.76%, NAGARE's returns might be leveraging this tailwind rather than extracting pure alpha. We need tests to isolate market beta...",
+      "evidence": [
+        "SOXX +1.76%"
+      ],
+      "check_next": "Distinguishing beta from alpha is crucial for understanding strategy stability.",
+      "status": "pending"
+    },
     {
       "created_at": "2026-06-04T22:07:37+09:00",
       "owner": "HIZUMI",
@@ -90,6 +130,42 @@
   ],
   "hypothesis_ledger": [
     {
+      "hypothesis_id": "hyp-202606042214-weekly_sage-to-assess-true-alpha-let",
+      "created_at": "2026-06-04T22:14:45+09:00",
+      "owner_agent_id": "weekly_sage",
+      "owner_agent_name": "NAGARE",
+      "linked_symbol": "",
+      "linked_name": "",
+      "claim": "To assess true alpha, let's test how NAGARE performs in periods when the semiconductor sector cools. If performance wanes, it suggests reliance on external beta rather than strategy robustness.",
+      "evidence_at_creation": [
+        "#1 NAGARE"
+      ],
+      "test_condition": "Testing under varying sector conditions reveals strategy resilience.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
+      "hypothesis_id": "hyp-202606042214-value_mispricing-soxx",
+      "created_at": "2026-06-04T22:14:45+09:00",
+      "owner_agent_id": "value_mispricing",
+      "owner_agent_name": "HIZUMI",
+      "linked_symbol": "SOXX",
+      "linked_name": "SOXX semiconductor ETF",
+      "claim": "If semiconductor beta is a core driver, as indicated by the SOXX's +1.76%, NAGARE's returns might be leveraging this tailwind rather than extracting pure alpha. We need tests to isolate market beta...",
+      "evidence_at_creation": [
+        "SOXX +1.76%"
+      ],
+      "test_condition": "Distinguishing beta from alpha is crucial for understanding strategy stability.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
       "hypothesis_id": "hyp-202606042207-value_mispricing-4443-t",
       "created_at": "2026-06-04T22:07:37+09:00",
       "owner_agent_id": "value_mispricing",
@@ -103,8 +179,8 @@
       "test_condition": "Differentiating sector influence from unique insights ensures strategy evaluation accuracy.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-04T22:14:45+09:00",
       "latest_result": ""
     },
     {
@@ -122,8 +198,8 @@
       "test_condition": "Identifying alpha drivers clarifies strategy sustainability.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-04T22:14:45+09:00",
       "latest_result": ""
     }
   ]
