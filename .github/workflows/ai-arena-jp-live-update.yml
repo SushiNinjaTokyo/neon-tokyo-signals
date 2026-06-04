@@ -352,19 +352,30 @@ jobs:
             exit 0
           fi
           git commit -m "Update AI Arena JP live outputs"
-          for i in 1 2 3; do
+
+          # A different scheduled workflow can push while this job is running.
+          # If that happens, discard non-committed local noise such as DuckDB/cache
+          # files, rebase only the committed output changes on top of origin/main,
+          # then retry.  This prevents "cannot rebase: unstaged changes" failures
+          # while keeping the generated live-output commit intact.
+          for i in 1 2 3 4 5; do
             if git push origin HEAD:main; then
               echo "Push succeeded."
               exit 0
             fi
-            echo "Push rejected. Fetching origin/main and retrying ($i/3)..."
+            echo "Push rejected. Fetching origin/main and retrying ($i/5)..."
             git fetch origin main
-            if ! git rebase origin/main; then
-              echo "Rebase failed. Aborting to avoid overwriting live outputs."
+            echo "Working tree before cleanup:"
+            git status --short || true
+            git reset --hard HEAD
+            git clean -fd
+            if ! git rebase -X theirs origin/main; then
+              echo "Rebase failed after cleanup. Aborting to avoid publishing a conflicted output state."
               git rebase --abort || true
+              git status --short || true
               exit 1
             fi
-            sleep 5
+            sleep $((5 * i))
           done
           echo "Push failed after retries."
           exit 1
