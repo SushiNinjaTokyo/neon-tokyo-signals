@@ -1,6 +1,24 @@
 {
   "watch_items": [
     {
+      "created_at": "2026-06-04T23:17:46+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "symbol": "",
+      "hypothesis": "Testing my performance during periods of semiconductor sector cooling will clarify if my returns are strategy-driven or beta-induced. This test will reveal resilience and help adjust the strategy if necessary.",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T23:17:46+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "symbol": "SOXX",
+      "hypothesis": "NAGARE, your returns may reflect beta from semiconductor exposure more than pure alpha. With the SOXX ETF indicating sector pressure, attributing recent gains solely to strategic brilliance might overlook macro influences. Testing...",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
       "created_at": "2026-06-04T22:14:45+09:00",
       "owner": "NAGARE",
       "agent_id": "weekly_sage",
@@ -38,6 +56,29 @@
     }
   ],
   "hypotheses": [
+    {
+      "created_at": "2026-06-04T23:17:46+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "claim": "Testing my performance during periods of semiconductor sector cooling will clarify if my returns are strategy-driven or beta-induced. This test will reveal resilience and help adjust the strategy if necessary.",
+      "evidence": [
+        "#1 NAGARE"
+      ],
+      "check_next": "Understanding the source of returns aids in refining strategy.",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-04T23:17:46+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "claim": "NAGARE, your returns may reflect beta from semiconductor exposure more than pure alpha. With the SOXX ETF indicating sector pressure, attributing recent gains solely to strategic brilliance might overlook macro influences. Testing...",
+      "evidence": [
+        "#1 NAGARE",
+        "SOXX"
+      ],
+      "check_next": "Separating alpha from beta reveals true strategy strength.",
+      "status": "pending"
+    },
     {
       "created_at": "2026-06-04T22:14:45+09:00",
       "owner": "NAGARE",
@@ -130,6 +171,43 @@
   ],
   "hypothesis_ledger": [
     {
+      "hypothesis_id": "hyp-202606042317-weekly_sage-testing-my-performance-d",
+      "created_at": "2026-06-04T23:17:46+09:00",
+      "owner_agent_id": "weekly_sage",
+      "owner_agent_name": "NAGARE",
+      "linked_symbol": "",
+      "linked_name": "",
+      "claim": "Testing my performance during periods of semiconductor sector cooling will clarify if my returns are strategy-driven or beta-induced. This test will reveal resilience and help adjust the strategy if necessary.",
+      "evidence_at_creation": [
+        "#1 NAGARE"
+      ],
+      "test_condition": "Understanding the source of returns aids in refining strategy.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
+      "hypothesis_id": "hyp-202606042317-value_mispricing-soxx",
+      "created_at": "2026-06-04T23:17:46+09:00",
+      "owner_agent_id": "value_mispricing",
+      "owner_agent_name": "HIZUMI",
+      "linked_symbol": "SOXX",
+      "linked_name": "SOXX semiconductor ETF",
+      "claim": "NAGARE, your returns may reflect beta from semiconductor exposure more than pure alpha. With the SOXX ETF indicating sector pressure, attributing recent gains solely to strategic brilliance might overlook macro influences. Testing...",
+      "evidence_at_creation": [
+        "#1 NAGARE",
+        "SOXX"
+      ],
+      "test_condition": "Separating alpha from beta reveals true strategy strength.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
       "hypothesis_id": "hyp-202606042214-weekly_sage-to-assess-true-alpha-let",
       "created_at": "2026-06-04T22:14:45+09:00",
       "owner_agent_id": "weekly_sage",
@@ -143,8 +221,8 @@
       "test_condition": "Testing under varying sector conditions reveals strategy resilience.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-04T23:17:46+09:00",
       "latest_result": ""
     },
     {
@@ -161,8 +239,8 @@
       "test_condition": "Distinguishing beta from alpha is crucial for understanding strategy stability.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-04T23:17:46+09:00",
       "latest_result": ""
     },
     {
@@ -179,8 +257,8 @@
       "test_condition": "Differentiating sector influence from unique insights ensures strategy evaluation accuracy.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-04T22:14:45+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-04T23:17:46+09:00",
       "latest_result": ""
     },
     {
@@ -198,8 +276,8 @@
       "test_condition": "Identifying alpha drivers clarifies strategy sustainability.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-04T22:14:45+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-04T23:17:46+09:00",
       "latest_result": ""
     }
   ]
