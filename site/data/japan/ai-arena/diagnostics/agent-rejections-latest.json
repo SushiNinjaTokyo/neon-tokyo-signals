@@ -1,6 +1,6 @@
 {
   "schema_version": "neon_tokyo_ai_arena_agent_rejection_diagnostics_v1",
-  "generated_at": "2026-06-05T01:44:57Z",
+  "generated_at": "2026-06-05T12:26:17Z",
   "run_id": "arena_jp_live_2026",
   "year": 2026,
   "season": {
@@ -9,8 +9,8 @@
     "trading_days": 102
   },
   "totals": {
-    "candidate_rows": 65242,
-    "evaluated_rows": 42140,
+    "candidate_rows": 64651,
+    "evaluated_rows": 41848,
     "entry_rule_pass": 664,
     "orders_created": 445,
     "buy_orders_filled": 424,
@@ -20,14 +20,14 @@
     "sell_orders_cancelled": 0,
     "closed_trades": 414,
     "final_open_positions": 10,
-    "rejected_total": 64818
+    "rejected_total": 64227
   },
   "agents": [
     {
       "agent_id": "value_mispricing",
       "agent_name": "HIZUMI",
-      "candidate_rows": 5870,
-      "evaluated_rows": 3747,
+      "candidate_rows": 5279,
+      "evaluated_rows": 3455,
       "entry_rule_pass": 19,
       "orders_created": 19,
       "buy_orders_filled": 19,
@@ -37,20 +37,20 @@
       "sell_orders_cancelled": 0,
       "closed_trades": 19,
       "final_open_positions": 0,
-      "rejected_total": 5851,
+      "rejected_total": 5260,
       "rejected_reasons": {
-        "ENTRY_RULE_REJECTED": 3569,
+        "ENTRY_RULE_REJECTED": 3279,
         "MAX_NEW_ENTRIES_PER_DAY": 1801,
-        "NO_NEXT_TRADING_DATE": 322,
-        "MAX_SYMBOL_CLOSED_TRADES": 79,
-        "COOLDOWN_AFTER_LOSS": 41,
-        "ALREADY_OPEN_POSITION": 39
+        "MAX_SYMBOL_CLOSED_TRADES": 78,
+        "COOLDOWN_AFTER_LOSS": 40,
+        "ALREADY_OPEN_POSITION": 39,
+        "NO_NEXT_TRADING_DATE": 23
       },
       "entry_rule_reject_reasons_top20": {
         "score_below_entry_threshold": 2941,
-        "market_regime_panic_entry_disabled": 308,
         "blocked_near_year_end": 218,
         "year_range_position_too_high": 100,
+        "market_regime_panic_entry_disabled": 18,
         "five_day_return_too_low": 1,
         "liquidity_below_threshold": 1
       }
