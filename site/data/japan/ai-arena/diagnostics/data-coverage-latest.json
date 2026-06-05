@@ -1,57 +1,57 @@
 {
   "schema_version": "neon_tokyo_data_coverage_review_v2",
-  "generated_at": "2026-06-04T12:54:08+00:00",
+  "generated_at": "2026-06-05T12:50:03+00:00",
   "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
   "duckdb_exists": true,
   "duckdb_metadata": {
     "db_path": "data/cache/neon_tokyo_jp.duckdb",
     "exists": true,
-    "size_mb": 1911.762,
+    "size_mb": 2133.012,
     "metadata_table_exists": true,
     "metadata": {
       "artifact_kind": {
         "value": "github-release-asset",
-        "updated_at": "2026-06-03T17:44:49.444514"
+        "updated_at": "2026-06-05T12:31:03.906669"
       },
       "asset_name": {
         "value": "neon_tokyo_jp_latest.duckdb.zst",
-        "updated_at": "2026-06-03T17:44:49.448082"
+        "updated_at": "2026-06-05T12:31:03.909795"
       },
       "build_id": {
-        "value": "26890495078-1",
-        "updated_at": "2026-06-03T17:44:49.433475"
+        "value": "27014559880-1",
+        "updated_at": "2026-06-05T12:31:03.897365"
       },
       "generated_at": {
-        "value": "2026-06-03T17:44:49+00:00",
-        "updated_at": "2026-06-03T17:44:49.431424"
+        "value": "2026-06-05T12:31:03+00:00",
+        "updated_at": "2026-06-05T12:31:03.895464"
       },
       "release_tag": {
         "value": "ai-arena-duckdb-latest",
-        "updated_at": "2026-06-03T17:44:49.446321"
+        "updated_at": "2026-06-05T12:31:03.908270"
       },
       "schema_version": {
         "value": "neon_tokyo_duckdb_state_v1",
-        "updated_at": "2026-06-03T17:44:49.426987"
+        "updated_at": "2026-06-05T12:31:03.888173"
       },
       "source_ref": {
         "value": "refs/heads/main",
-        "updated_at": "2026-06-03T17:44:49.442619"
+        "updated_at": "2026-06-05T12:31:03.905178"
       },
       "source_run_attempt": {
         "value": "1",
-        "updated_at": "2026-06-03T17:44:49.439088"
+        "updated_at": "2026-06-05T12:31:03.902200"
       },
       "source_run_id": {
-        "value": "26890495078",
-        "updated_at": "2026-06-03T17:44:49.437322"
+        "value": "27014559880",
+        "updated_at": "2026-06-05T12:31:03.900553"
       },
       "source_sha": {
-        "value": "ecfd99966e1b2ef809bb60e5547b5fa6b1aef41a",
-        "updated_at": "2026-06-03T17:44:49.440793"
+        "value": "cb13fb51fc1858c6c52a4cf6cb9c1f58f6775a9d",
+        "updated_at": "2026-06-05T12:31:03.903678"
       },
       "source_workflow": {
         "value": "AI Arena JP live update",
-        "updated_at": "2026-06-03T17:44:49.435393"
+        "updated_at": "2026-06-05T12:31:03.898936"
       }
     }
   },
@@ -61,7 +61,7 @@
       "code": "STALE_PRICE_SYMBOLS",
       "message": "Some symbols are stale versus latest price date.",
       "details": {
-        "latest_price_date": "2026-06-03",
+        "latest_price_date": "2026-06-05",
         "examples": [
           {
             "symbol": "202A.T",
@@ -134,31 +134,31 @@
   },
   "prices": {
     "table_exists": true,
-    "rows": 293709,
+    "rows": 295564,
     "unique_symbols": 860,
     "date_range": {
       "min": "2024-12-27",
-      "max": "2026-06-03"
+      "max": "2026-06-05"
     },
     "field_coverage": {
       "open": {
-        "count": 293709,
+        "count": 295564,
         "pct": 100.0
       },
       "high": {
-        "count": 293709,
+        "count": 295564,
         "pct": 100.0
       },
       "low": {
-        "count": 293709,
+        "count": 295564,
         "pct": 100.0
       },
       "close": {
-        "count": 293709,
+        "count": 295564,
         "pct": 100.0
       },
       "volume": {
-        "count": 293709,
+        "count": 295564,
         "pct": 100.0
       }
     },
@@ -190,158 +190,158 @@
   },
   "features": {
     "table_exists": true,
-    "rows": 293709,
+    "rows": 295564,
     "unique_symbols": 860,
-    "latest_date": "2026-06-03",
-    "latest_date_symbols": 701,
+    "latest_date": "2026-06-05",
+    "latest_date_symbols": 851,
     "field_coverage": {
       "return_1d_pct": {
-        "count": 292849,
-        "pct": 99.707
+        "count": 294704,
+        "pct": 99.709
       },
       "return_5d_pct": {
-        "count": 289409,
-        "pct": 98.536
+        "count": 291264,
+        "pct": 98.545
       },
       "return_20d_pct": {
-        "count": 276509,
-        "pct": 94.144
+        "count": 278364,
+        "pct": 94.181
       },
       "return_60d_pct": {
-        "count": 242109,
-        "pct": 82.432
+        "count": 243964,
+        "pct": 82.542
       },
       "volume_ratio_20d": {
-        "count": 290269,
-        "pct": 98.829
+        "count": 292124,
+        "pct": 98.836
       },
       "avg_traded_value_20d_jpy": {
-        "count": 290269,
-        "pct": 98.829
+        "count": 292124,
+        "pct": 98.836
       },
       "rsi_14": {
-        "count": 281669,
-        "pct": 95.901
+        "count": 283524,
+        "pct": 95.926
       },
       "range_position_252d_0_1": {
-        "count": 277369,
-        "pct": 94.437
+        "count": 279224,
+        "pct": 94.472
       },
       "liquidity_score": {
-        "count": 290269,
-        "pct": 98.829
+        "count": 292124,
+        "pct": 98.836
       }
     }
   },
   "agent_scores": {
     "table_exists": true,
-    "rows": 388035,
+    "rows": 396302,
     "unique_agents": 7,
-    "latest_date": "2026-06-03",
-    "date_count": 100,
-    "trade_candidate_rows": 58311,
+    "latest_date": "2026-06-05",
+    "date_count": 102,
+    "trade_candidate_rows": 59377,
     "season_window": {
       "start_date": "2026-01-01",
-      "end_date": "2026-06-01",
+      "end_date": "2026-06-05",
       "year": 2026
     },
-    "season_rows": 380959,
-    "season_date_count": 98,
-    "season_trade_candidate_rows": 57272,
+    "season_rows": 396302,
+    "season_date_count": 102,
+    "season_trade_candidate_rows": 59377,
     "agents": [
       {
         "agent_id": "contrarian_monk",
         "display_name": "MATSU",
         "raw_agent_value": "contrarian_monk",
-        "rows": 59484,
-        "date_count": 100,
+        "rows": 60763,
+        "date_count": 102,
         "tickers": 596,
-        "trade_candidate_rows": 1120,
+        "trade_candidate_rows": 1153,
         "max_score": 0.863977,
-        "avg_score": 0.42296766280008113,
+        "avg_score": 0.42241010769711884,
         "actions": {
-          "Ignore": 43945,
-          "Watch": 14419,
-          "Trade": 1120
+          "Ignore": 44957,
+          "Watch": 14653,
+          "Trade": 1153
         }
       },
       {
         "agent_id": "daily_striker",
         "display_name": "KYOU",
         "raw_agent_value": "daily_striker",
-        "rows": 66643,
-        "date_count": 100,
-        "tickers": 731,
-        "trade_candidate_rows": 1366,
+        "rows": 68056,
+        "date_count": 102,
+        "tickers": 732,
+        "trade_candidate_rows": 1378,
         "max_score": 0.980205,
-        "avg_score": 0.2925364148222612,
+        "avg_score": 0.2917534137181138,
         "actions": {
-          "Ignore": 60598,
-          "Watch": 4679,
-          "Trade": 1366
+          "Ignore": 61962,
+          "Watch": 4716,
+          "Trade": 1378
         }
       },
       {
         "agent_id": "discovery_scout",
         "display_name": "SAGURI",
         "raw_agent_value": "discovery_scout",
-        "rows": 19024,
-        "date_count": 100,
+        "rows": 19494,
+        "date_count": 102,
         "tickers": 255,
-        "trade_candidate_rows": 575,
+        "trade_candidate_rows": 580,
         "max_score": 1.0,
-        "avg_score": 0.3165616077586198,
+        "avg_score": 0.3151097980917197,
         "actions": {
-          "Ignore": 16254,
-          "Watch": 2195,
-          "Trade": 575
+          "Ignore": 16687,
+          "Watch": 2227,
+          "Trade": 580
         }
       },
       {
         "agent_id": "reversal_snapback",
         "display_name": "KAESHI",
         "raw_agent_value": "reversal_snapback",
-        "rows": 66643,
-        "date_count": 100,
-        "tickers": 731,
-        "trade_candidate_rows": 257,
+        "rows": 68056,
+        "date_count": 102,
+        "tickers": 732,
+        "trade_candidate_rows": 258,
         "max_score": 0.89385,
-        "avg_score": 0.2723898746154878,
+        "avg_score": 0.27320960773480596,
         "actions": {
-          "Ignore": 63790,
-          "Watch": 2596,
-          "Trade": 257
+          "Ignore": 65124,
+          "Watch": 2674,
+          "Trade": 258
         }
       },
       {
         "agent_id": "risk_sentinel",
         "display_name": "MAMORU",
         "raw_agent_value": "risk_sentinel",
-        "rows": 50114,
-        "date_count": 100,
+        "rows": 51114,
+        "date_count": 102,
         "tickers": 502,
-        "trade_candidate_rows": 41282,
+        "trade_candidate_rows": 42077,
         "max_score": 0.990716,
-        "avg_score": 0.7860482154487787,
+        "avg_score": 0.7854777269828246,
         "actions": {
-          "Trade": 41282,
-          "Watch": 7834,
-          "Ignore": 998
+          "Trade": 42077,
+          "Watch": 8006,
+          "Ignore": 1031
         }
       },
       {
         "agent_id": "value_mispricing",
         "display_name": "HIZUMI",
         "raw_agent_value": "value_mispricing",
-        "rows": 66643,
-        "date_count": 100,
-        "tickers": 731,
+        "rows": 68056,
+        "date_count": 102,
+        "tickers": 732,
         "trade_candidate_rows": 5,
         "max_score": 0.690131,
-        "avg_score": 0.3172000689344732,
+        "avg_score": 0.316189910617728,
         "actions": {
-          "Ignore": 61408,
-          "Watch": 5230,
+          "Ignore": 62777,
+          "Watch": 5274,
           "Trade": 5
         }
       },
@@ -349,16 +349,16 @@
         "agent_id": "weekly_sage",
         "display_name": "NAGARE",
         "raw_agent_value": "weekly_sage",
-        "rows": 59484,
-        "date_count": 100,
+        "rows": 60763,
+        "date_count": 102,
         "tickers": 596,
-        "trade_candidate_rows": 13706,
+        "trade_candidate_rows": 13926,
         "max_score": 1.0,
-        "avg_score": 0.44451078890121776,
+        "avg_score": 0.4429806279150147,
         "actions": {
-          "Ignore": 37774,
-          "Trade": 13706,
-          "Watch": 8004
+          "Ignore": 38705,
+          "Trade": 13926,
+          "Watch": 8132
         }
       }
     ],
@@ -453,45 +453,45 @@
     },
     "value_features_daily": {
       "exists": true,
-      "rows": 84843,
+      "rows": 87414,
       "unique_tickers": 857,
       "coverage_vs_universe_pct": 99.651,
-      "latest_date": "2026-06-02",
-      "date_count": 99,
+      "latest_date": "2026-06-05",
+      "date_count": 102,
       "latest_date_tickers": 857,
-      "season_rows": 83986,
-      "season_date_count": 98,
+      "season_rows": 87414,
+      "season_date_count": 102,
       "field_coverage": {
         "valuation_discount_score": {
-          "count": 84843,
+          "count": 87414,
           "pct": 100.0
         },
         "quality_guard_score": {
-          "count": 84843,
+          "count": 87414,
           "pct": 100.0
         },
         "earnings_stability_score": {
-          "count": 84843,
+          "count": 87414,
           "pct": 100.0
         },
         "shareholder_return_score": {
-          "count": 84843,
+          "count": 87414,
           "pct": 100.0
         },
         "re_rating_signal_score": {
-          "count": 84843,
+          "count": 87414,
           "pct": 100.0
         },
         "value_trap_penalty": {
-          "count": 84843,
+          "count": 87414,
           "pct": 100.0
         },
         "value_mispricing_score": {
-          "count": 84843,
+          "count": 87414,
           "pct": 100.0
         },
         "fundamental_coverage_score": {
-          "count": 84843,
+          "count": 87414,
           "pct": 100.0
         }
       }
@@ -554,23 +554,23 @@
     },
     "arena_orders": {
       "exists": true,
-      "rows": 16006,
-      "rows_for_live_run_id": 823
+      "rows": 16025,
+      "rows_for_live_run_id": 859
     },
     "arena_open_positions": {
       "exists": true,
-      "rows": 285,
-      "rows_for_live_run_id": 16
+      "rows": 284,
+      "rows_for_live_run_id": 10
     },
     "arena_trades": {
       "exists": true,
-      "rows": 7652,
-      "rows_for_live_run_id": 393
+      "rows": 7662,
+      "rows_for_live_run_id": 414
     },
     "arena_equity_curve": {
       "exists": true,
-      "rows": 15687,
-      "rows_for_live_run_id": 686
+      "rows": 15701,
+      "rows_for_live_run_id": 714
     },
     "arena_yearly_rankings": {
       "exists": true,
@@ -591,12 +591,12 @@
       "exists": true,
       "rows": 0
     },
-    "live_run_id": "arena_jp_rebuild_2026_v022",
+    "live_run_id": "arena_jp_live_2026",
     "live_run_health": {
-      "orders": 823,
-      "trades": 393,
-      "open_positions": 16,
-      "equity_rows": 686,
+      "orders": 859,
+      "trades": 414,
+      "open_positions": 10,
+      "equity_rows": 714,
       "yearly_ranking_rows": 7,
       "monthly_ranking_rows": 42,
       "trade_ranking_rows": 40,
@@ -605,44 +605,44 @@
     "agent_execution": [
       {
         "agent_id": "contrarian_monk",
-        "orders": 154,
+        "orders": 155,
         "filled_buys": 78,
-        "filled_sells": 74
+        "filled_sells": 77
       },
       {
         "agent_id": "daily_striker",
-        "orders": 162,
-        "filled_buys": 79,
-        "filled_sells": 79
+        "orders": 168,
+        "filled_buys": 82,
+        "filled_sells": 82
       },
       {
         "agent_id": "discovery_scout",
-        "orders": 83,
-        "filled_buys": 42,
-        "filled_sells": 41
+        "orders": 92,
+        "filled_buys": 46,
+        "filled_sells": 46
       },
       {
         "agent_id": "reversal_snapback",
-        "orders": 107,
-        "filled_buys": 54,
-        "filled_sells": 53
+        "orders": 114,
+        "filled_buys": 57,
+        "filled_sells": 57
       },
       {
         "agent_id": "risk_sentinel",
-        "orders": 188,
-        "filled_buys": 96,
-        "filled_sells": 92
+        "orders": 196,
+        "filled_buys": 99,
+        "filled_sells": 97
       },
       {
         "agent_id": "value_mispricing",
-        "orders": 36,
-        "filled_buys": 18,
-        "filled_sells": 18
+        "orders": 38,
+        "filled_buys": 19,
+        "filled_sells": 19
       },
       {
         "agent_id": "weekly_sage",
-        "orders": 93,
-        "filled_buys": 42,
+        "orders": 96,
+        "filled_buys": 43,
         "filled_sells": 36
       }
     ]
@@ -652,18 +652,18 @@
     "outputs": {
       "site/data/japan/ai-arena/live/latest.json": {
         "exists": true,
-        "size_bytes": 213336,
-        "size_mb": 0.203
+        "size_bytes": 205841,
+        "size_mb": 0.196
       },
       "site/data/japan/ai-arena/ranking/latest.json": {
         "exists": true,
-        "size_bytes": 205425,
-        "size_mb": 0.196
+        "size_bytes": 212249,
+        "size_mb": 0.202
       },
       "site/data/japan/ai-arena/summary/latest.json": {
         "exists": true,
-        "size_bytes": 224650,
-        "size_mb": 0.214
+        "size_bytes": 221376,
+        "size_mb": 0.211
       },
       "site/data/japan/ai-arena/signals/latest.json": {
         "exists": true,
@@ -672,7 +672,7 @@
       },
       "site/japan/ai-arena/summary/index.html": {
         "exists": true,
-        "size_bytes": 41840,
+        "size_bytes": 41489,
         "size_mb": 0.04
       },
       "site/japan/ai-arena/signals/index.html": {
@@ -688,8 +688,8 @@
     }
   },
   "repo_artifact_size": {
-    "site_data_files": 54,
-    "site_data_total_mb": 7.992,
+    "site_data_files": 56,
+    "site_data_total_mb": 8.7,
     "prices_latest_mb": 2.764,
     "dated_prices_json_count": 1,
     "largest_files": [
@@ -709,14 +709,19 @@
         "size_bytes": 441807
       },
       {
-        "path": "site/data/japan/ai-arena/war-room/history/2026-06-04-close_council.json",
-        "size_mb": 0.357,
-        "size_bytes": 374524
+        "path": "site/data/japan/ai-arena/war-room/latest.json",
+        "size_mb": 0.378,
+        "size_bytes": 396039
       },
       {
-        "path": "site/data/japan/ai-arena/war-room/latest.json",
-        "size_mb": 0.347,
-        "size_bytes": 363737
+        "path": "site/data/japan/ai-arena/war-room/history/2026-06-05-night_strategy_lab.json",
+        "size_mb": 0.378,
+        "size_bytes": 396039
+      },
+      {
+        "path": "site/data/japan/ai-arena/war-room/history/2026-06-05-close_council.json",
+        "size_mb": 0.357,
+        "size_bytes": 374394
       },
       {
         "path": "site/data/japan/ai-arena/war-room/history/2026-06-04-night_strategy_lab.json",
@@ -724,34 +729,34 @@
         "size_bytes": 363737
       },
       {
+        "path": "site/data/japan/ai-arena/war-room/history/2026-06-04-close_council.json",
+        "size_mb": 0.318,
+        "size_bytes": 333943
+      },
+      {
         "path": "site/data/japan/ai-arena/latest.json",
         "size_mb": 0.242,
         "size_bytes": 253748
       },
       {
-        "path": "site/data/japan/ai-arena/positions/latest.json",
-        "size_mb": 0.217,
-        "size_bytes": 227664
-      },
-      {
         "path": "site/data/japan/ai-arena/summary/latest.json",
-        "size_mb": 0.214,
-        "size_bytes": 224650
+        "size_mb": 0.211,
+        "size_bytes": 221376
       },
       {
         "path": "site/data/japan/ai-arena/summary/2026/latest.json",
-        "size_mb": 0.214,
-        "size_bytes": 224650
+        "size_mb": 0.211,
+        "size_bytes": 221376
       },
       {
-        "path": "site/data/japan/ai-arena/live/latest.json",
-        "size_mb": 0.203,
-        "size_bytes": 213336
+        "path": "site/data/japan/ai-arena/positions/latest.json",
+        "size_mb": 0.206,
+        "size_bytes": 215569
       },
       {
-        "path": "site/data/japan/ai-arena/simulation/latest.json",
-        "size_mb": 0.203,
-        "size_bytes": 213336
+        "path": "site/data/japan/ai-arena/ranking/latest.json",
+        "size_mb": 0.202,
+        "size_bytes": 212249
       },
       {
         "path": "site/data/japan/ai-arena/war-room/history/2026-06-03-close_council.json",
@@ -759,14 +764,9 @@
         "size_bytes": 209894
       },
       {
-        "path": "site/data/japan/ai-arena/ranking/latest.json",
+        "path": "site/data/japan/ai-arena/live/latest.json",
         "size_mb": 0.196,
-        "size_bytes": 205425
-      },
-      {
-        "path": "site/data/japan/universe/jp_index_universe.csv",
-        "size_mb": 0.174,
-        "size_bytes": 182436
+        "size_bytes": 205841
       }
     ]
   }
