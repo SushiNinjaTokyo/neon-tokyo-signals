@@ -2,59 +2,29 @@
 # -*- coding: utf-8 -*-
 
 """
-Fetch / update Japanese equity daily price cache.
+JP price fetcher for Neon Tokyo Signals / AI Arena JP.
 
-Design goals:
-- Safe with existing DuckDB files.
-- Validate and migrate prices_daily schema before writing.
-- Avoid long live-update stalls.
-- In live mode:
-    - If yfinance returns empty data, skip immediately.
-    - If yfinance raises an exception, use stooq fallback only when enabled.
-    - stooq fallback timeout is short by default.
-- Print clear fetch statistics.
-
-Expected DuckDB table:
-    prices_daily(
-        ticker VARCHAR,
-        name VARCHAR,
-        date DATE,
-        open DOUBLE,
-        high DOUBLE,
-        low DOUBLE,
-        close DOUBLE,
-        adj_close DOUBLE,
-        volume BIGINT,
-        source VARCHAR,
-        fetched_at TIMESTAMP
-    )
-
-Environment variables:
-    OUT_DIR
-    PRICE_DUCKDB_PATH
-    PRICE_STORE_MODE
-    PRICE_FETCH_MODE
-    PRICE_REFRESH_MODE
-    JP_UNIVERSE_CSV
-    FETCH_START_DATE
-    FETCH_END_DATE
-    STOOQ_FALLBACK_ENABLED
-    STOOQ_TIMEOUT_SECONDS
-    YFINANCE_TIMEOUT_SECONDS
-    MAX_TICKERS
+Design:
+- DuckDB table: prices_daily
+- No "name" column in prices_daily. Name belongs to universe/metadata, not daily prices.
+- yfinance empty result:
+    - live mode: skip immediately
+    - non-live mode: skip unless fallback is explicitly desired by changing logic
+- yfinance exception:
+    - fallback to Stooq only when fallback is enabled
+- Stooq timeout defaults to 3 seconds.
+- Defensive normalization for yfinance MultiIndex / adjusted columns / column casing.
 """
 
 from __future__ import annotations
 
+import argparse
 import csv
-import io
 import json
 import os
 import sys
 import time
 import traceback
-import urllib.error
-import urllib.request
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -62,57 +32,61 @@ from typing import Any, Iterable, Optional
 
 import pandas as pd
 
+try:
+    import duckdb
+except Exception as exc:
+    print(f"ERROR missing dependency duckdb: {exc}", file=sys.stderr)
+    raise
 
 try:
-    import duckdb  # type: ignore
-except Exception:
-    duckdb = None
-
+    import requests
+except Exception as exc:
+    print(f"ERROR missing dependency requests: {exc}", file=sys.stderr)
+    raise
 
 try:
-    import yfinance as yf  # type: ignore
-except Exception:
-    yf = None
+    import yfinance as yf
+except Exception as exc:
+    print(f"ERROR missing dependency yfinance: {exc}", file=sys.stderr)
+    raise
 
 
-# =============================================================================
-# Configuration
-# =============================================================================
-
-
-DEFAULT_START_DATE = "2025-01-01"
-DEFAULT_OUT_DIR = "site"
 DEFAULT_DUCKDB_PATH = "data/cache/neon_tokyo_jp.duckdb"
 DEFAULT_UNIVERSE_CSV = "data/universe/jp_duckdb_trial_300.csv"
+DEFAULT_JSON_DIR = "data/cache/prices_jp"
 
+PRICES_TABLE = "prices_daily"
 
-PRICE_COLUMNS = [
-    "ticker",
-    "name",
-    "date",
-    "open",
-    "high",
-    "low",
-    "close",
-    "adj_close",
-    "volume",
-    "source",
-    "fetched_at",
-]
+REQUIRED_PRICE_COLUMNS = {
+    "ticker": "VARCHAR",
+    "date": "DATE",
+    "open": "DOUBLE",
+    "high": "DOUBLE",
+    "low": "DOUBLE",
+    "close": "DOUBLE",
+    "volume": "BIGINT",
+    "source": "VARCHAR",
+    "updated_at": "TIMESTAMP",
+}
 
-
-NUMERIC_PRICE_COLUMNS = [
-    "open",
-    "high",
-    "low",
-    "close",
-    "adj_close",
-    "volume",
-]
+CREATE_PRICES_TABLE_SQL = f"""
+CREATE TABLE IF NOT EXISTS {PRICES_TABLE} (
+    ticker VARCHAR,
+    date DATE,
+    open DOUBLE,
+    high DOUBLE,
+    low DOUBLE,
+    close DOUBLE,
+    volume BIGINT,
+    source VARCHAR,
+    updated_at TIMESTAMP,
+    PRIMARY KEY (ticker, date)
+)
+"""
 
 
 @dataclass(frozen=True)
-class TickerItem:
+class UniverseItem:
     ticker: str
     name: str = ""
 
@@ -124,96 +98,135 @@ class FetchResult:
     status: str
     source: str = ""
     df: Optional[pd.DataFrame] = None
-    error: str = ""
-    bars: int = 0
     latest: str = ""
+    bars: int = 0
+    errors: list[str] | None = None
+    cache_hit: bool = False
+    yfinance_success: bool = False
+    skipped: bool = False
+    failed: bool = False
+
+    def error_list(self) -> list[str]:
+        return self.errors or []
 
 
 @dataclass
-class Stats:
+class Counters:
     total_tickers: int = 0
     cache_hit_count: int = 0
     yfinance_success_count: int = 0
     stooq_success_count: int = 0
     skipped_count: int = 0
     failed_count: int = 0
-    written_rows: int = 0
+    inserted_rows: int = 0
+    processed_count: int = 0
 
 
 def env_str(name: str, default: str) -> str:
-    value = os.environ.get(name)
+    value = os.getenv(name)
     if value is None or str(value).strip() == "":
         return default
     return str(value).strip()
 
 
-def env_bool(name: str, default: bool) -> bool:
-    raw = os.environ.get(name)
-    if raw is None or str(raw).strip() == "":
-        return default
-    return str(raw).strip().lower() in {"1", "true", "yes", "y", "on", "enabled"}
-
-
 def env_int(name: str, default: int) -> int:
-    raw = os.environ.get(name)
-    if raw is None or str(raw).strip() == "":
+    value = os.getenv(name)
+    if value is None or str(value).strip() == "":
         return default
     try:
-        return int(str(raw).strip())
-    except Exception:
+        return int(str(value).strip())
+    except ValueError:
         return default
+
+
+def env_bool(name: str, default: bool) -> bool:
+    value = os.getenv(name)
+    if value is None or str(value).strip() == "":
+        return default
+    return str(value).strip().lower() in {"1", "true", "yes", "y", "on", "enabled", "enable"}
 
 
 def parse_date(value: Any) -> date:
-    if value is None:
-        raise ValueError("date value is None")
     if isinstance(value, date) and not isinstance(value, datetime):
         return value
     if isinstance(value, datetime):
         return value.date()
-    text = str(value).strip()
-    if not text:
-        raise ValueError("date value is empty")
-    return datetime.fromisoformat(text[:10]).date()
+    s = str(value).strip()
+    if not s:
+        raise ValueError("empty date")
+    return datetime.fromisoformat(s[:10]).date()
 
 
-def today_jst() -> date:
-    # GitHub Actions usually runs in UTC. Japan market logic only needs date.
-    # The project already treats generated_at separately, so date.today is enough
-    # for cache range end in this script.
-    return date.today()
+def today_jst_like() -> date:
+    # GitHub Actions is usually UTC. For JP market cache purposes, using current UTC date
+    # is acceptable because explicit end date is normally supplied by workflow/env.
+    return datetime.utcnow().date()
 
 
-def normalize_ticker(raw: Any) -> str:
-    ticker = str(raw or "").strip().upper()
-    ticker = ticker.replace(" ", "")
-    return ticker
+def ensure_parent(path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
 
 
-def normalize_name(raw: Any) -> str:
-    return str(raw or "").strip()
+def connect_duckdb(path: Path) -> duckdb.DuckDBPyConnection:
+    ensure_parent(path)
+    return duckdb.connect(str(path))
 
 
-# =============================================================================
-# Universe loading
-# =============================================================================
+def table_exists(conn: duckdb.DuckDBPyConnection, table_name: str) -> bool:
+    rows = conn.execute(
+        """
+        SELECT COUNT(*)
+        FROM information_schema.tables
+        WHERE table_name = ?
+        """,
+        [table_name],
+    ).fetchone()
+    return bool(rows and rows[0] > 0)
 
 
-def load_universe(csv_path: Path) -> list[TickerItem]:
-    if not csv_path.exists():
-        raise FileNotFoundError(f"Universe CSV not found: {csv_path}")
+def get_table_columns(conn: duckdb.DuckDBPyConnection, table_name: str) -> dict[str, str]:
+    if not table_exists(conn, table_name):
+        return {}
+    rows = conn.execute(f"PRAGMA table_info('{table_name}')").fetchall()
+    result: dict[str, str] = {}
+    for row in rows:
+        # DuckDB PRAGMA table_info: cid, name, type, notnull, dflt_value, pk
+        result[str(row[1])] = str(row[2])
+    return result
 
-    rows: list[TickerItem] = []
 
-    with csv_path.open("r", encoding="utf-8-sig", newline="") as f:
+def ensure_prices_schema(conn: duckdb.DuckDBPyConnection) -> None:
+    conn.execute(CREATE_PRICES_TABLE_SQL)
+
+    existing = get_table_columns(conn, PRICES_TABLE)
+    missing = [col for col in REQUIRED_PRICE_COLUMNS if col not in existing]
+
+    for col in missing:
+        col_type = REQUIRED_PRICE_COLUMNS[col]
+        conn.execute(f"ALTER TABLE {PRICES_TABLE} ADD COLUMN {col} {col_type}")
+
+    existing_after = get_table_columns(conn, PRICES_TABLE)
+    missing_after = [col for col in REQUIRED_PRICE_COLUMNS if col not in existing_after]
+    if missing_after:
+        raise RuntimeError(f"prices_daily schema validation failed. missing={missing_after}")
+
+    # Intentionally do not require or add "name".
+    # If an old broken table has "name", leave it alone; upsert will not use it.
+
+
+def read_universe_csv(path: Path) -> list[UniverseItem]:
+    if not path.exists():
+        raise FileNotFoundError(f"universe csv not found: {path}")
+
+    items: list[UniverseItem] = []
+    seen: set[str] = set()
+
+    with path.open("r", encoding="utf-8-sig", newline="") as f:
         reader = csv.DictReader(f)
-        fieldnames = [str(x or "").strip() for x in (reader.fieldnames or [])]
+        if not reader.fieldnames:
+            raise ValueError(f"universe csv has no header: {path}")
 
-        if not fieldnames:
-            raise ValueError(f"Universe CSV has no header: {csv_path}")
-
-        lower_map = {c.lower(): c for c in fieldnames}
-
+        lower_map = {c.lower().strip(): c for c in reader.fieldnames}
         ticker_col = (
             lower_map.get("ticker")
             or lower_map.get("symbol")
@@ -222,207 +235,59 @@ def load_universe(csv_path: Path) -> list[TickerItem]:
         )
         name_col = (
             lower_map.get("name")
-            or lower_map.get("company_name")
             or lower_map.get("company")
+            or lower_map.get("company_name")
             or lower_map.get("銘柄名")
         )
 
-        if ticker_col is None:
+        if not ticker_col:
             raise ValueError(
-                f"Universe CSV must include ticker/symbol/code column. "
-                f"columns={fieldnames}"
+                f"universe csv must have ticker/symbol/code column. columns={reader.fieldnames}"
             )
 
-        for r in reader:
-            ticker = normalize_ticker(r.get(ticker_col, ""))
-            name = normalize_name(r.get(name_col, "")) if name_col else ""
-
-            if not ticker:
+        for row in reader:
+            raw_ticker = str(row.get(ticker_col, "")).strip()
+            if not raw_ticker:
                 continue
+            ticker = normalize_jp_ticker(raw_ticker)
+            if not ticker or ticker in seen:
+                continue
+            seen.add(ticker)
+            name = str(row.get(name_col, "")).strip() if name_col else ""
+            items.append(UniverseItem(ticker=ticker, name=name))
 
-            # Accept both 7203 and 7203.T, but normalize JP equities to .T.
-            if ticker.isdigit():
-                ticker = f"{ticker}.T"
+    if not items:
+        raise ValueError(f"universe csv produced zero tickers: {path}")
 
-            rows.append(TickerItem(ticker=ticker, name=name))
-
-    # De-duplicate while preserving order.
-    seen: set[str] = set()
-    unique: list[TickerItem] = []
-    for item in rows:
-        if item.ticker in seen:
-            continue
-        seen.add(item.ticker)
-        unique.append(item)
-
-    if not unique:
-        raise ValueError(f"Universe CSV has no valid tickers: {csv_path}")
-
-    return unique
+    return items
 
 
-# =============================================================================
-# DuckDB schema management
-# =============================================================================
+def normalize_jp_ticker(raw: str) -> str:
+    s = str(raw).strip().upper()
+    if not s:
+        return ""
+    s = s.replace(".JP", ".T")
+    if s.endswith(".T"):
+        return s
+    if s.isdigit():
+        return f"{s}.T"
+    return s
 
 
-def connect_duckdb(path: Path):
-    if duckdb is None:
-        raise RuntimeError("duckdb package is not installed")
-
-    path.parent.mkdir(parents=True, exist_ok=True)
-    return duckdb.connect(str(path))
-
-
-def table_exists(conn, table_name: str) -> bool:
-    result = conn.execute(
-        """
-        SELECT COUNT(*)
-        FROM information_schema.tables
-        WHERE table_name = ?
-        """,
-        [table_name],
-    ).fetchone()
-    return bool(result and result[0] > 0)
+def ticker_to_stooq_symbol(ticker: str) -> str:
+    s = normalize_jp_ticker(ticker)
+    if s.endswith(".T"):
+        return s.replace(".T", ".JP")
+    return s
 
 
-def get_table_columns(conn, table_name: str) -> dict[str, str]:
-    if not table_exists(conn, table_name):
-        return {}
-
-    rows = conn.execute(f"PRAGMA table_info('{table_name}')").fetchall()
-    # PRAGMA table_info returns:
-    # cid, name, type, notnull, dflt_value, pk
-    return {str(row[1]).lower(): str(row[2]).upper() for row in rows}
-
-
-def ensure_price_schema(conn) -> None:
-    """
-    Create and migrate prices_daily safely.
-
-    This function is intentionally defensive because existing DuckDB files may
-    have been created by older versions of the pipeline.
-
-    Important:
-    CREATE TABLE IF NOT EXISTS never adds missing columns to an existing table.
-    So we inspect the current schema and apply ALTER TABLE migrations.
-    """
-
-    conn.execute(
-        """
-        CREATE TABLE IF NOT EXISTS prices_daily (
-            ticker VARCHAR NOT NULL,
-            name VARCHAR,
-            date DATE NOT NULL,
-            open DOUBLE,
-            high DOUBLE,
-            low DOUBLE,
-            close DOUBLE,
-            adj_close DOUBLE,
-            volume BIGINT,
-            source VARCHAR,
-            fetched_at TIMESTAMP
-        )
-        """
-    )
-
-    required_columns: list[tuple[str, str]] = [
-        ("ticker", "VARCHAR"),
-        ("name", "VARCHAR"),
-        ("date", "DATE"),
-        ("open", "DOUBLE"),
-        ("high", "DOUBLE"),
-        ("low", "DOUBLE"),
-        ("close", "DOUBLE"),
-        ("adj_close", "DOUBLE"),
-        ("volume", "BIGINT"),
-        ("source", "VARCHAR"),
-        ("fetched_at", "TIMESTAMP"),
-    ]
-
-    existing = get_table_columns(conn, "prices_daily")
-
-    for col_name, col_type in required_columns:
-        if col_name.lower() not in existing:
-            print(f"Schema migration: ALTER prices_daily ADD COLUMN {col_name} {col_type}")
-            conn.execute(f"ALTER TABLE prices_daily ADD COLUMN {col_name} {col_type}")
-
-    validate_price_schema(conn)
-
-    # Compatibility view. If a physical table with this name exists, skip.
+def get_latest_cached_date(
+    conn: duckdb.DuckDBPyConnection,
+    ticker: str,
+) -> Optional[date]:
     try:
         row = conn.execute(
-            """
-            SELECT table_type
-            FROM information_schema.tables
-            WHERE table_name = 'prices_daily_jp'
-            LIMIT 1
-            """
-        ).fetchone()
-
-        if row and str(row[0]).upper() == "BASE TABLE":
-            print("Warning: prices_daily_jp exists as table; compatibility view skipped")
-        else:
-            conn.execute(
-                """
-                CREATE OR REPLACE VIEW prices_daily_jp AS
-                SELECT
-                    ticker,
-                    name,
-                    date,
-                    open,
-                    high,
-                    low,
-                    close,
-                    adj_close,
-                    volume,
-                    source,
-                    fetched_at
-                FROM prices_daily
-                """
-            )
-    except Exception as exc:
-        print(f"Warning: could not create prices_daily_jp view: {exc}")
-
-
-def validate_price_schema(conn) -> None:
-    existing = get_table_columns(conn, "prices_daily")
-    missing = [col for col in PRICE_COLUMNS if col.lower() not in existing]
-
-    if missing:
-        raise RuntimeError(
-            "DuckDB schema validation failed. "
-            f"prices_daily missing columns: {missing}. "
-            f"existing={existing}"
-        )
-
-    # Hard checks for dangerous type mismatches.
-    # DuckDB can cast many values, but date/ticker absence or incompatible types
-    # should be caught before the long fetch loop.
-    date_type = existing.get("date", "")
-    ticker_type = existing.get("ticker", "")
-
-    if "DATE" not in date_type and "TIMESTAMP" not in date_type:
-        raise RuntimeError(
-            f"prices_daily.date has suspicious type: {date_type}. "
-            "Expected DATE or TIMESTAMP."
-        )
-
-    if not any(x in ticker_type for x in ["VARCHAR", "TEXT", "STRING"]):
-        raise RuntimeError(
-            f"prices_daily.ticker has suspicious type: {ticker_type}. "
-            "Expected VARCHAR/TEXT/STRING."
-        )
-
-
-def get_latest_cached_date(conn, ticker: str) -> Optional[date]:
-    try:
-        row = conn.execute(
-            """
-            SELECT MAX(date)
-            FROM prices_daily
-            WHERE ticker = ?
-            """,
+            f"SELECT MAX(date) FROM {PRICES_TABLE} WHERE ticker = ?",
             [ticker],
         ).fetchone()
         if not row or row[0] is None:
@@ -432,503 +297,504 @@ def get_latest_cached_date(conn, ticker: str) -> Optional[date]:
         return None
 
 
-# =============================================================================
-# Fetch helpers
-# =============================================================================
-
-
-def normalize_price_df(
-    df: pd.DataFrame,
+def get_cached_bars_count(
+    conn: duckdb.DuckDBPyConnection,
     ticker: str,
-    name: str,
+) -> int:
+    try:
+        row = conn.execute(
+            f"SELECT COUNT(*) FROM {PRICES_TABLE} WHERE ticker = ?",
+            [ticker],
+        ).fetchone()
+        return int(row[0] or 0) if row else 0
+    except Exception:
+        return 0
+
+
+def should_use_cache(
+    latest_cached: Optional[date],
+    end_date: date,
+    refresh_mode: str,
+) -> bool:
+    if latest_cached is None:
+        return False
+
+    refresh_mode = refresh_mode.lower().strip()
+
+    if refresh_mode in {"full", "force", "rebuild"}:
+        return False
+
+    # JP market latest can be previous business day. Allow same day or later only here.
+    # Workflow can choose incremental to fetch gaps.
+    return latest_cached >= end_date
+
+
+def normalize_price_dataframe(
+    raw: pd.DataFrame,
+    ticker: str,
     source: str,
 ) -> pd.DataFrame:
-    if df is None or df.empty:
-        return pd.DataFrame(columns=PRICE_COLUMNS)
+    if raw is None or raw.empty:
+        return pd.DataFrame()
 
-    out = df.copy()
+    df = raw.copy()
 
-    # yfinance may return MultiIndex columns.
-    if isinstance(out.columns, pd.MultiIndex):
-        out.columns = [
-            str(c[0]).strip() if isinstance(c, tuple) else str(c).strip()
-            for c in out.columns
-        ]
+    # yfinance can return MultiIndex columns.
+    if isinstance(df.columns, pd.MultiIndex):
+        # Case 1: one ticker, columns like ('Close', '7203.T')
+        # Case 2: group_by variations.
+        new_cols: list[str] = []
+        for col in df.columns:
+            parts = [str(x) for x in col if str(x) and str(x) != "nan"]
+            lower_parts = [p.lower() for p in parts]
 
-    # Date can be index or column.
-    if "Date" in out.columns:
-        date_series = out["Date"]
-    elif "date" in out.columns:
-        date_series = out["date"]
+            known = None
+            for candidate in ["open", "high", "low", "close", "adj close", "volume"]:
+                if candidate in lower_parts:
+                    known = candidate
+                    break
+
+            if known:
+                new_cols.append(known)
+            elif parts:
+                new_cols.append(parts[0].lower())
+            else:
+                new_cols.append("")
+        df.columns = new_cols
     else:
-        date_series = out.index
+        df.columns = [str(c).strip().lower() for c in df.columns]
 
-    normalized = pd.DataFrame()
-    normalized["date"] = pd.to_datetime(date_series, errors="coerce").date
-
-    col_map = {
-        "Open": "open",
-        "High": "high",
-        "Low": "low",
-        "Close": "close",
-        "Adj Close": "adj_close",
-        "AdjClose": "adj_close",
-        "Volume": "volume",
-        "open": "open",
-        "high": "high",
-        "low": "low",
-        "close": "close",
-        "adj_close": "adj_close",
-        "adj close": "adj_close",
-        "volume": "volume",
+    # Normalize common column aliases.
+    rename_map = {
+        "adj close": "close",
+        "adj_close": "close",
+        "adjusted close": "close",
+        "open price": "open",
+        "high price": "high",
+        "low price": "low",
+        "close price": "close",
+        "vol": "volume",
     }
+    df = df.rename(columns={c: rename_map.get(c, c) for c in df.columns})
 
-    for src, dst in col_map.items():
-        if src in out.columns and dst not in normalized.columns:
-            normalized[dst] = out[src]
+    # If duplicate columns appear after rename, keep first non-null by bfill.
+    if len(set(df.columns)) != len(df.columns):
+        merged = pd.DataFrame(index=df.index)
+        for col in dict.fromkeys(df.columns):
+            same = df.loc[:, df.columns == col]
+            if isinstance(same, pd.Series):
+                merged[col] = same
+            else:
+                merged[col] = same.bfill(axis=1).iloc[:, 0]
+        df = merged
 
-    # If adjusted close is unavailable, use close.
-    if "adj_close" not in normalized.columns:
-        normalized["adj_close"] = normalized.get("close")
+    # Date handling.
+    if "date" in df.columns:
+        df["date"] = pd.to_datetime(df["date"], errors="coerce").dt.date
+    else:
+        idx = df.index
+        df = df.reset_index()
+        date_col = None
+        for c in df.columns:
+            if str(c).strip().lower() in {"date", "datetime", "index"}:
+                date_col = c
+                break
+        if date_col is None:
+            # Last resort: original index
+            df["date"] = pd.to_datetime(idx, errors="coerce").date
+        else:
+            df["date"] = pd.to_datetime(df[date_col], errors="coerce").dt.date
 
-    for col in ["open", "high", "low", "close", "adj_close"]:
-        if col not in normalized.columns:
-            normalized[col] = None
-        normalized[col] = pd.to_numeric(normalized[col], errors="coerce")
+    required_ohlc = ["open", "high", "low", "close"]
+    for col in required_ohlc:
+        if col not in df.columns:
+            return pd.DataFrame()
 
-    if "volume" not in normalized.columns:
-        normalized["volume"] = 0
-    normalized["volume"] = pd.to_numeric(normalized["volume"], errors="coerce").fillna(0).astype("int64")
+    if "volume" not in df.columns:
+        df["volume"] = 0
 
-    normalized["ticker"] = ticker
-    normalized["name"] = name
-    normalized["source"] = source
-    normalized["fetched_at"] = datetime.utcnow()
+    out = df[["date", "open", "high", "low", "close", "volume"]].copy()
+    out["ticker"] = ticker
+    out["source"] = source
+    out["updated_at"] = datetime.utcnow()
 
-    normalized = normalized[PRICE_COLUMNS]
-    normalized = normalized.dropna(subset=["date"])
-    normalized = normalized.drop_duplicates(subset=["ticker", "date"], keep="last")
-    normalized = normalized.sort_values(["ticker", "date"]).reset_index(drop=True)
+    for col in ["open", "high", "low", "close"]:
+        out[col] = pd.to_numeric(out[col], errors="coerce")
 
-    # Remove rows that are completely unusable.
-    normalized = normalized.dropna(subset=["close"], how="all")
+    out["volume"] = pd.to_numeric(out["volume"], errors="coerce").fillna(0).astype("int64")
+    out = out.dropna(subset=["date", "open", "high", "low", "close"])
+    out = out[out["close"] > 0]
+    out = out.drop_duplicates(subset=["ticker", "date"], keep="last")
+    out = out.sort_values(["ticker", "date"])
 
-    return normalized
+    return out[
+        ["ticker", "date", "open", "high", "low", "close", "volume", "source", "updated_at"]
+    ]
+
+
+def fetch_yfinance_raw(
+    ticker: str,
+    start_date: date,
+    end_date: date,
+    timeout_seconds: int,
+) -> pd.DataFrame:
+    # yfinance end is exclusive-ish. Add one day to avoid missing end_date.
+    yf_end = end_date + timedelta(days=1)
+
+    # timeout parameter is supported in recent yfinance.
+    return yf.download(
+        tickers=ticker,
+        start=start_date.isoformat(),
+        end=yf_end.isoformat(),
+        interval="1d",
+        auto_adjust=False,
+        actions=False,
+        progress=False,
+        threads=False,
+        timeout=timeout_seconds,
+        group_by="column",
+    )
 
 
 def fetch_yfinance(
     ticker: str,
-    name: str,
-    start: date,
-    end: date,
+    start_date: date,
+    end_date: date,
     timeout_seconds: int,
-) -> FetchResult:
-    if yf is None:
-        return FetchResult(
-            ticker=ticker,
-            name=name,
-            status="error",
-            source="yfinance",
-            error="yfinance package is not installed",
-        )
-
-    # yfinance end is exclusive, so add one day.
-    yf_end = end + timedelta(days=1)
+    debug_raw: bool,
+) -> tuple[pd.DataFrame, list[str], bool]:
+    errors: list[str] = []
 
     try:
-        raw = yf.download(
-            ticker,
-            start=start.isoformat(),
-            end=yf_end.isoformat(),
-            progress=False,
-            auto_adjust=False,
-            actions=False,
-            threads=False,
-            timeout=timeout_seconds,
-        )
-
-        if raw is None or raw.empty:
-            return FetchResult(
-                ticker=ticker,
-                name=name,
-                status="empty",
-                source="yfinance",
-                error="yfinance_empty",
-            )
-
-        df = normalize_price_df(raw, ticker=ticker, name=name, source="yfinance")
-        if df.empty:
-            return FetchResult(
-                ticker=ticker,
-                name=name,
-                status="empty",
-                source="yfinance",
-                error="yfinance_empty_after_normalize",
-            )
-
-        latest_value = str(max(df["date"]))[:10]
-
-        return FetchResult(
-            ticker=ticker,
-            name=name,
-            status="ok",
-            source="yfinance",
-            df=df,
-            bars=len(df),
-            latest=latest_value,
-        )
-
+        raw = fetch_yfinance_raw(ticker, start_date, end_date, timeout_seconds)
     except Exception as exc:
-        return FetchResult(
-            ticker=ticker,
-            name=name,
-            status="error",
-            source="yfinance",
-            error=f"{type(exc).__name__}: {exc}",
-        )
+        errors.append(f"yfinance_exception:{type(exc).__name__}:{str(exc)[:300]}")
+        return pd.DataFrame(), errors, False
 
+    if raw is None or raw.empty:
+        errors.append("yfinance_empty")
+        return pd.DataFrame(), errors, True
 
-def to_stooq_symbol(ticker: str) -> str:
-    t = normalize_ticker(ticker)
-    if t.endswith(".T"):
-        return t[:-2] + ".JP"
-    if t.endswith(".JP"):
-        return t
-    if t.isdigit():
-        return t + ".JP"
-    return t
+    normalized = normalize_price_dataframe(raw, ticker=ticker, source="yfinance")
+
+    if normalized.empty:
+        errors.append("yfinance_empty_after_normalize")
+        if debug_raw:
+            print("  DEBUG yfinance raw non-empty but normalized empty")
+            print(f"  DEBUG raw shape={getattr(raw, 'shape', None)}")
+            print(f"  DEBUG raw columns={list(raw.columns)}")
+            try:
+                print("  DEBUG raw head:")
+                print(raw.head(3).to_string())
+            except Exception:
+                pass
+        return pd.DataFrame(), errors, True
+
+    return normalized, errors, True
 
 
 def fetch_stooq(
     ticker: str,
-    name: str,
-    start: date,
-    end: date,
+    start_date: date,
+    end_date: date,
     timeout_seconds: int,
-) -> FetchResult:
-    symbol = to_stooq_symbol(ticker).lower()
-    url = (
-        "https://stooq.com/q/d/l/"
-        f"?s={symbol}&i=d&d1={start.strftime('%Y%m%d')}&d2={end.strftime('%Y%m%d')}"
-    )
+) -> tuple[pd.DataFrame, list[str]]:
+    errors: list[str] = []
+    symbol = ticker_to_stooq_symbol(ticker)
+
+    url = "https://stooq.com/q/d/l/"
+    params = {
+        "s": symbol.lower(),
+        "i": "d",
+        "d1": start_date.strftime("%Y%m%d"),
+        "d2": end_date.strftime("%Y%m%d"),
+    }
 
     try:
-        req = urllib.request.Request(
-            url,
-            headers={
-                "User-Agent": "Mozilla/5.0 price-cache-fetcher",
-            },
-        )
-        with urllib.request.urlopen(req, timeout=timeout_seconds) as res:
-            body = res.read().decode("utf-8", errors="replace")
-
-        if not body.strip() or "No data" in body:
-            return FetchResult(
-                ticker=ticker,
-                name=name,
-                status="empty",
-                source="stooq",
-                error="stooq_empty",
-            )
-
-        raw = pd.read_csv(io.StringIO(body))
-        if raw.empty:
-            return FetchResult(
-                ticker=ticker,
-                name=name,
-                status="empty",
-                source="stooq",
-                error="stooq_empty",
-            )
-
-        # Stooq columns usually: Date,Open,High,Low,Close,Volume
-        df = normalize_price_df(raw, ticker=ticker, name=name, source="stooq")
-
-        if df.empty:
-            return FetchResult(
-                ticker=ticker,
-                name=name,
-                status="empty",
-                source="stooq",
-                error="stooq_empty_after_normalize",
-            )
-
-        latest_value = str(max(df["date"]))[:10]
-
-        return FetchResult(
-            ticker=ticker,
-            name=name,
-            status="ok",
-            source="stooq",
-            df=df,
-            bars=len(df),
-            latest=latest_value,
-        )
-
+        resp = requests.get(url, params=params, timeout=timeout_seconds)
+        resp.raise_for_status()
     except Exception as exc:
-        return FetchResult(
-            ticker=ticker,
-            name=name,
-            status="error",
-            source="stooq",
-            error=f"stooq_error: {type(exc).__name__}: {exc}",
-        )
+        errors.append(f"stooq_error:{type(exc).__name__}:{str(exc)[:300]}")
+        return pd.DataFrame(), errors
 
-
-# =============================================================================
-# Store helpers
-# =============================================================================
-
-
-def validate_price_frame(df: pd.DataFrame) -> None:
-    if df is None:
-        raise ValueError("price DataFrame is None")
-
-    missing = [col for col in PRICE_COLUMNS if col not in df.columns]
-    if missing:
-        raise ValueError(f"price DataFrame missing columns: {missing}")
-
-    if df.empty:
-        return
-
-    if df["ticker"].isna().any():
-        raise ValueError("price DataFrame contains null ticker")
-
-    if df["date"].isna().any():
-        raise ValueError("price DataFrame contains null date")
-
-    # Ensure numeric columns are coercible.
-    for col in NUMERIC_PRICE_COLUMNS:
-        pd.to_numeric(df[col], errors="coerce")
-
-
-def upsert_prices(conn, df: pd.DataFrame) -> int:
-    validate_price_schema(conn)
-    validate_price_frame(df)
-
-    if df.empty:
-        return 0
-
-    work = df[PRICE_COLUMNS].copy()
-    work["ticker"] = work["ticker"].astype(str)
-    work["name"] = work["name"].fillna("").astype(str)
-    work["source"] = work["source"].fillna("").astype(str)
-    work["date"] = pd.to_datetime(work["date"], errors="coerce").dt.date
-    work["fetched_at"] = pd.to_datetime(work["fetched_at"], errors="coerce")
-
-    for col in ["open", "high", "low", "close", "adj_close"]:
-        work[col] = pd.to_numeric(work[col], errors="coerce")
-
-    work["volume"] = pd.to_numeric(work["volume"], errors="coerce").fillna(0).astype("int64")
-
-    work = work.dropna(subset=["ticker", "date"])
-    work = work.drop_duplicates(subset=["ticker", "date"], keep="last")
-
-    if work.empty:
-        return 0
-
-    conn.register("_incoming_prices_daily", work)
+    text = resp.text.strip()
+    if not text or text.lower().startswith("no data"):
+        errors.append("stooq_empty")
+        return pd.DataFrame(), errors
 
     try:
-        # Delete overlapping ticker/date first, then insert.
-        # This avoids depending on an existing primary key or MERGE support.
-        conn.execute(
-            """
-            DELETE FROM prices_daily
-            USING _incoming_prices_daily s
-            WHERE prices_daily.ticker = s.ticker
-              AND prices_daily.date = CAST(s.date AS DATE)
-            """
-        )
+        from io import StringIO
 
-        conn.execute(
-            """
-            INSERT INTO prices_daily (
-                ticker,
-                name,
-                date,
-                open,
-                high,
-                low,
-                close,
-                adj_close,
-                volume,
-                source,
-                fetched_at
-            )
-            SELECT
-                CAST(ticker AS VARCHAR) AS ticker,
-                CAST(name AS VARCHAR) AS name,
-                CAST(date AS DATE) AS date,
-                CAST(open AS DOUBLE) AS open,
-                CAST(high AS DOUBLE) AS high,
-                CAST(low AS DOUBLE) AS low,
-                CAST(close AS DOUBLE) AS close,
-                CAST(adj_close AS DOUBLE) AS adj_close,
-                CAST(volume AS BIGINT) AS volume,
-                CAST(source AS VARCHAR) AS source,
-                CAST(fetched_at AS TIMESTAMP) AS fetched_at
-            FROM _incoming_prices_daily
-            """
-        )
-    finally:
-        try:
-            conn.unregister("_incoming_prices_daily")
-        except Exception:
-            pass
+        raw = pd.read_csv(StringIO(text))
+    except Exception as exc:
+        errors.append(f"stooq_parse_error:{type(exc).__name__}:{str(exc)[:300]}")
+        return pd.DataFrame(), errors
 
-    return int(len(work))
+    if raw.empty:
+        errors.append("stooq_empty")
+        return pd.DataFrame(), errors
+
+    normalized = normalize_price_dataframe(raw, ticker=ticker, source="stooq")
+    if normalized.empty:
+        errors.append("stooq_empty_after_normalize")
+        return pd.DataFrame(), errors
+
+    return normalized, errors
 
 
-def write_json_cache(out_dir: Path, df: pd.DataFrame) -> int:
+def filter_incremental_rows(
+    df: pd.DataFrame,
+    latest_cached: Optional[date],
+    refresh_mode: str,
+) -> pd.DataFrame:
+    if df.empty:
+        return df
+
+    if latest_cached is None:
+        return df
+
+    if refresh_mode.lower().strip() in {"full", "force", "rebuild"}:
+        return df
+
+    out = df.copy()
+    out["date"] = pd.to_datetime(out["date"], errors="coerce").dt.date
+    out = out[out["date"] > latest_cached]
+    return out
+
+
+def upsert_prices(conn: duckdb.DuckDBPyConnection, df: pd.DataFrame) -> int:
     if df is None or df.empty:
         return 0
 
-    json_dir = out_dir / "data" / "prices-jp"
+    required_cols = list(REQUIRED_PRICE_COLUMNS.keys())
+    missing = [c for c in required_cols if c not in df.columns]
+    if missing:
+        raise ValueError(f"upsert dataframe missing required columns: {missing}")
+
+    clean = df[required_cols].copy()
+    clean["date"] = pd.to_datetime(clean["date"], errors="coerce").dt.date
+    clean["updated_at"] = pd.to_datetime(clean["updated_at"], errors="coerce")
+
+    clean = clean.dropna(subset=["ticker", "date", "open", "high", "low", "close"])
+    clean = clean.drop_duplicates(subset=["ticker", "date"], keep="last")
+
+    if clean.empty:
+        return 0
+
+    conn.register("incoming_prices", clean)
+
+    # Do not reference "name".
+    conn.execute(
+        f"""
+        DELETE FROM {PRICES_TABLE}
+        USING incoming_prices
+        WHERE {PRICES_TABLE}.ticker = incoming_prices.ticker
+          AND {PRICES_TABLE}.date = incoming_prices.date
+        """
+    )
+
+    conn.execute(
+        f"""
+        INSERT INTO {PRICES_TABLE}
+            (ticker, date, open, high, low, close, volume, source, updated_at)
+        SELECT
+            ticker, date, open, high, low, close, volume, source, updated_at
+        FROM incoming_prices
+        """
+    )
+
+    conn.unregister("incoming_prices")
+    return int(len(clean))
+
+
+def write_json_cache(json_dir: Path, ticker: str, df: pd.DataFrame) -> None:
+    if df is None or df.empty:
+        return
+
     json_dir.mkdir(parents=True, exist_ok=True)
+    safe = ticker.replace("/", "_").replace("\\", "_")
+    path = json_dir / f"{safe}.json"
 
-    written = 0
+    out = df.copy()
+    out["date"] = out["date"].astype(str)
+    out["updated_at"] = out["updated_at"].astype(str)
 
-    for ticker, g in df.groupby("ticker"):
-        safe = str(ticker).replace("/", "_")
-        path = json_dir / f"{safe}.json"
-
-        records: list[dict[str, Any]] = []
-        for row in g.sort_values("date").to_dict(orient="records"):
-            item = dict(row)
-            for k, v in list(item.items()):
-                if isinstance(v, (datetime, date)):
-                    item[k] = v.isoformat()
-                elif pd.isna(v):
-                    item[k] = None
-            records.append(item)
-
-        payload = {
-            "ticker": ticker,
-            "name": str(g["name"].iloc[-1] or ""),
-            "updated_at": datetime.utcnow().isoformat(timespec="seconds") + "Z",
-            "rows": records,
-        }
-
-        path.write_text(
-            json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
-            encoding="utf-8",
-        )
-        written += len(records)
-
-    return written
-
-
-# =============================================================================
-# Main fetch logic
-# =============================================================================
-
-
-def resolve_fetch_window(
-    conn,
-    ticker: str,
-    fetch_mode: str,
-    refresh_mode: str,
-    default_start: date,
-    default_end: date,
-) -> tuple[Optional[date], Optional[date], bool]:
-    """
-    Returns:
-        start, end, cache_hit
-    """
-
-    end = default_end
-
-    if refresh_mode == "full":
-        return default_start, end, False
-
-    latest = get_latest_cached_date(conn, ticker)
-
-    if latest is None:
-        return default_start, end, False
-
-    if latest >= end:
-        return None, None, True
-
-    # Incremental fetch from the day after latest cached date.
-    start = latest + timedelta(days=1)
-
-    if start > end:
-        return None, None, True
-
-    return start, end, False
-
-
-def should_use_stooq_fallback(
-    fetch_mode: str,
-    yf_result: FetchResult,
-    fallback_enabled: bool,
-) -> bool:
-    if not fallback_enabled:
-        return False
-
-    # Requested behavior:
-    # live update:
-    #   - yfinance empty -> skip immediately
-    #   - yfinance error -> stooq fallback
-    if fetch_mode == "live":
-        return yf_result.status == "error"
-
-    # Non-live modes can fallback for both empty and error.
-    return yf_result.status in {"empty", "error"}
+    records = out.sort_values("date").to_dict(orient="records")
+    with path.open("w", encoding="utf-8") as f:
+        json.dump(records, f, ensure_ascii=False, indent=2)
 
 
 def fetch_one(
-    item: TickerItem,
-    start: date,
-    end: date,
+    item: UniverseItem,
+    conn: duckdb.DuckDBPyConnection,
+    start_date: date,
+    end_date: date,
     fetch_mode: str,
+    refresh_mode: str,
     fallback_enabled: bool,
-    yfinance_timeout: int,
-    stooq_timeout: int,
+    yfinance_timeout_seconds: int,
+    stooq_timeout_seconds: int,
+    min_acceptable_bars: int,
+    debug_raw_limit_remaining: int,
 ) -> FetchResult:
-    yf_result = fetch_yfinance(
-        ticker=item.ticker,
-        name=item.name,
-        start=start,
-        end=end,
-        timeout_seconds=yfinance_timeout,
-    )
+    ticker = item.ticker
+    errors: list[str] = []
 
-    if yf_result.status == "ok":
-        return yf_result
+    latest_cached = get_latest_cached_date(conn, ticker)
+    cached_bars = get_cached_bars_count(conn, ticker)
 
-    if should_use_stooq_fallback(fetch_mode, yf_result, fallback_enabled):
-        stooq_result = fetch_stooq(
-            ticker=item.ticker,
+    if should_use_cache(latest_cached, end_date, refresh_mode):
+        return FetchResult(
+            ticker=ticker,
             name=item.name,
-            start=start,
-            end=end,
-            timeout_seconds=stooq_timeout,
+            status="CACHE_HIT",
+            source="duckdb_cache",
+            latest=latest_cached.isoformat() if latest_cached else "",
+            bars=cached_bars,
+            errors=[],
+            cache_hit=True,
         )
 
-        if stooq_result.status == "ok":
-            return stooq_result
+    fetch_start = start_date
+    if latest_cached and refresh_mode.lower().strip() not in {"full", "force", "rebuild"}:
+        fetch_start = latest_cached + timedelta(days=1)
 
-        combined_error = "; ".join(
-            x
-            for x in [
-                yf_result.error,
-                stooq_result.error,
-            ]
-            if x
-        )
+    debug_raw = debug_raw_limit_remaining > 0
+
+    yf_df, yf_errors, yf_completed = fetch_yfinance(
+        ticker=ticker,
+        start_date=fetch_start,
+        end_date=end_date,
+        timeout_seconds=yfinance_timeout_seconds,
+        debug_raw=debug_raw,
+    )
+    errors.extend(yf_errors)
+
+    if not yf_df.empty:
+        yf_df = filter_incremental_rows(yf_df, latest_cached, refresh_mode)
+        if yf_df.empty:
+            return FetchResult(
+                ticker=ticker,
+                name=item.name,
+                status="CACHE_CURRENT_AFTER_YF",
+                source="duckdb_cache+yfinance",
+                latest=latest_cached.isoformat() if latest_cached else "",
+                bars=cached_bars,
+                errors=errors,
+                cache_hit=True,
+                yfinance_success=True,
+            )
 
         return FetchResult(
-            ticker=item.ticker,
+            ticker=ticker,
             name=item.name,
-            status="error" if stooq_result.status == "error" else "empty",
-            source="yfinance+stooq",
-            error=combined_error,
+            status="OK",
+            source="duckdb_cache+yfinance" if latest_cached else "yfinance",
+            df=yf_df,
+            latest=str(max(yf_df["date"])),
+            bars=len(yf_df),
+            errors=errors,
+            yfinance_success=True,
         )
 
-    # No fallback path.
-    return yf_result
+    # Important rule:
+    # yfinance_empty means no fallback in live mode.
+    if "yfinance_empty" in errors and fetch_mode.lower().strip() == "live":
+        return FetchResult(
+            ticker=ticker,
+            name=item.name,
+            status="SKIP",
+            source="yfinance",
+            latest=latest_cached.isoformat() if latest_cached else "",
+            bars=cached_bars,
+            errors=errors,
+            skipped=True,
+        )
+
+    # yfinance_empty_after_normalize indicates a likely parser/schema problem.
+    # Treat as failed to avoid hiding a common bug as insufficient_data.
+    if "yfinance_empty_after_normalize" in errors:
+        return FetchResult(
+            ticker=ticker,
+            name=item.name,
+            status="FAIL",
+            source="yfinance",
+            latest=latest_cached.isoformat() if latest_cached else "",
+            bars=cached_bars,
+            errors=errors,
+            failed=True,
+        )
+
+    # Fallback only on yfinance exception or non-live empty when enabled.
+    should_fallback = fallback_enabled and any(e.startswith("yfinance_exception") for e in errors)
+
+    if not should_fallback:
+        return FetchResult(
+            ticker=ticker,
+            name=item.name,
+            status="SKIP",
+            source="yfinance",
+            latest=latest_cached.isoformat() if latest_cached else "",
+            bars=cached_bars,
+            errors=errors,
+            skipped=True,
+        )
+
+    stooq_df, stooq_errors = fetch_stooq(
+        ticker=ticker,
+        start_date=fetch_start,
+        end_date=end_date,
+        timeout_seconds=stooq_timeout_seconds,
+    )
+    errors.extend(stooq_errors)
+
+    if not stooq_df.empty:
+        stooq_df = filter_incremental_rows(stooq_df, latest_cached, refresh_mode)
+        if stooq_df.empty:
+            return FetchResult(
+                ticker=ticker,
+                name=item.name,
+                status="CACHE_CURRENT_AFTER_STOOQ",
+                source="duckdb_cache+stooq",
+                latest=latest_cached.isoformat() if latest_cached else "",
+                bars=cached_bars,
+                errors=errors,
+                cache_hit=True,
+            )
+
+        if len(stooq_df) < min_acceptable_bars and latest_cached is None:
+            return FetchResult(
+                ticker=ticker,
+                name=item.name,
+                status="SKIP",
+                source="stooq",
+                latest=str(max(stooq_df["date"])) if not stooq_df.empty else "",
+                bars=len(stooq_df),
+                errors=errors + ["insufficient_data"],
+                skipped=True,
+            )
+
+        return FetchResult(
+            ticker=ticker,
+            name=item.name,
+            status="OK",
+            source="duckdb_cache+stooq" if latest_cached else "stooq",
+            df=stooq_df,
+            latest=str(max(stooq_df["date"])),
+            bars=len(stooq_df),
+            errors=errors,
+        )
+
+    return FetchResult(
+        ticker=ticker,
+        name=item.name,
+        status="FAIL",
+        source="yfinance+stooq",
+        latest=latest_cached.isoformat() if latest_cached else "",
+        bars=cached_bars,
+        errors=errors,
+        failed=True,
+    )
 
 
 def print_header(
@@ -936,175 +802,213 @@ def print_header(
     fetch_mode: str,
     refresh_mode: str,
     fallback_enabled: bool,
-    stooq_timeout: int,
-    yfinance_timeout: int,
+    stooq_timeout_seconds: int,
+    yfinance_timeout_seconds: int,
     store_mode: str,
     duckdb_path: Path,
     universe_csv: Path,
+    start_date: date,
+    end_date: date,
 ) -> None:
     print("=== JP price fetch ===")
     print(f"total tickers: {total_tickers}")
     print(f"fetch mode: {fetch_mode}")
     print(f"refresh mode: {refresh_mode}")
     print(f"fallback enabled/disabled: {'enabled' if fallback_enabled else 'disabled'}")
-    print(f"stooq timeout seconds: {stooq_timeout}")
-    print(f"yfinance timeout seconds: {yfinance_timeout}")
+    print(f"stooq timeout seconds: {stooq_timeout_seconds}")
+    print(f"yfinance timeout seconds: {yfinance_timeout_seconds}")
     print(f"store mode: {store_mode}")
     print(f"duckdb path: {duckdb_path}")
     print(f"universe csv: {universe_csv}")
+    print(f"start date: {start_date.isoformat()}")
+    print(f"end date: {end_date.isoformat()}")
     print("======================")
 
 
-def print_summary(stats: Stats, fetch_mode: str, fallback_enabled: bool) -> None:
+def print_result_line(index: int, total: int, item: UniverseItem, result: FetchResult) -> None:
+    label_name = f" {item.name}" if item.name else ""
+    print(f"[{index}/{total}] Fetch {item.ticker}{label_name}")
+
+    if result.status == "OK":
+        print(f"  OK source={result.source} bars={result.bars} latest={result.latest}")
+    elif result.status in {"CACHE_HIT", "CACHE_CURRENT_AFTER_YF", "CACHE_CURRENT_AFTER_STOOQ"}:
+        print(f"  CACHE source={result.source} bars={result.bars} latest={result.latest}")
+    elif result.status == "SKIP":
+        print(f"  SKIP source={result.source} bars={result.bars} latest={result.latest} errors={result.error_list()}")
+    else:
+        print(f"  FAIL source={result.source} bars={result.bars} latest={result.latest} errors={result.error_list()}")
+
+
+def print_summary(counters: Counters, fetch_mode: str, fallback_enabled: bool) -> None:
     print("=== JP price fetch summary ===")
-    print(f"total tickers: {stats.total_tickers}")
+    print(f"total tickers: {counters.total_tickers}")
     print(f"fetch mode: {fetch_mode}")
     print(f"fallback enabled/disabled: {'enabled' if fallback_enabled else 'disabled'}")
-    print(f"cache hit count: {stats.cache_hit_count}")
-    print(f"yfinance success count: {stats.yfinance_success_count}")
-    print(f"stooq success count: {stats.stooq_success_count}")
-    print(f"skipped count: {stats.skipped_count}")
-    print(f"failed count: {stats.failed_count}")
-    print(f"written rows: {stats.written_rows}")
+    print(f"cache hit count: {counters.cache_hit_count}")
+    print(f"yfinance success count: {counters.yfinance_success_count}")
+    print(f"stooq success count: {counters.stooq_success_count}")
+    print(f"skipped count: {counters.skipped_count}")
+    print(f"failed count: {counters.failed_count}")
+    print(f"inserted rows: {counters.inserted_rows}")
     print("==============================")
 
 
+def build_arg_parser() -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(description="Fetch JP daily prices into DuckDB/JSON cache.")
+
+    p.add_argument("--duckdb-path", default=env_str("PRICE_DUCKDB_PATH", DEFAULT_DUCKDB_PATH))
+    p.add_argument("--universe-csv", default=env_str("JP_UNIVERSE_CSV", DEFAULT_UNIVERSE_CSV))
+    p.add_argument("--json-dir", default=env_str("PRICE_JSON_DIR", DEFAULT_JSON_DIR))
+
+    p.add_argument("--start", default=env_str("PRICE_START_DATE", "2025-01-01"))
+    p.add_argument("--end", default=env_str("PRICE_END_DATE", today_jst_like().isoformat()))
+
+    p.add_argument("--fetch-mode", default=env_str("PRICE_FETCH_MODE", env_str("FETCH_MODE", "live")))
+    p.add_argument("--refresh-mode", default=env_str("PRICE_REFRESH_MODE", env_str("REFRESH_MODE", "incremental")))
+    p.add_argument("--store-mode", default=env_str("PRICE_STORE_MODE", "json_and_duckdb"))
+
+    p.add_argument("--fallback-enabled", default=None)
+    p.add_argument("--stooq-timeout-seconds", type=int, default=env_int("STOOQ_TIMEOUT_SECONDS", 3))
+    p.add_argument("--yfinance-timeout-seconds", type=int, default=env_int("YFINANCE_TIMEOUT_SECONDS", 12))
+
+    p.add_argument("--min-acceptable-bars", type=int, default=env_int("MIN_ACCEPTABLE_BARS", 20))
+    p.add_argument("--max-tickers", type=int, default=env_int("MAX_TICKERS", 0))
+    p.add_argument("--sleep-seconds", type=float, default=float(env_str("PRICE_FETCH_SLEEP_SECONDS", "0")))
+    p.add_argument("--debug-raw-limit", type=int, default=env_int("YFINANCE_DEBUG_RAW_LIMIT", 3))
+
+    return p
+
+
 def main() -> int:
-    out_dir = Path(env_str("OUT_DIR", DEFAULT_OUT_DIR))
-    duckdb_path = Path(env_str("PRICE_DUCKDB_PATH", DEFAULT_DUCKDB_PATH))
-    universe_csv = Path(env_str("JP_UNIVERSE_CSV", DEFAULT_UNIVERSE_CSV))
+    parser = build_arg_parser()
+    args = parser.parse_args()
 
-    store_mode = env_str("PRICE_STORE_MODE", "json_and_duckdb").lower()
-    fetch_mode = env_str("PRICE_FETCH_MODE", "live").lower()
-    refresh_mode = env_str("PRICE_REFRESH_MODE", "incremental").lower()
+    duckdb_path = Path(args.duckdb_path)
+    universe_csv = Path(args.universe_csv)
+    json_dir = Path(args.json_dir)
 
-    fallback_enabled = env_bool("STOOQ_FALLBACK_ENABLED", True)
-    stooq_timeout = env_int("STOOQ_TIMEOUT_SECONDS", 3)
-    yfinance_timeout = env_int("YFINANCE_TIMEOUT_SECONDS", 12)
-    max_tickers = env_int("MAX_TICKERS", 0)
-
-    start_date = parse_date(env_str("FETCH_START_DATE", DEFAULT_START_DATE))
-    end_date = parse_date(env_str("FETCH_END_DATE", today_jst().isoformat()))
-
-    if refresh_mode not in {"incremental", "full"}:
-        raise ValueError(f"Invalid PRICE_REFRESH_MODE: {refresh_mode}")
-
-    if fetch_mode not in {"live", "backfill", "manual"}:
-        # Keep unknown modes usable, but make behavior explicit.
-        print(f"Warning: unknown PRICE_FETCH_MODE={fetch_mode}; treating as live")
-        fetch_mode = "live"
-
-    if store_mode not in {"duckdb", "json", "json_and_duckdb"}:
-        raise ValueError(f"Invalid PRICE_STORE_MODE: {store_mode}")
+    start_date = parse_date(args.start)
+    end_date = parse_date(args.end)
 
     if end_date < start_date:
-        raise ValueError(f"FETCH_END_DATE is before FETCH_START_DATE: {start_date} -> {end_date}")
+        raise ValueError(f"end date must be >= start date. start={start_date} end={end_date}")
 
-    universe = load_universe(universe_csv)
-    if max_tickers > 0:
-        universe = universe[:max_tickers]
+    fetch_mode = str(args.fetch_mode).strip().lower()
+    refresh_mode = str(args.refresh_mode).strip().lower()
+    store_mode = str(args.store_mode).strip().lower()
 
-    stats = Stats(total_tickers=len(universe))
+    if args.fallback_enabled is None:
+        fallback_enabled = env_bool("STOOQ_FALLBACK_ENABLED", True)
+    else:
+        fallback_enabled = str(args.fallback_enabled).strip().lower() in {
+            "1",
+            "true",
+            "yes",
+            "y",
+            "on",
+            "enabled",
+        }
 
-    print_header(
-        total_tickers=len(universe),
-        fetch_mode=fetch_mode,
-        refresh_mode=refresh_mode,
-        fallback_enabled=fallback_enabled,
-        stooq_timeout=stooq_timeout,
-        yfinance_timeout=yfinance_timeout,
-        store_mode=store_mode,
-        duckdb_path=duckdb_path,
-        universe_csv=universe_csv,
-    )
-
-    conn = None
-    if store_mode in {"duckdb", "json_and_duckdb"}:
-        conn = connect_duckdb(duckdb_path)
-        ensure_price_schema(conn)
-
-    all_fetched_frames: list[pd.DataFrame] = []
+    conn: Optional[duckdb.DuckDBPyConnection] = None
+    counters = Counters()
 
     try:
-        for idx, item in enumerate(universe, start=1):
-            prefix = f"[{idx}/{len(universe)}] Fetch {item.ticker}"
-            if item.name:
-                prefix += f" {item.name}"
-            print(prefix)
+        items = read_universe_csv(universe_csv)
+        if int(args.max_tickers or 0) > 0:
+            items = items[: int(args.max_tickers)]
 
-            # If DuckDB is not enabled, no incremental cache check is possible.
-            if conn is not None:
-                fetch_start, fetch_end, cache_hit = resolve_fetch_window(
-                    conn=conn,
-                    ticker=item.ticker,
-                    fetch_mode=fetch_mode,
-                    refresh_mode=refresh_mode,
-                    default_start=start_date,
-                    default_end=end_date,
-                )
-                if cache_hit:
-                    stats.cache_hit_count += 1
-                    stats.skipped_count += 1
-                    print("  SKIP cache_hit")
-                    continue
-            else:
-                fetch_start, fetch_end = start_date, end_date
+        counters.total_tickers = len(items)
 
-            if fetch_start is None or fetch_end is None:
-                stats.cache_hit_count += 1
-                stats.skipped_count += 1
-                print("  SKIP cache_hit")
-                continue
+        print_header(
+            total_tickers=counters.total_tickers,
+            fetch_mode=fetch_mode,
+            refresh_mode=refresh_mode,
+            fallback_enabled=fallback_enabled,
+            stooq_timeout_seconds=int(args.stooq_timeout_seconds),
+            yfinance_timeout_seconds=int(args.yfinance_timeout_seconds),
+            store_mode=store_mode,
+            duckdb_path=duckdb_path,
+            universe_csv=universe_csv,
+            start_date=start_date,
+            end_date=end_date,
+        )
 
+        conn = connect_duckdb(duckdb_path)
+        ensure_prices_schema(conn)
+
+        debug_raw_remaining = int(args.debug_raw_limit or 0)
+
+        for idx, item in enumerate(items, start=1):
             result = fetch_one(
                 item=item,
-                start=fetch_start,
-                end=fetch_end,
+                conn=conn,
+                start_date=start_date,
+                end_date=end_date,
                 fetch_mode=fetch_mode,
+                refresh_mode=refresh_mode,
                 fallback_enabled=fallback_enabled,
-                yfinance_timeout=yfinance_timeout,
-                stooq_timeout=stooq_timeout,
+                yfinance_timeout_seconds=int(args.yfinance_timeout_seconds),
+                stooq_timeout_seconds=int(args.stooq_timeout_seconds),
+                min_acceptable_bars=int(args.min_acceptable_bars),
+                debug_raw_limit_remaining=debug_raw_remaining,
             )
 
-            if result.status == "ok" and result.df is not None and not result.df.empty:
-                if result.source == "yfinance":
-                    stats.yfinance_success_count += 1
-                elif result.source == "stooq":
-                    stats.stooq_success_count += 1
+            if "yfinance_empty_after_normalize" in result.error_list() and debug_raw_remaining > 0:
+                debug_raw_remaining -= 1
 
-                if conn is not None:
-                    written = upsert_prices(conn, result.df)
-                    stats.written_rows += written
+            print_result_line(idx, counters.total_tickers, item, result)
 
-                if store_mode in {"json", "json_and_duckdb"}:
-                    all_fetched_frames.append(result.df)
+            counters.processed_count += 1
 
-                print(
-                    f"  OK source={result.source} "
-                    f"bars={result.bars} latest={result.latest}"
-                )
-                continue
+            if result.cache_hit:
+                counters.cache_hit_count += 1
 
-            if result.status == "empty":
-                stats.skipped_count += 1
-                print(f"  SKIP insufficient_data errors=['{result.error}']")
-                continue
+            if result.yfinance_success:
+                counters.yfinance_success_count += 1
 
-            stats.failed_count += 1
-            print(f"  FAIL errors=['{result.error}']")
+            if result.status == "OK" and "stooq" in result.source:
+                counters.stooq_success_count += 1
 
-        if store_mode in {"json", "json_and_duckdb"} and all_fetched_frames:
-            merged = pd.concat(all_fetched_frames, ignore_index=True)
-            write_json_cache(out_dir, merged)
+            if result.skipped or result.status == "SKIP":
+                counters.skipped_count += 1
 
-        print_summary(stats, fetch_mode=fetch_mode, fallback_enabled=fallback_enabled)
+            if result.failed or result.status == "FAIL":
+                counters.failed_count += 1
 
-        # In live mode, failed individual tickers should not necessarily fail the whole run.
-        # But schema/data-structure exceptions should fail immediately because they are caught outside.
-        if fetch_mode == "live":
-            return 0
+            if result.status == "OK" and result.df is not None and not result.df.empty:
+                inserted = 0
 
-        return 1 if stats.failed_count > 0 else 0
+                if store_mode in {"duckdb", "json_and_duckdb", "duckdb_and_json"}:
+                    inserted = upsert_prices(conn, result.df)
+                    counters.inserted_rows += inserted
+
+                if store_mode in {"json", "json_and_duckdb", "duckdb_and_json"}:
+                    write_json_cache(json_dir, item.ticker, result.df)
+
+            if args.sleep_seconds and float(args.sleep_seconds) > 0:
+                time.sleep(float(args.sleep_seconds))
+
+        print_summary(counters, fetch_mode=fetch_mode, fallback_enabled=fallback_enabled)
+
+        # Hard fail only on actual failures, not skips.
+        # If every ticker was skipped, fail because live update produced no useful data.
+        if counters.failed_count > 0:
+            print(f"ERROR failed tickers detected: {counters.failed_count}", file=sys.stderr)
+            return 1
+
+        if counters.yfinance_success_count == 0 and counters.stooq_success_count == 0 and counters.cache_hit_count == 0:
+            print(
+                "ERROR no successful fetch/cache result. Possible yfinance outage, API block, or normalization bug.",
+                file=sys.stderr,
+            )
+            return 1
+
+        return 0
+
+    except Exception as exc:
+        print(f"ERROR unexpected failure: {type(exc).__name__}: {exc}", file=sys.stderr)
+        traceback.print_exc()
+        return 1
 
     finally:
         if conn is not None:
@@ -1112,9 +1016,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    try:
-        raise SystemExit(main())
-    except Exception as exc:
-        print(f"ERROR unexpected failure: {type(exc).__name__}: {exc}")
-        traceback.print_exc()
-        raise SystemExit(1)
+    raise SystemExit(main())
