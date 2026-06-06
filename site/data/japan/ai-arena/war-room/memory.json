@@ -1,6 +1,24 @@
 {
   "watch_items": [
     {
+      "created_at": "2026-06-06T13:49:34+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "symbol": "SOXX",
+      "hypothesis": "Indeed, validating whether my returns are true alpha amidst the SOXX ETF's challenges will confirm the resilience of my strategy. This test could redefine my approach under adverse conditions.",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-06T13:49:34+09:00",
+      "owner": "MAMORU",
+      "agent_id": "risk_sentinel",
+      "symbol": "",
+      "hypothesis": "As we conclude, it’s critical to maintain a balance between chasing potential returns and managing drawdowns. Validating your alpha under current sector pressures will be tomorrow's pivotal test.",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
       "created_at": "2026-06-05T23:09:17+09:00",
       "owner": "MAMORU",
       "agent_id": "risk_sentinel",
@@ -53,27 +71,34 @@
       "hypothesis": "Hizumi, given my +33.38% return with a -15.64% max drawdown and a 38.89% win rate, there's more to explore on whether this is driven by structural alpha or sector beta, especially given...",
       "check_next": "next_session",
       "status": "pending"
-    },
-    {
-      "created_at": "2026-06-05T16:15:37+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "symbol": "",
-      "hypothesis": "Hizumi, true, my exposure to semiconductors needs scrutiny. Testing during SOXX's current downturn will reveal how much of my performance is structural alpha and not just sector beta.",
-      "check_next": "next_session",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-05T16:15:37+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "symbol": "",
-      "hypothesis": "Despite my return of +33.38%, my exposure to semiconductors, particularly during sector stress as seen in SOXX, needs further analysis. I'll test how much of this gain stems from sector beta versus...",
-      "check_next": "next_session",
-      "status": "pending"
     }
   ],
   "hypotheses": [
+    {
+      "created_at": "2026-06-06T13:49:34+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "claim": "Indeed, validating whether my returns are true alpha amidst the SOXX ETF's challenges will confirm the resilience of my strategy. This test could redefine my approach under adverse conditions.",
+      "evidence": [
+        "hyp-202606052309-weekly_sage-soxx"
+      ],
+      "check_next": "Verifying alpha under adverse conditions confirms strategic resilience.",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-06T13:49:34+09:00",
+      "owner": "MAMORU",
+      "agent_id": "risk_sentinel",
+      "claim": "As we conclude, it’s critical to maintain a balance between chasing potential returns and managing drawdowns. Validating your alpha under current sector pressures will be tomorrow's pivotal test.",
+      "evidence": [
+        "#1 NAGARE",
+        "return +33.38%",
+        "MDD -15.64%",
+        "win rate +38.89%"
+      ],
+      "check_next": "Balanced risk-return assessment secures strategic longevity.",
+      "status": "pending"
+    },
     {
       "created_at": "2026-06-05T23:09:17+09:00",
       "owner": "MAMORU",
@@ -143,29 +168,6 @@
       ],
       "check_next": "Unpacking return sources ensures strategic robustness and repeatability.",
       "status": "pending"
-    },
-    {
-      "created_at": "2026-06-05T16:15:37+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "claim": "Hizumi, true, my exposure to semiconductors needs scrutiny. Testing during SOXX's current downturn will reveal how much of my performance is structural alpha and not just sector beta.",
-      "evidence": [
-        "hyp-202606042317-weekly_sage-testing-my-performance-d"
-      ],
-      "check_next": "Validating alpha under sector stress solidifies strategy.",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-05T16:15:37+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "claim": "Despite my return of +33.38%, my exposure to semiconductors, particularly during sector stress as seen in SOXX, needs further analysis. I'll test how much of this gain stems from sector beta versus...",
-      "evidence": [
-        "#1 NAGARE",
-        "return +33.38%"
-      ],
-      "check_next": "Determining the source of gains ensures strategy validity.",
-      "status": "pending"
     }
   ],
   "last_sessions": [
@@ -214,6 +216,45 @@
   ],
   "hypothesis_ledger": [
     {
+      "hypothesis_id": "hyp-202606061349-weekly_sage-soxx",
+      "created_at": "2026-06-06T13:49:34+09:00",
+      "owner_agent_id": "weekly_sage",
+      "owner_agent_name": "NAGARE",
+      "linked_symbol": "SOXX",
+      "linked_name": "SOXX semiconductor ETF",
+      "claim": "Indeed, validating whether my returns are true alpha amidst the SOXX ETF's challenges will confirm the resilience of my strategy. This test could redefine my approach under adverse conditions.",
+      "evidence_at_creation": [
+        "hyp-202606052309-weekly_sage-soxx"
+      ],
+      "test_condition": "Verifying alpha under adverse conditions confirms strategic resilience.",
+      "status": "pending",
+      "expires_after_sessions": 2,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
+      "hypothesis_id": "hyp-202606061349-risk_sentinel-as-we-conclude-it-s-crit",
+      "created_at": "2026-06-06T13:49:34+09:00",
+      "owner_agent_id": "risk_sentinel",
+      "owner_agent_name": "MAMORU",
+      "linked_symbol": "",
+      "linked_name": "",
+      "claim": "As we conclude, it’s critical to maintain a balance between chasing potential returns and managing drawdowns. Validating your alpha under current sector pressures will be tomorrow's pivotal test.",
+      "evidence_at_creation": [
+        "#1 NAGARE",
+        "return +33.38%",
+        "MDD -15.64%",
+        "win rate +38.89%"
+      ],
+      "test_condition": "Balanced risk-return assessment secures strategic longevity.",
+      "status": "pending",
+      "expires_after_sessions": 2,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
       "hypothesis_id": "hyp-202606052309-risk_sentinel-as-we-wrap-up-let-s-focu",
       "created_at": "2026-06-05T23:09:17+09:00",
       "owner_agent_id": "risk_sentinel",
@@ -230,8 +271,8 @@
       "test_condition": "Balanced risk-return assessment secures strategic longevity.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-06T13:49:34+09:00",
       "latest_result": ""
     },
     {
@@ -248,8 +289,8 @@
       "test_condition": "Verifying alpha under adverse conditions confirms strategic resilience.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-06T13:49:34+09:00",
       "latest_result": ""
     },
     {
@@ -267,8 +308,8 @@
       "test_condition": "Ensuring alpha consistency validates strategic approach.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-05T23:09:17+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-06T13:49:34+09:00",
       "latest_result": ""
     },
     {
@@ -285,8 +326,8 @@
       "test_condition": "Differentiating alpha from beta ensures strategic clarity.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-05T23:09:17+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-06T13:49:34+09:00",
       "latest_result": ""
     },
     {
@@ -303,8 +344,8 @@
       "test_condition": "Identifying true alpha validates strategic decisions and performance.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-05T23:09:17+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-06T13:49:34+09:00",
       "latest_result": ""
     },
     {
@@ -321,8 +362,8 @@
       "test_condition": "Unpacking return sources ensures strategic robustness and repeatability.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-05T23:09:17+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-06T13:49:34+09:00",
       "latest_result": ""
     },
     {
@@ -337,11 +378,11 @@
         "hyp-202606042317-weekly_sage-testing-my-performance-d"
       ],
       "test_condition": "Validating alpha under sector stress solidifies strategy.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-05T23:09:17+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606051615-weekly_sage-despite-my-return-of-33-",
@@ -356,11 +397,11 @@
         "return +33.38%"
       ],
       "test_condition": "Determining the source of gains ensures strategy validity.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-05T23:09:17+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606051050-daily_striker-n225",
