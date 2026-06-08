@@ -39,7 +39,7 @@ on:
         options: ["true", "false"]
 
   schedule:
-    - cron: "30 9 * * 1-5"  # 18:30 JST weekdays
+    - cron: "55 9 * * 1-5"  # 18:55 JST weekdays; avoids War Room scheduled windows
 
 permissions:
   contents: write
@@ -146,6 +146,7 @@ jobs:
             scripts/build_jp_index_universe_csv.py \
             scripts/build_universe_300_from_index_csv.py \
             scripts/fetch_prices_jp.py \
+            scripts/export_prices_public_json_jp.py \
             scripts/fetch_fundamentals_jp.py \
             scripts/build_value_features_jp.py \
             scripts/build_agent_scores_jp.py \
@@ -172,6 +173,13 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/fetch_prices_jp.py
+
+      - name: Export public JP price summary JSON
+        run: |
+          set -euo pipefail
+          python scripts/export_prices_public_json_jp.py
+          test -s site/data/prices-jp/latest.json
+          test -s site/data/prices-jp/manifest.json
 
       - name: Fetch JP fundamentals
         if: ${{ github.event.inputs.fetch_fundamentals == 'true' && github.event.inputs.skip_fundamentals_fetch != 'true' }}
@@ -291,11 +299,19 @@ jobs:
           assert len(live.get("agents", [])) == 7
           assert live.get("ranking") is not None
           prices = json.loads(Path("site/data/prices-jp/latest.json").read_text(encoding="utf-8"))
+          assert prices.get("schema_version") == "neon_tokyo_prices_jp_summary_v2", prices.get("schema_version")
           assert prices.get("public_json_mode") == "summary"
           assert prices.get("bars_omitted") is True
+          assert prices.get("latest_price_date"), "public prices latest_price_date missing"
+          assert prices.get("ticker_count", 0) > 0, "public prices ticker_count is zero"
           assert Path("site/data/prices-jp/latest.json").stat().st_size < 5 * 1024 * 1024
           con = duckdb.connect(str(db_path), read_only=True)
           tables = {r[0] for r in con.execute("SHOW TABLES").fetchall()}
+          cols = {r[1] for r in con.execute("PRAGMA table_info('prices_daily')").fetchall()}
+          required_price_cols = {"ticker", "date", "open", "high", "low", "close", "adj_close", "volume", "traded_value_jpy", "source", "updated_at"}
+          assert required_price_cols.issubset(cols), f"prices_daily missing columns: {sorted(required_price_cols - cols)}"
+          db_latest = str(con.execute("SELECT MAX(date) FROM prices_daily").fetchone()[0])[:10]
+          assert prices.get("latest_price_date") == db_latest, f"public latest_price_date {prices.get('latest_price_date')} != duckdb {db_latest}"
           assert "duckdb_build_metadata" in tables
           rid = live.get("run_id")
           assert rid, "live latest has no run_id"

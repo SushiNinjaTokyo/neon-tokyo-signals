@@ -212,6 +212,7 @@ jobs:
           set -euo pipefail
           python -m compileall \
             scripts/fetch_prices_jp.py \
+            scripts/export_prices_public_json_jp.py \
             scripts/fetch_fundamentals_jp.py \
             scripts/build_value_features_jp.py \
             scripts/build_jp_index_universe_csv.py \
@@ -256,6 +257,13 @@ jobs:
           set -euo pipefail
           test -f "${PRICE_DUCKDB_PATH}"
           python scripts/fetch_fundamentals_jp.py
+
+      - name: Export public JP price summary JSON
+        run: |
+          set -euo pipefail
+          python scripts/export_prices_public_json_jp.py
+          test -s site/data/prices-jp/latest.json
+          test -s site/data/prices-jp/manifest.json
 
       - name: Build value features
         run: |
