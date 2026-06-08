@@ -1,6 +1,15 @@
 {
   "watch_items": [
     {
+      "created_at": "2026-06-08T23:44:09+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "symbol": "5333.T",
+      "hypothesis": "Before popping the champagne, Nagare, consider semiconductor beta as your gains’ fairy godmother. At +4.42%, SOXX supports your numbers. Next test demands separating value from velocity.",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
       "created_at": "2026-06-08T23:25:04+09:00",
       "owner": "MAMORU",
       "agent_id": "risk_sentinel",
@@ -61,19 +70,21 @@
       "symbol": "5333.T",
       "hypothesis": "HIZUMI, I recognize the need to disentangle value from pure price movement. My trend structure suggests staying invested unless critical levels are breached, yet I must validate this gain beyond mere market...",
       "check_next": "next_session",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-08T17:17:12+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "symbol": "5333.T",
-      "hypothesis": "The open gain in 5333.T at +15.69% might suggest efficiency, but we must ascertain if this reflects genuine alpha or a temporary sector lift. Let's test this under different market environments to...",
-      "check_next": "next_session",
-      "status": "pending"
+      "status": "expired"
     }
   ],
   "hypotheses": [
+    {
+      "created_at": "2026-06-08T23:44:09+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "claim": "Before popping the champagne, Nagare, consider semiconductor beta as your gains’ fairy godmother. At +4.42%, SOXX supports your numbers. Next test demands separating value from velocity.",
+      "evidence": [
+        "#1 NAGARE"
+      ],
+      "check_next": "Understanding the source of returns prevents strategic blind spots.",
+      "status": "pending"
+    },
     {
       "created_at": "2026-06-08T23:25:04+09:00",
       "owner": "MAMORU",
@@ -150,19 +161,7 @@
         "open return +15.69%"
       ],
       "check_next": "Understanding gain drivers helps maintain strategic discipline.",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-08T17:17:12+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "claim": "The open gain in 5333.T at +15.69% might suggest efficiency, but we must ascertain if this reflects genuine alpha or a temporary sector lift. Let's test this under different market environments to...",
-      "evidence": [
-        "5333.T ＮＧＫ",
-        "open return +15.69%"
-      ],
-      "check_next": "Testing alpha sustainability distinguishes transient success from strategic robustness.",
-      "status": "pending"
+      "status": "expired"
     }
   ],
   "last_sessions": [
@@ -211,6 +210,24 @@
   ],
   "hypothesis_ledger": [
     {
+      "hypothesis_id": "hyp-202606082344-value_mispricing-5333-t",
+      "created_at": "2026-06-08T23:44:09+09:00",
+      "owner_agent_id": "value_mispricing",
+      "owner_agent_name": "HIZUMI",
+      "linked_symbol": "5333.T",
+      "linked_name": "",
+      "claim": "Before popping the champagne, Nagare, consider semiconductor beta as your gains’ fairy godmother. At +4.42%, SOXX supports your numbers. Next test demands separating value from velocity.",
+      "evidence_at_creation": [
+        "#1 NAGARE"
+      ],
+      "test_condition": "Understanding the source of returns prevents strategic blind spots.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
       "hypothesis_id": "hyp-202606082325-risk_sentinel-let-s-quantify-this-hizu",
       "created_at": "2026-06-08T23:25:04+09:00",
       "owner_agent_id": "risk_sentinel",
@@ -224,8 +241,8 @@
       "test_condition": "Sector-specific influences can distort the perception of alpha.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-08T23:44:09+09:00",
       "latest_result": ""
     },
     {
@@ -242,8 +259,8 @@
       "test_condition": "Distinguishing between beta and alpha clarifies true performance origins.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-08T23:44:09+09:00",
       "latest_result": ""
     },
     {
@@ -260,8 +277,8 @@
       "test_condition": "Testing resilience determines if the strategy can survive different market conditions.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-08T23:25:04+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-08T23:44:09+09:00",
       "latest_result": ""
     },
     {
@@ -278,8 +295,8 @@
       "test_condition": "Understanding beta versus alpha clarifies the true source of returns.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-08T23:25:04+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-08T23:44:09+09:00",
       "latest_result": ""
     },
     {
@@ -296,8 +313,8 @@
       "test_condition": "Resilience tests determine strategy viability.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-08T23:25:04+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-08T23:44:09+09:00",
       "latest_result": ""
     },
     {
@@ -314,8 +331,8 @@
       "test_condition": "Defining alpha separates skill from market movement.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-08T23:25:04+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-08T23:44:09+09:00",
       "latest_result": ""
     },
     {
@@ -331,11 +348,11 @@
         "open return +15.69%"
       ],
       "test_condition": "Understanding gain drivers helps maintain strategic discipline.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-08T23:25:04+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606081717-weekly_sage-5333-t",
@@ -350,11 +367,11 @@
         "open return +15.69%"
       ],
       "test_condition": "Testing alpha sustainability distinguishes transient success from strategic robustness.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-08T23:25:04+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606081416-weekly_sage-5333-t",

@@ -1,28 +1,28 @@
 # AI Arena Agent Rejection Diagnostics
 
-Generated: 2026-06-08T14:20:09Z
+Generated: 2026-06-08T14:39:31Z
 Run: `arena_jp_live_2026`
 Season: 2026-01-01 → 2026-06-08
 
 | Agent | Candidates | Evaluated | Entry Pass | Orders | Buy Fills | Buy Cancels | Sells | Trades | Open | Rejected | Top Reject Reason |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| HIZUMI / `value_mispricing` | 5519 | 3308 | 20 | 20 | 20 | 0 | 20 | 20 | 0 | 5499 | ENTRY_RULE_REJECTED (3130) |
+| HIZUMI / `value_mispricing` | 5206 | 3308 | 20 | 20 | 20 | 0 | 20 | 20 | 0 | 5186 | ENTRY_RULE_REJECTED (3130) |
 | KAESHI / `reversal_snapback` | 259 | 219 | 57 | 57 | 57 | 0 | 57 | 57 | 0 | 202 | ENTRY_RULE_REJECTED (129) |
 | KYOU / `daily_striker` | 1380 | 1104 | 88 | 88 | 84 | 4 | 84 | 84 | 0 | 1296 | ENTRY_RULE_REJECTED (999) |
 | MAMORU / `risk_sentinel` | 42465 | 30668 | 124 | 101 | 101 | 0 | 98 | 98 | 3 | 42364 | ENTRY_RULE_REJECTED (29883) |
 | MATSU / `contrarian_monk` | 1196 | 609 | 78 | 78 | 78 | 0 | 77 | 77 | 1 | 1118 | ENTRY_RULE_REJECTED (442) |
 | NAGARE / `weekly_sage` | 14024 | 5758 | 256 | 60 | 43 | 17 | 37 | 37 | 6 | 13981 | MAX_POSITIONS_FULL (5753) |
-| SAGURI / `discovery_scout` | 580 | 559 | 49 | 49 | 49 | 0 | 49 | 49 | 0 | 531 | ENTRY_RULE_REJECTED (484) |
+| SAGURI / `discovery_scout` | 581 | 559 | 49 | 49 | 49 | 0 | 49 | 49 | 0 | 532 | ENTRY_RULE_REJECTED (484) |
 
 ## Reject reasons by agent
 
 ### HIZUMI / `value_mispricing`
 - `ENTRY_RULE_REJECTED`: 3130
 - `MAX_NEW_ENTRIES_PER_DAY`: 1879
-- `NO_NEXT_TRADING_DATE`: 332
 - `MAX_SYMBOL_CLOSED_TRADES`: 80
 - `ALREADY_OPEN_POSITION`: 39
 - `COOLDOWN_AFTER_LOSS`: 39
+- `NO_NEXT_TRADING_DATE`: 19
 - Entry rule details:
   - score_below_entry_threshold: 2824
   - blocked_near_year_end: 169
@@ -118,6 +118,7 @@ Season: 2026-01-01 → 2026-06-08
 - `ENTRY_RULE_REJECTED`: 484
 - `ALREADY_OPEN_POSITION`: 26
 - `MAX_NEW_ENTRIES_PER_DAY`: 21
+- `NO_NEXT_TRADING_DATE`: 1
 - Entry rule details:
   - five_day_move_too_extended: 152
   - quality_guard_below_threshold: 71
