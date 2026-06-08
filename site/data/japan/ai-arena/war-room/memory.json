@@ -1,6 +1,24 @@
 {
   "watch_items": [
     {
+      "created_at": "2026-06-08T20:27:35+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "symbol": "",
+      "hypothesis": "MAMORU, I intend to examine if the drawdown was justified by long-term gains. Testing whether my returns remain robust under varied market stresses will reveal resilience.",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-08T20:27:35+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "symbol": "",
+      "hypothesis": "Distinguishing between alpha and beta is critical here. A 33.38% return might indicate alpha, but your 38.89% win rate suggests selective capture. How much of your gain is structural alpha?",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
       "created_at": "2026-06-08T17:17:12+09:00",
       "owner": "NAGARE",
       "agent_id": "weekly_sage",
@@ -53,27 +71,31 @@
       "hypothesis": "As we conclude, it’s critical to maintain a balance between chasing potential returns and managing drawdowns. Validating your alpha under current sector pressures will be tomorrow's pivotal test.",
       "check_next": "next_session",
       "status": "expired"
-    },
-    {
-      "created_at": "2026-06-05T23:09:17+09:00",
-      "owner": "MAMORU",
-      "agent_id": "risk_sentinel",
-      "symbol": "",
-      "hypothesis": "As we wrap up, let's focus on maintaining a balance between embracing potential returns and managing drawdowns. Tomorrow's crucial test is the validation of Nagare's alpha in light of sector stress; this...",
-      "check_next": "next_session",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-05T23:09:17+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "symbol": "SOXX",
-      "hypothesis": "Indeed, as the SOXX ETF faces downside pressure, our next step is to test whether my strategy's returns are truly alpha-based or merely benefiting from prior sector trends. This will ensure our...",
-      "check_next": "next_session",
-      "status": "pending"
     }
   ],
   "hypotheses": [
+    {
+      "created_at": "2026-06-08T20:27:35+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "claim": "MAMORU, I intend to examine if the drawdown was justified by long-term gains. Testing whether my returns remain robust under varied market stresses will reveal resilience.",
+      "evidence": [
+        "#1 NAGARE"
+      ],
+      "check_next": "Resilience tests determine strategy viability.",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-08T20:27:35+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "claim": "Distinguishing between alpha and beta is critical here. A 33.38% return might indicate alpha, but your 38.89% win rate suggests selective capture. How much of your gain is structural alpha?",
+      "evidence": [
+        "#1 NAGARE"
+      ],
+      "check_next": "Defining alpha separates skill from market movement.",
+      "status": "pending"
+    },
     {
       "created_at": "2026-06-08T17:17:12+09:00",
       "owner": "NAGARE",
@@ -145,31 +167,6 @@
       ],
       "check_next": "Balanced risk-return assessment secures strategic longevity.",
       "status": "expired"
-    },
-    {
-      "created_at": "2026-06-05T23:09:17+09:00",
-      "owner": "MAMORU",
-      "agent_id": "risk_sentinel",
-      "claim": "As we wrap up, let's focus on maintaining a balance between embracing potential returns and managing drawdowns. Tomorrow's crucial test is the validation of Nagare's alpha in light of sector stress; this...",
-      "evidence": [
-        "#1 NAGARE",
-        "return +33.38%",
-        "MDD -15.64%",
-        "win rate +38.89%"
-      ],
-      "check_next": "Balanced risk-return assessment secures strategic longevity.",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-05T23:09:17+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "claim": "Indeed, as the SOXX ETF faces downside pressure, our next step is to test whether my strategy's returns are truly alpha-based or merely benefiting from prior sector trends. This will ensure our...",
-      "evidence": [
-        "hyp-202606051932-weekly_sage-hizumi-given-my-33-38-re"
-      ],
-      "check_next": "Verifying alpha under adverse conditions confirms strategic resilience.",
-      "status": "pending"
     }
   ],
   "last_sessions": [
@@ -218,6 +215,42 @@
   ],
   "hypothesis_ledger": [
     {
+      "hypothesis_id": "hyp-202606082027-weekly_sage-mamoru-i-intend-to-exami",
+      "created_at": "2026-06-08T20:27:35+09:00",
+      "owner_agent_id": "weekly_sage",
+      "owner_agent_name": "NAGARE",
+      "linked_symbol": "",
+      "linked_name": "",
+      "claim": "MAMORU, I intend to examine if the drawdown was justified by long-term gains. Testing whether my returns remain robust under varied market stresses will reveal resilience.",
+      "evidence_at_creation": [
+        "#1 NAGARE"
+      ],
+      "test_condition": "Resilience tests determine strategy viability.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
+      "hypothesis_id": "hyp-202606082027-value_mispricing-distinguishing-between-a",
+      "created_at": "2026-06-08T20:27:35+09:00",
+      "owner_agent_id": "value_mispricing",
+      "owner_agent_name": "HIZUMI",
+      "linked_symbol": "",
+      "linked_name": "",
+      "claim": "Distinguishing between alpha and beta is critical here. A 33.38% return might indicate alpha, but your 38.89% win rate suggests selective capture. How much of your gain is structural alpha?",
+      "evidence_at_creation": [
+        "#1 NAGARE"
+      ],
+      "test_condition": "Defining alpha separates skill from market movement.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
       "hypothesis_id": "hyp-202606081717-weekly_sage-5333-t",
       "created_at": "2026-06-08T17:17:12+09:00",
       "owner_agent_id": "weekly_sage",
@@ -232,8 +265,8 @@
       "test_condition": "Understanding gain drivers helps maintain strategic discipline.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-08T20:27:35+09:00",
       "latest_result": ""
     },
     {
@@ -251,8 +284,8 @@
       "test_condition": "Testing alpha sustainability distinguishes transient success from strategic robustness.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-08T20:27:35+09:00",
       "latest_result": ""
     },
     {
@@ -270,8 +303,8 @@
       "test_condition": "Understanding if gains are sustainable is crucial for strategic refinement.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-08T17:17:12+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-08T20:27:35+09:00",
       "latest_result": ""
     },
     {
@@ -288,8 +321,8 @@
       "test_condition": "Sustainability of alpha is crucial for long-term strategy.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-08T17:17:12+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-08T20:27:35+09:00",
       "latest_result": ""
     },
     {
@@ -346,11 +379,11 @@
         "win rate +38.89%"
       ],
       "test_condition": "Balanced risk-return assessment secures strategic longevity.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-08T17:17:12+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606052309-weekly_sage-soxx",
@@ -364,11 +397,11 @@
         "hyp-202606051932-weekly_sage-hizumi-given-my-33-38-re"
       ],
       "test_condition": "Verifying alpha under adverse conditions confirms strategic resilience.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-08T17:17:12+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606052131-weekly_sage-5333-t",
