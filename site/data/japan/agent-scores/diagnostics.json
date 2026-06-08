@@ -1,32 +1,27 @@
 {
   "schema_version": "neon_tokyo_agent_scores_diagnostics_v1",
-  "generated_at": "2026-06-05T12:23:56+00:00",
+  "generated_at": "2026-06-08T14:17:09+00:00",
   "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
   "mode": "range",
   "range": {
     "year": 2026,
     "start_date": "2026-01-01",
-    "end_date": "2026-06-05",
-    "latest_equity_feature_date": "2026-06-05"
+    "end_date": "2026-06-08",
+    "latest_equity_feature_date": "2026-06-08"
   },
-  "price_rows": 295564,
+  "price_rows": 296415,
   "feature_diagnostics": {
-    "prices_rows": 295564,
-    "feature_rows": 295564,
+    "prices_rows": 296415,
+    "feature_rows": 296415,
     "tickers": 860,
     "min_date": "2024-12-27",
-    "max_date": "2026-06-05"
+    "max_date": "2026-06-08"
   },
   "score_date_coverage": {
-    "date_count": 347,
+    "date_count": 348,
     "equity_symbol_denominator": 857,
     "min_date_coverage_pct": 70.0,
     "recent_dates": [
-      {
-        "date": "2026-05-18",
-        "symbols": 853,
-        "coverage_pct": 99.53
-      },
       {
         "date": "2026-05-19",
         "symbols": 853,
@@ -96,55 +91,60 @@
         "date": "2026-06-05",
         "symbols": 851,
         "coverage_pct": 99.3
+      },
+      {
+        "date": "2026-06-08",
+        "symbols": 851,
+        "coverage_pct": 99.3
       }
     ],
-    "latest_recent_eligible_date": "2026-06-05"
+    "latest_recent_eligible_date": "2026-06-08"
   },
-  "agent_score_rows": 396302,
-  "agent_score_date_count": 102,
-  "trade_candidate_rows": 59377,
-  "latest_date": "2026-06-05",
+  "agent_score_rows": 400140,
+  "agent_score_date_count": 103,
+  "trade_candidate_rows": 59949,
+  "latest_date": "2026-06-08",
   "agents": [
     {
       "agent_id": "daily_striker",
       "name": "KYOU",
-      "candidates_scored": 68056,
+      "candidates_scored": 68713,
       "top_items": 30
     },
     {
       "agent_id": "weekly_sage",
       "name": "NAGARE",
-      "candidates_scored": 60763,
+      "candidates_scored": 61356,
       "top_items": 30
     },
     {
       "agent_id": "risk_sentinel",
       "name": "MAMORU",
-      "candidates_scored": 51114,
+      "candidates_scored": 51614,
       "top_items": 30
     },
     {
       "agent_id": "discovery_scout",
       "name": "SAGURI",
-      "candidates_scored": 19494,
+      "candidates_scored": 19675,
       "top_items": 30
     },
     {
       "agent_id": "contrarian_monk",
       "name": "MATSU",
-      "candidates_scored": 60763,
+      "candidates_scored": 61356,
       "top_items": 30
     },
     {
       "agent_id": "reversal_snapback",
       "name": "KAESHI",
-      "candidates_scored": 68056,
+      "candidates_scored": 68713,
       "top_items": 30
     },
     {
       "agent_id": "value_mispricing",
       "name": "HIZUMI",
-      "candidates_scored": 68056,
+      "candidates_scored": 68713,
       "top_items": 30
     }
   ],
