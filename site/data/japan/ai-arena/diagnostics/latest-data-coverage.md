@@ -1,6 +1,6 @@
 # Neon Tokyo Data Coverage Review
 
-Generated: 2026-06-05T12:50:03+00:00
+Generated: 2026-06-08T14:22:17+00:00
 DuckDB: `data/cache/neon_tokyo_jp.duckdb`
 DuckDB exists: **True**
 
@@ -11,17 +11,17 @@ DuckDB exists: **True**
 
 | Key | Value | Updated At |
 |---|---|---|
-| `artifact_kind` | github-release-asset | 2026-06-05T12:31:03.906669 |
-| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-06-05T12:31:03.909795 |
-| `build_id` | 27014559880-1 | 2026-06-05T12:31:03.897365 |
-| `generated_at` | 2026-06-05T12:31:03+00:00 | 2026-06-05T12:31:03.895464 |
-| `release_tag` | ai-arena-duckdb-latest | 2026-06-05T12:31:03.908270 |
-| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-06-05T12:31:03.888173 |
-| `source_ref` | refs/heads/main | 2026-06-05T12:31:03.905178 |
-| `source_run_attempt` | 1 | 2026-06-05T12:31:03.902200 |
-| `source_run_id` | 27014559880 | 2026-06-05T12:31:03.900553 |
-| `source_sha` | cb13fb51fc1858c6c52a4cf6cb9c1f58f6775a9d | 2026-06-05T12:31:03.903678 |
-| `source_workflow` | AI Arena JP live update | 2026-06-05T12:31:03.898936 |
+| `artifact_kind` | github-release-asset | 2026-06-07T22:10:46.911126 |
+| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-06-07T22:10:46.915978 |
+| `build_id` | 27106202096-1 | 2026-06-07T22:10:46.898214 |
+| `generated_at` | 2026-06-07T22:10:46+00:00 | 2026-06-07T22:10:46.895549 |
+| `release_tag` | ai-arena-duckdb-latest | 2026-06-07T22:10:46.913487 |
+| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-06-07T22:10:46.890186 |
+| `source_ref` | refs/heads/main | 2026-06-07T22:10:46.908575 |
+| `source_run_attempt` | 1 | 2026-06-07T22:10:46.904444 |
+| `source_run_id` | 27106202096 | 2026-06-07T22:10:46.902342 |
+| `source_sha` | cbc8227566e25dd290fd0ae13c4f5f2e95b59b42 | 2026-06-07T22:10:46.906553 |
+| `source_workflow` | AI Arena JP fundamentals refresh | 2026-06-07T22:10:46.900274 |
 
 ## Executive Warnings
 
@@ -95,9 +95,9 @@ DuckDB exists: **True**
 ### `company_master_jp`
 
 - Exists: True
-- Rows: 4052
-- Unique tickers: 4052
-- Coverage vs universe: 471.163%
+- Rows: 4038
+- Unique tickers: 4038
+- Coverage vs universe: 469.535%
 
 ### `fundamentals_latest_jp`
 
@@ -108,10 +108,10 @@ DuckDB exists: **True**
 
 | Field | Coverage | Count |
 |---|---:|---:|
-| `market_cap_jpy` | 99.883% | 856 |
+| `market_cap_jpy` | 100.0% | 857 |
 | `per` | 95.449% | 818 |
 | `pbr` | 99.883% | 856 |
-| `psr` | 99.067% | 849 |
+| `psr` | 99.183% | 850 |
 | `roe_pct` | 92.299% | 791 |
 | `roa_pct` | 92.299% | 791 |
 | `operating_margin_pct` | 100.0% | 857 |
@@ -173,8 +173,8 @@ DuckDB exists: **True**
 
 ## Repo Artifact Size
 
-- site/data files: 56
-- site/data total MB: 8.7
+- site/data files: 59
+- site/data total MB: 10.452
 - prices latest MB: 2.764
 - dated prices JSON count: 1
 
@@ -182,16 +182,16 @@ DuckDB exists: **True**
 |---|---:|
 | `site/data/prices-jp/latest.json` | 2.764 |
 | `site/data/japan/ai-arena/diagnostics/trade-diagnostics/latest.json` | 1.136 |
+| `site/data/japan/ai-arena/war-room/latest.json` | 0.538 |
+| `site/data/japan/ai-arena/war-room/history/2026-06-08-close_council.json` | 0.538 |
+| `site/data/japan/ai-arena/war-room/history/2026-06-08-night_strategy_lab.json` | 0.53 |
+| `site/data/japan/ai-arena/war-room/history/2026-06-06-weekly_arena_review.json` | 0.471 |
 | `site/data/japan/universe/jp_index_universe.json` | 0.421 |
-| `site/data/japan/ai-arena/war-room/latest.json` | 0.378 |
+| `site/data/japan/ai-arena/war-room/history/2026-06-05-close_council.json` | 0.399 |
 | `site/data/japan/ai-arena/war-room/history/2026-06-05-night_strategy_lab.json` | 0.378 |
-| `site/data/japan/ai-arena/war-room/history/2026-06-05-close_council.json` | 0.357 |
 | `site/data/japan/ai-arena/war-room/history/2026-06-04-night_strategy_lab.json` | 0.347 |
 | `site/data/japan/ai-arena/war-room/history/2026-06-04-close_council.json` | 0.318 |
 | `site/data/japan/ai-arena/latest.json` | 0.242 |
 | `site/data/japan/ai-arena/summary/latest.json` | 0.211 |
 | `site/data/japan/ai-arena/summary/2026/latest.json` | 0.211 |
 | `site/data/japan/ai-arena/positions/latest.json` | 0.206 |
-| `site/data/japan/ai-arena/ranking/latest.json` | 0.202 |
-| `site/data/japan/ai-arena/war-room/history/2026-06-03-close_council.json` | 0.2 |
-| `site/data/japan/ai-arena/live/latest.json` | 0.196 |
