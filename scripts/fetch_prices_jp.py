@@ -64,10 +64,14 @@ REQUIRED_PRICE_COLUMNS = {
     "high": "DOUBLE",
     "low": "DOUBLE",
     "close": "DOUBLE",
+    "adj_close": "DOUBLE",
     "volume": "BIGINT",
+    "traded_value_jpy": "DOUBLE",
     "source": "VARCHAR",
     "updated_at": "TIMESTAMP",
 }
+
+PRICE_INSERT_COLUMNS = list(REQUIRED_PRICE_COLUMNS.keys())
 
 CREATE_PRICES_TABLE_SQL = f"""
 CREATE TABLE IF NOT EXISTS {PRICES_TABLE} (
@@ -77,10 +81,11 @@ CREATE TABLE IF NOT EXISTS {PRICES_TABLE} (
     high DOUBLE,
     low DOUBLE,
     close DOUBLE,
+    adj_close DOUBLE,
     volume BIGINT,
+    traded_value_jpy DOUBLE,
     source VARCHAR,
-    updated_at TIMESTAMP,
-    PRIMARY KEY (ticker, date)
+    updated_at TIMESTAMP
 )
 """
 
@@ -364,11 +369,10 @@ def normalize_price_dataframe(
     else:
         df.columns = [str(c).strip().lower() for c in df.columns]
 
-    # Normalize common column aliases.
+    # Normalize common column aliases. Preserve adjusted close separately when available.
     rename_map = {
-        "adj close": "close",
-        "adj_close": "close",
-        "adjusted close": "close",
+        "adj close": "adj_close",
+        "adjusted close": "adj_close",
         "open price": "open",
         "high price": "high",
         "low price": "low",
@@ -413,23 +417,29 @@ def normalize_price_dataframe(
     if "volume" not in df.columns:
         df["volume"] = 0
 
-    out = df[["date", "open", "high", "low", "close", "volume"]].copy()
+    keep_cols = ["date", "open", "high", "low", "close", "volume"]
+    if "adj_close" in df.columns:
+        keep_cols.append("adj_close")
+    out = df[keep_cols].copy()
     out["ticker"] = ticker
     out["source"] = source
     out["updated_at"] = datetime.utcnow()
 
-    for col in ["open", "high", "low", "close"]:
-        out[col] = pd.to_numeric(out[col], errors="coerce")
+    for col in ["open", "high", "low", "close", "adj_close"]:
+        if col in out.columns:
+            out[col] = pd.to_numeric(out[col], errors="coerce")
+    if "adj_close" not in out.columns:
+        out["adj_close"] = out["close"]
+    out["adj_close"] = out["adj_close"].fillna(out["close"])
 
     out["volume"] = pd.to_numeric(out["volume"], errors="coerce").fillna(0).astype("int64")
+    out["traded_value_jpy"] = out["close"] * out["volume"]
     out = out.dropna(subset=["date", "open", "high", "low", "close"])
     out = out[out["close"] > 0]
     out = out.drop_duplicates(subset=["ticker", "date"], keep="last")
     out = out.sort_values(["ticker", "date"])
 
-    return out[
-        ["ticker", "date", "open", "high", "low", "close", "volume", "source", "updated_at"]
-    ]
+    return out[PRICE_INSERT_COLUMNS]
 
 
 def fetch_yfinance_raw(
@@ -566,7 +576,13 @@ def upsert_prices(conn: duckdb.DuckDBPyConnection, df: pd.DataFrame) -> int:
     if df is None or df.empty:
         return 0
 
-    required_cols = list(REQUIRED_PRICE_COLUMNS.keys())
+    required_cols = PRICE_INSERT_COLUMNS
+    if "adj_close" not in df.columns and "close" in df.columns:
+        df = df.copy()
+        df["adj_close"] = df["close"]
+    if "traded_value_jpy" not in df.columns and {"close", "volume"}.issubset(df.columns):
+        df = df.copy()
+        df["traded_value_jpy"] = pd.to_numeric(df["close"], errors="coerce") * pd.to_numeric(df["volume"], errors="coerce").fillna(0)
     missing = [c for c in required_cols if c not in df.columns]
     if missing:
         raise ValueError(f"upsert dataframe missing required columns: {missing}")
@@ -574,6 +590,8 @@ def upsert_prices(conn: duckdb.DuckDBPyConnection, df: pd.DataFrame) -> int:
     clean = df[required_cols].copy()
     clean["date"] = pd.to_datetime(clean["date"], errors="coerce").dt.date
     clean["updated_at"] = pd.to_datetime(clean["updated_at"], errors="coerce")
+    clean["adj_close"] = pd.to_numeric(clean["adj_close"], errors="coerce").fillna(pd.to_numeric(clean["close"], errors="coerce"))
+    clean["traded_value_jpy"] = pd.to_numeric(clean["traded_value_jpy"], errors="coerce")
 
     clean = clean.dropna(subset=["ticker", "date", "open", "high", "low", "close"])
     clean = clean.drop_duplicates(subset=["ticker", "date"], keep="last")
@@ -596,9 +614,9 @@ def upsert_prices(conn: duckdb.DuckDBPyConnection, df: pd.DataFrame) -> int:
     conn.execute(
         f"""
         INSERT INTO {PRICES_TABLE}
-            (ticker, date, open, high, low, close, volume, source, updated_at)
+            (ticker, date, open, high, low, close, adj_close, volume, traded_value_jpy, source, updated_at)
         SELECT
-            ticker, date, open, high, low, close, volume, source, updated_at
+            ticker, date, open, high, low, close, adj_close, volume, traded_value_jpy, source, updated_at
         FROM incoming_prices
         """
     )
