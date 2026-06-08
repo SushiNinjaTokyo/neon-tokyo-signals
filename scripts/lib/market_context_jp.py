@@ -8,6 +8,7 @@ unsupported catalysts.
 """
 
 import math
+import os
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Any
@@ -81,7 +82,7 @@ def _regime(items: list[dict[str, Any]]) -> str:
     return "; ".join(pieces[:4]) or "Market context is available, but no strong regime signal was detected."
 
 
-def build_market_context(*, enabled: bool = True, lookback_days: int = 7) -> dict[str, Any]:
+def build_market_context(*, enabled: bool = True, lookback_days: int = 7, timeout_seconds: int | None = None) -> dict[str, Any]:
     now = datetime.now(JST).isoformat(timespec="seconds")
     if not enabled:
         return {"enabled": False, "as_of": now, "items": [], "regime_summary": "Market context disabled.", "strict_rule": "Do not use external market facts."}
@@ -90,10 +91,11 @@ def build_market_context(*, enabled: bool = True, lookback_days: int = 7) -> dic
         import yfinance as yf  # type: ignore
     except Exception as exc:
         return {"enabled": False, "as_of": now, "items": [], "regime_summary": f"Market context unavailable: {exc}", "strict_rule": "Do not use external market facts."}
+    timeout = int(timeout_seconds if timeout_seconds is not None else os.getenv("AI_ARENA_MARKET_CONTEXT_TIMEOUT_SECONDS", "8"))
     for key, meta in SYMBOLS.items():
         symbol = meta["symbol"]
         try:
-            hist = yf.download(symbol, period=f"{max(3, lookback_days)}d", interval="1d", progress=False, auto_adjust=False, threads=False)
+            hist = yf.download(symbol, period=f"{max(3, lookback_days)}d", interval="1d", progress=False, auto_adjust=False, threads=False, timeout=timeout)
             if hist is None or hist.empty or "Close" not in hist:
                 continue
             closes = hist["Close"].dropna()

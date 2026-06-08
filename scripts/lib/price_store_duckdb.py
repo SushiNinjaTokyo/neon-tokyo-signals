@@ -108,7 +108,7 @@ def store_price_payload(
                     "high": bar.get("high"),
                     "low": bar.get("low"),
                     "close": close,
-                    "adj_close": None,
+                    "adj_close": close,
                     "volume": volume,
                     "traded_value_jpy": traded_value,
                     "source": item.get("source") or "",
@@ -123,7 +123,13 @@ def store_price_payload(
 
     if price_rows:
         conn.register("_price_rows", pd.DataFrame(price_rows))
-        conn.execute("INSERT INTO prices_daily SELECT * FROM _price_rows")
+        conn.execute("""
+            INSERT INTO prices_daily
+              (ticker, date, open, high, low, close, adj_close, volume, traded_value_jpy, source, updated_at)
+            SELECT
+              ticker, date, open, high, low, close, adj_close, volume, traded_value_jpy, source, updated_at
+            FROM _price_rows
+        """)
         conn.unregister("_price_rows")
 
     failure_rows = []

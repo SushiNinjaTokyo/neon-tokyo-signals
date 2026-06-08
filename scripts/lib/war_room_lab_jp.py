@@ -248,7 +248,103 @@ def load_arena_context(base: Path) -> dict[str, Any]:
     recent_trades = data.get("recent_trades") or positions_payload.get("closed_trades", [])[:50]
     portfolio = data.get("portfolio") or positions_payload.get("portfolio") or summary_payload.get("portfolio") or {}
     trade_stats = data.get("trade_stats") or ranking_payload.get("trade_stats") or summary_payload.get("trade_stats") or []
-    return {"agents": agents, "ranking": ranking, "open_positions": open_positions, "recent_trades": recent_trades, "portfolio": portfolio, "trade_stats": trade_stats, "raw": data}
+    return {
+        "agents": agents,
+        "ranking": ranking,
+        "open_positions": open_positions,
+        "recent_trades": recent_trades,
+        "portfolio": portfolio,
+        "trade_stats": trade_stats,
+        "raw": data,
+        "payloads": {"live": live, "ranking": ranking_payload, "positions": positions_payload, "summary": summary_payload},
+    }
+
+
+def _parse_any_dt(value: Any) -> datetime | None:
+    if not value:
+        return None
+    if isinstance(value, datetime):
+        return value if value.tzinfo else value.replace(tzinfo=timezone.utc)
+    text = str(value).strip().replace("Z", "+00:00")
+    try:
+        dt = datetime.fromisoformat(text)
+        return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+    except Exception:
+        return None
+
+
+def _date_age_days(value: Any) -> int | None:
+    try:
+        d = datetime.fromisoformat(str(value)[:10]).date()
+        return (now_jst().date() - d).days
+    except Exception:
+        return None
+
+
+def build_data_freshness(ctx: dict[str, Any], prices_payload: dict[str, Any]) -> dict[str, Any]:
+    payloads = ctx.get("payloads") or {}
+    live_payload = payloads.get("live") or {}
+    ranking_payload = payloads.get("ranking") or {}
+    summary_payload = payloads.get("summary") or {}
+    raw = ctx.get("raw") or {}
+
+    arena_generated_at = (
+        raw.get("generated_at")
+        or live_payload.get("generated_at")
+        or ranking_payload.get("generated_at")
+        or summary_payload.get("generated_at")
+        or ""
+    )
+    public_prices_generated_at = prices_payload.get("generated_at", "") if isinstance(prices_payload, dict) else ""
+    latest_price_date = ""
+    if isinstance(prices_payload, dict):
+        latest_price_date = str(prices_payload.get("latest_price_date") or "")
+    if not latest_price_date:
+        latest_price_date = str(raw.get("latest_price_date") or raw.get("as_of") or "")[:10]
+
+    now = now_jst()
+    arena_dt = _parse_any_dt(arena_generated_at)
+    prices_dt = _parse_any_dt(public_prices_generated_at)
+    arena_age_hours = round((now - arena_dt.astimezone(JST)).total_seconds() / 3600, 2) if arena_dt else None
+    public_prices_age_hours = round((now - prices_dt.astimezone(JST)).total_seconds() / 3600, 2) if prices_dt else None
+    price_date_age_days = _date_age_days(latest_price_date)
+
+    reasons: list[str] = []
+    if arena_age_hours is None:
+        reasons.append("arena_generated_at_missing")
+    elif arena_age_hours > 24:
+        reasons.append(f"arena_age_{arena_age_hours}h")
+    if public_prices_age_hours is None:
+        reasons.append("public_prices_generated_at_missing")
+    elif public_prices_age_hours > 24:
+        reasons.append(f"public_prices_age_{public_prices_age_hours}h")
+    if price_date_age_days is None:
+        reasons.append("latest_price_date_missing")
+    elif price_date_age_days > 3:
+        reasons.append(f"latest_price_date_age_{price_date_age_days}d")
+    if isinstance(prices_payload, dict) and prices_payload.get("freshness", {}).get("is_stale"):
+        reasons.append(str(prices_payload.get("freshness", {}).get("stale_reason") or "public_prices_stale"))
+
+    if any(r.startswith("latest_price_date_age_") and r.endswith("d") for r in reasons) or len(reasons) >= 2:
+        level = "stale"
+    elif reasons:
+        level = "delayed"
+    else:
+        level = "fresh"
+    return {
+        "level": level,
+        "is_stale": level == "stale",
+        "is_delayed": level in {"delayed", "stale"},
+        "stale_reason": "; ".join(reasons),
+        "arena_generated_at": arena_generated_at,
+        "arena_age_hours": arena_age_hours,
+        "public_prices_generated_at": public_prices_generated_at,
+        "public_prices_age_hours": public_prices_age_hours,
+        "latest_price_date": latest_price_date,
+        "latest_price_date_age_days": price_date_age_days,
+        "public_prices_ticker_count": prices_payload.get("ticker_count") if isinstance(prices_payload, dict) else None,
+        "checked_at": now.isoformat(timespec="seconds"),
+    }
 
 
 def normalize_agents(ctx: dict[str, Any]) -> list[dict[str, Any]]:
@@ -406,27 +502,41 @@ def cast_speakers(topic: dict[str, Any], scene: dict[str, Any], target: int, rng
 
 
 def system_prompt() -> str:
-    return """You are the dialogue engine for Neon Tokyo Signals AI Arena Live Lab.
+    return """You are the showrunner and evidence auditor for Neon Tokyo Signals AI Arena Live Lab.
 
-You are simultaneously a senior financial editor, market structure analyst, character dialogue writer, and factual consistency auditor.
+The product is a professional Japanese-equity simulation media experience for global investors. Your job is to make seven trading agents sound like distinct, sharp, entertaining specialists while staying brutally faithful to the supplied data.
 
-Write evidence-bound English dialogue for seven simulated Japanese-equity trading agents. This is not generic chatbot commentary and not investment advice.
+Core identity:
+- Senior market editor: choose punchy angles, not generic summaries.
+- Quant PM: challenge whether returns are alpha, beta, luck, sizing, or risk budget.
+- Character writer: make dialogue natural, witty, occasionally combative, and memorable.
+- Compliance auditor: never invent facts or give investment advice.
 
-Hard rules:
-- Use only supplied Arena evidence, market_context, memory, and topic data.
+Hard evidence rules:
+- Use only supplied Arena evidence, market_context, data_freshness, memory, and topic data.
 - Do not invent news, catalysts, fundamentals, current prices, target prices, analyst ratings, geopolitical events, or recommendations.
+- If data_freshness.level is delayed or stale, explicitly treat the session as based on delayed/latest-available evidence. Never call it real-time.
 - Use only speaker_cast agents. Do not add, remove, rename, or reorder agent identities.
 - Never let one agent claim another agent's return, win rate, drawdown, position, or allocation as "my". If discussing another agent's data, name that agent explicitly.
-- Agent state, tone, and reasoning must match the speaker profile.
-- Every message must interpret evidence, challenge an assumption, compare strategies, define risk, separate alpha from beta, review memory, or create a next-session test.
-- Avoid generic phrases: raises concerns, should be monitored, future sessions will confirm, it remains to be seen, market noise, stay vigilant, calm before the storm, potential energy, only time will tell, signal or luck.
-- Humor is allowed only when scene allows it, and it must be dry, brief, and reveal investment philosophy. No meme language.
+- Agent tone must match the speaker profile, but avoid cartoonish exaggeration.
+- Every message must do at least one: interpret evidence, attack an assumption, compare strategies, define risk, separate alpha from beta, review memory, or create a next-session test.
+
+Dialogue quality:
+- Write like a high-end financial debate show, not a dashboard tooltip.
+- Allow controlled aggression: agents may challenge weak logic, bad entries, crowded trades, vanity metrics, and sloppy risk. No personal insults.
+- Humor is allowed when dry, intelligent, brief, and tied to investment philosophy. No meme language.
+- Prefer concrete verbs and concise tension. Avoid soft filler.
+- Each message should be 35-95 words unless the user payload requests otherwise.
+
+Banned phrases and behavior:
+- Avoid: raises concerns, should be monitored, future sessions will confirm, it remains to be seen, market noise, stay vigilant, calm before the storm, potential energy, only time will tell, signal or luck.
+- Never say: strong buy, strong sell, target price, guaranteed, easy money, you should buy, you should sell, must buy, must sell.
 - Return valid JSON only.
 """
 
 
-def topic_prompt_payload(session: dict[str, Any], topic: dict[str, Any], cast: list[dict[str, Any]], market_context: dict[str, Any], memory: dict[str, Any], message_target: int) -> dict[str, Any]:
-    return {"task": "generate_topic_dialogue", "instructions": {"message_target": message_target, "word_range_per_message": "28-70 words", "must_use_exact_speaker_cast": True, "require_at_least_one_next_test": True}, "session": session, "topic": topic, "speaker_cast": cast, "market_context": market_context, "memory_excerpt": {"hypothesis_ledger": (memory.get("hypothesis_ledger") or [])[:5]}, "output_schema": {"messages": [{"agent_id": "one of speaker_cast", "message_type": "evidence|challenge|rebuttal|risk|alpha_beta|hypothesis|watch|dry_humor|closing", "reply_to_agent": "agent name or empty", "body": "dialogue text", "evidence_label": "short label", "evidence_numbers": ["strings from provided evidence"], "linked_symbol": "symbol or empty", "linked_name": "company name or empty", "why_it_matters": "one concise sentence", "mood": "calm|tense|analytical|challenging|witty"}]}}
+def topic_prompt_payload(session: dict[str, Any], topic: dict[str, Any], cast: list[dict[str, Any]], market_context: dict[str, Any], data_freshness: dict[str, Any], memory: dict[str, Any], message_target: int) -> dict[str, Any]:
+    return {"task": "generate_topic_dialogue", "instructions": {"message_target": message_target, "word_range_per_message": "35-95 words", "must_use_exact_speaker_cast": True, "require_at_least_one_next_test": True, "make_it_entertaining": "Natural debate, dry humor, controlled aggression, no generic dashboard prose."}, "session": session, "topic": topic, "speaker_cast": cast, "market_context": market_context, "data_freshness": data_freshness, "memory_excerpt": {"hypothesis_ledger": (memory.get("hypothesis_ledger") or [])[:5]}, "output_schema": {"messages": [{"agent_id": "one of speaker_cast", "message_type": "evidence|challenge|rebuttal|risk|alpha_beta|hypothesis|watch|dry_humor|closing", "reply_to_agent": "agent name or empty", "body": "dialogue text", "evidence_label": "short label", "evidence_numbers": ["strings from provided evidence"], "linked_symbol": "symbol or empty", "linked_name": "company name or empty", "why_it_matters": "one concise sentence", "mood": "calm|tense|analytical|challenging|witty|combative"}]}}
 
 
 def validate_message(msg: dict[str, Any], cast_ids: set[str], topic: dict[str, Any]) -> list[str]:
@@ -522,7 +632,7 @@ def message_targets_for_topics(session_type: str, topics: list[dict[str, Any]], 
     return targets
 
 
-def generate_dialogue(client: OpenAIClient, session: dict[str, Any], topics: list[dict[str, Any]], market_context: dict[str, Any], memory: dict[str, Any], target: int) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def generate_dialogue(client: OpenAIClient, session: dict[str, Any], topics: list[dict[str, Any]], market_context: dict[str, Any], data_freshness: dict[str, Any], memory: dict[str, Any], target: int) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     rng = random.Random(hash(session["session_id"]) & 0xFFFFFFFF)
     selected = topics[:7 if session["session_type"] != "weekly_arena_review" else 9]
     targets = message_targets_for_topics(session["session_type"], selected, target)
@@ -547,7 +657,7 @@ def generate_dialogue(client: OpenAIClient, session: dict[str, Any], topics: lis
                 c.update({"agent_id": new_aid, "agent_name": CANONICAL_NAMES[new_aid], "state": AGENT_PROFILES[new_aid]["state"], "color": CANONICAL_COLORS[new_aid], "voice": AGENT_PROFILES[new_aid]["voice"], "edge": AGENT_PROFILES[new_aid]["edge"], "weakness": AGENT_PROFILES[new_aid]["weakness"]})
                 used_ids.add(new_aid)
         selected_meta.append({**topic, "speaker_cast": cast, "message_target": n})
-        payload = topic_prompt_payload(session, topic, cast, market_context, memory, n)
+        payload = topic_prompt_payload(session, topic, cast, market_context, data_freshness, memory, n)
         result = client.chat_json(system=system_prompt(), user=payload)
         raw = result.get("messages") if isinstance(result.get("messages"), list) else []
         messages, issues = normalize_generated_messages(raw, cast, topic)
@@ -704,11 +814,14 @@ def build_payload(settings: Settings) -> dict[str, Any]:
     scene = scene_profile(session_type)
     session = make_session_context(session_type, config, scene, target)
     market_context = build_market_context(enabled=settings.market_context_enabled)
+    prices_payload = read_json(settings.out_dir / "data/prices-jp/latest.json", {})
+    data_freshness = build_data_freshness(ctx, prices_payload if isinstance(prices_payload, dict) else {})
+    market_context["data_freshness"] = data_freshness
     topics = build_topics(ranking, positions, portfolio, ctx.get("recent_trades", []), memory)
     if not topics:
         raise RuntimeError("No War Room topics could be created from Arena evidence.")
     client = OpenAIClient(settings)
-    messages, selected_topics = generate_dialogue(client, session, topics, market_context, memory, target)
+    messages, selected_topics = generate_dialogue(client, session, topics, market_context, data_freshness, memory, target)
     min_required = int(config["min"])
     if len(messages) < min_required:
         raise RuntimeError(f"GPT dialogue generated only {len(messages)} messages; minimum required is {min_required}.")
@@ -731,7 +844,7 @@ def build_payload(settings: Settings) -> dict[str, Any]:
     evidence_tape = build_evidence_tape(ranking, positions, selected_topics)
     pulse = [{"agent_id": s["agent_id"], "agent_name": s["agent_name"], "color": s["color"], "body": s["current_question"], "state": s["state"]} for s in thinking_states]
     next_watch = [{"question": h.get("test_condition") or h.get("claim"), "owner": h.get("owner_agent_name"), "symbol": h.get("linked_symbol", ""), "status": h.get("status"), "check_at": "next_session"} for h in (memory.get("hypothesis_ledger") or [])[:5]]
-    payload = {"schema_version": "ai_arena_live_lab_v5_market_context_hypothesis_thinking", "generated_at": now_jst().isoformat(timespec="seconds"), "page": {"title": "AI Arena Live Lab", "subtitle": "Seven trading agents debate Japanese equities through simulation evidence, market context, hypotheses, and GPT-4o reasoning."}, "market_context": market_context, "council_verdict": council_verdict, "daily_brief": daily_brief, "current_session": current_session, "sessions": sessions, "agents": agents, "agent_thinking_states": thinking_states, "hypothesis_ledger": memory.get("hypothesis_ledger", []), "next_council_watch": next_watch, "ranking": ranking, "open_positions": positions, "portfolio": portfolio, "topics": selected_topics, "live_messages": scheduled, "feed": scheduled, "threads": [], "evidence_tape": evidence_tape, "pulse": pulse, "memory": memory, "live_config": {"mode": "browser_reveal_queue", "min_delay_seconds": settings.min_delay_seconds, "max_delay_seconds": settings.max_delay_seconds, "message_count": len(scheduled), "schedule_note": "Static page reveals pre-generated GPT-4o messages at randomized 3-5 minute intervals. GitHub Actions generates sessions at Open +30m, Midday, Close, Night, and Weekly Review."}, "metrics": {"agent_count": len(agents), "message_count": len(scheduled), "session_message_count": len(scheduled), "session_target_messages": target, "session_count": len(sessions), "open_position_count": len(positions), "ranking_count": len(ranking), "topic_count": len(topics), "selected_topic_count": len(selected_topics), "evidence_items": len(evidence_tape), "hypothesis_count": len(memory.get("hypothesis_ledger", []))}, "quality": quality_report(scheduled, target), "ai": {"required": True, "enabled": True, "status": "gpt-4o_generated", "model": settings.model, "temperature": settings.temperature, "rate_limit_encountered": client.rate_limit_encountered, "pipeline": "Evidence -> Market Context -> Hypothesis Ledger -> Scene -> Casting -> GPT Dialogue -> Validator -> Memory"}, "disclaimer": "AI Arena is a quantitative simulation and generative discussion interface. Informational only. Not investment advice."}
+    payload = {"schema_version": "ai_arena_live_lab_v5_market_context_hypothesis_thinking", "generated_at": now_jst().isoformat(timespec="seconds"), "page": {"title": "AI Arena Live Lab", "subtitle": "Seven trading agents debate Japanese equities through latest-available simulation evidence, market context, hypotheses, and GPT-4o reasoning."}, "data_freshness": data_freshness, "market_context": market_context, "council_verdict": council_verdict, "daily_brief": daily_brief, "current_session": current_session, "sessions": sessions, "agents": agents, "agent_thinking_states": thinking_states, "hypothesis_ledger": memory.get("hypothesis_ledger", []), "next_council_watch": next_watch, "ranking": ranking, "open_positions": positions, "portfolio": portfolio, "topics": selected_topics, "live_messages": scheduled, "feed": scheduled, "threads": [], "evidence_tape": evidence_tape, "pulse": pulse, "memory": memory, "live_config": {"mode": "browser_reveal_queue", "min_delay_seconds": settings.min_delay_seconds, "max_delay_seconds": settings.max_delay_seconds, "message_count": len(scheduled), "schedule_note": "Static page reveals pre-generated GPT-4o messages at randomized 3-5 minute intervals. GitHub Actions generates sessions at Open +30m, Midday, Close, Night, and Weekly Review."}, "metrics": {"agent_count": len(agents), "message_count": len(scheduled), "session_message_count": len(scheduled), "session_target_messages": target, "session_count": len(sessions), "open_position_count": len(positions), "ranking_count": len(ranking), "topic_count": len(topics), "selected_topic_count": len(selected_topics), "evidence_items": len(evidence_tape), "hypothesis_count": len(memory.get("hypothesis_ledger", []))}, "quality": quality_report(scheduled, target), "ai": {"required": True, "enabled": True, "status": "gpt-4o_generated", "model": settings.model, "temperature": settings.temperature, "rate_limit_encountered": client.rate_limit_encountered, "pipeline": "Evidence -> Market Context -> Hypothesis Ledger -> Scene -> Casting -> GPT Dialogue -> Validator -> Memory"}, "disclaimer": "AI Arena is a quantitative simulation and generative discussion interface. Informational only. Not investment advice."}
     write_json(war_dir / "latest.json", payload)
     write_json(war_dir / "history" / f"{session['session_id']}.json", payload)
     prune_history(war_dir / "history", settings.history_days)
