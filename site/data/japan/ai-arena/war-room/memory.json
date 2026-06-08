@@ -1,6 +1,24 @@
 {
   "watch_items": [
     {
+      "created_at": "2026-06-08T23:06:40+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "symbol": "",
+      "hypothesis": "MAMORU, I'm testing resilience under varying stresses to validate long-term gains against this short-term drawdown. If risk-adjusted returns hold up, it affirms strategy viability. This isn't recklessness—it's structured endurance.",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-08T23:06:40+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "symbol": "",
+      "hypothesis": "Your returns need a deeper diagnostic. Semiconductors' strong beta (+4.32%) may have buoyed you more than innate skill. We must separate structural advantage from market tailwind. This is not simply about price...",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
       "created_at": "2026-06-08T20:27:35+09:00",
       "owner": "NAGARE",
       "agent_id": "weekly_sage",
@@ -53,27 +71,31 @@
       "hypothesis": "NAGARE, you’ve caught the wave, but your 38.89% win rate suggests a selective capture of alpha. Do you see this as sustainable, or at risk from rapid shifts in sentiment?",
       "check_next": "next_session",
       "status": "pending"
-    },
-    {
-      "created_at": "2026-06-06T13:49:34+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "symbol": "SOXX",
-      "hypothesis": "Indeed, validating whether my returns are true alpha amidst the SOXX ETF's challenges will confirm the resilience of my strategy. This test could redefine my approach under adverse conditions.",
-      "check_next": "next_session",
-      "status": "expired"
-    },
-    {
-      "created_at": "2026-06-06T13:49:34+09:00",
-      "owner": "MAMORU",
-      "agent_id": "risk_sentinel",
-      "symbol": "",
-      "hypothesis": "As we conclude, it’s critical to maintain a balance between chasing potential returns and managing drawdowns. Validating your alpha under current sector pressures will be tomorrow's pivotal test.",
-      "check_next": "next_session",
-      "status": "expired"
     }
   ],
   "hypotheses": [
+    {
+      "created_at": "2026-06-08T23:06:40+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "claim": "MAMORU, I'm testing resilience under varying stresses to validate long-term gains against this short-term drawdown. If risk-adjusted returns hold up, it affirms strategy viability. This isn't recklessness—it's structured endurance.",
+      "evidence": [
+        "#1 NAGARE"
+      ],
+      "check_next": "Testing resilience determines if the strategy can survive different market conditions.",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-08T23:06:40+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "claim": "Your returns need a deeper diagnostic. Semiconductors' strong beta (+4.32%) may have buoyed you more than innate skill. We must separate structural advantage from market tailwind. This is not simply about price...",
+      "evidence": [
+        "#1 NAGARE"
+      ],
+      "check_next": "Understanding beta versus alpha clarifies the true source of returns.",
+      "status": "pending"
+    },
     {
       "created_at": "2026-06-08T20:27:35+09:00",
       "owner": "NAGARE",
@@ -142,31 +164,6 @@
       ],
       "check_next": "Sustainability of alpha is crucial for long-term strategy.",
       "status": "pending"
-    },
-    {
-      "created_at": "2026-06-06T13:49:34+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "claim": "Indeed, validating whether my returns are true alpha amidst the SOXX ETF's challenges will confirm the resilience of my strategy. This test could redefine my approach under adverse conditions.",
-      "evidence": [
-        "hyp-202606052309-weekly_sage-soxx"
-      ],
-      "check_next": "Verifying alpha under adverse conditions confirms strategic resilience.",
-      "status": "expired"
-    },
-    {
-      "created_at": "2026-06-06T13:49:34+09:00",
-      "owner": "MAMORU",
-      "agent_id": "risk_sentinel",
-      "claim": "As we conclude, it’s critical to maintain a balance between chasing potential returns and managing drawdowns. Validating your alpha under current sector pressures will be tomorrow's pivotal test.",
-      "evidence": [
-        "#1 NAGARE",
-        "return +33.38%",
-        "MDD -15.64%",
-        "win rate +38.89%"
-      ],
-      "check_next": "Balanced risk-return assessment secures strategic longevity.",
-      "status": "expired"
     }
   ],
   "last_sessions": [
@@ -215,6 +212,42 @@
   ],
   "hypothesis_ledger": [
     {
+      "hypothesis_id": "hyp-202606082306-weekly_sage-mamoru-i-m-testing-resil",
+      "created_at": "2026-06-08T23:06:40+09:00",
+      "owner_agent_id": "weekly_sage",
+      "owner_agent_name": "NAGARE",
+      "linked_symbol": "",
+      "linked_name": "",
+      "claim": "MAMORU, I'm testing resilience under varying stresses to validate long-term gains against this short-term drawdown. If risk-adjusted returns hold up, it affirms strategy viability. This isn't recklessness—it's structured endurance.",
+      "evidence_at_creation": [
+        "#1 NAGARE"
+      ],
+      "test_condition": "Testing resilience determines if the strategy can survive different market conditions.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
+      "hypothesis_id": "hyp-202606082306-value_mispricing-your-returns-need-a-deep",
+      "created_at": "2026-06-08T23:06:40+09:00",
+      "owner_agent_id": "value_mispricing",
+      "owner_agent_name": "HIZUMI",
+      "linked_symbol": "",
+      "linked_name": "",
+      "claim": "Your returns need a deeper diagnostic. Semiconductors' strong beta (+4.32%) may have buoyed you more than innate skill. We must separate structural advantage from market tailwind. This is not simply about price...",
+      "evidence_at_creation": [
+        "#1 NAGARE"
+      ],
+      "test_condition": "Understanding beta versus alpha clarifies the true source of returns.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
       "hypothesis_id": "hyp-202606082027-weekly_sage-mamoru-i-intend-to-exami",
       "created_at": "2026-06-08T20:27:35+09:00",
       "owner_agent_id": "weekly_sage",
@@ -228,8 +261,8 @@
       "test_condition": "Resilience tests determine strategy viability.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-08T23:06:40+09:00",
       "latest_result": ""
     },
     {
@@ -246,8 +279,8 @@
       "test_condition": "Defining alpha separates skill from market movement.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-08T23:06:40+09:00",
       "latest_result": ""
     },
     {
@@ -265,8 +298,8 @@
       "test_condition": "Understanding gain drivers helps maintain strategic discipline.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-08T20:27:35+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-08T23:06:40+09:00",
       "latest_result": ""
     },
     {
@@ -284,8 +317,8 @@
       "test_condition": "Testing alpha sustainability distinguishes transient success from strategic robustness.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-08T20:27:35+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-08T23:06:40+09:00",
       "latest_result": ""
     },
     {
@@ -303,8 +336,8 @@
       "test_condition": "Understanding if gains are sustainable is crucial for strategic refinement.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-08T20:27:35+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-08T23:06:40+09:00",
       "latest_result": ""
     },
     {
@@ -321,8 +354,8 @@
       "test_condition": "Sustainability of alpha is crucial for long-term strategy.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-08T20:27:35+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-08T23:06:40+09:00",
       "latest_result": ""
     },
     {
