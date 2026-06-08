@@ -1,81 +1,34 @@
-# AI Arena Live Lab Semantic Guard Patch
+# Neon Tokyo Signals / AI Arena patch
 
-## Add
+## Scope
+This patch is a full-file replacement package for the changed source/workflow/test files.
 
-Place this file:
+## Main changes
+- Unifies `prices_daily` around the canonical DuckDB schema: `ticker,date,open,high,low,close,adj_close,volume,traded_value_jpy,source,updated_at`.
+- Adds `scripts/export_prices_public_json_jp.py` to regenerate lightweight `site/data/prices-jp/latest.json` from DuckDB.
+- Adds freshness validation in live/season workflows.
+- Converts War Room workflow to `build_only` / `refresh_then_build` modes; scheduled runs use refresh mode and share the canonical DB concurrency lock.
+- Adds `data_freshness` to War Room payload and prompt context.
+- Simplifies Live Lab UI around the agent conversation; removes reveal-all / fast-preview controls.
+- Makes the browser reveal queue global-time based, so all visitors see the same visible state at the same time.
+- Adds unit tests for price schema, public JSON export, and War Room freshness classification.
 
-```text
-scripts/lib/ai_arena_lab_semantic_guard_jp.py
-```
-
-## Modify `scripts/build_ai_arena_war_room_jp.py`
-
-Add this import near the top:
-
-```python
-from scripts.lib.ai_arena_lab_semantic_guard_jp import sanitize_lab_payload
-```
-
-Then call this immediately before writing `latest.json`:
-
-```python
-payload = sanitize_lab_payload(payload)
-```
-
-Example:
-
-```python
-payload = {...}
-payload = sanitize_lab_payload(payload)
-write_json(latest_json_path, payload)
-```
-
-## Add to OpenAI prompt
-
-```text
-MARKET CONTEXT RULES:
-- Market context is optional evidence, not mandatory decoration.
-- Use SOXX or semiconductor context only when the topic or linked ticker has plausible semiconductor, electronics, component, equipment, material, or high-tech exposure.
-- Do not connect SOXX to software/service names unless the supplied evidence explicitly says the company is semiconductor-related.
-- If market context is weakly related, say it is not decisive instead of forcing a connection.
-- Never invent catalysts, news, policy events, geopolitical events, earnings, guidance, company fundamentals, or geopolitical causes.
-- Use only the provided numeric facts.
-- If you use a market context item, mention the actual number exactly as provided.
-
-DIALOGUE QUALITY RULES:
-- Every message must advance the debate.
-- Avoid generic finance filler such as "sustainable", "robust", "crucial", "market conditions", "risk-adjusted", unless tied to a specific number.
-- Each agent must speak in its own style.
-- Avoid making all agents sound like risk managers.
-- Do not let one agent reply to itself.
-- Do not assign another agent's state, color, role, or personality.
-- Prefer concrete tests: "what would prove this wrong next session?"
-- A disagreement must identify the exact number or assumption being challenged.
-- Do not celebrate returns without testing drawdown, sample size, concentration, or opportunity cost.
-- Do not produce investment advice, target prices, buy/sell instructions, guarantees, or recommendations.
-```
-
-## Check
-
+## Local checks run
 ```bash
-python -m compileall scripts/lib/ai_arena_lab_semantic_guard_jp.py scripts/build_ai_arena_war_room_jp.py
-python scripts/build_ai_arena_war_room_jp.py
-python -m json.tool site/data/japan/ai-arena/war-room/latest.json > /tmp/latest.checked.json
-```
-
-```bash
+python -m compileall scripts tests
+python -m unittest discover -s tests -v
 python - <<'PY'
-import json
+import yaml
 from pathlib import Path
-
-p = Path("site/data/japan/ai-arena/war-room/latest.json")
-data = json.loads(p.read_text(encoding="utf-8"))
-
-print("semantic_score:", data.get("quality", {}).get("semantic_score"))
-print("semantic_guard_issue_count:", data.get("quality", {}).get("semantic_guard_issue_count"))
-print("message_count:", data.get("metrics", {}).get("message_count"))
-
-for m in data.get("current_session", {}).get("messages", [])[:5]:
-    print(m["agent_id"], m["agent_name"], m["state"], m["color"])
+for p in Path('.github/workflows').glob('*.yml'):
+    yaml.safe_load(p.read_text())
+print('yaml_ok')
 PY
+AI_ARENA_WAR_ROOM_MOCK_OPENAI=true AI_ARENA_WAR_ROOM_MARKET_CONTEXT=false OUT_DIR=site python scripts/build_ai_arena_war_room_jp.py
+OUT_DIR=site python scripts/render_ai_arena_war_room_jp.py
 ```
+
+## Notes
+- Scheduled War Room refresh uses short yfinance timeout and Stooq fallback disabled by default.
+- `site/data/prices-jp/latest.json` remains a compatibility artifact, not the canonical source. DuckDB is canonical.
+- The package intentionally excludes generated `site/data/...` JSON and generated HTML except generated War Room CSS/JS assets.
