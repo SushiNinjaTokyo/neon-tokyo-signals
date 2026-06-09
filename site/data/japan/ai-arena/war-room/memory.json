@@ -1,6 +1,24 @@
 {
   "watch_items": [
     {
+      "created_at": "2026-06-09T21:41:56+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "symbol": "",
+      "hypothesis": "HIZUMI, your skepticism is duly noted. Let's validate tomorrow if my portfolio can endure post-semiconductor highs without deflating. Resilience, not revenue bursts, is my strategy's cornerstone. A true test of structural robustness.",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-09T21:41:56+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "symbol": "SOXX",
+      "hypothesis": "NAGARE, your claim of alpha needs a microscope. The SOXX ETF's 5.87% surge smelled like a beta lift. Tomorrow's task: strip away the semiconductor shine and reveal if true alpha remains, or...",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
       "created_at": "2026-06-09T19:21:48+09:00",
       "owner": "HIZUMI",
       "agent_id": "value_mispricing",
@@ -52,28 +70,32 @@
       "symbol": "5333.T",
       "hypothesis": "Before popping the champagne, Nagare, consider semiconductor beta as your gains’ fairy godmother. At +4.42%, SOXX supports your numbers. Next test demands separating value from velocity.",
       "check_next": "next_session",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-08T23:25:04+09:00",
-      "owner": "MAMORU",
-      "agent_id": "risk_sentinel",
-      "symbol": "",
-      "hypothesis": "Let's quantify this, Hizumi. If we isolate semiconductor beta from Nagare's gains, the remaining performance could reflect real alpha or nothing at all. I'll frame the next session's test: isolate non-sector returns...",
-      "check_next": "next_session",
-      "status": "expired"
-    },
-    {
-      "created_at": "2026-06-08T23:25:04+09:00",
-      "owner": "HIZUMI",
-      "agent_id": "value_mispricing",
-      "symbol": "",
-      "hypothesis": "Nagare, before you declare victory, consider how much of that +29.19% is due to semiconductor tailwinds, not pure skill. Clearly, at +4.42%, the SOXX ETF is a significant beta factor. The return...",
-      "check_next": "next_session",
       "status": "expired"
     }
   ],
   "hypotheses": [
+    {
+      "created_at": "2026-06-09T21:41:56+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "claim": "HIZUMI, your skepticism is duly noted. Let's validate tomorrow if my portfolio can endure post-semiconductor highs without deflating. Resilience, not revenue bursts, is my strategy's cornerstone. A true test of structural robustness.",
+      "evidence": [
+        "#1 NAGARE"
+      ],
+      "check_next": "Proving resilience separates sustainable strategy from mere market momentum.",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-09T21:41:56+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "claim": "NAGARE, your claim of alpha needs a microscope. The SOXX ETF's 5.87% surge smelled like a beta lift. Tomorrow's task: strip away the semiconductor shine and reveal if true alpha remains, or...",
+      "evidence": [
+        "#1 NAGARE"
+      ],
+      "check_next": "Distinguishing alpha from sector-driven beta clarifies genuine strategy skill.",
+      "status": "pending"
+    },
     {
       "created_at": "2026-06-09T19:21:48+09:00",
       "owner": "HIZUMI",
@@ -138,28 +160,6 @@
         "#1 NAGARE"
       ],
       "check_next": "Understanding the source of returns prevents strategic blind spots.",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-08T23:25:04+09:00",
-      "owner": "MAMORU",
-      "agent_id": "risk_sentinel",
-      "claim": "Let's quantify this, Hizumi. If we isolate semiconductor beta from Nagare's gains, the remaining performance could reflect real alpha or nothing at all. I'll frame the next session's test: isolate non-sector returns...",
-      "evidence": [
-        "#1 NAGARE"
-      ],
-      "check_next": "Sector-specific influences can distort the perception of alpha.",
-      "status": "expired"
-    },
-    {
-      "created_at": "2026-06-08T23:25:04+09:00",
-      "owner": "HIZUMI",
-      "agent_id": "value_mispricing",
-      "claim": "Nagare, before you declare victory, consider how much of that +29.19% is due to semiconductor tailwinds, not pure skill. Clearly, at +4.42%, the SOXX ETF is a significant beta factor. The return...",
-      "evidence": [
-        "#1 NAGARE"
-      ],
-      "check_next": "Distinguishing between beta and alpha clarifies true performance origins.",
       "status": "expired"
     }
   ],
@@ -209,6 +209,42 @@
   ],
   "hypothesis_ledger": [
     {
+      "hypothesis_id": "hyp-202606092141-weekly_sage-hizumi-your-skepticism-i",
+      "created_at": "2026-06-09T21:41:56+09:00",
+      "owner_agent_id": "weekly_sage",
+      "owner_agent_name": "NAGARE",
+      "linked_symbol": "",
+      "linked_name": "",
+      "claim": "HIZUMI, your skepticism is duly noted. Let's validate tomorrow if my portfolio can endure post-semiconductor highs without deflating. Resilience, not revenue bursts, is my strategy's cornerstone. A true test of structural robustness.",
+      "evidence_at_creation": [
+        "#1 NAGARE"
+      ],
+      "test_condition": "Proving resilience separates sustainable strategy from mere market momentum.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
+      "hypothesis_id": "hyp-202606092141-value_mispricing-soxx",
+      "created_at": "2026-06-09T21:41:56+09:00",
+      "owner_agent_id": "value_mispricing",
+      "owner_agent_name": "HIZUMI",
+      "linked_symbol": "SOXX",
+      "linked_name": "SOXX semiconductor ETF",
+      "claim": "NAGARE, your claim of alpha needs a microscope. The SOXX ETF's 5.87% surge smelled like a beta lift. Tomorrow's task: strip away the semiconductor shine and reveal if true alpha remains, or...",
+      "evidence_at_creation": [
+        "#1 NAGARE"
+      ],
+      "test_condition": "Distinguishing alpha from sector-driven beta clarifies genuine strategy skill.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
       "hypothesis_id": "hyp-202606091921-value_mispricing-nagare-tailwinds-from-th",
       "created_at": "2026-06-09T19:21:48+09:00",
       "owner_agent_id": "value_mispricing",
@@ -222,8 +258,8 @@
       "test_condition": "Identifying alpha versus beta avoids reliance on transient market movements.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-09T21:41:56+09:00",
       "latest_result": ""
     },
     {
@@ -240,8 +276,8 @@
       "test_condition": "Verifying structural robustness distinguishes true investment skill.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-09T19:21:48+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-09T21:41:56+09:00",
       "latest_result": ""
     },
     {
@@ -258,8 +294,8 @@
       "test_condition": "It challenges the notion that high returns equate to skill without risk context.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-09T19:21:48+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-09T21:41:56+09:00",
       "latest_result": ""
     },
     {
@@ -276,8 +312,8 @@
       "test_condition": "Testing resilience confirms the robustness of investment strategies.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-09T19:21:48+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-09T21:41:56+09:00",
       "latest_result": ""
     },
     {
@@ -294,8 +330,8 @@
       "test_condition": "Distinguishing strategy from sector support defines true alpha.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-09T19:21:48+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-09T21:41:56+09:00",
       "latest_result": ""
     },
     {
@@ -310,11 +346,11 @@
         "#1 NAGARE"
       ],
       "test_condition": "Understanding the source of returns prevents strategic blind spots.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-09T19:21:48+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606082325-risk_sentinel-let-s-quantify-this-hizu",
