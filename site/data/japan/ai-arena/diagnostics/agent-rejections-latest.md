@@ -1,12 +1,12 @@
 # AI Arena Agent Rejection Diagnostics
 
-Generated: 2026-06-09T04:59:00Z
+Generated: 2026-06-09T07:00:50Z
 Run: `arena_jp_live_2026`
 Season: 2026-01-01 → 2026-06-09
 
 | Agent | Candidates | Evaluated | Entry Pass | Orders | Buy Fills | Buy Cancels | Sells | Trades | Open | Rejected | Top Reject Reason |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| HIZUMI / `value_mispricing` | 5532 | 3327 | 20 | 20 | 20 | 0 | 20 | 20 | 0 | 5512 | ENTRY_RULE_REJECTED (3144) |
+| HIZUMI / `value_mispricing` | 5227 | 3327 | 20 | 20 | 20 | 0 | 20 | 20 | 0 | 5207 | ENTRY_RULE_REJECTED (3144) |
 | KAESHI / `reversal_snapback` | 259 | 220 | 57 | 57 | 57 | 0 | 57 | 57 | 0 | 202 | ENTRY_RULE_REJECTED (130) |
 | KYOU / `daily_striker` | 1383 | 1106 | 88 | 88 | 84 | 4 | 84 | 84 | 0 | 1299 | ENTRY_RULE_REJECTED (1001) |
 | MAMORU / `risk_sentinel` | 42858 | 31056 | 125 | 102 | 102 | 0 | 98 | 98 | 4 | 42756 | ENTRY_RULE_REJECTED (30263) |
@@ -19,10 +19,10 @@ Season: 2026-01-01 → 2026-06-09
 ### HIZUMI / `value_mispricing`
 - `ENTRY_RULE_REJECTED`: 3144
 - `MAX_NEW_ENTRIES_PER_DAY`: 1879
-- `NO_NEXT_TRADING_DATE`: 326
 - `MAX_SYMBOL_CLOSED_TRADES`: 84
 - `COOLDOWN_AFTER_LOSS`: 40
 - `ALREADY_OPEN_POSITION`: 39
+- `NO_NEXT_TRADING_DATE`: 21
 - Entry rule details:
   - score_below_entry_threshold: 2861
   - blocked_near_year_end: 132
