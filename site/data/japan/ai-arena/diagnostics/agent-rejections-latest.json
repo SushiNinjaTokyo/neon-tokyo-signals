@@ -1,33 +1,33 @@
 {
   "schema_version": "neon_tokyo_ai_arena_agent_rejection_diagnostics_v1",
-  "generated_at": "2026-06-08T14:39:31Z",
+  "generated_at": "2026-06-09T04:59:00Z",
   "run_id": "arena_jp_live_2026",
   "year": 2026,
   "season": {
     "start_date": "2026-01-01",
-    "end_date": "2026-06-08",
-    "trading_days": 103
+    "end_date": "2026-06-09",
+    "trading_days": 104
   },
   "totals": {
-    "candidate_rows": 65111,
-    "evaluated_rows": 42225,
-    "entry_rule_pass": 672,
-    "orders_created": 453,
-    "buy_orders_filled": 432,
-    "buy_orders_cancelled": 21,
-    "sell_orders_created": 422,
-    "sell_orders_filled": 422,
+    "candidate_rows": 65964,
+    "evaluated_rows": 41883,
+    "entry_rule_pass": 676,
+    "orders_created": 457,
+    "buy_orders_filled": 434,
+    "buy_orders_cancelled": 23,
+    "sell_orders_created": 423,
+    "sell_orders_filled": 423,
     "sell_orders_cancelled": 0,
-    "closed_trades": 422,
-    "final_open_positions": 10,
-    "rejected_total": 64679
+    "closed_trades": 423,
+    "final_open_positions": 11,
+    "rejected_total": 65530
   },
   "agents": [
     {
       "agent_id": "value_mispricing",
       "agent_name": "HIZUMI",
-      "candidate_rows": 5206,
-      "evaluated_rows": 3308,
+      "candidate_rows": 5532,
+      "evaluated_rows": 3327,
       "entry_rule_pass": 20,
       "orders_created": 20,
       "buy_orders_filled": 20,
@@ -37,20 +37,20 @@
       "sell_orders_cancelled": 0,
       "closed_trades": 20,
       "final_open_positions": 0,
-      "rejected_total": 5186,
+      "rejected_total": 5512,
       "rejected_reasons": {
-        "ENTRY_RULE_REJECTED": 3130,
+        "ENTRY_RULE_REJECTED": 3144,
         "MAX_NEW_ENTRIES_PER_DAY": 1879,
-        "MAX_SYMBOL_CLOSED_TRADES": 80,
-        "ALREADY_OPEN_POSITION": 39,
-        "COOLDOWN_AFTER_LOSS": 39,
-        "NO_NEXT_TRADING_DATE": 19
+        "NO_NEXT_TRADING_DATE": 326,
+        "MAX_SYMBOL_CLOSED_TRADES": 84,
+        "COOLDOWN_AFTER_LOSS": 40,
+        "ALREADY_OPEN_POSITION": 39
       },
       "entry_rule_reject_reasons_top20": {
-        "score_below_entry_threshold": 2824,
-        "blocked_near_year_end": 169,
+        "score_below_entry_threshold": 2861,
+        "blocked_near_year_end": 132,
         "year_range_position_too_high": 97,
-        "market_regime_panic_entry_disabled": 38,
+        "market_regime_panic_entry_disabled": 52,
         "liquidity_below_threshold": 1,
         "valuation_discount_below_threshold": 1
       }
@@ -59,7 +59,7 @@
       "agent_id": "reversal_snapback",
       "agent_name": "KAESHI",
       "candidate_rows": 259,
-      "evaluated_rows": 219,
+      "evaluated_rows": 220,
       "entry_rule_pass": 57,
       "orders_created": 57,
       "buy_orders_filled": 57,
@@ -71,11 +71,10 @@
       "final_open_positions": 0,
       "rejected_total": 202,
       "rejected_reasons": {
-        "ENTRY_RULE_REJECTED": 129,
+        "ENTRY_RULE_REJECTED": 130,
         "ALREADY_OPEN_POSITION": 33,
         "MAX_NEW_ENTRIES_PER_DAY": 29,
-        "MAX_POSITIONS_FULL": 10,
-        "NO_NEXT_TRADING_DATE": 1
+        "MAX_POSITIONS_FULL": 10
       },
       "entry_rule_reject_reasons_top20": {
         "rank_below_cutoff": 53,
@@ -83,17 +82,17 @@
         "five_day_falling_knife": 19,
         "rsi_extremely_weak": 16,
         "score_below_entry_threshold": 6,
+        "market_regime_panic_entry_disabled": 2,
         "reversal_confirmation_failed:0/1": 2,
         "liquidity_below_threshold": 1,
-        "market_regime_panic_entry_disabled": 1,
         "rsi_not_oversold_enough": 1
       }
     },
     {
       "agent_id": "daily_striker",
       "agent_name": "KYOU",
-      "candidate_rows": 1380,
-      "evaluated_rows": 1104,
+      "candidate_rows": 1383,
+      "evaluated_rows": 1106,
       "entry_rule_pass": 88,
       "orders_created": 88,
       "buy_orders_filled": 84,
@@ -103,24 +102,24 @@
       "sell_orders_cancelled": 0,
       "closed_trades": 84,
       "final_open_positions": 0,
-      "rejected_total": 1296,
+      "rejected_total": 1299,
       "rejected_reasons": {
-        "ENTRY_RULE_REJECTED": 999,
+        "ENTRY_RULE_REJECTED": 1001,
         "MAX_NEW_ENTRIES_PER_DAY": 205,
         "MAX_POSITIONS_FULL": 69,
         "ALREADY_OPEN_POSITION": 17,
         "CANCELLED_NO_CASH_OR_DUPLICATE_AT_EXECUTION": 4,
-        "NO_NEXT_TRADING_DATE": 2
+        "NO_NEXT_TRADING_DATE": 3
       },
       "entry_rule_reject_reasons_top20": {
-        "score_below_entry_threshold": 544,
-        "rsi_overheated": 155,
+        "score_below_entry_threshold": 548,
+        "rsi_overheated": 156,
         "rank_below_cutoff": 144,
         "year_range_position_too_low": 49,
+        "five_day_move_too_extended": 37,
         "volume_ratio_below_threshold": 36,
-        "five_day_move_too_extended": 35,
         "liquidity_below_threshold": 20,
-        "blocked_near_year_end": 9,
+        "blocked_near_year_end": 4,
         "volatility_too_high": 4,
         "range_position_20d_too_low": 2,
         "twenty_day_move_too_extended": 1
@@ -129,41 +128,41 @@
     {
       "agent_id": "risk_sentinel",
       "agent_name": "MAMORU",
-      "candidate_rows": 42465,
-      "evaluated_rows": 30668,
-      "entry_rule_pass": 124,
-      "orders_created": 101,
-      "buy_orders_filled": 101,
+      "candidate_rows": 42858,
+      "evaluated_rows": 31056,
+      "entry_rule_pass": 125,
+      "orders_created": 102,
+      "buy_orders_filled": 102,
       "buy_orders_cancelled": 0,
       "sell_orders_created": 98,
       "sell_orders_filled": 98,
       "sell_orders_cancelled": 0,
       "closed_trades": 98,
-      "final_open_positions": 3,
-      "rejected_total": 42364,
+      "final_open_positions": 4,
+      "rejected_total": 42756,
       "rejected_reasons": {
-        "ENTRY_RULE_REJECTED": 29883,
+        "ENTRY_RULE_REJECTED": 30263,
         "MAX_NEW_ENTRIES_PER_DAY": 6850,
         "MAX_POSITIONS_FULL": 4559,
-        "ALREADY_OPEN_POSITION": 661,
-        "NO_NEXT_TRADING_DATE": 388,
+        "ALREADY_OPEN_POSITION": 668,
+        "NO_NEXT_TRADING_DATE": 393,
         "ZERO_SHARES_AFTER_SIZING": 23
       },
       "entry_rule_reject_reasons_top20": {
-        "score_below_entry_threshold": 15333,
-        "rank_below_cutoff": 12876,
-        "blocked_near_year_end": 1572,
+        "score_below_entry_threshold": 15589,
+        "rank_below_cutoff": 13000,
+        "blocked_near_year_end": 1570,
         "price_not_above_ma50": 47,
-        "weekly_trend_too_weak": 31,
-        "rsi_overheated": 19,
+        "weekly_trend_too_weak": 32,
+        "rsi_overheated": 20,
         "price_not_above_ma120": 5
       }
     },
     {
       "agent_id": "contrarian_monk",
       "agent_name": "MATSU",
-      "candidate_rows": 1196,
-      "evaluated_rows": 609,
+      "candidate_rows": 1225,
+      "evaluated_rows": 652,
       "entry_rule_pass": 78,
       "orders_created": 78,
       "buy_orders_filled": 78,
@@ -173,20 +172,20 @@
       "sell_orders_cancelled": 0,
       "closed_trades": 77,
       "final_open_positions": 1,
-      "rejected_total": 1118,
+      "rejected_total": 1147,
       "rejected_reasons": {
-        "ENTRY_RULE_REJECTED": 442,
+        "ENTRY_RULE_REJECTED": 485,
         "MAX_NEW_ENTRIES_PER_DAY": 323,
         "MAX_POSITIONS_FULL": 221,
         "ALREADY_OPEN_POSITION": 89,
-        "NO_NEXT_TRADING_DATE": 43
+        "NO_NEXT_TRADING_DATE": 29
       },
       "entry_rule_reject_reasons_top20": {
         "score_below_entry_threshold": 280,
-        "blocked_near_year_end": 53,
+        "blocked_near_year_end": 95,
         "rsi_outside_pullback_band": 42,
         "rank_below_cutoff": 29,
-        "price_vs_ma50_outside_band": 21,
+        "price_vs_ma50_outside_band": 22,
         "pullback_too_deep": 8,
         "weekly_trend_too_weak": 5,
         "volatility_too_high": 4
@@ -195,39 +194,39 @@
     {
       "agent_id": "weekly_sage",
       "agent_name": "NAGARE",
-      "candidate_rows": 14024,
-      "evaluated_rows": 5758,
-      "entry_rule_pass": 256,
-      "orders_created": 60,
-      "buy_orders_filled": 43,
-      "buy_orders_cancelled": 17,
-      "sell_orders_created": 37,
-      "sell_orders_filled": 37,
+      "candidate_rows": 14126,
+      "evaluated_rows": 4962,
+      "entry_rule_pass": 259,
+      "orders_created": 63,
+      "buy_orders_filled": 44,
+      "buy_orders_cancelled": 19,
+      "sell_orders_created": 38,
+      "sell_orders_filled": 38,
       "sell_orders_cancelled": 0,
-      "closed_trades": 37,
+      "closed_trades": 38,
       "final_open_positions": 6,
-      "rejected_total": 13981,
+      "rejected_total": 14082,
       "rejected_reasons": {
-        "MAX_POSITIONS_FULL": 5753,
-        "ENTRY_RULE_REJECTED": 5244,
-        "MAX_NEW_ENTRIES_PER_DAY": 2415,
-        "ALREADY_OPEN_POSITION": 258,
+        "MAX_POSITIONS_FULL": 6550,
+        "ENTRY_RULE_REJECTED": 4497,
+        "MAX_NEW_ENTRIES_PER_DAY": 2512,
+        "ALREADY_OPEN_POSITION": 206,
         "ZERO_SHARES_AFTER_SIZING": 196,
-        "NO_NEXT_TRADING_DATE": 98,
-        "CANCELLED_NO_CASH_OR_DUPLICATE_AT_EXECUTION": 17
+        "NO_NEXT_TRADING_DATE": 102,
+        "CANCELLED_NO_CASH_OR_DUPLICATE_AT_EXECUTION": 19
       },
       "entry_rule_reject_reasons_top20": {
         "rank_below_cutoff": 3227,
         "score_below_entry_threshold": 1174,
-        "blocked_near_year_end": 840,
-        "twenty_day_move_too_extended": 3
+        "blocked_near_year_end": 92,
+        "twenty_day_move_too_extended": 4
       }
     },
     {
       "agent_id": "discovery_scout",
       "agent_name": "SAGURI",
       "candidate_rows": 581,
-      "evaluated_rows": 559,
+      "evaluated_rows": 560,
       "entry_rule_pass": 49,
       "orders_created": 49,
       "buy_orders_filled": 49,
@@ -239,10 +238,9 @@
       "final_open_positions": 0,
       "rejected_total": 532,
       "rejected_reasons": {
-        "ENTRY_RULE_REJECTED": 484,
+        "ENTRY_RULE_REJECTED": 485,
         "ALREADY_OPEN_POSITION": 26,
-        "MAX_NEW_ENTRIES_PER_DAY": 21,
-        "NO_NEXT_TRADING_DATE": 1
+        "MAX_NEW_ENTRIES_PER_DAY": 21
       },
       "entry_rule_reject_reasons_top20": {
         "five_day_move_too_extended": 152,
@@ -255,8 +253,8 @@
         "rank_below_cutoff": 14,
         "market_cap_too_small": 10,
         "pbr_too_high": 7,
+        "market_regime_panic_entry_disabled": 6,
         "twenty_day_move_too_extended": 6,
-        "market_regime_panic_entry_disabled": 5,
         "five_day_return_too_low": 3,
         "pullback_too_deep": 1,
         "short_term_euphoria_rejected": 1
