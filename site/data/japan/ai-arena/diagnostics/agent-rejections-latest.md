@@ -1,6 +1,6 @@
 # AI Arena Agent Rejection Diagnostics
 
-Generated: 2026-06-09T12:36:02Z
+Generated: 2026-06-09T14:11:14Z
 Run: `arena_jp_live_2026`
 Season: 2026-01-01 → 2026-06-09
 
