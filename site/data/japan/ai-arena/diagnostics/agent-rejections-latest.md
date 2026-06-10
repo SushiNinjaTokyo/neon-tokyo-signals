@@ -1,33 +1,33 @@
 # AI Arena Agent Rejection Diagnostics
 
-Generated: 2026-06-09T14:11:14Z
+Generated: 2026-06-10T05:11:44Z
 Run: `arena_jp_live_2026`
-Season: 2026-01-01 → 2026-06-09
+Season: 2026-01-01 → 2026-06-10
 
 | Agent | Candidates | Evaluated | Entry Pass | Orders | Buy Fills | Buy Cancels | Sells | Trades | Open | Rejected | Top Reject Reason |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| HIZUMI / `value_mispricing` | 5227 | 3327 | 20 | 20 | 20 | 0 | 20 | 20 | 0 | 5207 | ENTRY_RULE_REJECTED (3144) |
-| KAESHI / `reversal_snapback` | 259 | 220 | 57 | 57 | 57 | 0 | 57 | 57 | 0 | 202 | ENTRY_RULE_REJECTED (130) |
-| KYOU / `daily_striker` | 1383 | 1106 | 88 | 88 | 84 | 4 | 84 | 84 | 0 | 1299 | ENTRY_RULE_REJECTED (1001) |
-| MAMORU / `risk_sentinel` | 42858 | 31056 | 125 | 102 | 102 | 0 | 98 | 98 | 4 | 42756 | ENTRY_RULE_REJECTED (30263) |
-| MATSU / `contrarian_monk` | 1225 | 652 | 78 | 78 | 78 | 0 | 77 | 77 | 1 | 1147 | ENTRY_RULE_REJECTED (485) |
-| NAGARE / `weekly_sage` | 14126 | 4962 | 259 | 63 | 44 | 19 | 38 | 38 | 6 | 14082 | MAX_POSITIONS_FULL (6550) |
-| SAGURI / `discovery_scout` | 581 | 560 | 49 | 49 | 49 | 0 | 49 | 49 | 0 | 532 | ENTRY_RULE_REJECTED (485) |
+| HIZUMI / `value_mispricing` | 5542 | 3348 | 20 | 20 | 20 | 0 | 20 | 20 | 0 | 5522 | ENTRY_RULE_REJECTED (3161) |
+| KAESHI / `reversal_snapback` | 260 | 220 | 57 | 57 | 57 | 0 | 57 | 57 | 0 | 203 | ENTRY_RULE_REJECTED (130) |
+| KYOU / `daily_striker` | 1383 | 1109 | 88 | 88 | 84 | 4 | 84 | 84 | 0 | 1299 | ENTRY_RULE_REJECTED (1004) |
+| MAMORU / `risk_sentinel` | 43237 | 31449 | 126 | 103 | 103 | 0 | 98 | 98 | 5 | 43134 | ENTRY_RULE_REJECTED (30647) |
+| MATSU / `contrarian_monk` | 1280 | 681 | 78 | 78 | 78 | 0 | 77 | 77 | 1 | 1202 | ENTRY_RULE_REJECTED (514) |
+| NAGARE / `weekly_sage` | 14210 | 5064 | 259 | 63 | 44 | 19 | 38 | 38 | 6 | 14166 | MAX_POSITIONS_FULL (6550) |
+| SAGURI / `discovery_scout` | 583 | 560 | 49 | 49 | 49 | 0 | 49 | 49 | 0 | 534 | ENTRY_RULE_REJECTED (485) |
 
 ## Reject reasons by agent
 
 ### HIZUMI / `value_mispricing`
-- `ENTRY_RULE_REJECTED`: 3144
+- `ENTRY_RULE_REJECTED`: 3161
 - `MAX_NEW_ENTRIES_PER_DAY`: 1879
-- `MAX_SYMBOL_CLOSED_TRADES`: 84
-- `COOLDOWN_AFTER_LOSS`: 40
+- `NO_NEXT_TRADING_DATE`: 315
+- `MAX_SYMBOL_CLOSED_TRADES`: 87
+- `COOLDOWN_AFTER_LOSS`: 41
 - `ALREADY_OPEN_POSITION`: 39
-- `NO_NEXT_TRADING_DATE`: 21
 - Entry rule details:
-  - score_below_entry_threshold: 2861
-  - blocked_near_year_end: 132
+  - score_below_entry_threshold: 2901
   - year_range_position_too_high: 97
-  - market_regime_panic_entry_disabled: 52
+  - blocked_near_year_end: 92
+  - market_regime_panic_entry_disabled: 69
   - liquidity_below_threshold: 1
   - valuation_discount_below_threshold: 1
 
@@ -36,6 +36,7 @@ Season: 2026-01-01 → 2026-06-09
 - `ALREADY_OPEN_POSITION`: 33
 - `MAX_NEW_ENTRIES_PER_DAY`: 29
 - `MAX_POSITIONS_FULL`: 10
+- `NO_NEXT_TRADING_DATE`: 1
 - Entry rule details:
   - rank_below_cutoff: 53
   - year_range_position_extremely_low: 30
@@ -48,75 +49,75 @@ Season: 2026-01-01 → 2026-06-09
   - rsi_not_oversold_enough: 1
 
 ### KYOU / `daily_striker`
-- `ENTRY_RULE_REJECTED`: 1001
+- `ENTRY_RULE_REJECTED`: 1004
 - `MAX_NEW_ENTRIES_PER_DAY`: 205
 - `MAX_POSITIONS_FULL`: 69
 - `ALREADY_OPEN_POSITION`: 17
 - `CANCELLED_NO_CASH_OR_DUPLICATE_AT_EXECUTION`: 4
-- `NO_NEXT_TRADING_DATE`: 3
 - Entry rule details:
-  - score_below_entry_threshold: 548
+  - score_below_entry_threshold: 550
   - rsi_overheated: 156
   - rank_below_cutoff: 144
   - year_range_position_too_low: 49
   - five_day_move_too_extended: 37
   - volume_ratio_below_threshold: 36
   - liquidity_below_threshold: 20
-  - blocked_near_year_end: 4
+  - blocked_near_year_end: 5
   - volatility_too_high: 4
   - range_position_20d_too_low: 2
   - twenty_day_move_too_extended: 1
 
 ### MAMORU / `risk_sentinel`
-- `ENTRY_RULE_REJECTED`: 30263
+- `ENTRY_RULE_REJECTED`: 30647
 - `MAX_NEW_ENTRIES_PER_DAY`: 6850
 - `MAX_POSITIONS_FULL`: 4559
-- `ALREADY_OPEN_POSITION`: 668
-- `NO_NEXT_TRADING_DATE`: 393
+- `ALREADY_OPEN_POSITION`: 676
+- `NO_NEXT_TRADING_DATE`: 379
 - `ZERO_SHARES_AFTER_SIZING`: 23
 - Entry rule details:
-  - score_below_entry_threshold: 15589
-  - rank_below_cutoff: 13000
-  - blocked_near_year_end: 1570
+  - score_below_entry_threshold: 15849
+  - rank_below_cutoff: 13139
+  - blocked_near_year_end: 1553
   - price_not_above_ma50: 47
   - weekly_trend_too_weak: 32
-  - rsi_overheated: 20
+  - rsi_overheated: 22
   - price_not_above_ma120: 5
 
 ### MATSU / `contrarian_monk`
-- `ENTRY_RULE_REJECTED`: 485
+- `ENTRY_RULE_REJECTED`: 514
 - `MAX_NEW_ENTRIES_PER_DAY`: 323
 - `MAX_POSITIONS_FULL`: 221
 - `ALREADY_OPEN_POSITION`: 89
-- `NO_NEXT_TRADING_DATE`: 29
+- `NO_NEXT_TRADING_DATE`: 55
 - Entry rule details:
-  - score_below_entry_threshold: 280
-  - blocked_near_year_end: 95
+  - score_below_entry_threshold: 285
+  - blocked_near_year_end: 117
   - rsi_outside_pullback_band: 42
   - rank_below_cutoff: 29
-  - price_vs_ma50_outside_band: 22
+  - price_vs_ma50_outside_band: 24
   - pullback_too_deep: 8
   - weekly_trend_too_weak: 5
   - volatility_too_high: 4
 
 ### NAGARE / `weekly_sage`
 - `MAX_POSITIONS_FULL`: 6550
-- `ENTRY_RULE_REJECTED`: 4497
+- `ENTRY_RULE_REJECTED`: 4593
 - `MAX_NEW_ENTRIES_PER_DAY`: 2512
-- `ALREADY_OPEN_POSITION`: 206
+- `ALREADY_OPEN_POSITION`: 212
 - `ZERO_SHARES_AFTER_SIZING`: 196
-- `NO_NEXT_TRADING_DATE`: 102
+- `NO_NEXT_TRADING_DATE`: 84
 - `CANCELLED_NO_CASH_OR_DUPLICATE_AT_EXECUTION`: 19
 - Entry rule details:
   - rank_below_cutoff: 3227
   - score_below_entry_threshold: 1174
-  - blocked_near_year_end: 92
+  - blocked_near_year_end: 188
   - twenty_day_move_too_extended: 4
 
 ### SAGURI / `discovery_scout`
 - `ENTRY_RULE_REJECTED`: 485
 - `ALREADY_OPEN_POSITION`: 26
 - `MAX_NEW_ENTRIES_PER_DAY`: 21
+- `NO_NEXT_TRADING_DATE`: 2
 - Entry rule details:
   - five_day_move_too_extended: 152
   - quality_guard_below_threshold: 71
