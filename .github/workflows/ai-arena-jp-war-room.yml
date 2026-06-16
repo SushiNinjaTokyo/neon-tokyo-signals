@@ -3,53 +3,54 @@ name: AI Arena JP War Room
 on:
   workflow_dispatch:
     inputs:
-      session_type:
-        description: "Council session type"
-        required: false
-        default: "auto"
-        type: choice
-        options:
-          - auto
-          - open_council
-          - midday_council
-          - close_council
-          - night_strategy_lab
-          - weekly_arena_review
       data_mode:
-        description: "Data mode. refresh_then_build updates prices/ranking before GPT; build_only preserves existing Arena JSON."
-        required: false
+        description: "Data mode"
+        required: true
         default: "build_only"
         type: choice
         options:
           - build_only
           - refresh_then_build
-      price_refresh_mode:
-        description: "Price refresh mode used only when data_mode=refresh_then_build"
-        required: false
-        default: "incremental"
+      session_type:
+        description: "War Room session type"
+        required: true
+        default: "auto"
         type: choice
         options:
-          - incremental
-          - missing
-          - full
-      stooq_fallback_enabled:
-        description: "Enable Stooq fallback. Keep false for scheduled live sessions."
-        required: false
-        default: "false"
-        type: choice
-        options: ["false", "true"]
+          - auto
+          - open
+          - midday
+          - close
+          - night
+          - weekly
       commit_outputs:
-        description: "Commit generated War Room outputs"
-        required: false
+        description: "Commit generated outputs"
+        required: true
         default: "true"
         type: choice
-        options: ["true", "false"]
+        options:
+          - "true"
+          - "false"
+      stooq_fallback_enabled:
+        description: "Enable Stooq fallback for refresh_then_build"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
   schedule:
-    - cron: "35 0 * * 1-5"   # 09:35 JST weekdays: Open Council; offset to avoid market-open API bursts
-    - cron: "5 3 * * 1-5"    # 12:05 JST weekdays: Midday Council
-    - cron: "40 6 * * 1-5"   # 15:40 JST weekdays: Post-Close Council
-    - cron: "45 11 * * 1-5"  # 20:45 JST weekdays: Night Strategy Lab
-    - cron: "10 1 * * 6"     # 10:10 JST Saturdays: Weekly Arena Review
+    # JST 09:20 - before open council
+    - cron: "20 0 * * 1-5"
+    # JST 12:20 - midday council
+    - cron: "20 3 * * 1-5"
+    # JST 15:50 - close council
+    - cron: "50 6 * * 1-5"
+    # JST 20:40 - night strategy lab
+    - cron: "40 11 * * 1-5"
+    # JST 10:20 Saturday - weekly review
+    - cron: "20 1 * * 6"
 
 permissions:
   contents: write
@@ -59,62 +60,78 @@ concurrency:
   group: ai-arena-jp-canonical-db
   cancel-in-progress: false
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  OUT_DIR: site
+
+  # Scheduled War Room should refresh prices/ranking first.
+  # Manual runs can choose build_only when you only want to regenerate the discussion UI.
+  WAR_ROOM_DATA_MODE: ${{ github.event_name == 'schedule' && 'refresh_then_build' || inputs.data_mode || 'build_only' }}
+
+  PRICE_DUCKDB_PATH: data/cache/neon_tokyo_jp.duckdb
+  PRICE_STORE_MODE: json_and_duckdb
+  PRICE_FETCH_MODE: live
+  PRICE_REFRESH_MODE: incremental
+  STOOQ_FALLBACK_ENABLED: ${{ inputs.stooq_fallback_enabled || 'false' }}
+  STOOQ_TIMEOUT_SECONDS: "3"
+  YFINANCE_TIMEOUT_SECONDS: "10"
+  PRICE_FETCH_SLEEP_SECONDS: "0.05"
+  PRICE_MAX_STALE_CALENDAR_DAYS: "3"
+  PRICE_PUBLIC_JSON_MODE: summary
+  WRITE_DATED_PRICE_JSON: "false"
+
+  UNIVERSE_LIMIT: "1000"
+  OUT_UNIVERSE_CSV: data/universe/jp_duckdb_trial_300.csv
+  MANUAL_THEME_INCLUDE_CSV: data/universe/jp_manual_theme_includes.csv
+  UNIVERSE_DIAGNOSTICS_JSON: site/data/japan/universe/jp_duckdb_trial_300_diagnostics.json
+  STRICT_INDEX_UNIVERSE: "true"
+
+  LOOKBACK_DAYS: "520"
+  MIN_BARS_REQUIRED: "60"
+  MIN_ACCEPTABLE_BARS: "20"
+
+  VALUE_FEATURE_YEAR: auto
+  VALUE_FEATURE_START_DATE: ""
+  VALUE_FEATURE_END_DATE: ""
+
+  AGENT_SCORE_MODE: range
+  AGENT_SCORE_YEAR: auto
+  AGENT_SCORE_START_DATE: auto
+  AGENT_SCORE_END_DATE: auto
+  AGENT_SCORE_TOP_N: "30"
+  AGENT_SCORE_FAIL_IF_RANGE_TOO_SMALL: "true"
+  AGENT_SCORE_MIN_DATE_COVERAGE_PCT: "70"
+
+  AI_ARENA_YEAR: auto
+  AI_ARENA_RUN_MODE: live
+  AI_ARENA_RESET_RUN: "true"
+  AI_ARENA_PROMOTE_DISPLAY_RUN: "true"
+  AI_ARENA_ENABLE_GPT_SIGNAL_NOTES: "false"
+  AI_ARENA_FAIL_IF_NO_ORDERS: "true"
+  FORCE_FINALIZE_SEASON: "false"
+
+  AI_ARENA_WAR_ROOM_MODEL: gpt-4o
+  AI_ARENA_WAR_ROOM_SESSION_TYPE: ${{ inputs.session_type || 'auto' }}
+  AI_ARENA_WAR_ROOM_MESSAGES: ""
+  AI_ARENA_WAR_ROOM_MIN_DELAY_SECONDS: "180"
+  AI_ARENA_WAR_ROOM_MAX_DELAY_SECONDS: "300"
+  AI_ARENA_WAR_ROOM_TEMPERATURE: "0.86"
+  AI_ARENA_WAR_ROOM_HISTORY_DAYS: "14"
+  AI_ARENA_WAR_ROOM_OPENAI_MIN_INTERVAL_SECONDS: "30"
+  AI_ARENA_WAR_ROOM_OPENAI_MAX_RETRIES: "8"
+  AI_ARENA_WAR_ROOM_OPENAI_429_BASE_SLEEP_SECONDS: "75"
+  AI_ARENA_WAR_ROOM_MARKET_CONTEXT: "true"
+  AI_ARENA_MARKET_CONTEXT_TIMEOUT_SECONDS: "8"
+
+  CANONICAL_DUCKDB_RELEASE_TAG: ai-arena-duckdb-latest
+  CANONICAL_DUCKDB_ASSET: neon_tokyo_jp_latest.duckdb.zst
+  CANONICAL_DUCKDB_MANIFEST_ASSET: neon_tokyo_jp_latest_manifest.json
+
 jobs:
   war-room:
-    runs-on: ubuntu-24.04
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-      OUT_DIR: site
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      WAR_ROOM_DATA_MODE: ${{ github.event_name == 'schedule' && 'refresh_then_build' || github.event.inputs.data_mode || 'build_only' }}
-      PRICE_DUCKDB_PATH: data/cache/neon_tokyo_jp.duckdb
-      PRICE_STORE_MODE: json_and_duckdb
-      PRICE_FETCH_MODE: live
-      PRICE_REFRESH_MODE: ${{ github.event.inputs.price_refresh_mode || 'incremental' }}
-      STOOQ_FALLBACK_ENABLED: ${{ github.event.inputs.stooq_fallback_enabled || 'false' }}
-      STOOQ_TIMEOUT_SECONDS: "3"
-      YFINANCE_TIMEOUT_SECONDS: "10"
-      PRICE_FETCH_SLEEP_SECONDS: "0.05"
-      PRICE_MAX_STALE_CALENDAR_DAYS: "3"
-      UNIVERSE_LIMIT: "1000"
-      OUT_UNIVERSE_CSV: data/universe/jp_duckdb_trial_300.csv
-      MANUAL_THEME_INCLUDE_CSV: data/universe/jp_manual_theme_includes.csv
-      UNIVERSE_DIAGNOSTICS_JSON: site/data/japan/universe/jp_duckdb_trial_300_diagnostics.json
-      STRICT_INDEX_UNIVERSE: "true"
-      LOOKBACK_DAYS: "520"
-      MIN_BARS_REQUIRED: "60"
-      MIN_ACCEPTABLE_BARS: "20"
-      AGENT_SCORE_TOP_N: "30"
-      AI_ARENA_YEAR: "auto"
-      AI_ARENA_RUN_MODE: live
-      AI_ARENA_RESET_RUN: "true"
-      AI_ARENA_PROMOTE_DISPLAY_RUN: "true"
-      AI_ARENA_ENABLE_GPT_SIGNAL_NOTES: "false"
-      FORCE_FINALIZE_SEASON: "false"
-      VALUE_FEATURE_YEAR: auto
-      VALUE_FEATURE_START_DATE: ""
-      VALUE_FEATURE_END_DATE: ""
-      AGENT_SCORE_MODE: range
-      AGENT_SCORE_YEAR: auto
-      AGENT_SCORE_START_DATE: auto
-      AGENT_SCORE_END_DATE: auto
-      AGENT_SCORE_FAIL_IF_RANGE_TOO_SMALL: "true"
-      AI_ARENA_FAIL_IF_NO_ORDERS: "true"
-      AI_ARENA_WAR_ROOM_MODEL: ${{ vars.AI_ARENA_WAR_ROOM_MODEL || 'gpt-4o' }}
-      AI_ARENA_WAR_ROOM_SESSION_TYPE: ${{ github.event.inputs.session_type || 'auto' }}
-      AI_ARENA_WAR_ROOM_MESSAGES: ${{ vars.AI_ARENA_WAR_ROOM_MESSAGES }}
-      AI_ARENA_WAR_ROOM_MIN_DELAY_SECONDS: "180"
-      AI_ARENA_WAR_ROOM_MAX_DELAY_SECONDS: "300"
-      AI_ARENA_WAR_ROOM_TEMPERATURE: ${{ vars.AI_ARENA_WAR_ROOM_TEMPERATURE || '0.86' }}
-      AI_ARENA_WAR_ROOM_HISTORY_DAYS: "14"
-      AI_ARENA_WAR_ROOM_OPENAI_MIN_INTERVAL_SECONDS: ${{ vars.AI_ARENA_WAR_ROOM_OPENAI_MIN_INTERVAL_SECONDS || '30' }}
-      AI_ARENA_WAR_ROOM_OPENAI_MAX_RETRIES: ${{ vars.AI_ARENA_WAR_ROOM_OPENAI_MAX_RETRIES || '8' }}
-      AI_ARENA_WAR_ROOM_OPENAI_429_BASE_SLEEP_SECONDS: ${{ vars.AI_ARENA_WAR_ROOM_OPENAI_429_BASE_SLEEP_SECONDS || '75' }}
-      AI_ARENA_WAR_ROOM_MARKET_CONTEXT: ${{ vars.AI_ARENA_WAR_ROOM_MARKET_CONTEXT || 'true' }}
-      AI_ARENA_MARKET_CONTEXT_TIMEOUT_SECONDS: "8"
-      CANONICAL_DUCKDB_RELEASE_TAG: ai-arena-duckdb-latest
-      CANONICAL_DUCKDB_ASSET: neon_tokyo_jp_latest.duckdb.zst
-      CANONICAL_DUCKDB_MANIFEST_ASSET: neon_tokyo_jp_latest_manifest.json
+    name: war-room
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
 
     steps:
       - name: Checkout
@@ -140,10 +157,102 @@ jobs:
           set -euo pipefail
           git pull --ff-only origin main
 
-      - name: Compile War Room and data pipeline scripts
+      - name: Show run configuration
+        run: |
+          set -euo pipefail
+          echo "WAR_ROOM_DATA_MODE=${WAR_ROOM_DATA_MODE}"
+          echo "AI_ARENA_WAR_ROOM_SESSION_TYPE=${AI_ARENA_WAR_ROOM_SESSION_TYPE}"
+          echo "PRICE_DUCKDB_PATH=${PRICE_DUCKDB_PATH}"
+          echo "CANONICAL_DUCKDB_RELEASE_TAG=${CANONICAL_DUCKDB_RELEASE_TAG}"
+          echo "CANONICAL_DUCKDB_ASSET=${CANONICAL_DUCKDB_ASSET}"
+          echo "CANONICAL_DUCKDB_MANIFEST_ASSET=${CANONICAL_DUCKDB_MANIFEST_ASSET}"
+          echo "STOOQ_FALLBACK_ENABLED=${STOOQ_FALLBACK_ENABLED}"
+
+      - name: Download canonical DuckDB from Release
+        if: ${{ env.WAR_ROOM_DATA_MODE == 'refresh_then_build' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          mkdir -p data/cache
+
+          if ! gh release view "${CANONICAL_DUCKDB_RELEASE_TAG}" >/dev/null 2>&1; then
+            echo "::error::Canonical DuckDB release not found: ${CANONICAL_DUCKDB_RELEASE_TAG}"
+            echo "::error::Run AI Arena JP live update or season rebuild first."
+            exit 1
+          fi
+
+          echo "Available assets in ${CANONICAL_DUCKDB_RELEASE_TAG}:"
+          gh release view "${CANONICAL_DUCKDB_RELEASE_TAG}" --json assets \
+            --jq '.assets[].name' || true
+
+          asset_exists() {
+            local asset_name="$1"
+            gh release view "${CANONICAL_DUCKDB_RELEASE_TAG}" --json assets \
+              --jq '.assets[].name' | grep -Fx "${asset_name}" >/dev/null
+          }
+
+          download_with_retry() {
+            local asset_name="$1"
+            local required="$2"
+
+            if ! asset_exists "${asset_name}"; then
+              if [ "${required}" = "true" ]; then
+                echo "::error::Required release asset not found: ${asset_name}"
+                echo "::error::Expected release tag: ${CANONICAL_DUCKDB_RELEASE_TAG}"
+                echo "::error::This is a hard failure because refresh_then_build must not run on stale committed JSON."
+                exit 1
+              else
+                echo "::warning::Optional release asset not found: ${asset_name}; continuing."
+                return 0
+              fi
+            fi
+
+            for attempt in 1 2 3; do
+              echo "Downloading ${asset_name} attempt ${attempt}/3..."
+              if gh release download "${CANONICAL_DUCKDB_RELEASE_TAG}" \
+                --pattern "${asset_name}" \
+                --dir data/cache \
+                --clobber; then
+                test -f "data/cache/${asset_name}"
+                echo "Downloaded ${asset_name}"
+                return 0
+              fi
+
+              echo "::warning::Download failed for ${asset_name} on attempt ${attempt}/3"
+              sleep $((10 * attempt))
+            done
+
+            if [ "${required}" = "true" ]; then
+              echo "::error::Failed to download required release asset after retries: ${asset_name}"
+              exit 1
+            else
+              echo "::warning::Failed to download optional release asset after retries: ${asset_name}; continuing."
+              return 0
+            fi
+          }
+
+          download_with_retry "${CANONICAL_DUCKDB_ASSET}" "true"
+          download_with_retry "${CANONICAL_DUCKDB_MANIFEST_ASSET}" "false"
+
+          test -f "data/cache/${CANONICAL_DUCKDB_ASSET}"
+          zstd -d -f "data/cache/${CANONICAL_DUCKDB_ASSET}" -o "${PRICE_DUCKDB_PATH}"
+          test -f "${PRICE_DUCKDB_PATH}"
+          ls -lh "${PRICE_DUCKDB_PATH}"
+
+      - name: Show DuckDB metadata before refresh
+        if: ${{ env.WAR_ROOM_DATA_MODE == 'refresh_then_build' }}
+        run: |
+          set -euo pipefail
+          python scripts/show_duckdb_build_metadata.py --db-path "${PRICE_DUCKDB_PATH}" --fail-if-missing
+
+      - name: Compile scripts
         run: |
           set -euo pipefail
           python -m compileall \
+            scripts/build_jp_index_universe_csv.py \
+            scripts/build_universe_300_from_index_csv.py \
             scripts/fetch_prices_jp.py \
             scripts/export_prices_public_json_jp.py \
             scripts/build_value_features_jp.py \
@@ -152,25 +261,12 @@ jobs:
             scripts/build_ai_arena_war_room_jp.py \
             scripts/render_ai_arena_war_room_jp.py \
             scripts/render_all.py \
+            scripts/render_index.py \
+            scripts/stamp_duckdb_build_metadata.py \
+            scripts/show_duckdb_build_metadata.py \
             scripts/lib
 
-      - name: Download canonical DuckDB from Release
-        if: ${{ env.WAR_ROOM_DATA_MODE == 'refresh_then_build' }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          mkdir -p data/cache
-          if ! gh release view "${CANONICAL_DUCKDB_RELEASE_TAG}" >/dev/null 2>&1; then
-            echo "::error::Canonical DuckDB release not found: ${CANONICAL_DUCKDB_RELEASE_TAG}"
-            exit 1
-          fi
-          gh release download "${CANONICAL_DUCKDB_RELEASE_TAG}" --pattern "${CANONICAL_DUCKDB_ASSET}" --dir data/cache --clobber
-          gh release download "${CANONICAL_DUCKDB_RELEASE_TAG}" --pattern "${CANONICAL_DUCKDB_MANIFEST_ASSET}" --dir data/cache --clobber || true
-          zstd -d -f "data/cache/${CANONICAL_DUCKDB_ASSET}" -o "${PRICE_DUCKDB_PATH}"
-          test -f "${PRICE_DUCKDB_PATH}"
-
-      - name: Refresh prices and rebuild Arena context
+      - name: Ensure universe
         if: ${{ env.WAR_ROOM_DATA_MODE == 'refresh_then_build' }}
         run: |
           set -euo pipefail
@@ -178,42 +274,181 @@ jobs:
             python scripts/build_jp_index_universe_csv.py
           fi
           python scripts/build_universe_300_from_index_csv.py
-          python scripts/fetch_prices_jp.py
-          python scripts/export_prices_public_json_jp.py
-          python scripts/build_value_features_jp.py
-          python scripts/build_agent_scores_jp.py
-          python scripts/rebuild_ai_arena_season_from_duckdb_jp.py
 
-      - name: Build and render War Room
+      - name: Fetch latest prices
+        if: ${{ env.WAR_ROOM_DATA_MODE == 'refresh_then_build' }}
+        env:
+          UNIVERSE_CSV: ${{ env.OUT_UNIVERSE_CSV }}
         run: |
           set -euo pipefail
+          python scripts/fetch_prices_jp.py
+
+      - name: Export public price JSON
+        if: ${{ env.WAR_ROOM_DATA_MODE == 'refresh_then_build' }}
+        run: |
+          set -euo pipefail
+          python scripts/export_prices_public_json_jp.py
+          test -s site/data/prices-jp/latest.json
+          test -s site/data/prices-jp/manifest.json
+
+      - name: Build value features
+        if: ${{ env.WAR_ROOM_DATA_MODE == 'refresh_then_build' }}
+        env:
+          AI_ARENA_START_DATE: ""
+          AI_ARENA_END_DATE: ""
+        run: |
+          set -euo pipefail
+          python scripts/build_value_features_jp.py
+
+      - name: Build agent scores
+        if: ${{ env.WAR_ROOM_DATA_MODE == 'refresh_then_build' }}
+        run: |
+          set -euo pipefail
+          python scripts/build_agent_scores_jp.py
+
+      - name: Rebuild AI Arena live state
+        if: ${{ env.WAR_ROOM_DATA_MODE == 'refresh_then_build' }}
+        run: |
+          set -euo pipefail
+          python scripts/rebuild_ai_arena_season_from_duckdb_jp.py
+          test -s site/data/japan/ai-arena/live/latest.json
+          test -s site/data/japan/ai-arena/ranking/latest.json
+          test -s site/data/japan/ai-arena/positions/latest.json
+          test -s site/data/japan/ai-arena/summary/latest.json
+          test -s site/data/japan/ai-arena/hero/latest.json
+
+      - name: Build War Room payload
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "${OPENAI_API_KEY}"
           python scripts/build_ai_arena_war_room_jp.py
-          python scripts/render_all.py
           test -s site/data/japan/ai-arena/war-room/latest.json
+
+      - name: Render all pages after refresh
+        if: ${{ env.WAR_ROOM_DATA_MODE == 'refresh_then_build' }}
+        run: |
+          set -euo pipefail
+          python scripts/render_all.py
+          test -s site/index.html
+          test -s site/japan/ai-arena/index.html
+          test -s site/japan/ai-arena/summary/index.html
+          test -s site/japan/ai-arena/ranking/index.html
+          test -s site/japan/ai-arena/positions/index.html
           test -s site/japan/ai-arena/log/index.html
           test -s site/assets/ai_arena_war_room_jp.css
           test -s site/assets/ai_arena_war_room_jp.js
 
-      - name: Validate War Room freshness and UI guardrails
+      - name: Render War Room only
+        if: ${{ env.WAR_ROOM_DATA_MODE == 'build_only' }}
+        run: |
+          set -euo pipefail
+          python scripts/render_ai_arena_war_room_jp.py
+          test -s site/japan/ai-arena/log/index.html
+          test -s site/assets/ai_arena_war_room_jp.css
+          test -s site/assets/ai_arena_war_room_jp.js
+
+      - name: Validate War Room output
         run: |
           set -euo pipefail
           python - <<'PY'
           import json
           from pathlib import Path
-          payload = json.loads(Path('site/data/japan/ai-arena/war-room/latest.json').read_text(encoding='utf-8'))
-          assert payload.get('live_messages') or payload.get('feed'), 'War Room has no messages'
-          freshness = payload.get('data_freshness') or {}
-          assert freshness.get('level') in {'fresh', 'delayed', 'stale'}, freshness
-          html = Path('site/japan/ai-arena/log/index.html').read_text(encoding='utf-8')
-          js = Path('site/assets/ai_arena_war_room_jp.js').read_text(encoding='utf-8')
-          assert 'data-reveal-all' not in html, 'Reveal-all control must not exist'
-          assert 'Fast preview' not in html, 'Fast preview control must not exist'
-          assert 'data-reveal-all' not in js, 'Reveal-all JS must not exist'
-          assert 'Global reveal queue' in html
-          print('war_room_validation_ok', freshness.get('level'))
+
+          payload_path = Path("site/data/japan/ai-arena/war-room/latest.json")
+          html_path = Path("site/japan/ai-arena/log/index.html")
+
+          payload = json.loads(payload_path.read_text(encoding="utf-8"))
+          html = html_path.read_text(encoding="utf-8")
+
+          assert payload.get("schema_version"), "war-room schema_version missing"
+          assert payload.get("generated_at"), "war-room generated_at missing"
+          assert payload.get("current_session"), "war-room current_session missing"
+          assert payload.get("live_messages") or payload.get("feed"), "war-room messages/feed missing"
+
+          freshness = payload.get("data_freshness", {})
+          if "${WAR_ROOM_DATA_MODE}" == "refresh_then_build":
+              assert freshness, "data_freshness missing in refresh_then_build"
+              assert freshness.get("mode") in {"refresh_then_build", "build_only", None} or freshness.get("war_room_data_mode") in {"refresh_then_build", "build_only", None}
+
+          banned_ui = [
+              "Reveal all",
+              "Fast preview",
+              "Show all",
+              "reveal all",
+              "fast preview",
+              "show all",
+          ]
+          for token in banned_ui:
+              assert token not in html, f"banned UI text found: {token}"
+
+          for agent_name in ["KYOU", "NAGARE", "MAMORU", "SAGURI", "MATSU", "KAESHI", "HIZUMI"]:
+              assert agent_name in html or agent_name in json.dumps(payload, ensure_ascii=False), f"missing agent: {agent_name}"
+
+          print("war_room_validation_ok")
           PY
 
-      - name: Stamp canonical DuckDB metadata
+      - name: Validate refreshed data state
+        if: ${{ env.WAR_ROOM_DATA_MODE == 'refresh_then_build' }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import duckdb
+
+          db_path = Path("data/cache/neon_tokyo_jp.duckdb")
+          assert db_path.exists(), "DuckDB missing after refresh"
+
+          prices_path = Path("site/data/prices-jp/latest.json")
+          live_path = Path("site/data/japan/ai-arena/live/latest.json")
+          ranking_path = Path("site/data/japan/ai-arena/ranking/latest.json")
+
+          assert prices_path.exists(), "public prices JSON missing"
+          assert live_path.exists(), "live latest JSON missing"
+          assert ranking_path.exists(), "ranking latest JSON missing"
+
+          prices = json.loads(prices_path.read_text(encoding="utf-8"))
+          live = json.loads(live_path.read_text(encoding="utf-8"))
+          ranking = json.loads(ranking_path.read_text(encoding="utf-8"))
+
+          assert prices.get("schema_version") == "neon_tokyo_prices_jp_summary_v2", prices.get("schema_version")
+          assert prices.get("public_json_mode") == "summary"
+          assert prices.get("bars_omitted") is True
+          assert prices.get("latest_price_date"), "latest_price_date missing"
+          assert prices.get("ticker_count", 0) > 0, "ticker_count is zero"
+          assert live.get("run_id"), "live run_id missing"
+          assert len(live.get("agents", [])) == 7, "live agents must be 7"
+          assert ranking.get("ranking") or ranking.get("agents"), "ranking payload has no ranking/agents"
+
+          con = duckdb.connect(str(db_path), read_only=True)
+          cols = {r[1] for r in con.execute("PRAGMA table_info('prices_daily')").fetchall()}
+          required_cols = {
+              "ticker",
+              "date",
+              "open",
+              "high",
+              "low",
+              "close",
+              "adj_close",
+              "volume",
+              "traded_value_jpy",
+              "source",
+              "updated_at",
+          }
+          missing = required_cols - cols
+          assert not missing, f"prices_daily missing columns: {sorted(missing)}"
+
+          db_latest = str(con.execute("SELECT MAX(date) FROM prices_daily").fetchone()[0])[:10]
+          assert prices.get("latest_price_date") == db_latest, (
+              f"public latest_price_date {prices.get('latest_price_date')} != duckdb {db_latest}"
+          )
+
+          print("refresh_validation_ok")
+          PY
+
+      - name: Stamp DuckDB metadata
         if: ${{ env.WAR_ROOM_DATA_MODE == 'refresh_then_build' }}
         run: |
           set -euo pipefail
@@ -228,53 +463,113 @@ jobs:
             --asset-name "${CANONICAL_DUCKDB_ASSET}" \
             --manifest-path "data/cache/${CANONICAL_DUCKDB_MANIFEST_ASSET}"
 
+      - name: Show DuckDB metadata after refresh
+        if: ${{ env.WAR_ROOM_DATA_MODE == 'refresh_then_build' }}
+        run: |
+          set -euo pipefail
+          python scripts/show_duckdb_build_metadata.py --db-path "${PRICE_DUCKDB_PATH}" --fail-if-missing
+
       - name: Publish canonical DuckDB Release asset
         if: ${{ env.WAR_ROOM_DATA_MODE == 'refresh_then_build' }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          zstd -T0 -19 -f "${PRICE_DUCKDB_PATH}" -o "data/cache/${CANONICAL_DUCKDB_ASSET}"
-          gh release upload "${CANONICAL_DUCKDB_RELEASE_TAG}" \
-            "data/cache/${CANONICAL_DUCKDB_ASSET}" \
-            "data/cache/${CANONICAL_DUCKDB_MANIFEST_ASSET}" \
-            --clobber
 
-      - name: Commit War Room outputs
-        if: ${{ github.event_name == 'schedule' || github.event.inputs.commit_outputs != 'false' }}
+          test -f "${PRICE_DUCKDB_PATH}"
+          mkdir -p data/cache
+
+          zstd -T0 -19 -f "${PRICE_DUCKDB_PATH}" -o "data/cache/${CANONICAL_DUCKDB_ASSET}"
+          test -f "data/cache/${CANONICAL_DUCKDB_ASSET}"
+
+          if ! gh release view "${CANONICAL_DUCKDB_RELEASE_TAG}" >/dev/null 2>&1; then
+            gh release create "${CANONICAL_DUCKDB_RELEASE_TAG}" \
+              --title "AI Arena canonical DuckDB latest" \
+              --notes "Canonical DuckDB state for Neon Tokyo AI Arena. Updated by GitHub Actions."
+          fi
+
+          upload_files=("data/cache/${CANONICAL_DUCKDB_ASSET}")
+
+          if [ -f "data/cache/${CANONICAL_DUCKDB_MANIFEST_ASSET}" ]; then
+            upload_files+=("data/cache/${CANONICAL_DUCKDB_MANIFEST_ASSET}")
+          else
+            echo "::warning::Manifest file missing; uploading DuckDB asset only."
+          fi
+
+          for attempt in 1 2 3; do
+            echo "Uploading canonical DuckDB assets attempt ${attempt}/3..."
+            if gh release upload "${CANONICAL_DUCKDB_RELEASE_TAG}" \
+              "${upload_files[@]}" \
+              --clobber; then
+              echo "Release upload succeeded."
+              exit 0
+            fi
+
+            echo "::warning::Release upload failed on attempt ${attempt}/3"
+            sleep $((15 * attempt))
+          done
+
+          echo "::error::Release upload failed after retries."
+          exit 1
+
+      - name: Commit outputs
+        if: ${{ inputs.commit_outputs != 'false' }}
         run: |
           set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A -- \
-            data/universe/jp_duckdb_trial_300.csv \
-            site/data/japan/universe \
-            site/data/prices-jp \
-            site/data/japan/agent-scores \
-            site/data/japan/ai-arena \
-            site/index.html \
-            site/japan/ai-arena \
-            site/assets
+
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+
+          if [ "${WAR_ROOM_DATA_MODE}" = "refresh_then_build" ]; then
+            git add -A \
+              data/universe/jp_duckdb_trial_300.csv \
+              data/universe/jp_manual_theme_includes.csv \
+              site/data/japan/universe \
+              site/data/prices-jp \
+              site/data/japan/agent-scores \
+              site/data/japan/ai-arena \
+              site/index.html \
+              site/japan/ai-arena \
+              site/assets
+          else
+            git add -A \
+              site/data/japan/ai-arena/war-room \
+              site/japan/ai-arena/log \
+              site/assets/ai_arena_war_room_jp.css \
+              site/assets/ai_arena_war_room_jp.js
+          fi
+
           if git diff --cached --quiet; then
-            echo "No War Room changes to commit."
+            echo "No War Room outputs to commit."
             exit 0
           fi
-          git commit -m "Update AI Arena Live Lab"
-          for i in 1 2 3 4 5; do
+
+          git commit -m "Update AI Arena JP War Room"
+
+          for attempt in 1 2 3 4 5; do
             if git push origin HEAD:main; then
               echo "Push succeeded."
               exit 0
             fi
-            echo "Push rejected. Fetching origin/main and retrying ($i/5)..."
+
+            echo "Push rejected. Fetching origin/main and retrying (${attempt}/5)..."
             git fetch origin main
+
+            echo "Working tree before cleanup:"
+            git status --short || true
+
             git reset --hard HEAD
             git clean -fd
+
             if ! git rebase -X theirs origin/main; then
+              echo "::error::Rebase failed after cleanup. Aborting to avoid publishing conflicted output state."
               git rebase --abort || true
               git status --short || true
               exit 1
             fi
-            sleep $((5 * i))
+
+            sleep $((5 * attempt))
           done
-          echo "Push failed after retries."
+
+          echo "::error::Push failed after retries."
           exit 1
