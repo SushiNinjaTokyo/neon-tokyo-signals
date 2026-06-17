@@ -116,19 +116,84 @@ jobs:
           set -euo pipefail
           git pull --ff-only origin main
 
-      - name: Download canonical DuckDB from Release
+      - name: Restore canonical DuckDB or bootstrap new DB
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           mkdir -p data/cache
+
+          echo "CANONICAL_DUCKDB_BOOTSTRAP=false" >> "$GITHUB_ENV"
+          echo "Canonical release tag: ${CANONICAL_DUCKDB_RELEASE_TAG}"
+          echo "Required DB asset: ${CANONICAL_DUCKDB_ASSET}"
+          echo "Optional manifest asset: ${CANONICAL_DUCKDB_MANIFEST_ASSET}"
+
+          asset_exists() {
+            local asset_name="$1"
+            gh release view "${CANONICAL_DUCKDB_RELEASE_TAG}" --json assets \
+              --jq '.assets[].name' | grep -Fx "${asset_name}" >/dev/null
+          }
+
+          download_with_retry() {
+            local asset_name="$1"
+            local required="$2"
+
+            if ! asset_exists "${asset_name}"; then
+              if [ "${required}" = "true" ]; then
+                echo "::warning::Required canonical asset is missing: ${asset_name}"
+                return 2
+              fi
+              echo "::warning::Optional canonical asset is missing: ${asset_name}; continuing."
+              return 0
+            fi
+
+            for attempt in 1 2 3; do
+              echo "Downloading ${asset_name} attempt ${attempt}/3..."
+              if gh release download "${CANONICAL_DUCKDB_RELEASE_TAG}" \
+                --pattern "${asset_name}" \
+                --dir data/cache \
+                --clobber; then
+                test -f "data/cache/${asset_name}"
+                echo "Downloaded ${asset_name}"
+                return 0
+              fi
+              echo "::warning::Download failed for ${asset_name} on attempt ${attempt}/3"
+              sleep $((10 * attempt))
+            done
+
+            if [ "${required}" = "true" ]; then
+              echo "::warning::Required canonical asset could not be downloaded after retries: ${asset_name}"
+              return 2
+            fi
+
+            echo "::warning::Optional canonical asset could not be downloaded after retries: ${asset_name}; continuing."
+            return 0
+          }
+
+          bootstrap_new_db() {
+            echo "::warning::Canonical DuckDB was not restored. Bootstrapping a new DB in live-update."
+            echo "::warning::This is allowed only for live-update so the canonical release can recover from missing/deleted assets."
+            rm -f "${PRICE_DUCKDB_PATH}" "data/cache/${CANONICAL_DUCKDB_ASSET}"
+            echo "CANONICAL_DUCKDB_BOOTSTRAP=true" >> "$GITHUB_ENV"
+          }
+
           if ! gh release view "${CANONICAL_DUCKDB_RELEASE_TAG}" >/dev/null 2>&1; then
-            echo "::error::Canonical DuckDB release not found: ${CANONICAL_DUCKDB_RELEASE_TAG}"
-            echo "::error::Run AI Arena JP season rebuild first."
-            exit 1
+            echo "::warning::Canonical DuckDB release not found: ${CANONICAL_DUCKDB_RELEASE_TAG}"
+            bootstrap_new_db
+            exit 0
           fi
-          gh release download "${CANONICAL_DUCKDB_RELEASE_TAG}" --pattern "${CANONICAL_DUCKDB_ASSET}" --dir data/cache --clobber
-          gh release download "${CANONICAL_DUCKDB_RELEASE_TAG}" --pattern "${CANONICAL_DUCKDB_MANIFEST_ASSET}" --dir data/cache --clobber || true
+
+          echo "Available assets in ${CANONICAL_DUCKDB_RELEASE_TAG}:"
+          gh release view "${CANONICAL_DUCKDB_RELEASE_TAG}" --json assets \
+            --jq '.assets[].name' || true
+
+          if ! download_with_retry "${CANONICAL_DUCKDB_ASSET}" "true"; then
+            bootstrap_new_db
+            exit 0
+          fi
+
+          download_with_retry "${CANONICAL_DUCKDB_MANIFEST_ASSET}" "false" || true
+
           test -f "data/cache/${CANONICAL_DUCKDB_ASSET}"
           zstd -d -f "data/cache/${CANONICAL_DUCKDB_ASSET}" -o "${PRICE_DUCKDB_PATH}"
           test -f "${PRICE_DUCKDB_PATH}"
@@ -137,7 +202,21 @@ jobs:
       - name: Show DB before live update
         run: |
           set -euo pipefail
+          if [ "${CANONICAL_DUCKDB_BOOTSTRAP:-false}" = "true" ]; then
+            echo "No canonical DuckDB restored. fetch_prices_jp.py will create and initialize ${PRICE_DUCKDB_PATH}."
+            exit 0
+          fi
           python scripts/show_duckdb_build_metadata.py --db-path "${PRICE_DUCKDB_PATH}" --fail-if-missing
+
+      - name: Guard skip price fetch during bootstrap
+        if: ${{ github.event.inputs.skip_price_fetch == 'true' }}
+        run: |
+          set -euo pipefail
+          if [ "${CANONICAL_DUCKDB_BOOTSTRAP:-false}" = "true" ] || [ ! -f "${PRICE_DUCKDB_PATH}" ]; then
+            echo "::error::skip_price_fetch=true but canonical DuckDB was not restored."
+            echo "::error::Run live-update once with skip_price_fetch=false so it can bootstrap and publish the canonical DB asset."
+            exit 1
+          fi
 
       - name: Compile scripts
         run: |
