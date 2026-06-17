@@ -1,6 +1,6 @@
 {
   "schema_version": "neon_tokyo_agent_scores_diagnostics_v1",
-  "generated_at": "2026-06-17T14:52:46+00:00",
+  "generated_at": "2026-06-17T15:05:24+00:00",
   "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
   "mode": "range",
   "range": {
@@ -9,142 +9,142 @@
     "end_date": "2026-06-17",
     "latest_equity_feature_date": "2026-06-17"
   },
-  "price_rows": 298016,
+  "price_rows": 299422,
   "feature_diagnostics": {
-    "prices_rows": 298016,
-    "feature_rows": 298016,
-    "tickers": 851,
+    "prices_rows": 299422,
+    "feature_rows": 299422,
+    "tickers": 855,
     "min_date": "2025-01-06",
     "max_date": "2026-06-17"
   },
   "score_date_coverage": {
     "date_count": 353,
-    "equity_symbol_denominator": 851,
+    "equity_symbol_denominator": 855,
     "min_date_coverage_pct": 70.0,
     "recent_dates": [
       {
         "date": "2026-05-28",
-        "symbols": 849,
-        "coverage_pct": 99.76
+        "symbols": 853,
+        "coverage_pct": 99.77
       },
       {
         "date": "2026-05-29",
-        "symbols": 848,
+        "symbols": 852,
         "coverage_pct": 99.65
       },
       {
         "date": "2026-06-01",
-        "symbols": 848,
+        "symbols": 852,
         "coverage_pct": 99.65
       },
       {
         "date": "2026-06-02",
-        "symbols": 847,
+        "symbols": 851,
         "coverage_pct": 99.53
       },
       {
         "date": "2026-06-03",
-        "symbols": 847,
+        "symbols": 851,
         "coverage_pct": 99.53
       },
       {
         "date": "2026-06-04",
-        "symbols": 847,
+        "symbols": 851,
         "coverage_pct": 99.53
       },
       {
         "date": "2026-06-05",
-        "symbols": 847,
+        "symbols": 851,
         "coverage_pct": 99.53
       },
       {
         "date": "2026-06-08",
-        "symbols": 847,
+        "symbols": 851,
         "coverage_pct": 99.53
       },
       {
         "date": "2026-06-09",
-        "symbols": 847,
+        "symbols": 851,
         "coverage_pct": 99.53
       },
       {
         "date": "2026-06-10",
-        "symbols": 847,
+        "symbols": 851,
         "coverage_pct": 99.53
       },
       {
         "date": "2026-06-11",
-        "symbols": 847,
+        "symbols": 851,
         "coverage_pct": 99.53
       },
       {
         "date": "2026-06-12",
-        "symbols": 847,
+        "symbols": 851,
         "coverage_pct": 99.53
       },
       {
         "date": "2026-06-15",
-        "symbols": 847,
+        "symbols": 851,
         "coverage_pct": 99.53
       },
       {
         "date": "2026-06-16",
-        "symbols": 678,
-        "coverage_pct": 79.67
+        "symbols": 680,
+        "coverage_pct": 79.53
       },
       {
         "date": "2026-06-17",
         "symbols": 846,
-        "coverage_pct": 99.41
+        "coverage_pct": 98.95
       }
     ],
     "latest_recent_eligible_date": "2026-06-17"
   },
-  "agent_score_rows": 480978,
+  "agent_score_rows": 483172,
   "agent_score_date_count": 110,
-  "trade_candidate_rows": 66341,
+  "trade_candidate_rows": 66629,
   "latest_date": "2026-06-17",
   "agents": [
     {
       "agent_id": "daily_striker",
       "name": "KYOU",
-      "candidates_scored": 72701,
+      "candidates_scored": 73027,
       "top_items": 30
     },
     {
       "agent_id": "weekly_sage",
       "name": "NAGARE",
-      "candidates_scored": 93347,
+      "candidates_scored": 93781,
       "top_items": 30
     },
     {
       "agent_id": "risk_sentinel",
       "name": "MAMORU",
-      "candidates_scored": 55569,
+      "candidates_scored": 55787,
       "top_items": 30
     },
     {
       "agent_id": "discovery_scout",
       "name": "SAGURI",
-      "candidates_scored": 20612,
+      "candidates_scored": 20742,
       "top_items": 30
     },
     {
       "agent_id": "contrarian_monk",
       "name": "MATSU",
-      "candidates_scored": 93347,
+      "candidates_scored": 93781,
       "top_items": 30
     },
     {
       "agent_id": "reversal_snapback",
       "name": "KAESHI",
-      "candidates_scored": 72701,
+      "candidates_scored": 73027,
       "top_items": 30
     },
     {
       "agent_id": "value_mispricing",
       "name": "HIZUMI",
-      "candidates_scored": 72701,
+      "candidates_scored": 73027,
       "top_items": 30
     }
   ],
