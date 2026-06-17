@@ -1,150 +1,150 @@
 {
   "schema_version": "neon_tokyo_agent_scores_diagnostics_v1",
-  "generated_at": "2026-06-10T10:45:13+00:00",
+  "generated_at": "2026-06-17T14:52:46+00:00",
   "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
   "mode": "range",
   "range": {
     "year": 2026,
     "start_date": "2026-01-01",
-    "end_date": "2026-06-10",
-    "latest_equity_feature_date": "2026-06-10"
+    "end_date": "2026-06-17",
+    "latest_equity_feature_date": "2026-06-17"
   },
-  "price_rows": 298116,
+  "price_rows": 298016,
   "feature_diagnostics": {
-    "prices_rows": 298116,
-    "feature_rows": 298116,
-    "tickers": 860,
-    "min_date": "2024-12-27",
-    "max_date": "2026-06-10"
+    "prices_rows": 298016,
+    "feature_rows": 298016,
+    "tickers": 851,
+    "min_date": "2025-01-06",
+    "max_date": "2026-06-17"
   },
   "score_date_coverage": {
-    "date_count": 350,
-    "equity_symbol_denominator": 857,
+    "date_count": 353,
+    "equity_symbol_denominator": 851,
     "min_date_coverage_pct": 70.0,
     "recent_dates": [
       {
-        "date": "2026-05-21",
-        "symbols": 853,
-        "coverage_pct": 99.53
-      },
-      {
-        "date": "2026-05-22",
-        "symbols": 853,
-        "coverage_pct": 99.53
-      },
-      {
-        "date": "2026-05-25",
-        "symbols": 853,
-        "coverage_pct": 99.53
-      },
-      {
-        "date": "2026-05-26",
-        "symbols": 853,
-        "coverage_pct": 99.53
-      },
-      {
-        "date": "2026-05-27",
-        "symbols": 853,
-        "coverage_pct": 99.53
-      },
-      {
         "date": "2026-05-28",
-        "symbols": 853,
-        "coverage_pct": 99.53
+        "symbols": 849,
+        "coverage_pct": 99.76
       },
       {
         "date": "2026-05-29",
-        "symbols": 852,
-        "coverage_pct": 99.42
+        "symbols": 848,
+        "coverage_pct": 99.65
       },
       {
         "date": "2026-06-01",
-        "symbols": 852,
-        "coverage_pct": 99.42
+        "symbols": 848,
+        "coverage_pct": 99.65
       },
       {
         "date": "2026-06-02",
-        "symbols": 851,
-        "coverage_pct": 99.3
+        "symbols": 847,
+        "coverage_pct": 99.53
       },
       {
         "date": "2026-06-03",
-        "symbols": 851,
-        "coverage_pct": 99.3
+        "symbols": 847,
+        "coverage_pct": 99.53
       },
       {
         "date": "2026-06-04",
-        "symbols": 851,
-        "coverage_pct": 99.3
+        "symbols": 847,
+        "coverage_pct": 99.53
       },
       {
         "date": "2026-06-05",
-        "symbols": 851,
-        "coverage_pct": 99.3
+        "symbols": 847,
+        "coverage_pct": 99.53
       },
       {
         "date": "2026-06-08",
-        "symbols": 851,
-        "coverage_pct": 99.3
+        "symbols": 847,
+        "coverage_pct": 99.53
       },
       {
         "date": "2026-06-09",
-        "symbols": 851,
-        "coverage_pct": 99.3
+        "symbols": 847,
+        "coverage_pct": 99.53
       },
       {
         "date": "2026-06-10",
-        "symbols": 850,
-        "coverage_pct": 99.18
+        "symbols": 847,
+        "coverage_pct": 99.53
+      },
+      {
+        "date": "2026-06-11",
+        "symbols": 847,
+        "coverage_pct": 99.53
+      },
+      {
+        "date": "2026-06-12",
+        "symbols": 847,
+        "coverage_pct": 99.53
+      },
+      {
+        "date": "2026-06-15",
+        "symbols": 847,
+        "coverage_pct": 99.53
+      },
+      {
+        "date": "2026-06-16",
+        "symbols": 678,
+        "coverage_pct": 79.67
+      },
+      {
+        "date": "2026-06-17",
+        "symbols": 846,
+        "coverage_pct": 99.41
       }
     ],
-    "latest_recent_eligible_date": "2026-06-10"
+    "latest_recent_eligible_date": "2026-06-17"
   },
-  "agent_score_rows": 407795,
-  "agent_score_date_count": 105,
-  "trade_candidate_rows": 60956,
-  "latest_date": "2026-06-10",
+  "agent_score_rows": 480978,
+  "agent_score_date_count": 110,
+  "trade_candidate_rows": 66341,
+  "latest_date": "2026-06-17",
   "agents": [
     {
       "agent_id": "daily_striker",
       "name": "KYOU",
-      "candidates_scored": 70021,
+      "candidates_scored": 72701,
       "top_items": 30
     },
     {
       "agent_id": "weekly_sage",
       "name": "NAGARE",
-      "candidates_scored": 62542,
+      "candidates_scored": 93347,
       "top_items": 30
     },
     {
       "agent_id": "risk_sentinel",
       "name": "MAMORU",
-      "candidates_scored": 52614,
+      "candidates_scored": 55569,
       "top_items": 30
     },
     {
       "agent_id": "discovery_scout",
       "name": "SAGURI",
-      "candidates_scored": 20034,
+      "candidates_scored": 20612,
       "top_items": 30
     },
     {
       "agent_id": "contrarian_monk",
       "name": "MATSU",
-      "candidates_scored": 62542,
+      "candidates_scored": 93347,
       "top_items": 30
     },
     {
       "agent_id": "reversal_snapback",
       "name": "KAESHI",
-      "candidates_scored": 70021,
+      "candidates_scored": 72701,
       "top_items": 30
     },
     {
       "agent_id": "value_mispricing",
       "name": "HIZUMI",
-      "candidates_scored": 70021,
+      "candidates_scored": 72701,
       "top_items": 30
     }
   ],
