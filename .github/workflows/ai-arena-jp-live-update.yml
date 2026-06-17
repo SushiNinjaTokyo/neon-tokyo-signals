@@ -67,6 +67,10 @@ jobs:
       PRICE_REFRESH_MODE: ${{ github.event.inputs.price_refresh_mode || 'incremental' }}
       PRICE_INCREMENTAL_OVERLAP_DAYS: "10"
       PRICE_MAX_FAILURE_RATIO: "0.05"
+      STOOQ_FALLBACK_ENABLED: "false"
+      STOOQ_TIMEOUT_SECONDS: "3"
+      YFINANCE_TIMEOUT_SECONDS: "10"
+      PRICE_FETCH_SLEEP_SECONDS: "0.05"
       LOOKBACK_DAYS: "520"
       REQUEST_SLEEP_SECONDS: "0.20"
       AGENT_SCORE_MIN_DATE_COVERAGE_PCT: "70"
@@ -260,13 +264,68 @@ jobs:
           test -s site/data/prices-jp/latest.json
           test -s site/data/prices-jp/manifest.json
 
-      - name: Fetch JP fundamentals
-        if: ${{ github.event.inputs.fetch_fundamentals == 'true' && github.event.inputs.skip_fundamentals_fetch != 'true' }}
+      - name: Ensure JP fundamentals
         env:
           UNIVERSE_CSV: data/universe/jp_duckdb_trial_300.csv
+          FUNDAMENTALS_LIMIT: ${{ github.event.inputs.universe_limit || '1000' }}
+          FUNDAMENTALS_REQUEST_SLEEP_SECONDS: "0.05"
+          BUILD_COMPAT_VALUE_FEATURE_LATEST: "true"
+          FETCH_FUNDAMENTALS_REQUESTED: ${{ github.event.inputs.fetch_fundamentals || 'false' }}
+          SKIP_FUNDAMENTALS_FETCH: ${{ github.event.inputs.skip_fundamentals_fetch || 'true' }}
         run: |
           set -euo pipefail
+          test -f "${PRICE_DUCKDB_PATH}"
+
+          fundamentals_count="$({
+            python - <<'PY'
+          import duckdb
+          from pathlib import Path
+          db = Path("data/cache/neon_tokyo_jp.duckdb")
+          if not db.exists():
+              print(0)
+              raise SystemExit(0)
+          con = duckdb.connect(str(db), read_only=True)
+          tables = {r[0] for r in con.execute("SHOW TABLES").fetchall()}
+          if "fundamentals_latest_jp" not in tables:
+              print(0)
+              raise SystemExit(0)
+          print(con.execute("SELECT COUNT(*) FROM fundamentals_latest_jp WHERE ticker IS NOT NULL").fetchone()[0] or 0)
+          PY
+          } | tail -n 1)"
+
+          echo "fundamentals_latest_jp rows before ensure: ${fundamentals_count}"
+          need_fetch="false"
+
+          if [ "${CANONICAL_DUCKDB_BOOTSTRAP:-false}" = "true" ]; then
+            echo "Canonical DB is being bootstrapped; fundamentals must be fetched before value features."
+            need_fetch="true"
+          fi
+
+          if [ "${FETCH_FUNDAMENTALS_REQUESTED:-false}" = "true" ] && [ "${SKIP_FUNDAMENTALS_FETCH:-true}" != "true" ]; then
+            echo "Manual fundamentals refresh requested."
+            need_fetch="true"
+          fi
+
+          if [ "${fundamentals_count}" = "0" ]; then
+            echo "fundamentals_latest_jp is empty or missing; fetching fundamentals to preserve HIZUMI/value-feature integrity."
+            need_fetch="true"
+          fi
+
+          if [ "${need_fetch}" != "true" ]; then
+            echo "Existing fundamentals are present and refresh was not requested; skipping fundamentals fetch."
+            exit 0
+          fi
+
           python scripts/fetch_fundamentals_jp.py
+
+          python - <<'PY'
+          import duckdb
+          con = duckdb.connect("data/cache/neon_tokyo_jp.duckdb", read_only=True)
+          n = con.execute("SELECT COUNT(*) FROM fundamentals_latest_jp WHERE ticker IS NOT NULL").fetchone()[0]
+          print("fundamentals_latest_jp rows after ensure:", n)
+          if not n:
+              raise SystemExit("fundamentals_latest_jp is still empty after fetch_fundamentals_jp.py")
+          PY
 
       - name: Build value features
         env:
