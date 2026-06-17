@@ -100,10 +100,28 @@ jobs:
           set -euo pipefail
           python -m compileall \
             scripts/fetch_fundamentals_jp.py \
+            scripts/sync_universe_master_from_csv_jp.py \
+            scripts/build_price_features_jp.py \
             scripts/build_value_features_jp.py \
             scripts/stamp_duckdb_build_metadata.py \
             scripts/show_duckdb_build_metadata.py \
             scripts/lib
+
+      - name: Sync universe_master when universe CSV exists
+        run: |
+          set -euo pipefail
+          if [ -f data/universe/jp_duckdb_trial_300.csv ]; then
+            python scripts/sync_universe_master_from_csv_jp.py \
+              --db-path "${PRICE_DUCKDB_PATH}" \
+              --universe-csv data/universe/jp_duckdb_trial_300.csv
+          else
+            echo "data/universe/jp_duckdb_trial_300.csv not found; using universe_master from canonical DuckDB."
+          fi
+
+      - name: Build JP price features
+        run: |
+          set -euo pipefail
+          python scripts/build_price_features_jp.py
 
       - name: Refresh fundamentals
         env:

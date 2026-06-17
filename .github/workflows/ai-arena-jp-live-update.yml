@@ -229,6 +229,8 @@ jobs:
             scripts/build_jp_index_universe_csv.py \
             scripts/build_universe_300_from_index_csv.py \
             scripts/fetch_prices_jp.py \
+            scripts/sync_universe_master_from_csv_jp.py \
+            scripts/build_price_features_jp.py \
             scripts/export_prices_public_json_jp.py \
             scripts/fetch_fundamentals_jp.py \
             scripts/build_value_features_jp.py \
@@ -249,6 +251,15 @@ jobs:
           fi
           python scripts/build_universe_300_from_index_csv.py
 
+      - name: Sync universe_master to DuckDB
+        env:
+          UNIVERSE_CSV: data/universe/jp_duckdb_trial_300.csv
+        run: |
+          set -euo pipefail
+          python scripts/sync_universe_master_from_csv_jp.py \
+            --db-path "${PRICE_DUCKDB_PATH}" \
+            --universe-csv "${UNIVERSE_CSV}"
+
       - name: Fetch JP prices
         if: ${{ github.event_name == 'schedule' || github.event.inputs.skip_price_fetch != 'true' }}
         env:
@@ -256,6 +267,11 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/fetch_prices_jp.py
+
+      - name: Build JP price features
+        run: |
+          set -euo pipefail
+          python scripts/build_price_features_jp.py
 
       - name: Export public JP price summary JSON
         run: |
