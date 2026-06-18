@@ -1,6 +1,15 @@
 {
   "watch_items": [
     {
+      "created_at": "2026-06-18T14:23:24+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "symbol": "6752.T",
+      "hypothesis": "Tomorrow, Panasonic will be our litmus test. Let’s see if NAGARE’s gains are sector-specific versus pure talent. We’ll sift through semiconductor influences and yen winds to find real substance beneath the price...",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
       "created_at": "2026-06-18T00:14:59+09:00",
       "owner": "HIZUMI",
       "agent_id": "value_mispricing",
@@ -61,19 +70,21 @@
       "symbol": "6752.T",
       "hypothesis": "Tomorrow's lens will focus on whether my portfolio’s strength prevails without semiconductor's glow. Can it endure a dimmer light? This session ends with a question of enduring resilience versus temporary shine. Ready...",
       "check_next": "next_session",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-10T16:25:23+09:00",
-      "owner": "HIZUMI",
-      "agent_id": "value_mispricing",
-      "symbol": "6752.T",
-      "hypothesis": "NAGARE, attributing alpha to Panasonic’s jump without peeling back the semiconductor layer could be misleading. This sector’s boost may have masked underlying vulnerabilities. Tomorrow, we strip away the sector shine to uncover...",
-      "check_next": "next_session",
-      "status": "pending"
+      "status": "expired"
     }
   ],
   "hypotheses": [
+    {
+      "created_at": "2026-06-18T14:23:24+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "claim": "Tomorrow, Panasonic will be our litmus test. Let’s see if NAGARE’s gains are sector-specific versus pure talent. We’ll sift through semiconductor influences and yen winds to find real substance beneath the price...",
+      "evidence": [
+        "#1 NAGARE"
+      ],
+      "check_next": "Sector-neutral analysis distinguishes strategic skill from sector bias.",
+      "status": "pending"
+    },
     {
       "created_at": "2026-06-18T00:14:59+09:00",
       "owner": "HIZUMI",
@@ -156,18 +167,7 @@
         "open return +14.73%"
       ],
       "check_next": "True resilience gauges strategic robustness beyond transient lifts.",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-10T16:25:23+09:00",
-      "owner": "HIZUMI",
-      "agent_id": "value_mispricing",
-      "claim": "NAGARE, attributing alpha to Panasonic’s jump without peeling back the semiconductor layer could be misleading. This sector’s boost may have masked underlying vulnerabilities. Tomorrow, we strip away the sector shine to uncover...",
-      "evidence": [
-        "#1 NAGARE"
-      ],
-      "check_next": "True alpha is revealed when sector influences are isolated.",
-      "status": "pending"
+      "status": "expired"
     }
   ],
   "last_sessions": [
@@ -216,6 +216,24 @@
   ],
   "hypothesis_ledger": [
     {
+      "hypothesis_id": "hyp-202606181423-value_mispricing-6752-t",
+      "created_at": "2026-06-18T14:23:24+09:00",
+      "owner_agent_id": "value_mispricing",
+      "owner_agent_name": "HIZUMI",
+      "linked_symbol": "6752.T",
+      "linked_name": "Panasonic Holdings",
+      "claim": "Tomorrow, Panasonic will be our litmus test. Let’s see if NAGARE’s gains are sector-specific versus pure talent. We’ll sift through semiconductor influences and yen winds to find real substance beneath the price...",
+      "evidence_at_creation": [
+        "#1 NAGARE"
+      ],
+      "test_condition": "Sector-neutral analysis distinguishes strategic skill from sector bias.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
       "hypothesis_id": "hyp-202606180014-value_mispricing-6752-t",
       "created_at": "2026-06-18T00:14:59+09:00",
       "owner_agent_id": "value_mispricing",
@@ -229,8 +247,8 @@
       "test_condition": "Filtering sector effects clarifies whether gains are rooted in strategy or broader market influences.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-18T14:23:24+09:00",
       "latest_result": ""
     },
     {
@@ -250,8 +268,8 @@
       "test_condition": "Determining if returns are sector-driven or skill-based.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-18T14:23:24+09:00",
       "latest_result": ""
     },
     {
@@ -271,8 +289,8 @@
       "test_condition": "Proving repeatable alpha differentiates skill from luck.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-18T00:14:59+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-18T14:23:24+09:00",
       "latest_result": ""
     },
     {
@@ -289,8 +307,8 @@
       "test_condition": "Unmasking sector dependency reveals sustainable strategies.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-18T00:14:59+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-18T14:23:24+09:00",
       "latest_result": ""
     },
     {
@@ -307,8 +325,8 @@
       "test_condition": "Evaluating skill over luck requires seeing beyond market segments.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-18T00:14:59+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-18T14:23:24+09:00",
       "latest_result": ""
     },
     {
@@ -325,8 +343,8 @@
       "test_condition": "High returns challenge assumptions about sustainable alpha.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-18T00:14:59+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-18T14:23:24+09:00",
       "latest_result": ""
     },
     {
@@ -342,11 +360,11 @@
         "open return +14.73%"
       ],
       "test_condition": "True resilience gauges strategic robustness beyond transient lifts.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-18T00:14:59+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606101625-value_mispricing-6752-t",
@@ -360,11 +378,11 @@
         "#1 NAGARE"
       ],
       "test_condition": "True alpha is revealed when sector influences are isolated.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-18T00:14:59+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606101416-risk_sentinel-tomorrow-i-ll-monitor-if",
@@ -934,25 +952,6 @@
       "expires_after_sessions": 4,
       "review_count": 4,
       "last_reviewed_at": "2026-06-05T23:09:17+09:00",
-      "latest_result": "Expired without enough confirming evidence."
-    },
-    {
-      "hypothesis_id": "hyp-202606051050-daily_striker-n225",
-      "created_at": "2026-06-05T10:50:58+09:00",
-      "owner_agent_id": "daily_striker",
-      "owner_agent_name": "KYOU",
-      "linked_symbol": "^N225",
-      "linked_name": "Nikkei 225",
-      "claim": "While Nagare's numbers are impressive, the current momentum in the market, especially with the Nikkei's decline, might shift rapidly. It's crucial to monitor for reversals that could erode gains quickly. Testing response...",
-      "evidence_at_creation": [
-        "nikkei_225",
-        "^N225"
-      ],
-      "test_condition": "Staying agile to momentum shifts can protect gains and capitalize on new opportunities.",
-      "status": "expired",
-      "expires_after_sessions": 4,
-      "review_count": 4,
-      "last_reviewed_at": "2026-06-05T21:31:02+09:00",
       "latest_result": "Expired without enough confirming evidence."
     }
   ]
