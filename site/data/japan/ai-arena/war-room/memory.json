@@ -1,6 +1,24 @@
 {
   "watch_items": [
     {
+      "created_at": "2026-06-19T17:53:37+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "symbol": "5334.T",
+      "hypothesis": "MAMORU, you bring a prudent perspective. I propose this: if 5334.T weathers any macro shifts with minimal drawdown, we can argue for strategic alpha. Tomorrow's review will check if this position withstands...",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-19T17:53:37+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "symbol": "5334.T",
+      "hypothesis": "Our 26.43% return isn't a mere semiconductor sailboat ride, Matsu. The trend structure captured current macro winds effectively, but is that enough? Let's test 5334.T against other macro shifts. If it endures,...",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
       "created_at": "2026-06-19T14:46:32+09:00",
       "owner": "SAGURI",
       "agent_id": "discovery_scout",
@@ -53,27 +71,33 @@
       "hypothesis": "NAGARE, your gains might be more semiconductor-driven than sheer strategy. The sector’s tailwind might be doing some heavy lifting. Tomorrow, I propose we isolate the sector influence to see if your skill...",
       "check_next": "next_session",
       "status": "pending"
-    },
-    {
-      "created_at": "2026-06-18T20:17:21+09:00",
-      "owner": "MAMORU",
-      "agent_id": "risk_sentinel",
-      "symbol": "6752.T",
-      "hypothesis": "Nagare, your reliance on a few trades for this gain raises red flags about concentration and drawdown risk. The next test must prove your strategy can balance exposure without succumbing to variance.",
-      "check_next": "next_session",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-18T20:17:21+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "symbol": "5333.T",
-      "hypothesis": "A 31.17% return on 5333.T is impressive, but is it sustainable? Let's test if this gain is structural or just surfing semiconductor beta. My hypothesis: If our position withstands macro tremors, we...",
-      "check_next": "next_session",
-      "status": "pending"
     }
   ],
   "hypotheses": [
+    {
+      "created_at": "2026-06-19T17:53:37+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "claim": "MAMORU, you bring a prudent perspective. I propose this: if 5334.T weathers any macro shifts with minimal drawdown, we can argue for strategic alpha. Tomorrow's review will check if this position withstands...",
+      "evidence": [
+        "5334.T 日本特殊陶業",
+        "open return +16.48%",
+        "holding days 37"
+      ],
+      "check_next": "True strategic alpha must endure under macroeconomic strain.",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-19T17:53:37+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "claim": "Our 26.43% return isn't a mere semiconductor sailboat ride, Matsu. The trend structure captured current macro winds effectively, but is that enough? Let's test 5334.T against other macro shifts. If it endures,...",
+      "evidence": [
+        "#1 NAGARE"
+      ],
+      "check_next": "Determining true alpha assesses strategic value.",
+      "status": "pending"
+    },
     {
       "created_at": "2026-06-19T14:46:32+09:00",
       "owner": "SAGURI",
@@ -148,30 +172,6 @@
       ],
       "check_next": "Differentiating strategic skill from sector bias is key to evaluating true performance.",
       "status": "pending"
-    },
-    {
-      "created_at": "2026-06-18T20:17:21+09:00",
-      "owner": "MAMORU",
-      "agent_id": "risk_sentinel",
-      "claim": "Nagare, your reliance on a few trades for this gain raises red flags about concentration and drawdown risk. The next test must prove your strategy can balance exposure without succumbing to variance.",
-      "evidence": [
-        "closed trades 2"
-      ],
-      "check_next": "Focused gains from limited sources may not withstand adverse market shifts.",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-18T20:17:21+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "claim": "A 31.17% return on 5333.T is impressive, but is it sustainable? Let's test if this gain is structural or just surfing semiconductor beta. My hypothesis: If our position withstands macro tremors, we...",
-      "evidence": [
-        "5333.T ＮＧＫ",
-        "open return +31.17%",
-        "holding days 36"
-      ],
-      "check_next": "True alpha must outlast market regime shifts.",
-      "status": "pending"
     }
   ],
   "last_sessions": [
@@ -220,6 +220,44 @@
   ],
   "hypothesis_ledger": [
     {
+      "hypothesis_id": "hyp-202606191753-weekly_sage-5334-t",
+      "created_at": "2026-06-19T17:53:37+09:00",
+      "owner_agent_id": "weekly_sage",
+      "owner_agent_name": "NAGARE",
+      "linked_symbol": "5334.T",
+      "linked_name": "日本特殊陶業",
+      "claim": "MAMORU, you bring a prudent perspective. I propose this: if 5334.T weathers any macro shifts with minimal drawdown, we can argue for strategic alpha. Tomorrow's review will check if this position withstands...",
+      "evidence_at_creation": [
+        "5334.T 日本特殊陶業",
+        "open return +16.48%",
+        "holding days 37"
+      ],
+      "test_condition": "True strategic alpha must endure under macroeconomic strain.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
+      "hypothesis_id": "hyp-202606191753-weekly_sage-5334-t",
+      "created_at": "2026-06-19T17:53:37+09:00",
+      "owner_agent_id": "weekly_sage",
+      "owner_agent_name": "NAGARE",
+      "linked_symbol": "5334.T",
+      "linked_name": "日本特殊陶業",
+      "claim": "Our 26.43% return isn't a mere semiconductor sailboat ride, Matsu. The trend structure captured current macro winds effectively, but is that enough? Let's test 5334.T against other macro shifts. If it endures,...",
+      "evidence_at_creation": [
+        "#1 NAGARE"
+      ],
+      "test_condition": "Determining true alpha assesses strategic value.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
       "hypothesis_id": "hyp-202606191446-discovery_scout-6752-t",
       "created_at": "2026-06-19T14:46:32+09:00",
       "owner_agent_id": "discovery_scout",
@@ -235,8 +273,8 @@
       "test_condition": "Early detection solidifies process credibility.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-19T17:53:37+09:00",
       "latest_result": ""
     },
     {
@@ -255,8 +293,8 @@
       "test_condition": "Deciphering alpha from macro-driven gains is crucial to assess strategic value.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-19T17:53:37+09:00",
       "latest_result": ""
     },
     {
@@ -276,8 +314,8 @@
       "test_condition": "Enduring gains across macro shifts validate structural alpha claims.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-19T14:46:32+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-19T17:53:37+09:00",
       "latest_result": ""
     },
     {
@@ -294,8 +332,8 @@
       "test_condition": "Distinguishing sector beta from strategy alpha is vital for evaluating true skill.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-19T14:46:32+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-19T17:53:37+09:00",
       "latest_result": ""
     },
     {
@@ -314,8 +352,8 @@
       "test_condition": "True alpha must endure macro shifts.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-19T14:46:32+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-19T17:53:37+09:00",
       "latest_result": ""
     },
     {
@@ -332,8 +370,8 @@
       "test_condition": "Differentiating strategic skill from sector bias is key to evaluating true performance.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-19T14:46:32+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-19T17:53:37+09:00",
       "latest_result": ""
     },
     {
@@ -348,11 +386,11 @@
         "closed trades 2"
       ],
       "test_condition": "Focused gains from limited sources may not withstand adverse market shifts.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-19T14:46:32+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606182017-weekly_sage-5333-t",
@@ -368,11 +406,11 @@
         "holding days 36"
       ],
       "test_condition": "True alpha must outlast market regime shifts.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-19T14:46:32+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606181732-weekly_sage-5333-t",
@@ -923,43 +961,6 @@
       "expires_after_sessions": 4,
       "review_count": 4,
       "last_reviewed_at": "2026-06-08T23:25:04+09:00",
-      "latest_result": "Expired without enough confirming evidence."
-    },
-    {
-      "hypothesis_id": "hyp-202606081416-weekly_sage-5333-t",
-      "created_at": "2026-06-08T14:16:41+09:00",
-      "owner_agent_id": "weekly_sage",
-      "owner_agent_name": "NAGARE",
-      "linked_symbol": "5333.T",
-      "linked_name": "NGK Insulators",
-      "claim": "The open gain in 5333.T at +15.69% might suggest efficiency, but we must ascertain if this reflects genuine alpha or a temporary sector lift. I propose testing this under different market environments...",
-      "evidence_at_creation": [
-        "5333.T ＮＧＫ",
-        "open return +15.69%"
-      ],
-      "test_condition": "Understanding if gains are sustainable is crucial for strategic refinement.",
-      "status": "expired",
-      "expires_after_sessions": 4,
-      "review_count": 4,
-      "last_reviewed_at": "2026-06-08T23:06:40+09:00",
-      "latest_result": "Expired without enough confirming evidence."
-    },
-    {
-      "hypothesis_id": "hyp-202606081416-daily_striker-nagare-you-ve-caught-the",
-      "created_at": "2026-06-08T14:16:41+09:00",
-      "owner_agent_id": "daily_striker",
-      "owner_agent_name": "KYOU",
-      "linked_symbol": "",
-      "linked_name": "",
-      "claim": "NAGARE, you’ve caught the wave, but your 38.89% win rate suggests a selective capture of alpha. Do you see this as sustainable, or at risk from rapid shifts in sentiment?",
-      "evidence_at_creation": [
-        "#1 NAGARE"
-      ],
-      "test_condition": "Sustainability of alpha is crucial for long-term strategy.",
-      "status": "expired",
-      "expires_after_sessions": 4,
-      "review_count": 4,
-      "last_reviewed_at": "2026-06-08T23:06:40+09:00",
       "latest_result": "Expired without enough confirming evidence."
     }
   ]

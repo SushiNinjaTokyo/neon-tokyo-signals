@@ -1,6 +1,6 @@
 {
   "schema_version": "neon_tokyo_agent_scores_v1",
-  "generated_at": "2026-06-19T05:36:54+00:00",
+  "generated_at": "2026-06-19T08:44:50+00:00",
   "market": "Japan",
   "timezone": "Asia/Tokyo",
   "mode": "range",
@@ -12,7 +12,7 @@
       "name": "KYOU",
       "style_label": "Today’s Momentum Signal",
       "universe_rule": "core_growth_liquid",
-      "candidates_scored": 74316,
+      "candidates_scored": 74317,
       "items": [
         {
           "rank": 1,
@@ -416,6 +416,22 @@
         },
         {
           "rank": 26,
+          "ticker": "5803.T",
+          "name": "フジクラ",
+          "score": 0.4802,
+          "score_pts": 48.0,
+          "action": "Ignore",
+          "signal_strength": "low",
+          "universe_bucket": "Core",
+          "reason_codes": [
+            "fresh_daily_breakout",
+            "volume_quality",
+            "overheat_control"
+          ],
+          "reason": "KYOU: fresh_daily_breakout / volume_quality / overheat_control"
+        },
+        {
+          "rank": 27,
           "ticker": "1860.T",
           "name": "戸田建設",
           "score": 0.4635,
@@ -431,7 +447,7 @@
           "reason": "KYOU: fresh_daily_breakout / volume_quality / overheat_control"
         },
         {
-          "rank": 27,
+          "rank": 28,
           "ticker": "6645.T",
           "name": "オムロン",
           "score": 0.461,
@@ -447,7 +463,7 @@
           "reason": "KYOU: fresh_daily_breakout / volume_quality / overheat_control"
         },
         {
-          "rank": 28,
+          "rank": 29,
           "ticker": "5901.T",
           "name": "東洋製罐グループホールディングス",
           "score": 0.4594,
@@ -463,7 +479,7 @@
           "reason": "KYOU: fresh_daily_breakout / volume_quality / overheat_control"
         },
         {
-          "rank": 29,
+          "rank": 30,
           "ticker": "325A.T",
           "name": "TENTIAL Inc.",
           "score": 0.4568,
@@ -471,22 +487,6 @@
           "action": "Ignore",
           "signal_strength": "low",
           "universe_bucket": "Discovery",
-          "reason_codes": [
-            "fresh_daily_breakout",
-            "volume_quality",
-            "overheat_control"
-          ],
-          "reason": "KYOU: fresh_daily_breakout / volume_quality / overheat_control"
-        },
-        {
-          "rank": 30,
-          "ticker": "7735.T",
-          "name": "ＳＣＲＥＥＮホールディングス",
-          "score": 0.4563,
-          "score_pts": 45.6,
-          "action": "Ignore",
-          "signal_strength": "low",
-          "universe_bucket": "Core",
           "reason_codes": [
             "fresh_daily_breakout",
             "volume_quality",
@@ -501,7 +501,7 @@
       "name": "NAGARE",
       "style_label": "Weekly / Trend Flow",
       "universe_rule": "core_growth",
-      "candidates_scored": 95485,
+      "candidates_scored": 95487,
       "items": [
         {
           "rank": 1,
@@ -990,7 +990,7 @@
       "name": "MAMORU",
       "style_label": "Risk / Quality Defense",
       "universe_rule": "core_liquid",
-      "candidates_scored": 56802,
+      "candidates_scored": 56803,
       "items": [
         {
           "rank": 1,
@@ -1968,7 +1968,7 @@
       "name": "MATSU",
       "style_label": "Pullback / Patient Reversal",
       "universe_rule": "core_growth",
-      "candidates_scored": 95485,
+      "candidates_scored": 95487,
       "items": [
         {
           "rank": 1,
@@ -2457,7 +2457,7 @@
       "name": "KAESHI",
       "style_label": "Reversal / Snapback Signal",
       "universe_rule": "core_growth_liquid",
-      "candidates_scored": 74316,
+      "candidates_scored": 74317,
       "items": [
         {
           "rank": 1,
@@ -2946,7 +2946,7 @@
       "name": "HIZUMI",
       "style_label": "Value / Mispricing Signal",
       "universe_rule": "value_candidate",
-      "candidates_scored": 74316,
+      "candidates_scored": 74317,
       "items": [
         {
           "rank": 1,
