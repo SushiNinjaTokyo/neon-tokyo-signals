@@ -1,12 +1,12 @@
 # AI Arena Agent Rejection Diagnostics
 
-Generated: 2026-06-19T14:34:25Z
+Generated: 2026-06-20T05:55:19Z
 Run: `arena_jp_live_2026`
 Season: 2026-01-01 → 2026-06-19
 
 | Agent | Candidates | Evaluated | Entry Pass | Orders | Buy Fills | Buy Cancels | Sells | Trades | Open | Rejected | Top Reject Reason |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| HIZUMI / `value_mispricing` | 4161 | 3693 | 7 | 7 | 7 | 0 | 7 | 7 | 0 | 4154 | ENTRY_RULE_REJECTED (3508) |
+| HIZUMI / `value_mispricing` | 4138 | 3671 | 7 | 7 | 7 | 0 | 7 | 7 | 0 | 4131 | ENTRY_RULE_REJECTED (3486) |
 | KAESHI / `reversal_snapback` | 247 | 226 | 47 | 47 | 47 | 0 | 47 | 47 | 0 | 200 | ENTRY_RULE_REJECTED (154) |
 | KYOU / `daily_striker` | 1442 | 1169 | 91 | 91 | 87 | 4 | 87 | 87 | 0 | 1355 | ENTRY_RULE_REJECTED (1060) |
 | MAMORU / `risk_sentinel` | 46132 | 33545 | 137 | 111 | 111 | 0 | 104 | 104 | 7 | 46021 | ENTRY_RULE_REJECTED (32664) |
@@ -17,16 +17,16 @@ Season: 2026-01-01 → 2026-06-19
 ## Reject reasons by agent
 
 ### HIZUMI / `value_mispricing`
-- `ENTRY_RULE_REJECTED`: 3508
+- `ENTRY_RULE_REJECTED`: 3486
 - `MAX_NEW_ENTRIES_PER_DAY`: 441
 - `MAX_SYMBOL_CLOSED_TRADES`: 129
-- `NO_NEXT_TRADING_DATE`: 27
 - `COOLDOWN_AFTER_LOSS`: 26
+- `NO_NEXT_TRADING_DATE`: 26
 - `ALREADY_OPEN_POSITION`: 23
 - Entry rule details:
-  - score_below_entry_threshold: 3293
-  - blocked_near_year_end: 202
-  - year_range_position_too_high: 13
+  - score_below_entry_threshold: 3269
+  - blocked_near_year_end: 205
+  - year_range_position_too_high: 12
 
 ### KAESHI / `reversal_snapback`
 - `ENTRY_RULE_REJECTED`: 154
@@ -117,10 +117,10 @@ Season: 2026-01-01 → 2026-06-19
 - Entry rule details:
   - five_day_move_too_extended: 166
   - liquidity_below_threshold: 110
-  - quality_guard_below_threshold: 73
+  - quality_guard_below_threshold: 72
   - operating_margin_below_threshold: 69
   - rsi_overheated: 26
-  - market_cap_too_small: 18
+  - market_cap_too_small: 19
   - roe_below_threshold: 17
   - twenty_day_move_too_extended: 9
   - blocked_near_year_end: 5

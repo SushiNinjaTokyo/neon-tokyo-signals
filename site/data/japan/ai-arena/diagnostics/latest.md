@@ -1,6 +1,6 @@
 # AI Arena Diagnostics
 
-Generated: 2026-06-19T14:35:30Z
+Generated: 2026-06-20T05:56:15Z
 Run: `arena_jp_live_2026`
 Year: 2026
 
@@ -25,5 +25,5 @@ Year: 2026
 | SAGURI | 587 | 42 | 42 | 42 | 0 | -3.72% | - |
 | MATSU | 1684 | 92 | 91 | 91 | 1 | 17.09% | - |
 | KAESHI | 247 | 47 | 47 | 47 | 0 | 3.34% | - |
-| HIZUMI | 0 | 7 | 7 | 7 | 0 | 1.36% | NO_TRADE_SIGNALS |
+| HIZUMI | 0 | 7 | 7 | 7 | 0 | 1.35% | NO_TRADE_SIGNALS |
 
