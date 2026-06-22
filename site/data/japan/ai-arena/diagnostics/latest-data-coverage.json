@@ -1,57 +1,57 @@
 {
   "schema_version": "neon_tokyo_data_coverage_review_v2",
-  "generated_at": "2026-06-19T13:49:01+00:00",
+  "generated_at": "2026-06-22T15:32:42+00:00",
   "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
   "duckdb_exists": true,
   "duckdb_metadata": {
     "db_path": "data/cache/neon_tokyo_jp.duckdb",
     "exists": true,
-    "size_mb": 2511.012,
+    "size_mb": 277.512,
     "metadata_table_exists": true,
     "metadata": {
       "artifact_kind": {
         "value": "github-release-asset",
-        "updated_at": "2026-06-19T13:38:48.080176"
+        "updated_at": "2026-06-22T15:30:05.390497"
       },
       "asset_name": {
         "value": "neon_tokyo_jp_latest.duckdb.zst",
-        "updated_at": "2026-06-19T13:38:48.084347"
+        "updated_at": "2026-06-22T15:30:05.394845"
       },
       "build_id": {
-        "value": "27828501190-1",
-        "updated_at": "2026-06-19T13:38:48.068136"
+        "value": "27963017838-1",
+        "updated_at": "2026-06-22T15:30:05.370571"
       },
       "generated_at": {
-        "value": "2026-06-19T13:38:47+00:00",
-        "updated_at": "2026-06-19T13:38:48.065964"
+        "value": "2026-06-22T15:30:05+00:00",
+        "updated_at": "2026-06-22T15:30:05.368144"
       },
       "release_tag": {
         "value": "ai-arena-duckdb-latest",
-        "updated_at": "2026-06-19T13:38:48.082087"
+        "updated_at": "2026-06-22T15:30:05.392626"
       },
       "schema_version": {
         "value": "neon_tokyo_duckdb_state_v1",
-        "updated_at": "2026-06-19T13:38:48.061102"
+        "updated_at": "2026-06-22T15:30:05.364448"
       },
       "source_ref": {
         "value": "refs/heads/main",
-        "updated_at": "2026-06-19T13:38:48.078345"
+        "updated_at": "2026-06-22T15:30:05.387720"
       },
       "source_run_attempt": {
         "value": "1",
-        "updated_at": "2026-06-19T13:38:48.074289"
+        "updated_at": "2026-06-22T15:30:05.377668"
       },
       "source_run_id": {
-        "value": "27828501190",
-        "updated_at": "2026-06-19T13:38:48.072387"
+        "value": "27963017838",
+        "updated_at": "2026-06-22T15:30:05.375354"
       },
       "source_sha": {
-        "value": "5482dde885426741f0f85c9d9e3c388529019c55",
-        "updated_at": "2026-06-19T13:38:48.076246"
+        "value": "df42fdf5dba70fca23ed6424e054bd7d955d4295",
+        "updated_at": "2026-06-22T15:30:05.379720"
       },
       "source_workflow": {
         "value": "AI Arena JP live update",
-        "updated_at": "2026-06-19T13:38:48.070083"
+        "updated_at": "2026-06-22T15:30:05.372900"
       }
     }
   },
@@ -80,6 +80,16 @@
             "latest_date": "2026-06-01"
           }
         ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "LOW_FUNDAMENTAL_METRIC_COVERAGE",
+      "message": "dividend_yield_pct coverage is low.",
+      "details": {
+        "table": "fundamentals_latest_jp",
+        "field": "dividend_yield_pct",
+        "coverage_pct": 46.217
       }
     },
     {
@@ -129,7 +139,7 @@
   },
   "prices": {
     "table_exists": true,
-    "rows": 301128,
+    "rows": 301296,
     "unique_symbols": 855,
     "date_range": {
       "min": "2025-01-06",
@@ -137,23 +147,23 @@
     },
     "field_coverage": {
       "open": {
-        "count": 301128,
+        "count": 301296,
         "pct": 100.0
       },
       "high": {
-        "count": 301128,
+        "count": 301296,
         "pct": 100.0
       },
       "low": {
-        "count": 301128,
+        "count": 301296,
         "pct": 100.0
       },
       "close": {
-        "count": 301128,
+        "count": 301296,
         "pct": 100.0
       },
       "volume": {
-        "count": 301128,
+        "count": 301296,
         "pct": 100.0
       }
     },
@@ -181,174 +191,174 @@
   },
   "features": {
     "table_exists": true,
-    "rows": 301128,
+    "rows": 301296,
     "unique_symbols": 855,
     "latest_date": "2026-06-19",
     "latest_date_symbols": 850,
     "field_coverage": {
       "return_1d_pct": {
-        "count": 300273,
+        "count": 300441,
         "pct": 99.716
       },
       "return_5d_pct": {
-        "count": 296853,
-        "pct": 98.58
+        "count": 297021,
+        "pct": 98.581
       },
       "return_20d_pct": {
-        "count": 284028,
-        "pct": 94.321
+        "count": 284196,
+        "pct": 94.325
       },
       "return_60d_pct": {
-        "count": 249828,
-        "pct": 82.964
+        "count": 249996,
+        "pct": 82.974
       },
       "volume_ratio_20d": {
-        "count": 297701,
-        "pct": 98.862
+        "count": 297869,
+        "pct": 98.863
       },
       "avg_traded_value_20d_jpy": {
-        "count": 297708,
-        "pct": 98.864
+        "count": 297876,
+        "pct": 98.865
       },
       "rsi_14": {
-        "count": 289158,
-        "pct": 96.025
+        "count": 289326,
+        "pct": 96.027
       },
       "range_position_252d_0_1": {
-        "count": 284883,
-        "pct": 94.605
+        "count": 285051,
+        "pct": 94.608
       },
       "liquidity_score": {
-        "count": 297708,
-        "pct": 98.864
+        "count": 297876,
+        "pct": 98.865
       }
     }
   },
   "agent_scores": {
     "table_exists": true,
-    "rows": 491806,
+    "rows": 492438,
     "unique_agents": 7,
     "latest_date": "2026-06-19",
     "date_count": 112,
-    "trade_candidate_rows": 67776,
+    "trade_candidate_rows": 67791,
     "season_window": {
       "start_date": "2026-01-01",
       "end_date": "2026-06-19",
       "year": 2026
     },
-    "season_rows": 491806,
+    "season_rows": 492438,
     "season_date_count": 112,
-    "season_trade_candidate_rows": 67776,
+    "season_trade_candidate_rows": 67791,
     "agents": [
       {
         "agent_id": "contrarian_monk",
         "display_name": "MATSU",
         "raw_agent_value": "contrarian_monk",
-        "rows": 95487,
+        "rows": 95655,
         "date_count": 112,
         "tickers": 855,
-        "trade_candidate_rows": 1684,
+        "trade_candidate_rows": 1680,
         "max_score": 0.873995,
-        "avg_score": 0.37321996592206297,
+        "avg_score": 0.37274061918352436,
         "actions": {
-          "Ignore": 76134,
-          "Watch": 17669,
-          "Trade": 1684
+          "Ignore": 76356,
+          "Watch": 17619,
+          "Trade": 1680
         }
       },
       {
         "agent_id": "daily_striker",
         "display_name": "KYOU",
         "raw_agent_value": "daily_striker",
-        "rows": 74317,
+        "rows": 74388,
         "date_count": 112,
         "tickers": 731,
-        "trade_candidate_rows": 1442,
+        "trade_candidate_rows": 1447,
         "max_score": 0.980205,
-        "avg_score": 0.2890795321797158,
+        "avg_score": 0.28926316427380677,
         "actions": {
-          "Ignore": 67871,
-          "Watch": 5004,
-          "Trade": 1442
+          "Ignore": 67925,
+          "Watch": 5016,
+          "Trade": 1447
         }
       },
       {
         "agent_id": "discovery_scout",
         "display_name": "SAGURI",
         "raw_agent_value": "discovery_scout",
-        "rows": 21078,
+        "rows": 21149,
         "date_count": 112,
         "tickers": 254,
-        "trade_candidate_rows": 587,
-        "max_score": 0.980547,
-        "avg_score": 0.34888394752822893,
+        "trade_candidate_rows": 574,
+        "max_score": 0.99,
+        "avg_score": 0.34340538356423456,
         "actions": {
-          "Ignore": 18027,
-          "Watch": 2464,
-          "Trade": 587
+          "Ignore": 18182,
+          "Watch": 2393,
+          "Trade": 574
         }
       },
       {
         "agent_id": "reversal_snapback",
         "display_name": "KAESHI",
         "raw_agent_value": "reversal_snapback",
-        "rows": 74317,
+        "rows": 74388,
         "date_count": 112,
         "tickers": 731,
-        "trade_candidate_rows": 247,
+        "trade_candidate_rows": 249,
         "max_score": 0.917028,
-        "avg_score": 0.3188785107176007,
+        "avg_score": 0.31910710469430464,
         "actions": {
-          "Ignore": 70312,
-          "Watch": 3758,
-          "Trade": 247
+          "Ignore": 70365,
+          "Watch": 3774,
+          "Trade": 249
         }
       },
       {
         "agent_id": "risk_sentinel",
         "display_name": "MAMORU",
         "raw_agent_value": "risk_sentinel",
-        "rows": 56803,
+        "rows": 56815,
         "date_count": 112,
         "tickers": 508,
-        "trade_candidate_rows": 46132,
+        "trade_candidate_rows": 46144,
         "max_score": 0.990716,
-        "avg_score": 0.780335457546255,
+        "avg_score": 0.7803761836310824,
         "actions": {
-          "Trade": 46132,
-          "Watch": 9174,
-          "Ignore": 1497
+          "Trade": 46144,
+          "Watch": 9173,
+          "Ignore": 1498
         }
       },
       {
         "agent_id": "value_mispricing",
         "display_name": "HIZUMI",
         "raw_agent_value": "value_mispricing",
-        "rows": 74317,
+        "rows": 74388,
         "date_count": 112,
         "tickers": 731,
         "trade_candidate_rows": 0,
-        "max_score": 0.670572,
-        "avg_score": 0.3673519897331701,
+        "max_score": 0.670522,
+        "avg_score": 0.28669138422863966,
         "actions": {
-          "Ignore": 70156,
-          "Watch": 4161
+          "Ignore": 71619,
+          "Watch": 2769
         }
       },
       {
         "agent_id": "weekly_sage",
         "display_name": "NAGARE",
         "raw_agent_value": "weekly_sage",
-        "rows": 95487,
+        "rows": 95655,
         "date_count": 112,
         "tickers": 855,
-        "trade_candidate_rows": 17684,
+        "trade_candidate_rows": 17697,
         "max_score": 1.0,
-        "avg_score": 0.36520706875281617,
+        "avg_score": 0.36491000863520107,
         "actions": {
-          "Ignore": 67690,
-          "Trade": 17684,
-          "Watch": 10113
+          "Ignore": 67833,
+          "Trade": 17697,
+          "Watch": 10125
         }
       }
     ],
@@ -368,36 +378,36 @@
       "coverage_vs_universe_pct": 100.0,
       "field_coverage": {
         "market_cap_jpy": {
-          "count": 854,
-          "pct": 99.418
+          "count": 531,
+          "pct": 61.816
         },
         "per": {
-          "count": 817,
-          "pct": 95.111
+          "count": 505,
+          "pct": 58.789
         },
         "pbr": {
-          "count": 854,
-          "pct": 99.418
+          "count": 530,
+          "pct": 61.7
         },
         "psr": {
-          "count": 847,
-          "pct": 98.603
+          "count": 524,
+          "pct": 61.001
         },
         "roe_pct": {
-          "count": 793,
-          "pct": 92.317
+          "count": 493,
+          "pct": 57.392
         },
         "roa_pct": {
-          "count": 793,
-          "pct": 92.317
+          "count": 494,
+          "pct": 57.509
         },
         "operating_margin_pct": {
-          "count": 855,
-          "pct": 99.534
+          "count": 531,
+          "pct": 61.816
         },
         "dividend_yield_pct": {
-          "count": 464,
-          "pct": 54.016
+          "count": 397,
+          "pct": 46.217
         }
       }
     },
@@ -491,43 +501,444 @@
       "path": "site/data/japan/ai-arena/diagnostics/fundamentals-latest.json",
       "data": {
         "schema_version": "fundamentals_jp_fetch_diagnostics_v1",
-        "generated_at": "2026-06-17T14:52:29Z",
+        "generated_at": "2026-06-22T15:20:29Z",
         "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
         "rows_fetched": 859,
-        "failures": [],
-        "failure_count": 0,
-        "feature_date_for_value_features": "2026-06-17",
+        "failures": [
+          {
+            "ticker": "1332.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1333.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "135A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1401.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1414.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1417.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "141A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1431.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1436.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1447.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "147A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "151A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "153A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "155A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "156A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1605.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "165A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "166A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1719.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1721.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "176A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "177A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1801.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1802.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1803.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1808.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1812.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "1820.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "202A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "205A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "206A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2127.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2158.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "215A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2160.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2173.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2181.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "218A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2195.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "219A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2201.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2206.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2212.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2222.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2229.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2264.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2267.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2269.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2282.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "228A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2321.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2327.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2331.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2334.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2370.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2371.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2413.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "241A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2432.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2433.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2438.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "244A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "245A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "246A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "247A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "248A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2497.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2501.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2502.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2503.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2531.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2579.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2586.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2587.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2593.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2607.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "264A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "265A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2670.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "269A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2726.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2768.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "276A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "277A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2784.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "278A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2801.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2802.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2809.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "280A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2810.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2811.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "281A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "285A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "286A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2871.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2875.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "288A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "2897.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          },
+          {
+            "ticker": "290A.T",
+            "error": "YFRateLimitError: Too Many Requests. Rate limited. Try after a while."
+          }
+        ],
+        "failure_count": 328,
+        "feature_date_for_value_features": "2026-06-19",
         "compat_value_feature_latest_enabled": true,
         "value_feature_rows_upserted_for_latest_date": 859,
         "canonical_value_feature_builder": "scripts/build_value_features_jp.py",
         "metric_coverage": {
           "market_cap_jpy": {
-            "count": 854,
-            "coverage_pct": 99.42
+            "count": 531,
+            "coverage_pct": 61.82
           },
           "per": {
-            "count": 817,
-            "coverage_pct": 95.11
+            "count": 505,
+            "coverage_pct": 58.79
           },
           "pbr": {
-            "count": 854,
-            "coverage_pct": 99.42
+            "count": 530,
+            "coverage_pct": 61.7
           },
           "psr": {
-            "count": 847,
-            "coverage_pct": 98.6
+            "count": 524,
+            "coverage_pct": 61.0
           },
           "roe_pct": {
-            "count": 793,
-            "coverage_pct": 92.32
+            "count": 493,
+            "coverage_pct": 57.39
           },
           "operating_margin_pct": {
-            "count": 855,
-            "coverage_pct": 99.53
+            "count": 531,
+            "coverage_pct": 61.82
           },
           "dividend_yield_pct": {
-            "count": 464,
-            "coverage_pct": 54.02
+            "count": 397,
+            "coverage_pct": 46.22
           }
         }
       }
@@ -544,8 +955,8 @@
     },
     "arena_orders": {
       "exists": true,
-      "rows": 880,
-      "rows_for_live_run_id": 880
+      "rows": 840,
+      "rows_for_live_run_id": 840
     },
     "arena_open_positions": {
       "exists": true,
@@ -554,8 +965,8 @@
     },
     "arena_trades": {
       "exists": true,
-      "rows": 422,
-      "rows_for_live_run_id": 422
+      "rows": 402,
+      "rows_for_live_run_id": 402
     },
     "arena_equity_curve": {
       "exists": true,
@@ -583,8 +994,8 @@
     },
     "live_run_id": "arena_jp_live_2026",
     "live_run_health": {
-      "orders": 880,
-      "trades": 422,
+      "orders": 840,
+      "trades": 402,
       "open_positions": 12,
       "equity_rows": 784,
       "yearly_ranking_rows": 7,
@@ -607,9 +1018,9 @@
       },
       {
         "agent_id": "discovery_scout",
-        "orders": 84,
-        "filled_buys": 42,
-        "filled_sells": 42
+        "orders": 48,
+        "filled_buys": 24,
+        "filled_sells": 24
       },
       {
         "agent_id": "reversal_snapback",
@@ -625,9 +1036,9 @@
       },
       {
         "agent_id": "value_mispricing",
-        "orders": 14,
-        "filled_buys": 7,
-        "filled_sells": 7
+        "orders": 10,
+        "filled_buys": 5,
+        "filled_sells": 5
       },
       {
         "agent_id": "weekly_sage",
@@ -642,17 +1053,17 @@
     "outputs": {
       "site/data/japan/ai-arena/live/latest.json": {
         "exists": true,
-        "size_bytes": 219944,
+        "size_bytes": 219859,
         "size_mb": 0.21
       },
       "site/data/japan/ai-arena/ranking/latest.json": {
         "exists": true,
-        "size_bytes": 229929,
+        "size_bytes": 229901,
         "size_mb": 0.219
       },
       "site/data/japan/ai-arena/summary/latest.json": {
         "exists": true,
-        "size_bytes": 236041,
+        "size_bytes": 236034,
         "size_mb": 0.225
       },
       "site/data/japan/ai-arena/signals/latest.json": {
@@ -662,7 +1073,7 @@
       },
       "site/japan/ai-arena/summary/index.html": {
         "exists": true,
-        "size_bytes": 43690,
+        "size_bytes": 43705,
         "size_mb": 0.042
       },
       "site/japan/ai-arena/signals/index.html": {
@@ -678,8 +1089,8 @@
     }
   },
   "repo_artifact_size": {
-    "site_data_files": 68,
-    "site_data_total_mb": 12.816,
+    "site_data_files": 71,
+    "site_data_total_mb": 14.675,
     "prices_latest_mb": 0.34,
     "dated_prices_json_count": 1,
     "largest_files": [
@@ -687,6 +1098,26 @@
         "path": "site/data/japan/ai-arena/diagnostics/trade-diagnostics/latest.json",
         "size_mb": 1.136,
         "size_bytes": 1191334
+      },
+      {
+        "path": "site/data/japan/ai-arena/war-room/history/2026-06-20-weekly_arena_review.json",
+        "size_mb": 0.631,
+        "size_bytes": 661578
+      },
+      {
+        "path": "site/data/japan/ai-arena/war-room/history/2026-06-22-close_council.json",
+        "size_mb": 0.604,
+        "size_bytes": 632890
+      },
+      {
+        "path": "site/data/japan/ai-arena/war-room/latest.json",
+        "size_mb": 0.6,
+        "size_bytes": 629487
+      },
+      {
+        "path": "site/data/japan/ai-arena/war-room/history/2026-06-23-close_council.json",
+        "size_mb": 0.6,
+        "size_bytes": 629487
       },
       {
         "path": "site/data/japan/ai-arena/war-room/history/2026-06-17-close_council.json",
@@ -699,14 +1130,9 @@
         "size_bytes": 616111
       },
       {
-        "path": "site/data/japan/ai-arena/war-room/latest.json",
-        "size_mb": 0.587,
-        "size_bytes": 616021
-      },
-      {
         "path": "site/data/japan/ai-arena/war-room/history/2026-06-19-close_council.json",
         "size_mb": 0.587,
-        "size_bytes": 616021
+        "size_bytes": 615021
       },
       {
         "path": "site/data/japan/ai-arena/war-room/history/2026-06-10-close_council.json",
@@ -742,21 +1168,6 @@
         "path": "site/data/japan/ai-arena/war-room/history/2026-06-08-night_strategy_lab.json",
         "size_mb": 0.53,
         "size_bytes": 555766
-      },
-      {
-        "path": "site/data/japan/ai-arena/war-room/history/2026-06-06-weekly_arena_review.json",
-        "size_mb": 0.471,
-        "size_bytes": 493717
-      },
-      {
-        "path": "site/data/japan/universe/jp_index_universe.json",
-        "size_mb": 0.421,
-        "size_bytes": 441807
-      },
-      {
-        "path": "site/data/japan/ai-arena/war-room/history/2026-06-05-close_council.json",
-        "size_mb": 0.399,
-        "size_bytes": 418829
       }
     ]
   }
