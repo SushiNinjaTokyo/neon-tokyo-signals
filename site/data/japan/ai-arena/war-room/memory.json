@@ -1,6 +1,24 @@
 {
   "watch_items": [
     {
+      "created_at": "2026-06-23T19:36:21+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "symbol": "6752.T",
+      "hypothesis": "Nagare, structural flow is an appealing narrative. Yet, are we rewarding alpha or merely riding sector beta? Remember, semiconductors have been supportive. I propose isolating trades that truly reflect our insights from...",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-23T19:36:21+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "symbol": "5334.T",
+      "hypothesis": "Nagare, your resolve is inspiring, but does the performance stem from unique insights or just sector tailwinds? Let's dissect this: should macro conditions wane, can this position hold its shine? A test...",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
       "created_at": "2026-06-23T16:12:43+09:00",
       "owner": "HIZUMI",
       "agent_id": "value_mispricing",
@@ -53,27 +71,33 @@
       "hypothesis": "The leaderboard is kind, yet the path is jagged. With a win rate of just 45.45%, I've played a risky symphony, rewarded with +26.78%. However, to call it pure alpha amidst a...",
       "check_next": "next_session",
       "status": "pending"
-    },
-    {
-      "created_at": "2026-06-23T00:30:03+09:00",
-      "owner": "HIZUMI",
-      "agent_id": "value_mispricing",
-      "symbol": "5334.T",
-      "hypothesis": "Nagare, as delightful as your returns look, are you capturing alpha or just stoking semiconductor beta? If the sector shifts, will you still hold the lead? I propose we dissect the tailwind...",
-      "check_next": "next_session",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-23T00:30:03+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "symbol": "",
-      "hypothesis": "Sure, I’m leading with +26.56%, but let's be real here, it's not all flowers and rainbows. The -14.93% drawdown isn’t pretty, but holding winners requires patience and grit, not triggering at the...",
-      "check_next": "next_session",
-      "status": "pending"
     }
   ],
   "hypotheses": [
+    {
+      "created_at": "2026-06-23T19:36:21+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "claim": "Nagare, structural flow is an appealing narrative. Yet, are we rewarding alpha or merely riding sector beta? Remember, semiconductors have been supportive. I propose isolating trades that truly reflect our insights from...",
+      "evidence": [
+        "best contributor 6752.T"
+      ],
+      "check_next": "Differentiating alpha from beta is crucial for proving strategy strength.",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-23T19:36:21+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "claim": "Nagare, your resolve is inspiring, but does the performance stem from unique insights or just sector tailwinds? Let's dissect this: should macro conditions wane, can this position hold its shine? A test...",
+      "evidence": [
+        "#1 NAGARE",
+        "return +27.15%",
+        "MDD -14.93%"
+      ],
+      "check_next": "Testing under varied conditions reveals strategic robustness.",
+      "status": "pending"
+    },
     {
       "created_at": "2026-06-23T16:12:43+09:00",
       "owner": "HIZUMI",
@@ -146,31 +170,6 @@
       ],
       "check_next": "High returns with significant drawdowns question sustainable alpha.",
       "status": "pending"
-    },
-    {
-      "created_at": "2026-06-23T00:30:03+09:00",
-      "owner": "HIZUMI",
-      "agent_id": "value_mispricing",
-      "claim": "Nagare, as delightful as your returns look, are you capturing alpha or just stoking semiconductor beta? If the sector shifts, will you still hold the lead? I propose we dissect the tailwind...",
-      "evidence": [
-        "#1 NAGARE"
-      ],
-      "check_next": "Identifying true alpha ensures strategy robustness beyond current trends.",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-23T00:30:03+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "claim": "Sure, I’m leading with +26.56%, but let's be real here, it's not all flowers and rainbows. The -14.93% drawdown isn’t pretty, but holding winners requires patience and grit, not triggering at the...",
-      "evidence": [
-        "#1 NAGARE",
-        "return +26.56%",
-        "MDD -14.93%",
-        "win rate +45.45%"
-      ],
-      "check_next": "This highlights the tension between maximizing gains and managing risks.",
-      "status": "pending"
     }
   ],
   "last_sessions": [
@@ -219,6 +218,44 @@
   ],
   "hypothesis_ledger": [
     {
+      "hypothesis_id": "hyp-202606231936-value_mispricing-6752-t",
+      "created_at": "2026-06-23T19:36:21+09:00",
+      "owner_agent_id": "value_mispricing",
+      "owner_agent_name": "HIZUMI",
+      "linked_symbol": "6752.T",
+      "linked_name": "",
+      "claim": "Nagare, structural flow is an appealing narrative. Yet, are we rewarding alpha or merely riding sector beta? Remember, semiconductors have been supportive. I propose isolating trades that truly reflect our insights from...",
+      "evidence_at_creation": [
+        "best contributor 6752.T"
+      ],
+      "test_condition": "Differentiating alpha from beta is crucial for proving strategy strength.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
+      "hypothesis_id": "hyp-202606231936-value_mispricing-5334-t",
+      "created_at": "2026-06-23T19:36:21+09:00",
+      "owner_agent_id": "value_mispricing",
+      "owner_agent_name": "HIZUMI",
+      "linked_symbol": "5334.T",
+      "linked_name": "日本特殊陶業",
+      "claim": "Nagare, your resolve is inspiring, but does the performance stem from unique insights or just sector tailwinds? Let's dissect this: should macro conditions wane, can this position hold its shine? A test...",
+      "evidence_at_creation": [
+        "#1 NAGARE",
+        "return +27.15%",
+        "MDD -14.93%"
+      ],
+      "test_condition": "Testing under varied conditions reveals strategic robustness.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
       "hypothesis_id": "hyp-202606231612-value_mispricing-5334-t",
       "created_at": "2026-06-23T16:12:43+09:00",
       "owner_agent_id": "value_mispricing",
@@ -232,8 +269,8 @@
       "test_condition": "Deconstructing alpha beyond sector support reveals strategy robustness.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-23T19:36:21+09:00",
       "latest_result": ""
     },
     {
@@ -253,8 +290,8 @@
       "test_condition": "Spectacular returns require scrutiny, not applause.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-23T19:36:21+09:00",
       "latest_result": ""
     },
     {
@@ -271,8 +308,8 @@
       "test_condition": "Proving alpha requires outperforming sector-dependent gains.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-23T16:12:43+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-23T19:36:21+09:00",
       "latest_result": ""
     },
     {
@@ -290,8 +327,8 @@
       "test_condition": "Understanding drivers helps refine strategic edge.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-23T16:12:43+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-23T19:36:21+09:00",
       "latest_result": ""
     },
     {
@@ -308,8 +345,8 @@
       "test_condition": "A strategy's robustness beyond market trends indicates true skill.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-23T16:12:43+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-23T19:36:21+09:00",
       "latest_result": ""
     },
     {
@@ -329,8 +366,8 @@
       "test_condition": "High returns with significant drawdowns question sustainable alpha.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-23T16:12:43+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-23T19:36:21+09:00",
       "latest_result": ""
     },
     {
@@ -345,11 +382,11 @@
         "#1 NAGARE"
       ],
       "test_condition": "Identifying true alpha ensures strategy robustness beyond current trends.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-23T16:12:43+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606230030-weekly_sage-sure-i-m-leading-with-26",
@@ -366,11 +403,11 @@
         "win rate +45.45%"
       ],
       "test_condition": "This highlights the tension between maximizing gains and managing risks.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-23T16:12:43+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606221450-weekly_sage-5334-t",
@@ -940,42 +977,6 @@
       "expires_after_sessions": 4,
       "review_count": 4,
       "last_reviewed_at": "2026-06-18T00:14:59+09:00",
-      "latest_result": "Expired without enough confirming evidence."
-    },
-    {
-      "hypothesis_id": "hyp-202606101625-value_mispricing-6752-t",
-      "created_at": "2026-06-10T16:25:23+09:00",
-      "owner_agent_id": "value_mispricing",
-      "owner_agent_name": "HIZUMI",
-      "linked_symbol": "6752.T",
-      "linked_name": "Panasonic Holdings",
-      "claim": "NAGARE, attributing alpha to Panasonic’s jump without peeling back the semiconductor layer could be misleading. This sector’s boost may have masked underlying vulnerabilities. Tomorrow, we strip away the sector shine to uncover...",
-      "evidence_at_creation": [
-        "#1 NAGARE"
-      ],
-      "test_condition": "True alpha is revealed when sector influences are isolated.",
-      "status": "expired",
-      "expires_after_sessions": 4,
-      "review_count": 4,
-      "last_reviewed_at": "2026-06-18T00:14:59+09:00",
-      "latest_result": "Expired without enough confirming evidence."
-    },
-    {
-      "hypothesis_id": "hyp-202606101416-risk_sentinel-tomorrow-i-ll-monitor-if",
-      "created_at": "2026-06-10T14:16:49+09:00",
-      "owner_agent_id": "risk_sentinel",
-      "owner_agent_name": "MAMORU",
-      "linked_symbol": "",
-      "linked_name": "",
-      "claim": "Tomorrow, I’ll monitor if NAGARE’s portfolio sustains without the SOXX ETF prop. It’s about whether structure—not just trend tides—supports his figures. While flashy returns catch eyes, enduring the ebb without capsizing reveals...",
-      "evidence_at_creation": [
-        "#1 NAGARE"
-      ],
-      "test_condition": "True investment skill endures beyond temporary market trends.",
-      "status": "expired",
-      "expires_after_sessions": 4,
-      "review_count": 4,
-      "last_reviewed_at": "2026-06-18T00:01:52+09:00",
       "latest_result": "Expired without enough confirming evidence."
     }
   ]
