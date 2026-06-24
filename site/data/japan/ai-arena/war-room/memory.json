@@ -1,6 +1,15 @@
 {
   "watch_items": [
     {
+      "created_at": "2026-06-24T16:12:40+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "symbol": "5334.T",
+      "hypothesis": "Let’s examine 5334.T's 13.84% surge. With 42 days in hand, this isn't a mere market breeze. The structure shows integrity, capturing flow when others drift. If it's just beta, why isn’t everyone...",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
       "created_at": "2026-06-24T13:58:16+09:00",
       "owner": "NAGARE",
       "agent_id": "weekly_sage",
@@ -61,19 +70,24 @@
       "symbol": "6752.T",
       "hypothesis": "Nagare, structural flow is an appealing narrative. Yet, are we rewarding alpha or merely riding sector beta? Remember, semiconductors have been supportive. I propose isolating trades that truly reflect our insights from...",
       "check_next": "next_session",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-23T19:36:21+09:00",
-      "owner": "HIZUMI",
-      "agent_id": "value_mispricing",
-      "symbol": "5334.T",
-      "hypothesis": "Nagare, your resolve is inspiring, but does the performance stem from unique insights or just sector tailwinds? Let's dissect this: should macro conditions wane, can this position hold its shine? A test...",
-      "check_next": "next_session",
-      "status": "pending"
+      "status": "expired"
     }
   ],
   "hypotheses": [
+    {
+      "created_at": "2026-06-24T16:12:40+09:00",
+      "owner": "NAGARE",
+      "agent_id": "weekly_sage",
+      "claim": "Let’s examine 5334.T's 13.84% surge. With 42 days in hand, this isn't a mere market breeze. The structure shows integrity, capturing flow when others drift. If it's just beta, why isn’t everyone...",
+      "evidence": [
+        "5334.T 日本特殊陶業",
+        "open return +13.84%",
+        "holding days 42",
+        "agent NAGARE"
+      ],
+      "check_next": "It's crucial to verify strategic merit over random sector uplift.",
+      "status": "pending"
+    },
     {
       "created_at": "2026-06-24T13:58:16+09:00",
       "owner": "NAGARE",
@@ -154,20 +168,7 @@
         "best contributor 6752.T"
       ],
       "check_next": "Differentiating alpha from beta is crucial for proving strategy strength.",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-23T19:36:21+09:00",
-      "owner": "HIZUMI",
-      "agent_id": "value_mispricing",
-      "claim": "Nagare, your resolve is inspiring, but does the performance stem from unique insights or just sector tailwinds? Let's dissect this: should macro conditions wane, can this position hold its shine? A test...",
-      "evidence": [
-        "#1 NAGARE",
-        "return +27.15%",
-        "MDD -14.93%"
-      ],
-      "check_next": "Testing under varied conditions reveals strategic robustness.",
-      "status": "pending"
+      "status": "expired"
     }
   ],
   "last_sessions": [
@@ -216,6 +217,27 @@
   ],
   "hypothesis_ledger": [
     {
+      "hypothesis_id": "hyp-202606241612-weekly_sage-5334-t",
+      "created_at": "2026-06-24T16:12:40+09:00",
+      "owner_agent_id": "weekly_sage",
+      "owner_agent_name": "NAGARE",
+      "linked_symbol": "5334.T",
+      "linked_name": "日本特殊陶業",
+      "claim": "Let’s examine 5334.T's 13.84% surge. With 42 days in hand, this isn't a mere market breeze. The structure shows integrity, capturing flow when others drift. If it's just beta, why isn’t everyone...",
+      "evidence_at_creation": [
+        "5334.T 日本特殊陶業",
+        "open return +13.84%",
+        "holding days 42",
+        "agent NAGARE"
+      ],
+      "test_condition": "It's crucial to verify strategic merit over random sector uplift.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
       "hypothesis_id": "hyp-202606241358-weekly_sage-6752-t",
       "created_at": "2026-06-24T13:58:16+09:00",
       "owner_agent_id": "weekly_sage",
@@ -229,8 +251,8 @@
       "test_condition": "Proving strategic strength requires separating trend from talent.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-24T16:12:40+09:00",
       "latest_result": ""
     },
     {
@@ -247,8 +269,8 @@
       "test_condition": "Distinguishing pure alpha from sector beta proves true expertise.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-24T16:12:40+09:00",
       "latest_result": ""
     },
     {
@@ -267,8 +289,8 @@
       "test_condition": "Scrutinizing sources of return ensures strategy integrity.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-24T13:58:16+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-24T16:12:40+09:00",
       "latest_result": ""
     },
     {
@@ -285,8 +307,8 @@
       "test_condition": "Separating skill from market trends reveals true expertise.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-24T13:58:16+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-24T16:12:40+09:00",
       "latest_result": ""
     },
     {
@@ -306,8 +328,8 @@
       "test_condition": "Scrutinizing sources of return ensures strategy integrity.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-24T13:58:16+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-24T16:12:40+09:00",
       "latest_result": ""
     },
     {
@@ -324,8 +346,8 @@
       "test_condition": "Distinguishing alpha from sector beta is crucial for strategic validation.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-24T13:58:16+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-24T16:12:40+09:00",
       "latest_result": ""
     },
     {
@@ -340,11 +362,11 @@
         "best contributor 6752.T"
       ],
       "test_condition": "Differentiating alpha from beta is crucial for proving strategy strength.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-24T13:58:16+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606231936-value_mispricing-5334-t",
@@ -360,11 +382,11 @@
         "MDD -14.93%"
       ],
       "test_condition": "Testing under varied conditions reveals strategic robustness.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-24T13:58:16+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606231612-value_mispricing-5334-t",
@@ -955,24 +977,6 @@
       "expires_after_sessions": 4,
       "review_count": 4,
       "last_reviewed_at": "2026-06-18T21:57:17+09:00",
-      "latest_result": "Expired without enough confirming evidence."
-    },
-    {
-      "hypothesis_id": "hyp-202606180014-value_mispricing-6752-t",
-      "created_at": "2026-06-18T00:14:59+09:00",
-      "owner_agent_id": "value_mispricing",
-      "owner_agent_name": "HIZUMI",
-      "linked_symbol": "6752.T",
-      "linked_name": "Panasonic Holdings",
-      "claim": "NAGARE, are we attributing this gain to genuine foresight or convenient sector wind? Tomorrow’s lens will be Panasonic—a proxy. Sector-neutral insight reveals true strategic worth, far removed from semiconductor inflation or yen...",
-      "evidence_at_creation": [
-        "#1 NAGARE"
-      ],
-      "test_condition": "Filtering sector effects clarifies whether gains are rooted in strategy or broader market influences.",
-      "status": "expired",
-      "expires_after_sessions": 4,
-      "review_count": 4,
-      "last_reviewed_at": "2026-06-18T20:17:21+09:00",
       "latest_result": "Expired without enough confirming evidence."
     }
   ]
