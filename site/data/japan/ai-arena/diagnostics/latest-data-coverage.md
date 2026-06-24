@@ -1,27 +1,27 @@
 # Neon Tokyo Data Coverage Review
 
-Generated: 2026-06-23T12:46:48+00:00
+Generated: 2026-06-24T12:29:33+00:00
 DuckDB: `data/cache/neon_tokyo_jp.duckdb`
 DuckDB exists: **True**
 
 ## Canonical DuckDB Metadata
 
 - Metadata table exists: True
-- DB size MB: 1439.762
+- DB size MB: 2364.762
 
 | Key | Value | Updated At |
 |---|---|---|
-| `artifact_kind` | github-release-asset | 2026-06-23T12:40:27.505195 |
-| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-06-23T12:40:27.509362 |
-| `build_id` | 28026124270-1 | 2026-06-23T12:40:27.492855 |
-| `generated_at` | 2026-06-23T12:40:27+00:00 | 2026-06-23T12:40:27.490645 |
-| `release_tag` | ai-arena-duckdb-latest | 2026-06-23T12:40:27.507288 |
-| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-06-23T12:40:27.485746 |
-| `source_ref` | refs/heads/main | 2026-06-23T12:40:27.502373 |
-| `source_run_attempt` | 1 | 2026-06-23T12:40:27.498553 |
-| `source_run_id` | 28026124270 | 2026-06-23T12:40:27.496732 |
-| `source_sha` | 0f859d21102ee0d2488977a68f2722f48d928b99 | 2026-06-23T12:40:27.500529 |
-| `source_workflow` | AI Arena JP live update | 2026-06-23T12:40:27.494929 |
+| `artifact_kind` | github-release-asset | 2026-06-24T10:15:44.406832 |
+| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-06-24T10:15:44.410563 |
+| `build_id` | 28090714713-1 | 2026-06-24T10:15:44.395522 |
+| `generated_at` | 2026-06-24T10:15:44+00:00 | 2026-06-24T10:15:44.393353 |
+| `release_tag` | ai-arena-duckdb-latest | 2026-06-24T10:15:44.408581 |
+| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-06-24T10:15:44.388751 |
+| `source_ref` | refs/heads/main | 2026-06-24T10:15:44.404956 |
+| `source_run_attempt` | 1 | 2026-06-24T10:15:44.401221 |
+| `source_run_id` | 28090714713 | 2026-06-24T10:15:44.399415 |
+| `source_sha` | 3bb0c2d31c9795027eb3beb7efd9aba57a84449a | 2026-06-24T10:15:44.403048 |
+| `source_workflow` | AI Arena JP War Room | 2026-06-24T10:15:44.397456 |
 
 ## Executive Warnings
 
@@ -43,53 +43,53 @@ DuckDB exists: **True**
 ## Prices
 
 - Table exists: True
-- Rows: 302996
+- Rows: 303845
 - Unique symbols: 855
-- Date range: 2025-01-06 → 2026-06-23
+- Date range: 2025-01-06 → 2026-06-24
 - Insufficient bars symbols: 0
 - Stale symbols: 5
 
 ## Features
 
 - Table exists: True
-- Rows: 302996
+- Rows: 303845
 - Unique symbols: 855
-- Latest date: 2026-06-23
-- Latest date symbols: 850
+- Latest date: 2026-06-24
+- Latest date symbols: 849
 
 | Feature | Coverage | Count |
 |---|---:|---:|
-| `return_1d_pct` | 99.718% | 302141 |
-| `return_5d_pct` | 98.589% | 298721 |
-| `return_20d_pct` | 94.356% | 285896 |
-| `return_60d_pct` | 83.069% | 251696 |
-| `volume_ratio_20d` | 98.869% | 299569 |
-| `avg_traded_value_20d_jpy` | 98.871% | 299576 |
-| `rsi_14` | 96.049% | 291026 |
-| `range_position_252d_0_1` | 94.639% | 286751 |
-| `liquidity_score` | 98.871% | 299576 |
+| `return_1d_pct` | 99.719% | 302990 |
+| `return_5d_pct` | 98.593% | 299570 |
+| `return_20d_pct` | 94.372% | 286745 |
+| `return_60d_pct` | 83.116% | 252545 |
+| `volume_ratio_20d` | 98.872% | 300418 |
+| `avg_traded_value_20d_jpy` | 98.874% | 300425 |
+| `rsi_14` | 96.06% | 291875 |
+| `range_position_252d_0_1` | 94.654% | 287600 |
+| `liquidity_score` | 98.874% | 300425 |
 
 ## Agent Scores
 
 - Table exists: True
-- Rows: 501021
+- Rows: 505289
 - Unique agents: 7
-- Latest date: 2026-06-23
-- Date count: 114
-- Trade candidates: 68933
-- Season window: 2026-01-01 → 2026-06-23
-- Season date count: 114
-- Season trade candidates: 68933
+- Latest date: 2026-06-24
+- Date count: 115
+- Trade candidates: 69473
+- Season window: 2026-01-01 → 2026-06-24
+- Season date count: 115
+- Season trade candidates: 69473
 
 | Agent | Rows | Dates | Trade candidates | Tickers | Max Score | Avg Score | Actions |
 |---|---:|---:|---:|---:|---:|---:|---|
-| MATSU / `contrarian_monk` | 97355 | 114 | 1686 | 855 | 0.874 | 0.3723 | Ignore:77751, Watch:17918, Trade:1686 |
-| KYOU / `daily_striker` | 75670 | 114 | 1462 | 731 | 0.9802 | 0.289 | Ignore:69123, Watch:5085, Trade:1462 |
-| SAGURI / `discovery_scout` | 21472 | 114 | 575 | 254 | 0.99 | 0.3426 | Ignore:18488, Watch:2409, Trade:575 |
-| KAESHI / `reversal_snapback` | 75670 | 114 | 251 | 731 | 0.917 | 0.3186 | Ignore:71618, Watch:3801, Trade:251 |
-| MAMORU / `risk_sentinel` | 57829 | 114 | 46963 | 508 | 0.9907 | 0.7802 | Trade:46963, Watch:9348, Ignore:1518 |
-| HIZUMI / `value_mispricing` | 75670 | 114 | 0 | 731 | 0.6705 | 0.2866 | Ignore:72866, Watch:2804 |
-| NAGARE / `weekly_sage` | 97355 | 114 | 17996 | 855 | 1.0 | 0.3642 | Ignore:69113, Trade:17996, Watch:10246 |
+| MATSU / `contrarian_monk` | 98204 | 115 | 1710 | 855 | 0.874 | 0.3724 | Ignore:78408, Watch:18086, Trade:1710 |
+| KYOU / `daily_striker` | 76305 | 115 | 1462 | 731 | 0.9802 | 0.2885 | Ignore:69745, Watch:5098, Trade:1462 |
+| SAGURI / `discovery_scout` | 21630 | 115 | 575 | 254 | 0.99 | 0.3421 | Ignore:18640, Watch:2415, Trade:575 |
+| KAESHI / `reversal_snapback` | 76305 | 115 | 251 | 731 | 0.917 | 0.3184 | Ignore:72231, Watch:3823, Trade:251 |
+| MAMORU / `risk_sentinel` | 58336 | 115 | 47360 | 508 | 0.9907 | 0.78 | Trade:47360, Watch:9442, Ignore:1534 |
+| HIZUMI / `value_mispricing` | 76305 | 115 | 0 | 731 | 0.6705 | 0.2864 | Ignore:73490, Watch:2815 |
+| NAGARE / `weekly_sage` | 98204 | 115 | 18115 | 855 | 1.0 | 0.3636 | Ignore:69776, Trade:18115, Watch:10313 |
 
 ## Company / Fundamentals
 
@@ -139,30 +139,30 @@ DuckDB exists: **True**
 ### `value_features_daily`
 
 - Exists: True
-- Rows: 97926
+- Rows: 98785
 - Unique tickers: 859
 - Coverage vs universe: 100.0%
-- Latest date: 2026-06-23
-- Date count: 114
+- Latest date: 2026-06-24
+- Date count: 115
 - Latest date tickers: 859
-- Season date count: 114
+- Season date count: 115
 
 ## Arena Simulation Tables
 
 - Live run: `arena_jp_live_2026`
-- Live orders: 865
-- Live trades: 413
-- Live open positions: 13
+- Live orders: 869
+- Live trades: 416
+- Live open positions: 11
 - Live yearly ranking rows: 7
 
 | Table | Exists | Rows | Rows for live run |
 |---|---:|---:|---:|
 | `arena_simulation_runs` | True | 1 | N/A |
 | `arena_display_runs` | True | 1 | N/A |
-| `arena_orders` | True | 865 | 865 |
-| `arena_open_positions` | True | 13 | 13 |
-| `arena_trades` | True | 413 | 413 |
-| `arena_equity_curve` | True | 798 | 798 |
+| `arena_orders` | True | 869 | 869 |
+| `arena_open_positions` | True | 11 | 11 |
+| `arena_trades` | True | 416 | 416 |
+| `arena_equity_curve` | True | 805 | 805 |
 | `arena_yearly_rankings` | True | 7 | 7 |
 | `arena_monthly_rankings` | True | 42 | 42 |
 | `arena_trade_rankings` | True | 40 | 40 |
@@ -174,8 +174,8 @@ DuckDB exists: **True**
 
 ## Repo Artifact Size
 
-- site/data files: 72
-- site/data total MB: 15.312
+- site/data files: 73
+- site/data total MB: 15.946
 - prices latest MB: 0.34
 - dated prices JSON count: 1
 
@@ -183,10 +183,11 @@ DuckDB exists: **True**
 |---|---:|
 | `site/data/japan/ai-arena/diagnostics/trade-diagnostics/latest.json` | 1.136 |
 | `site/data/japan/ai-arena/war-room/history/2026-06-20-weekly_arena_review.json` | 0.631 |
-| `site/data/japan/ai-arena/war-room/history/2026-06-23-close_council.json` | 0.609 |
+| `site/data/japan/ai-arena/war-room/latest.json` | 0.615 |
+| `site/data/japan/ai-arena/war-room/history/2026-06-24-close_council.json` | 0.615 |
+| `site/data/japan/ai-arena/war-room/history/2026-06-23-close_council.json` | 0.611 |
 | `site/data/japan/ai-arena/war-room/history/2026-06-22-close_council.json` | 0.604 |
 | `site/data/japan/ai-arena/war-room/history/2026-06-17-close_council.json` | 0.6 |
-| `site/data/japan/ai-arena/war-room/latest.json` | 0.588 |
 | `site/data/japan/ai-arena/war-room/history/2026-06-23-night_strategy_lab.json` | 0.588 |
 | `site/data/japan/ai-arena/war-room/history/2026-06-18-close_council.json` | 0.588 |
 | `site/data/japan/ai-arena/war-room/history/2026-06-19-close_council.json` | 0.587 |
@@ -195,4 +196,3 @@ DuckDB exists: **True**
 | `site/data/japan/ai-arena/war-room/history/2026-06-19-night_strategy_lab.json` | 0.571 |
 | `site/data/japan/ai-arena/war-room/history/2026-06-18-night_strategy_lab.json` | 0.569 |
 | `site/data/japan/ai-arena/war-room/history/2026-06-09-night_strategy_lab.json` | 0.563 |
-| `site/data/japan/ai-arena/war-room/history/2026-06-08-close_council.json` | 0.556 |
