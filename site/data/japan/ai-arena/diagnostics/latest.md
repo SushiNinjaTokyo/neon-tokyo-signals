@@ -1,16 +1,16 @@
 # AI Arena Diagnostics
 
-Generated: 2026-06-25T07:05:04Z
+Generated: 2026-06-25T12:27:49Z
 Run: `arena_jp_live_2026`
 Year: 2026
 
 ## Totals
-- orders: 877
-- filled_orders: 851
+- orders: 917
+- filled_orders: 891
 - cancelled_orders: 26
-- buy_orders: 457
-- sell_orders: 420
-- trades: 420
+- buy_orders: 477
+- sell_orders: 440
+- trades: 440
 - open_positions: 11
 - equity_rows: 812
 - agents_with_executed_buys: 7
@@ -19,11 +19,11 @@ Year: 2026
 ## Agent Activity
 | Agent | Trade signals | Executed buys | Executed sells | Closed trades | Open positions | Return | Warnings |
 |---|---:|---:|---:|---:|---:|---:|---|
-| KYOU | 1469 | 92 | 92 | 92 | 0 | 5.77% | - |
-| NAGARE | 18253 | 50 | 45 | 45 | 5 | 25.97% | - |
-| MAMORU | 47763 | 113 | 108 | 108 | 5 | 14.23% | - |
-| SAGURI | 575 | 26 | 26 | 26 | 0 | -7.80% | - |
-| MATSU | 1745 | 97 | 96 | 96 | 1 | 24.69% | - |
+| KYOU | 1476 | 92 | 92 | 92 | 0 | 5.77% | - |
+| NAGARE | 18249 | 50 | 45 | 45 | 5 | 25.67% | - |
+| MAMORU | 47771 | 113 | 108 | 108 | 5 | 14.20% | - |
+| SAGURI | 589 | 44 | 44 | 44 | 0 | -5.62% | - |
+| MATSU | 1716 | 97 | 96 | 96 | 1 | 24.71% | - |
 | KAESHI | 251 | 48 | 48 | 48 | 0 | 3.36% | - |
-| HIZUMI | 0 | 5 | 5 | 5 | 0 | 0.67% | NO_TRADE_SIGNALS |
+| HIZUMI | 1 | 7 | 7 | 7 | 0 | 1.36% | - |
 
