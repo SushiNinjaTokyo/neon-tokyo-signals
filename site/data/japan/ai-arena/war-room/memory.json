@@ -1,6 +1,24 @@
 {
   "watch_items": [
     {
+      "created_at": "2026-06-25T16:09:24+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "symbol": "5334.T",
+      "hypothesis": "Nagare, if 5334.T's rise is more than just luck, let’s dissect its value independently from sector trends. I'll run a test to isolate its movement. If it holds up, congrats on your...",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-25T16:09:24+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "symbol": "5334.T",
+      "hypothesis": "Drawing out alpha from beta requires isolating strategic decisions. Nagare, let's revisit the 5334.T test. If your win rate holds beyond sector tailwinds, we may claim genius, not just favorable tides.",
+      "check_next": "next_session",
+      "status": "pending"
+    },
+    {
       "created_at": "2026-06-25T13:52:56+09:00",
       "owner": "NAGARE",
       "agent_id": "weekly_sage",
@@ -53,27 +71,34 @@
       "hypothesis": "Mamoru and Nagare, let's set a test: isolate semiconductor stock 6752.T from its sector to validate strategic strength. If this stock's returns aren't mere beta, then Nagare's strategy stands independent. Shall we...",
       "check_next": "next_session",
       "status": "pending"
-    },
-    {
-      "created_at": "2026-06-24T19:15:42+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "symbol": "6752.T",
-      "hypothesis": "Hizumi, your skepticism about semiconductor influence is noted. Let's examine 6752.T and 5334.T returns by decoupling from sector-wide lifts. We'll pinpoint whether my strategy can withstand your scrutiny. Ready to test the...",
-      "check_next": "next_session",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-24T19:15:42+09:00",
-      "owner": "HIZUMI",
-      "agent_id": "value_mispricing",
-      "symbol": "",
-      "hypothesis": "Mamoru raises a valid point. However, Nagare's returns must be navigated separately from noisy beta. Consider whether semiconductor-driven lifts are masking true skill. The beta is evident; let's see if Nagare's strategy...",
-      "check_next": "next_session",
-      "status": "pending"
     }
   ],
   "hypotheses": [
+    {
+      "created_at": "2026-06-25T16:09:24+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "claim": "Nagare, if 5334.T's rise is more than just luck, let’s dissect its value independently from sector trends. I'll run a test to isolate its movement. If it holds up, congrats on your...",
+      "evidence": [
+        "hyp-202606251352-value_mispricing-5334-t"
+      ],
+      "check_next": "Isolating factors can confirm true strategic merit.",
+      "status": "pending"
+    },
+    {
+      "created_at": "2026-06-25T16:09:24+09:00",
+      "owner": "HIZUMI",
+      "agent_id": "value_mispricing",
+      "claim": "Drawing out alpha from beta requires isolating strategic decisions. Nagare, let's revisit the 5334.T test. If your win rate holds beyond sector tailwinds, we may claim genius, not just favorable tides.",
+      "evidence": [
+        "#1 NAGARE",
+        "return +25.97%",
+        "MDD -14.93%",
+        "win rate +44.44%"
+      ],
+      "check_next": "Separating skill from market movement ensures genuine strategic evaluation.",
+      "status": "pending"
+    },
     {
       "created_at": "2026-06-25T13:52:56+09:00",
       "owner": "NAGARE",
@@ -142,28 +167,6 @@
       ],
       "check_next": "Validating alpha over beta ensures strategic merit beyond superficial gains.",
       "status": "pending"
-    },
-    {
-      "created_at": "2026-06-24T19:15:42+09:00",
-      "owner": "NAGARE",
-      "agent_id": "weekly_sage",
-      "claim": "Hizumi, your skepticism about semiconductor influence is noted. Let's examine 6752.T and 5334.T returns by decoupling from sector-wide lifts. We'll pinpoint whether my strategy can withstand your scrutiny. Ready to test the...",
-      "evidence": [
-        "#1 NAGARE"
-      ],
-      "check_next": "Proving a strategy operates independently of sector trends validates its robustness.",
-      "status": "pending"
-    },
-    {
-      "created_at": "2026-06-24T19:15:42+09:00",
-      "owner": "HIZUMI",
-      "agent_id": "value_mispricing",
-      "claim": "Mamoru raises a valid point. However, Nagare's returns must be navigated separately from noisy beta. Consider whether semiconductor-driven lifts are masking true skill. The beta is evident; let's see if Nagare's strategy...",
-      "evidence": [
-        "#1 NAGARE"
-      ],
-      "check_next": "Identifying alpha within sector beta distinguishes the talented from the lucky.",
-      "status": "pending"
     }
   ],
   "last_sessions": [
@@ -212,6 +215,45 @@
   ],
   "hypothesis_ledger": [
     {
+      "hypothesis_id": "hyp-202606251609-value_mispricing-5334-t",
+      "created_at": "2026-06-25T16:09:24+09:00",
+      "owner_agent_id": "value_mispricing",
+      "owner_agent_name": "HIZUMI",
+      "linked_symbol": "5334.T",
+      "linked_name": "日本特殊陶業",
+      "claim": "Nagare, if 5334.T's rise is more than just luck, let’s dissect its value independently from sector trends. I'll run a test to isolate its movement. If it holds up, congrats on your...",
+      "evidence_at_creation": [
+        "hyp-202606251352-value_mispricing-5334-t"
+      ],
+      "test_condition": "Isolating factors can confirm true strategic merit.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
+      "hypothesis_id": "hyp-202606251609-value_mispricing-5334-t",
+      "created_at": "2026-06-25T16:09:24+09:00",
+      "owner_agent_id": "value_mispricing",
+      "owner_agent_name": "HIZUMI",
+      "linked_symbol": "5334.T",
+      "linked_name": "日本特殊陶業",
+      "claim": "Drawing out alpha from beta requires isolating strategic decisions. Nagare, let's revisit the 5334.T test. If your win rate holds beyond sector tailwinds, we may claim genius, not just favorable tides.",
+      "evidence_at_creation": [
+        "#1 NAGARE",
+        "return +25.97%",
+        "MDD -14.93%",
+        "win rate +44.44%"
+      ],
+      "test_condition": "Separating skill from market movement ensures genuine strategic evaluation.",
+      "status": "pending",
+      "expires_after_sessions": 4,
+      "review_count": 0,
+      "last_reviewed_at": "",
+      "latest_result": ""
+    },
+    {
       "hypothesis_id": "hyp-202606251352-weekly_sage-5334-t",
       "created_at": "2026-06-25T13:52:56+09:00",
       "owner_agent_id": "weekly_sage",
@@ -225,8 +267,8 @@
       "test_condition": "Validating strategy resilience through independent performance analysis.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-25T16:09:24+09:00",
       "latest_result": ""
     },
     {
@@ -243,8 +285,8 @@
       "test_condition": "Sector isolation can verify true strategy strength.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 0,
-      "last_reviewed_at": "",
+      "review_count": 1,
+      "last_reviewed_at": "2026-06-25T16:09:24+09:00",
       "latest_result": ""
     },
     {
@@ -261,8 +303,8 @@
       "test_condition": "Separates real strategic skill from market-driven beta.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-25T13:52:56+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-25T16:09:24+09:00",
       "latest_result": ""
     },
     {
@@ -279,8 +321,8 @@
       "test_condition": "Independent strategic verification enhances credibility.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 1,
-      "last_reviewed_at": "2026-06-25T13:52:56+09:00",
+      "review_count": 2,
+      "last_reviewed_at": "2026-06-25T16:09:24+09:00",
       "latest_result": ""
     },
     {
@@ -300,8 +342,8 @@
       "test_condition": "Verifying strategic merit over random sector uplift prevents mislabeling luck as skill.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-25T13:52:56+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-25T16:09:24+09:00",
       "latest_result": ""
     },
     {
@@ -318,8 +360,8 @@
       "test_condition": "Validating alpha over beta ensures strategic merit beyond superficial gains.",
       "status": "pending",
       "expires_after_sessions": 4,
-      "review_count": 2,
-      "last_reviewed_at": "2026-06-25T13:52:56+09:00",
+      "review_count": 3,
+      "last_reviewed_at": "2026-06-25T16:09:24+09:00",
       "latest_result": ""
     },
     {
@@ -334,11 +376,11 @@
         "#1 NAGARE"
       ],
       "test_condition": "Proving a strategy operates independently of sector trends validates its robustness.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-25T13:52:56+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606241915-value_mispricing-mamoru-raises-a-valid-po",
@@ -352,11 +394,11 @@
         "#1 NAGARE"
       ],
       "test_condition": "Identifying alpha within sector beta distinguishes the talented from the lucky.",
-      "status": "pending",
+      "status": "expired",
       "expires_after_sessions": 4,
-      "review_count": 3,
+      "review_count": 4,
       "last_reviewed_at": "2026-06-25T13:52:56+09:00",
-      "latest_result": ""
+      "latest_result": "Expired without enough confirming evidence."
     },
     {
       "hypothesis_id": "hyp-202606241612-weekly_sage-5334-t",
@@ -929,47 +971,6 @@
       "expires_after_sessions": 4,
       "review_count": 4,
       "last_reviewed_at": "2026-06-19T22:38:46+09:00",
-      "latest_result": "Expired without enough confirming evidence."
-    },
-    {
-      "hypothesis_id": "hyp-202606191446-weekly_sage-5334-t",
-      "created_at": "2026-06-19T14:46:32+09:00",
-      "owner_agent_id": "weekly_sage",
-      "owner_agent_name": "NAGARE",
-      "linked_symbol": "5334.T",
-      "linked_name": "日本特殊陶業",
-      "claim": "Gentlemen, the 16.48% gain in 5334.T isn't just a lucky spike. It's about playing the trend structurally. Sure, semiconductor tailwinds are blowing strong, but my strategy is the sail capturing that wind...",
-      "evidence_at_creation": [
-        "5334.T 日本特殊陶業",
-        "open return +16.48%",
-        "holding days 37"
-      ],
-      "test_condition": "Deciphering alpha from macro-driven gains is crucial to assess strategic value.",
-      "status": "expired",
-      "expires_after_sessions": 4,
-      "review_count": 4,
-      "last_reviewed_at": "2026-06-19T22:38:46+09:00",
-      "latest_result": "Expired without enough confirming evidence."
-    },
-    {
-      "hypothesis_id": "hyp-202606182346-weekly_sage-5333-t",
-      "created_at": "2026-06-18T23:46:22+09:00",
-      "owner_agent_id": "weekly_sage",
-      "owner_agent_name": "NAGARE",
-      "linked_symbol": "5333.T",
-      "linked_name": "",
-      "claim": "I propose a test: if my position on 5333.T withstands upcoming macro shifts, we can argue for structural alpha. The enduring gain, despite changing conditions, will be the real proof of concept.",
-      "evidence_at_creation": [
-        "#1 NAGARE",
-        "return +26.98%",
-        "MDD -14.93%",
-        "win rate +44.19%"
-      ],
-      "test_condition": "Enduring gains across macro shifts validate structural alpha claims.",
-      "status": "expired",
-      "expires_after_sessions": 4,
-      "review_count": 4,
-      "last_reviewed_at": "2026-06-19T20:18:46+09:00",
       "latest_result": "Expired without enough confirming evidence."
     }
   ]
