@@ -1,6 +1,6 @@
 # Neon Tokyo Data Coverage Review
 
-Generated: 2026-07-01T12:45:35+00:00
+Generated: 2026-07-02T12:20:47+00:00
 DuckDB: `data/cache/neon_tokyo_jp.duckdb`
 DuckDB exists: **True**
 
@@ -36,7 +36,7 @@ DuckDB exists: **True**
 - DuckDB unique tickers: 859
 - Suspicious tickers: 0
 - CSV `jp_duckdb_trial_300`: exists=True rows=859 suspicious=0
-- CSV `jp_index_universe`: exists=True rows=851 suspicious=0
+- CSV `jp_index_universe`: exists=True rows=849 suspicious=0
 - CSV `legacy_universe_jp`: exists=True rows=36 suspicious=0
 
 ## Prices
@@ -174,7 +174,7 @@ DuckDB exists: **True**
 ## Repo Artifact Size
 
 - site/data files: 76
-- site/data total MB: 17.667
+- site/data total MB: 17.665
 - prices latest MB: 0.34
 - dated prices JSON count: 1
 
