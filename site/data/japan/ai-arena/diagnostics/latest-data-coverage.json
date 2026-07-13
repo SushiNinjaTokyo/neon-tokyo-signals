@@ -1,57 +1,57 @@
 {
   "schema_version": "neon_tokyo_data_coverage_review_v2",
-  "generated_at": "2026-07-10T12:36:06+00:00",
+  "generated_at": "2026-07-13T12:41:06+00:00",
   "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
   "duckdb_exists": true,
   "duckdb_metadata": {
     "db_path": "data/cache/neon_tokyo_jp.duckdb",
     "exists": true,
-    "size_mb": 514.762,
+    "size_mb": 626.512,
     "metadata_table_exists": true,
     "metadata": {
       "artifact_kind": {
         "value": "github-release-asset",
-        "updated_at": "2026-07-05T22:08:32.043620"
+        "updated_at": "2026-07-12T21:59:19.684386"
       },
       "asset_name": {
         "value": "neon_tokyo_jp_latest.duckdb.zst",
-        "updated_at": "2026-07-05T22:08:32.047511"
+        "updated_at": "2026-07-12T21:59:19.716127"
       },
       "build_id": {
-        "value": "28756389039-1",
-        "updated_at": "2026-07-05T22:08:32.031838"
+        "value": "29210454560-1",
+        "updated_at": "2026-07-12T21:59:19.667673"
       },
       "generated_at": {
-        "value": "2026-07-05T22:08:31+00:00",
-        "updated_at": "2026-07-05T22:08:32.029820"
+        "value": "2026-07-12T21:59:19+00:00",
+        "updated_at": "2026-07-12T21:59:19.527867"
       },
       "release_tag": {
         "value": "ai-arena-duckdb-latest",
-        "updated_at": "2026-07-05T22:08:32.045472"
+        "updated_at": "2026-07-12T21:59:19.686671"
       },
       "schema_version": {
         "value": "neon_tokyo_duckdb_state_v1",
-        "updated_at": "2026-07-05T22:08:32.024683"
+        "updated_at": "2026-07-12T21:59:19.519502"
       },
       "source_ref": {
         "value": "refs/heads/main",
-        "updated_at": "2026-07-05T22:08:32.041652"
+        "updated_at": "2026-07-12T21:59:19.682133"
       },
       "source_run_attempt": {
         "value": "1",
-        "updated_at": "2026-07-05T22:08:32.037815"
+        "updated_at": "2026-07-12T21:59:19.677432"
       },
       "source_run_id": {
-        "value": "28756389039",
-        "updated_at": "2026-07-05T22:08:32.035985"
+        "value": "29210454560",
+        "updated_at": "2026-07-12T21:59:19.675240"
       },
       "source_sha": {
-        "value": "abe1a03ef50c2dc40264ef330de467b13fb4a9ee",
-        "updated_at": "2026-07-05T22:08:32.039753"
+        "value": "394452eb34e7594727687d8312eafb5b5f395342",
+        "updated_at": "2026-07-12T21:59:19.679739"
       },
       "source_workflow": {
         "value": "AI Arena JP fundamentals refresh",
-        "updated_at": "2026-07-05T22:08:32.034077"
+        "updated_at": "2026-07-12T21:59:19.672376"
       }
     }
   },
@@ -273,7 +273,7 @@
         "tickers": 732,
         "trade_candidate_rows": 1476,
         "max_score": 0.980205,
-        "avg_score": 0.28829057828318877,
+        "avg_score": 0.2882905782831887,
         "actions": {
           "Ignore": 70333,
           "Watch": 5136,
@@ -393,20 +393,20 @@
           "pct": 98.487
         },
         "roe_pct": {
-          "count": 807,
-          "pct": 93.946
+          "count": 806,
+          "pct": 93.83
         },
         "roa_pct": {
-          "count": 807,
-          "pct": 93.946
+          "count": 806,
+          "pct": 93.83
         },
         "operating_margin_pct": {
           "count": 853,
           "pct": 99.302
         },
         "dividend_yield_pct": {
-          "count": 660,
-          "pct": 76.834
+          "count": 659,
+          "pct": 76.717
         }
       }
     },
@@ -500,7 +500,7 @@
       "path": "site/data/japan/ai-arena/diagnostics/fundamentals-latest.json",
       "data": {
         "schema_version": "fundamentals_jp_fetch_diagnostics_v1",
-        "generated_at": "2026-07-05T22:08:09Z",
+        "generated_at": "2026-07-12T21:59:00Z",
         "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
         "rows_fetched": 859,
         "failures": [],
@@ -527,16 +527,16 @@
             "coverage_pct": 98.49
           },
           "roe_pct": {
-            "count": 807,
-            "coverage_pct": 93.95
+            "count": 806,
+            "coverage_pct": 93.83
           },
           "operating_margin_pct": {
             "count": 853,
             "coverage_pct": 99.3
           },
           "dividend_yield_pct": {
-            "count": 660,
-            "coverage_pct": 76.83
+            "count": 659,
+            "coverage_pct": 76.72
           }
         }
       }
