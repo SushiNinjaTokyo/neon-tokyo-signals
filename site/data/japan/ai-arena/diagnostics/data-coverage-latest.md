@@ -1,27 +1,27 @@
 # Neon Tokyo Data Coverage Review
 
-Generated: 2026-07-31T12:13:17+00:00
+Generated: 2026-08-03T13:18:54+00:00
 DuckDB: `data/cache/neon_tokyo_jp.duckdb`
 DuckDB exists: **True**
 
 ## Canonical DuckDB Metadata
 
 - Metadata table exists: True
-- DB size MB: 848.012
+- DB size MB: 959.012
 
 | Key | Value | Updated At |
 |---|---|---|
-| `artifact_kind` | github-release-asset | 2026-07-26T22:05:49.910975 |
-| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-07-26T22:05:49.914590 |
-| `build_id` | 30222242155-1 | 2026-07-26T22:05:49.900007 |
-| `generated_at` | 2026-07-26T22:05:49+00:00 | 2026-07-26T22:05:49.897879 |
-| `release_tag` | ai-arena-duckdb-latest | 2026-07-26T22:05:49.912748 |
-| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-07-26T22:05:49.893109 |
-| `source_ref` | refs/heads/main | 2026-07-26T22:05:49.909199 |
-| `source_run_attempt` | 1 | 2026-07-26T22:05:49.905607 |
-| `source_run_id` | 30222242155 | 2026-07-26T22:05:49.903754 |
-| `source_sha` | 2b7dd76e0d2653b10c69065c75388e4754afde5d | 2026-07-26T22:05:49.907457 |
-| `source_workflow` | AI Arena JP fundamentals refresh | 2026-07-26T22:05:49.901805 |
+| `artifact_kind` | github-release-asset | 2026-08-02T22:03:07.048663 |
+| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-08-02T22:03:07.052178 |
+| `build_id` | 30769023270-1 | 2026-08-02T22:03:07.037340 |
+| `generated_at` | 2026-08-02T22:03:06+00:00 | 2026-08-02T22:03:07.035251 |
+| `release_tag` | ai-arena-duckdb-latest | 2026-08-02T22:03:07.050453 |
+| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-08-02T22:03:07.030057 |
+| `source_ref` | refs/heads/main | 2026-08-02T22:03:07.046856 |
+| `source_run_attempt` | 1 | 2026-08-02T22:03:07.043003 |
+| `source_run_id` | 30769023270 | 2026-08-02T22:03:07.040989 |
+| `source_sha` | 2acec38806a7d71c5cf8940dce4eec0d8c83d1f6 | 2026-08-02T22:03:07.044836 |
+| `source_workflow` | AI Arena JP fundamentals refresh | 2026-08-02T22:03:07.039265 |
 
 ## Executive Warnings
 
@@ -36,7 +36,7 @@ DuckDB exists: **True**
 - DuckDB unique tickers: 859
 - Suspicious tickers: 0
 - CSV `jp_duckdb_trial_300`: exists=True rows=859 suspicious=0
-- CSV `jp_index_universe`: exists=True rows=849 suspicious=0
+- CSV `jp_index_universe`: exists=True rows=854 suspicious=0
 - CSV `legacy_universe_jp`: exists=True rows=36 suspicious=0
 
 ## Prices
@@ -108,14 +108,14 @@ DuckDB exists: **True**
 
 | Field | Coverage | Count |
 |---|---:|---:|
-| `market_cap_jpy` | 99.302% | 853 |
-| `per` | 95.111% | 817 |
-| `pbr` | 99.302% | 853 |
+| `market_cap_jpy` | 99.069% | 851 |
+| `per` | 94.878% | 815 |
+| `pbr` | 99.069% | 851 |
 | `psr` | 98.37% | 845 |
-| `roe_pct` | 95.111% | 817 |
-| `roa_pct` | 94.994% | 816 |
-| `operating_margin_pct` | 99.302% | 853 |
-| `dividend_yield_pct` | 76.834% | 660 |
+| `roe_pct` | 93.714% | 805 |
+| `roa_pct` | 93.714% | 805 |
+| `operating_margin_pct` | 99.069% | 851 |
+| `dividend_yield_pct` | 76.484% | 657 |
 
 ### `fundamentals_latest`
 
@@ -174,7 +174,7 @@ DuckDB exists: **True**
 ## Repo Artifact Size
 
 - site/data files: 76
-- site/data total MB: 17.665
+- site/data total MB: 17.674
 - prices latest MB: 0.34
 - dated prices JSON count: 1
 

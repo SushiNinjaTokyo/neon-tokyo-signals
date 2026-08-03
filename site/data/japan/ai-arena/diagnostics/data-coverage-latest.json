@@ -1,57 +1,57 @@
 {
   "schema_version": "neon_tokyo_data_coverage_review_v2",
-  "generated_at": "2026-07-31T12:13:17+00:00",
+  "generated_at": "2026-08-03T13:18:54+00:00",
   "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
   "duckdb_exists": true,
   "duckdb_metadata": {
     "db_path": "data/cache/neon_tokyo_jp.duckdb",
     "exists": true,
-    "size_mb": 848.012,
+    "size_mb": 959.012,
     "metadata_table_exists": true,
     "metadata": {
       "artifact_kind": {
         "value": "github-release-asset",
-        "updated_at": "2026-07-26T22:05:49.910975"
+        "updated_at": "2026-08-02T22:03:07.048663"
       },
       "asset_name": {
         "value": "neon_tokyo_jp_latest.duckdb.zst",
-        "updated_at": "2026-07-26T22:05:49.914590"
+        "updated_at": "2026-08-02T22:03:07.052178"
       },
       "build_id": {
-        "value": "30222242155-1",
-        "updated_at": "2026-07-26T22:05:49.900007"
+        "value": "30769023270-1",
+        "updated_at": "2026-08-02T22:03:07.037340"
       },
       "generated_at": {
-        "value": "2026-07-26T22:05:49+00:00",
-        "updated_at": "2026-07-26T22:05:49.897879"
+        "value": "2026-08-02T22:03:06+00:00",
+        "updated_at": "2026-08-02T22:03:07.035251"
       },
       "release_tag": {
         "value": "ai-arena-duckdb-latest",
-        "updated_at": "2026-07-26T22:05:49.912748"
+        "updated_at": "2026-08-02T22:03:07.050453"
       },
       "schema_version": {
         "value": "neon_tokyo_duckdb_state_v1",
-        "updated_at": "2026-07-26T22:05:49.893109"
+        "updated_at": "2026-08-02T22:03:07.030057"
       },
       "source_ref": {
         "value": "refs/heads/main",
-        "updated_at": "2026-07-26T22:05:49.909199"
+        "updated_at": "2026-08-02T22:03:07.046856"
       },
       "source_run_attempt": {
         "value": "1",
-        "updated_at": "2026-07-26T22:05:49.905607"
+        "updated_at": "2026-08-02T22:03:07.043003"
       },
       "source_run_id": {
-        "value": "30222242155",
-        "updated_at": "2026-07-26T22:05:49.903754"
+        "value": "30769023270",
+        "updated_at": "2026-08-02T22:03:07.040989"
       },
       "source_sha": {
-        "value": "2b7dd76e0d2653b10c69065c75388e4754afde5d",
-        "updated_at": "2026-07-26T22:05:49.907457"
+        "value": "2acec38806a7d71c5cf8940dce4eec0d8c83d1f6",
+        "updated_at": "2026-08-02T22:03:07.044836"
       },
       "source_workflow": {
         "value": "AI Arena JP fundamentals refresh",
-        "updated_at": "2026-07-26T22:05:49.901805"
+        "updated_at": "2026-08-02T22:03:07.039265"
       }
     }
   },
@@ -120,7 +120,7 @@
       "jp_index_universe": {
         "path": "data/universe/jp_index_universe.csv",
         "exists": true,
-        "rows": 849,
+        "rows": 854,
         "suspicious": 0
       },
       "legacy_universe_jp": {
@@ -289,7 +289,7 @@
         "tickers": 254,
         "trade_candidate_rows": 589,
         "max_score": 0.980566,
-        "avg_score": 0.34707426788418294,
+        "avg_score": 0.34707426788418305,
         "actions": {
           "Ignore": 18700,
           "Watch": 2504,
@@ -321,7 +321,7 @@
         "tickers": 508,
         "trade_candidate_rows": 47771,
         "max_score": 0.990716,
-        "avg_score": 0.7798241272708727,
+        "avg_score": 0.7798241272708728,
         "actions": {
           "Trade": 47771,
           "Watch": 9526,
@@ -377,36 +377,36 @@
       "coverage_vs_universe_pct": 100.0,
       "field_coverage": {
         "market_cap_jpy": {
-          "count": 853,
-          "pct": 99.302
+          "count": 851,
+          "pct": 99.069
         },
         "per": {
-          "count": 817,
-          "pct": 95.111
+          "count": 815,
+          "pct": 94.878
         },
         "pbr": {
-          "count": 853,
-          "pct": 99.302
+          "count": 851,
+          "pct": 99.069
         },
         "psr": {
           "count": 845,
           "pct": 98.37
         },
         "roe_pct": {
-          "count": 817,
-          "pct": 95.111
+          "count": 805,
+          "pct": 93.714
         },
         "roa_pct": {
-          "count": 816,
-          "pct": 94.994
+          "count": 805,
+          "pct": 93.714
         },
         "operating_margin_pct": {
-          "count": 853,
-          "pct": 99.302
+          "count": 851,
+          "pct": 99.069
         },
         "dividend_yield_pct": {
-          "count": 660,
-          "pct": 76.834
+          "count": 657,
+          "pct": 76.484
         }
       }
     },
@@ -500,7 +500,7 @@
       "path": "site/data/japan/ai-arena/diagnostics/fundamentals-latest.json",
       "data": {
         "schema_version": "fundamentals_jp_fetch_diagnostics_v1",
-        "generated_at": "2026-07-26T22:05:31Z",
+        "generated_at": "2026-08-02T22:02:44Z",
         "duckdb_path": "data/cache/neon_tokyo_jp.duckdb",
         "rows_fetched": 859,
         "failures": [],
@@ -511,32 +511,32 @@
         "canonical_value_feature_builder": "scripts/build_value_features_jp.py",
         "metric_coverage": {
           "market_cap_jpy": {
-            "count": 853,
-            "coverage_pct": 99.3
+            "count": 851,
+            "coverage_pct": 99.07
           },
           "per": {
-            "count": 817,
-            "coverage_pct": 95.11
+            "count": 815,
+            "coverage_pct": 94.88
           },
           "pbr": {
-            "count": 853,
-            "coverage_pct": 99.3
+            "count": 851,
+            "coverage_pct": 99.07
           },
           "psr": {
             "count": 845,
             "coverage_pct": 98.37
           },
           "roe_pct": {
-            "count": 817,
-            "coverage_pct": 95.11
+            "count": 805,
+            "coverage_pct": 93.71
           },
           "operating_margin_pct": {
-            "count": 853,
-            "coverage_pct": 99.3
+            "count": 851,
+            "coverage_pct": 99.07
           },
           "dividend_yield_pct": {
-            "count": 660,
-            "coverage_pct": 76.83
+            "count": 657,
+            "coverage_pct": 76.48
           }
         }
       }
@@ -688,7 +688,7 @@
   },
   "repo_artifact_size": {
     "site_data_files": 76,
-    "site_data_total_mb": 17.665,
+    "site_data_total_mb": 17.674,
     "prices_latest_mb": 0.34,
     "dated_prices_json_count": 1,
     "largest_files": [
