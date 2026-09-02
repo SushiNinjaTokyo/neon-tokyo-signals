@@ -1,6 +1,6 @@
 # Neon Tokyo Data Coverage Review
 
-Generated: 2026-09-01T14:50:20+00:00
+Generated: 2026-09-02T14:26:02+00:00
 DuckDB: `data/cache/neon_tokyo_jp.duckdb`
 DuckDB exists: **True**
 
@@ -36,7 +36,7 @@ DuckDB exists: **True**
 - DuckDB unique tickers: 859
 - Suspicious tickers: 0
 - CSV `jp_duckdb_trial_300`: exists=True rows=859 suspicious=0
-- CSV `jp_index_universe`: exists=True rows=854 suspicious=0
+- CSV `jp_index_universe`: exists=True rows=853 suspicious=0
 - CSV `legacy_universe_jp`: exists=True rows=36 suspicious=0
 
 ## Prices
