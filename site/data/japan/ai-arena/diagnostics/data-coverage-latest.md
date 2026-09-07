@@ -1,27 +1,27 @@
 # Neon Tokyo Data Coverage Review
 
-Generated: 2026-09-04T14:18:58+00:00
+Generated: 2026-09-07T15:49:03+00:00
 DuckDB: `data/cache/neon_tokyo_jp.duckdb`
 DuckDB exists: **True**
 
 ## Canonical DuckDB Metadata
 
 - Metadata table exists: True
-- DB size MB: 1402.012
+- DB size MB: 1509.262
 
 | Key | Value | Updated At |
 |---|---|---|
-| `artifact_kind` | github-release-asset | 2026-08-30T23:22:08.662946 |
-| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-08-30T23:22:08.667902 |
-| `build_id` | 33341367695-1 | 2026-08-30T23:22:08.649612 |
-| `generated_at` | 2026-08-30T23:22:08+00:00 | 2026-08-30T23:22:08.647076 |
-| `release_tag` | ai-arena-duckdb-latest | 2026-08-30T23:22:08.665239 |
-| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-08-30T23:22:08.641458 |
-| `source_ref` | refs/heads/main | 2026-08-30T23:22:08.660381 |
-| `source_run_attempt` | 1 | 2026-08-30T23:22:08.656119 |
-| `source_run_id` | 33341367695 | 2026-08-30T23:22:08.653818 |
-| `source_sha` | e1a380bd0cb6bcf6c01010951696cc8c99912113 | 2026-08-30T23:22:08.658377 |
-| `source_workflow` | AI Arena JP fundamentals refresh | 2026-08-30T23:22:08.651804 |
+| `artifact_kind` | github-release-asset | 2026-09-06T22:50:13.222670 |
+| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-09-06T22:50:13.226075 |
+| `build_id` | 34064904721-1 | 2026-09-06T22:50:13.211661 |
+| `generated_at` | 2026-09-06T22:50:12+00:00 | 2026-09-06T22:50:13.209437 |
+| `release_tag` | ai-arena-duckdb-latest | 2026-09-06T22:50:13.224361 |
+| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-09-06T22:50:13.205090 |
+| `source_ref` | refs/heads/main | 2026-09-06T22:50:13.220684 |
+| `source_run_attempt` | 1 | 2026-09-06T22:50:13.217080 |
+| `source_run_id` | 34064904721 | 2026-09-06T22:50:13.215277 |
+| `source_sha` | f4dfd859d5ec440fc75b4b533493951792da24b4 | 2026-09-06T22:50:13.218918 |
+| `source_workflow` | AI Arena JP fundamentals refresh | 2026-09-06T22:50:13.213427 |
 
 ## Executive Warnings
 
@@ -109,11 +109,11 @@ DuckDB exists: **True**
 | Field | Coverage | Count |
 |---|---:|---:|
 | `market_cap_jpy` | 98.719% | 848 |
-| `per` | 94.645% | 813 |
+| `per` | 94.761% | 814 |
 | `pbr` | 98.836% | 849 |
 | `psr` | 98.021% | 842 |
-| `roe_pct` | 90.803% | 780 |
-| `roa_pct` | 90.687% | 779 |
+| `roe_pct` | 91.153% | 783 |
+| `roa_pct` | 90.803% | 780 |
 | `operating_margin_pct` | 98.836% | 849 |
 | `dividend_yield_pct` | 76.95% | 661 |
 
