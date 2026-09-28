@@ -1,27 +1,27 @@
 # Neon Tokyo Data Coverage Review
 
-Generated: 2026-09-25T15:13:00+00:00
+Generated: 2026-09-28T18:08:49+00:00
 DuckDB: `data/cache/neon_tokyo_jp.duckdb`
 DuckDB exists: **True**
 
 ## Canonical DuckDB Metadata
 
 - Metadata table exists: True
-- DB size MB: 1730.762
+- DB size MB: 1841.512
 
 | Key | Value | Updated At |
 |---|---|---|
-| `artifact_kind` | github-release-asset | 2026-09-20T23:08:01.608944 |
-| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-09-20T23:08:01.612791 |
-| `build_id` | 35543459655-1 | 2026-09-20T23:08:01.597235 |
-| `generated_at` | 2026-09-20T23:08:01+00:00 | 2026-09-20T23:08:01.595181 |
-| `release_tag` | ai-arena-duckdb-latest | 2026-09-20T23:08:01.610873 |
-| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-09-20T23:08:01.590389 |
-| `source_ref` | refs/heads/main | 2026-09-20T23:08:01.607000 |
-| `source_run_attempt` | 1 | 2026-09-20T23:08:01.603190 |
-| `source_run_id` | 35543459655 | 2026-09-20T23:08:01.601211 |
-| `source_sha` | 422c73c8338f2b61b7c2614de8bf8f840d36b4d2 | 2026-09-20T23:08:01.605102 |
-| `source_workflow` | AI Arena JP fundamentals refresh | 2026-09-20T23:08:01.599187 |
+| `artifact_kind` | github-release-asset | 2026-09-27T23:48:10.712344 |
+| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-09-27T23:48:10.715043 |
+| `build_id` | 36359530757-1 | 2026-09-27T23:48:10.704048 |
+| `generated_at` | 2026-09-27T23:48:10+00:00 | 2026-09-27T23:48:10.702459 |
+| `release_tag` | ai-arena-duckdb-latest | 2026-09-27T23:48:10.713754 |
+| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-09-27T23:48:10.698628 |
+| `source_ref` | refs/heads/main | 2026-09-27T23:48:10.710911 |
+| `source_run_attempt` | 1 | 2026-09-27T23:48:10.708323 |
+| `source_run_id` | 36359530757 | 2026-09-27T23:48:10.706924 |
+| `source_sha` | 0379270764234c66a195a156e93cc8b787d38eba | 2026-09-27T23:48:10.709648 |
+| `source_workflow` | AI Arena JP fundamentals refresh | 2026-09-27T23:48:10.705428 |
 
 ## Executive Warnings
 
