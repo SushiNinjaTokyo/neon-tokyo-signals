@@ -1,27 +1,27 @@
 # Neon Tokyo Data Coverage Review
 
-Generated: 2026-10-02T16:15:03+00:00
+Generated: 2026-10-05T19:17:09+00:00
 DuckDB: `data/cache/neon_tokyo_jp.duckdb`
 DuckDB exists: **True**
 
 ## Canonical DuckDB Metadata
 
 - Metadata table exists: True
-- DB size MB: 1841.512
+- DB size MB: 1952.512
 
 | Key | Value | Updated At |
 |---|---|---|
-| `artifact_kind` | github-release-asset | 2026-09-27T23:48:10.712344 |
-| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-09-27T23:48:10.715043 |
-| `build_id` | 36359530757-1 | 2026-09-27T23:48:10.704048 |
-| `generated_at` | 2026-09-27T23:48:10+00:00 | 2026-09-27T23:48:10.702459 |
-| `release_tag` | ai-arena-duckdb-latest | 2026-09-27T23:48:10.713754 |
-| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-09-27T23:48:10.698628 |
-| `source_ref` | refs/heads/main | 2026-09-27T23:48:10.710911 |
-| `source_run_attempt` | 1 | 2026-09-27T23:48:10.708323 |
-| `source_run_id` | 36359530757 | 2026-09-27T23:48:10.706924 |
-| `source_sha` | 0379270764234c66a195a156e93cc8b787d38eba | 2026-09-27T23:48:10.709648 |
-| `source_workflow` | AI Arena JP fundamentals refresh | 2026-09-27T23:48:10.705428 |
+| `artifact_kind` | github-release-asset | 2026-10-04T23:56:28.207325 |
+| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-10-04T23:56:28.210804 |
+| `build_id` | 37245243953-1 | 2026-10-04T23:56:28.196239 |
+| `generated_at` | 2026-10-04T23:56:27+00:00 | 2026-10-04T23:56:28.194175 |
+| `release_tag` | ai-arena-duckdb-latest | 2026-10-04T23:56:28.209038 |
+| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-10-04T23:56:28.189328 |
+| `source_ref` | refs/heads/main | 2026-10-04T23:56:28.205498 |
+| `source_run_attempt` | 1 | 2026-10-04T23:56:28.201766 |
+| `source_run_id` | 37245243953 | 2026-10-04T23:56:28.199993 |
+| `source_sha` | 3e525358e13cba9bd08163944bd255815d80e470 | 2026-10-04T23:56:28.203633 |
+| `source_workflow` | AI Arena JP fundamentals refresh | 2026-10-04T23:56:28.198056 |
 
 ## Executive Warnings
 
@@ -115,7 +115,7 @@ DuckDB exists: **True**
 | `roe_pct` | 91.502% | 786 |
 | `roa_pct` | 91.153% | 783 |
 | `operating_margin_pct` | 98.719% | 848 |
-| `dividend_yield_pct` | 76.834% | 660 |
+| `dividend_yield_pct` | 98.603% | 847 |
 
 ### `fundamentals_latest`
 
