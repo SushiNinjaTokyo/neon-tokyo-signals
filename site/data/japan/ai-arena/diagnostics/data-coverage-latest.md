@@ -1,6 +1,6 @@
 # Neon Tokyo Data Coverage Review
 
-Generated: 2026-10-15T14:57:38+00:00
+Generated: 2026-10-16T14:48:15+00:00
 DuckDB: `data/cache/neon_tokyo_jp.duckdb`
 DuckDB exists: **True**
 
