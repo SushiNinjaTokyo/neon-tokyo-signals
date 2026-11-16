@@ -1,27 +1,27 @@
 # Neon Tokyo Data Coverage Review
 
-Generated: 2026-11-13T17:41:28+00:00
+Generated: 2026-11-16T20:22:30+00:00
 DuckDB: `data/cache/neon_tokyo_jp.duckdb`
 DuckDB exists: **True**
 
 ## Canonical DuckDB Metadata
 
 - Metadata table exists: True
-- DB size MB: 2506.512
+- DB size MB: 2617.762
 
 | Key | Value | Updated At |
 |---|---|---|
-| `artifact_kind` | github-release-asset | 2026-11-09T00:42:13.787288 |
-| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-11-09T00:42:13.791403 |
-| `build_id` | 42541048394-1 | 2026-11-09T00:42:13.773730 |
-| `generated_at` | 2026-11-09T00:42:13+00:00 | 2026-11-09T00:42:13.770965 |
-| `release_tag` | ai-arena-duckdb-latest | 2026-11-09T00:42:13.789372 |
-| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-11-09T00:42:13.765895 |
-| `source_ref` | refs/heads/main | 2026-11-09T00:42:13.785172 |
-| `source_run_attempt` | 1 | 2026-11-09T00:42:13.780590 |
-| `source_run_id` | 42541048394 | 2026-11-09T00:42:13.778442 |
-| `source_sha` | 88e94d48dc33d4bd02cc98bb700bc82370a878b1 | 2026-11-09T00:42:13.783017 |
-| `source_workflow` | AI Arena JP fundamentals refresh | 2026-11-09T00:42:13.776123 |
+| `artifact_kind` | github-release-asset | 2026-11-16T00:56:49.474183 |
+| `asset_name` | neon_tokyo_jp_latest.duckdb.zst | 2026-11-16T00:56:49.478894 |
+| `build_id` | 43782553049-1 | 2026-11-16T00:56:49.459791 |
+| `generated_at` | 2026-11-16T00:56:49+00:00 | 2026-11-16T00:56:49.456803 |
+| `release_tag` | ai-arena-duckdb-latest | 2026-11-16T00:56:49.476535 |
+| `schema_version` | neon_tokyo_duckdb_state_v1 | 2026-11-16T00:56:49.451389 |
+| `source_ref` | refs/heads/main | 2026-11-16T00:56:49.471747 |
+| `source_run_attempt` | 1 | 2026-11-16T00:56:49.467252 |
+| `source_run_id` | 43782553049 | 2026-11-16T00:56:49.464844 |
+| `source_sha` | e23d64de0e72ff481b85f89f215259f6d6f0b73a | 2026-11-16T00:56:49.469500 |
+| `source_workflow` | AI Arena JP fundamentals refresh | 2026-11-16T00:56:49.462457 |
 
 ## Executive Warnings
 
@@ -112,8 +112,8 @@ DuckDB exists: **True**
 | `per` | 94.179% | 809 |
 | `pbr` | 98.719% | 848 |
 | `psr` | 97.905% | 841 |
-| `roe_pct` | 92.2% | 792 |
-| `roa_pct` | 91.735% | 788 |
+| `roe_pct` | 93.481% | 803 |
+| `roa_pct` | 93.132% | 800 |
 | `operating_margin_pct` | 98.719% | 848 |
 | `dividend_yield_pct` | 98.37% | 845 |
 
